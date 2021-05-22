@@ -5,6 +5,7 @@ namespace App\Http\Controllers\report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductPurchaseReportController extends Controller
 {
@@ -14,78 +15,93 @@ class ProductPurchaseReportController extends Controller
     }
 
     // Index view of supplier report
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
+            $purchaseProducts = '';
+            $query = DB::table('purchase_products')
+                ->leftJoin('purchases', 'purchase_products.purchase_id', '=', 'purchases.id')
+                ->leftJoin('products', 'purchase_products.product_id', 'products.id')
+                ->leftJoin('product_variants', 'purchase_products.product_variant_id', 'product_variants.id')
+                ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
+                ->leftJoin('units', 'products.unit_id', 'units.id');
+     
+            if ($request->product_id) {
+                $query->where('purchase_products.product_id', $request->product_id);
+            }
+    
+            if ($request->variant_id) {
+                $query->where('purchase_products.product_variant_id', $request->variant_id);
+            }
+    
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('purchases.branch_id', NULL);
+                } else {
+                    $query->where('purchases.branch_id', $request->branch_id);
+                }
+            }
+    
+            if ($request->supplier_id) {
+                $query->where('purchases.supplier_id', $request->supplier_id);
+            }
+    
+            if ($request->date_range) {
+                $date_range = explode('-', $request->date_range);
+                //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            }
+    
+            $purchaseProducts = $query
+                ->select(
+                    'purchase_products.purchase_id',
+                    'purchase_products.product_id',
+                    'purchase_products.product_variant_id',
+                    'purchase_products.net_unit_cost',
+                    'purchase_products.quantity',
+                    'units.code_name as unit_code',
+                    'purchase_products.subtotal',
+                    'purchases.*',
+                    'products.name',
+                    'products.product_code',
+                    'product_variants.variant_name',
+                    'product_variants.variant_code',
+                    'suppliers.name as supplier_name'
+                )->get();
+
+                return DataTables::of($purchaseProducts)
+                ->editColumn('product', function ($row) {
+                    $variant = $row->variant_name ?' - '.$row->variant_name : '';
+                    return $row->name .$variant;
+                })
+                ->editColumn('sku', function ($row) {
+                    return $row->variant_code ? $row->variant_code : $row->product_code;
+                })
+                ->editColumn('date', function ($row) {
+                    return date('d/m/Y', strtotime($row->date));
+                })
+                ->editColumn('qty', function ($row) {
+                    return $row->quantity.' (<span class="qty" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>)';
+                })
+                ->editColumn('net_unit_cost',  function ($row) use ($generalSettings) {
+                    return '<b><span class="net_unit_cost" data-value="'.$row->net_unit_cost.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_unit_cost . '</span></b>';
+                })
+                ->editColumn('subtotal', function ($row) use ($generalSettings) {
+                    return '<b><span class="subtotal" data-value="'.$row->subtotal.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->subtotal . '</span></b>';
+                })
+                ->rawColumns(['product', 'sku', 'date', 'qty', 'branch', 'net_unit_cost', 'subtotal'])
+                ->make(true);
+        }
         return view('reports.product_purchase_report.index');
     }
 
-    public function getProductPurchaseReport(Request $request)
+    public function getProductPurchaseReport()
     {
-        $purchaseProducts = '';
-        $query = DB::table('purchase_products')
-            ->leftJoin('purchases', 'purchase_products.purchase_id', '=', 'purchases.id')
-            ->leftJoin('products', 'purchase_products.product_id', 'products.id')
-            ->leftJoin('product_variants', 'purchase_products.product_variant_id', 'product_variants.id')
-            ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id');
-        // ->where('purchases.branch_id', $request->branch_id)
-        // ->where('purchases.supplier_id', $request->supplier_id)
-        // ->where('purchases.warehouse_id', $request->warehouse_id)
-        // ->select('purchases.*', 'products.name', 'product_variants.variant_name', 'suppliers.name as sup_name')
-        // ->get();
-
-        // if ($request->product_id) {
-        //     $query->where('product_id', $request->product_id);
-        // }
-
-        if ($request->product_id) {
-            $query->where('purchase_products.product_id', $request->product_id);
-        }
-
-        if ($request->variant_id) {
-            $query->where('purchase_products.product_variant_id', $request->variant_id);
-        }
-
-        if ($request->branch_id) {
-            $query->where('purchases.branch_id', $request->branch_id);
-        }
-
-        if ($request->warehouse_id) {
-            $query->where('purchases.warehouse_id', $request->warehouse_id);
-        }
-
-        if ($request->supplier_id) {
-            $query->where('purchases.supplier_id', $request->supplier_id);
-        }
-
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-            $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-        } else {
-            $query->where('purchases.year', date('Y'));
-        }
-
-        $purchaseProducts = $query
-            ->select(
-                'purchase_products.purchase_id',
-                'purchase_products.product_id',
-                'purchase_products.product_variant_id',
-                'purchase_products.net_unit_cost',
-                'purchase_products.quantity',
-                'units.code_name as unit_code',
-                'purchase_products.subtotal',
-                'purchases.*',
-                'products.name',
-                'products.product_code',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-                'suppliers.name as supplier_name'
-            )
-            ->get();
-
+        
+      
         return view('reports.product_purchase_report.ajax_view.purchase_product_list', compact('purchaseProducts'));
     }
 
@@ -102,8 +118,7 @@ class ProductPurchaseReportController extends Controller
                 'product_variants.id as variant_id',
                 'product_variants.variant_name',
                 'product_variants.variant_code',
-            )
-            ->get();
+            )->get();
 
         if (count($products) > 0) {
             return view('reports.product_purchase_report.ajax_view.search_result', compact('products'));

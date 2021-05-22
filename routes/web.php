@@ -649,8 +649,7 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'stock/adjustments'], function () {
         Route::get('/', 'StockAdjustmentReportController@index')->name('reports.stock.adjustments.index');
-        Route::get('all/adjustment/amounts', 'StockAdjustmentReportController@allAdjustmentAmount')->name('reports.stock.adjustments.all.amounts');
-        Route::get('filter/adjustment', 'StockAdjustmentReportController@filterAdjustment')->name('reports.stock.adjustments.filter');
+        Route::get('all/adjustments', 'StockAdjustmentReportController@allAdjustments')->name('reports.stock.adjustments.all');
     });
 
     Route::group(['prefix' => 'trending/products'], function () {
@@ -662,13 +661,11 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     Route::group(['prefix' => 'product/purchases'], function () {
         Route::get('/', 'ProductPurchaseReportController@index')->name('reports.product.purchases.index');
         Route::get('search/product/{product_name}', 'ProductPurchaseReportController@searchProduct');
-        Route::get('get', 'ProductPurchaseReportController@getProductPurchaseReport')->name('reports.get.product.purchases');
     });
 
     Route::group(['prefix' => 'product/sales'], function () {
         Route::get('/', 'ProductSaleReportController@index')->name('reports.product.sales.index');
         Route::get('search/product/{product_name}', 'ProductSaleReportController@searchProduct');
-        Route::get('get', 'ProductSaleReportController@getProductSaleReport')->name('reports.get.product.sales');
     });
 
     Route::group(['prefix' => 'purchase/payments'], function () {

@@ -114,7 +114,7 @@
                                             <th>Actions</th>
                                             <th>Product</th>
                                             <th>Purchase Cost</th>
-                                            <th>Salling Price</th>
+                                            <th>Selling Price</th>
                                             <th>Current Stock</th>
                                             <th>Product Type</th>
                                             <th>Category</th>

@@ -1,3 +1,6 @@
+@php
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+@endphp
 <div class="sale_payment_print_area">
     <div class="header_area">
         <div class="company_name text-center">
@@ -105,6 +108,18 @@
                     <th class="text-center"><p style="width: 70%; border-top:1px solid black;">Made By</p></th>
                     <th class="text-center"><p style="width: 70%; border-top:1px solid black;">Account Manger</p></th>
                     <th class="text-center"><p style="width: 70%; border-top:1px solid black;">Authority</p></th>
+                </tr>
+
+                <tr class="text-center">
+                    <td colspan="4" class="text-center">
+                        <img style="width: 170px; height:40px;" class="mt-3" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($payment->invoice_id, $generator::TYPE_CODE_128)) }}">
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td colspan="4" class="text-center">
+                        {{ $payment->invoice_id }}
+                    </td>
                 </tr>
 
                 <tr>

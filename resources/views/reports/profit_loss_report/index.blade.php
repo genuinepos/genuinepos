@@ -291,7 +291,7 @@
         // Set branch in form field
         function setBranches(){
             $.ajax({
-                url:"{{route('sales.get.all.branches')}}",
+                url:"{{ route('sales.get.all.branches') }}",
                 async:true,
                 success:function(branches){
                     $.each(branches, function(key, val){
@@ -304,15 +304,15 @@
     @endif
 
     function getSalePurchaseAndProfitData() {
-            $('.data_preloader').show();
-            $.ajax({
-                url:"{{route('reports.profit.sale.purchase.profit')}}",
-                type:'get',
-                success:function(data){
-                    $('#data_list').html(data);
-                    $('.data_preloader').hide();
-                }
-            });
+        $('.data_preloader').show();
+        $.ajax({
+            url:"{{route('reports.profit.sale.purchase.profit')}}",
+            type:'get',
+            success:function(data){
+                $('#data_list').html(data);
+                $('.data_preloader').hide();
+            }
+        });
     }
     getSalePurchaseAndProfitData();
 

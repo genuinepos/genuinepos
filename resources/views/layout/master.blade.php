@@ -4,9 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zarra Admin Panel Dashboard</title>
+
+    <!-- Title -->
+    <title>Genuine POS</title>
+
+    <!-- Icon -->
+    <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
-   
+
    @include('layout._stylesheet')
    @stack('stylesheets')
 
@@ -15,7 +21,7 @@
 <body style="background: #EEF0F8!important;">
     <div class="all__content">
         @include('partials.sidebar')
-        
+
         <div class="main-woaper_t">
             @include('partials.header')
             <div style="background: #EEF0F8;">

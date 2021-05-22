@@ -1,62 +1,90 @@
+@extends('layout.app')
 
-<!DOCTYPE html>
-<html lang="en">
+@section('title', 'Login - ')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpeedDigitPosPro</title>
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend//asset/css/bootstrap.min.css">
-    <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
-    <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
-    <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css">
-    <link href="{{asset('public')}}/backend/css/wizard.css" rel="stylesheet" type="text/css">
-    <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/style.css">
-</head>
+    @push('css')
 
-<body>
+    @endpush
+
+@section('content')
+    {{-- <div class="form-wraper" style="background: #448aff"> --}}
     <div class="form-wraper">
         <div class="container">
             <div class="form-content">
-                <div class="col-lg-3 col-md-4 col-12">
-                    <div class="form-head">
-                        <div class="head">
-                            <img src="{{asset('public')}}/backend/asset/img/logo.png" alt="" class="logo">
-                            <span class="head-text"><b>The Complete Software Solution.</b> </span>
-                        </div>
-                    </div>
+                <div class="inner-div col-lg-7">
+                    <div class="border-div">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="form-head">
+                                    <div class="head">
+                                        <img src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}" alt="POS" class="logo">
+                                        <span class="head-text">
+                                            Genuine POS, Point of Sale software by SpeedDigit
+                                        </span>
+                                    </div>
+                                </div>
 
-                    <div class="main-form">
-                        <div class="form-title">
-                            <p>Admin Login</p>
-                        </div>
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
-                            <div class="left-inner-addon input-container">
-                                <i class="fa fa-user"></i>
-                                <input type="text" name="username" class="form-control form-st" placeholder="User Name" />
-                                <span class="error error_username">{{ $errors->first('username') }}</span>
+                                <div class="main-form">
+                                    <div class="form-title">
+                                        <p>Admin Login</p>
+                                    </div>
+                                    <form action="{{ route('login') }}" method="POST">
+                                        @csrf
+                                        <div class="left-inner-addon input-container">
+                                            <i class="fa fa-envelope"></i>
+                                            <input name="username" class="form-control form-st"
+                                                placeholder="Username" required/>
+                                        </div>
+                                        <div class="left-inner-addon input-container">
+                                            <i class="fa fa-key"></i>
+                                            <input name="password" type="Password"
+                                                class="form-control form-st rounded-bottom" placeholder="Password" required />
+                                        </div>
+
+                                        <button type="submit" class="submit-button">Login</button>
+                                    </form>
+                                    <div class="login_opt_link">
+                                        @if (Route::has('password.request'))
+                                            <a class="forget-pw" href="{{ route('password.request') }}">
+                                                {{ __('Forgot Your Password?') }}
+                                            </a>
+                                        @endif
+                                        {{-- <div class="form-group cx-box">
+                                            <input type="checkbox" id="remembar" class="form-control">
+                                            <label for="remembar">Remembar me</label>
+                                        </div> --}}
+
+                                        <div class="form-group cx-box">
+                                            <label for="remembar">Remembar me</label>
+                                            <input type="checkbox" id="remembar" class="form-control">
+                                        </div>
+                                    </div>
+
+
+                                </div>
                             </div>
-                            
-                            <div class="left-inner-addon input-container">
-                                <i class="fa fa-key"></i>
-                                <input type="Password" name="password" class="form-control form-st rounded-bottom" placeholder="Password" />
-                                <span class="error error_password">{{ $errors->first('password') }}</span>
-                            </div>
-                            @if (Session::has('errorMsg'))
-									<span class="bg-danger text-white px-1">{{ session('errorMsg') }}</span>
-							@endif
-                            <button type="submit" class="submit-button">Login</button>
-                        </form>
-                        <div class="login_opt_link">
-                            <a href="" class="forget-pw">Forgot Password </a>
-                            <div class="form-group cx-box">
-                                <input type="checkbox" id="remembar">
-                                <label for="remembar">Remembar me</label>
+
+
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="form-head addr">
+                                    <div class="head addr-t">
+                                        {{-- <h2>
+                                            Genuine Point Of Sale
+                                        </h2> --}}
+                                        <p class="logo-main-sec"><img src="{{ asset('public/assets/images/genuine_pos.png') }}"
+                                                alt="POS" class="logo">
+                                        </p>
+                                        <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>
+                                        <p class="details"><span>Support:</span> support@speeddigit.com</p>
+                                        <p class="details"><span>Web Address:</span> www.speeddigit.com</p>
+
+                                        <div class="function-btn">
+                                            <a href="" class="btn-fn">P</a>
+                                            <a href="" class="btn-fn">O</a>
+                                            <a href="" class="btn-fn">S</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -64,5 +92,9 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+@endsection
+
+
+@push('js')
+
+@endpush

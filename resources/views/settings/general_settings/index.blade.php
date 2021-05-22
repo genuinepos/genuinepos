@@ -1,0 +1,1269 @@
+@extends('layout.master')
+@push('stylesheets')
+    <style>
+        .form_element {border: 1px solid #7e0d3d;}
+        label {font-size: 12px !important;}
+        ul.menus_unorder_list {list-style: none;float: left;width: 100%;}
+        ul.menus_unorder_list .menu_list {border: 1px solid lightgray;display: block;text-align: center;
+            background: linear-gradient(#8c0437ee, #1e000d);}
+        ul.menus_unorder_list .menu_list .menu_btn {color: white;padding: 6px 1px;display: block;}
+        .menu_active {background: white;color: #504d4d!important;font-weight: 700;}
+    </style>
+@endpush
+@section('content')
+    <div class="body-woaper">
+        <div class="mt-5"></div>
+        <div class="container-fluid">
+            <div class="form_element mt-3">
+                <div class="section-header">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>General Settings</h5>
+                            </div>
+    
+                            <div class="col-md-6">
+                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="element-body">
+                    <div class="settings_form_area">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="settings_side_menu">
+                                    <ul class="menus_unorder_list">
+                                        <li class="menu_list">
+                                            <a class="menu_btn menu_active" data-form="business_settings_form"
+                                                href="#">Business</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="tax_settings_form" href="#">Tax</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="product_settings_form" href="#">Product</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="sale_settings_form" href="#">Sale</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="pos_settings_form" href="#">POS</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="purchase_settings_form" href="#">Purchase</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="dashboard_settings_form" href="#">Dashboard</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="prefix_settings_form" href="#">Prefix</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="module_settings_form" href="#">Modules</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="email_settings_form" href="#">Email Setting</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="sms_settings_form" href="#">SMS Setting</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9">
+                                <form id="business_settings_form" class="setting_form p-2"
+                                    action="{{ route('settings.business.settings') }}" method="post"
+                                    enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Business Settings </h6>
+                                        </div>
+                                    </div>
+                                    @csrf
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Business Name :</strong></label>
+                                            <input type="text" name="shop_name" class="form-control bs_input"
+                                                autocomplete="off"
+                                                value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Address :</strong></label>
+                                            <input type="text" name="address" class="form-control bs_input"
+                                                autocomplete="off" placeholder="Business address"
+                                                value="{{ json_decode($generalSettings->business, true)['address'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Phone :</strong></label>
+                                            <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number"
+                                                value="{{ json_decode($generalSettings->business, true)['phone'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Email :</strong></label>
+                                            <input type="text" name="email" class="form-control bs_input"
+                                                placeholder="Business email address"
+                                                value="{{ json_decode($generalSettings->business, true)['email'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Start Date :</strong></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1"><i
+                                                            class="fas fa-calendar-week"></i></span>
+                                                </div>
+                                                <input type="text" name="start_date" class="form-control date-picker"
+                                                    autocomplete="off"
+                                                    value="{{ json_decode($generalSettings->business, true)['start_date'] }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Default Profit(%) :</strong><span
+                                                    class="text-danger">*</span></label>
+                                            <input type="number" name="default_profit" class="form-control bs_input"
+                                                autocomplete="off" data-name="Default profit" id="default_profit"
+                                                value="{{ json_decode($generalSettings->business, true)['default_profit'] }}">
+                                            <span class="error error_default_profit"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Business Logo :</strong><span
+                                                    class="text-danger">*</span></label>
+                                            <input type="file" class="form-control" name="business_logo" id="business_logo">
+                                            <small>Previous logo (if exists) will be replaced</small>
+                                            <span class="error error_business_logo"></span>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Currency :</strong><span class="text-danger">*</span></label>
+                                            <select name="currency" class="form-control bs_input" data-name="Currency"
+                                                id="currency">
+                                                @foreach ($currencies as $currency)
+                                                    <option
+                                                        {{ json_decode($generalSettings->business, true)['currency'] == $currency->symbol ? 'SELECTED' : '' }}
+                                                        value="{{ $currency->symbol }}">
+                                                        {{ $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ')' }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_currency"></span>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Financial year start month:</strong> <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="financial_year_start" class="form-control bs_input"
+                                                data-name="Financial year start month" id="financial_year_start">
+                                                @foreach ($months as $month)
+                                                    <option value="{{ $month->month }}"
+                                                        {{ json_decode($generalSettings->business, true)['financial_year_start'] == $month->month ? 'SELECTED' : '' }}>
+                                                        {{ $month->month }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_financial_year_start"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Date Format:</strong><span class="text-danger">*</span></label>
+                                            <select name="date_format" class="form-control bs_input" data-name="Date format"
+                                                id="date_format">
+                                                <option value="dd-mm-yyyy"
+                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'dd-mm-yyyy' ? 'SELECTED' : '' }}>
+                                                    dd-mm-yyyy</option>
+                                                <option value="mm-dd-yyyy"
+                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'mm-dd-yyyy' ? 'SELECTED' : '' }}>
+                                                    mm-dd-yyyy</option>
+                                                <option value="mm/dd/yyyy"
+                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'mm/dd/yyyy' ? 'SELECTED' : '' }}>
+                                                    mm/dd/yyyy</option>
+                                                <option value="dd/mm/yyyy"
+                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'dd/mm/yyyy' ? 'SELECTED' : '' }}>
+                                                    dd/mm/yyyy</option>
+                                            </select>
+                                            <span class="error error_date_format"></span>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Time Format:</strong><span class="text-danger">*</span></label>
+                                            <select name="time_format" class="form-control bs_input" data-name="Time format"
+                                                id="time_format">
+                                                <option value="12"
+                                                    {{ json_decode($generalSettings->business, true)['time_format'] == '12' ? 'SELECTED' : '' }}>
+                                                    12 Hour</option>
+                                                <option value="24"
+                                                    {{ json_decode($generalSettings->business, true)['time_format'] == '24' ? 'SELECTED' : '' }}>
+                                                    24 Hour</option>
+                                            </select>
+                                            <span class="error error_time_format"></span>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Time Zone:</strong><span class="text-danger">*</span></label>
+                                            <select name="timezone" class="form-control bs_input" data-name="Time format"
+                                                id="time_format">
+                                                <option value="">TimeZone</option>
+                                                @foreach ($timezones as $timezone)
+                                                    <option
+                                                        {{ json_decode($generalSettings->business, true)['timezone'] == $timezone->name ? 'SELECTED' : '' }}
+                                                        value="{{ $timezone->name }}">{{ $timezone->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_time_format"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="tax_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.tax.settings') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Tax Settings</h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label>Tax 1 Name : <span class="text-danger">*</span></label>
+                                            <input type="text" name="tax_1_name" class="form-control" autocomplete="off"
+                                                placeholder="GST / VAT / Other"
+                                                value="{{ json_decode($generalSettings->tax, true)['tax_1_name'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label>Tax 1 No : <span class="text-danger">*</span></label>
+                                            <input type="text" name="tax_1_no" class="form-control" autocomplete="off"
+                                                value="{{ json_decode($generalSettings->tax, true)['tax_1_no'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label>Tax 2 Name : <span class="text-danger">*</span></label>
+                                            <input type="text" name="tax_2_name" class="form-control" autocomplete="off"
+                                                placeholder="GST / VAT / Other"
+                                                value="{{ json_decode($generalSettings->tax, true)['tax_2_name'] }}">
+                                        </div>
+
+                                        <div class="col-md-4 mt-2">
+                                            <label>Tax 2 No : <span class="text-danger">*</span></label>
+                                            <input type="text" name="tax_2_no" class="form-control" autocomplete="off"
+                                                value="{{ json_decode($generalSettings->tax, true)['tax_2_no'] }}">
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <div class="row mt-5">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->tax, true)['is_tax_en_purchase_sale'] == '1' ? 'CHECKED' : '' }} name="is_tax_en_purchase_sale" id="is_tax_en_purchase_sale"> 
+                                                        &nbsp; Enable inline tax in purchase and sell
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="product_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.product.settings') }}" method="post">
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Product Settings</h6>
+                                        </div>
+                                    </div>
+                                    @csrf
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Product Code Prefix (SKU) :</strong></label>
+                                            <input type="text" name="product_code_prefix" class="form-control"
+                                                autocomplete="off"
+                                                value="{{ json_decode($generalSettings->product, true)['product_code_prefix'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Default Unit :</strong></label>
+                                            <select name="default_unit_id" class="form-control" id="default_unit_id">
+                                                <option value="null">None</option>
+                                                @foreach ($units as $unit)
+                                                    <option
+                                                        {{ json_decode($generalSettings->product, true)['default_unit_id'] == $unit->id ? 'SELECTED' : '' }}
+                                                        value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->product, true)['is_enable_brands'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enable_brands"> &nbsp; <b>Enable Brands</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->product, true)['is_enable_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_categories"> &nbsp; <b>Enable Categories</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_sub_categories"> &nbsp; <b>Enable Sub-Categories</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enable_price_tax"> &nbsp; <b>Enable Price & Tax info</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->product, true)['is_enable_warranty'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enable_warranty"> &nbsp; <b>Enable Warranty</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="sale_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.sale.settings') }}" method="post">
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Sale Settings</h6>
+                                        </div>
+                                    </div>
+                                    @csrf
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Default Sale Discount :</strong></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1"><i
+                                                            class="fas fa-percent text-dark"></i></span>
+                                                </div>
+                                                <input type="text" name="default_sale_discount" class="form-control"
+                                                    autocomplete="off"
+                                                    value="{{ json_decode($generalSettings->sale, true)['default_sale_discount'] }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Default Sale Tax :</strong></label>
+                                            <select name="default_tax_id" class="form-control">
+                                                <option value="null">None</option>
+                                                @foreach ($taxes as $tax)
+                                                    <option
+                                                        {{ json_decode($generalSettings->sale, true)['default_tax_id'] == $tax->tax_percent ? 'SELECTED' : '' }}
+                                                        value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Sales Commission Agent:</strong></label>
+                                            <select class="form-control" name="sales_cmsn_agnt">
+                                                <option
+                                                    {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'disable' ? 'SELECTED' : '' }}
+                                                    value="disable">Disable</option>
+                                                <option
+                                                    {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'logged_in_user' ? 'SELECTED' : '' }}
+                                                    value="logged_in_user">Logged in user</option>
+                                                <option
+                                                    {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'user' ? 'SELECTED' : '' }}
+                                                    value="user">Select from user&#039;s list</option>
+                                                <option
+                                                    {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'select_form_cmsn_list' ? 'SELECTED' : '' }}
+                                                    value="select_form_cmsn_list">Select from commission agent&#039;s list
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="pos_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.pos.settings') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">POS Settings</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <div class="row ">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_disable_multiple_pay'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_disable_multiple_pay"> &nbsp; <b>Disable Multiple Pay</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_disable_draft'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_disable_draft"> &nbsp; <b>Disable Draft</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_disable_quotation'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_disable_quotation"> &nbsp; <b>Disable Quotation</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <div class="row ">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_disable_challan'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_disable_challan"> &nbsp; <b>Disable Challan</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_disable_discount'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_disable_discount"> &nbsp; <b>Disable Discount</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_disable_order_tax'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_disable_order_tax"> &nbsp; <b>Disable order tax</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <div class="row ">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_show_recent_transactions" autocomplete="off"> &nbsp; <b>Don't
+                                                            show recent transactions</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_show_credit_sale_button'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_show_credit_sale_button"> &nbsp; <b>Show Due Sale Button</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_disable_hold_invoice'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_disable_hold_invoice"> &nbsp; <b>Disable Hold Invoice</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <div class="row ">
+                                                <p class="checkbox_input_wrap mt-3">
+                                                    <input type="checkbox" name="is_show_partial_sale_button"
+                                                        {{ json_decode($generalSettings->pos, true)['is_show_partial_sale_button'] == '1' ? 'CHECKED' : '' }}>
+                                                    &nbsp; &nbsp; <b>Show Partial Sale Button</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="purchase_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.purchase.settings') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Purchase Settings</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-7">
+                                            <div class="row mt-2">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_edit_pro_price"> &nbsp; <b>Enable editing  product price from purchase screen</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5">
+                                            <div class="row mt-2">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->purchase, true)['is_enable_status'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enable_status"> &nbsp; <b>Enable Purchase Status</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <div class="row mt-2">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enable_lot_no"> &nbsp; <b>Enable Lot number</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="dashboard_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.dashboard.settings') }}" method="post">
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Dashboard Settings</h6>
+                                        </div>
+                                    </div>
+                                    @csrf
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label><strong>View Stock Expiry Alert For :</strong> <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <input type="number" name="view_stock_expiry_alert_for"
+                                                    class="form-control dbs_input" id="dbs_view_stock_expiry_alert_for"
+                                                    data-name="Day amount" autocomplete="off"
+                                                    value="{{ json_decode($generalSettings->dashboard, true)['view_stock_expiry_alert_for'] }}">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text input-group-text-sm"
+                                                        id="basic-addon1">Days</span>
+                                                </div>
+                                            </div>
+                                            <span class="error error_dbs_view_stock_expiry_alert_for"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="prefix_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.prefix.settings') }}" method="post">
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Prefix Settings</h6>
+                                        </div>
+                                    </div>
+                                    @csrf
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Purchase Invoice :</strong></label>
+                                            <input type="text" name="purchase_invoice" class="form-control"
+                                                autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['purchase_invoice'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Sale Invoice :</strong></label>
+                                            <input type="text" name="sale_invoice" class="form-control" autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['sale_invoice'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Purchase Return :</strong></label>
+                                            <input type="text" name="purchase_return" class="form-control"
+                                                autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['purchase_return'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Stock Transfer :</strong></label>
+                                            <input type="text" name="stock_transfer" class="form-control" autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['stock_transfer'] }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Stock Adjustment :</strong></label>
+                                            <input type="text" name="stock_djustment" class="form-control"
+                                                autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['stock_djustment'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Sale Return :</strong></label>
+                                            <input type="text" name="sale_return" class="form-control" autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['sale_return'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Expenses :</strong></label>
+                                            <input type="text" name="expenses" class="form-control" autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['expenses'] }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Contacts :</strong></label>
+                                            <input type="text" name="contacts" class="form-control" autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['contacts'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Purchase Payment :</strong></label>
+                                            <input type="text" name="purchase_payment" class="form-control"
+                                                autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['purchase_payment'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Sale Payment :</strong></label>
+                                            <input type="text" name="sale_payment" class="form-control" autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['sale_payment'] }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Expense Payment :</strong></label>
+                                            <input type="text" name="expanse_payment" class="form-control"
+                                                autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['expanse_payment'] }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="module_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.module.settings') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary"><b>Module Settings</b></h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-2">
+                                        <div class="col-md-4">
+                                            <div class="row ">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['purchases'] == '1' ? 'CHECKED' : '' }}
+                                                        name="purchases" autocomplete="off"> &nbsp; <b>Purchases</b>  
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['add_sale'] == '1' ? 'CHECKED' : '' }}
+                                                        name="add_sale" autocomplete="off"> &nbsp; <b>Add Sale</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['pos'] == '1' ? 'CHECKED' : '' }}
+                                                        name="pos" autocomplete="off"> &nbsp; <b>POS</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-2">
+                                        <div class="col-md-4">
+                                            <div class="row ">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['transfer_stock'] == '1' ? 'CHECKED' : '' }}
+                                                        name="transfer_stock" autocomplete="off">
+                                                    &nbsp; <b>Transfers Stock</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['stock_adjustment'] == '1' ? 'CHECKED' : '' }}
+                                                        name="stock_adjustment" autocomplete="off"> &nbsp; <b>Stock Adjustment</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['expenses'] == '1' ? 'CHECKED' : '' }}
+                                                        name="expenses" autocomplete="off"> &nbsp; <b>Expenses</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-2">
+                                        <div class="col-md-4">
+                                            <div class="row ">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['accounting'] == '1' ? 'CHECKED' : '' }}
+                                                        name="accounting" autocomplete="off"> &nbsp; <b>Accounting</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['contacts'] == '1' ? 'CHECKED' : '' }}
+                                                        name="contacts" autocomplete="off"> &nbsp; <b>Contacts</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['hrms'] == '1' ? 'CHECKED' : '' }}
+                                                        name="hrms" autocomplete="off"> &nbsp; <b>Human Resource Management</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-2">
+                                        <div class="col-md-4">
+                                            <div class="row ">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->modules, true)['damage_product'] == '1' ? 'CHECKED' : '' }}
+                                                        name="damage_product" autocomplete="off"> &nbsp; <b>Damage Products</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="email_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.email.settings') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Email Settings</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>MAIL MAILER : </strong></label>
+                                            <input type="text" name="MAIL_MAILER" class="form-control es_input"
+                                                placeholder="MAIL MAILER" autocomplete="off"
+                                                value="{{ env('MAIL_MAILER') }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>MAIL HOST :</strong></label>
+                                            <input type="text" name="MAIL_HOST" class="form-control es_input"
+                                                placeholder="MAIL HOST" autocomplete="off"
+                                                value="{{ env('MAIL_HOST') }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>MAIL PORT :</strong></label>
+                                            <input type="text" name="MAIL_PORT" class="form-control  es_input"
+                                                placeholder="MAIL PORT" autocomplete="off"
+                                                value="{{ env('MAIL_PORT') }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>MAIL_USERNAME :</strong></label>
+                                            <input type="text" name="MAIL_USERNAME" class="form-control es_input"
+                                                placeholder="MAIL USERNAME" autocomplete="off"
+                                                value="{{ env('MAIL_USERNAME') }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>MAIL PASSWORD :</strong></label>
+                                            <input type="text" name="MAIL_PASSWORD" class="form-control es_input"
+                                                placeholder="MAIL PASSWORD" autocomplete="off"
+                                                value="{{ env('MAIL_PASSWORD') }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>MAIL ENCRYPTION :</strong></label>
+                                            <input type="text" name="MAIL_ENCRYPTION" class="form-control  es_input"
+                                                placeholder="MAIL ENCRYPTION" autocomplete="off"
+                                                value="{{ env('MAIL_ENCRYPTION') }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>MAIL FROM ADDRESS :</strong></label>
+                                            <input type="text" name="MAIL_FROM_ADDRESS" class="form-control es_input"
+                                                placeholder="MAIL FROM ADDRESS" autocomplete="off"
+                                                value="{{ env('MAIL_FROM_ADDRESS') }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>MAIL FROM NAME :</strong></label>
+                                            <input type="text" name="MAIL_FROM_NAME" class="form-control es_input"
+                                                placeholder="MAIL FROM NAME" autocomplete="off"
+                                                value="{{ env('MAIL_FROM_NAME') }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            //$('.setting_form').hide();
+            $(document).on('click', '.menu_btn', function(e) {
+                e.preventDefault();
+                var form_name = $(this).data('form');
+                $('.setting_form').hide(500);
+                $('#' + form_name).show(500);
+                $('.menu_btn').removeClass('menu_active');
+                $(this).addClass('menu_active');
+            });
+        });
+
+        $('#business_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            var inputs = $('.bs_input');
+            inputs.removeClass('is-invalid');
+            $('.error').html('');
+            var countErrorField = 0;
+            $.each(inputs, function(key, val) {
+                var inputId = $(val).attr('id');
+                var idValue = $('#' + inputId).val()
+                if (idValue == '') {
+                    countErrorField += 1;
+                    $('#' + inputId).addClass('is-invalid');
+                    var fieldName = $('#' + inputId).data('name');
+                    $('.error_' + inputId).html(fieldName + ' is required.');
+                }
+            });
+
+            if (countErrorField > 0) {
+                $('.loading_button').hide();
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#tax_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            var inputs = $('.bs_input');
+            inputs.removeClass('is-invalid');
+            $('.error').html('');
+            var countErrorField = 0;
+            $.each(inputs, function(key, val) {
+                var inputId = $(val).attr('id');
+                var idValue = $('#' + inputId).val()
+                if (idValue == '') {
+                    countErrorField += 1;
+                    $('#' + inputId).addClass('is-invalid');
+                    var fieldName = $('#' + inputId).data('name');
+                    $('.error_' + inputId).html(fieldName + ' is required.');
+                }
+            });
+
+            if (countErrorField > 0) {
+                $('.loading_button').hide();
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#product_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            var inputs = $('.bs_input');
+            inputs.removeClass('is-invalid');
+            $('.error').html('');
+            var countErrorField = 0;
+            $.each(inputs, function(key, val) {
+                var inputId = $(val).attr('id');
+                var idValue = $('#' + inputId).val()
+                if (idValue == '') {
+                    countErrorField += 1;
+                    $('#' + inputId).addClass('is-invalid');
+                    var fieldName = $('#' + inputId).data('name');
+                    $('.error_' + inputId).html(fieldName + ' is required.');
+                }
+            });
+
+            if (countErrorField > 0) {
+                $('.loading_button').hide();
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#sale_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            var inputs = $('.bs_input');
+            inputs.removeClass('is-invalid');
+            $('.error').html('');
+            var countErrorField = 0;
+            $.each(inputs, function(key, val) {
+                var inputId = $(val).attr('id');
+                var idValue = $('#' + inputId).val()
+                if (idValue == '') {
+                    countErrorField += 1;
+                    $('#' + inputId).addClass('is-invalid');
+                    var fieldName = $('#' + inputId).data('name');
+                    $('.error_' + inputId).html(fieldName + ' is required.');
+                }
+            });
+
+            if (countErrorField > 0) {
+                $('.loading_button').hide();
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#pos_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#purchase_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#dashboard_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            var inputs = $('.dbs_input');
+            inputs.removeClass('is-invalid');
+            $('.error').html('');
+            var countErrorField = 0;
+            $.each(inputs, function(key, val) {
+                var inputId = $(val).attr('id');
+                var idValue = $('#' + inputId).val()
+                if (idValue == '') {
+                    countErrorField += 1;
+                    $('#' + inputId).addClass('is-invalid');
+                    var fieldName = $('#' + inputId).data('name');
+                    $('.error_' + inputId).html(fieldName + ' is required.');
+                }
+            });
+
+            if (countErrorField > 0) {
+                $('.loading_button').hide();
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#prefix_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#module_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#email_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data);
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+    </script>
+@endpush

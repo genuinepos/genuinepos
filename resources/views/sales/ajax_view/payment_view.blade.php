@@ -1,0 +1,110 @@
+<style>
+    .payment_top_card {background: #d7dfe8;}
+    .payment_top_card span {font-size: 12px;font-weight: 400;}
+    .payment_top_card li {font-size: 12px;}
+    .payment_top_card ul {padding: 6px;}
+    .payment_list_table {position: relative;}
+    .payment_details_contant{background: azure!important;}
+</style>
+<div class="info_area mb-2">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="payment_top_card">
+                <ul class="list-unstyled">
+                    <li><strong>Customer : </strong><span
+                            class="customer_name">{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
+                    </li>
+                    <li><strong>Business : </strong><span class="customer_business">
+                            {{ $sale->customer ? $sale->customer->business_name : '' }}</span> </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="payment_top_card">
+                <ul class="list-unstyled">
+                    <li><strong> Invoice ID : </strong><span class="invoice_no">{{ $sale->invoice_id }}</span> </li>
+                    <li><strong>Branch/Business : </strong>
+                        <span>
+                            @if ($sale->branch)
+                                {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
+                            @else
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
+                                Office</b>)
+                            @endif
+                        </span> 
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="payment_top_card">
+                <ul class="list-unstyled">
+                    <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                        </strong><span class="total_due">{{ $sale->due }}</span> </li>
+                    <li><strong>Date : </strong><span class="sale_date">{{ $sale->date }}</span> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="payment_list_table">
+    <div class="data_preloader payment_list_preloader">
+        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+    </div>
+    <div class="table-responsive">
+        <table class="table modal-table table-sm table-striped">
+            <thead>
+                <tr class="bg-primary">
+                    <th class="text-white">Date</th>
+                    <th class="text-white">Invoice ID</th>
+                    <th class="text-white">Amount</th>
+                    <th class="text-white">Method</th>
+                    <th class="text-white">Type</th>
+                    <th class="text-white">Account</th>
+                    <th class="text-white">Action</th>
+                </tr>
+            </thead>
+            <tbody id="payment_list_body">
+                @if (count($sale->sale_payments) > 0)
+                    @foreach ($sale->sale_payments as $payment)
+                        <tr data-info="{{ $payment }}">
+                            <td>{{ date('d/m/Y', strtotime($payment->date)) }}</td>
+                            <td>{{ $payment->invoice_id }}</td>
+                            <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
+                            </td>
+                            <td>{{ $payment->pay_mode }}</td>
+                            <td>{{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}</td>
+                            <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
+                            <td>
+                                @if ($payment->payment_type == 1)
+                                    <a href="{{ route('sales.payment.edit', $payment->id) }}" id="edit_payment"
+                                        class="btn-sm"><i class="fas fa-edit text-info"></i></a>
+                                @else
+                                    <a href="{{ route('sales.return.payment.edit', $payment->id) }}"
+                                        id="edit_return_payment" class="btn-sm"><i
+                                            class="fas fa-edit text-info"></i></a>
+                                @endif
+
+                                <a href="{{ route('sales.payment.details', $payment->id) }}" id="payment_details"
+                                    class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
+                                <a href="{{ route('sales.payment.delete', $payment->id) }}" id="delete_payment"
+                                    class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="7" class="text-center">No Data Found</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+        <form id="payment_deleted_form" action="" method="post">
+            @method('DELETE')
+            @csrf
+        </form>
+    </div>
+</div>

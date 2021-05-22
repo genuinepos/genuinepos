@@ -1,0 +1,89 @@
+    <style>
+    .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #cbe4ee }
+    .table-striped tbody tr:nth-of-type(odd) {
+    /* background-color: #EBEDF3;*/
+        background-color: #cbe4ee;
+    } 
+    </style>
+<table class="display data_tbl data__table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Invoice ID</th>
+            <th>Type</th>
+            <th>Total</th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th>Payment Method</th>
+            <th>Others</th>
+        </tr>
+    </thead>
+
+    <thead>
+        @foreach ($ledgers as $ledger)
+            <tr>
+                @if ($ledger->row_type == 1)
+                    <td>{{ date('d/m/Y', strtotime($ledger->sale->date)) }}</td> 
+                    <td>{{ $ledger->sale->invoice_id }}</td>
+                    <td>Sale</td>
+                    <td>
+                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        {{ $ledger->sale->total_payable_amount }}
+                    </td>
+                    <td>---</td>
+                    <td>---</td>
+                    <td>---</td>
+                    <td>---</td>
+                @elseif($ledger->row_type == 2)
+                    <td>{{ date('d/m/Y', strtotime($ledger->sale_payment->date)) }}</td> 
+                    <td>{{ $ledger->sale_payment->invoice_id }}</td>
+                    <td>{{ $ledger->sale_payment->payment_type == 1 ? 'Sale Payment' : 'Sale Return Payment' }}</td>
+                    <td>---</td>
+                    @if ($ledger->sale_payment->payment_type == 1)
+                        <td>---</td>
+                        <td>
+                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $ledger->sale_payment->paid_amount }}
+                        </td>
+                    @else   
+                        <td>
+                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $ledger->sale_payment->paid_amount }}
+                        </td>
+                        <td>---</td>  
+                    @endif
+                    <td>{{ $ledger->sale_payment->pay_mode }}</td>
+                    <td>Payment For : {{ $ledger->sale_payment->sale->invoice_id }}</td>
+                @elseif ($ledger->row_type == 4)
+                    <td>{{ date('d/m/Y', strtotime($ledger->created_at)) }}</td> 
+                    <td>---</td>
+                    <td>
+                        {{ $ledger->is_advanced == 1 ? 'Advance From Money Receipt' : 'Get By Money Receipt(OP Due)' }}<br>
+                        Voucher No: {{ $ledger->money_receipt->invoice_id }}
+                    </td>
+                    <td>---</td>
+                    <td>---</td>
+                    <td>{{ json_decode($generalSettings->business, true)['currency'] }}
+                        {{ $ledger->amount }}</td>
+                    <td>
+                        {{ $ledger->money_receipt->payment_method }}
+                    </td>   
+                    <td>---</td> 
+                @else 
+                    <td>{{ date('d/m/Y', strtotime($ledger->created_at)) }}</td> 
+                    <td>---</td>
+                    <td>Opening Balance</td>
+                    <td>
+                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        {{ $ledger->amount }}
+                    </td>
+                    <td>---</td>
+                    <td>---</td>
+                    <td>---</td>   
+                    <td>---</td> 
+                @endif
+            </tr>
+        @endforeach
+    </thead>
+</table>

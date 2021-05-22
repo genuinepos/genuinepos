@@ -1,0 +1,1265 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Tax;
+use App\Models\Unit;
+use App\Models\Brand;
+use App\Models\Branch;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Warranty;
+use App\Models\BulkVariant;
+use App\Models\ComboProduct;
+use App\Models\ProductImage;
+use Illuminate\Http\Request;
+use App\Models\ProductBranch;
+use App\Models\ProductVariant;
+use App\Models\General_setting;
+use App\Models\SupplierProduct;
+use App\Models\ProductWarehouse;
+use Illuminate\Support\Facades\DB;
+use App\Models\ProductOpeningStock;
+use App\Models\ProductBranchVariant;
+use Illuminate\Support\Facades\Cache;
+use Intervention\Image\Facades\Image;
+use App\Models\ProductWarehouseVariant;
+use Yajra\DataTables\Facades\DataTables;
+
+class ProductController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth:admin_and_user');
+    }
+
+    // index view
+    public function allProduct(Request $request)
+    {
+        if (auth()->user()->permission->product['product_all'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
+        //return $request->status;
+        if ($request->ajax()) {
+            $img_url = asset('public/uploads/product/thumbnail');
+            $products = '';
+            $query = DB::table('products')->join('units', 'products.unit_id', 'units.id')
+                ->leftJoin('categories', 'products.category_id', 'categories.id')
+                ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
+                ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+                ->leftJoin('brands', 'products.brand_id', 'brands.id');
+            //return $request->all();
+
+
+            if ($request->product_type == 1) {
+                $query->where('products.type', 1)->where('products.is_variant', 0);
+            }
+
+            if ($request->product_type == 2) {
+                $query->where('products.is_variant', 1)->where('products.type', 1);
+            }
+
+            if ($request->product_type == 3) {
+                $query->where('products.type', 2)->where('products.is_combo', 1);
+            }
+
+            if ($request->category_id) {
+                $query->where('products.category_id', $request->category_id);
+            }
+
+            if ($request->unit_id) {
+                $query->where('products.unit_id', $request->unit_id);
+            }
+
+            if ($request->tax_id) {
+                $query->where('products.tax_id', $request->tax_id);
+            }
+
+            if ($request->brand_id) {
+                $query->where('products.brand_id', $request->brand_id);
+            }
+
+            if ($request->status != '') {
+                $query->where('products.status', $request->status);
+            }
+
+            $products = $query->select(
+                [
+                    'products.*',
+                    'units.name as unit_name',
+                    'taxes.tax_name',
+                    'categories.name as cate_name',
+                    'sub_cate.name as sub_cate_name',
+                    'brands.name as brand_name',
+                ]
+            )
+                ->get();
+
+            return DataTables::of($products)
+                ->addColumn('multiple_delete', function ($row) {
+                    if (auth()->user()->permission->product['product_delete']  == '1') {
+                        return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
+                    }
+                })
+                ->editColumn('photo', function ($row) use ($img_url) {
+                    return '<img loading="lazy" class="rounded" width="40" height="40" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
+                })
+                ->addColumn('action', function ($row) {
+                    // return $action_btn;
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+
+                    $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode mr-1 text-primary"></i> Barcode</a>';
+
+                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+
+                    if (auth()->user()->permission->product['product_edit']  == '1') {
+                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                    }
+
+                    if (auth()->user()->permission->product['product_delete']  == '1') {
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
+                    }
+
+                    if ($row->status == 1) {
+                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up mr-1 text-success"></i> Change Status</a>';
+                    } else {
+                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down mr-1 text-danger"></i> Change Status</a>';
+                    }
+
+                    if (auth()->user()->permission->product['openingStock_add']  == '1') {
+                        $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '"><i class="fas fa-database mr-1 text-primary"></i> Add or edit opening stock</a>';
+                    }
+                    $html .= ' </div>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->editColumn('type', function ($row) {
+                    if ($row->type == 1 && $row->is_variant == 1) {
+                        return '<span class="text-primary">Variant</span>';
+                    } elseif ($row->type == 1 && $row->is_variant == 0) {
+                        return '<span class="text-success">Single</span>';
+                    } elseif ($row->type == 2) {
+                        return '<span class="text-info">Combo</span>';
+                    } elseif ($row->type == 3) {
+                        return '<span class="text-info">Digital</span>';
+                    }
+                })
+                ->editColumn('category', function ($row) {
+                    return '<span>' . ($row->cate_name ? $row->cate_name : '') . ($row->sub_cate_name ? '<br>--' . $row->sub_cate_name : '') . '</span>';
+                })
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 1) {
+                        return '<i class="far fa-thumbs-up mr-1 text-success"></i>';
+                    } else {
+                        return '<i class="far fa-thumbs-down mr-1 text-danger"></i>';
+                    }
+                })
+                ->editColumn('brand_name', function ($row) {
+                    return $row->brand_name ? $row->brand_name : '...';
+                })
+                ->editColumn('tax_name', function ($row) {
+                    return $row->tax_name ? $row->tax_name : '...';
+                })
+                ->editColumn('expire_date', function ($row) {
+                    return $row->expire_date ? date('d/m/Y', strtotime($row->expire_date)) : '...';
+                })
+                ->setRowAttr([
+                    'data-href' => function ($row) {
+                        return route('products.view', [$row->id]);
+                    }
+                ])
+                ->setRowClass('clickable_row')
+                ->rawColumns([
+                    'multiple_delete',
+                    'photo', 'action',
+                    'type', 'category',
+                    'status',
+                    'expire_date',
+                    'tax_name',
+                    'brand_name',
+                ])
+                ->make(true);
+        }
+        return view('product.products.index');
+    }
+
+    // Add product view
+    public function create()
+    {
+        if (auth()->user()->permission->product['product_add'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+        return view('product.products.create');
+    }
+
+    public function store(Request $request)
+    {
+        ///return $request->all();
+        $addProduct = new Product();
+        $tax_id = NULL;
+        if ($request->tax_id) {
+            $tax_id = explode('-', $request->tax_id)[0];
+        }
+
+        $this->validate(
+            $request,
+            [
+                'name' => 'required',
+                'code' => 'required|min:3|max:40|unique:products,product_code',
+                'category_id' => 'required',
+                'unit_id' => 'required',
+                'photo' => 'sometimes|image|max:2048',
+                'image.*' => 'sometimes|image|max:2048',
+            ],
+            [
+                'category_id.required' => 'Category field is required.',
+                'unit_id.required' => 'Product unit field is required.',
+                'code.required' => 'Product code field is required.',
+            ]
+        );
+
+        $addProduct->type = $request->type;
+        $addProduct->name = $request->name;
+        $addProduct->product_code = $request->code;
+        $addProduct->category_id = $request->category_id;
+        $addProduct->parent_category_id = $request->child_category_id;
+        $addProduct->brand_id = $request->brand_id;
+        $addProduct->unit_id = $request->unit_id;
+        $addProduct->alert_quantity = $request->alert_quantity;
+        $addProduct->tax_id = $tax_id;
+        $addProduct->expire_date = $request->expired_date;
+        $addProduct->product_condition = $request->product_condition;
+        $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
+        $addProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
+        $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
+        $addProduct->product_details = $request->product_details;
+        $addProduct->is_purchased = 0;
+        $addProduct->barcode_type = $request->barcode_type;
+        $addProduct->warranty_id = $request->warranty_id;
+        $addProduct->weight = $request->weight;
+        $addProduct->custom_field_1 = $request->custom_field_1;
+        $addProduct->custom_field_2 = $request->custom_field_2;
+        $addProduct->custom_field_3 = $request->custom_field_3;
+
+        if ($request->file('image')) {
+            if (count($request->file('image')) > 2) {
+                return response()->json(['errorMsg' => 'You can upload only 2 product images.']);
+            }
+        }
+
+        if ($request->file('image')) {
+            if (count($request->file('image')) > 0) {
+                foreach ($request->file('image') as $image) {
+                    $productImage = $image;
+                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
+                    Image::make($productImage)->resize(250, 250)->save('public/uploads/product/' . $productImageName);
+                    $addProductImage = new ProductImage();
+                    $addProductImage->product_id = $addProduct->id;
+                    $addProductImage->image = $productImageName;
+                    $addProductImage->save();
+                }
+            }
+        }
+
+        if ($request->type == 1) {
+            $this->validate(
+                $request,
+                [
+                    'product_price' => 'required',
+                    'product_cost' => 'required',
+                    'product_cost_with_tax' => 'required',
+                ],
+
+            );
+            $addProduct->product_cost = $request->product_cost;
+            $addProduct->profit = $request->profit ? $request->profit : 0.00;
+            $addProduct->product_cost_with_tax = $request->product_cost_with_tax;
+            $addProduct->product_price = $request->product_price;
+
+            if ($request->file('photo')) {
+                $productThumbnailPhoto = $request->file('photo');
+                $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+                Image::make($productThumbnailPhoto)->resize(250, 250)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
+                $addProduct->thumbnail_photo = $productThumbnailName;
+            }
+
+            if (isset($request->is_variant)) {
+                $addProduct->is_variant = 1;
+                if ($request->variant_combinations == null) {
+                    return response()->json(['errorMsg' => 'You have selected variant option but there is no variant at all.']);
+                }
+
+                $this->validate(
+                    $request,
+                    [
+                        'variant_image.*' => 'sometimes|image|max:2048',
+                    ],
+                );
+
+                $addProduct->save();
+
+                $variant_combinations = $request->variant_combinations;
+                $variant_codes = $request->variant_codes;
+                $variant_costings = $request->variant_costings;
+                $variant_costings_with_tax = $request->variant_costings_with_tax;
+                $variant_profits = $request->variant_profits;
+                $variant_prices_exc_tax = $request->variant_prices_exc_tax;
+                $variant_images = $request->variant_image;
+                $index = 0;
+                foreach ($variant_combinations as $value) {
+                    $addVariant = new ProductVariant();
+                    $addVariant->product_id = $addProduct->id;
+                    $addVariant->variant_name = $value;
+                    $addVariant->variant_code = $variant_codes[$index];
+                    $addVariant->variant_cost = $variant_costings[$index];
+                    $addVariant->variant_cost_with_tax = $variant_costings_with_tax[$index];
+                    $addVariant->variant_profit = $variant_profits[$index];
+                    $addVariant->variant_price = $variant_prices_exc_tax[$index];
+
+                    if (isset($variant_images[$index])) {
+                        $variantImage = $variant_images[$index];
+                        $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
+                        Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
+                        $addVariant->variant_image = $variantImageName;
+                    }
+
+                    $index++;
+                    $addVariant->save();
+                }
+            } else {
+                $addProduct->save();
+            }
+        }
+
+        if ($request->type == 2) {
+            //return $request->all();
+            if ($request->product_ids == null) {
+                return response()->json(['errorMsg' => 'You have selected combo product but there is no product at all']);
+            }
+
+            $addProduct->is_combo = 1;
+            $addProduct->profit = $request->profit ? $request->profit : 0.00;
+            $addProduct->combo_price = $request->combo_price;
+            $addProduct->product_price = $request->combo_price;
+            $addProduct->save();
+
+            $productIds = $request->product_ids;
+            $combo_quantities = $request->combo_quantities;
+            $productVariantIds = $request->variant_ids;
+            $index = 0;
+            foreach ($productIds as $id) {
+                $addComboProducts = new ComboProduct();
+                $addComboProducts->product_id = $addProduct->id;
+                $addComboProducts->combo_product_id = $id;
+                $addComboProducts->quantity = $combo_quantities[$index];
+                $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : NULL;
+                $index++;
+                $addComboProducts->save();
+            }
+        }
+
+        // Add opening stock
+        // $product = Product::with(['product_variants'])->where('id', $addProduct->id)->first();
+        // $branches = DB::table('branches')->select('id')->get();
+        // if (count($branches) > 0) {
+        //     if ($product->type == 1 || $product->type == 2) {
+        //         if ($product->is_variant == 1) {
+        //             foreach ($branches as $branch) {
+        //                 foreach ($product->product_variants as $product_variant) {
+        //                     $addOpeningStock = new ProductOpeningStock();
+        //                     $addOpeningStock->branch_id = $branch->id;
+        //                     $addOpeningStock->product_id = $product->id;
+        //                     $addOpeningStock->unit_cost_exc_tax = $product_variant->variant_cost;
+        //                     $addOpeningStock->product_variant_id = $product_variant->id;
+        //                     $addOpeningStock->save();
+        //                 }
+        //             }
+        //         } else {
+        //             foreach ($branches as $branch) {
+        //                 $addOpeningStock = new ProductOpeningStock();
+        //                 $addOpeningStock->branch_id = $branch->id;
+        //                 $addOpeningStock->product_id = $product->id;
+        //                 $addOpeningStock->unit_cost_exc_tax = $product->product_cost;
+        //                 $addOpeningStock->save();
+        //             }
+        //         }
+        //     }
+        // }
+
+        Cache::forget('all-products');
+        session()->flash('successMsg', 'Successfully product is added');
+        return response()->json('Successfully product is added');
+    }
+
+    public function view($productId)
+    {
+        $product = Product::with([
+            'category',
+            'child_category',
+            'tax',
+            'unit',
+            'brand',
+            'product_variants',
+            'product_warehouses',
+            'product_warehouses.product_warehouse_variants',
+            'product_warehouses.product_warehouse_variants.product_variant',
+            'product_branches',
+            'product_branches.branch',
+            'product_branches.product_branch_variants',
+            'product_branches.product_branch_variants.product_variant',
+        ])
+            ->where('id', $productId)->first();
+        return view('product.products.ajax_view.product_details_view', compact('product'));
+    }
+
+    //update opening stock
+    public function openingStockUpdate(Request $request, $productId)
+    {
+        //return $request->all();
+        $branch_ids = $request->branch_ids;
+        $warehouse_ids = $request->warehouse_ids;
+        $product_ids = $request->product_ids;
+        $variant_ids = $request->variant_ids;
+        $qunatities = $request->qunatities;
+        $subtotals = $request->subtotals;
+        $unit_costs_exc_tax = $request->unit_costs_exc_tax;
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $index = 0;
+            foreach ($product_ids as $product_id) {
+                $variant_id = $variant_ids[$index] == 'noid' ? NULL : $variant_ids[$index];
+                $updateOpeningStock = '';
+                $openignStock = ProductOpeningStock::where('warehouse_id', $warehouse_ids[$index])
+                    ->where('product_id', $product_id)
+                    ->where('product_variant_id', $variant_id)
+                    ->first();
+
+                if ($openignStock) {
+                    $updateOpeningStock = $openignStock;
+                } else {
+                    $variant_id = $variant_ids[$index] == 'noid' ? NULL : $variant_ids[$index];
+                    $addOpeningStock = new ProductOpeningStock();
+                    $addOpeningStock->warehouse_id = $warehouse_ids[$index];
+                    $addOpeningStock->product_id = $product_id;
+                    $addOpeningStock->product_variant_id = $variant_id;
+                    $addOpeningStock->quantity = 0.00;
+                    $addOpeningStock->save();
+
+                    $updateOpeningStock = ProductOpeningStock::where('warehouse_id', $warehouse_ids[$index])
+                        ->where('product_id', $product_id)
+                        ->where('product_variant_id', $variant_id)
+                        ->first();
+                }
+
+                if ($updateOpeningStock) {
+                    // update  product quantity 
+                    $updateProductQty = Product::where('id', $product_id)->first();
+                    $updateProductQty->quantity -= $updateOpeningStock->quantity;
+                    $updateProductQty->quantity += $qunatities[$index];
+                    $updateProductQty->is_purchased = 1;
+                    $updateProductQty->save();
+
+                    // update  product variant quantity 
+                    if ($updateOpeningStock->product_variant_id) {
+                        $updateVariantQty = ProductVariant::where('id', $updateOpeningStock->product_variant_id)
+                            ->where('product_id', $product_id)->first();
+                        $updateVariantQty->variant_quantity -= $updateOpeningStock->quantity;
+                        $updateVariantQty->variant_quantity += $qunatities[$index];
+                        $updateVariantQty->save();
+                    }
+
+                    // update branch product qty
+                    $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_ids[$index])
+                        ->where('product_id', $product_id)->first();
+                    if ($productWarehouse) {
+                        $productWarehouse->product_quantity -= $updateOpeningStock->quantity;
+                        $productWarehouse->product_quantity += $qunatities[$index];
+                        $productWarehouse->save();
+                        if ($updateOpeningStock->product_variant_id) {
+                            $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
+                                ->where('product_id', $product_id)
+                                ->where('product_variant_id', $updateOpeningStock->product_variant_id)->first();
+                            if ($productWarehouseVariant) {
+                                $productWarehouseVariant->variant_quantity -= $updateOpeningStock->quantity;
+                                $productWarehouseVariant->variant_quantity += $qunatities[$index];
+                                $productWarehouseVariant->save();
+                            } else {
+                                $addProductWarehousehVariant = new ProductWarehouseVariant();
+                                $addProductWarehousehVariant->product_warehouse_id = $productWarehouse->id;
+                                $addProductWarehousehVariant->product_id = $product_id;
+                                $addProductWarehousehVariant->product_variant_id = $updateOpeningStock->product_variant_id;
+                                $addProductWarehousehVariant->variant_quantity = $qunatities[$index];
+                                $addProductWarehousehVariant->save();
+                            }
+                        }
+                    } else {
+                        $addWarehouseProduct = new ProductWarehouse();
+                        $addWarehouseProduct->warehouse_id = $warehouse_ids[$index];
+                        $addWarehouseProduct->product_id = $product_id;
+                        $addWarehouseProduct->product_quantity = $qunatities[$index];
+                        $addWarehouseProduct->save();
+
+                        if ($updateOpeningStock->product_variant_id) {
+                            $addProductWarehouseVariant = new ProductWarehouseVariant();
+                            $addProductWarehouseVariant->product_warehouse_id = $addWarehouseProduct->id;
+                            $addProductWarehouseVariant->product_id = $product_id;
+                            $addProductWarehouseVariant->product_variant_id = $updateOpeningStock->product_variant_id;
+                            $addProductWarehouseVariant->variant_quantity = $qunatities[$index];
+                            $addProductWarehouseVariant->save();
+                        }
+                    }
+
+                    $updateOpeningStock->quantity = $qunatities[$index];
+                    $updateOpeningStock->unit_cost_exc_tax = $unit_costs_exc_tax[$index];
+                    $updateOpeningStock->subtotal = $subtotals[$index];
+                    $updateOpeningStock->save();
+                    $index++;
+                }
+            }
+        } else {
+            $index = 0;
+            foreach ($product_ids as $product_id) {
+                $variant_id = $variant_ids[$index] == 'noid' ? NULL : $variant_ids[$index];
+                $updateOpeningStock = '';
+                $openignStock = ProductOpeningStock::where('branch_id', $branch_ids[$index])
+                    ->where('product_id', $product_id)
+                    ->where('product_variant_id', $variant_id)
+                    ->first();
+
+                if ($openignStock) {
+                    $updateOpeningStock = $openignStock;
+                } else {
+                    $variant_id = $variant_ids[$index] == 'noid' ? NULL : $variant_ids[$index];
+                    $addOpeningStock = new ProductOpeningStock();
+                    $addOpeningStock->branch_id = $branch_ids[$index];
+                    $addOpeningStock->product_id = $product_id;
+                    $addOpeningStock->product_variant_id = $variant_id;
+                    $addOpeningStock->quantity = 0.00;
+                    $addOpeningStock->save();
+
+                    $updateOpeningStock = ProductOpeningStock::where('branch_id', $branch_ids[$index])
+                        ->where('product_id', $product_id)
+                        ->where('product_variant_id', $variant_id)
+                        ->first();
+                }
+
+                if ($updateOpeningStock) {
+                    // update  product quantity 
+                    $updateProductQty = Product::where('id', $product_id)->first();
+                    $updateProductQty->quantity -= $updateOpeningStock->quantity;
+                    $updateProductQty->quantity += $qunatities[$index];
+                    $updateProductQty->is_purchased = 1;
+                    $updateProductQty->save();
+
+                    // update  product variant quantity 
+                    if ($updateOpeningStock->product_variant_id) {
+                        $updateVariantQty = ProductVariant::where('id', $updateOpeningStock->product_variant_id)
+                            ->where('product_id', $product_id)->first();
+                        $updateVariantQty->variant_quantity -= $updateOpeningStock->quantity;
+                        $updateVariantQty->variant_quantity += $qunatities[$index];
+                        $updateVariantQty->save();
+                    }
+
+                    // update branch product qty
+                    $productBranch = ProductBranch::where('branch_id', $branch_ids[$index])->where('product_id', $product_id)->first();
+                    if ($productBranch) {
+                        $productBranch->product_quantity -= $updateOpeningStock->quantity;
+                        $productBranch->product_quantity += $qunatities[$index];
+                        $productBranch->save();
+                        if ($updateOpeningStock->product_variant_id) {
+                            $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
+                                ->where('product_id', $product_id)
+                                ->where('product_variant_id', $updateOpeningStock->product_variant_id)->first();
+                            if ($productBranchVariant) {
+                                $productBranchVariant->variant_quantity -= $updateOpeningStock->quantity;
+                                $productBranchVariant->variant_quantity += $qunatities[$index];
+                                $productBranchVariant->save();
+                            } else {
+                                $addProductBranchVariant = new ProductBranchVariant();
+                                $addProductBranchVariant->product_branch_id = $productBranch->id;
+                                $addProductBranchVariant->product_id = $product_id;
+                                $addProductBranchVariant->product_variant_id = $updateOpeningStock->product_variant_id;
+                                $addProductBranchVariant->variant_quantity = $qunatities[$index];
+                                $addProductBranchVariant->save();
+                            }
+                        }
+                    } else {
+                        $addBranchProduct = new ProductBranch();
+                        $addBranchProduct->branch_id = $branch_ids[$index];
+                        $addBranchProduct->product_id = $product_id;
+                        $addBranchProduct->product_quantity = $qunatities[$index];
+                        $addBranchProduct->save();
+
+                        if ($updateOpeningStock->product_variant_id) {
+                            $addProductBranchVariant = new ProductBranchVariant();
+                            $addProductBranchVariant->product_branch_id = $addBranchProduct->id;
+                            $addProductBranchVariant->product_id = $product_id;
+                            $addProductBranchVariant->product_variant_id = $updateOpeningStock->product_variant_id;
+                            $addProductBranchVariant->variant_quantity = $qunatities[$index];
+                            $addProductBranchVariant->save();
+                        }
+                    }
+
+                    $updateOpeningStock->quantity = $qunatities[$index];
+                    $updateOpeningStock->unit_cost_exc_tax = $unit_costs_exc_tax[$index];
+                    $updateOpeningStock->subtotal = $subtotals[$index];
+                    $updateOpeningStock->save();
+                    $index++;
+                }
+            }
+        }
+
+
+        Cache::forget('all-products');
+        return response()->json('Successfully product opening stock is added');
+    }
+
+    // Get opening stock
+    public function openingStock($productId)
+    {
+        $warehouses = DB::table('warehouses')->get();
+        $productId = $productId;
+        return view('product.products.ajax_view.opening_stock_modal_view', compact('warehouses', 'productId'));
+    }
+
+    // edit view of product
+    public function edit($productId)
+    {
+        $product = DB::table('products')->where('id', $productId)->first();
+        $categories = DB::table('categories')->get();
+        $units = DB::table('units')->get();
+        $brands = DB::table('brands')->get();
+        $taxes = DB::table('taxes')->get();
+
+        $warrantities = DB::table('warranties')->get();
+        return view('product.products.edit', compact('product', 'categories', 'units', 'brands', 'taxes', 'warrantities'));
+    }
+
+    // Get product variants 
+    public function getProductVariants($productId)
+    {
+        $variants = DB::table('product_variants')->where('product_id', $productId)->get();
+        return response()->json($variants);
+    }
+
+    public function getComboProducts($productId)
+    {
+        $comboProducts = ComboProduct::with(['parentProduct', 'parentProduct.tax', 'product_variant'])->where('product_id', $productId)->get();
+        return response()->json($comboProducts);
+    }
+
+    // product update method
+    public function update(Request $request, $productId)
+    {
+        $updateProduct = Product::with(['product_variants', 'ComboProducts'])->where('id', $productId)->first();
+        $tax_id = NULL;
+        if ($request->tax_id) {
+            $tax_id = explode('-', $request->tax_id)[0];
+        }
+
+        $this->validate(
+            $request,
+            [
+                'name' => 'required',
+                'code' => 'required',
+                'category_id' => 'required',
+                'unit_id' => 'required',
+                'photo' => 'sometimes|image|max:2048',
+                'image.*' => 'sometimes|image|max:2048',
+            ],
+            [
+                'category_id.required' => 'Category field is required.',
+                'unit_id.required' => 'Product unit field is required.',
+                'code.required' => 'Product code field is required.',
+            ]
+        );
+
+        $updateProduct->name = $request->name;
+        $updateProduct->product_code = $request->code;
+        $updateProduct->category_id = $request->category_id;
+        $updateProduct->parent_category_id = $request->child_category_id;
+        $updateProduct->brand_id = $request->brand_id;
+        $updateProduct->unit_id = $request->unit_id;
+        $updateProduct->alert_quantity = $request->alert_quantity;
+        $updateProduct->tax_id = $tax_id;
+        $updateProduct->expire_date = $request->expired_date;
+        $updateProduct->product_condition = $request->product_condition;
+        $updateProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
+        $updateProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
+        $updateProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
+        $updateProduct->product_details = $request->product_details;
+        $updateProduct->is_purchased = 0;
+        $updateProduct->barcode_type = $request->barcode_type;
+        $updateProduct->warranty_id = $request->warranty_id;
+        $updateProduct->weight = $request->weight;
+        $updateProduct->custom_field_1 = $request->custom_field_1;
+        $updateProduct->custom_field_2 = $request->custom_field_2;
+        $updateProduct->custom_field_3 = $request->custom_field_3;
+
+        //upload multiple photo for e-commerce
+        if ($request->file('image')) {
+            if (count($request->file('image')) > 2) {
+                return response()->json(['errorMsg' => 'You can upload only 2 product images.']);
+            }
+        }
+
+        if ($request->file('image')) {
+            if (count($request->file('image')) > 0) {
+                foreach ($request->file('image') as $image) {
+                    $productImage = $image;
+                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
+                    Image::make($productImage)->resize(250, 250)->save('public/uploads/product/' . $productImageName);
+                    $addProductImage = new ProductImage();
+                    $addProductImage->product_id = $updateProduct->id;
+                    $addProductImage->image = $productImageName;
+                    $addProductImage->save();
+                }
+            }
+        }
+
+        if ($updateProduct->type == 1) {
+            $this->validate(
+                $request,
+                [
+                    'product_price' => 'required',
+                    'product_cost' => 'required',
+                    'product_cost_with_tax' => 'required',
+                ],
+            );
+
+            $updateProduct->product_cost = $request->product_cost;
+            $updateProduct->profit = $request->profit ? $request->profit : 0.00;
+            $updateProduct->product_cost_with_tax = $request->product_cost_with_tax;
+            $updateProduct->product_price = $request->product_price;
+
+            // Upload product thumbnail
+            if ($request->file('photo')) {
+                if ($updateProduct->thumbnail_photo != 'default.png') {
+                    if (file_exists(public_path('public/uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
+                        unlink(public_path('public/uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
+                    }
+                }
+                $productThumbnailPhoto = $request->file('photo');
+                $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+                Image::make($productThumbnailPhoto)->resize(250, 250)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
+                $updateProduct->thumbnail_photo = $productThumbnailName;
+            }
+
+            if ($updateProduct->is_variant == 1) {
+                if ($request->variant_combinations == null) {
+                    return response()->json(['errorMsg' => 'You have selected variant option but there is no variant at all.']);
+                }
+
+                foreach ($updateProduct->product_variants as $product_variant) {
+                    $product_variant->delete_in_update = 1;
+                    $product_variant->save();
+                }
+
+                $this->validate(
+                    $request,
+                    [
+                        'variant_image.*' => 'sometimes|image|max:2048',
+                    ],
+                );
+                $updateProduct->save();
+
+                $variant_ids = $request->variant_ids;
+                $variant_combinations = $request->variant_combinations;
+                $variant_codes = $request->variant_codes;
+                $variant_costings = $request->variant_costings;
+                $variant_costings_with_tax = $request->variant_costings_with_tax;
+                $variant_profits = $request->variant_profits;
+                $variant_prices_exc_tax = $request->variant_prices_exc_tax;
+                $variant_images = $request->variant_image;
+                $index = 0;
+                foreach ($variant_combinations as $value) {
+                    $updateVariant = ProductVariant::where('id', $variant_ids[$index])->first();
+                    if ($updateVariant) {
+                        $updateVariant->variant_name = $value;
+                        $updateVariant->variant_code = $variant_codes[$index];
+                        $updateVariant->variant_cost = $variant_costings[$index];
+                        $updateVariant->variant_cost_with_tax = $variant_costings_with_tax[$index];
+                        $updateVariant->variant_profit = $variant_profits[$index];
+                        $updateVariant->variant_price = $variant_prices_exc_tax[$index];
+                        $updateVariant->delete_in_update = 0;
+
+                        if (isset($variant_images[$index])) {
+                            if ($updateVariant->variant_image != null) {
+                                if (file_exists(public_path('public/uploads/product/variant_image/' . $updateVariant->variant_image))) {
+                                    unlink(public_path('public/uploads/product/thumbnail/' . $updateVariant->variant_image));
+                                }
+                            }
+
+                            $variantImage = $variant_images[$index];
+                            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
+                            Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
+                            $updateVariant->variant_image = $variantImageName;
+                        }
+                        $updateVariant->save();
+                    } else {
+                        $addVariant = new ProductVariant();
+                        $addVariant->product_id = $updateProduct->id;
+                        $addVariant->variant_name = $value;
+                        $addVariant->variant_code = $variant_codes[$index];
+                        $addVariant->variant_cost = $variant_costings[$index];
+                        $addVariant->variant_cost_with_tax = $variant_costings_with_tax[$index];
+                        $addVariant->variant_profit = $variant_profits[$index];
+                        $addVariant->variant_price = $variant_prices_exc_tax[$index];
+
+                        if (isset($variant_images[$index])) {
+                            $variantImage = $variant_images[$index];
+                            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
+                            Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
+                            $addVariant->variant_image = $variantImageName;
+                        }
+                        $addVariant->save();
+                    }
+                    $index++;
+                }
+
+                $deleteNotFoundVariants = ProductVariant::where('delete_in_update', 1)->get();
+                foreach ($deleteNotFoundVariants as $deleteNotFoundVariant) {
+                    if ($deleteNotFoundVariant->variant_image != null) {
+                        if (file_exists(public_path('public/uploads/product/variant_image/' . $updateVariant->variant_image))) {
+                            unlink(public_path('public/uploads/product/thumbnail/' . $updateVariant->variant_image));
+                        }
+                    }
+                    $deleteNotFoundVariant->delete();
+                }
+            } else {
+                $updateProduct->save();
+            }
+        }
+
+        if ($updateProduct->type == 2) {
+            //return $request->all();
+            if ($request->product_ids == null) {
+                return response()->json(['errorMsg' => 'You have selected combo product but there is no product at all']);
+            }
+
+            foreach ($updateProduct->ComboProducts as $ComboProduct) {
+                $ComboProduct->delete_in_update = 1;
+                $ComboProduct->save();
+            }
+
+            $updateProduct->profit = $request->profit ? $request->profit : 0.00;
+            $updateProduct->product_price = $request->combo_price;
+            $updateProduct->combo_price = $request->combo_price;
+            $updateProduct->save();
+
+            $combo_ids = $request->combo_ids;
+            $productIds = $request->product_ids;
+            $combo_quantities = $request->combo_quantities;
+            $productVariantIds = $request->variant_ids;
+            $index = 0;
+            foreach ($productIds as $id) {
+                $updateComboProduct = ComboProduct::where('id', $combo_ids[$index])->first();
+                if ($updateComboProduct) {
+                    $updateComboProduct->quantity = $combo_quantities[$index];
+                    $updateComboProduct->delete_in_update = 0;
+                    $updateComboProduct->save();
+                } else {
+                    $addComboProducts = new ComboProduct();
+                    $addComboProducts->product_id = $updateProduct->id;
+                    $addComboProducts->combo_product_id = $id;
+                    $addComboProducts->quantity = $combo_quantities[$index];
+                    $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : NULL;
+                    $addComboProducts->save();
+                }
+                $index++;
+            }
+        }
+
+        $deleteNotFoundComboProducts = ComboProduct::where('delete_in_update', 1)->get();
+        foreach ($deleteNotFoundComboProducts as $deleteNotFoundComboProduct) {
+            $deleteNotFoundComboProduct->delete();
+        }
+
+        // Add opening stock
+        $product = Product::with(['product_variants'])->where('id', $updateProduct->id)->first();
+        if ($product->type == 1 || $product->type == 2) {
+            if ($product->is_variant == 1) {
+                $branches = Branch::all();
+                foreach ($branches as $branch) {
+                    foreach ($product->product_variants as $product_variant) {
+                        $productOpeningStock = ProductOpeningStock::where('branch_id', $branch->id)->where('product_id', $product->id)
+                            ->where('product_variant_id', $product_variant->id)->first();
+                        if (!$productOpeningStock) {
+                            $addOpeningStock = new ProductOpeningStock();
+                            $addOpeningStock->branch_id = $branch->id;
+                            $addOpeningStock->product_id = $product->id;
+                            $addOpeningStock->unit_cost_exc_tax = $product_variant->variant_cost;
+                            $addOpeningStock->product_variant_id = $product_variant->id;
+                            $addOpeningStock->save();
+                        }
+                    }
+                }
+            } else {
+                $branches = Branch::all();
+                foreach ($branches as $branch) {
+                    $productOpeningStock = ProductOpeningStock::where('branch_id', $branch->id)->where('product_id', $product->id)
+                        ->first();
+                    if (!$productOpeningStock) {
+                        $addOpeningStock = new ProductOpeningStock();
+                        $addOpeningStock->branch_id = $branch->id;
+                        $addOpeningStock->product_id = $product->id;
+                        $addOpeningStock->unit_cost_exc_tax = $product->product_cost;
+                        $addOpeningStock->save();
+                    }
+                }
+            }
+        }
+
+        Cache::forget('all-products');
+        session()->flash('successMsg', 'Successfully product is updated');
+        return response()->json('Successfully product is updated');
+    }
+
+    //Filter product method
+    public function filterProduct(Request $request)
+    {
+        //return $request->status;
+        $filteredProducts = '';
+        $query = Product::with([
+            'product_branches',
+            'product_branches.branch',
+            'product_variants',
+            'category',
+            'child_category',
+            'brand',
+            'tax',
+            'unit',
+            'comboProducts',
+            'comboProducts.child_category',
+            'comboProducts.product_variant',
+            'comboProducts.child_category.category',
+            'comboProducts.parentProduct.child_category',
+            'comboProducts.parentProduct.brand'
+        ]);
+        //return $request->all();
+        if ($request->product_type == 1) {
+            $query->where('type', 1)->where('is_variant', 0);
+        }
+
+        if ($request->product_type == 2) {
+            $query->where('is_variant', 1)->where('type', 1);
+        }
+
+        if ($request->product_type == 3) {
+            $query->where('type', 2)->where('is_combo', 1);
+        }
+
+        if ($request->category_id) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->unit_id) {
+            $query->where('unit_id', $request->unit_id);
+        }
+
+        if ($request->tax_id) {
+            $query->where('tax_id', $request->tax_id);
+        }
+
+        if ($request->brand_id) {
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if (isset($request->is_for_sale)) {
+            $query->where('is_for_sale', 0);
+        }
+
+        $filteredProducts = $query->get();
+
+        return view('product.products.ajax_view.filtered_product_list', compact('filteredProducts'));
+    }
+
+    // delete product
+    public function delete(Request $request, $productId)
+    {
+        $deleteProduct = Product::with(['product_images', 'product_variants'])->where('id', $productId)->first();
+        if (!is_null($deleteProduct)) {
+            if ($deleteProduct->thumbnail_photo !== 'default.png') {
+                if (file_exists(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo))) {
+                    unlink(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo));
+                }
+            }
+
+            if ($deleteProduct->product_images->count() > 0) {
+                foreach ($deleteProduct->product_images as $product_image) {
+                    if (file_exists(public_path('uploads/product/' . $product_image->image))) {
+                        unlink(public_path('uploads/product/' . $product_image->image));
+                    }
+                }
+            }
+
+            if ($deleteProduct->product_variants->count() > 0) {
+                foreach ($deleteProduct->product_variants as $product_variant) {
+                    if ($product_variant->variant_image) {
+                        if (file_exists(public_path('uploads/product/variant_image/' . $product_variant->variant_image))) {
+                            unlink(public_path('uploads/product/variant_image/' . $product_variant->variant_image));
+                        }
+                    }
+                }
+            }
+
+            $deleteProduct->delete();
+        }
+        Cache::forget('all-products');
+        return response()->json('Successfully product is deleted');
+    }
+
+    // multiple delete method
+    public function multipleDelete(Request $request)
+    {
+        if ($request->data_ids == null) {
+            return response()->json(['errorMsg' => 'You did not select any product.']);
+        }
+        if ($request->action == 'multiple_delete') {
+            //     foreach($request->data_ids as $data_id){
+            //         $deleteProduct = Product::with(['product_images', 'product_variants'])->where('id', $data_id)->get();
+            //         if (!is_null($deleteProduct)) {
+            //             if ($deleteProduct->thumbnail_photo !== 'default.png') {
+            //                 if (file_exists(public_path('uploads/product/thumbnail/'.$deleteProduct->thumbnail_photo))) {
+            //                     unlink(public_path('uploads/product/thumbnail/'.$deleteProduct->thumbnail_photo));
+            //                 } 
+            //             }
+
+            //             if($deleteProduct->product_images->count() > 0){
+            //                 foreach($deleteProduct->product_images as $product_image){
+            //                     if (file_exists(public_path('uploads/product/'.$product_image->image))) {
+            //                         unlink(public_path('uploads/product/'.$product_image->image));
+            //                     }
+            //                 }
+            //             }
+
+            //             if($deleteProduct->product_variants->count() > 0){
+            //                 foreach($deleteProduct->product_variants as $product_variant){
+            //                     if($product_variant->variant_image){
+            //                         if (file_exists(public_path('uploads/product/variant_image/'.$product_variant->variant_image))) {
+            //                             unlink(public_path('uploads/product/variant_image/'.$product_variant->variant_image));
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //             $deleteProduct->delete(); 
+            //         }
+            //     }
+            //Cache::forget('all-products');
+            return response()->json('Multiple delete feature is disabled in this demo');
+        } elseif ($request->action == 'multipla_deactive') {
+            foreach ($request->data_ids as $data_id) {
+                $product = Product::where('id', $data_id)->first();
+                $product->status = 0;
+                $product->save();
+            }
+            Cache::forget('all-products');
+            return response()->json('Successfully all selected product status is deactived');
+        }
+    }
+
+    // Change product status method
+    public function changeStatus($productId)
+    {
+        $statusChange = Product::where('id', $productId)->first();
+        if ($statusChange->status == 1) {
+            $statusChange->status = 0;
+            $statusChange->save();
+            Cache::forget('all-products');
+            return response()->json('Successfully Product is deactivated');
+        } else {
+            $statusChange->status = 1;
+            $statusChange->save();
+            Cache::forget('all-products');
+            return response()->json('Successfully Product is activated');
+        }
+    }
+
+
+    //Get all form variant by ajax request
+    public function getAllFormVariants()
+    {
+        $variants = BulkVariant::with(['bulk_variant_childs'])->get();
+        return response()->json($variants);
+    }
+
+    // Get all form brand by ajax
+    public function allFromBrand()
+    {
+        $allFromBrand = Cache::rememberForever('all-brands', function () {
+            return $allFromBrand = Brand::all();
+        });
+        return response()->json($allFromBrand);
+    }
+
+    // Get all form Categories by ajax request
+    public function getAllFormCategories()
+    {
+        $categories = Cache::rememberForever('all-categories', function () {
+            return Category::orderBy('id', 'DESC')->get();
+        });
+        return response()->json($categories);
+    }
+
+    // Get all form Units by ajax request
+    public function getAllFormUnits()
+    {
+        $units = Cache::rememberForever('all-unites', function () {
+            return Unit::select(['id', 'name', 'code_name'])->get();
+        });
+        return response()->json($units);
+    }
+
+    // Get all form warranties by ajax request
+    public function getAllFormWarrties()
+    {
+        $warranties = Cache::rememberForever('all-warranties', function () {
+            return Warranty::select(['id', 'name', 'type'])->get();
+        });
+        return response()->json($warranties);
+    }
+
+    // Get all form taxes by ajax request
+    public function getAllFormTaxes()
+    {
+        $taxes = Cache::rememberForever('all-taxes', function () {
+            return Tax::select(['id', 'tax_name', 'tax_percent'])->get();
+        });
+        return response()->json($taxes);
+    }
+
+    public function searchProduct($productCode)
+    {
+        $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $productCode)->first();
+
+        if ($product) {
+            return response()->json(['product' => $product]);
+        } else {
+            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $productCode)->first();
+            return response()->json(['variant_product' => $variant_product]);
+        }
+    }
+
+    public function chackPurchaseAndGenerateBarcode($productId)
+    {
+        $supplierProducts = SupplierProduct::where('product_id', $productId)->get();
+        if ($supplierProducts->count() > 0) {
+            return response()->json(route('products.generate.product.barcode', $productId));
+        } else {
+            return response()->json(['errorMsg' => 'This product yet to be purchased.']);
+        }
+    }
+
+    // Get product warehouse stock ** reqeusted by ajax
+    public function warehouseStock($productId)
+    {
+        $product = Product::with([
+            'tax',
+            'unit',
+            'product_warehouses',
+            'product_warehouses.warehouse',
+            'product_warehouses.product_warehouse_variants',
+            'product_warehouses.product_warehouse_variants.product_variant'
+        ])->where('id', $productId)->first();
+        return view('product.products.ajax_view.warehouse_stock_list', compact('product'));
+    }
+
+    // Get product branch stock ** reqeusted by ajax
+    public function branchStock($productId)
+    {
+        $product = Product::with([
+            'tax',
+            'unit',
+            'product_branches',
+            'product_branches.branch',
+            'product_branches.product_branch_variants',
+            'product_branches.product_branch_variants.product_variant'
+        ])->where('id', $productId)->first();
+        return view('product.products.ajax_view.branch_stock_list', compact('product'));
+    }
+
+    // Add Category from add product
+    public function addCategory(Request $request)
+    {
+        // return $request->all();
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $addBrand = new Category();
+        $addBrand->name = $request->name;
+        $addBrand->save();
+
+        Cache::forget('all-categories');
+        Cache::forget('all-parent-categories');
+        Cache::forget('all-main_categories');
+        Cache::forget('all-products');
+        return response()->json($addBrand);
+    }
+
+    // Add brand from add product
+    public function addBrand(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $addBrand = new Brand();
+        $addBrand->name = $request->name;
+        $addBrand->save();
+
+        Cache::forget('all-brands');
+        Cache::forget('all-products');
+        return response()->json($addBrand);
+    }
+
+    // Add brand from add product
+    public function addUnit(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'code' => 'required',
+        ]);
+
+        $addUnit = new Unit();
+        $addUnit->name = $request->name;
+        $addUnit->code_name = $request->code;
+        $addUnit->save();
+        Cache::forget('all-products');
+        Cache::forget('all-unites');
+        return response()->json($addUnit);
+    }
+
+    public function addWarranty(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'duration' => 'required',
+        ]);
+
+       $add = new Warranty();
+       $add->name = $request->name;
+       $add->type = $request->type;
+       $add->duration = $request->duration;
+       $add->duration_type = $request->duration_type;
+       $add->description = $request->description;
+       $add->save();
+        Cache::forget('all-products');
+        Cache::forget('all-warranties');
+        return response()->json($add);
+    }
+
+    public function getFormPart($type)
+    {
+        $type = $type;
+        $variants = BulkVariant::with(['bulk_variant_childs'])->get();
+        return view('product.products.ajax_view.form_part', compact('type', 'variants'));
+    }
+}

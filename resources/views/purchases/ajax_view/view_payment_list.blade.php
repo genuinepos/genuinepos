@@ -1,0 +1,143 @@
+<!--begin::Form-->
+<style>
+    .payment_top_card {background: #d7dfe8;}
+    .payment_top_card span {font-size: 12px;font-weight: 400;}
+    .payment_top_card li {font-size: 12px;}
+    .payment_top_card ul {padding: 6px;}
+    .payment_list_table {position: relative;}
+    .payment_details_contant{background: azure!important;}
+    h6.checkbox_input_wrap {border: 1px solid #495677;padding: 0px 7px;}
+</style>
+<div class="info_area mb-2">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="payment_top_card">
+                <ul class="list-unstyled">
+                    <li><strong>Supplier : </strong><span>{{ $purchase->supplier->name }}</span>
+                    </li>
+                    <li><strong>Business : </strong>
+                        <span>{{ $purchase->supplier->business_name }}</span> 
+                    </li>
+                    <li><strong>phone : </strong>
+                        <span>{{ $purchase->supplier->phone }}</span> 
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="payment_top_card">
+                <ul class="list-unstyled">
+                    <li><strong> P.Invoice ID : </strong>{{ $purchase->invoice_id }}
+                    </li>
+                    <li><strong>Purchase Form : </strong>
+                        {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : 'Head Office' }}
+                    </li>
+                    <li><strong>Stored Loacation : </strong>
+                        @if ($purchase->branch)
+                            {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
+                            (<b>Branch/Company</b>) ,<br>
+                            {{ $purchase->branch ? $purchase->branch->city : '' }},
+                            {{ $purchase->branch ? $purchase->branch->state : '' }},
+                            {{ $purchase->branch ? $purchase->branch->zip_code : '' }},
+                            {{ $purchase->branch ? $purchase->branch->country : '' }}.
+                        @else
+                            {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
+                            (<b>Warehouse</b>),<br>
+                            {{ $purchase->warehouse->address }}.
+                        @endif
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="payment_top_card">
+                <ul class="list-unstyled">
+                    <li>
+                        <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                        {{ $purchase->due }}
+                    </li>
+                    <li><strong>Date : </strong>{{ $purchase->date . ' ' . $purchase->time }} </li>
+                    <li><strong>Purchase Status : </strong>
+                        @if ($purchase->purchase_status == 1)
+                            <span class="text-success"><b>Received</b></span>
+                        @elseif($purchase->purchase_status == 2){
+                            <span class="text-warning"><b>Pending</b></span>
+                        @else
+                            <span class="text-primary"><b>Ordered</b></span>
+                        @endif
+                    </li>
+                    <li><strong>Payment Status : </strong>
+                            @php
+                                $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
+                            @endphp
+                            @if ($purchase->due <= 0)
+                                <span class="text-success"><b>Paid</b></span>
+                            @elseif($purchase->due > 0 && $purchase->due < $payable) 
+                                <span class="text-primary"><b>Partial</b></span>
+                            @elseif($payable == $purchase->due)
+                                <span class="text-danger"><b>Due</b></span>
+                            @endif
+                       
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="payment_list_table">
+    <div class="data_preloader payment_list_preloader">
+        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+    </div>
+    <div class="table-responsive">
+        <table class="display data_tbl data__table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Voucher No</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Type</th>
+                    <th>Account</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="payment_list_body">
+                @if (count($purchase->purchase_payments) > 0)
+                    @foreach ($purchase->purchase_payments as $payment)
+                        <tr data-info="{{ $payment }}">
+                            <td>{{ date('d/m/Y', strtotime($payment->date)) }}</td>
+                            <td>{{ $payment->invoice_id }}</td>
+                            <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
+                            </td>
+                            <td>{{ $payment->pay_mode }}</td>
+                            <td>{{ $payment->payment_type == 1 ? 'Purchase due' : 'Return due' }}</td>
+                            <td>{{ $payment->account ? $payment->account->name : '....' }}</td>
+                            <td>
+                                @if ($payment->payment_type == 1)
+                                    <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
+                                @else
+                                    <a href="{{ route('purchases.return.payment.edit', $payment->id) }}" id="edit_return_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
+                                @endif
+                                
+                                <a href="{{ route('purchases.payment.details', $payment->id) }}" id="payment_details" class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
+                                <a href="{{ route('purchases.payment.delete', $payment->id) }}" id="delete_payment"
+                                    class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="7" class="text-center">No Data Found</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+        <form id="payment_deleted_form" action="" method="post">
+            @method('DELETE')
+            @csrf
+        </form>
+    </div>
+</div>

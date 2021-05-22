@@ -1,0 +1,180 @@
+<style>
+    h6.checkbox_input_wrap {font-size: 13px;}
+</style>
+<form id="add_product_form" action="{{ route('purchases.add.product') }}" method="POST">
+    @csrf
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label><b>Product Name :</b> <span class="text-danger">*</span></label>
+            <input type="text" name="name" class="form-control form-control-sm" id="add_name" placeholder="Product Name"/>
+            <span class="error error_add_name"></span>
+        </div>
+
+        <div class="col-md-3">
+            <label><b>Product Code (SKU) :</b> <span class="text-danger">*</span></label>
+            <input type="text" name="product_code" class="form-control form-control-sm" placeholder="Product code"/>
+            <span class="error error_add_product_code"></span>
+        </div>
+
+        <div class="col-md-3">
+            <label><b>Barcode Type :</b></label>
+            <select class="form-control form-control-sm" name="barcode_type" id="barcode_type">
+                <option value="CODE128">Code 128 (C128)</option>
+                <option value="CODE39">Code 39 (C39)</option>
+                <option value="EAN13">EAN-13</option>
+                <option value="UPC">UPC</option>
+            </select>
+        </div>
+
+        <div class="col-md-3 ">
+            <label><b> Unit :</b> <span class="text-danger">*</span></label>
+            <select class="form-control form-control-sm product_unit" name="unit_id" id="add_unit_id">
+                <option value="">Select Unit</option>
+                @foreach ($units as $unit)
+                    <option value="{{ $unit->id }}">{{ $unit->name }}({{ $unit->code_name }})</option>
+                @endforeach
+            </select>
+            <span class="error error_add_unit_id"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
+            <div class="col-md-3">
+                <label><b>Category :</b> <span class="text-danger">*</span></label>
+                <select class="form-control form-control-sm category" name="category_id" id="add_category_id">
+                    <option value="">Select Category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+                <span class="error error_add_category_id"></span>
+            </div>
+        @endif
+
+        @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
+            <div class="col-md-3 parent_category">
+                <label><b>Child category :</b></label>
+                <select class="form-control form-control-sm" name="child_category_id"
+                    id="add_child_category_id">
+                    <option value="">Select child category first</option>
+                </select>
+            </div>
+        @endif
+
+        @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
+            <div class="col-md-3">
+                <label><b>Brand :</b></label>
+                <select class="form-control form-control-sm" data-live-search="true" name="brand_id"
+                    id="add_brand_id">
+                    <option value="">Select Brand</option>
+                    @foreach ($brands as $brand)
+                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
+
+        @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
+            <div class="col-md-3">
+                <label><b>Warranty :</b></label>
+                <select class="form-control form-control-sm" name="warranty_id" id="add_warranty_id">
+                    <option value="">Select Warranty</option>
+                    @foreach ($warranties as $warranty)
+                        <option value="{{ $warranty->id }}">{{ $warranty->name }} ({{$warranty->type == 1 ? 'Warranty' : 'Guaranty'}})</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-8">
+            <label><b>Description :</b> </label>
+            <textarea  name="product_details" class="form-control form-control-sm" cols="10" rows="3">
+            </textarea>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row mt-5">
+                <h6 class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; Product wil be displayed in E-Commerce. &nbsp; </h6>
+                <h6 class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="1"> &nbsp; Enable IMEI or SL NO &nbsp;</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+            <div class="col-md-3 ">
+                <label><b>Tax :</b> </label>
+                <select class="form-control form-control-sm" name="tax_id" id="add_tax_id">
+                    <option value="">NoTax</option>
+                    @foreach ($taxes as $tax)
+                        <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
+
+        <div class="col-md-3">
+            <label><b>Alert quentity :</b></label>
+            <input type="number" name="alert_quantity" class="form-control form-control-sm"
+                autocomplete="off" id="add_alert_quantity" value="0">
+        </div>
+    </div>
+
+    <div class="form-group row mt-3">
+        <div class="col-md-12">
+            <table class="table modal-table table-sm custom-table">
+                <thead>
+                    <tr class="bg-primary">
+                        <th class="text-white">Default Purchase Price</th>
+                        <th class="text-white">x Margin(%)</th>
+                        <th class="text-white">Selling Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label><b>Item Cost Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                    <input type="text" name="product_cost" class="form-control form-control-sm" autocomplete="off" id="add_product_cost">
+                                    <span class="error error_add_product_cost"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label><b>Item Cost (Inc.Tax) :</b><span
+                                        class="text-danger">*</span></label>
+                                    <input type="text" name="product_cost_with_tax"
+                                    class="form-control form-control-sm" autocomplete="off"
+                                    id="add_product_cost_with_tax">
+                                    <span class="error error_add_product_cost_with_tax"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <br>
+                            <input type="text" name="profit" class="form-control form-control-sm mt-1" autocomplete="off" id="add_profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] }}">
+                        </td>
+                        <td>
+                            <label><b>Price Exc.Tax :</b><span class="text-danger">*</span></label>
+                                <input type="text" name="product_price" class="form-control form-control-sm"
+                                    autocomplete="off" id="add_product_price">
+                            <span class="error error_add_product_price"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group row mt-3">
+        <div class="col-md-12">
+            <button type="button" class="btn loading_button d-none"><i
+                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+            <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+            <button type="reset" data-bs-dismiss="modal"
+                class="c-btn btn_orange float-end">Close</button>
+        </div>
+    </div>
+</form>

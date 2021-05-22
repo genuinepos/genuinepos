@@ -1,0 +1,362 @@
+@extends('layout.master')
+@push('stylesheets')
+    <style>
+        .input-group-text {
+            font-size: 12px !important;
+        }
+    </style>
+@endpush
+@section('content')
+    <div class="body-woaper">
+        <div class="container-fluid">
+            <form id="add_purchase_return_form" action="{{ route('purchases.returns.store', $purchaseId) }}" method="POST">
+                @csrf
+                <section class="mt-5">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form_element">
+                                <div class="section-header">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h5>Purchase Return</h5>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="element-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="m-0"><strong>Invoice ID: </strong> <span class="purchase_invoice_id">SI-14252-45525588</span> </p> 
+                                            <p class="m-0"><strong>Date: </strong> <span class="purchase_date">05-12-2020</span></p> 
+                                         </div>
+                                         <div class="col-md-6">
+                                             <p class="m-0 "><strong>Supplier: </strong> <span class="purchase_supplier">Walk_in_customer</span> </p> 
+                                             <p class="m-0 branch"><strong>Branch : </strong> <span class="purchase_branch">Dhaka Branch - 145225</span></p>
+                                             <p class="m-0 warehouse"><strong>Warehouse : </strong> <span class="purchase_warehouse">Warehouse - W-01</span></p>
+                                         </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class=" col-4">Reference ID:<span
+                                                        class="text-danger">*</span></label>
+                                                <div class="col-8">
+                                                    <input type="text" name="invoice_id" class="form-control" id="invoice_id">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class=" col-2">Date:</label>
+                                                <div class="col-8">
+                                                    <input type="date" name="date" class="form-control" autocomplete="off" value="{{ date('Y-m-d') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="sale-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="item-details-sec">
+                                    <div class="content-inner">
+                                        <div class="row">
+                                            <div class="sale-item-sec">
+                                                <div class="sale-item-inner">
+                                                    <div class="table-responsive">
+                                                        <table class="display data__table table-striped">
+                                                            <thead class="staky">
+                                                                <tr>
+                                                                    <th>Product Name</th>
+                                                                    <th></th>
+                                                                    <th>Unit Cost</th>
+                                                                    <th>Lot Number</th>
+                                                                    <th>Purchase Quantity</th>
+                                                                    <th>Return Quantity</th>
+                                                                    <th>Return Subtotal</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="purchase_return_list">
+                                                               
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form_element">
+                                <div class="element-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class=" col-2"><b>Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</b>  </label>
+                                                <div class="col-8">
+                                                    <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="submit_button_area py-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn loading_button d-none"><i
+                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                            <button class="btn btn-sm btn-success float-end">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+@push('scripts')
+<script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
+<script>
+    function getPurchaseReturn() {
+        $.ajax({
+            url:"{{route('purchases.returns.get.purchase', $purchaseId)}}",
+            async:true,
+            type:'get',
+            dataType: 'json',
+            success:function(purchase){
+                console.log(purchase); 
+                $('.purchase_invoice_id').html(purchase.invoice_id); 
+                $('.purchase_date').html(purchase.date); 
+                $('.purchase_supplier').html(purchase.supplier.name); 
+                console.log(purchase.branch);
+                if (purchase.branch != null) {
+                    $('.purchase_branch').html(purchase.branch.name + ' - ' + purchase.branch.branch_code);
+                }else{
+                    $('.branch').hide();
+                }
+
+                if (purchase.warehouse != null) {
+                    $('.purchase_warehouse').html(purchase.warehouse.warehouse_name + ' - ' + purchase.warehouse.warehouse_code);
+                }else{
+                    $('.warehouse').hide();
+                }
+                
+                $('#invoice_id').val(purchase.purchase_return != null ? purchase.purchase_return.invoice_id : '');
+                $('#date').val(purchase.purchase_return != null ? purchase.purchase_return.date : '');
+            
+                if (purchase.purchase_return != null) {
+                    $.each(purchase.purchase_return.purchase_return_products, function (key, return_product) {
+                        var tr = "";
+                        tr += '<tr >';
+                        tr += '<td colspan="2" class="text text-dark">';
+                        tr += '<span class="product_name">'+return_product.purchase_product.product.name+'</span>';
+                        var variant = return_product.purchase_product.variant ? ' ('+return_product.purchase_product.variant.variant_name+')' : '';
+                        
+                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>'; 
+
+                        var code = return_product.purchase_product.variant ? return_product.purchase_product.variant.variant_code : return_product.purchase_product.product.product_code;
+                        tr += ' <span class="product_code"><small>('+code+')</small></span>';
+                        tr += '<input value="'+return_product.purchase_product_id+'" type="hidden" id="purchase_product_id" name="purchase_product_ids[]">';
+                        tr += '</td>';
+                        
+                        tr += '<td class="text">';
+                        tr += '<span class="span_unit_cost">'+return_product.purchase_product.net_unit_cost+'</span>';
+                        tr += '<input value="'+return_product.purchase_product.net_unit_cost+'" type="hidden" name="unit_costs[]" id="unit_cost">';
+                        tr += '</td>';
+
+                        tr += '<td>';
+                        tr += '<span >'+(return_product.purchase_product.lot_no ? return_product.purchase_product.lot_no : '')+'</span>';
+                        tr += '</td>';
+
+                        tr += '<td class="text">';
+                        tr += '<input value="'+return_product.purchase_product.unit+'" type="hidden" name="units[]" id="unit">';
+                        tr += '<span class="span_purchase_product_qty">'+return_product.purchase_product.quantity+' ('+return_product.purchase_product.unit+')'+'</span>';
+                        tr += '<input value="'+return_product.purchase_product.quantity+'" type="hidden" name="purchase_qtys[]" id="purchase_qty">';
+                        tr += '</td>';
+
+                        tr += '<td>';
+                        tr += '<input value="'+return_product.return_qty+'" type="hidden" name="previous_return_quantitiess[]" id="previous_return_quantity">';
+                        tr += '<input value="'+return_product.purchase_product.unit+'" type="hidden" id="unit">';
+                        tr += '<input value="'+return_product.return_qty+'" required name="return_quantities[]" type="text" class="form-control form-control-sm" id="return_quantity">';
+                        tr += '</td>';
+
+                        tr += '<td class="text">';
+                        tr += '<span class="span_return_subtotal">'+return_product.return_subtotal+'</span>';
+                        tr += '<input value="'+return_product.return_subtotal+'"  name="return_subtotals[]" type="hidden" class="form-control form-control-sm" id="return_subtotal">';
+                        tr += '</td>';
+                        tr += '</tr>';
+                        $('#purchase_return_list').append(tr);
+                    });
+                    calculateTotalAmount();
+                }else{
+                    $.each(purchase.purchase_products, function (key, purchase_product) {
+                        var tr = "";
+                        tr += '<tr>';
+                        tr += '<td colspan="2" class="text text-dark">';
+                        tr += '<span class="product_name">'+purchase_product.product.name+'</span>';
+                        var variant = purchase_product.variant ? ' ('+purchase_product.variant.variant_name+')' : '';
+                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>'; 
+                        var code = purchase_product.variant ? purchase_product.variant.variant_code : purchase_product.product.product_code;
+                        tr += ' <span class="product_code"><small>('+code+')</small></span>';
+                        tr += '<input value="'+purchase_product.id+'" type="hidden" id="purchase_product_id" name="purchase_product_ids[]">';
+                        tr += '</td>';
+                        
+                        tr += '<td class="text">';
+                        tr += '<span class="span_unit_cost">'+purchase_product.net_unit_cost+'</span>';
+                        tr += '<input value="'+purchase_product.net_unit_cost+'" type="hidden" name="unit_costs[]" id="unit_cost">';
+                        tr += '</td>';
+
+
+                        tr += '<td class="text">';
+                        tr += '<span class="">'+(purchase_product.lot_no ? purchase_product.lot_no : '') +'</span>';
+                        tr += '</td>';
+
+                        tr += '<td class="text">';
+                        tr += '<input value="'+purchase_product.unit+'" type="hidden" name="units[]" id="unit">';
+                        tr += '<span class="span_purchase_product_quantity">'+purchase_product.quantity+' ('+purchase_product.unit+')'+'</span>';
+                        tr += '<input value="'+purchase_product.quantity+'" type="hidden" name="purchase_quantities[]" id="purchase_quantity">';
+                        tr += '</td>';
+
+                        tr += '<td>';
+                        tr += '<input value="0" type="hidden" name="previous_return_quantities[]" id="previous_return_quantity">';
+                        tr += '<input value="'+purchase_product.unit+'" type="hidden" id="unit">';
+                        tr += '<input value="0.00" required name="return_quantities[]" type="text" class="form-control form-control-sm" id="return_quantity">';
+                        tr += '</td>';
+
+                        tr += '<td class="text">';
+                        tr += '<span class="span_return_subtotal">0.00</span>';
+                        tr += '<input value="0.00" name="return_subtotals[]" type="hidden" class="form-control form-control-sm" id="return_subtotal">';
+                        tr += '</td>';
+                        tr += '</tr>';
+                        $('#purchase_return_list').append(tr);
+                    });
+                    calculateTotalAmount();
+                }
+            }
+        });
+    }
+    getPurchaseReturn();
+
+    // Calculate total amount functionalitie
+    function calculateTotalAmount(){
+        var quantities = document.querySelectorAll('#return_quantity');
+        var subtotals = document.querySelectorAll('#return_subtotal');
+  
+        // Update Net total Amount
+        var netTotalAmount = 0;
+        subtotals.forEach(function(subtotal){
+            netTotalAmount += parseFloat(subtotal.value);
+        });
+        
+        $('#total_return_amount').val(parseFloat(netTotalAmount).toFixed(2));
+    }
+
+
+    // Return Quantity increase or dicrease and clculate row amount
+    $(document).on('input', '#return_quantity', function(){
+        var return_quantity = $(this).val() ? $(this).val() : 0;
+        console.log(return_quantity);
+        if (parseFloat(return_quantity) >= 0) {
+            var tr = $(this).closest('tr');
+            var previousReturnQty = tr.find('#previous_return_quantity').val();
+            var unit = tr.find('#unit').val();
+            var limit = tr.find('#purchase_quantity').val();
+            var qty_limit = parseFloat(previousReturnQty) + parseFloat(limit);
+            console.log(qty_limit);
+            if(parseInt(return_quantity) > parseInt(qty_limit)){
+                alert('Only '+limit+' '+unit+' is available.');
+                $(this).val(parseFloat(limit).toFixed(2));
+                var unitPrice = tr.find('#unit_cost').val();
+                var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
+                tr.find('#return_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+                tr.find('.span_return_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+                calculateTotalAmount();
+            }else{
+                var unitPrice = tr.find('#unit_cost').val();
+                var calcSubtotal = parseFloat(unitPrice) * parseFloat(return_quantity);
+                tr.find('#return_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+                tr.find('.span_return_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+                calculateTotalAmount(); 
+            }
+        }
+    });
+
+    //Add purchase request by ajax
+    $('#add_purchase_return_form').on('submit', function(e){
+        e.preventDefault();
+        $('.loading_button').show();
+        var request = $(this).serialize();
+        var url = $(this).attr('action');
+        var inputs = $('.add_input');
+            inputs.removeClass('is-invalid');
+            $('.error').html('');  
+            var countErrorField = 0;  
+        $.each(inputs, function(key, val){
+            var inputId = $(val).attr('id');
+            var idValue = $('#'+inputId).val();
+            if(idValue == ''){
+                countErrorField += 1;
+                var fieldName = $('#'+inputId).data('name');
+                $('.error_'+inputId).html(fieldName+' is required.');
+            }
+        });
+
+        if(countErrorField > 0){
+            $('.loading_button').hide();
+            toastr.error('Please check again all form fields.','Some thing want wrong.'); 
+            return;
+        }
+
+        $.ajax({
+            url:url,
+            type:'post',
+            data: request,
+            success:function(data){
+                if(!$.isEmptyObject(data.errorMsg)){
+                    toastr.error(data.errorMsg,'ERROR'); 
+                    $('.loading_button').hide();
+                }else {
+                    console.log(data);
+                    $('.loading_button').hide();
+                    toastr.success('Successfully purchase return is addedd.'); 
+                    $(data).printThis({
+                        debug: false,                   
+                        importCSS: true,                
+                        importStyle: true,          
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                        removeInline: true, 
+                        printDelay: 1000, 
+                        header: null,        
+                    });
+                }
+            }
+        });
+    });
+</script>
+@endpush

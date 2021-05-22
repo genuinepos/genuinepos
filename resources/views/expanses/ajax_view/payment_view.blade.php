@@ -1,0 +1,91 @@
+<style>
+    .payment_top_card {background: #d7dfe8;}
+    .payment_top_card span {font-size: 12px;font-weight: 400;}
+    .payment_top_card li {font-size: 12px;}
+    .payment_top_card ul {padding: 6px;}
+    .payment_list_table {position: relative;}
+    .payment_details_contant{background: azure!important;}
+</style>
+<!--begin::Form-->
+<div class="info_area mb-2">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="payment_top_card">
+                <ul class="list-unstyled">
+                    <li><strong> Reference ID : </strong>{{ $expense->invoice_id }} </li>
+                    <li><strong>Branch : </strong>
+                        {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : 'Head Office' }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="payment_top_card">
+                <ul class="list-unstyled">
+                    <li><strong>Total Due : </strong>{{ $expense->due }}</li>
+                    <li><strong>Date : </strong>{{ $expense->date }}</li>
+                    <li><strong>Payment Status : </strong> 
+                        @php
+                           $payable = $expense->net_total_amount; 
+                        @endphp
+                        
+                        @if ($expense->due <= 0) 
+                            <span class="badge bg-success">Paid</span>
+                        @elseif ($expense->due > 0 && $expense->due < $payable) 
+                            <span class="badge bg-primary text-white">Partial</span>
+                        @elseif ($payable == $expense->due) 
+                            <span class="badge bg-danger text-white">Due</span>
+                        @endif
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="payment_list_table">
+    <div class="data_preloader modal_preloader"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
+    <div class="table-responsive">
+        <table class="display modal-table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th class="text-start">Date</th>
+                    <th class="text-start">Voucher No</th>
+                    <th class="text-start">Amount</th>
+                    <th class="text-start">Method</th>
+                    <th class="text-start">Type</th>
+                    <th class="text-start">Account</th>
+                    <th class="text-start">Action</th>
+                </tr>
+            </thead>
+            <tbody id="payment_list_body">
+                @if (count($expense->expense_payments) > 0)
+                    @foreach ($expense->expense_payments as $payment)
+                        <tr data-info="{{ $payment }}">
+                            <td class="text-start">{{ date('d/m/Y', strtotime($payment->date)) }}</td>
+                            <td class="text-start">{{ $payment->invoice_id }}</td>
+                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'].' '.$payment->paid_amount }}</td>
+                            <td class="text-start">{{ $payment->pay_mode }}</td>
+                            <td class="text-start">{{ 'Expanse due'  }}</td>
+                            <td class="text-start">{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
+                            <td class="text-start">
+                                <a href="{{ route('expanses.payment.edit', $payment) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
+                                <a href="{{ route('expanses.payment.details', $payment) }}" id="payment_details" class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
+                                <a href="{{ route('expanses.payment.delete', $payment->id) }}" id="delete_payment" class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else   
+                <tr>
+                    <td colspan="6" class="text-center">No Data Found</td>
+                </tr>
+                @endif
+            </tbody>
+        </table>
+        <form id="payment_deleted_form" action="" method="post">
+            @method('DELETE')
+            @csrf
+        </form>
+    </div>
+</div>

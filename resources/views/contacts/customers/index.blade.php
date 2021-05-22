@@ -1,0 +1,967 @@
+@extends('layout.master')
+@push('stylesheets')
+@endpush
+@section('content')
+    <div class="body-woaper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="border-class">
+                    <div class="main__content">
+                        <!-- =====================================================================BODY CONTENT================== -->
+                        <div class="sec-name">
+                            <div class="name-head">
+                                <span class="fas fa-desktop"></span>
+                                <h5>Customers</h5>
+                            </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        </div>
+                    </div>
+                    <!-- =========================================top section button=================== -->
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form_element">
+                                <div class="section-header">
+                                    <div class="col-md-6">
+                                        <h6>All Customers</h6>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="btn_30_blue float-end">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
+                                                    class="fas fa-plus-square"></i> Add</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="widget_content">
+                                    <div class="data_preloader">
+                                        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                    </div>
+                                    <div class="table-responsive" id="data-list">
+                                        <table class="display data_tbl data__table">
+                                            <thead>
+                                                <tr class="text-center">
+                                                    <th>Actions</th>
+                                                    <th>Contact ID</th>
+                                                    <th>Name</th>
+                                                    <th>Business Name</th>
+                                                    <th>Phone</th>
+                                                    <th>Email</th>
+                                                    <th>Tax Number</th>
+                                                    <th>Opening Balance</th>
+                                                    <th>Total Purchase Due</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <form id="deleted_form" action="" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Add Customer</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <!--begin::Form-->
+                    <form id="add_customer_form" action="{{ route('product.categories.store') }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
+                                <label><strong>Contact Type :</strong> </label>
+                                <select name="contact_type" class="form-control">
+                                    <option value="">Select contact type</option>
+                                    <option value="1">Supplier</option>
+                                    <option value="2">Customer</option>
+                                    <option value="3">Both (Supplier - Customer)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Contact ID :</strong></label>
+                                <input type="text" name="contact_id" class="form-control"
+                                    placeholder="Contact ID" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Business Name :</strong></label>
+                                <input type="text" name="business_name" class="form-control"
+                                    placeholder="Business name" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control add_input"
+                                    data-name="Customer name" id="name" placeholder="Customer name" />
+                                <span class="error error_name"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
+                                <label><strong>Phone :</strong> <span class="text-danger">*</span></label>
+                                <input type="text" name="phone" class="form-control add_input"
+                                    data-name="Phone number" id="phone" placeholder="Phone number" />
+                                <span class="error error_phone"></span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Alternative Number :</strong> </label>
+                                <input type="text" name="alternative_phone" class="form-control"
+                                    placeholder="Alternative phone number" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Landline :</strong></label>
+                                <input type="text" name="landline" class="form-control"
+                                    placeholder="landline number" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Email :</strong></label>
+                                <input type="text" name="email" class="form-control"
+                                    placeholder="Email address" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
+                                <label><strong>Date Of Birth :</strong></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i
+                                                class="fas fa-calendar-week text-navy-blue"></i></span>
+                                    </div>
+                                    <input type="text" name="date_of_birth" class="form-control"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Tax Number :</strong></label>
+                                <input type="text" name="tax_number" class="form-control"
+                                    placeholder="Tax number" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Opening Balance :</strong> </label>
+                                <input type="number" step="any" name="opening_balance" class="form-control"
+                                    placeholder="Opening balance" value="0.00" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Pay Term :</strong> </label>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <input type="text" name="pay_term_number"
+                                            class="form-control w-50" />
+                                        <select name="pay_term" class="form-control w-50">
+                                            <option value="1">Select term</option>
+                                            <option value="2">Days </option>
+                                            <option value="3">Months</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
+                                <label><strong>Customer Group :</strong> </label>
+                                <select name="customer_group_id" class="form-control"
+                                    id="customer_group_id">
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-9">
+                                <label><strong>Address :</strong> </label>
+                                <input type="text" name="address" class="form-control"
+                                    placeholder="Address">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
+                                <label><strong>City :</strong> </label>
+                                <input type="text" name="city" class="form-control" placeholder="City" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>State :</strong> </label>
+                                <input type="text" name="state" class="form-control" placeholder="State" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Country :</strong> </label>
+                                <input type="text" name="country" class="form-control"
+                                    placeholder="Country" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Zip-Code :</strong> </label>
+                                <input type="text" name="zip_code" class="form-control"
+                                    placeholder="zip_code" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-5">
+                                <label><strong>Shipping Address :</strong> </label>
+                                <input type="text" name="shipping_address" class="form-control"
+                                    placeholder="Shipping address" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-3">
+                            <div class="col-md-12">
+                                <button type="button" class="btn loading_button d-none"><i
+                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+                                <button type="reset" data-bs-dismiss="modal"
+                                    class="c-btn btn_orange float-end">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Category</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="edit_modal_body">
+                    <!--begin::Form-->
+                    <form id="edit_customer_form" action="{{ route('contacts.customer.update') }}">
+                        @csrf
+                        <input type="hidden" name="id" id="id">
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
+                                <label><b>Contact Type</b> : </label>
+                                <select name="contact_type" class="form-control" id="e_contact_type">
+                                    <option value="">Select contact type</option>
+                                    <option value="1">Customer</option>
+                                    <option value="2">Supplier</option>
+                                    <option value="3">Both (Supplier - Customer)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Contact ID</b> : </label>
+                                <input type="text" name="contact_id" class="form-control"
+                                    placeholder="Contact ID" id="e_contact_id" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Business Name</b> : </label>
+                                <input type="text" name="business_name" class="form-control"
+                                    placeholder="Business name" id="e_business_name" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Name</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control edit_input"
+                                    data-name="Supplier name" id="e_name" placeholder="Supplier name" />
+                                <span class="error error_e_name"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
+                                <label><b>Phone</b> : <span class="text-danger">*</span></label>
+                                <input type="text" name="phone" class="form-control edit_input"
+                                    data-name="Phone number" id="e_phone" placeholder="Phone number" />
+                                <span class="error error_e_phone"></span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Alternative Number</b> : </label>
+                                <input type="text" name="alternative_phone" class="form-control"
+                                    placeholder="Alternative phone number" id="e_alternative_phone" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Landline</b> : </label>
+                                <input type="text" name="landline" class="form-control"
+                                    placeholder="landline number" id="e_landline" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Email</b> : </label>
+                                <input type="text" name="email" class="form-control"
+                                    placeholder="Email address" id="e_email" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
+                                <label><b>Date Of Birth</b> : </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i
+                                                class="fas fa-calendar-week text-navy-blue"></i></span>
+                                    </div>
+                                    <input type="text" name="date_of_birth" class="form-control"
+                                        autocomplete="off" id="e_date_of_birth">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Tax Number</b> : </label>
+                                <input type="text" name="tax_number" class="form-control"
+                                    placeholder="Tax number" id="e_tax_number" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Pay Term</b> : </label>
+                                <div class="row">
+                                    <input type="text" name="pay_term_number" class="form-control w-50"
+                                        id="e_pay_term_number" />
+                                    <select name="pay_term" class="form-control w-50" id="e_pay_term">
+                                        <option value="">Select term</option>
+                                        <option value="1">Days </option>
+                                        <option value="2">Months</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
+                                <label><b>Customer Group</b> : </label>
+                                <select name="customer_group_id" class="form-control"
+                                    id="e_customer_group_id">
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-9">
+                                <label><b>Address</b> : </label>
+                                <input type="text" name="address" class="form-control" placeholder="Address"
+                                    id="e_address">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label><b>City</b> : </label>
+                                <input type="text" name="city" class="form-control" placeholder="City"
+                                    id="e_city" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>State</b> : </label>
+                                <input type="text" name="state" class="form-control" placeholder="State"
+                                    id="e_state" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Country</b> : </label>
+                                <input type="text" name="country" class="form-control" placeholder="Country"
+                                    id="e_country" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><b>Zip-Code</b> : </label>
+                                <input type="text" name="zip_code" class="form-control"
+                                    placeholder="zip_code" id="e_zip_code" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-5">
+                                <label><b>Shipping Address</b> : </label>
+                                <input type="text" name="shipping_address" class="form-control"
+                                    placeholder="Shipping address" id="e_shipping_address" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-3">
+                            <div class="col-md-12">
+                                <button type="button" class="btn loading_button d-none"><i
+                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+                                <button type="reset" data-bs-dismiss="modal"
+                                    class="c-btn btn_orange float-end">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer payment Modal-->
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+        aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Receive Payment</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="payment_modal_body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Customer payment Modal End-->
+
+    <!-- Money Receipt list Modal-->
+    <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+        aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Payment Receipt Voucher List</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="receipt_voucher_list_modal_body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Money Receipt list Modal End-->
+
+    <!--add money receipt Modal-->
+    <div class="modal fade" id="addReciptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+        aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Generate Money Receipt Voucher</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="money_receipt_modal">
+                    <!--begin::Form-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--add money receipt Modal End-->
+
+    <!--add money receipt Modal-->
+    <div class="modal fade" id="changeReciptStatusModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+        aria-hidden="true">
+    </div>
+    <!--add money receipt Modal End-->
+@endsection
+@push('scripts')
+    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
+    <script>
+        // Get all customer by ajax
+        function getAllCustomer() {
+            $('.data_preloader').show();
+            $.ajax({
+                url: "{{ route('contacts.customer.get.all.customer') }}",
+                type: 'get',
+                success: function(data) {
+                    $('.table-responsive').html(data);
+                    $('.data_preloader').hide();
+                }
+            });
+        }
+        getAllCustomer();
+
+        function setBranches() {
+            $.ajax({
+                url: "{{ route('contacts.customer.get.all.group') }}",
+                async: true,
+                type: 'get',
+                dataType: 'json',
+                success: function(groups) {
+                    $.each(groups, function(key, group) {
+                        $('#customer_group_id').append('<option value="' + group.id + '">' + group
+                            .group_name + '</option>');
+                        $('#e_customer_group_id').append('<option value="' + group.id + '">' + group
+                            .group_name + '</option>');
+                    });
+                }
+            });
+        }
+        setBranches();
+
+        // Setup ajax for csrf token.
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        // call jquery method 
+        $(document).ready(function() {
+            // Add category by ajax
+            $('#add_customer_form').on('submit', function(e) {
+                e.preventDefault();
+                $('.loading_button').show();
+                var url = $(this).attr('action');
+                var request = $(this).serialize();
+                var inputs = $('.add_input');
+                $('.error').html('');
+                var countErrorField = 0;
+                $.each(inputs, function(key, val) {
+                    var inputId = $(val).attr('id');
+                    var idValue = $('#' + inputId).val();
+                    if (idValue == '') {
+                        countErrorField += 1;
+                        var fieldName = $('#' + inputId).data('name');
+                        $('.error_' + inputId).html(fieldName + ' is required.');
+                    }
+                });
+
+                if (countErrorField > 0) {
+                    $('.loading_button').hide();
+                    return;
+                }
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: request,
+                    success: function(data) {
+                        toastr.success(data, 'Succeed');
+                        $('#add_customer_form')[0].reset();
+                        getAllCustomer();
+                        $('.loading_button').hide();
+                        $('#addModal').modal('hide');
+                    }
+                });
+            });
+
+            // pass editable data to edit modal fields
+            $(document).on('click', '#edit', function(e) {
+                e.preventDefault();
+                $('.form-control').removeClass('is-invalid');
+                $('.error').html('');
+                var supplier = $(this).closest('tr').data('info');
+                console.log(supplier);
+                $('#id').val(supplier.id);
+                $('#e_contact_type').val(supplier.type);
+                $('#e_contact_id').val(supplier.contact_id);
+                $('#e_name').val(supplier.name);
+                $('#e_business_name').val(supplier.business_name);
+                $('#e_phone').val(supplier.phone);
+                $('#e_alternative_phone').val(supplier.alternative_phone);
+                $('#e_landline').val(supplier.landline);
+                $('#e_email').val(supplier.email);
+                $('#e_customer_group_id').val(supplier.customer_group_id);
+                $('#e_address').val(supplier.address);
+                $('#e_date_of_birth').val(supplier.date_of_birth);
+                $('#e_tax_number').val(supplier.tax_number);
+                $('#e_city').val(supplier.city);
+                $('#e_state').val(supplier.state);
+                $('#e_country').val(supplier.country);
+                $('#e_zip_code').val(supplier.zip_code);
+                $('#e_opening_balance').val(supplier.opening_balance);
+                $('#e_pay_term').val(supplier.pay_term);
+                $('#e_pay_term_number').val(supplier.pay_term_number);
+                $('#e_shipping_address').val(supplier.shipping_address);
+                $('#editModal').modal('show');
+            });
+
+            // edit category by ajax
+            $('#edit_customer_form').on('submit', function(e) {
+                e.preventDefault();
+                $('.loading_button').show();
+                var url = $(this).attr('action');
+                var request = $(this).serialize();
+                var inputs = $('.edit_input');
+                $('.error').html('');
+                var countErrorField = 0;
+                $.each(inputs, function(key, val) {
+                    var inputId = $(val).attr('id');
+                    var idValue = $('#' + inputId).val();
+                    if (idValue == '') {
+                        countErrorField += 1;
+                        var fieldName = $('#' + inputId).data('name');
+                        $('.error_' + inputId).html(fieldName + ' is required.');
+                    }
+                });
+                if (countErrorField > 0) {
+                    $('.loading_button').hide();
+                    return;
+                }
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: request,
+                    success: function(data) {
+                        console.log(data);
+                        toastr.success(data, 'Succeed');
+                        $('.loading_button').hide();
+                        getAllCustomer();
+                        $('#editModal').modal('hide');
+                    }
+                });
+            });
+
+            // Show sweet alert for delete
+            $(document).on('click', '#delete', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('#deleted_form').attr('action', url);
+                swal({
+                        title: "Are you sure?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $('#deleted_form').submit();
+                        } else {
+                            swal("Your imaginary file is safe!");
+                        }
+                    });
+            });
+
+            //data delete by ajax
+            $(document).on('submit', '#deleted_form', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('action');
+                var request = $(this).serialize();
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    async: false,
+                    data: request,
+                    success: function(data) {
+                        getAllCustomer();
+                        toastr.success(data, 'Succeed');
+                        $('#deleted_form')[0].reset();
+                    }
+                });
+            });
+
+            // Show sweet alert for delete
+            $(document).on('click', '#change_status', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                console.log(url);
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+                        toastr.success(data, 'Succeed');
+                        getAllCustomer();
+                    }
+                });
+            });
+
+            // Show Customer payment modal
+            $(document).on('click', '#pay_button', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('.data_preloader').show();
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+                        $('#payment_modal_body').html(data);
+                        $('#paymentModal').modal('show');
+                        $('.data_preloader').hide();
+                    }
+                });
+            });
+
+            // Show supplier return payment modal
+            $(document).on('click', '#pay_return_button', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('.data_preloader').show();
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+                        $('#payment_modal_body').html(data);
+                        $('#paymentModal').modal('show');
+                        $('.data_preloader').hide();
+                    }
+                });
+            });
+
+            //Add Customer payment request by ajax
+            $(document).on('submit', '#customer_payment_form', function(e) {
+                e.preventDefault();
+                $('.loading_button').show();
+                var available_amount = $('#p_available_amount').val();
+                var paying_amount = $('#p_amount').val();
+                if (parseFloat(paying_amount) > parseFloat(available_amount)) {
+                    $('.error_p_amount').html('Paying amount must not be greater then due amount.');
+                    $('.loading_button').hide();
+                    return;
+                }
+
+                var url = $(this).attr('action');
+                var inputs = $('.p_input');
+                inputs.removeClass('is-invalid');
+                $('.error').html('');
+                var countErrorField = 0;
+                $.each(inputs, function(key, val) {
+                    var inputId = $(val).attr('id');
+                    var idValue = $('#' + inputId).val();
+                    if (idValue == '') {
+                        countErrorField += 1;
+                        var fieldName = $('#' + inputId).data('name');
+                        $('.error_' + inputId).html(fieldName + ' is required.');
+                    }
+                });
+
+                if (countErrorField > 0) {
+                    $('.loading_button').hide();
+                    toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                    return;
+                }
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+                        if (!$.isEmptyObject(data.errorMsg)) {
+                            toastr.error(data.errorMsg, 'ERROR');
+                            $('.loading_button').hide();
+                        } else {
+                            $('.loading_button').hide();
+                            $('#paymentModal').modal('hide');
+                            toastr.success(data);
+                            getAllCustomer();
+                        }
+                    }
+                });
+            });
+
+            $(document).on('change', '#payment_method', function() {
+                var value = $(this).val();
+                $('.payment_method').hide();
+                $('#' + value).show();
+            });
+
+            $(document).on('click', '#generate_receipt', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+                        $('#money_receipt_modal').html(data);
+                        $('#addReciptModal').modal('show');
+                    }
+                });
+            });
+
+            $(document).on('click', '#money_receipt_list', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('.data_preloader').show();
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+                        $('#receipt_voucher_list_modal_body').html(data);
+                        $('#moneyReceiptListModal').modal('show');
+                        $('.data_preloader').hide();
+                    }
+                });
+            });
+
+            $(document).on('submit', '#add_money_receipt_form', function(e) {
+                e.preventDefault();
+                $('.loading_button').show();
+                var url = $(this).attr('action');
+                var request = $(this).serialize();
+                var inputs = $('.mr_input');
+                $('.error').html('');
+                var countErrorField = 0;
+                $.each(inputs, function(key, val) {
+                    var inputId = $(val).attr('id');
+                    var idValue = $('#' + inputId).val();
+                    if (idValue == '') {
+                        countErrorField += 1;
+                        var fieldName = $('#' + inputId).data('name');
+                        $('.error_' + inputId).html(fieldName + ' is required.');
+                    }
+                });
+
+                if (countErrorField > 0) {
+                    $('.loading_button').hide();
+                    return;
+                }
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: request,
+                    success: function(data) {
+                        toastr.success('Successfully money receipt voucher is generated.');
+                        $('#addReciptModal').modal('hide');
+                        $('#moneyReceiptListModal').modal('hide');
+                        $('.loading_button').hide();
+                        $(data).printThis({
+                            debug: false,
+                            importCSS: true,
+                            importStyle: true,
+                            loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",
+                            removeInline: true,
+                            printDelay: 500,
+                            header: null,
+                        });
+                    }
+                });
+            });
+
+            $(document).on('click', '#print_receipt', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    dataType: 'html',
+                    success: function(data) {
+                        console.log(data);
+                        $(data).printThis({
+                            debug: false,
+                            importCSS: true,
+                            importStyle: true,
+                            loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",
+                            removeInline: false,
+                            printDelay: 500,
+                            header: null,
+                        });
+                        $('.print_area').remove();
+                        return;
+                    }
+                });
+            });
+
+            // Show sweet alert for delete
+            $(document).on('click', '#change_receipt_status', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('.receipt_preloader').show();
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+                        $('#changeReciptStatusModal').html(data);
+                        $('#changeReciptStatusModal').modal('show');
+                        $('.receipt_preloader').hide();
+                    }
+                });
+            });
+
+            $(document).on('submit', '#change_voucher_status_form', function(e) {
+                e.preventDefault();
+                $('.loading_button').show();
+                var url = $(this).attr('action');
+                var request = $(this).serialize();
+                var inputs = $('.vcs_input');
+                $('.error').html('');
+                var countErrorField = 0;
+                $.each(inputs, function(key, val) {
+                    var inputId = $(val).attr('id');
+                    var idValue = $('#' + inputId).val();
+                    if (idValue == '') {
+                        countErrorField += 1;
+                        var fieldName = $('#' + inputId).data('name');
+                        $('.error_vcs_' + inputId).html(fieldName + ' is required.');
+                    }
+                });
+
+                if (countErrorField > 0) {
+                    $('.loading_button').hide();
+                    return;
+                }
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: request,
+                    success: function(data) {
+                        toastr.success(data);
+                        $('#changeReciptStatusModal').modal('hide');
+                        $('#moneyReceiptListModal').modal('hide');
+                        getAllCustomer();
+                    }
+                });
+            });
+
+            // Show sweet alert for delete
+            $(document).on('click', '#delete_receipt', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                var tr = $(this).closest('tr');
+                $('#receipt_deleted_form').attr('action', url);
+                swal({
+                    title: "Are you sure?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $('#receipt_deleted_form').submit();
+                        tr.remove();
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                });
+            });
+
+            //data delete by ajax
+            $(document).on('submit', '#receipt_deleted_form', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('action');
+                var request = $(this).serialize();
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    async: false,
+                    data: request,
+                    success: function(data) {
+                        toastr.success(data, 'Succeed');
+                        $('#receipt_deleted_form')[0].reset();
+                    }
+                });
+            });
+        });
+    </script>
+
+
+@endpush

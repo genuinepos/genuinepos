@@ -1,0 +1,359 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Bank;
+use App\Models\Account;
+use App\Models\AccountType;
+use App\Models\CashFlow;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
+class AccountController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth:admin_and_user');
+    }
+
+    // Bank main page/index page
+    public function index()
+    {
+        return view('accounting.accounts.index');
+    }
+
+    // Get all banks by ajax
+    public function allAccounts()
+    {
+        $accounts = Account::with(['bank', 'account_type', 'admin', 'admin.role'])->orderBy('id', 'DESC')->where('status', 1)->get();
+        return view('accounting.accounts.ajax_view.account_list', compact('accounts'));
+    }
+
+    //Get account book
+    public function accountBook($accountId)
+    {
+        $account = Account::with(['bank', 'account_type', 'cash_flows'])->where('id', $accountId)->first();
+        return view('accounting.accounts.account_book', compact('account'));
+    }
+
+    // Store bank
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'account_number' => 'required',
+            'bank_id' => 'required',
+        ]);
+
+        $addAccount = Account::insertGetId([
+            'name' => $request->name,
+            'account_number' => $request->account_number,
+            'bank_id' => $request->bank_id,
+            'account_type_id' => $request->account_type_id,
+            'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
+            'balance' => $request->opening_balance ? $request->opening_balance : 0,
+            'credit' => $request->opening_balance ? $request->opening_balance : 0,
+            'remark' => $request->remark,
+            'admin_id' => auth()->user()->id,
+        ]);
+
+        if ($request->opening_balance && $request->opening_balance != 0) {
+            $addCashflow = new CashFlow();
+            $addCashflow->account_id = $addAccount;
+            $addCashflow->transaction_type = 7;
+            $addCashflow->cash_type = 2;
+            $addCashflow->credit = $request->opening_balance;
+            $addCashflow->balance = $request->opening_balance;
+            $addCashflow->report_date = date('Y-m-d');
+            $addCashflow->date = date('Y-m-d');
+            $addCashflow->month = date('F');
+            $addCashflow->year = date('Y');
+            $addCashflow->admin_id = auth()->user()->id;
+            $addCashflow->save();
+        }
+
+        Cache::forget('all-accounts');
+        return response()->json('Successfully account is added');
+    }
+
+    // Update bank
+    public function update(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'account_number' => 'required',
+            'bank_id' => 'required',
+        ]);
+
+        $updateBank = Account::where('id', $request->id)->first();
+        $updateBank->update([
+            'name' => $request->name,
+            'account_number' => $request->account_number,
+            'bank_id' => $request->bank_id,
+            'account_type_id' => $request->account_type_id,
+            'remark' => $request->remark,
+        ]);
+
+        Cache::forget('all-accounts');
+        return response()->json('Successfully account is updated');
+    }
+
+    public function delete(Request $request, $accountId)
+    {
+        $deleteAccount = Account::find($accountId);
+        if (!is_null($deleteAccount)) {
+            $deleteAccount->delete();
+        }
+        Cache::forget('all-accounts');
+        return response()->json('Successfully bank is deleted');
+    }
+
+    public function allBanks()
+    {
+        $banks = Cache::rememberForever('all-banks', function () {
+            return $banks = Bank::select('id', 'name', 'branch_name')->get();
+        });
+
+        return response()->json($banks);
+    }
+
+    public function allAccountTypes()
+    {
+        $types = Cache::rememberForever('all-account_types', function () {
+            return $types = AccountType::where('status', 1)->get();
+        });
+        return response()->json($types);
+    }
+
+    public function allFromAccount()
+    {
+        $accounts = Cache::rememberForever('all-accounts', function () {
+            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
+        });
+        return response()->json($accounts);
+    }
+
+    public function changeStatus($typeId)
+    {
+        $statusChange = Account::where('id', $typeId)->first();
+        if ($statusChange->status == 1) {
+            $statusChange->status = 0;
+            $statusChange->save();
+            Cache::forget('all-accounts');
+            return response()->json('Successfully account type is activated');
+        } else {
+            $statusChange->status = 1;
+            $statusChange->save();
+            Cache::forget('all-accounts');
+            return response()->json('Successfully account is closed');
+        }
+    }
+
+    public function filterAccount(Request $request)
+    {
+        //return $request->status;
+        $filteredAccounts = Account::with([
+            'bank',
+            'account_type',
+            'admin',
+            'admin.role'
+        ])->orderBy('id', 'DESC')->where('status', $request->status)->get();
+        return view('accounting.accounts.ajax_view.filter_account_list', compact('filteredAccounts'));
+    }
+
+    public function fundTransfer(Request $request)
+    {
+        $senderAccount = Account::where('id', $request->sender_account_id)->first();
+        $senderAccount->debit += $request->amount;
+        $senderAccount->balance -= $request->amount;
+        $senderAccount->save();
+
+        $cashFlow1 = new CashFlow();
+        $cashFlow1->account_id = $request->sender_account_id;
+        $cashFlow1->receiver_account_id = $request->receiver_account_id;
+        $cashFlow1->debit = $request->amount;
+        $cashFlow1->transaction_type = 4;
+        $cashFlow1->cash_type = 1;
+        $cashFlow1->balance = $senderAccount->balance;
+        $cashFlow1->date = $request->date;
+        $cashFlow1->report_date = date('Y-m-d', strtotime($request->date));
+        $cashFlow1->month = date('F');
+        $cashFlow1->year = date('Y');
+        $cashFlow1->admin_id = auth()->user()->id;
+        $cashFlow1->save();
+
+        $receiverAccount = Account::where('id', $request->receiver_account_id)->first();
+        $receiverAccount->credit += $request->amount;
+        $receiverAccount->balance += $request->amount;
+        $receiverAccount->save();
+
+        $cashFlow2 = new CashFlow();
+        $cashFlow2->account_id = $request->receiver_account_id;
+        $cashFlow2->sender_account_id = $request->sender_account_id;
+        $cashFlow2->credit = $request->amount;
+        $cashFlow2->transaction_type = 4;
+        $cashFlow2->cash_type = 2;
+        $cashFlow2->balance = $receiverAccount->balance;
+        $cashFlow2->date = $request->date;
+        $cashFlow2->report_date = date('Y-m-d', strtotime($request->date));
+        $cashFlow2->month = date('F');
+        $cashFlow2->year = date('Y');
+        $cashFlow2->related_cash_flow_id = $cashFlow1->id;
+        $cashFlow2->admin_id = auth()->user()->id;
+        $cashFlow2->save();
+
+
+        $cashFlow1->related_cash_flow_id = $cashFlow2->id;
+        $cashFlow1->save();
+        Cache::forget('all-accounts');
+        return response()->json('Successfully account fund transfer is created.');
+    }
+
+    public function deposit(Request $request)
+    {
+        $receiverAccount = Account::where('id', $request->receiver_account_id)->first();
+        $receiverAccount->credit += $request->amount;
+        $receiverAccount->balance += $request->amount;
+        $receiverAccount->save();
+
+        $cashFlow1 = new CashFlow();
+        $cashFlow1->account_id = $request->receiver_account_id;
+        $cashFlow1->sender_account_id = $request->sender_account_id ? $request->sender_account_id : NULL;
+        $cashFlow1->credit = $request->amount;
+        $cashFlow1->transaction_type = 5;
+        $cashFlow1->cash_type = 2;
+        $cashFlow1->balance = $receiverAccount->balance;
+        $cashFlow1->date = $request->date;
+        $cashFlow1->report_date = date('Y-m-d', strtotime($request->date));
+        $cashFlow1->month = date('F');
+        $cashFlow1->year = date('Y');
+        $cashFlow1->admin_id = auth()->user()->id;
+        $cashFlow1->save();
+
+        if ($request->sender_account_id) {
+            $senderAccount = Account::where('id', $request->sender_account_id)->first();
+            $senderAccount->debit += $request->amount;
+            $senderAccount->balance -= $request->amount;
+            $senderAccount->save();
+
+            $cashFlow2 = new CashFlow();
+            $cashFlow2->account_id = $request->sender_account_id;
+            $cashFlow2->receiver_account_id = $request->receiver_account_id;
+            $cashFlow2->debit = $request->amount;
+            $cashFlow2->transaction_type = 4;
+            $cashFlow2->cash_type = 1;
+            $cashFlow2->balance = $senderAccount->balance;
+            $cashFlow2->date = $request->date;
+            $cashFlow2->report_date = date('Y-m-d', strtotime($request->date));
+            $cashFlow2->month = date('F');
+            $cashFlow2->year = date('Y');
+            $cashFlow2->related_cash_flow_id = $cashFlow1->id;
+            $cashFlow2->admin_id = auth()->user()->id;
+            $cashFlow2->save();
+
+            $cashFlow1->related_cash_flow_id = $cashFlow2->id;
+            $cashFlow1->save();
+        }
+        Cache::forget('all-accounts');
+        return response()->json('Successfully account deposit is created.');
+    }
+
+    public function accountCashflows($accountId)
+    {
+        $accountCashFlows = CashFlow::with([
+            'sender_account',
+            'receiver_account',
+            'sale_payment',
+            'sale_payment.customer',
+            'sale_payment.sale',
+            'purchase_payment',
+            'purchase_payment.supplier',
+            'purchase_payment.purchase',
+            'expanse_payment',
+            'expanse_payment.expense',
+            'money_receipt',
+            'money_receipt.customer',
+        ])
+            ->where('account_id', $accountId)->orderBy('id', 'DESC')->get();
+        return view('accounting.accounts.ajax_view.account_cash_flow_list', compact('accountCashFlows'));
+    }
+
+    public function accountCashflowFilter(Request $request, $accountId)
+    {
+        $filterAccountCashFlows = '';
+        $query = CashFlow::with([
+            'sender_account',
+            'receiver_account',
+            'sale_payment',
+            'sale_payment.customer',
+            'sale_payment.sale',
+            'purchase_payment',
+            'purchase_payment.supplier',
+            'purchase_payment.purchase',
+            'expanse_payment',
+            'expanse_payment.expense',
+            'money_receipt',
+            'money_receipt.customer',
+        ])
+            ->where('account_id', $accountId);
+
+        if ($request->date_range) {
+            $date_range = explode('-', $request->date_range);
+            $form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
+            $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+            //date_sub($date,date_interval_create_from_date_string("2 days"));
+            $query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            //$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
+        }
+
+        if ($request->transaction_type) {
+            $query->where('cash_type', $request->transaction_type);
+        }
+        $filterAccountCashFlows = $query->orderBy('id', 'desc')->get();
+        return view('accounting.accounts.ajax_view.filter_account_cash_flow_list', compact('filterAccountCashFlows'));
+    }
+
+    public function deleteCashFlow($cashFlowId)
+    {
+        $deleteCashflow = CashFlow::with('account', 'sender_account', 'receiver_account')
+            ->where('id', $cashFlowId)->first();
+        if (!is_null($deleteCashflow)) {
+            if ($deleteCashflow->transaction_type == 4) {
+                if ($deleteCashflow->cash_type == 1) {
+                    $deleteCashflow->account->debit -= $deleteCashflow->debit;
+                    $deleteCashflow->account->balance += $deleteCashflow->debit;
+                    $deleteCashflow->account->save();
+
+                    $deleteCashflow->receiver_account->credit -= $deleteCashflow->debit;
+                    $deleteCashflow->receiver_account->balance -= $deleteCashflow->debit;
+                    $deleteCashflow->receiver_account->save();
+                } elseif ($deleteCashflow->cash_type == 2) {
+                    $deleteCashflow->account->credit -= $deleteCashflow->credit;
+                    $deleteCashflow->account->balance -= $deleteCashflow->debit;
+                    $deleteCashflow->account->save();
+
+                    $deleteCashflow->sender_account->debit -= $deleteCashflow->credit;
+                    $deleteCashflow->sender_account->balance += $deleteCashflow->debit;
+                    $deleteCashflow->sender_account->save();
+                }
+            } elseif ($deleteCashflow->transaction_type == 5) {
+                $deleteCashflow->account->credit -= $deleteCashflow->credit;
+                $deleteCashflow->account->balance -= $deleteCashflow->debit;
+                $deleteCashflow->account->save();
+
+                if ($deleteCashflow->sender_account) {
+                    $deleteCashflow->sender_account->debit -= $deleteCashflow->credit;
+                    $deleteCashflow->sender_account->balance += $deleteCashflow->balance;
+                    $deleteCashflow->sender_account->save();
+                }
+            }
+            if ($deleteCashflow->related_cash_flow_id) {
+                $realatedCashFlow = CashFlow::where('id', $deleteCashflow->related_cash_flow_id)->first();
+                $realatedCashFlow->delete();
+            }
+            $deleteCashflow->delete();
+        }
+        Cache::forget('all-accounts');
+        return response()->json('Successfully cashflow is deleted');
+    }
+}

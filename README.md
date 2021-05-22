@@ -2,6 +2,7 @@
 
 #### TODO 
 
+> Global 
 - Add title (dynamic)
 - Add fav-icon 
 - Remove search option from Categories, Sub-Categories, Brand, etc pages. Where search option is not needed.

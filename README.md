@@ -24,3 +24,6 @@
 - Fix ERRORS in console (jQuery related.)
 - Add Email feature (Forget password)
 - Add remember me feature
+
+
+Links: https://mailtrap.io/inboxes/803649/messages

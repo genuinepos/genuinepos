@@ -17,7 +17,7 @@ class ProductImportController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'import_file' => 'required|mimes:xlsx,csv'
+            'import_file' => 'required'
         ]);
 
         Excel::import(new ProductImport, $request->import_file);

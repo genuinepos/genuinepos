@@ -17,3 +17,10 @@
 
 > Add Product
 - Description spaces, and add rich-text editor, form padding and design issue (image upload, Description, etc )
+
+
+#### TODO
+
+- Fix ERRORS in console (jQuery related.)
+- Add Email feature (Forget password)
+- Add remember me feature

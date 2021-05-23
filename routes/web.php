@@ -444,7 +444,6 @@ Route::group(['prefix' => 'expanses', 'namespace' => 'App\Http\Controllers'], fu
     Route::get('create', 'ExpanseController@create')->name('expanses.create');
     Route::post('store', 'ExpanseController@store')->name('expanses.store');
     Route::get('edit/{expanseId}', 'ExpanseController@edit')->name('expanses.edit');
-    Route::get('editable/expanse/{expenseId}', 'ExpanseController@editableExpanse')->name('expanses.editable.expanse');
     Route::post('update/{expenseId}', 'ExpanseController@update')->name('expanses.update');
     Route::delete('delete/{expanseId}', 'ExpanseController@delete')->name('expanses.delete');
     Route::get('all/categories', 'ExpanseController@allCategories')->name('expanses.all.categories');
@@ -636,8 +635,6 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'customers'], function () {
         Route::get('/', 'CustomerReportController@index')->name('reports.customer.index');
-        Route::get('all/customer', 'CustomerReportController@allCustomer')->name('reports.customer.all.customer');
-        Route::get('filter/customer', 'CustomerReportController@filterCustomer')->name('reports.customer.filter');
     });
 
     Route::group(['prefix' => 'stock'], function () {
@@ -670,7 +667,6 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'purchase/payments'], function () {
         Route::get('/', 'PurchasePaymentReportController@index')->name('reports.purchase.payments.index');
-        Route::get('get', 'PurchasePaymentReportController@getPurchasePaymentReport')->name('reports.get.puchase.payments');
     });
 
     Route::group(['prefix' => 'sale/payments'], function () {

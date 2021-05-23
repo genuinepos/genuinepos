@@ -9,12 +9,13 @@
         .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
         .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
         /* Search Product area style */
+        .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .search_area{position: relative;}
         .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
             margin-top: 1px;}
-        .search_result ul li {width: 100%;}
+        .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
         .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
-        .search_result ul li a:hover {color: white;background-color: #32325d;}
+        .search_result ul li a:hover {color: white;background-color: #ab1c59;}
         /* Search Product area style end */
     </style>
 @endpush
@@ -43,11 +44,11 @@
                                             <div class="form-group row">
                                                 <div class="col-md-3 search_area">
                                                     <label><strong>Search Product :</strong></label>
-                                                    <input type="text" name="search" id="search" class="form-control" placeholder="Search Product By name" autofocus>
+                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus>
                                                     <input type="hidden" name="product_id" id="product_id" value="">
                                                     <input type="hidden" name="variant_id" id="variant_id" value="">
                                                     <div class="search_result d-none">
-                                                        <ul class="list-unstyled">
+                                                        <ul id="list" class="list-unstyled">
                                                             <li><a id="select_product" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
                                                         </ul>
                                                     </div>
@@ -130,6 +131,7 @@
     </div>
 @endsection
 @push('scripts')
+<script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script>
@@ -226,11 +228,11 @@
     });
 
      //Submit filter form by date-range field blur 
-     $(document).on('click', '#search', function () {
+     $(document).on('click', '#search_product', function () {
         $(this).val('');
         $('#product_id').val('');
         table.ajax.reload();
-    })
+    });
 
     //Submit filter form by date-range apply button
     $(document).on('click', '.applyBtn', function () {
@@ -240,7 +242,7 @@
         }, 500);
     });
 
-    $('#search').on('input', function () {
+    $('#search_product').on('input', function () {
         $('.search_result').hide();
         var product_name = $(this).val();
         if (product_name === '') {
@@ -260,7 +262,7 @@
                     $('.search_result').hide();
                 }else{
                     $('.search_result').show();
-                    $('.search_result').html(data);
+                    $('#list').html(data);
                 }
             }
         });
@@ -269,14 +271,21 @@
     $(document).on('click', '#select_product', function (e) {
         e.preventDefault();
         var product_name = $(this).html();
-        $('#search').val(product_name.trim());
-        console.log(product_name);
+        $('#search_product').val(product_name.trim());
         var product_id = $(this).data('p_id');
         var variant_id = $(this).data('v_id');
         $('#product_id').val(product_id);
         $('#variant_id').val(variant_id);
         $('.search_result').hide();
         table.ajax.reload();
+    });
+
+    $('body').keyup(function(e){
+        if (e.keyCode == 13 || e.keyCode == 9){  
+            $(".selectProduct").click();
+            $('.search_result').hide();
+            $('#list').empty();
+        }
     });
 </script>
 

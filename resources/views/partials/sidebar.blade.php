@@ -969,6 +969,39 @@
                                     <p class="switch_text">@lang('menu.product_sale_report')</p>
                                 </div>
                             @endif
+
+                            @if (auth()->user()->permission->report['purchase_payment_report'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('reports.purchase.payments.index') }}" class="bar-link">
+                                            <span><img src="{{ asset('public/backend/asset/img/payment-method.png') }}"></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.purchase_payment_report')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->report['sale_payment_report'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('reports.sale.payments.index') }}" class="bar-link">
+                                            <span><img src="{{ asset('public/backend/asset/img/pay.png') }}"></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.sale_payment_report')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->report['register_report'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('reports.cash.registers.index') }}" class="bar-link">
+                                            <span><img src="{{ asset('public/backend/asset/img/cashier.png') }}"></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.register_report')</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

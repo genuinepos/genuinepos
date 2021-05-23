@@ -9,6 +9,7 @@ use App\Models\AdminAndUser;
 use Illuminate\Http\Request;
 use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
+use App\Models\ExpenseDescription;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
@@ -29,7 +30,6 @@ class ExpanseController extends Controller
             $expenses = '';
             $query = DB::table('expanses')
                 ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
-                ->leftJoin('expanse_categories', 'expanses.expanse_category_id', 'expanse_categories.id')
                 ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
 
             if ($request->branch_id) {
@@ -38,10 +38,6 @@ class ExpanseController extends Controller
                 } else {
                     $query->where('expanses.branch_id', $request->branch_id);
                 }
-            }
-
-            if ($request->category_id) {
-                $query->where('expanses.expanse_category_id', $request->category_id);
             }
 
             if ($request->admin_id) {
@@ -64,7 +60,6 @@ class ExpanseController extends Controller
                     'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'expanse_categories.name as cat_name',
                     'admin_and_users.prefix as cr_prefix',
                     'admin_and_users.name as cr_name',
                     'admin_and_users.last_name as cr_last_name',
@@ -76,7 +71,6 @@ class ExpanseController extends Controller
                     'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'expanse_categories.name as cat_name',
                     'admin_and_users.prefix as cr_prefix',
                     'admin_and_users.name as cr_name',
                     'admin_and_users.last_name as cr_last_name',
@@ -188,9 +182,7 @@ class ExpanseController extends Controller
         }else {
             $addExpanse->branch_id = auth()->user()->branch_id;
         }
-        
-        $addExpanse->expanse_category_id  = $request->category_id;
-        $addExpanse->note = $request->expanse_note;
+     
         $addExpanse->tax_percent = $request->tax ? $request->tax : 0;
         $addExpanse->total_amount = $request->total_amount;
         $addExpanse->net_total_amount = $request->net_total_amount;
@@ -210,6 +202,19 @@ class ExpanseController extends Controller
         }
 
         $addExpanse->save();
+
+        $category_ids = $request->category_ids;
+        $amounts = $request->amounts;
+
+        $index = 0;
+        foreach ($category_ids as $category_id) {
+            $addExDescription = new ExpenseDescription();
+            $addExDescription->expense_id = $addExpanse->id;
+            $addExDescription->expense_category_id = $category_id;
+            $addExDescription->amount = $amounts[$index];
+            $addExDescription->save();
+            $index++;
+        }
 
         if ($request->paying_amount > 0) {
             $addExpansePayment = new ExpansePayment();
@@ -286,8 +291,19 @@ class ExpanseController extends Controller
     // Edit view
     public function edit($expenseId)
     {
-        $expenseId = $expenseId;
-        return view('expanses.edit', compact('expenseId'));
+        $expense = Expanse::with('expense_descriptions')->where('id', $expenseId)->first();
+        $categories = DB::table('expanse_categories')->get();
+        $taxes = DB::table('taxes')->get();
+        $users = '';
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $users = DB::table('admin_and_users')->get(['id', 'prefix', 'name', 'last_name']);
+        }else {
+            $users = DB::table('admin_and_users')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->get(['id', 'prefix', 'name', 'last_name']);
+        }
+        
+        return view('expanses.edit', compact('expense', 'categories', 'users', 'taxes'));
     }
 
     // Update expanse
@@ -313,7 +329,6 @@ class ExpanseController extends Controller
         // Add expanse
         $updateExpanse = Expanse::where('id', $expenseId)->first();
         $updateExpanse->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'EXI') . date('ymd') . $invoiceId;
-        $updateExpanse->expanse_category_id  = $request->category_id;
         $updateExpanse->note = $request->expanse_note;
         $updateExpanse->tax_percent = $request->tax ? $request->tax : 0;
         $updateExpanse->total_amount = $request->total_amount;
@@ -338,14 +353,43 @@ class ExpanseController extends Controller
         }
 
         $updateExpanse->save();
-        return response()->json(['successMsg' => 'Successfully expanse is updated']);
-    }
 
-    // Get editable expanse
-    public function editableExpanse($expanseId)
-    {
-        $expanse = Expanse::where('id', $expanseId)->first();
-        return response()->json($expanse);
+        $exDescriptions = ExpenseDescription::where('expense_id', $updateExpanse->id)->get();
+        foreach ($exDescriptions as  $exDescription) {
+            $exDescription->is_delete_in_update = 1;
+            $exDescription->save();
+        }
+
+        $category_ids = $request->category_ids;
+        $amounts = $request->amounts;
+        $description_ids = $request->description_ids;
+
+        $index = 0;
+        foreach ($category_ids as $category_id) {
+            $description = ExpenseDescription::where('id', $description_ids[$index])->first();
+            if ($description) {
+                $description->expense_category_id = $category_id;
+                $description->amount = $amounts[$index];
+                $description->is_delete_in_update = 0;
+                $description->save();
+            }else {
+                $addExDescription = new ExpenseDescription();
+                $addExDescription->expense_id = $updateExpanse->id;
+                $addExDescription->expense_category_id = $category_id;
+                $addExDescription->amount = $amounts[$index];
+                $addExDescription->save();
+            }
+            
+            $index++;
+        }
+
+        $deleteAbleExDescriptions = ExpenseDescription::where('expense_id', $updateExpanse->id)
+        ->where('is_delete_in_update', 1)->get();
+        foreach ($deleteAbleExDescriptions as  $exDescription) {
+            $exDescription->delete();
+        }
+
+        return response()->json(['successMsg' => 'Successfully expanse is updated']);
     }
 
     // Get all form Categories by ajax request
@@ -367,7 +411,7 @@ class ExpanseController extends Controller
     // Payment details
     public function paymentDetails($paymentId)
     {
-        $payment = ExpansePayment::with(['expense', 'expense.expanse_category', 'expense.admin'])->where('id', $paymentId)->first();
+        $payment = ExpansePayment::with(['expense', 'expense.expense_descriptions', 'expense.expense_descriptions.category','expense.admin'])->where('id', $paymentId)->first();
         return view('expanses.ajax_view.payment_details', compact('payment'));
     }
 

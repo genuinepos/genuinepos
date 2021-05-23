@@ -98,13 +98,6 @@ class ProductPurchaseReportController extends Controller
         return view('reports.product_purchase_report.index');
     }
 
-    public function getProductPurchaseReport()
-    {
-        
-      
-        return view('reports.product_purchase_report.ajax_view.purchase_product_list', compact('purchaseProducts'));
-    }
-
     // Search product 
     public function searchProduct($product_name)
     {

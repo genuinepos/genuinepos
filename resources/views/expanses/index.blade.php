@@ -26,37 +26,27 @@
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
                                                         <label><strong>Branch :</strong></label>
                                                         <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                         
                                                         </select>
                                                     </div>
                                                 @endif
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Expense For :</strong></label>
                                                     <select name="admin_id" class="form-control submit_able" id="admin_id" >
                                                         <option value="">All</option>
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <label><strong>Expense Category :</strong></label>
-                                                    <select name="category_id" class="form-control submit_able" id="category_id" >
-                                                        <option value="">All</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
+                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input"
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
@@ -99,14 +89,11 @@
                                                     <th class="text-start">Date</th>
                                                     <th class="text-start">Reference ID</th>
                                                     <th class="text-start">Branch</th>
-                                                    <th class="text-start">Expanse Category</th>
                                                     <th class="text-start">Payment Status</th>
                                                     <th class="text-start">Tax</th>
                                                     <th class="text-start">Net Total</th>
                                                     <th class="text-start">Payment Due</th>
                                                     <th class="text-start">Expanse For</th>
-                                                    <th class="text-start">Note</th>
-                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -165,7 +152,7 @@
 
     <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog col-55-modal" role="document">
             <div class="modal-content payment_details_contant">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span
@@ -214,7 +201,6 @@
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
                     d.admin_id = $('#admin_id').val();
-                    d.category_id = $('#category_id').val();
                     d.date_range = $('#date_range').val();
                 }
             },
@@ -228,13 +214,11 @@
                 { data: 'date', name: 'date' },
                 { data: 'invoice_id', name: 'invoice_id'},
                 { data: 'from', name: 'from' },
-                { data: 'cat_name', name: 'cat_name' },
                 { data: 'payment_status', name: 'payment_status' },
                 { data: 'tax_percent', name: 'tax_percent' },
                 { data: 'net_total', name: 'net_total' },
                 { data: 'due', name: 'due' },
                 { data: 'user_name', name: 'user_name' },
-                { data: 'note', name: 'note' },
             ],
         });
 
@@ -492,6 +476,47 @@
                 printDelay: 500, 
                 header: header,  
                 footer: footer
+            });
+        });
+
+        
+        // Show sweet alert for delete
+        $(document).on('click', '#delete', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            swal({
+                    title: "Are you sure to datele?",
+                    buttons: true,
+                    dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $('#deleted_form').submit();
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+        });
+
+        //data delete by ajax
+        $(document).on('submit', '#deleted_form', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                async: false,
+                data: request,
+                success: function(data) {
+                    if ($.isEmptyObject(data.errorMsg)) {
+                        table.ajax.reload();
+                        toastr.success(data);
+                        $('#deleted_form')[0].reset();
+                    }else{
+                        toastr.error(data.errorMsg);
+                    }
+                }
             });
         });
     </script>

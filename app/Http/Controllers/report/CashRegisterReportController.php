@@ -33,6 +33,14 @@ class CashRegisterReportController extends Controller
             ]
         );
 
+        if ($request->branch_id) {
+            if ($request->branch_id == 'NULL') {
+                $query->where('branch_id', NULL);
+            } else {
+                $query->where('branch_id', $request->branch_id);
+            }
+        }
+
         if ($request->user_id) {
             $query->where('admin_id', $request->user_id);
         }
@@ -43,11 +51,6 @@ class CashRegisterReportController extends Controller
             $form_date = date('Y-m-d', strtotime($date_range[0]));
             $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
             $query->whereBetween('created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-        } else {
-            $today = date('Y-m-d');
-            $star_date = date('Y-m-d', strtotime($today));
-            $end_date = date('Y-m-d', strtotime($today . ' +1 days'));
-            $query->whereBetween('created_at', [$star_date . ' 00:00:00', $end_date . ' 00:00:00']);
         }
 
         if ($request->status) {

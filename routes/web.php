@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 
-Route::get('sunwarul', function() {
-    return 'Sunwarul';
-});
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes

@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>SpeedDigitPosPro</title>
+
+    <!-- Title -->
+    <title>Genuine POS</title>
+    <!-- Icon -->
+    <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
+
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/bootstrap.min.css">
     <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css">
@@ -13,7 +18,7 @@
 
     <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
-    
+
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">
@@ -63,16 +68,16 @@
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
                                     <select name="payment_method" class="form-control"  id="payment_method">
-                                        <option value="Cash">Cash</option>  
-                                        <option value="Card">Card</option> 
-                                        <option value="Bkash">Bkash</option> 
-                                        <option value="Rocket">Rocket</option> 
-                                        <option value="Nagad">Nagad</option> 
-                                        <option value="Cheque">Cheque</option> 
-                                        <option value="Advanced">Advanced</option> 
-                                        <option value="Bank-Transfer">Bank-Transfer</option> 
-                                        <option value="Other">Other</option> 
-                                        <option value="Custom">Custom Field</option> 
+                                        <option value="Cash">Cash</option>
+                                        <option value="Card">Card</option>
+                                        <option value="Bkash">Bkash</option>
+                                        <option value="Rocket">Rocket</option>
+                                        <option value="Nagad">Nagad</option>
+                                        <option value="Cheque">Cheque</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="Bank-Transfer">Bank-Transfer</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Custom">Custom Field</option>
                                     </select>
                                 </div>
                             </div>
@@ -97,46 +102,46 @@
                                         <label><strong>Card Number :</strong> </label>
                                         <input type="text" class="form-control" name="card_no" id="p_card_no" placeholder="Card number">
                                     </div>
-                    
+
                                     <div class="col-md-3">
                                         <label><strong>Holder Name :</strong> </label>
                                         <input type="text" class="form-control" name="card_holder_name" id="p_card_holder_name" placeholder="Card holder name">
                                     </div>
-                    
+
                                     <div class="col-md-3">
                                         <label><strong>Transaction No :</strong> </label>
                                         <input type="text" class="form-control" name="card_transaction_no" id="p_card_transaction_no" placeholder="Card transaction no">
                                     </div>
-                    
+
                                     <div class="col-md-3">
                                         <label><strong>Card Type :</strong> </label>
                                         <select name="card_type" class="form-control"  id="p_card_type">
-                                            <option value="Credit-Card">Credit Card</option>  
-                                            <option value="Debit-Card">Debit Card</option> 
-                                            <option value="Visa">Visa Card</option> 
-                                            <option value="Master-Card">Master Card</option> 
+                                            <option value="Credit-Card">Credit Card</option>
+                                            <option value="Debit-Card">Debit Card</option>
+                                            <option value="Visa">Visa Card</option>
+                                            <option value="Master-Card">Master Card</option>
                                         </select>
                                     </div>
                                 </div>
-                    
+
                                 <div class="row mt-2">
                                     <div class="col-md-3">
                                         <label><strong>Month :</strong> </label>
                                         <input type="text" class="form-control" name="month" id="p_month" placeholder="Month">
                                     </div>
-                    
+
                                     <div class="col-md-3">
                                         <label><strong>Year :</strong> </label>
                                         <input type="text" class="form-control" name="year" id="p_year" placeholder="Year">
                                     </div>
-                    
+
                                     <div class="col-md-3">
                                         <label><strong>Secure Code :</strong> </label>
                                         <input type="text" class="form-control" name="secure_code" id="p_secure_code" placeholder="Secure code">
                                     </div>
                                 </div>
                             </div>
-                    
+
                             <div class="payment_method d-none" id="Cheque">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -145,7 +150,7 @@
                                     </div>
                                 </div>
                             </div>
-                    
+
                             <div class="payment_method d-none" id="Bank-Transfer">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -154,7 +159,7 @@
                                     </div>
                                 </div>
                             </div>
-                    
+
                             <div class="payment_method d-none" id="Custom">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -164,7 +169,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                         <div class="form-group mt-2">
                             <label><strong> Payment Note :</strong></label>
                             <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
@@ -198,7 +203,7 @@
                                 <li>
                                     <a id="tab_btn" class="tab_btn tab_active text-white" href="{{url('sales/pos/recent/sales')}}"><i class="fas fa-info-circle"></i> Final</a>
                                 </li>
-                                
+
                                 <li>
                                     <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/quotations')}}"><i class="fas fa-scroll"></i>Quotation</a>
                                 </li>
@@ -228,7 +233,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="data-list" id="transection_list">
-                                                    
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -236,7 +241,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <div class="col-md-12">
                                 <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
@@ -245,8 +250,8 @@
                     </div>
                 </div>
             </div>
-        </div> 
-     <!-- Recent transection list modal end-->   
+        </div>
+     <!-- Recent transection list modal end-->
     </form>
 
     <!-- Hold invoice list modal -->
@@ -268,13 +273,13 @@
                                         <h6><i class="fas fa-spinner"></i> Processing...</h6>
                                     </div>
                                     <div class="table-responsive" id="hold_invoices">
-                                      
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <div class="col-md-12">
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
@@ -283,7 +288,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- Hold invoice list modal End-->
 
     <!-- Edit selling product modal-->
@@ -299,14 +304,14 @@
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="stock_modal_body">
-                   
+
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- Edit selling product modal end-->
-    
-    <!--Add Product Modal--> 
+
+    <!--Add Product Modal-->
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
@@ -320,10 +325,10 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!--Add Product Modal End-->
-    
-    <!--Add Customer Modal--> 
+
+    <!--Add Customer Modal-->
     <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
@@ -334,11 +339,11 @@
                 </div>
                 <div class="modal-body" id="add_customer_modal_body">
                     <!--begin::Form-->
-                    
+
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!--Add Customer Modal-->
 
     <!-- Edit selling product modal-->
@@ -351,11 +356,11 @@
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="suspended_sale_list">
-            
+
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- Edit selling product modal end-->
 
     <!-- Edit selling product modal-->
@@ -403,7 +408,7 @@
                         <div class="form-group">
                             <label><strong>Tax</strong> :</label>
                             <select class="form-control form-control-sm" id="e_unit_tax">
-                                
+
                             </select>
                         </div>
 
@@ -425,7 +430,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- Edit selling product modal end-->
 
     <!-- Edit selling product modal-->
@@ -441,11 +446,11 @@
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="stock_modal_body">
-                   
+
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- Edit selling product modal end-->
 
     <!--Data delete form-->
@@ -510,9 +515,9 @@
             var orderTax = $('#order_tax').val() ? $('#order_tax').val() : 0;
             var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax) ;
             $('#order_tax_amount').val(parseFloat(calcOrderTaxAmount).toFixed(2));
-          
+
             // Update Total payable Amount
-            var calcOrderTaxAmount = $('#order_tax_amount').val() ? $('#order_tax_amount').val() : 0; 
+            var calcOrderTaxAmount = $('#order_tax_amount').val() ? $('#order_tax_amount').val() : 0;
             var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
             var previousDue = $('#previous_due').val() ? $('#previous_due').val() : 0;
 
@@ -558,7 +563,7 @@
                 buttons: true,
                 dangerMode: true,
             }).then((willDelete) => {
-                if (willDelete) { 
+                if (willDelete) {
                     $('#deleted_form').submit();
                     $('#recent_trans_preloader').show()
                 } else {
@@ -566,7 +571,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
@@ -595,7 +600,7 @@
                 buttons: true,
                 dangerMode: true,
             }).then((willDelete) => {
-                if (willDelete) { 
+                if (willDelete) {
                     window.location = "{{ route('dashboard.dashboard') }}";
                 } else {
                     swal("OK, Continue the selling.");

@@ -571,6 +571,7 @@
             html += '</td>';
             html += '</tr>';
             $('#description_body').append(html);
+            calculateAmount();
             index++;
         });
 

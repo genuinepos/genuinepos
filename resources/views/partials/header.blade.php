@@ -102,7 +102,9 @@
                             </span>
                             <span><a href="{{ route('users.profile.index') }}">Profile</a> | <a href="#">Help?</a></span>
                         </li>
-                        <li class="top-icon"><a href="#"><span class="fas fa-power-off" title="Logout" id="logout_option"></span></a></li>
+                        <li class="top-icon">
+                            <a href="" id="logout_option"><span class="fas fa-power-off" title="Logout"></span></a>
+                        </li>
 
                     </ul>
 

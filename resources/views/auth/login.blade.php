@@ -28,6 +28,9 @@
                                     <div class="form-title">
                                         <p>Admin Login</p>
                                     </div>
+                                    @if (Session::has('errorMsg'))
+									    <span class="bg-danger text-white px-1">{{ session('errorMsg') }}</span>
+								    @endif
                                     <form action="{{ route('login') }}" method="POST">
                                         @csrf
                                         <div class="left-inner-addon input-container">

@@ -373,10 +373,9 @@
 
         var index = 1;
         $(document).on('click', '#addMore', function (e) {
-           e.preventDefault();
-
-           var html = '';
-           html += '<tr>';
+            e.preventDefault();
+            var html = '';
+            html += '<tr>';
             html += '<td>';
             html += '<b><span class="serial">'+(index + 1)+'</span></b>';
             html += '<input class="index-'+(index + 1)+'" type="hidden" id="index">';
@@ -400,6 +399,7 @@
             html += '</td>';
             html += '</tr>';
             $('#description_body').append(html);
+            calculateAmount();
             index++;
         });
     </script>

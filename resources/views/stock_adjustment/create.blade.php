@@ -125,10 +125,7 @@
                                                             class="form-control scanable" autocomplete="off"
                                                             id="search_product"
                                                             placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                        <div class="input-group-prepend">
-                                                            <span id="add_product" class="input-group-text add_button"><i
-                                                                    class="fas fa-plus-square text-dark"></i></span>
-                                                        </div>
+                                                        
                                                     </div>
                                                     <div class="select_area">
                                                         {{-- <div class="remove_select_area_btn">X</div> --}}

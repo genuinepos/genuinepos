@@ -651,16 +651,19 @@ class ExpanseController extends Controller
         return response()->json('Successfully payment is deleted.');
     }
 
-     // Get all form user **requested by ajax**
-     public function allAdmins()
+    // Get all form user **requested by ajax**
+    public function allAdmins()
      {
          if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-             $admins = AdminAndUser::with(['role'])->select(['id', 'prefix', 'name', 'last_name', 'role_type', 'role_id'])->orderBy('role_type', 'asc')->where('allow_login', 1)->get();
+             $admins = AdminAndUser::with(['role'])->select(['id', 'prefix', 'name', 'last_name', 'role_type', 'role_id'])->orderBy('role_type', 'asc')
+            //  ->where('allow_login', 1)
+             ->get();
              return response()->json($admins);
          } else {
              $admins = AdminAndUser::with(['role'])->select(['id', 'prefix', 'name', 'last_name', 'role_type', 'role_id'])->orderBy('role_type', 'asc')
                  ->where('branch_id', auth()->user()->branch_id)
-                 ->where('allow_login', 1)->get();
+                //  ->where('allow_login', 1)
+                 ->get();
              return response()->json($admins);
          }
      }

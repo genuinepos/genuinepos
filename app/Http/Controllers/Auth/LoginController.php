@@ -43,7 +43,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    
+
     public function login(Request $request)
     {
         $this->validate($request,[
@@ -59,11 +59,11 @@ class LoginController extends Controller
                 }
                 return redirect()->intended(route('dashboard.dashboard'));
             }else{
-                session()->flash('errorMsg', 'Sorry !! Email or Password not matched!');
+                session()->flash('errorMsg', 'Sorry! Email or Password not matched!');
                 return redirect()->back();
             }
         }else{
-            session()->flash('errorMsg', 'Sorry !! you do not have any permission to login.');
+            session()->flash('errorMsg', 'Login failed. Please try with correct username and password');
             return redirect()->back();
         }
     }

@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head">
-                                    <div class="head">
+                                    <div class="head p-1">
                                         <img src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}" alt="POS" class="logo">
                                         <span class="head-text">
                                             Genuine POS, Point of Sale software by SpeedDigit
@@ -28,9 +28,13 @@
                                     <div class="form-title">
                                         <p>Admin Login</p>
                                     </div>
+<<<<<<< HEAD
                                     @if (Session::has('errorMsg'))
 									    <span class="bg-danger text-white px-1">{{ session('errorMsg') }}</span>
 								    @endif
+=======
+
+>>>>>>> d4ebcea51e897d9b8a0ca13e39e6864523939419
                                     <form action="{{ route('login') }}" method="POST">
                                         @csrf
                                         <div class="left-inner-addon input-container">
@@ -43,7 +47,13 @@
                                             <input name="password" type="Password"
                                                 class="form-control form-st rounded-bottom" placeholder="Password" required />
                                         </div>
-
+                                        @if (Session::has('errorMsg'))
+                                            <div class="bg-danger p-3 mt-4 mx-2">
+                                                <p class="text-white">
+                                                    {{ session('errorMsg') }}
+                                                </p>
+                                            </div>
+                                        @endif
                                         <button type="submit" class="submit-button">Login</button>
                                     </form>
                                     <div class="login_opt_link">
@@ -57,10 +67,7 @@
                                             <label for="remembar">Remembar me</label>
                                         </div> --}}
 
-                                        <div class="form-group cx-box">
-                                            <label for="remembar">Remembar me</label>
-                                            <input type="checkbox" id="remembar" class="form-control">
-                                        </div>
+
                                     </div>
 
 
@@ -70,21 +77,22 @@
 
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head addr">
-                                    <div class="head addr-t">
+                                    <div class="head addr-t pt-4">
                                         {{-- <h2>
                                             Genuine Point Of Sale
                                         </h2> --}}
-                                        <p class="logo-main-sec"><img src="{{ asset('public/assets/images/genuine_pos.png') }}"
-                                                alt="POS" class="logo">
-                                        </p>
-                                        <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>
-                                        <p class="details"><span>Support:</span> support@speeddigit.com</p>
-                                        <p class="details"><span>Web Address:</span> www.speeddigit.com</p>
+                                        <div class="px-2">
+                                            <p class="logo-main-sec"><img src="{{ asset('public/assets/images/genuine_pos.png') }}" alt="POS" class="logo">
+                                            </p>
+                                            <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>
+                                            <p class="details"><span>Support:</span> support@speeddigit.com</p>
+                                            <p class="details"><span>Web Address:</span> www.speeddigit.com</p>
 
-                                        <div class="function-btn">
-                                            <a href="" class="btn-fn">P</a>
-                                            <a href="" class="btn-fn">O</a>
-                                            <a href="" class="btn-fn">S</a>
+                                            <div class="function-btn">
+                                                <span class="btn-fn">P</span>
+                                                <span class="btn-fn">O</span>
+                                                <span class="btn-fn">S</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

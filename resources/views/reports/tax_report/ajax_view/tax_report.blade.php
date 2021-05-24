@@ -182,7 +182,6 @@
                                     <tr class="bg-navey-blue">
                                         <th>Date</th>
                                         <th>Invoice ID</th>
-                                        <th>Expense Category</th>
                                         <th>Total Amount</th>
                                         <th>Tax Percent</th>
                                         <th>Tax Amount</th>
@@ -197,7 +196,6 @@
                                         <tr>
                                             <td class="text-navy-blue">{{ date('d/m/Y', strtotime($expense->date)) }}</td>
                                             <td class="text-navy-blue">{{ $expense->invoice_id }}</td>
-                                            <td class="text-navy-blue">{{ $expense->expanse_category_name }}</td>
                                             <td class="text-navy-blue">
                                                 {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $expense->total_amount }}
                                             </td>

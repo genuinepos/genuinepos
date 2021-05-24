@@ -486,7 +486,7 @@
                                                 <select name="order_tax" class="form-control" id="order_tax">
                                                     
                                                 </select>
-                                                <input type="number" class="d-none" name="order_tax_amount" id="order_tax_amount" value="0.00">
+                                                <input type="number" step="any" class="d-none" name="order_tax_amount" id="order_tax_amount" value="0.00">
                                             </div>
                                         </div>
 
@@ -605,13 +605,13 @@
                     <form id="update_selling_product" action="">
                         <div class="form-group">
                             <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" readonly class="form-control form-control-sm edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
+                            <input type="number" step="any" readonly class="form-control form-control-sm edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
                             <span class="error error_e_quantity"></span>
                         </div>
 
                         <div class="form-group">
                             <label> <strong>Unit Price Exc.Tax</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" {{ auth()->user()->permission->sale['edit_price_sale_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price"/>
+                            <input type="number" step="any" {{ auth()->user()->permission->sale['edit_price_sale_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price"/>
                             <span class="error error_e_unit_price"></span>
                         </div>
 

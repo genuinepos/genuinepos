@@ -1002,6 +1002,17 @@
                                     <p class="switch_text">@lang('menu.register_report')</p>
                                 </div>
                             @endif
+
+                            @if (auth()->user()->permission->report['representative_report'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('reports.sale.representive.index') }}" class="bar-link">
+                                            <span><img src="{{ asset('public/backend/asset/img/representation.png') }}"></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.sales_representative_report')</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

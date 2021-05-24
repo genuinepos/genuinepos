@@ -35,7 +35,6 @@ class TaxReportController extends Controller
             ->where('sales.status', 1);
 
         $expense_query = DB::table('expanses')
-            ->leftJoin('expanse_categories', 'expanses.expanse_category_id', 'expanse_categories.id')
             ->where('expanses.tax_percent', '>', 0);
             
         if ($request->branch_id) {
@@ -90,12 +89,10 @@ class TaxReportController extends Controller
         $expenses = $expense_query->select(
             'expanses.date',
             'expanses.invoice_id',
-            'expanses.expanse_category_id',
             'expanses.branch_id',
             'expanses.admin_id',
             'expanses.total_amount',
             'expanses.tax_percent',
-            'expanse_categories.name as expanse_category_name',
         )->get();
 
         return view('reports.tax_report.ajax_view.tax_report', compact('purchases', 'sales', 'expenses'));

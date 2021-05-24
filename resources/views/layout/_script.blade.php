@@ -115,9 +115,10 @@
               .then((willDelete) => {
                   if (willDelete) {
                     $('#logout_form').submit();
-                  } else {
-                      swal("Okay");
-                  }
+                  } 
+                  // else {
+                  //     swal("Okay");
+                  // }
               });
           });
       });

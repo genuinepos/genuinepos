@@ -37,7 +37,12 @@
   }
   
   .col-50-modal{
-    max-width: 40%!important;
+    max-width: 50%!important;
+    margin: 1.75rem auto;
+  }
+
+  .col-55-modal{
+    max-width: 55%!important;
     margin: 1.75rem auto;
   }
   

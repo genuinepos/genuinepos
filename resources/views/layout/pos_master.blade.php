@@ -37,6 +37,7 @@
     <script src="{{asset('public')}}/assets/plugins/custom/Shortcuts-master/shortcuts.js"></script>
     <!--Sweet alert js link-->
     <script src="{{ asset('public') }}/assets/plugins/custom/sweet-alert/sweet-alert.min.js"></script>
+    <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
     <!--Sweet alert js link end-->
 </head>
 

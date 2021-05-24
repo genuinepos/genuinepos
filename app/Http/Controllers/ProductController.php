@@ -255,7 +255,7 @@ class ProductController extends Controller
                 foreach ($request->file('image') as $image) {
                     $productImage = $image;
                     $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(250, 250)->save('public/uploads/product/' . $productImageName);
+                    Image::make($productImage)->resize(600, 600)->save('public/uploads/product/' . $productImageName);
                     $addProductImage = new ProductImage();
                     $addProductImage->product_id = $addProduct->id;
                     $addProductImage->image = $productImageName;
@@ -282,7 +282,7 @@ class ProductController extends Controller
             if ($request->file('photo')) {
                 $productThumbnailPhoto = $request->file('photo');
                 $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-                Image::make($productThumbnailPhoto)->resize(250, 250)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
+                Image::make($productThumbnailPhoto)->resize(600, 600)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
                 $addProduct->thumbnail_photo = $productThumbnailName;
             }
 

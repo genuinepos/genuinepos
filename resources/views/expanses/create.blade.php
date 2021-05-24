@@ -3,6 +3,7 @@
     <style>
         .form_element {border: 1px solid #7e0d3d;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        /* .expense_description_table table tbody tr td {width: 25%;} */
     </style>
 @endpush
 @section('content')
@@ -34,18 +35,13 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>Ex. Category :</b> </label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Reference No :</b> </label>
                                                     <div class="col-8">
-                                                        <select name="category_id"  class="form-control" id="category_id" autofocus>
-                                                            <option value="">Select Category</option>
-                                                        </select>
+                                                        <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" autofocus>
                                                     </div>
                                                 </div>
-    
-                                            </div>
-    
-                                            <div class="col-md-6">
-                                                <div class="input-group">
+
+                                                <div class="input-group mt-1">
                                                     <label for="inputEmail3" class=" col-4"><b>Date :</b> </label>
                                                     <div class="col-8">
                                                         <input type="date" name="date" class="form-control changeable"
@@ -53,18 +49,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Reference No :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" name="invoice_id" id="invoice_id" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
+                                     
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class=" col-4"><b>Expanse For :</b></label>
@@ -74,15 +59,61 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
+                                                <div class="input-group mt-1">
                                                     <label for="inputEmail3" class=" col-4"><b>Attachment :</b></label>
                                                     <div class="col-8">
                                                         <input type="file" name="attachment" class="form-control ">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-3">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-8">
+                                
+                                <div class="form_element m-0">
+                                    <div class="heading_area">
+                                        <p class="text-primary m-0 p-0 ps-1"><b>Descriptions</b></p>
+                                    </div>
+                                    <div class="element-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="expense_description_table">
+                                                    <div class="table-responsive">
+                                                        <table class="table modal-table table-sm">
+                                                            <tbody id="description_body">
+                                                                <tr>
+                                                                    <td id="index">
+                                                                        <b><span class="serial">1</span></b>
+                                                                        <input class="index-1" type="hidden" id="index">
+                                                                    </td>
+                                                                    <td>
+                                                                        <select required name="category_ids[]" class="form-control" id="category_id">
+                                                                            <option value="">Select Expense Category</option>
+                                                                        </select>
+                                                                    </td>
+        
+                                                                    <td>
+                                                                        <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">
+                                                                    </td>
+        
+                                                                    <td>
+                                                                        <div class="btn_30_blue" >
+                                                                            <a id="addMore" href=""><i class="fas fa-plus-square"></i></a>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
@@ -101,7 +132,17 @@
                                 <div class="form_element m-0">
                                     <div class="element-body">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
+                                                    <div class="col-8">
+                                                        <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
+                                                        <span class="error error_total_amount"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
                                                     <div class="col-8">
@@ -111,35 +152,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
-                                                    <div class="col-8">
-                                                        <input class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="" step="any" placeholder="Total amount">
-                                                        <span class="error error_total_amount"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-    
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class=" col-4"><b>Net Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</b>  </label>
                                                     <div class="col-8">
                                                         <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-1">
-                                            <div class="col-md-12">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-2"><b>Expense Note :</b></label>
-                                                    <div class="col-10">
-                                                        <input class="form-control form-control-sm" name="expanse_note" id="expanse_note"  placeholder="Expanse note">
                                                     </div>
                                                 </div>
                                             </div>
@@ -155,7 +173,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-8">
-                                <div class="form_element m-0 mt-4">
+                                <div class="form_element m-0 mt-3">
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -356,6 +374,7 @@
 @push('scripts')
     <script>
         // Set accounts in payment and payment edit form
+        var ex_categories = '';
         function setExpanseCategory(){
             $.ajax({
                 url:"{{route('expanses.all.categories')}}",
@@ -363,6 +382,7 @@
                 type:'get',
                 dataType: 'json',
                 success:function(categories){
+                    ex_categories = categories;
                     $.each(categories, function (key, category) {
                         $('#category_id').append('<option value="'+category.id+'">'+ category.name +' ('+category.code+')'+'</option>');
                     });
@@ -434,15 +454,32 @@
 
          // Calculate amount
          function calculateAmount() {
+            var indexs = document.querySelectorAll('#index');
+            indexs.forEach(function(index) {
+                var className = index.getAttribute("class");
+                var rowIndex = $('.' + className).closest('tr').index();
+                $('.' + className).closest('tr').find('.serial').html(rowIndex + 1);
+            });
+
+            var amounts = document.querySelectorAll('#amount');
+            totalAmount = 0;
+            amounts.forEach(function(amount){
+                totalAmount += parseFloat(amount.value ? amount.value : 0);
+            });
+
+            $('#total_amount').val(parseFloat(totalAmount).toFixed(2));
             var tax_percent = $('#tax').val() ? $('#tax').val() : 0;
-            var total_amount = $('#total_amount').val() ? $('#total_amount').val() : 0;
-            var tax_amount = parseFloat(total_amount) / 100 * parseFloat(tax_percent);
-            var netTotalAmount = parseFloat(total_amount) + parseFloat(tax_amount); 
-            var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
+            var tax_amount = parseFloat(totalAmount) / 100 * parseFloat(tax_percent);
+            var netTotalAmount = parseFloat(totalAmount) + parseFloat(tax_amount); 
             $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
+            var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
             var totalDue = parseFloat(netTotalAmount) - parseFloat(payingAmount);
             $('#total_due').val(parseFloat(totalDue).toFixed(2));
         }
+
+        $(document).on('input', '#amount',function () {
+            calculateAmount();
+        });
 
         $('#tax').on('change', function () {
             calculateAmount();
@@ -452,7 +489,9 @@
             calculateAmount();
         });
 
-        $('#total_amount').on('input', function () {
+        $(document).on('click', '#remove_btn', function (e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
             calculateAmount();
         });
 
@@ -502,6 +541,37 @@
                     }
                 }
             });
+        });
+
+        var index = 1;
+        $(document).on('click', '#addMore', function (e) {
+           e.preventDefault();
+
+           var html = '';
+           html += '<tr>';
+            html += '<td>';
+            html += '<b><span class="serial">'+(index + 1)+'</span></b>';
+            html += '<input class="index-'+(index + 1)+'" type="hidden" id="index">';
+            html += '</td>';
+            html += '<td>';
+            html += '<select required name="category_ids[]" class="form-control">';
+            html += '<option value="">Select Expense Category</option>';
+                $.each(ex_categories, function (key, val) {
+                    html += '<option value="'+val.id+'">'+val.name+' ('+val.code+')'+'</option>';
+                });
+            html += '</select>';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">';
+            html += '</td>';
+
+            html += '<td>';
+            html += '<a href="#" class="action-btn c-delete" id="remove_btn"><span class="fas fa-trash "></span></a>';
+            html += '</td>';
+            html += '</tr>';
+            $('#description_body').append(html);
+            index++;
         });
 
         $('#payment_method').on('change', function () {

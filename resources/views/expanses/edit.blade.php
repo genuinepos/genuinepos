@@ -1,79 +1,74 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-       
+        .form_element {border: 1px solid #7e0d3d;}
+        b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        /* .expense_description_table table tbody tr td {width: 25%;} */
     </style>
 @endpush
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form id="edit_expanse_form" action="{{ route('expanses.update', $expenseId) }}" enctype="multipart/form-data" method="POST">
+            <form id="add_expanse_form" action="{{ route('expanses.update', $expense->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <section class="mt-5">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <h5>Edit Expense</h5>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <div class="col-md-8">
+                                <div class="form_element">
+                                    <div class="section-header">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h5>Edit Expense</h5>
+                                                </div>
+    
+                                                <div class="col-md-6">
+                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                                                        class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+    
+                                    <div class="element-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Reference No :</b> </label>
+                                                    <div class="col-8">
+                                                        <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
+                                                        <input type="hidden" name="description_ids" id="description_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
+                                                    </div>
+                                                </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Category:</label>
-                                                <div class="col-8">
-                                                    <select name="category_id"  class="form-control" id="category_id">
-                                                        <option value="">Select Category</option>
-                                                    </select>
+                                                <div class="input-group mt-1">
+                                                    <label for="inputEmail3" class=" col-4"><b>Date :</b> </label>
+                                                    <div class="col-8">
+                                                        <input type="date" name="date" class="form-control changeable"
+                                                            value="{{ date('Y-m-d', strtotime( $expense->date)) }}" id="date">
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4">Attachment:</label>
-                                                <div class="col-8">
-                                                    <input type="file" name="attachment" class="form-control ">
+                                     
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Expanse For :</b></label>
+                                                    <div class="col-8">
+                                                        <select name="admin_id" class="form-control" id="admin_id">
+                                                            <option value="">None</option>
+                                                            @foreach ($users as $user)
+                                                                <option {{ $user->id == $expense->admin_id ? 'SELECTED' : '' }} value="">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Reference :</label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Date:</label>
-                                                <div class="col-8">
-                                                    <input type="date" name="date" class="form-control changeable"
-                                                        value="{{ date('Y-m-d') }}" id="date">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Expanse For :</label>
-                                                <div class="col-8">
-                                                    <select name="admin_id" class="form-control" id="admin_id">
-                                                        <option value="">None</option>
-                                                    </select>
+                                                <div class="input-group mt-1">
+                                                    <label for="inputEmail3" class=" col-4"><b>Attachment :</b></label>
+                                                    <div class="col-8">
+                                                        <input type="file" name="attachment" class="form-control ">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -84,16 +79,57 @@
                     </div>
                 </section>
 
-                <section>
+                <section class="mb-3">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="form_element m-0">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="inputEmail3">Expense Note :</label>
-                                                <textarea class="form-control" name="expanse_note" id="expanse_note" cols="10" rows="3" placeholder="Expanse note"></textarea>
+                            <div class="col-md-8">
+                                
+                                <div class="form_element m-0">
+                                    <div class="heading_area">
+                                        <p class="text-primary m-0 p-0 ps-1"><b>Descriptions</b></p>
+                                    </div>
+                                    <div class="element-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="expense_description_table">
+                                                    <div class="table-responsive">
+                                                        <table class="table modal-table table-sm">
+                                                            <tbody id="description_body">
+                                                                @foreach ($expense->expense_descriptions as $description)
+                                                                    <tr>
+                                                                        <td id="index">
+                                                                            <b><span class="serial">{{ $loop->index + 1 }}</span></b>
+                                                                            <input class="index-{{ $loop->index + 1 }}" type="hidden" id="index">
+                                                                            <input type="hidden" name="description_ids[]" id="description_id" value="{{ $description->id }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <select required name="category_ids[]" class="form-control" id="category_id">
+                                                                                <option value="">Select Expense Category</option>
+                                                                                @foreach ($categories as $category)
+                                                                                    <option {{ $category->id == $description->expense_category_id ? 'SELECTED' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </td>
+            
+                                                                        <td>
+                                                                            <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" placeholder="Amount" value="{{ $description->amount }}">
+                                                                        </td>
+            
+                                                                        <td>
+                                                                            @if ($loop->index == 0)
+                                                                                <div class="btn_30_blue" >
+                                                                                    <a id="addMore" href=""><i class="fas fa-plus-square"></i></a>
+                                                                                </div>
+                                                                            @else
+                                                                                <a href="#" class="action-btn c-delete" id="remove_btn"><span class="fas fa-trash "></span></a>
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -106,35 +142,37 @@
                 <section class="">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4">Tax :</label>
-                                                <div class="col-8">
-                                                    <select name="tax" class="form-control" id="tax">
-
-                                                    </select>
+                            <div class="col-md-8">
+                                <div class="form_element m-0">
+                                    <div class="element-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
+                                                    <div class="col-8">
+                                                        <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
+                                                        <span class="error error_total_amount"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="" step="any" placeholder="Total amount">
-                                                    <span class="error error_total_amount"></span>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
+                                                    <div class="col-8">
+                                                        <select name="tax" class="form-control" id="tax">
+                                                          
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Net Total : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Net Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</b>  </label>
+                                                    <div class="col-8">
+                                                        <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,25 +183,28 @@
                     </div>
                 </section>
 
-
-                <div class="submit_button_area py-2">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                <section class="">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="submit-area py-3 mb-4">
+                                    <button type="button" class="btn loading_button d-none"><i
+                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                    <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </form>
         </div>
     </div>
 
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script>
         // Set accounts in payment and payment edit form
+        var ex_categories = '';
         function setExpanseCategory(){
             $.ajax({
                 url:"{{route('expanses.all.categories')}}",
@@ -171,15 +212,13 @@
                 type:'get',
                 dataType: 'json',
                 success:function(categories){
-                    $.each(categories, function (key, category) {
-                        $('#category_id').append('<option value="'+category.id+'">'+ category.name +' ('+category.code+')'+'</option>');
-                    });
+                    ex_categories = categories;
                 }
             });
         }
         setExpanseCategory();
 
-          // Set accounts in payment and payment edit form
+        // Set accounts in payment and payment edit form
         function setAdmin(){
             $.ajax({
                 url:"{{route('expanses.all.admins')}}",
@@ -213,7 +252,7 @@
                 dataType: 'json',
                 success:function(taxes){
                     taxArray = taxes;
-                    $('#tax').append('<option value="0.00">NoTax</option>');
+                    $('#tax').append('<option value="">NoTax</option>');
                     $.each(taxes, function(key, val){
                         $('#tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
                     });
@@ -242,15 +281,33 @@
 
          // Calculate amount
          function calculateAmount() {
+            var indexs = document.querySelectorAll('#index');
+            indexs.forEach(function(index) {
+                var className = index.getAttribute("class");
+                var rowIndex = $('.' + className).closest('tr').index();
+                $('.' + className).closest('tr').find('.serial').html(rowIndex + 1);
+            });
+
+            var amounts = document.querySelectorAll('#amount');
+            totalAmount = 0;
+            amounts.forEach(function(amount){
+                totalAmount += parseFloat(amount.value ? amount.value : 0);
+            });
+
+            $('#total_amount').val(parseFloat(totalAmount).toFixed(2));
             var tax_percent = $('#tax').val() ? $('#tax').val() : 0;
-            var total_amount = $('#total_amount').val() ? $('#total_amount').val() : 0;
-            var tax_amount = parseFloat(total_amount) / 100 * parseFloat(tax_percent);
-            var netTotalAmount = parseFloat(total_amount) + parseFloat(tax_amount); 
-            var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
+            var tax_amount = parseFloat(totalAmount) / 100 * parseFloat(tax_percent);
+            var netTotalAmount = parseFloat(totalAmount) + parseFloat(tax_amount); 
             $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
+            var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
             var totalDue = parseFloat(netTotalAmount) - parseFloat(payingAmount);
             $('#total_due').val(parseFloat(totalDue).toFixed(2));
         }
+        calculateAmount();
+
+        $(document).on('input', '#amount',function () {
+            calculateAmount();
+        });
 
         $('#tax').on('change', function () {
             calculateAmount();
@@ -260,7 +317,9 @@
             calculateAmount();
         });
 
-        $('#total_amount').on('input', function () {
+        $(document).on('click', '#remove_btn', function (e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
             calculateAmount();
         });
 
@@ -312,80 +371,36 @@
             });
         });
 
-         //Edit expanse request by ajax
-         $('#edit_expanse_form').on('submit', function(e){
-            e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var inputs = $('.add_input');
-                inputs.removeClass('is-invalid');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
+        var index = 1;
+        $(document).on('click', '#addMore', function (e) {
+           e.preventDefault();
 
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-                return;
-            }
+           var html = '';
+           html += '<tr>';
+            html += '<td>';
+            html += '<b><span class="serial">'+(index + 1)+'</span></b>';
+            html += '<input class="index-'+(index + 1)+'" type="hidden" id="index">';
+            html += '<input type="hidden" name="description_ids[]" id="description_id" value="">';
+            html += '</td>';
+            html += '<td>';
+            html += '<select required name="category_ids[]" class="form-control">';
+            html += '<option value="">Select Expense Category</option>';
+                $.each(ex_categories, function (key, val) {
+                    html += '<option value="'+val.id+'">'+val.name+' ('+val.code+')'+'</option>';
+                });
+            html += '</select>';
+            html += '</td>';
 
-            $.ajax({
-                url:url,
-                type:'post',
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success:function(data){
-                    console.log(data);
-                    if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
-                        $('.loading_button').hide();
-                    }
+            html += '<td>';
+            html += '<input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">';
+            html += '</td>';
 
-                    if(!$.isEmptyObject(data.successMsg)){
-                        $('.loading_button').hide();
-                        toastr.success(data.successMsg); 
-                        window.location = "{{route('expanses.index')}}";
-                    }
-                }
-            });
-        });
-
-         // Get edit able data
-        function getEditableExpanse(){
-            $.ajax({
-                url:"{{route('expanses.editable.expanse',$expenseId)}}",
-                async:true,
-                type:'get',
-                dataType: 'json',
-                success:function(expanse){
-                   $('#branch_id').val(expanse.branch_id);
-                   $('#category_id').val(expanse.expanse_category_id);
-                   $('#admin_id').val(expanse.admin_id);
-                   $('#invoice_id').val(expanse.invoice_id);
-                   $('#date').val(expanse.date);
-                   $('#tax').val(expanse.tax_percent);
-                   $('#total_amount').val(expanse.total_amount);
-                   $('#net_total_amount').val(expanse.net_total_amount);
-                   $('#expanse_note').val(expanse.note);
-                }
-            });
-        }
-        getEditableExpanse();
-
-        $('#payment_method').on('change', function () {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#'+value).show();
+            html += '<td>';
+            html += '<a href="#" class="action-btn c-delete" id="remove_btn"><span class="fas fa-trash "></span></a>';
+            html += '</td>';
+            html += '</tr>';
+            $('#description_body').append(html);
+            index++;
         });
     </script>
 @endpush

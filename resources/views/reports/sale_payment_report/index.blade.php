@@ -20,7 +20,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
-                                <h5>Stock Adjustment Report</h5>
+                                <h5>Sale Payment Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
@@ -34,7 +34,7 @@
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-3 offset-md-6">
+                                                    <div class="col-md-2">
                                                         <label><strong>Branch :</strong></label>
                                                         <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                             <option value="">All</option>
@@ -45,72 +45,26 @@
                                                     <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                 @endif
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
+                                                    <label><strong>Customer :</strong></label>
+                                                    <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
+                                                        <option value="">All</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
-                                                            autocomplete="off">
+                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-1">
-                            <div class="sale_purchase_and_profit_area">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div id="data_list">
-                                    <div class="sale_and_purchase_amount_area">
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-body mt-1">  
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="text-start">Total Normal : </th>
-                                                                    <td class="text-start"> <span class="total_normal"></span></td>
-                                                                </tr>
-                        
-                                                                <tr>
-                                                                    <th class="text-start">Total Abnormal : </th>
-                                                                    <td class="text-start"><span class="total_abnormal"></span></td>
-                                                                </tr>
-                        
-                                                                <tr>
-                                                                    <th class="text-start"> Total Stock Adjustment : </th>
-                                                                    <td class="text-start"> <span class="total_adjustment"></span></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                    
-                                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-body "> 
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="text-start">Total Amount Recovered</th>
-                                                                    <td class="text-start"><span class="total_recovered"></span></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>  
                                 </div>
                             </div>
                         </div>
@@ -122,19 +76,24 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-start">Date</th>
-                                                    <th class="text-start">Reference No</th>
-                                                    <th class="text-start">Adjustment From</th>
-                                                    <th class="text-start">Type</th>
-                                                    <th class="text-start">Total Amount</th>
-                                                    <th class="text-start">Total Recovered Amount</th>
-                                                    <th class="text-start">Reason</th>
-                                                    <th class="text-start">Created By</th>
+                                                    <th>Voucher No</th>
+                                                    <th>Date</th>
+                                                    <th>Amount</th>
+                                                    <th>Customer</th>
+                                                    <th>Payment Method</th>
+                                                    <th>Sale</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
     
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="2" class="text-end">Total :</th>
+                                                    <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid_amount"></span></th>
+                                                    <th colspan="3"></th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 </div> 
@@ -166,36 +125,28 @@
         setBranches();
     @endif
 
-    var __currency_symbol = "{{ json_decode($generalSettings->business, true)['currency'] }}";
-    function getAdjustmentAmounts() {
-        $('.data_preloader').show();
-        var branch_id = $('#branch_id').val();
-        var date_range = $('#date_range').val();
+    function setCustomers(){
         $.ajax({
-            url: "{{ route('reports.stock.adjustments.index') }}",
-            data:{ branch_id, date_range },
-            type: 'get',
-            success: function(data) {
-                console.log(data[0].total_normal);
-                $('.total_normal').html(__currency_symbol+' '+(data[0].total_normal ? data[0].total_normal : parseFloat(0).toFixed(2)));
-                $('.total_abnormal').html(__currency_symbol+' '+(data[0].total_abnormal ? data[0].total_abnormal : parseFloat(0).toFixed(2)));
-                $('.total_adjustment').html(__currency_symbol+' '+(data[0].t_amount ? data[0].t_amount : parseFloat(0).toFixed(2)));
-                $('.total_recovered').html(__currency_symbol+' '+(data[0].t_recovered_amount ? data[0].t_recovered_amount : parseFloat(0).toFixed(2)));
-                $('.data_preloader').hide();
+            url:"{{route('sales.get.all.customer')}}",
+            type:'get',
+            success:function(customers){
+                $.each(customers, function(key, val){
+                    $('#customer_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
+                });
             }
         });
     }
-    getAdjustmentAmounts();
+    setCustomers();
 
-    adjustment_table = $('.data_tbl').DataTable({
+    var table = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,
         aaSorting: [[3, 'asc']],
         "ajax": {
-            "url": "{{ route('reports.stock.adjustments.all') }}",
+            "url": "{{ route('reports.sale.payments.index') }}",
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
-                d.type = $('#status').val();
+                d.supplier_id = $('#supplier_id').val();
                 d.date_range = $('#date_range').val();
             }
         },
@@ -205,28 +156,40 @@
             "searchable": false
         }],
         columns: [
+            {data: 'payment_invoice', name: 'payment_invoice'},
             {data: 'date', name: 'date'},
-            {data: 'invoice_id', name: 'invoice_id'},
-            {data: 'from', name: 'from'},
-            {data: 'type', name: 'type'},
-            {data: 'net_total', name: 'net_total'},
-            {data: 'recovered_amount', name: 'recovered_amount'},
-            {data: 'reason', name: 'reason'},
-            {data: 'created_by', name: 'created_by'},
+            {data: 'paid_amount', name: 'paid_amount'},
+            {data: 'customer_name', name: 'customer_name'},
+            {data: 'pay_mode', name: 'pay_mode'},
+            {data: 'sale_invoice', name: 'sale_invoice'},
         ],
+        fnDrawCallback: function() {
+            var paid_amount = sum_table_col($('.data_tbl'), 'paid_amount');
+            $('#paid_amount').text(parseFloat(paid_amount).toFixed(2));
+        },
     });
+
+    function sum_table_col(table, class_name) {
+        var sum = 0;
+        table.find('tbody').find('tr').each(function() {
+            if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                sum += parseFloat(
+                    $(this).find('.' + class_name).data('value')
+                );
+            }
+        });
+        return sum;
+    }
 
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function () {
-        adjustment_table.ajax.reload();
-        getAdjustmentAmounts();
+        table.ajax.reload();
     });
 
     //Submit filter form by date-range field blur 
     $(document).on('blur', '.submit_able_input', function () {
         setTimeout(function() {
-            adjustment_table.ajax.reload();
-            getAdjustmentAmounts();
+            table.ajax.reload();
         }, 500);
     });
 
@@ -257,8 +220,7 @@
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
                 'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')
-                ],
+                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
             }
         });
     });

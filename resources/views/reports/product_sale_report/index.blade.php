@@ -8,6 +8,15 @@
         .data_preloader{top:2.3%}
         .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
         .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
+        /* Search Product area style */
+        .selectProduct {background-color: #ab1c59;color: #fff !important;}
+        .search_area{position: relative;}
+        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
+            margin-top: 1px;}
+        .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
+        .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
+        .search_result ul li a:hover {color: white;background-color: #ab1c59;}
+        /* Search Product area style end */
     </style>
 @endpush
 @section('content')
@@ -20,7 +29,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
-                                <h5>Stock Adjustment Report</h5>
+                                <h5>Product Sale Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
@@ -33,8 +42,20 @@
                                     <div class="col-md-12">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
+                                                <div class="col-md-3 search_area">
+                                                    <label><strong>Search Product :</strong></label>
+                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus>
+                                                    <input type="hidden" name="product_id" id="product_id" value="">
+                                                    <input type="hidden" name="variant_id" id="variant_id" value="">
+                                                    <div class="search_result d-none">
+                                                        <ul id="list" class="list-unstyled">
+                                                            <li><a id="select_product" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-3 offset-md-6">
+                                                    <div class="col-md-3">
                                                         <label><strong>Branch :</strong></label>
                                                         <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                             <option value="">All</option>
@@ -46,71 +67,26 @@
                                                 @endif
 
                                                 <div class="col-md-3">
+                                                    <label><strong>Customer :</strong></label>
+                                                    <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
+                                                        <option value="">All</option>
+                                                        <option value="NULL">Walk-In-Customer</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-3">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
-                                                            autocomplete="off">
+                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-1">
-                            <div class="sale_purchase_and_profit_area">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div id="data_list">
-                                    <div class="sale_and_purchase_amount_area">
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-body mt-1">  
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="text-start">Total Normal : </th>
-                                                                    <td class="text-start"> <span class="total_normal"></span></td>
-                                                                </tr>
-                        
-                                                                <tr>
-                                                                    <th class="text-start">Total Abnormal : </th>
-                                                                    <td class="text-start"><span class="total_abnormal"></span></td>
-                                                                </tr>
-                        
-                                                                <tr>
-                                                                    <th class="text-start"> Total Stock Adjustment : </th>
-                                                                    <td class="text-start"> <span class="total_adjustment"></span></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                    
-                                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-body "> 
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="text-start">Total Amount Recovered</th>
-                                                                    <td class="text-start"><span class="total_recovered"></span></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>  
                                 </div>
                             </div>
                         </div>
@@ -122,19 +98,27 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-start">Date</th>
-                                                    <th class="text-start">Reference No</th>
-                                                    <th class="text-start">Adjustment From</th>
-                                                    <th class="text-start">Type</th>
-                                                    <th class="text-start">Total Amount</th>
-                                                    <th class="text-start">Total Recovered Amount</th>
-                                                    <th class="text-start">Reason</th>
-                                                    <th class="text-start">Created By</th>
+                                                    <th>Product</th>
+                                                    <th>P.Code</th>
+                                                    <th>Customer</th>
+                                                    <th>Invoice ID</th>
+                                                    <th>Date</th>
+                                                    <th>Quantity</th>
+                                                    <th>Unit Cost</th>
+                                                    <th>Subtotal</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
     
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="5" class="text-end">Total :</th>
+                                                    <th><span id="total_qty"></span></th>
+                                                    <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_price_inc_tax"></span></th>
+                                                    <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_subtotal"></span></th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 </div> 
@@ -147,6 +131,7 @@
     </div>
 @endsection
 @push('scripts')
+<script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script>
@@ -166,36 +151,29 @@
         setBranches();
     @endif
 
-    var __currency_symbol = "{{ json_decode($generalSettings->business, true)['currency'] }}";
-    function getAdjustmentAmounts() {
-        $('.data_preloader').show();
-        var branch_id = $('#branch_id').val();
-        var date_range = $('#date_range').val();
+    function setCustomers(){
         $.ajax({
-            url: "{{ route('reports.stock.adjustments.index') }}",
-            data:{ branch_id, date_range },
-            type: 'get',
-            success: function(data) {
-                console.log(data[0].total_normal);
-                $('.total_normal').html(__currency_symbol+' '+(data[0].total_normal ? data[0].total_normal : parseFloat(0).toFixed(2)));
-                $('.total_abnormal').html(__currency_symbol+' '+(data[0].total_abnormal ? data[0].total_abnormal : parseFloat(0).toFixed(2)));
-                $('.total_adjustment').html(__currency_symbol+' '+(data[0].t_amount ? data[0].t_amount : parseFloat(0).toFixed(2)));
-                $('.total_recovered').html(__currency_symbol+' '+(data[0].t_recovered_amount ? data[0].t_recovered_amount : parseFloat(0).toFixed(2)));
-                $('.data_preloader').hide();
+            url:"{{route('sales.get.all.customer')}}",
+            type:'get',
+            success:function(customers){
+                $.each(customers, function(key, val){
+                    $('#customer_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
+                });
             }
         });
     }
-    getAdjustmentAmounts();
+    setCustomers();
 
-    adjustment_table = $('.data_tbl').DataTable({
+    var table = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,
-        aaSorting: [[3, 'asc']],
+        aaSorting: [[3, 'desc']],
         "ajax": {
-            "url": "{{ route('reports.stock.adjustments.all') }}",
+            "url": "{{ route('reports.product.sales.index') }}",
             "data": function(d) {
+                d.product_id = $('#product_id').val();
                 d.branch_id = $('#branch_id').val();
-                d.type = $('#status').val();
+                d.customer_id = $('#customer_id').val();
                 d.date_range = $('#date_range').val();
             }
         },
@@ -205,29 +183,55 @@
             "searchable": false
         }],
         columns: [
-            {data: 'date', name: 'date'},
+            {data: 'product', name: 'product'},
+            {data: 'sku', name: 'sku'},
+            {data: 'customer', name: 'customer'},
             {data: 'invoice_id', name: 'invoice_id'},
-            {data: 'from', name: 'from'},
-            {data: 'type', name: 'type'},
-            {data: 'net_total', name: 'net_total'},
-            {data: 'recovered_amount', name: 'recovered_amount'},
-            {data: 'reason', name: 'reason'},
-            {data: 'created_by', name: 'created_by'},
+            {data: 'date', name: 'date'},
+            {data: 'qty', name: 'qty'},
+            {data: 'unit_price_inc_tax', name: 'unit_price_inc_tax'},
+            {data: 'subtotal', name: 'subtotal'},
         ],
+        fnDrawCallback: function() {
+            var total_qty = sum_table_col($('.data_tbl'), 'qty');
+            $('#total_qty').text(parseFloat(total_qty).toFixed(2));
+            var total_price_inc_tax = sum_table_col($('.data_tbl'), 'unit_price_inc_tax');
+            $('#unit_price_inc_tax').text(parseFloat(total_price_inc_tax).toFixed(2));
+            var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
+            $('#total_subtotal').text(parseFloat(total_subtotal).toFixed(2));
+        },
+        
     });
+
+    function sum_table_col(table, class_name) {
+        var sum = 0;
+        table.find('tbody').find('tr').each(function() {
+            if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                sum += parseFloat(
+                    $(this).find('.' + class_name).data('value')
+                );
+            }
+        });
+        return sum;
+    }
 
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function () {
-        adjustment_table.ajax.reload();
-        getAdjustmentAmounts();
+        table.ajax.reload();
     });
 
     //Submit filter form by date-range field blur 
     $(document).on('blur', '.submit_able_input', function () {
         setTimeout(function() {
-            adjustment_table.ajax.reload();
-            getAdjustmentAmounts();
+            table.ajax.reload();
         }, 500);
+    });
+
+     //Submit filter form by date-range field blur 
+     $(document).on('click', '#search_product', function () {
+        $(this).val('');
+        $('#product_id').val('');
+        table.ajax.reload();
     });
 
     //Submit filter form by date-range apply button
@@ -236,6 +240,52 @@
             $('.submit_able_input').addClass('.form-control:focus');
             $('.submit_able_input').blur();
         }, 500);
+    });
+
+    $('#search_product').on('input', function () {
+        $('.search_result').hide();
+        var product_name = $(this).val();
+        if (product_name === '') {
+            $('.search_result').hide();
+            $('#product_id').val('');
+            $('#variant_id').val('');
+            table.ajax.reload();
+            return;
+        }
+
+        $.ajax({
+            url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
+            async:true,
+            type:'get',
+            success:function(data){
+                if (!$.isEmptyObject(data.noResult)) {
+                    $('.search_result').hide();
+                }else{
+                    $('.search_result').show();
+                    $('#list').html(data);
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#select_product', function (e) {
+        e.preventDefault();
+        var product_name = $(this).html();
+        $('#search_product').val(product_name.trim());
+        var product_id = $(this).data('p_id');
+        var variant_id = $(this).data('v_id');
+        $('#product_id').val(product_id);
+        $('#variant_id').val(variant_id);
+        $('.search_result').hide();
+        table.ajax.reload();
+    });
+
+    $('body').keyup(function(e){
+        if (e.keyCode == 13 || e.keyCode == 9){  
+            $(".selectProduct").click();
+            $('.search_result').hide();
+            $('#list').empty();
+        }
     });
 </script>
 
@@ -257,8 +307,7 @@
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
                 'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')
-                ],
+                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
             }
         });
     });

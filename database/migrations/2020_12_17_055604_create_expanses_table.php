@@ -16,13 +16,12 @@ class CreateExpansesTable extends Migration
         Schema::create('expanses', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_id')->nullable();
-            $table->unsignedBigInteger('expanse_category_id')->nullable();
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('attachment')->nullable();
-            $table->mediumText('note')->nullable();
             $table->decimal('tax_percent', 22, 2)->default(0.00);
             $table->decimal('tax_amount', 22, 2)->default(0.00);
             $table->decimal('total_amount', 22, 2)->default(0.00);
+            $table->decimal('net_total_amount', 22, 2)->default(0.00);
             $table->decimal('paid', 22, 2)->default(0.00);
             $table->decimal('due', 22, 2)->default(0.00);
             $table->string('date');
@@ -31,7 +30,6 @@ class CreateExpansesTable extends Migration
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->timestamp('report_date');
             $table->timestamps();
-            $table->foreign('expanse_category_id')->references('id')->on('expanse_categories')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }

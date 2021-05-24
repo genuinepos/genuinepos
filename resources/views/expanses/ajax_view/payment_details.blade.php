@@ -1,3 +1,6 @@
+@php
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+@endphp
 <div class="sale_payment_print_area">
     <div class="header_area">
         <div class="company_name text-center">
@@ -28,48 +31,55 @@
                 <p><b>Voucher No :</b> {{ $payment->invoice_id }}</p>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6 text-end">
                 <p><b>Date :</b> {{ date('d/m/Y', strtotime($payment->date))  }}</p>
             </div>
         </div>
     </div>
 
-    <div class="total_amount_table_area pt-5">
+    <div class="total_amount_table_area pt-3">
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-sm table-md">
+                <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Expense Category:</th>
-                            <td class="text-start">{{ $payment->expense->expanse_category->name }}</td>
-                        </tr>
-
-                        <tr>
                             <th class="text-start">Expense For:</th>
-                            <td class="text-start">{{ $payment->expense->admin ? $payment->expense->admin->prefix.' '.$payment->expense->admin->name.' '.$payment->expense->admin->last_name : 'N/A' }}</td>
+                            <td class="text-end">{{ $payment->expense->admin ? $payment->expense->admin->prefix.' '.$payment->expense->admin->name.' '.$payment->expense->admin->last_name : 'N/A' }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Description:</th>
-                            <td class="text-start"><small>{{ $payment->expense->note }}</small> </td>
+                            <th class="text-end">Amount</th>
+                        </tr>
+
+                        @foreach ($payment->expense->expense_descriptions as $expense_description)
+                            <tr>
+                                <td class="text-start">{{ $loop->index + 1 }}. {{ $expense_description->category->name }}</td>
+                                <td class="text-end">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $expense_description->amount }}</td>
+                            </tr>
+                        @endforeach
+                       
+                        <tr>
+                            <th class="text-start">Total :</th>
+                            <td class="text-end"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payment->expense->net_total_amount }}</b></td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Paid:</th>
-                            <td class="text-start">
+                            <td class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $payment->paid_amount }}</b> 
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Method :</th>
-                            <td class="text-start">{{ $payment->pay_mode }}</td>
+                            <th class="text-start">In Word :</th>
+                            <td class="text-end"><span id="inword"></span></td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">In Word :</th>
-                            <td class="text-start"><span id="inword"></span></td>
+                            <th class="text-start">Method :</th>
+                            <td class="text-end">{{ $payment->pay_mode }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,6 +115,18 @@
                     <th class="text-center"><p style="width: 70%; border-top:1px solid black;">Made By</p></th>
                     <th class="text-center"><p style="width: 70%; border-top:1px solid black;">Account Manger</p></th>
                     <th class="text-center"><p style="width: 70%; border-top:1px solid black;">Authority</p></th>
+                </tr>
+
+                <tr class="text-center">
+                    <td colspan="4" class="text-center">
+                        <img style="width: 170px; height:40px;" class="mt-3" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($payment->invoice_id, $generator::TYPE_CODE_128)) }}">
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td colspan="4" class="text-center">
+                        {{ $payment->invoice_id }}
+                    </td>
                 </tr>
 
                 <tr>

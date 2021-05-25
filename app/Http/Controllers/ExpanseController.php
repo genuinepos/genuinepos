@@ -655,12 +655,12 @@ class ExpanseController extends Controller
     public function allAdmins()
      {
          if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-             $admins = AdminAndUser::with(['role'])->select(['id', 'prefix', 'name', 'last_name', 'role_type', 'role_id'])->orderBy('role_type', 'asc')
+             $admins = AdminAndUser::select(['id', 'prefix', 'name', 'last_name'])->orderBy('id', 'asc')
             //  ->where('allow_login', 1)
              ->get();
              return response()->json($admins);
          } else {
-             $admins = AdminAndUser::with(['role'])->select(['id', 'prefix', 'name', 'last_name', 'role_type', 'role_id'])->orderBy('role_type', 'asc')
+             $admins = AdminAndUser::select(['id', 'prefix', 'name', 'last_name'])->orderBy('id', 'asc')
                  ->where('branch_id', auth()->user()->branch_id)
                 //  ->where('allow_login', 1)
                  ->get();

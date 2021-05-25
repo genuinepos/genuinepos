@@ -100,7 +100,7 @@
                                                     <th>Product</th>
                                                     <th>P.Code</th>
                                                     <th>Supplier</th>
-                                                    <th>Invoice ID</th>
+                                                    <th>P.Invoice ID</th>
                                                     <th>Date</th>
                                                     <th>Quantity</th>
                                                     <th>Unit Cost</th>

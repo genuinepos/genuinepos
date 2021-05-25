@@ -185,9 +185,9 @@ class SaleController extends Controller
                 })
                 ->editColumn('from',  function ($row) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BRANCH</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WAREHOUSE</b>)';
+                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {

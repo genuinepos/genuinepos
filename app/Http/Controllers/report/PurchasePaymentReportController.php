@@ -44,15 +44,28 @@ class PurchasePaymentReportController extends Controller
                 $query->whereBetween('purchase_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
             } 
 
-            $payments = $query->select(
-                'purchase_payments.id as payment_id',
-                'purchase_payments.invoice_id as payment_invoice',
-                'purchase_payments.paid_amount',
-                'purchase_payments.pay_mode',
-                'purchase_payments.date',
-                'purchases.invoice_id as purchase_invoice',
-                'suppliers.name as supplier_name',
-            )->get();
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                $payments = $query->select(
+                    'purchase_payments.id as payment_id',
+                    'purchase_payments.invoice_id as payment_invoice',
+                    'purchase_payments.paid_amount',
+                    'purchase_payments.pay_mode',
+                    'purchase_payments.date',
+                    'purchases.invoice_id as purchase_invoice',
+                    'suppliers.name as supplier_name',
+                )->get();
+            }else {
+                $payments = $query->select(
+                    'purchase_payments.id as payment_id',
+                    'purchase_payments.invoice_id as payment_invoice',
+                    'purchase_payments.paid_amount',
+                    'purchase_payments.pay_mode',
+                    'purchase_payments.date',
+                    'purchases.invoice_id as purchase_invoice',
+                    'suppliers.name as supplier_name',
+                )->where('purchases.branch_id', auth()->user()->branch_id)->get();
+            }
+         
 
             return DataTables::of($payments)
             ->editColumn('date', function ($row) {

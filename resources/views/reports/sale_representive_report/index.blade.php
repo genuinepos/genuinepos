@@ -20,7 +20,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
-                                <h5>Tax Report</h5>
+                                <h5>Sales Representative Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
@@ -31,11 +31,11 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <form id="filter_tax_report_form" action="" method="get">
+                                        <form>
                                             @csrf
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-3 offset-md-6">
+                                                    <div class="col-md-3 offset-md-3">
                                                         <label><strong>Branch :</strong></label>
                                                         <select name="branch_id"
                                                             class="form-control submit_able" id="branch_id" autofocus>
@@ -46,6 +46,13 @@
                                                 @else 
                                                     <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                 @endif
+
+                                                <div class="col-md-3">
+                                                    <label><strong>User :</strong></label>
+                                                    <select name="user_id" class="form-control submit_able" id="user_id" autofocus>
+                                                        <option value="">All</option>
+                                                    </select>
+                                                </div>
 
                                                 <div class="col-md-3">
                                                     <label><strong>Date Range :</strong></label>
@@ -74,13 +81,13 @@
                                         <div class="card-body card-custom"> 
                                            
                                             <div class="heading">
-                                                <h4 class="text-navy-blue">Overall (Output - Input - Expense)</h4>
+                                                <h6 class="text-muted">Total Sale - Total Sales Return : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="sale_amount"></span></h6>
                                             </div>
                                                
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="tax_sum">
-                                                        <h4 class="text-muted">Output Tax - Input Tax - Expense Tax : {{ json_decode($generalSettings->business, true)['currency'] }} 00.00 </h4>
+                                                        <h6 class="text-muted">Expense  : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="expense_amount"></span></h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -94,82 +101,62 @@
                                                 <div class="tab_list_area">
                                                     <ul class="list-unstyled">
                                                         <li>
-                                                            <a id="tab_btn" data-show="purchase" class="tab_btn tab_active" href="#"><i
-                                                                    class="fas fa-info-circle"></i> Input Tax</a>
-                                                        </li>
-            
-                                                        <li>
-                                                            <a id="tab_btn" data-show="sale" class="tab_btn" href="#">
-                                                            <i class="fas fa-scroll"></i>Output Tax</a>
+                                                            <a id="tab_btn" data-show="sales" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Seles</a>
                                                         </li>
             
                                                         <li>
                                                             <a id="tab_btn" data-show="expense" class="tab_btn" href="#">
-                                                            <i class="fas fa-scroll"></i>Expense Tax</a>
+                                                            <i class="fas fa-scroll"></i> Expense</a>
                                                         </li>
                                                     </ul>
                                                 </div>
             
-                                                <div class="tab_contant sale">
+                                                <div class="tab_contant sales">
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="table-responsive" >
-                                                                <table class="table" id="kt_datatable">
+                                                                <table class="display data_tbl data__table" id="sale_table">
                                                                     <thead>
                                                                         <tr>
                                                                             <th>Date</th>
                                                                             <th>Invoice ID</th>
                                                                             <th>Customer</th>
-                                                                            <th>Tax Number</th>
-                                                                            <th>Discount</th>
-                                                                            <th>Tax Percent</th>
-                                                                            <th>Tax Amount</th>
+                                                                            <th>Branch</th>
+                                                                            <th>Payment Status</th>
+                                                                            <th>Total Amount</th>
+                                                                            <th>Total Return</th>
+                                                                            <th>Total Paid</th>
+                                                                            <th>Total Remaining</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <tr>
-                                                                            <td>--/--/----</td>
-                                                                            <td>SI000555</td>
-                                                                            <td>Walk-In-Customer</td>
-                                                                            <td>Tax Number</td>
-                                                                            <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
-                                                                            <td>(5.00%)</td>
-                                                                            <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
-                                                                        </tr>
+                                                                        
                                                                     </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-            
-                                                <div class="tab_contant purchase d-none">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="table-responsive">
-                                                                <table class="table" id="kt_datatable2">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Date</th>
-                                                                            <th>Invoice ID</th>
-                                                                            <th>Supplier</th>
-                                                                            <th>Tax Number</th>
-                                                                            <th>Discount</th>
-                                                                            <th>Tax Percent</th>
-                                                                            <th>Tax Amount</th>
+                                                                    <tfoot>
+                                                                        <tr class="bg-secondary">
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th class="text-white">Total :</th>
+                                                                            <th class="text-white">
+                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                <span id="total_amount"></span>
+                                                                            </th>
+                                                                            <th class="text-white">
+                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                <span id="total_return"></span>
+                                                                            </th>
+                                                                            <th class="text-white">
+                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                <span id="paid"></span>
+                                                                            </th>
+                                                                            <th class="text-white">
+                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                <span id="due"></span>
+                                                                            </th>
                                                                         </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>--/--/----</td>
-                                                                            <td>SI000555</td>
-                                                                            <td>Freedan Joo</td>
-                                                                            <td>Tax Number</td>
-                                                                            <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
-                                                                            <td>(0.00%)</td>
-                                                                            <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
-                                                                        </tr>
-                                                                    </tbody>
+                                                                    </tfoot>
                                                                 </table>
                                                             </div>
                                                         </div>
@@ -180,33 +167,48 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="table-responsive">
-                                                                <table class="table" id="kt_datatable3">
+                                                                <table class="display data_tbl data__table w-100" id="expense_table">
                                                                     <thead>
                                                                         <tr>
                                                                             <th>Date</th>
-                                                                            <th>Invoice ID</th>
-                                                                            <th>Expense Category</th>
+                                                                            <th>Reference No</th>
                                                                             <th>Branch</th>
-                                                                            <th>Tax Percent</th>
+                                                                            <th>Expense For</th>
+                                                                            <th>Payment Status</th>
                                                                             <th>Total Amount</th>
+                                                                            <th>Total Paid</th>
+                                                                            <th>Total Due</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <tr>
-                                                                            <td>--/--/----</td>
-                                                                            <td>EX000555</td>
-                                                                            <td>Expense Category</td>
-                                                                            <td>Dhaka Branch - D8557</td>
-                                                                            <td>(0.00%)</td>
-                                                                            <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
-                                                                        </tr>
+
                                                                     </tbody>
+                                                                    <tfoot>
+                                                                        <tr class="bg-secondary">
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th class="text-white">Total :</th>
+                                                                            <th class="text-white">
+                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                <span id="ex_total_amount"></span>
+                                                                            </th>
+                                                                            <th class="text-white">
+                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                <span id="ex_paid"></span>
+                                                                            </th>
+                                                                            <th class="text-white">
+                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                <span id="ex_due"></span>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </tfoot>
                                                                 </table>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-            
                                             </div>  
                                         </div>  
                                     </div>
@@ -222,36 +224,97 @@
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
-<script>
-    // Get sale representive report **requested by ajax**
-    function getTaxReport() {
-        $('.data_preloader').show();
-        var branch_id = $('#branch_id').val();
-        var date_range = $('#date_range').val();
-        $.ajax({
-            url:"{{ route('reports.taxes.get') }}",
-            type:'get',
-            data: {
-                branch_id, 
-                date_range, 
-            },
-            success:function(data){
-                //console.log(data);
-                $('.report_data').html(data);
-                $('.data_preloader').hide();
-            }
-        });
-    }
-    getTaxReport();
 
+<script>
+    var sale_table = $('#sale_table').DataTable({
+        "processing": true,
+        "serverSide": true,
+        aaSorting: [[3, 'desc']],
+        "ajax": {
+            "url": "{{ route('reports.sale.representive.index') }}",
+            "data": function(d) {
+                d.branch_id = $('#branch_id').val();
+                d.user_id = $('#user_id').val();
+                d.date_range = $('#date_range').val();
+            }
+        },
+        columnDefs: [{
+            "targets": [0],
+            "orderable": false,
+            "searchable": false
+        }],
+        columns: [
+            {data: 'date', name: 'date'},
+            {data: 'invoice_id', name: 'invoice_id'},
+            {data: 'customer', name: 'customer'},
+            {data: 'branch', name: 'branch'},
+            {data: 'payment_status', name: 'payment_status'},
+            {data: 'total_amount', name: 'total_amount'},
+            {data: 'total_return', name: 'total_return'},
+            {data: 'paid', name: 'paid'},
+            {data: 'due', name: 'due'},
+        ],
+        fnDrawCallback: function() {
+            var total_amount = sum_table_col($('.data_tbl'), 'total_amount');
+            $('#total_amount').html(parseFloat(total_amount).toFixed(2));
+            var total_return = sum_table_col($('.data_tbl'), 'total_return');
+            $('#total_return').html(parseFloat(total_return).toFixed(2));
+            var paid = sum_table_col($('.data_tbl'), 'paid');
+            $('#paid').html(parseFloat(paid).toFixed(2));
+            var due = sum_table_col($('.data_tbl'), 'due');
+            $('#due').html(parseFloat(due).toFixed(2));
+
+            var total_sale = parseFloat(total_amount) - parseFloat(total_return);
+            $('#sale_amount').html(parseFloat(total_sale).toFixed(2));
+        },
+    });
+
+    var ex_table = $('#expense_table').DataTable({
+        "processing": true,
+        "serverSide": true,
+        aaSorting: [[3, 'desc']],
+        "ajax": {
+            "url": "{{ route('reports.sale.representive.expenses') }}",
+            "data": function(d) {
+                d.branch_id = $('#branch_id').val();
+                d.user_id = $('#user_id').val();
+                d.date_range = $('#date_range').val();
+            }
+        },
+        columnDefs: [{
+            "targets": [0],
+            "orderable": false,
+            "searchable": false
+        }],
+        columns: [
+            {data: 'date', name: 'date'},
+            {data: 'invoice_id', name: 'invoice_id'},
+            {data: 'branch', name: 'branch'},
+            {data: 'user', name: 'user'},
+            {data: 'payment_status', name: 'payment_status'},
+            {data: 'total_amount', name: 'total_amount'},
+            {data: 'paid', name: 'paid'},
+            {data: 'due', name: 'due'},
+        ],
+        fnDrawCallback: function() {
+            var ex_total = sum_table_col($('.data_tbl'), 'ex_total');
+            $('#expense_amount').html(parseFloat(ex_total).toFixed(2));
+            $('#ex_total_amount').html(parseFloat(ex_total).toFixed(2));
+            var ex_paid = sum_table_col($('.data_tbl'), 'ex_paid');
+            $('#ex_paid').html(parseFloat(ex_paid).toFixed(2));
+            var ex_due = sum_table_col($('.data_tbl'), 'ex_due');
+            $('#ex_due').html(parseFloat(ex_due).toFixed(2));
+        },
+    });
+</script>
+
+<script type="text/javascript">
     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
         // Set branch in form field
         function setBranches(){
             $.ajax({
                 url:"{{route('sales.get.all.branches')}}",
                 async:true,
-                type:'get',
-                dataType: 'json',
                 success:function(branches){
                     $.each(branches, function(key, val){
                         $('#branch_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.branch_code+')'+'</option>');
@@ -262,15 +325,35 @@
         setBranches();
     @endif
 
+    // Set accounts in payment and payment edit form
+    function setAdmin(){
+        $.ajax({
+            url:"{{route('expanses.all.admins')}}",
+            async:true,
+            type:'get',
+            dataType: 'json',
+            success:function(admins){
+                $.each(admins, function (key, admin) {
+                    var prefix = admin.prefix != null ? admin.prefix : '';
+                    var last_name = admin.last_name != null ? admin.last_name : '';
+                    $('#user_id').append('<option value="'+admin.id+'">'+prefix+' '+admin.name+' '+last_name+'</option>');
+                });
+            }
+        });
+    }
+    setAdmin();
+
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function () {
-        $('#filter_tax_report_form').submit();
+        sale_table.ajax.reload();
+        ex_table.ajax.reload();
     });
 
     //Submit filter form by date-range field blur 
     $(document).on('blur', '.submitable_input', function () {
         setTimeout(function() {
-            $('#filter_tax_report_form').submit();
+            sale_table.ajax.reload();
+            ex_table.ajax.reload();
         }, 500);
     });
 
@@ -282,26 +365,23 @@
         }, 500);
     });
 
-    $(document).on('submit', '#filter_tax_report_form', function(e) {
-        e.preventDefault();
-        getTaxReport();
-    });
+    function sum_table_col(table, class_name) {
+        var sum = 0;
+        table.find('tbody').find('tr').each(function() {
+            if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                sum += parseFloat(
+                    $(this).find('.' + class_name).data('value')
+                );
+            }
+        });
+        return sum;
+    }
 
-    $(document).on('click', '#tab_btn', function(e) {
-        e.preventDefault();
-        $('.tab_btn').removeClass('tab_active');
-        $('.tab_contant').hide();
-        var show_content = $(this).data('show');
-        $('.' + show_content).show();
-        $(this).addClass('tab_active');
-    });
-</script>
-<script type="text/javascript">
     $(function() {
         var start = moment().startOf('year');
         var end = moment().endOf('year');
         $('.daterange').daterangepicker({
-            buttonClasses: ' btn',
+            buttonClasses: 'btn',
             applyClass: 'btn-primary',
             cancelClass: 'btn-secondary',
             startDate: start,
@@ -320,6 +400,15 @@
                 ],
             }
         });
+    });
+
+    $(document).on('click', '#tab_btn', function(e) {
+        e.preventDefault();
+        $('.tab_btn').removeClass('tab_active');
+        $('.tab_contant').hide();
+        var show_content = $(this).data('show');
+        $('.' + show_content).show();
+        $(this).addClass('tab_active');
     });
 </script>
 @endpush

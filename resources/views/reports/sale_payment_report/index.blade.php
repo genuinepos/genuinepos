@@ -130,6 +130,7 @@
             url:"{{route('sales.get.all.customer')}}",
             type:'get',
             success:function(customers){
+                $('#customer_id').append('<option value="NULL">Walk-In-Customer</option>');
                 $.each(customers, function(key, val){
                     $('#customer_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
                 });
@@ -141,12 +142,12 @@
     var table = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,
-        aaSorting: [[3, 'asc']],
+        aaSorting: [[2, 'desc']],
         "ajax": {
             "url": "{{ route('reports.sale.payments.index') }}",
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
-                d.supplier_id = $('#supplier_id').val();
+                d.customer_id = $('#customer_id').val();
                 d.date_range = $('#date_range').val();
             }
         },

@@ -58,7 +58,7 @@
                                                         <select name="admin_id" class="form-control" id="admin_id">
                                                             <option value="">None</option>
                                                             @foreach ($users as $user)
-                                                                <option {{ $user->id == $expense->admin_id ? 'SELECTED' : '' }} value="">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
+                                                                <option {{ $user->id == $expense->admin_id ? 'SELECTED' : '' }} value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -217,32 +217,6 @@
             });
         }
         setExpanseCategory();
-
-        // Set accounts in payment and payment edit form
-        function setAdmin(){
-            $.ajax({
-                url:"{{route('expanses.all.admins')}}",
-                async:true,
-                type:'get',
-                dataType: 'json',
-                success:function(admins){
-                    $.each(admins, function (key, admin) {
-                        var role = '';
-                        if (admin.role_type == 1) {
-                            role = 'Super-Admin';
-                        }else if (admin.role_type == 2) {
-                            role = 'Admin';
-                        }else if (admin.role_type == 3) {
-                            role = admin.role.name;
-                        }
-                        var prefix = admin.prefix != null ? admin.prefix : '';
-                        var last_name = admin.last_name != null ? admin.last_name : '';
-                        $('#admin_id').append('<option value="'+admin.id+'">'+prefix+' '+admin.name+' '+last_name+' ('+role+')'+'</option>');
-                    });
-                }
-            });
-        }
-        setAdmin();
 
         function getTaxes(){
             $.ajax({

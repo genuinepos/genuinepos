@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Models\RolePermission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller

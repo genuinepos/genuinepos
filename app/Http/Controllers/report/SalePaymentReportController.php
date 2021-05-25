@@ -26,9 +26,9 @@ class SalePaymentReportController extends Controller
 
             if ($request->customer_id) {
                 if ($request->customer_id == 'NULL') {
-                    $query->where('sale_payments.customer_id', NULL);
+                    $query->where('sales.customer_id', NULL);
                 } else {
-                    $query->where('sale_payments.customer_id', $request->customer_id);
+                    $query->where('sales.customer_id', $request->customer_id);
                 }
             }
 
@@ -50,24 +50,39 @@ class SalePaymentReportController extends Controller
                 $query->whereYear('sale_payments.report_date', date('Y'));
             }
 
-            $payments = $query->select(
-                'sale_payments.id as payment_id',
-                'sale_payments.invoice_id as payment_invoice',
-                'sale_payments.paid_amount',
-                'sale_payments.pay_mode',
-                'sale_payments.date',
-                'sales.invoice_id as sale_invoice',
-                'customers.name as customer_name',
-            )->get();
-
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                $payments = $query->select(
+                    'sale_payments.id as payment_id',
+                    'sale_payments.invoice_id as payment_invoice',
+                    'sale_payments.paid_amount',
+                    'sale_payments.pay_mode',
+                    'sale_payments.date',
+                    'sales.invoice_id as sale_invoice',
+                    'customers.name as customer_name',
+                )->get();
+            }else {
+                $payments = $query->select(
+                    'sale_payments.id as payment_id',
+                    'sale_payments.invoice_id as payment_invoice',
+                    'sale_payments.paid_amount',
+                    'sale_payments.pay_mode',
+                    'sale_payments.date',
+                    'sales.invoice_id as sale_invoice',
+                    'customers.name as customer_name',
+                )->where('sales.branch_id', auth()->user()->branch_id)->get();
+            }
+            
             return DataTables::of($payments)
             ->editColumn('date', function ($row) {
                 return date('d/m/Y', strtotime($row->date));
             })
+            ->editColumn('customer_name',  function ($row) {
+                return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
+            })
             ->editColumn('paid_amount',  function ($row) use ($generalSettings) {
                 return '<b><span class="paid_amount" data-value="'.$row->paid_amount.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid_amount . '</span></b>';
             })
-            ->rawColumns(['date', 'paid_amount'])
+            ->rawColumns(['date', 'customer_name', 'paid_amount'])
             ->make(true);
         }
         return view('reports.sale_payment_report.index');

@@ -108,7 +108,7 @@
                                                     <th>Actions</th>
                                                     <th>Date</th>
                                                     <th>Invoice ID</th>
-                                                    <th>Sale From</th>
+                                                    <th>Stock Location</th>
                                                     <th>Customer</th>
                                                     <th>Total Amount</th>
                                                     <th>Total Paid</th>

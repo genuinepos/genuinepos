@@ -31,7 +31,7 @@
                                     <form action="{{ route('login') }}" method="POST">
                                         @csrf
                                         <div class="left-inner-addon input-container">
-                                            <i class="fa fa-envelope"></i>
+                                            <i class="fa fa-user"></i>
                                             <input name="username" class="form-control form-st"
                                                 placeholder="Username" required/>
                                         </div>
@@ -41,7 +41,7 @@
                                                 class="form-control form-st rounded-bottom" placeholder="Password" required />
                                         </div>
                                         @if (Session::has('errorMsg'))
-                                            <div class="bg-danger p-3 mt-4 mx-2">
+                                            <div class="bg-danger p-3 mt-4">
                                                 <p class="text-white">
                                                     {{ session('errorMsg') }}
                                                 </p>
@@ -52,7 +52,7 @@
                                     <div class="login_opt_link">
                                         @if (Route::has('password.request'))
                                             <a class="forget-pw" href="{{ route('password.request') }}">
-                                                {{ __('Forgot Your Password?') }}
+                                                &nbsp; {{ __('Forgot Your Password?') }}
                                             </a>
                                         @endif
                                         {{-- <div class="form-group cx-box">

@@ -56,6 +56,7 @@ class CreateAdminAndUsersTable extends Migration
             $table->string('language')->nullable();
             $table->unsignedBigInteger('department_id')->nullable();
             $table->unsignedBigInteger('designation_id')->nullable();
+            $table->string('remember_token', 100)->nullable();
             $table->timestamps();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('set null');
             $table->foreign('role_permission_id')->references('id')->on('role_permissions')->onDelete('set null');

@@ -2,7 +2,6 @@
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
 .env
 .env.backup
 .phpunit.result.cache
@@ -12,3 +11,7 @@ npm-debug.log
 yarn-error.log
 pos.zip
 /pos.zip
+
+!vendor/
+**/vendor/*
+!**/vendor/laravel/ui/

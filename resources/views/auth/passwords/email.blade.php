@@ -16,7 +16,7 @@
                     {{-- Alert --}}
                     <div>
                         @if (session('status'))
-                            <div class="alert alert-success" role="alert">
+                            <div class="bg-success p-3 mt-4 mx-2">
                                 {{ session('status') }}
                             </div>
                         @endif
@@ -27,12 +27,29 @@
                             <p>Forgot Password</p>
                         </div>
                         <form action="{{ route('password.email') }}" method="POST">
+                            @csrf
                             <div class="left-inner-addon input-container">
                                 <i class="fa fa-envelope"></i>
-                                <input type="email" class="form-control form-st rounded-bottom
+                                <input type="email" name="email" class="form-control form-st rounded-bottom
                                             @error('email') is-invalid @enderror" value="{{ old('email') }}"
                                     placeholder="Enter Your Email" required autocomplete="email" autofocus />
                             </div>
+                             @if (Session::has('errorMsg'))
+                                <div class="bg-danger p-3 mt-4 mx-2">
+                                    <p class="text-white">
+                                        {{ session('errorMsg') }}
+                                    </p>
+                                </div>
+                            @endif
+                            @if($errors->any())
+                                @foreach ($errors->all() as $error)
+                                <div class="bg-danger p-3 mt-4 mx-2">
+                                    <p class="text-white">
+                                        {{ $error }}
+                                    </p>
+                                </div>
+                                @endforeach
+                                @endif
                             <button type="submit" class="submit-button">
                                 {{ __('Send Password Reset Link') }}
                             </button>

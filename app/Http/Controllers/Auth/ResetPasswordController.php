@@ -32,9 +32,9 @@ class ResetPasswordController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    public function reset(Request $request)
+    public function resetCurrentPassword(Request $request)
     {
-        $this->validate($request, 
+        $this->validate($request,
         [
             'current_password' => 'required',
             'password' => 'required|confirmed',
@@ -50,11 +50,11 @@ class ResetPasswordController extends Controller
                 Auth::logout();
                 return response()->json(['successMsg' => 'Successfully password has been changed.']);
             }else{
-                return response()->json(['errorMsg' => 'Current password and new password is same. 
+                return response()->json(['errorMsg' => 'Current password and new password is same.
                 If you want to change your current password please enter a new password']);
             }
         }else{
-            return response()->json(['errorMsg' => 'Current password does not matched']); 
+            return response()->json(['errorMsg' => 'Current password does not matched']);
         }
     }
 }

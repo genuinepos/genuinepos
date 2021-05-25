@@ -29,7 +29,7 @@
                                     </div>
                                 </div>
 
-                                <form id="reset_password_form" action="{{ route('password.update') }}" method="post">
+                                <form id="reset_password_form" action="{{ route('password.updateCurrent') }}" method="post">
                                     @csrf
                                     <div class="element-body">
                                         <div class="row">
@@ -42,7 +42,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock input_i"></i></span>
                                                             </div>
-                                                            <input type="password" name="password" class="form-control"
+                                                            <input type="password" name="current_password" class="form-control"
                                                             autocomplete="off" placeholder="New password">
                                                         </div>
                                                         <span class="error error_password"></span>
@@ -92,7 +92,7 @@
                                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                             <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
                                         </div>
-                                        
+
                                     </div>
                                 </form>
                             </div>
@@ -117,12 +117,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-        
+
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><span class="text-danger">*
                                                         </span><b>First Name :</b> </label>
-        
+
                                                     <div class="col-8">
                                                         <input type="text" name="first_name" class="form-control"
                                                             placeholder="First Name" id="first_name" value="{{ auth()->user()->name }}">
@@ -142,7 +142,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-        
+
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><span
@@ -461,7 +461,7 @@
                     $('.loading_button').hide();
                     if ($.isEmptyObject(data.errorMsg)) {
                         toastr.success(data.successMsg);
-                        window.location = "{{ route('login') }}";
+                        // window.location = "{{ route('login') }}";
                     } else {
                         toastr.error(data.errorMsg);
                         $('.error').html('');

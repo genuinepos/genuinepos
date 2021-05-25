@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\Sale;
 use Milon\Barcode\DNS1D;
 use App\Models\AdminAndUser;
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Artisan;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 //Product section route group
 Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], function () {
     // Branch route group

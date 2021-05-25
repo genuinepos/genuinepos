@@ -12,6 +12,5 @@ yarn-error.log
 pos.zip
 /pos.zip
 
-!vendor/
-**/vendor/*
-!**/vendor/laravel/ui/
+/vendor/*
+!/vendor/laravel/ui

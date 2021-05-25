@@ -90,7 +90,14 @@
                                                     </div>
                                                 </div>
                                             @else
-                                                <input type="hidden" name="purchase_status" id="purchase_status" value="1">
+                                                <div class="input-group mt-1">
+                                                    <label for="inputEmail3" class=" col-4"><span
+                                                        class="text-danger">*</span> <b>Branch :</b> </label>
+                                                    <div class="col-8">
+                                                        <input readonly type="text" class="form-control" value="{{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}">
+                                                        <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
+                                                    </div>
+                                                </div>
                                             @endif
                                         </div>
 

@@ -435,3 +435,5 @@ span.product_variant {
 a.dashboard_icon {padding: 3px 0px!important;border-radius: 4px;}
 label{font-size: 12px;}
 .t {padding-bottom: 41px!important;}
+
+select {height: 26px;}

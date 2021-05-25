@@ -46,7 +46,9 @@
     {{-- <script src="{{asset('public/backend/js/selectToUISlider.jQuery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/fg.menu.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/jquery.tagsinput.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/jquery.cleditor.js')}}"></script>
+
+    <script src="{{asset('public/backend/asset/js/jquery.cleditor.js')}}"></script>
+
     <script src="{{asset('public/backend/js/jquery.tipsy.js')}}"></script>
     <script src="{{asset('public/backend/js/jquery.peity.js')}}"></script>
     <script src="{{asset('public/backend/js/jquery.simplemodal.js')}}"></script>

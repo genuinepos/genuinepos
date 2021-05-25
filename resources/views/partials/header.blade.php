@@ -88,8 +88,23 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="top-icon ms-3"><a href="#"><span class="fas fa-user"></span></a></li>
-                        <li class="user_info  me-5">
+                    
+                        <li class="dropdown dp__top top-icon">
+                            <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown">
+                                <span class="fas fa-user"></span>
+                            </a>
+
+                            <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton1">
+                                <li>
+                                    <i class="fas fa-eye text-primary"></i><a class="dropdown-item d-block" href="#">View Profile</a>
+                                </li>
+                                <li>
+                                    <i class="fas fa-edit text-primary"></i></span><a class="dropdown-item d-block" href="{{ route('users.profile.index') }}">Edit Profile</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="user_info me-5">
                             <span class="user_name">
                                 {{ auth()->user()->prefix.' '.auth()->user()->name.' '.auth()->user()->last_name }} |
                                 @if (auth()->user()->role_type == 1)
@@ -100,7 +115,7 @@
                                     {{ auth()->user()->role->name }}
                                 @endif
                             </span>
-                            <span><a href="{{ route('users.profile.index') }}">Profile</a> | <a href="#">Help?</a></span>
+                            <span><a href="#">Help?</a></span>
                         </li>
                         <li class="top-icon">
                             <a href="" id="logout_option"><span class="fas fa-power-off" title="Logout"></span></a>

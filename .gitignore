@@ -11,6 +11,4 @@ npm-debug.log
 yarn-error.log
 pos.zip
 /pos.zip
-
-/vendor/*
-!/vendor/laravel/ui
+/vendor

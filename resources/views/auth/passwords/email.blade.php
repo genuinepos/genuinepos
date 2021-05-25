@@ -16,7 +16,7 @@
                     {{-- Alert --}}
                     <div>
                         @if (session('status'))
-                            <div class="bg-success p-3 mt-4 mx-2">
+                            <div class="bg-success p-3 mt-4 text-white">
                                 {{ session('status') }}
                             </div>
                         @endif
@@ -35,7 +35,7 @@
                                     placeholder="Enter Your Email" required autocomplete="email" autofocus />
                             </div>
                              @if (Session::has('errorMsg'))
-                                <div class="bg-danger p-3 mt-4 mx-2">
+                                <div class="bg-danger p-3 mt-4">
                                     <p class="text-white">
                                         {{ session('errorMsg') }}
                                     </p>
@@ -43,7 +43,7 @@
                             @endif
                             @if($errors->any())
                                 @foreach ($errors->all() as $error)
-                                <div class="bg-danger p-3 mt-4 mx-2">
+                                <div class="bg-danger p-3 mt-4">
                                     <p class="text-white">
                                         {{ $error }}
                                     </p>

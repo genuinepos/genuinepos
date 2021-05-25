@@ -1,74 +1,86 @@
 @extends('layout.app')
-
+@section('title', 'Reset Password - ')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
-                    @if($errors->any())
-                        @foreach ($errors->all() as $error)
-                        <div class="bg-danger p-3 mt-4 mx-2">
-                            <p class="text-white">
-                                {{ $error }}
-                            </p>
+    <div class="form-wraper">
+        <div class="container">
+            <div class="form-content">
+                <div class="col-lg-4 col-md-5 col-12">
+                    <div class="form-head">
+                        <div class="head">
+                            <img src="{{ asset('public/assets/images/genuine_pos.png') }}" alt="" class="logo">
+                            <span class="head-text">
+                                Genuine POS, Point of Sale Software By SpeedDigit
+                            </span>
                         </div>
-                        @endforeach
-                    @endif
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
-                        @csrf
-
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                                value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                    </div>
+                    {{-- Alert --}}
+                    <div>
+                        @if (session('status'))
+                            <div class="bg-success p-3 mt-4 mx-2">
+                                {{ session('status') }}
                             </div>
+                        @endif
+                    </div>
+
+                    <div class="main-form">
+                        <div class="form-title">
+                            <p>Reset Password</p>
                         </div>
+                        <form action="{{ route('password.update') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="token" value="{{ $token }}">
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                            <div class="left-inner-addon input-container">
+                                <i class="fa fa-envelope"></i>
+                                <input type="email" name="email" class="form-control form-st" value="{{ $email ?? old('email') }}"
+                                placeholder="Enter Your Email"
+                                required autocomplete="email" />
                             </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <div class="left-inner-addon input-container">
+                                <i class="fa fa-lock"></i>
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password" type="password" class="form-control form-st"
+                                name="password"
+                                required
+                                autocomplete="new-password"
+                                placeholder="New Password"
+                                autofocus>
                             </div>
-                        </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
+                            <div class="left-inner-addon input-container">
+                                <i class="fa fa-check-double"></i>
+
+                                <input id="password_confimation" type="password" class="form-control form-st rounded-bottom"
+                                    name="password_confirmation" required placeholder="Confirm Password">
                             </div>
-                        </div>
-                    </form>
+
+                            {{-- Custom errror message --}}
+                            @if (Session::has('errorMsg'))
+                                <div class="bg-danger mt-4 mx-2">
+                                    <p class="text-white">
+                                        {{ session('errorMsg') }}
+                                    </p>
+                                </div>
+                            @endif
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $error)
+                                    <div class="bg-danger p-4 mt-4">
+                                        <p class="text-white">
+                                            {{ $error }}
+                                        </p>
+                                    </div>
+                                @endforeach
+                            @endif
+                            {{-- Custom errror message --}}
+                            <button type="submit" class="submit-button">
+                                {{ __('Send Password Reset Link') }}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 @endsection

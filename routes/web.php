@@ -677,8 +677,6 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'expenses'], function () {
         Route::get('/', 'ExpanseReportController@index')->name('reports.expenses.index');
-        Route::get('get', 'ExpanseReportController@getExpenseReport')->name('reports.expenses.get');
-        Route::get('filter', 'ExpanseReportController@getFilteredExpenseReport')->name('reports.expenses.filter');
     });
 
     Route::group(['prefix' => 'cash/registers'], function () {
@@ -689,7 +687,7 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'sale/representive'], function () {
         Route::get('/', 'SaleRepresentiveReportController@index')->name('reports.sale.representive.index');
-        Route::get('get', 'SaleRepresentiveReportController@getSaleRepresentiveReport')->name('reports.sale.representive.get');
+        Route::get('expenses', 'SaleRepresentiveReportController@SaleRepresentiveExpenseReport')->name('reports.sale.representive.expenses');
     });
 
     Route::group(['prefix' => 'taxes'], function () {

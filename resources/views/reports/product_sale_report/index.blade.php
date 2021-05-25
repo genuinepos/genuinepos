@@ -114,7 +114,7 @@
                                             <tfoot>
                                                 <tr>
                                                     <th colspan="5" class="text-end">Total :</th>
-                                                    <th><span id="total_qty"></span></th>
+                                                    <th>(<span id="total_qty"></span>)</th>
                                                     <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_price_inc_tax"></span></th>
                                                     <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_subtotal"></span></th>
                                                 </tr>
@@ -196,11 +196,10 @@
             var total_qty = sum_table_col($('.data_tbl'), 'qty');
             $('#total_qty').text(parseFloat(total_qty).toFixed(2));
             var total_price_inc_tax = sum_table_col($('.data_tbl'), 'unit_price_inc_tax');
-            $('#unit_price_inc_tax').text(parseFloat(total_price_inc_tax).toFixed(2));
+            $('#total_price_inc_tax').text(parseFloat(total_price_inc_tax).toFixed(2));
             var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
             $('#total_subtotal').text(parseFloat(total_subtotal).toFixed(2));
         },
-        
     });
 
     function sum_table_col(table, class_name) {

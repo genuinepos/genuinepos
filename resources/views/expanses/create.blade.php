@@ -391,7 +391,7 @@
         }
         setExpanseCategory();
 
-          // Set accounts in payment and payment edit form
+        // Set accounts in payment and payment edit form
         function setAdmin(){
             $.ajax({
                 url:"{{route('expanses.all.admins')}}",

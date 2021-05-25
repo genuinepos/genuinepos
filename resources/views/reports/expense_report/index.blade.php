@@ -8,15 +8,6 @@
         .data_preloader{top:2.3%}
         .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
         .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
-        /* Search Product area style */
-        .selectProduct {background-color: #ab1c59;color: #fff !important;}
-        .search_area{position: relative;}
-        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
-            margin-top: 1px;}
-        .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
-        .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
-        .search_result ul li a:hover {color: white;background-color: #ab1c59;}
-        /* Search Product area style end */
     </style>
 @endpush
 @section('content')
@@ -29,7 +20,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
-                                <h5>Product Purchase Report</h5>
+                                <h5>Expense Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
@@ -42,20 +33,8 @@
                                     <div class="col-md-12">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
-                                                <div class="col-md-3 search_area">
-                                                    <label><strong>Search Product :</strong></label>
-                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus>
-                                                    <input type="hidden" name="product_id" id="product_id" value="">
-                                                    <input type="hidden" name="variant_id" id="variant_id" value="">
-                                                    <div class="search_result d-none">
-                                                        <ul id="list" class="list-unstyled">
-                                                            <li><a id="select_product" class="" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-3 offset-md-3">
                                                         <label><strong>Branch :</strong></label>
                                                         <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                             <option value="">All</option>
@@ -66,9 +45,9 @@
                                                     <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                 @endif
 
-                                                <div class="col-md-3">
-                                                    <label><strong>Supplier :</strong></label>
-                                                    <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
+                                                <div class="col-md-2">
+                                                    <label><strong>Expense For :</strong></label>
+                                                    <select name="admin_id" class="form-control submit_able" id="admin_id" autofocus>
                                                         <option value="">All</option>
                                                     </select>
                                                 </div>
@@ -80,7 +59,9 @@
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
+                                                        <input readonly type="text" name="date_range" id="date_range"
+                                                            class="form-control daterange submit_able_input"
+                                                            autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,25 +78,43 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
-                                                    <th>Product</th>
-                                                    <th>P.Code</th>
-                                                    <th>Supplier</th>
-                                                    <th>P.Invoice ID</th>
-                                                    <th>Date</th>
-                                                    <th>Quantity</th>
-                                                    <th>Unit Cost</th>
-                                                    <th>Subtotal</th>
+                                                    <th class="text-start">Date</th>
+                                                    <th class="text-start">Reference ID</th>
+                                                    <th class="text-start">Branch</th>
+                                                    <th class="text-start">Expanse For</th>
+                                                    <th class="text-start">Payment Status</th>
+                                                    <th class="text-start">Tax</th>
+                                                    <th class="text-start">Net Total</th>
+                                                    <th class="text-start">Paid</th>
+                                                    <th class="text-start">Payment Due</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
     
                                             </tbody>
                                             <tfoot>
-                                                <tr>
-                                                    <th colspan="5" class="text-end">Total :</th>
-                                                    <th><span id="total_qty"></span></th>
-                                                    <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_unit_cost"></span></th>
-                                                    <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_subtotal"></span></th>
+                                                <tr class="bg-secondary">
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th class="text-start text-white">Total :</th>
+                                                    <th class="text-start text-white">
+                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                        <span id="tax_amount"></span>
+                                                    </th>
+                                                    <th class="text-start text-white">
+                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                        <span id="net_total"></span>
+                                                    </th>
+                                                    <th class="text-start text-white">
+                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                        <span id="paid"></span>
+                                                    </th>
+                                                    <th class="text-start text-white">
+                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                        <span id="due"></span>
+                                                    </th>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -130,7 +129,6 @@
     </div>
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script>
@@ -150,29 +148,33 @@
         setBranches();
     @endif
 
-    function setSuppliers(){
+    // Set accounts in payment and payment edit form
+    function setAdmin(){
         $.ajax({
-            url:"{{route('purchases.get.all.supplier')}}",
+            url:"{{route('expanses.all.admins')}}",
+            async:true,
             type:'get',
-            success:function(suppliers){
-                $.each(suppliers, function(key, val){
-                    $('#supplier_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
+            dataType: 'json',
+            success:function(admins){
+                $.each(admins, function (key, admin) {
+                    var prefix = admin.prefix ? admin.prefix : '';
+                    var last_name = admin.last_name ? admin.last_name : '';
+                    $('#admin_id').append('<option value="'+admin.id+'">'+ admin.name+' '+last_name+'</option>');
                 });
             }
         });
     }
-    setSuppliers();
+    setAdmin();
 
     var table = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,
         aaSorting: [[3, 'asc']],
         "ajax": {
-            "url": "{{ route('reports.product.purchases.index') }}",
+            "url": "{{ route('reports.expenses.index') }}",
             "data": function(d) {
-                d.product_id = $('#product_id').val();
                 d.branch_id = $('#branch_id').val();
-                d.supplier_id = $('#supplier_id').val();
+                d.admin_id = $('#admin_id').val();
                 d.date_range = $('#date_range').val();
             }
         },
@@ -182,22 +184,25 @@
             "searchable": false
         }],
         columns: [
-            {data: 'product', name: 'product'},
-            {data: 'sku', name: 'sku'},
-            {data: 'supplier_name', name: 'supplier_name'},
-            {data: 'invoice_id', name: 'invoice_id'},
-            {data: 'date', name: 'date'},
-            {data: 'qty', name: 'qty'},
-            {data: 'net_unit_cost', name: 'net_unit_cost'},
-            {data: 'subtotal', name: 'subtotal'},
+            { data: 'date', name: 'date' },
+            { data: 'invoice_id', name: 'invoice_id'},
+            { data: 'from', name: 'from'},
+            { data: 'user_name', name: 'user_name' },
+            { data: 'payment_status', name: 'payment_status' },
+            { data: 'tax_percent', name: 'tax_percent' },
+            { data: 'net_total', name: 'net_total' },
+            { data: 'paid', name: 'paid' },
+            { data: 'due', name: 'due' },
         ],
         fnDrawCallback: function() {
-            var total_qty = sum_table_col($('.data_tbl'), 'qty');
-            $('#total_qty').text(parseFloat(total_qty).toFixed(2));
-            var total_unit_cost = sum_table_col($('.data_tbl'), 'net_unit_cost');
-            $('#total_unit_cost').text(parseFloat(total_unit_cost).toFixed(2));
-            var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
-            $('#total_subtotal').text(parseFloat(total_subtotal).toFixed(2));
+            var tax_amount = sum_table_col($('.data_tbl'), 'tax_amount');
+            $('#tax_amount').text(parseFloat(tax_amount).toFixed(2));
+            var net_total = sum_table_col($('.data_tbl'), 'net_total');
+            $('#net_total').text(parseFloat(net_total).toFixed(2));
+            var paid = sum_table_col($('.data_tbl'), 'paid');
+            $('#paid').text(parseFloat(paid).toFixed(2));
+            var due = sum_table_col($('.data_tbl'), 'due');
+            $('#due').text(parseFloat(paid).toFixed(2));
         },
     });
 
@@ -216,21 +221,16 @@
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function () {
         table.ajax.reload();
+        getAdjustmentAmounts();
     });
 
     //Submit filter form by date-range field blur 
     $(document).on('blur', '.submit_able_input', function () {
         setTimeout(function() {
             table.ajax.reload();
+            getAdjustmentAmounts();
         }, 500);
     });
-
-    //Submit filter form by date-range field blur 
-    $(document).on('click', '#search_product', function () {
-        $(this).val('');
-        $('#product_id').val('');
-        table.ajax.reload();
-    })
 
     //Submit filter form by date-range apply button
     $(document).on('click', '.applyBtn', function () {
@@ -238,53 +238,6 @@
             $('.submit_able_input').addClass('.form-control:focus');
             $('.submit_able_input').blur();
         }, 500);
-    });
-
-    $('#search_product').on('input', function () {
-        $('.search_result').hide();
-        $('#list').empty();
-        var product_name = $(this).val();
-        if (product_name === '') {
-            $('.search_result').hide();
-            $('#product_id').val('');
-            $('#variant_id').val('');
-            table.ajax.reload();
-            return;
-        }
-
-        $.ajax({
-            url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
-            async:true,
-            type:'get',
-            success:function(data){
-                if (!$.isEmptyObject(data.noResult)) {
-                    $('.search_result').hide();
-                }else{
-                    $('.search_result').show();
-                    $('#list').html(data);
-                }
-            }
-        });
-    });
-
-    $(document).on('click', '#select_product', function (e) {
-        e.preventDefault();
-        var product_name = $(this).html();
-        $('#search_product').val(product_name.trim());
-        var product_id = $(this).data('p_id');
-        var variant_id = $(this).data('v_id');
-        $('#product_id').val(product_id);
-        $('#variant_id').val(variant_id);
-        $('.search_result').hide();
-        table.ajax.reload();
-    });
-
-    $('body').keyup(function(e){
-        if (e.keyCode == 13 || e.keyCode == 9){  
-            $(".selectProduct").click();
-            $('.search_result').hide();
-            $('#list').empty();
-        }
     });
 </script>
 
@@ -306,7 +259,8 @@
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
                 'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
+                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')
+                ],
             }
         });
     });

@@ -421,29 +421,6 @@
             });
         });
             
-        // //data delete by ajax
-        // $(document).on('click','#delete_payment',function(e) {
-        //     e.preventDefault();
-        //     $.confirm({
-        //         'title': 'Delete Confirmation',
-        //         'message': 'You are about to delete this item. <br />It cannot be restored at a later time! Continue?',
-        //         'buttons': {
-        //             'Yes': {
-        //                 'class': 'yes',
-        //                 'action': function() {
-        //                     console.log('Submitted');
-        //                 }
-        //             },
-        //             'No': {
-        //                 'class': 'no',
-        //                 // 'action': function() {
-        //                 //     console.log('Submitted');
-        //                 // } // Nothing to do in this case. You can as well omit the action property.
-        //             }
-        //         }
-        //     });
-        // });
-
         $(document).on('submit', '#payment_deleted_form',function(e){
             e.preventDefault();
             var url = $(this).attr('action');

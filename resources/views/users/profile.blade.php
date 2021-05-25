@@ -11,7 +11,7 @@
             <section class="mt-5">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-8 pe-1">
                             <div class="form_element m-0 mt-4">
                                 <div class="section-header">
                                     <div class="col-md-12">

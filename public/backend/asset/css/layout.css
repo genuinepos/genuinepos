@@ -203,8 +203,8 @@ li.user_info span a {
 ul.dropdown-menu.dropdown__main__menu.show li a {
     color: var(--title-color);
     white-space: normal;
-    font-size: 13px;
-    line-height: 16px;
+    font-size: 11px;
+    line-height: 13px;
 }
 
 ul.dropdown-menu.dropdown__main__menu.show {
@@ -218,7 +218,7 @@ ul.dropdown-menu.dropdown__main__menu.show li {
 }
 
 span.dropdown__icon {
-    font-size: 25px;
+    font-size: 16px;
     border: 1px solid #a5aaad;
     padding: 6px;
     border-radius: 5px;

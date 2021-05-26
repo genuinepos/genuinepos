@@ -218,11 +218,10 @@
                                                     <label for="inputEmail3" class="col-2"><span
                                                             class="text-danger">*</span> <b>Description :</b>  </label>
                                                     <div class="col-10">
-                                                        <textarea name="filed05" id="txt_editor" cols="50" rows="5" tabindex="4" style="display: none; width: 50%; height: 160px;"></textarea>
+                                                        <textarea name="filed05" id="textEditor" cols="50" rows="5" tabindex="4" style="display: none; width: 50%; height: 160px;"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>

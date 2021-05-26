@@ -308,6 +308,7 @@ class POSController extends Controller
             'customer',
             'branch',
             'branch.add_sale_invoice_layout',
+            'branch.pos_sale_invoice_layout',
             'sale_products',
             'sale_products.product',
             'sale_products.product.warranty',

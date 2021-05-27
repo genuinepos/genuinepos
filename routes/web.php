@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('routes', function () {
+    if (env('APP_DEBUG') === true) {
+        Artisan::call('route:list --columns=Method,URI,Name,Action');
+        return '<pre>' . Artisan::output() . '</pre>';
+    } else {
+        echo '<h1>Sorry! It works only in debug mode</h1>';
+        return null;
+    }
+});
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -324,7 +334,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::post('return/payment/update/{paymentId}', 'SaleController@returnPaymentUpdate')->name('sales.return.payment.update');
 
     Route::get('add/product/modal/view', 'SaleController@addProductModalVeiw')->name('sales.add.product.modal.view');
-    Route::get('get/all/sub/category/{categoryId}','SaleController@getAllSubCategory');
+    Route::get('get/all/sub/category/{categoryId}', 'SaleController@getAllSubCategory');
     Route::post('add/product', 'SaleController@addProduct')->name('sales.add.product');
     Route::get('get/recent/product/{branch_id}/{warehouse_id}/{product_id}', 'SaleController@getRecentProduct');
 

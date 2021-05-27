@@ -138,7 +138,7 @@
                         </div>
 
                         <div class="col-md-6 col-12">
-                            <li>
+                            <li class="{{request()->is('hrm*') ? "menu_active" : ''}}">
                                 <a href="{{ route('hrm.leave.type') }}" class=""><img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}"></a>
                             </li>
                             <span class="menu-title-t">HRM</span>

@@ -1,5 +1,17 @@
 @extends('layout.master')
 @push('stylesheets')
+    <style>
+        .top-menu-area ul li {
+            display: inline-block;
+            margin-right: 3px;
+        }
+
+        .top-menu-area a {
+            border: 1px solid lightgray;
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+    </style>
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -9,22 +21,57 @@
                     <div class="main__content">
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
-                            <div class="top-menu-area">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="top-menu-area">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <a href="" class="text-dark text-muted"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
+                                            </li>
 
-                            </div>
-                                <ul class="list-unstyled">
-                                    <li></li>
-                                </ul>
-                                <div class="row no-gutters">
-                                    <div class="col-md-2">
-                                         <a href="{{ route('hrm.leave.type') }}" class="text-danger"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
+                                            <li>
+                                                <a href="{{ route('hrm.leave.type') }}" class="text-primary"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.leave') }}" class="text-dark text-muted"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.attendance.shift') }}" class="text-dark text-muted"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.attendance') }}" class="text-dark text-muted"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.allowance') }}" class="text-dark text-muted"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.payroll.index') }}" class="text-dark text-muted"><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.holidays') }}" class="text-dark text-muted"><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.departments') }}" class="text-dark text-muted"><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-sliders-h"></i> <b>@lang('menu.hrm_settings')</b></a>
+                                            </li>
+                                        </ul>
                                     </div>
-
-                                    <div class="col-md-1">
-                                        <a href="{{ route('hrm.leave') }}" class="text-dark"><i class="fas fa-th-large"></i> <b>@lang('menu.leave')</b></a>
-                                   </div>
                                 </div>
-                            
+                            </div>
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->

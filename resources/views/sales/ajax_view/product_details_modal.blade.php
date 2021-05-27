@@ -52,8 +52,7 @@
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
                             <li><strong>Date : </strong>{{ $sale->date . ' ' . $sale->time }}</li>
-                            <li><strong>Invoice ID : </strong> {{ $sale->invoice_id }}
-                            </li>
+                            <li><strong>Invoice ID : </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>Sale Status : </strong>
                                 @if ($sale->status == 1)
                                     <spna class="badge bg-success">Final</spna>
@@ -64,18 +63,16 @@
                                 @endif
                             </li>
                             <li><strong>Payment Status : </strong>
-                                <span class="payment_status">
-                                    @php
-                                        $payable = $sale->total_payable_amount - $sale->sale_return_amount;
-                                    @endphp
-                                    @if ($sale->due <= 0) {
-                                        <span class="badge bg-success">Paid</span>
-                                    @elseif ($sale->due > 0 && $sale->due < $payable) 
-                                        <span class="badge bg-primary text-white">Partial</span>
-                                    @elseif ($payable == $sale->due)
-                                        <span class="badge bg-danger text-white">Due</span>
-                                    @endif
-                                </span>
+                                @php
+                                    $payable = $sale->total_payable_amount - $sale->sale_return_amount;
+                                @endphp
+                                @if ($sale->due <= 0) 
+                                    <span class="badge bg-success"> Paid </span>
+                                @elseif ($sale->due > 0 && $sale->due < $payable) 
+                                    <span class="badge bg-primary text-white">Partial</span>
+                                @elseif ($payable == $sale->due)
+                                    <span class="badge bg-danger text-white">Due</span>
+                                @endif
                             </li>
                             <li><strong>Shipment Status : </strong>
                                 @if ($sale->shipment_status == null)
@@ -163,7 +160,8 @@
                             </tbody>
                         </table>
                     </div>
-                </div><br><br>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="payment_table">
@@ -229,84 +227,86 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <table class="table modal-table table-sm">
-                            <tr>
-                                <th class="text-start">Net Total Amount</th>
-                                <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                    <span class="net_total">
-                                        {{ $sale->net_total_amount }}
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-start">Order Discount</th>
-                                <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                    <span class="order_discount">
-                                        @php
-                                            $discount_type = $sale->order_discount_type == 1 ? ' (Fixed)' : '%';
-                                        @endphp
-                                        {{ $sale->order_discount_amount . $discount_type }}
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-start">Order Tax</th>
-                                <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                    <span class="order_tax">
-                                        {{ $sale->order_tax_amount . ' (' . $sale->order_tax_percent . '%)' }}
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-start">Shipment Charge</th>
-                                <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                    <span class="shipment_charge">
-                                        {{ $sale->shipment_charge }}
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-start">Grand Total</th>
-                                <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                    <span class="total_payable_amount">
-                                        {{ $sale->total_payable_amount }}
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-start">Sale Return</th>
-                                <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                    <span class="sale_return_amount">
-                                        {{ $sale->sale_return_amount }}
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-start">Total Paid</th>
-                                <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                    <span class="total_paid">
-                                        {{ $sale->paid }}
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-start">Total Due</th>
-                                <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                    <span class="total_due">
-                                        {{ $sale->due }}
-                                    </span>
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table modal-table table-sm">
+                                <tr>
+                                    <th class="text-start">Net Total Amount</th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        <span class="net_total">
+                                            {{ $sale->net_total_amount }}
+                                        </span>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <th class="text-start">Order Discount</th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        <span class="order_discount">
+                                            @php
+                                                $discount_type = $sale->order_discount_type == 1 ? ' (Fixed)' : '%';
+                                            @endphp
+                                            {{ $sale->order_discount_amount . $discount_type }}
+                                        </span>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <th class="text-start">Order Tax</th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        <span class="order_tax">
+                                            {{ $sale->order_tax_amount . ' (' . $sale->order_tax_percent . '%)' }}
+                                        </span>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <th class="text-start">Shipment Charge</th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        <span class="shipment_charge">
+                                            {{ $sale->shipment_charge }}
+                                        </span>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <th class="text-start">Grand Total</th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        <span class="total_payable_amount">
+                                            {{ $sale->total_payable_amount }}
+                                        </span>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <th class="text-start">Sale Return</th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        <span class="sale_return_amount">
+                                            {{ $sale->sale_return_amount }}
+                                        </span>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <th class="text-start">Total Paid</th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        <span class="total_paid">
+                                            {{ $sale->paid }}
+                                        </span>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <th class="text-start">Total Due</th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        <span class="total_due">
+                                            {{ $sale->due }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                </div> <br> <br>
+                </div> 
                 <hr class="p-0 m-0">
                 <div class="row">
                     <div class="col-md-6">
@@ -514,11 +514,6 @@
                                         {{ $sale_product->product->name }}
                                         @if ($sale_product->variant)
                                             -{{ $sale_product->variant->variant_name }}
-                                        @endif
-                                        @if ($sale_product->variant)
-                                            ({{ $sale_product->variant->variant_code }})
-                                        @else
-                                            ({{ $sale_product->product->product_code }})
                                         @endif
                                         {!! $sale->branch->add_sale_invoice_layout->product_imei == 1 ? '<br><small class="text-muted">' . ($sale_product->description == 'null' ? '' : $sale_product->description) . '</small>' : '' !!}
                                     </td>
@@ -1086,8 +1081,7 @@
                     @endfor
                 @endif
 
-                <div style=" {{ $defaultLayout->is_header_less == 1 ? 'margin-top:' . $defaultLayout->gap_from_top : '' }}  "
-                    class="purchase_and_deal_info pt-3">
+                <div class="purchase_and_deal_info pt-3">
                     <div class="row">
                         <div class="col-lg-4">
                             <ul class="list-unstyled">
@@ -1171,11 +1165,6 @@
                                         {{ $sale_product->product->name }}
                                         @if ($sale_product->variant)
                                             -{{ $sale_product->variant->variant_name }}
-                                        @endif
-                                        @if ($sale_product->variant)
-                                            ({{ $sale_product->variant->variant_code }})
-                                        @else
-                                            ({{ $sale_product->product->product_code }})
                                         @endif
                                         {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                     </td>
@@ -1791,11 +1780,7 @@
                                     @if ($sale_product->variant)
                                         -{{ $sale_product->variant->variant_name }}
                                     @endif
-                                    @if ($sale_product->variant)
-                                        ({{ $sale_product->variant->variant_code }})
-                                    @else
-                                        ({{ $sale_product->product->product_code }})
-                                    @endif
+                               
                                     {!! $sale->branch->add_sale_invoice_layout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                 </td>
                                 <td class="text-start">{{ $sale_product->unit }}</td>
@@ -2033,11 +2018,6 @@
                                     {{ $sale_product->product->name }}
                                     @if ($sale_product->variant)
                                         -{{ $sale_product->variant->variant_name }}
-                                    @endif
-                                    @if ($sale_product->variant)
-                                        ({{ $sale_product->variant->variant_code }})
-                                    @else
-                                        ({{ $sale_product->product->product_code }})
                                     @endif
                                     {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                 </td>

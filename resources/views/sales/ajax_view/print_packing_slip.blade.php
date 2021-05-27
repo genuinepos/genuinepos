@@ -32,7 +32,12 @@
                             <strong>Name : </strong>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         <li>
-                            <strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                            <strong>Address : </strong>
+                            @if ($sale->shipment_address)
+                                {{  $sale->shipment_address }}
+                            @else 
+                                {{ $sale->customer ? $sale->customer->address : '' }}
+                            @endif
                         </li>
                         <li>
                             <strong>Tax Number : </strong>{{ $sale->customer ? $sale->customer->tax_number : '' }}
@@ -74,7 +79,6 @@
                         <th class="text-start">Description</th>
                         <th class="text-start">Unit</th>
                         <th class="text-start">Quantity</th>
-                        <th class="text-start">SubTotal</th>
                     </tr>
                 </thead>
                 <thead>
@@ -83,11 +87,10 @@
                             @php
                                 $variant = $saleProduct->variant ? ' -' . $saleProduct->variant->variant_name : '';
                             @endphp
-                            <th class="text-start">{{ $loop->index + 1 }}</th>
-                            <th class="text-start"><p><b> {{ $saleProduct->product->name . $variant }}</b></p> </th>
-                            <th class="text-start">{{ $saleProduct->unit }}
-                            <th class="text-start">{{ $saleProduct->quantity }}</th>
-                            <th class="text-start">{{ $saleProduct->subtotal }}</th>
+                            <td class="text-start">{{ $loop->index + 1 }}</td>
+                            <td class="text-start"><p><b> {{ $saleProduct->product->name . $variant }}</b></p> </td>
+                            <td class="text-start">{{ $saleProduct->unit }}
+                            <td class="text-start">{{ $saleProduct->quantity }}</td>
                         </tr>
                     @endforeach
                 </thead>

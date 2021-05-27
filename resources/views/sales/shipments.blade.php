@@ -30,8 +30,9 @@
                                                     <div class="col-md-3">
                                                         <label><strong>Branch :</strong></label>
                                                         <select name="branch_id"
-                                                            class="form-control form-control-sm submit_able" id="branch_id"
+                                                            class="form-control submit_able" id="branch_id"
                                                             data-live-search="true">
+                                                            <option value="">All</option>
                                                             <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
@@ -45,14 +46,14 @@
                                                 <div class="col-md-3">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id"
-                                                        class="form-control form-control-sm selectpicker submit_able"
+                                                        class="form-control selectpicker submit_able"
                                                         id="customer_id">
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label><strong>Payment Status :</strong></label>
-                                                    <select name="payment_status" id="payment_status" class="form-control form-control-sm submit_able">
+                                                    <select name="payment_status" id="payment_status" class="form-control submit_able">
                                                         <option value="">All</option>
                                                         <option value="1">Paid</option>
                                                         <option value="2">Due</option>
@@ -64,10 +65,10 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week text-navy-blue"></i></span>
+                                                                    class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
                                                         <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control form-control-sm daterange submit_able_input"
+                                                            class="form-control daterange submit_able_input"
                                                             autocomplete="off">
                                                     </div>
                                                 </div>

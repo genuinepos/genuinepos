@@ -27,7 +27,7 @@
 
                     <div class="col-4 p-1">
                         <div class="btn-bg">
-                            <a href="" class="bg-orange function-card">
+                            <a href="" class="bg-orange function-card" id="exchange_btn" data-bs-toggle="modal" data-bs-target="#exchangeModal">
                                 <small>Exchange</small>
                                 <p>F6</p>
                             </a>

@@ -225,7 +225,6 @@
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
-
     <script>
         // Show session message by toster alert.
         @if (Session::has('successMsg'))
@@ -253,8 +252,8 @@
             }],
             columns: [
                 {data: 'action',},
-                { data: 'date', name: 'date'},
-                { data: 'invoice_id', name: 'invoice_id'},
+                {data: 'date', name: 'date'},
+                {data: 'invoice_id', name: 'invoice_id'},
                 {data: 'from', name: 'from'},
                 {data: 'customer', name: 'customer'},
                 {data: 'total_payable_amount', name: 'total_payable_amount'},
@@ -467,7 +466,6 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    console.log(data);
                     sales_table.ajax.reload();
                     toastr.success(data, 'Succeed');
                     $('.loading_button').hide();
@@ -641,12 +639,9 @@
                     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                     'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
-                        'month').endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
                     'This Year': [moment().startOf('year'), moment().endOf('year')],
-                    'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year')
-                        .subtract(1, 'year')
-                    ],
+                    'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
                 }
             });
         });

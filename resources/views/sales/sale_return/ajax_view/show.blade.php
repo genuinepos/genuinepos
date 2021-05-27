@@ -1,6 +1,6 @@
     <!-- Details Modal -->
     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-        <div class="modal-dialog modal-full-display">
+        <div class="modal-dialog col-65-modal">
           <div class="modal-content" >
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
@@ -80,26 +80,28 @@
                         </div>
                     </div>
                 </div>
-              <div class="row">
-                  <div class="col-md-6 offset-6">
-                      <table class="table tabl-sm">
-                            <tr>
-                                <th class="text-start">Net Total Amount : </th>
-                                <td class="net_total ">10000.00</td>
-                            </tr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-6">
+                        <div class="table-responsive">
+                            <table class="table modal-table tabl-sm">
+                                <tr>
+                                    <th class="text-start">Net Total Amount : </th>
+                                    <td class="net_total ">10000.00</td>
+                                </tr>
 
-                            <tr>
-                                <th class="text-start">Return Discount : </th>
-                                <td class="return_discount">400.00</td>
-                            </tr>
+                                <tr>
+                                    <th class="text-start">Return Discount : </th>
+                                    <td class="return_discount">400.00</td>
+                                </tr>
 
-                            <tr>
-                                <th class="text-start">Total Amount : </th>
-                                <td class="total_return_amount">10000.00</td>
-                            </tr>
-                      </table>
-                  </div>
-              </div>
+                                <tr>
+                                    <th class="text-start">Total Amount : </th>
+                                    <td class="total_return_amount">10000.00</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="c-btn btn_blue print_btn">Print</button>

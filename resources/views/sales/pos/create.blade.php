@@ -1,56 +1,53 @@
 @extends('layout.pos_master')
 @section('pos_content')
-        <!-- Pos Header -->
-        @include('sales.pos.partial.pos_header')
-        <!-- Pos Header End-->
-        <div class="body-wraper">
-            <div class="container-fluid">
-                <div class="pos-content">
-                    <div class="row">
-                        <div class="col-lg-9">
-                            <div class="row">
-
-                                <!-- Select Category, Brand and Product Area -->
-                                @include('sales.pos.partial.select_product_section')
-                                <!-- Select Category, Brand and Product Area -->
-
-                                <div class="col-lg-7 p-1">
-                                    <div class="cart-table">
-                                        <div class="cart-table-inner-pos">
-
-                                            <div class="tbl-head">
-                                                <ul>
-                                                    <li><a href="" class="head-tbl-icon"><span class="fas fa-calculator"></span></a></li>
-                                                    <li><a href="" class="head-tbl-icon"><span class="fas fa-phone"></span></a></li>
-                                                    <li><a href="" class="head-tbl-icon text-danger"><span class="fas fa-box"></span></a></li>
-                                                    <li><a href="" class="head-tbl-icon border-none"><span class="fas fa-plus"></span></a></li>
-                                                </ul>
-                                            </div>
-
-                                            <!-- Sale Product Table -->
-                                            @include('sales.pos.partial.sale_product_table')
-                                            <!-- Sale Product Table End -->
-
-                                            <!-- Total Item & Qty section -->
-                                            @include('sales.pos.partial.total_item_and_qty')
-                                            <!-- Total Item & Qty section End-->
+    <!-- Pos Header -->
+    @include('sales.pos.partial.pos_header')
+    <!-- Pos Header End-->
+    <div class="body-wraper">
+        <div class="container-fluid">
+            <div class="pos-content">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="row">
+                            <!-- Select Category, Brand and Product Area -->
+                            @include('sales.pos.partial.select_product_section')
+                            <!-- Select Category, Brand and Product Area -->
+                            <div class="col-lg-7 p-1">
+                                <div class="cart-table">
+                                    <div class="cart-table-inner-pos">
+                                        <div class="tbl-head">
+                                            <ul>
+                                                <li><a href="" class="head-tbl-icon"><span class="fas fa-calculator"></span></a></li>
+                                                <li><a href="" class="head-tbl-icon"><span class="fas fa-phone"></span></a></li>
+                                                <li><a href="" class="head-tbl-icon text-danger"><span class="fas fa-box"></span></a></li>
+                                                <li><a href="" class="head-tbl-icon border-none"><span class="fas fa-plus"></span></a></li>
+                                            </ul>
                                         </div>
+
+                                        <!-- Sale Product Table -->
+                                        @include('sales.pos.partial.sale_product_table')
+                                        <!-- Sale Product Table End -->
+
+                                        <!-- Total Item & Qty section -->
+                                        @include('sales.pos.partial.total_item_and_qty')
+                                        <!-- Total Item & Qty section End-->
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Pos Footer -->
-                            @include('sales.pos.partial.pos_footer')
-                            <!-- Pos Footer End -->
                         </div>
 
-                        <!-- Pos Total Sum And Buttons section -->
-                        @include('sales.pos.partial.total_sum_and_butten')
-                        <!-- Pos Total Sum And Buttons section End -->
+                        <!-- Pos Footer -->
+                        @include('sales.pos.partial.pos_footer')
+                        <!-- Pos Footer End -->
                     </div>
+
+                    <!-- Pos Total Sum And Buttons section -->
+                    @include('sales.pos.partial.total_sum_and_butten')
+                    <!-- Pos Total Sum And Buttons section End -->
                 </div>
             </div>
         </div>
+    </div>
 @endsection
 @push('js')
 <script>
@@ -600,8 +597,8 @@
 
     // Automatic remove searching product is found signal 
     setInterval(function(){
-            $('#search_product').removeClass('is-invalid');
-        }, 500); 
+        $('#search_product').removeClass('is-invalid');
+    }, 500); 
 
     setInterval(function(){
         $('#search_product').removeClass('is-valid');

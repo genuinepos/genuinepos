@@ -4,9 +4,8 @@
         .form_element {border: 1px solid #7e0d3d;}
         label {font-size: 12px !important;}
         ul.menus_unorder_list {list-style: none;float: left;width: 100%;}
-        ul.menus_unorder_list .menu_list {border: 1px solid lightgray;display: block;text-align: center;
-            background: linear-gradient(#8c0437ee, #1e000d);}
-        ul.menus_unorder_list .menu_list .menu_btn {color: white;padding: 6px 1px;display: block;}
+        ul.menus_unorder_list .menu_list {border: 1px solid lightgray;display: block;text-align: center;background: linear-gradient(#8c0437ee, #1e000d);}
+        ul.menus_unorder_list .menu_list .menu_btn {color: white;padding: 6px 1px;display: block; font-size: 11px;}
         .menu_active {background: white;color: #504d4d!important;font-weight: 700;}
     </style>
 @endpush
@@ -38,39 +37,39 @@
                                     <ul class="menus_unorder_list">
                                         <li class="menu_list">
                                             <a class="menu_btn menu_active" data-form="business_settings_form"
-                                                href="#">Business</a>
+                                                href="#">Business Settings</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="tax_settings_form" href="#">Tax</a>
+                                            <a class="menu_btn" data-form="tax_settings_form" href="#">Tax Settings</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="product_settings_form" href="#">Product</a>
+                                            <a class="menu_btn" data-form="product_settings_form" href="#">Product Settings</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="sale_settings_form" href="#">Sale</a>
+                                            <a class="menu_btn" data-form="sale_settings_form" href="#">Add Sale Settings</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="pos_settings_form" href="#">POS</a>
+                                            <a class="menu_btn" data-form="pos_settings_form" href="#">POS Settings</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="purchase_settings_form" href="#">Purchase</a>
+                                            <a class="menu_btn" data-form="purchase_settings_form" href="#">Purchase Settings</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="dashboard_settings_form" href="#">Dashboard</a>
+                                            <a class="menu_btn" data-form="dashboard_settings_form" href="#">Dashboard Settings</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="prefix_settings_form" href="#">Prefix</a>
+                                            <a class="menu_btn" data-form="prefix_settings_form" href="#">Prefix Settings</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="module_settings_form" href="#">Modules</a>
+                                            <a class="menu_btn" data-form="module_settings_form" href="#">Modules Settings</a>
                                         </li>
 
                                         <li class="menu_list">

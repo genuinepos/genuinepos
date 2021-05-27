@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
+
 Route::get('route-list', function () {
     if (env('APP_DEBUG') === true) {
         Artisan::call('route:list --columns=Method,URI,Name,Action');
@@ -696,7 +698,6 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     });
 });
 
-Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
 
 Route::get('add-admin', function () {

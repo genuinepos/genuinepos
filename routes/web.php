@@ -24,16 +24,6 @@ Route::get('route-list', function () {
     }
 });
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 //Product section route group
 Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], function () {

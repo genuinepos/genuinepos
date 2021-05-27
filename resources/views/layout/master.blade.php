@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Title -->
-    <title>Genuine POS</title>
+    <title>@yield('title') Genuine POS</title>
 
     <!-- Icon -->
     <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-   @include('layout._stylesheet')
-   @stack('stylesheets')
+    @include('layout._stylesheet')
+    @stack('stylesheets')
 
 </head>
 

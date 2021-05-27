@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
+
 Route::get('route-list', function () {
     if (env('APP_DEBUG') === true) {
         Artisan::call('route:list --columns=Method,URI,Name,Action');
@@ -24,16 +26,6 @@ Route::get('route-list', function () {
     }
 });
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 //Product section route group
 Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], function () {
@@ -706,7 +698,6 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     });
 });
 
-Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
 
 Route::get('add-admin', function () {

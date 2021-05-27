@@ -543,7 +543,9 @@ class SaleController extends Controller
         $customers = DB::table('customers')
         ->where('status', 1)->select('id', 'name', 'phone')
         ->orderBy('id', 'desc')->get();
-        return view('sales.create', compact('warehouses', 'customers'));
+
+        $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
+        return view('sales.create', compact('warehouses', 'customers', 'accounts'));
     }
 
     // Add Sale method

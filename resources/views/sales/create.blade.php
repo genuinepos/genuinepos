@@ -313,6 +313,9 @@
                                                     <div class="col-8">
                                                         <select name="account_id" class="form-control" id="account_id">
                                                             <option value="">None</option>
+                                                            @foreach ($accounts as $account)
+                                                                <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1288,19 +1291,6 @@
             document.getElementById('search_product').focus();
         });
 
-        // Set accounts in payment and payment edit form
-        function setAccount(){
-            $.ajax({
-                url:"{{route('accounting.accounts.all.form.account')}}",
-                success:function(accounts){
-                    $.each(accounts, function (key, account) {
-                        $('#account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                    });
-                    $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
-                }
-            });
-        }
-        setAccount();
 
         // Get all unite for form field
         var unites = [];
@@ -1993,5 +1983,7 @@
             productTable();
             document.getElementById('search_product').focus();
         }
+
+        $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
     </script>
 @endpush

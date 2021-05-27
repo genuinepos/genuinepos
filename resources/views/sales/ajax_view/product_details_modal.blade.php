@@ -2054,7 +2054,7 @@
                     <div class="col-md-12 text-end">
                         <h6><em>Continued To this next page....</em></h6>
                     </div>
-                </div><br><br><br>
+                </div>
             @endif
 
             {{--<div class="row">
@@ -2116,7 +2116,7 @@
                             <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                         </div>
                     </div>
-                </div><br/><br/>
+                </div>
                 
                 <div class="row">
                     <div class="col-md-6 text-center">

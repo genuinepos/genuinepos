@@ -230,7 +230,8 @@ class SaleController extends Controller
                 ->make(true);
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        return view('sales.index2', compact('branches'));
+        $customers = DB::table('customers')->get(['id', 'name', 'phone']);
+        return view('sales.index2', compact('branches', 'customers'));
     }
 
     public function show($saleId)

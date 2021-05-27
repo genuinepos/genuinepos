@@ -43,9 +43,12 @@
 
                                                 <div class="col-md-3">
                                                     <label><strong>Customer :</strong></label>
-                                                    <select name="customer_id"
-                                                        class="form-control submit_able"
-                                                        id="customer_id" autofocus>
+                                                    <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
+                                                        <option value="">All</option>
+                                                        <option value="NULL">Walk-In-Customer</option>
+                                                        @foreach ($customers as $customer)
+                                                            <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -262,17 +265,6 @@
                 {data: 'paid_status', name: 'paid_status'},
             ],
         });
-
-        function setCustomers(){
-            $.get("{{route('sales.get.all.customer')}}", function(customers) {
-                $('#customer_id').append('<option value="">All</option>');
-                $('#customer_id').append('<option value="NULL">Walk-In-Customer</option>');
-                $.each(customers, function(key, val){
-                    $('#customer_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
-                });
-            });
-        }
-        setCustomers();
 
         //Submit filter form by select input changing
         $(document).on('change', '.submit_able', function () {

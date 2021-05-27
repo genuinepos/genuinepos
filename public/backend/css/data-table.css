@@ -99,9 +99,9 @@
     transition: all 0.25s ease-in-out;
     -webkit-transition: all 0.25s ease-in-out;
     -moz-transition: all 0.25s ease-in-out;
-    padding: 0px 4px;
     height: 25px;
     margin-left: 6px;
+    padding-left: 22px;
 }
 
 .dataTables_filter input:focus {

@@ -28,7 +28,7 @@
                     <div class="col-4 p-1">
                         <div class="btn-bg">
                             <a href="" class="bg-orange function-card">
-                                <small>Challan</small>
+                                <small>Exchange</small>
                                 <p>F6</p>
                             </a>
                         </div>

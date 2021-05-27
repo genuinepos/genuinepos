@@ -27,7 +27,7 @@ class AdminAndUser extends Authenticatable
 
     public function branch()
     {
-        return $this->belongsTo(Branch::class, 'branch_id')->select(['id', 'name', 'phone', 'city', 'state', 'zip_code', 'country', 'branch_code', 'purchase_permission']);
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 
     public function department()

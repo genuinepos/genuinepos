@@ -1,7 +1,6 @@
 @extends('layout.master')
 @section('content')
 
-<br><br><br>
 {{-- @php 
     $categories=DB::table('categories')->get();
     $brands=DB::table('brands')->get();
@@ -28,10 +27,6 @@
     $recent_customer=DB::table('customers')->orderBy('id','DESC')->limit(8)->get();
     $product_qty=DB::table('products')->join('units','products.unit_id','units.id')->select('products.*','units.code_name')->orderBy('quantity','ASC')->limit(10)->get();
 @endphp
-
-
-
-
     <div class="content d-flex flex-column flex-column-fluid mt-4" id="kt_content">
         <!--begin::Subheader-->
         <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -567,181 +562,181 @@
         </div>
         <!--end::Entry-->
     </div>  --}}
-               <div class="body-woaper">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class=" border-class">
-                            <div class="main__content">
-                                <!-- =====================================================================BODY CONTENT================== -->
-                                <div class="sec-name">
-                                    <div class="name-head">
-                                        <span class="fas fa-desktop"></span>
-                                        <h5>Dashboard</h5>
-                                    </div>
-                                    <div class="search-input">
-                                        <form action="">
-                                            <div class="input-group">
-                                                <div class="form-outline col-sm-10">
-                                                    <input id="search-input" type="search" placeholder="Search" class=" rounded-start form-control search-bar" />
-                                                </div>
-                                                <button id="search-button" type="button" class="search-button col-sm-2  rounded-end">
-                                                        <i class="fas fa-search"></i>
-                                                    </button>
+        <div class="body-woaper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class=" border-class">
+                        <div class="main__content">
+                            <!-- =====================================================================BODY CONTENT================== -->
+                            <div class="sec-name">
+                                <div class="name-head">
+                                    <span class="fas fa-desktop"></span>
+                                    <h5>Dashboard</h5>
+                                </div>
+                                <div class="search-input">
+                                    <form action="">
+                                        <div class="input-group">
+                                            <div class="form-outline col-sm-10">
+                                                <input id="search-input" type="search" placeholder="Search" class=" rounded-start form-control search-bar" />
                                             </div>
-                                        </form>
-                                    </div>
+                                            <button id="search-button" type="button" class="search-button col-sm-2  rounded-end">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <!-- =========================================top section button=================== -->
-                            <div class="main-button-sec">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/chart.png" alt=""></span>
-                                                    <p>
-                                                        Analytics
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/note.png" alt=""></span>
-
-                                                    <p>
-                                                        Notes
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <span class="notify-grin">30</span>
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/user.png" alt=""></span>
-
-                                                    <p>
-                                                        User
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <span class="notify">30</span>
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/setting.png" alt=""></span>
-
-                                                    <p>
-                                                        Setting
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/task.png" alt=""></span>
-
-                                                    <p>
-                                                        Task list
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <span class="notify-grin">30</span>
-                                                <a href="" class="bar-link"> <span>
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/archive.png" alt=""></span>
-                                                    <p>
-                                                        Archive
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/contact.png" alt=""></span>
-                                                    <p>
-                                                        Contact
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <span class="notify">30</span>
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/exploer.png" alt=""></span>
-
-                                                    <p>
-                                                        Explorer
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/folder.png" alt=""></span>
-
-                                                    <p>
-                                                        Media
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/event.png" alt=""></span>
-                                                    <p>
-                                                        Event
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <span class="notify">30</span>
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/bulb.png" alt=""></span>
-                                                    <p>
-                                                        Support
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                                            <div class="switch_bar">
-                                                <a href="" class="bar-link">
-                                                    <span><img src="{{asset('public')}}/backend/asset/img/bank.png" alt=""></span>
-                                                    <p>
-                                                        Order List
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- =========================================top section button end=================== -->
-
-                            <!-- =========================================CHART===================== -->
-                            <div class="chart-section">
-                                <div class="row">
-                                    <div id="chart">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- =================================================================BODY CONTENT END================== -->
                         </div>
+                        <!-- =========================================top section button=================== -->
+                        <div class="main-button-sec">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/chart.png" alt=""></span>
+                                                <p>
+                                                    Analytics
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/note.png" alt=""></span>
+
+                                                <p>
+                                                    Notes
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <span class="notify-grin">30</span>
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/user.png" alt=""></span>
+
+                                                <p>
+                                                    User
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <span class="notify">30</span>
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/setting.png" alt=""></span>
+
+                                                <p>
+                                                    Setting
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/task.png" alt=""></span>
+
+                                                <p>
+                                                    Task list
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <span class="notify-grin">30</span>
+                                            <a href="" class="bar-link"> <span>
+                                                <span><img src="{{asset('public')}}/backend/asset/img/archive.png" alt=""></span>
+                                                <p>
+                                                    Archive
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/contact.png" alt=""></span>
+                                                <p>
+                                                    Contact
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <span class="notify">30</span>
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/exploer.png" alt=""></span>
+
+                                                <p>
+                                                    Explorer
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/folder.png" alt=""></span>
+
+                                                <p>
+                                                    Media
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/event.png" alt=""></span>
+                                                <p>
+                                                    Event
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <span class="notify">30</span>
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/bulb.png" alt=""></span>
+                                                <p>
+                                                    Support
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><img src="{{asset('public')}}/backend/asset/img/bank.png" alt=""></span>
+                                                <p>
+                                                    Order List
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- =========================================top section button end=================== -->
+
+                        <!-- =========================================CHART===================== -->
+                        <div class="chart-section">
+                            <div class="row">
+                                <div id="chart">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- =================================================================BODY CONTENT END================== -->
                     </div>
                 </div>
             </div>
+        </div>
 @endsection

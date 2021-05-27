@@ -109,97 +109,99 @@
                 
             </div><br><br>
           <div class="row">
-                <table id="" class="table modal-table table-sm custom-table">
-                    <thead>
-                        <tr class="bg-primary text-white">
-                            <th class="text-start">Product</th>
-                            <th class="text-start">Quantity</th>
-                            <th class="text-start">Unit Price Exc.Tax</th>
-                            <th class="text-start">Unit Discount</th>
-                            <th class="text-start">Unit Tax</th>
-                            <th class="text-start">Unit Price Inc.Tax</th>
-                            <th class="text-start">SubTotal</th>
-                        </tr>
-                    </thead>
-                    <tbody class="quotation_product_list">
-                        @foreach ($quotation->sale_products as $saleProduct)
-                            <tr>
-                                @php
-                                    $variant = $saleProduct->variant ? ' -' . $saleProduct->variant->variant_name : '';
-                                @endphp
-                                <td class="text-start">{{ $saleProduct->product->name . $variant }}</td>
-                                <td class="text-start">{{ $saleProduct->quantity }}</td>
-                                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_price_exc_tax }}
-                                </td>
-                                @php
-                                    $DiscountType = $saleProduct->unit_discount_type == 1 ? ' (Fixed)' : ' (' . $saleProduct->unit_discount . '%)';
-                                @endphp
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_discount_amount . $DiscountType }}
-                                </td>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_tax_amount . ' (' . $saleProduct->unit_tax_percent . '%)' }}
-                                </td>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_price_inc_tax }}
-                                </td>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->subtotal }}
-                                </td>
+                <div class="table-responsive">
+                    <table id="" class="table modal-table table-sm">
+                        <thead>
+                            <tr class="bg-primary text-white">
+                                <th class="text-start">Product</th>
+                                <th class="text-start">Quantity</th>
+                                <th class="text-start">Unit Price Exc.Tax</th>
+                                <th class="text-start">Unit Discount</th>
+                                <th class="text-start">Unit Tax</th>
+                                <th class="text-start">Unit Price Inc.Tax</th>
+                                <th class="text-start">SubTotal</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-          </div><br><br>
+                        </thead>
+                        <tbody class="quotation_product_list">
+                            @foreach ($quotation->sale_products as $saleProduct)
+                                <tr>
+                                    @php
+                                        $variant = $saleProduct->variant ? ' -' . $saleProduct->variant->variant_name : '';
+                                    @endphp
+                                    <td class="text-start">{{ $saleProduct->product->name . $variant }}</td>
+                                    <td class="text-start">{{ $saleProduct->quantity }}</td>
+                                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_price_exc_tax }}
+                                    </td>
+                                    @php
+                                        $DiscountType = $saleProduct->unit_discount_type == 1 ? ' (Fixed)' : ' (' . $saleProduct->unit_discount . '%)';
+                                    @endphp
+                                    <td class="text-start">
+                                        {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_discount_amount . $DiscountType }}
+                                    </td>
+                                    <td class="text-start">
+                                        {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_tax_amount . ' (' . $saleProduct->unit_tax_percent . '%)' }}
+                                    </td>
+                                    <td class="text-start">
+                                        {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_price_inc_tax }}
+                                    </td>
+                                    <td class="text-start">
+                                        {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->subtotal }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+          </div>
+
           <div class="row">
-              <div class="col-md-6">
-                  
+              <div class="col-md-6 offset-md-6">
+                  <div class="table-responsive">
+                    <table class="table modal-table table-sm">
+                        <tr>
+                            <th class="text-start">Net Total Amount</th>
+                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    {{ $quotation->net_total_amount }}
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <th class="text-start">Order Discount</th>
+                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                @php
+                                    $discount_type = $quotation->order_discount_type == 1 ? ' (Fixed)' : '%';
+                                @endphp
+                                {{ $quotation->order_discount_amount . $discount_type }}
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <th class="text-start">Order Tax</th>
+                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    {{ $quotation->order_tax_amount . ' (' . $quotation->order_tax_percent . '%)' }}
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <th class="text-start">Shipment Charge</th>
+                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                              {{ $quotation->shipment_charge }}
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <th class="text-start">Grand Total</th>
+                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                <span class="total_payable_amount">
+                                    {{ $quotation->total_payable_amount }}
+                                </span>
+                            </td>
+                        </tr>
+                      </table>
+                  </div>
               </div>
-              <div class="col-md-6">
-                  <table class="table table-sm">
-                    <tr>
-                        <th class="text-start">Net Total Amount</th>
-                        <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                {{ $quotation->net_total_amount }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-start">Order Discount</th>
-                        <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                            @php
-                                $discount_type = $quotation->order_discount_type == 1 ? ' (Fixed)' : '%';
-                            @endphp
-                            {{ $quotation->order_discount_amount . $discount_type }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-start">Order Tax</th>
-                        <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                {{ $quotation->order_tax_amount . ' (' . $quotation->order_tax_percent . '%)' }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-start">Shipment Charge</th>
-                        <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                          {{ $quotation->shipment_charge }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-start">Grand Total</th>
-                        <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                            <span class="total_payable_amount">
-                                {{ $quotation->total_payable_amount }}
-                            </span>
-                        </td>
-                    </tr>
-                  </table>
-              </div>
-          </div> <br> <br>
-          <hr class="p-0 m-0 pb-1">
+          </div> 
+          <hr class="p-0 m-0">
           <div class="row">
             <div class="col-md-6">
                 <div class="details_area">

@@ -157,11 +157,7 @@
                                         @if ($sale_product->variant)
                                             -{{ $sale_product->variant->variant_name }}
                                         @endif
-                                        @if ($sale_product->variant)
-                                            ({{ $sale_product->variant->variant_code }})
-                                        @else
-                                            ({{ $sale_product->product->product_code }})
-                                        @endif
+                                      
                                         {!! $sale->branch->add_sale_invoice_layout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                     </td>
                                     <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) </td>
@@ -913,11 +909,6 @@
                                         {{ $sale_product->product->name }}
                                         @if ($sale_product->variant)
                                             -{{ $sale_product->variant->variant_name }}
-                                        @endif
-                                        @if ($sale_product->variant)
-                                            ({{ $sale_product->variant->variant_code }})
-                                        @else
-                                            ({{ $sale_product->product->product_code }})
                                         @endif
                                         {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                     </td>

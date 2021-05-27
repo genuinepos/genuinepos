@@ -67,7 +67,6 @@ ul#search_box {
 
 
 /* ====================================================main button================================= */
-
 .switch_bar {
     text-align: center;
     border: 1px solid #ccc5c5;
@@ -78,6 +77,12 @@ ul#search_box {
     box-shadow: inset 0 0 5px#ddd;
     height: 77px;
     width: 100%;
+    font-size: 42px;
+}
+
+.switch_bar i {
+    margin: 11px;
+    color: black;
 }
 
 .switch_bar img {
@@ -1309,3 +1314,4 @@ li.dp-link {
 .input_i {
     font-size: 12px;
 }
+

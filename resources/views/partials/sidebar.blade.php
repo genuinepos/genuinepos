@@ -138,8 +138,8 @@
                         </div>
 
                         <div class="col-md-6 col-12">
-                            <li data-menu="settingmenu">
-                                <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}"></a>
+                            <li>
+                                <a href="{{ route('hrm.leave.type') }}" class=""><img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}"></a>
                             </li>
                             <span class="menu-title-t">HRM</span>
                         </div>
@@ -1029,6 +1029,38 @@
                 </div>
             </div>
             <!-- ===========================================FILE SIDEBAR=================== -->
+
+             <!-- ===========================================Hrm sub-menu=================== -->
+             {{-- <div class="sub-menu_t" id="hrm">
+                <div class="sub-menu-width">
+                    <div class="model__close">
+                        <button type="button" class="btn-close close-model"></button>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            @if (auth()->user()->permission->hrms['leave_type'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('hrm.leave.type') }}" class="bar-link">
+                                            <span><i class="fas fa-th-large"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.leave_type')</p>
+                                </div>
+                            @endif
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('hrm.leave.type') }}" class="bar-link">
+                                            <span><i class="fas fa-th-large"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.leave_type')</p>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+            <!-- ===========================================Hrm sub-menu=================== -->
         </div>
     </div>
 </div>

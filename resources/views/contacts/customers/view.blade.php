@@ -71,7 +71,7 @@
 
                                 <div class="col-md-3">
                                     <ul class="list-unstyled">
-                                        <li><strong><i class="fas fa-info"></i> Tex Number</strong></li>
+                                        <li><strong><i class="fas fa-info"></i> Tax Number</strong></li>
                                         <li><span class="tax_number">Tx0881087555558</span></li>
                                     </ul>
                                 </div>

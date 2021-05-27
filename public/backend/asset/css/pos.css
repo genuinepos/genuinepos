@@ -744,40 +744,10 @@ span.text-highlight {
     font-size: 11px!important;
 }
 
-.big_field{
-    height: 52px!important;
-    font-size: 41px!important;
-    font-weight: 600!important;
-}
-
-.input-box {
-    width: 100%;
-    border: 1px solid #85ef85;
-    padding: 0px 3px;
-    padding-bottom: 11px;
-    border-radius: 5px;
-}
-
-.input-box-2 {
-    width: 100%;
-    border: 1px solid #0a78f5;
-    padding: 0px 3px;
-    padding-bottom: 11px;
-    border-radius: 5px;
-}
-
-.input-box-3 {
-    width: 100%;
-    border: 1px solid #f00a29;
-    padding: 0px 3px;
-    padding-bottom: 11px;
-    border-radius: 5px;
-}
-
-.input-box-4 {
-    width: 100%;
-    border: 1px solid black;
-    padding: 0px 3px;
-    padding-bottom: 11px;
-    border-radius: 5px;
-}
+.big_field{height: 52px!important;font-size: 41px!important;font-weight: 600!important;}
+.input-box {width: 100%;border: 1px solid #85ef85;padding: 0px 3px;padding-bottom: 11px;border-radius: 5px;}
+.input-box-2 {width: 100%;border: 1px solid #0a78f5;padding: 0px 3px;padding-bottom: 11px;border-radius: 5px;}
+.input-box-3 {width: 100%;border: 1px solid #f00a29;padding: 0px 3px;padding-bottom: 11px;border-radius: 5px;}
+.input-box-4 {width: 100%;border: 1px solid black;padding: 0px 3px;padding-bottom: 11px;border-radius: 5px;}
+.set-height2 {max-height: 300px;overflow: scroll;}
+.preloader_area{position: relative;}

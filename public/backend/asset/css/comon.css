@@ -211,14 +211,14 @@ a.action-btn {
 /* ========================================================top button================ */
 
 .top-icon {
-    border: #862358 3px solid;
+    border: #862358 2px solid;
     margin: 0px 7px;
     background: #5c1b3e;
     border-radius: 4px;
 }
 
 .top-icon:hover {
-    border: 3px solid #1f1e1e;
+    border: 2px solid #ffffff;
 }
 
 
@@ -405,7 +405,11 @@ tr.clickable_row {
 
 .data_preloader {
     text-align: center;
-    font-size: 17px;
+    font-size: 12px;
+}
+
+.data_preloader h6 {
+    font-weight: 600;
 }
 
 .widget_content {

@@ -1,0 +1,61 @@
+<div class="invoice_info">
+    <div class="row">
+        <ul class="list-unstyled">
+            <li><b>Date :</b> {{ $sale->date.' '.$sale->time }}</li>
+            <li><b>Invoice No :</b> {{ $sale->invoice_id }}</li>
+            <li><b>Customer :</b> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</li>
+        </ul>
+    </div>
+</div>
+<hr class="m-1">
+<div class="sold_items_table">
+    <p><b>Item List</b></p>
+    <div class="set-height2">
+        <div class="table-responsive">
+            <table class="table data__table modal-table table-sm sale-product-table">
+                <thead>
+                    <tr>
+                        <th scope="col">SL</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Sold Qty</th>
+                        <th scope="col">Unit</th>
+                        <th scope="col">Price.Inc.Tax</th>
+                        <th scope="col">Subtotal</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    @foreach ($sale->sale_products as $item)
+                        <tr>
+                            <td class="serial text-start">1</td>
+                            <td class="text-start">
+                                <a class="product-name" href="#">{{ $item->product->name }} {{$item->variant ? $item->variant->variant_name : ''}}</a>
+                                <input value="{{ $item->product_id }}" type="hidden" class="productId-{{ $item->product_id }}" id = "product_id" name="product_ids[]">
+                                <input input value="{{$item->product_variant_id  ? $item->product_variant_id  : 'noid'}}" type="hidden" class="variantId-{{$item->variant_id ? $item->variant_id : ''}}" id="variant_id" name="variant_ids[]" value="{{$item->product_variant_id  ? $item->product_variant_id  : ''}}">
+                                <input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="{{ bcadd($item->tax_percent, 0, 2) }}">
+                                <input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="{{ bcadd($item->tax_amount, 0, 2) }}">
+                            </td>
+                        
+                            <td>
+                                <input value="{{ bcadd($item->quantity, 0, 2) }}" required name="sold_quantities[]" type="number" step="any" class="form-control text-center" id="sold_quantity">
+                            </td>
+                        
+                            <td>
+                                <b><span class="sold_unit">{{ $item->product->unit->name }}</span></b>
+                            </td>
+                        
+                            <td>
+                                <input name="sold_prices_inc_tax[]" type="hidden" id="sold_price_inc_tax" value="{{ bcadd($item->unit_price_inc_tax, 0, 2) }}">
+                                <b><span class="sold_unit_price_inc_tax">{{ bcadd($item->unit_price_inc_tax, 0, 2) }}</span> </b>
+                            </td>
+                            <td>
+                                <input value="{{ bcadd($item->subtotal, 0, 2) }}" name="sold_subtotals[]" type="hidden" id="sold_subtotal">
+                                <b><span class="sold_subtotal">{{ bcadd($item->subtotal, 0, 2) }}</span></b>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

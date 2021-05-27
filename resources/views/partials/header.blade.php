@@ -12,8 +12,8 @@
             <div class="notify-menu">
                 <div class="head__content__sec">
                     <ul class="head__cn">
+                        <li class="top-icon ms-3"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
                         <li class="dropdown dp__top top-icon">
-
                             <span class="notify">30</span>
                             <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown">
                                 <span class="fas fa-exclamation-circle"></span>
@@ -42,6 +42,7 @@
                                 <a href="" class="btn__sub">View All</a>
                             </ul>
                         </li>
+
                         <li class="dropdown dp__top">
                             <span class="notify-grin">30</span>
                             <a href="" class="top-icon" id="dropdownMenuButton1" data-bs-toggle="dropdown">
@@ -94,7 +95,7 @@
                                 <span class="fas fa-user"></span>
                             </a>
 
-                            <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton1">
+                            <ul class="dropdown-menu dropdown__main__menu" aria-labelledby="dropdownMenuButton1">
                                 <li>
                                     <i class="fas fa-eye text-primary"></i><a class="dropdown-item d-block" href="#">View Profile</a>
                                 </li>

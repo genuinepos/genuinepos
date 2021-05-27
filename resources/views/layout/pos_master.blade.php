@@ -478,12 +478,9 @@
                                 <input type="text" class="form-control big_field text-info" id="modal_change_amount" value="0">
                             </div>
                         </div>
-
-
                     </div>
 
                     <div class="form-group row mt-1">
-
                         <div class="col-md-6">
                             <div class="input-box bg-success">
                                 <label class="text-white"><strong>Cash Receive :</strong> <span class="text-danger">*</span></label>
@@ -511,6 +508,47 @@
         </div>
     </div>
     <!--Quick Cash receive modal End-->
+
+    <!-- Exchange modal -->
+    <div class="modal fade" id="exchangeModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-60-modal" role="document">
+            <div class="modal-content" id="exchange_body">
+                <div class="modal-header">
+                    <h6 class="modal-title">Exchange</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-area">
+                        <form id="search_inv_form" action="" method="GET">
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <input required type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Search invoice">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="btn_30_blue m-0">
+                                        <a href="#"><i class="fas fa-plus-square"></i> Search</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="preloader_area">
+                            <div class="data_preloader" id="get_inv_preloader">
+                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2" id="invoice_description">
+                        <h6>Comming Soon...</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Exchange modal End-->
 
     <!--Data delete form-->
     <form id="deleted_form" action="" method="post">

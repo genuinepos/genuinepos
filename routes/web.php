@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 
-Route::get('routes', function () {
+Route::get('route-list', function () {
     if (env('APP_DEBUG') === true) {
         Artisan::call('route:list --columns=Method,URI,Name,Action');
         return '<pre>' . Artisan::output() . '</pre>';

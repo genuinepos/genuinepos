@@ -42,14 +42,44 @@
             color: #FFF;
         }
 
-        .card-counter.success {
-            background: #DCE35B;
+        .card-counter.danger {
+            background: #000428;
             /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #45B649, #DCE35B);
+            background: -webkit-linear-gradient(to left, #004e92, #000428);
             /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to right, #45B649, #DCE35B);
+            background: linear-gradient(to left, #004e92, #000428);
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+        }
+
+        .card-counter.success {
+            background: #ad5389;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to left, #3c1053, #ad5389);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to left, #3c1053, #ad5389);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+        }
+
+        .card-counter.blue {
+            background: #44A08D;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to left, #093637, #44A08D);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to left, #093637, #44A08D);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+
+        .card-counter.green {
+            background: #44A08D;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to left, #093637, #44A08D);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to left, #093637, #44A08D);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
         }
 
@@ -63,16 +93,7 @@
 
         }
 
-        .card-counter.danger {
-            background: #B24592;
-            /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #F15F79, #B24592);
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to right, #F15F79, #B24592);
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-
-        }
 
         .card-counter i {
             font-size: 3.5em;
@@ -131,122 +152,102 @@
                     {{-- <div class="row mt-4">
                         <div id="chart1" style="width:100%; height:350px;"></div>
                     </div> --}}
-
-                    {{-- Card --}}
-
                     <div class="row mt-2">
                         <div class="col-md-3">
                             <div class="card-counter primary d-flex justify-content-around align-content-center">
                                 <div class="icon">
-                                    <i class="fas fa-database"></i>
+                                    <i class="fas fa-receipt"></i>
                                 </div>
                                 <div class="numbers px-1">
-                                    <h3 class="sub-title">Total Cost</h3>
-                                    <h1 class="title">10,324324</h1>
+                                    <h3 class="sub-title">Total Purchase</h3>
+                                    <h1 class="title">10,324</h1>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card-counter success d-flex justify-content-around align-content-center">
                                 <div class="icon">
-                                    <i class="fas fa-database"></i>
+                                    <i class="fas fa-money-check"></i>
                                 </div>
                                 <div class="numbers px-1">
-                                    <h3 class="sub-title">Total Cost</h3>
-                                    <h1 class="title">10,324324</h1>
+                                    <h3 class="sub-title">Total Sale</h3>
+                                    <h1 class="title">11,4324</h1>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card-counter info d-flex justify-content-around align-content-center">
                                 <div class="icon">
-                                    <i class="fas fa-database"></i>
+                                    <i class="fas fa-clipboard"></i>
                                 </div>
                                 <div class="numbers px-1">
-                                    <h3 class="sub-title">Total Cost</h3>
-                                    <h1 class="title">10,324324</h1>
+                                    <h3 class="sub-title">Purchase Due</h3>
+                                    <h1 class="title">4324</h1>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card-counter danger d-flex justify-content-around align-content-center">
                                 <div class="icon">
-                                    <i class="fas fa-database"></i>
+                                    <i class="fas fa-file-invoice"></i>
                                 </div>
                                 <div class="numbers px-1">
-                                    <h3 class="sub-title">Total Cost</h3>
-                                    <h1 class="title">10,324324</h1>
+                                    <h3 class="sub-title">Invoice Due</h3>
+                                    <h1 class="title">9234</h1>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card-counter info d-flex justify-content-around align-content-center">
+                                <div class="icon">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                                <div class="numbers px-1">
+                                    <h3 class="sub-title">Expense</h3>
+                                    <h1 class="title">13,3224</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card-counter danger d-flex justify-content-around align-content-center">
+                                <div class="icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="numbers px-1">
+                                    <h3 class="sub-title">Total User</h3>
+                                    <h1 class="title">250</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card-counter blue d-flex justify-content-around align-content-center">
+                                <div class="icon">
+                                    <i class="fas fa-list"></i>
+                                </div>
+                                <div class="numbers px-1">
+                                    <h3 class="sub-title">Total Products</h3>
+                                    <h1 class="title">150</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card-counter success d-flex justify-content-around align-content-center">
+                                <div class="icon">
+                                    <i class="fas fa-balance-scale"></i>
+                                </div>
+                                <div class="numbers px-1">
+                                    <h3 class="sub-title">Total Adjustment</h3>
+                                    <h1 class="title">2580
+                                    </h1>
                                 </div>
                             </div>
                         </div>
 
                     </div>
 
-                    {{-- <div class="row row-custom">
-                        <div class="col-md-3 col-sm-6 col-xs-12 col-custom">
-                            <div class="info-box info-box-new-style">
-                                <span class="info-box-icon bg-aqua">
-                                    <i class="fas fa-user"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Total purchase</span>
-                                    <span class="info-box-number total_purchase">$ 235,656.00</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-3 col-sm-6 col-xs-12 col-custom">
-                            <div class="info-box info-box-new-style">
-                                <span class="info-box-icon bg-aqua">
-                                    <i class="fas fa-search-dollar"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Total Sales</span>
-                                    <span class="info-box-number total_sell">$ 21,527.79</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-3 col-sm-6 col-xs-12 col-custom">
-                            <div class="info-box info-box-new-style">
-                                <span class="info-box-icon bg-yellow">
-                                    <i class="fa fa-dollar"></i>
-                                    <i class="fa fa-exclamation"></i>
-                                </span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Purchase due</span>
-                                    <span class="info-box-number purchase_due">$ 235,656.00</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-
-                        <!-- fix for small devices only -->
-                        <!-- <div class="clearfix visible-sm-block"></div> -->
-                        <div class="col-md-3 col-sm-6 col-xs-12 col-custom">
-                            <div class="info-box info-box-new-style">
-                                <span class="info-box-icon bg-yellow">
-                                    <i class="ion ion-ios-paper-outline"></i>
-                                    <i class="fa fa-exclamation"></i>
-                                </span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Invoice due</span>
-                                    <span class="info-box-number invoice_due">$ -47.00</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                    </div> --}}
                 </div>
             </div>
         </div>

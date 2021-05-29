@@ -14,8 +14,7 @@
 
                         <div class="col-md-6 col-12">
                             <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
-                                <a href="#" class=""><img
-                                        src="{{ asset('public/backend/asset/img/icon/package.svg') }}" alt=""></a>
+                                <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/package.svg') }}"></a>
                             </li>
                             <span class="menu-title-t">@lang('menu.product')</span>
                         </div>

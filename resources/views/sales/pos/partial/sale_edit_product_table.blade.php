@@ -22,21 +22,7 @@
             </thead>
 
             <tbody id="product_list">
-                {{-- <tr>
-                    <td>1</td>
-                    <td><a href="" class="product-name text-info">This is a product name</a></td>
-                    <td>
-                        <input type="number" name="qty" value="2" class="form-control qty-input" id="quantity">
-                    </td>
-                    <td><b>Cartoon</b></td>
-                    <td><b>10000.00</b> </td>
-                    <td><b>10000.00</b> </td>
-                    <td>
-                        <a href="#" class="action-btn c-delete ">
-                            <span class="fas fa-trash "></span>
-                        </a>
-                    </td>
-                </tr> --}}
+            
             </tbody>
         </table>
     </div>
@@ -127,7 +113,7 @@
                                     tr += '<td class="serial">1</td>';
                            
                                     tr += '<td class="text-start">';
-                                    tr += '<a class="product-name text-info" id="edit_product" href="#">' +
+                                    tr += '<a class="product-name text-info" id="edit_product" title="'+product.product_code+'" href="#">' +
                                         product.name + '</a><br/><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info.">';
                                     tr += '<input value="' + product.id +'" type="hidden" class="productId-' + product.id +
                                         '" id = "product_id" name="product_ids[]" >';
@@ -251,11 +237,8 @@
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td class="serial">1</td>';
-                                tr += '<td class="product_code">' + variant_product.variant_code +
-                                    '</td>';
-
-                                tr += '<td colspan="2">';
-                                tr += '<a class="product-name text-info" id="edit_product" href="#">' +
+                                tr += '<td class="text-start">';
+                                tr += '<a class="product-name text-info" id="edit_product" title="'+variant_product.variant_code+'" href="#">' +
                                     variant_product.product.name + ' - ' + variant_product.variant_name + '</a><br/><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info.">';
                                 tr += '<input value="' + variant_product.product.id +
                                     '" type="hidden" class="productId-' + variant_product.product.id + '" id = "product_id" name="product_ids[]" >';

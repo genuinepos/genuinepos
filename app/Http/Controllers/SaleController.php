@@ -2903,14 +2903,25 @@ class SaleController extends Controller
 
         if ($sale->status == 1) {
             Cache::forget('all-products');
-            return view('sales.save_and_print_template.sale_print', compact(
-                'sale',
-                'previous_due',
-                'total_payable_amount',
-                'paying_amount',
-                'total_due',
-                'change_amount'
-            ));
+            if ($sale->created_by == 1) {
+                return view('sales.save_and_print_template.sale_print', compact(
+                    'sale',
+                    'previous_due',
+                    'total_payable_amount',
+                    'paying_amount',
+                    'total_due',
+                    'change_amount'
+                ));
+            } else {
+                return view('sales.save_and_print_template.pos_sale_print', compact(
+                    'sale',
+                    'previous_due',
+                    'total_payable_amount',
+                    'paying_amount',
+                    'total_due',
+                    'change_amount'
+                ));
+            }
         } elseif ($sale->status == 2) {
             return view('sales.save_and_print_template.draft_print', compact('sale'));
         } elseif ($sale->status == 4) {

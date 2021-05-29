@@ -402,7 +402,6 @@
         var unit_tax_percent = parentTableRow.find('#unit_tax_percent').val();
         var unit_tax_amount = parentTableRow.find('#unit_tax_amount').val();
         var unit_discount_type = parentTableRow.find('#unit_discount_type').val();
-        console.log(unit_discount_type);
         var unit_discount = parentTableRow.find('#unit_discount').val();
         var unit_discount_amount = parentTableRow.find('#unit_discount_amount').val();
         var product_unit = parentTableRow.find('#unit').val();
@@ -593,6 +592,11 @@
             $('#list').empty();
             keyName = e.keyCode;
         }
+    });
+
+    $(document).on('mouseenter', '#list>li>a',function () {
+        $('#list>li>a').removeClass('selectProduct');
+        $(this).addClass('selectProduct');
     });
 
     // Automatic remove searching product is found signal 

@@ -59,6 +59,7 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
         Route::get('/ajax-all-leavetype', 'LeaveController@getleavetype')->name('hrm.get.all.leavetype');
         Route::post('/hrm/leave/update', 'LeaveController@updateleave')->name('hrm.leave.update');
         Route::delete('hrm/leave/{id}', 'LeaveController@deleteleave')->name('hrm.leave.delete');
+        Route::get('department/employees/{depId}', 'LeaveController@departmentEmployees');
     });
 
     //Leave  routes group

@@ -714,7 +714,7 @@
 
                                 <tr>
                                     <th class="text-center">
-                                        <span>SoftWare By <b>SpeedDigit Pvt. Ltd.</b> </span>
+                                        <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
                                     </th>
                                 </tr>
                             </thead>
@@ -1500,7 +1500,7 @@
 
                                 <tr>
                                     <th class="text-center">
-                                        <span>SoftWare By <b>SpeedDigit Pvt. Ltd.</b> </span>
+                                        <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
                                     </th>
                                 </tr>
                             </thead>

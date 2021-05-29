@@ -32,17 +32,16 @@ class ShiftController extends Controller
     {
         $this->validate($request, [
             'shift_name' => 'required',
-            'shift_type' => 'required',
+            'start_time' => 'required',
+            'endtime' => 'required',
         ]);
 
         Shift::insert([
             'shift_name' => $request->shift_name,
-            'shift_type' => $request->shift_type,
             'start_time' => $request->start_time,
             'endtime' => $request->endtime,
-            'holiday' => implode(", ", $request->holiday),
         ]);
-        return response()->json('Successfully Shift Added!');
+        return response()->json('Successfully Shift is Added!');
     }
 
     //update shift
@@ -50,16 +49,16 @@ class ShiftController extends Controller
     {
         $this->validate($request, [
             'shift_name' => 'required',
-            'shift_type' => 'required'
+            'start_time' => 'required',
+            'endtime' => 'required',
         ]);
+
         $updateShift = Shift::where('id', $request->id)->first();
         $updateShift->update([
             'shift_name' => $request->shift_name,
-            'shift_type' => $request->shift_type,
             'start_time' => $request->start_time,
             'endtime' => $request->endtime,
-            'holiday' => implode(", ", $request->holiday)
         ]);
-        return response()->json('Successfully Shift Updated!');
+        return response()->json('Successfully Shift is Updated!');
     }
 }

@@ -2,9 +2,9 @@
 @push('stylesheets')
     <style>
          .input-group-text {font-size: 12px !important;}
-        .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 88.3%;z-index: 9999999;padding: 0;left: 6%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
+        .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 96.7%;z-index: 9999999;padding: 0;left: 3.3%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
         .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
-        .select_area ul li a {color: #000000;text-decoration: none;font-size: 13px;padding: 4px 3px;display: block;}
+        .select_area ul li a {color: #000000;text-decoration: none;font-size: 13px;padding: 3px 3px;display: block;border: 1px solid lightgray;}
         .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
@@ -62,7 +62,6 @@
                                                 </div>
                                             @endif
                                         </div>
-
 
                                         <div class="col-md-3">
                                             <div class="input-group">
@@ -225,9 +224,8 @@
                 <div class="submit_button_area py-2">
                     <div class="row">
                         <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                            <button name="save" value="save" class="btn btn-sm btn-primary submit_button float-end">Save</button>
                         </div>
                     </div>
                 </div>
@@ -385,8 +383,8 @@
                                      tr += '<input value="'+product.product_cost_with_tax+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                                      tr += '</td>';
  
-                                     tr += '<td class="text-center">';
-                                     tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
+                                     tr += '<td class="text-start">';
+                                     tr += '<a href="" id="remove_product_btn"><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                                      tr += '</td>';
                                      tr += '</tr>';
                                      $('#product_list').prepend(tr);
@@ -481,8 +479,8 @@
                                  tr += '<strong><span class="span_subtotal">'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2)+'</span></strong>'; 
                                  tr += '<input value="'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                                  tr += '</td>';
-                                 tr += '<td class="text-center">';
-                                 tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
+                                 tr += '<td class="text-start">';
+                                 tr += '<a href="" id="remove_product_btn"><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                                  tr += '</td>';
                                  tr += '</tr>';
                                  $('#product_list').append(tr);
@@ -615,7 +613,7 @@
                              tr += '<strong><span class="span_subtotal">'+parseFloat(product_cost_inc_tax).toFixed(2)+'</span></strong>'; 
                              tr += '<input value="'+parseFloat(product_cost_inc_tax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                              tr += '</td>';
-                             tr += '<td>';
+                             tr += '<td class="text-start">';
                              tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                              tr += '</td>';
                              tr += '</tr>';
@@ -731,7 +729,7 @@
                              tr += '<input value="'+parseFloat(variant_cost_inc_tax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                              tr += '</td>';
  
-                             tr += '<td class="text-center">';
+                             tr += '<td class="text-start">';
                              tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                              tr += '</td>';
                              tr += '</tr>';
@@ -795,7 +793,6 @@
                  calculateTotalAmount(); 
              }
          });
- 
  
          // Dispose Select area 
          $(document).on('click', '.remove_select_area_btn', function(e){
@@ -893,5 +890,23 @@
          setInterval(function(){
              $('#search_product').removeClass('is-valid');
          }, 1000);
+
+        $('body').keyup(function(e){
+            if (e.keyCode == 13 || e.keyCode == 9){  
+                $(".selectProduct").click();
+                $('#list').empty();
+            }
+        });
+
+        $(document).keypress(".scanable",function(event){
+            if (event.which == '10' || event.which == '13') {
+                event.preventDefault();
+            }
+        });
+
+        $(document).on('mouseenter', '#list>li>a',function () {
+            $('#list>li>a').removeClass('selectProduct');
+            $(this).addClass('selectProduct');
+        });
      </script>
 @endpush

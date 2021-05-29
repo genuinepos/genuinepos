@@ -8,6 +8,7 @@ use App\Models\AdminAndUser;
 use App\Models\Hrm\Leavetype;
 use App\Models\Hrm\Leave;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class LeaveController extends Controller
 {
@@ -19,15 +20,16 @@ class LeaveController extends Controller
     //leave page method
     public function index()
     {
-        $employee = AdminAndUser::where('status', 1)->get();
-        $leavetype = Leavetype::all();
-        return view('hrm.leave.index', compact('employee', 'leavetype'));
+        $departments = DB::table('hrm_department')->get(['id', 'department_name']);
+        $leavetypes = DB::table('hrm_leavetypes')->get(['id', 'leave_type']);
+        $employees = DB::table('admin_and_users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+        return view('hrm.leave.index', compact('departments', 'leavetypes', 'employees'));
     }
 
     //all leave data for ajax
     public function allLeave()
     {
-        $leave = Leave::orderBy('id', 'DESC')->get();
+        $leave = Leave::with(['admin_and_user', 'leave_type'])->orderBy('id', 'DESC')->get();
         return view('hrm.leave.ajax.list', compact('leave'));
     }
 
@@ -51,13 +53,6 @@ class LeaveController extends Controller
             'status' => 0,
         ]);
         return response()->json('Successfully Leave Added!');
-    }
-
-    //get leave type
-    public function GetLeaveType()
-    {
-        $admins = Leavetype::all();
-        return response()->json($admins);
     }
 
     //update leave
@@ -87,5 +82,12 @@ class LeaveController extends Controller
         $Leave = Leave::find($id);
         $Leave->delete();
         return response()->json('Successfully leave Deleted');
+    }
+
+    public function departmentEmployees($depId)
+    {
+        $employees = DB::table('admin_and_users')->where('department_id', $depId)
+        ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+        return response()->json($employees);
     }
 }

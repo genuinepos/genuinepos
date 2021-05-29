@@ -318,7 +318,7 @@ class POSController extends Controller
 
         if ($request->action == 1) {
             Cache::forget('all-products');
-            return view('sales.save_and_print_template.sale_print', compact(
+            return view('sales.save_and_print_template.pos_sale_print', compact(
                 'sale',
                 'previous_due',
                 'total_payable_amount',
@@ -717,7 +717,7 @@ class POSController extends Controller
         if ($request->action == 1) {
             $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])->where('id', $updateSale->id)->first();
             Cache::forget('all-products');
-            return view('sales.save_and_print_template.sale_print', compact(
+            return view('sales.save_and_print_template.pos_sale_print', compact(
                 'sale',
                 'previous_due',
                 'total_payable_amount',

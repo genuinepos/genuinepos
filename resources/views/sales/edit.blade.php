@@ -1738,5 +1738,10 @@
                 keyName = e.keyCode;
             }
         });
+
+        $(document).on('mouseenter', '#list>li>a',function () {
+            $('#list>li>a').removeClass('selectProduct');
+            $(this).addClass('selectProduct');
+        });
     </script>
 @endpush

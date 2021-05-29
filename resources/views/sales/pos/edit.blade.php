@@ -554,6 +554,11 @@
         }
     });
 
+    $(document).on('mouseenter', '#list>li>a',function () {
+        $('#list>li>a').removeClass('selectProduct');
+        $(this).addClass('selectProduct');
+    });
+
     // Automatic remove searching product is found signal 
     setInterval(function(){
             $('#search_product').removeClass('is-invalid');

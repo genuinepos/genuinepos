@@ -16,7 +16,7 @@
                      <div class="col-md-4">
                          <ul class="list-unstyled">
                              <li><strong>Supplier :- </strong></li>
-                             <li><strong>Namne : </strong> <span
+                             <li><strong>Name : </strong> <span
                                      class="supplier_name">{{ $purchase->supplier->name }}</span></li>
                              <li><strong>Address : </strong> <span
                                      class="supplier_address">{{ $purchase->supplier->address }}</span></li>
@@ -73,11 +73,11 @@
                              <li>
                                 <strong>Purchase Status : </strong>
                                 @if ($purchase->purchase_status == 1)
-                                    <span class="badge badge-success">Received</span>
+                                    <span class="badge bg-success">Received</span>
                                 @elseif($purchase->purchase_status == 2){
-                                    <span class="badge badge-warning text-white">Pending</span>
+                                    <span class="badge bg-warning text-white">Pending</span>
                                 @else
-                                    <span class="badge badge-primary">Ordered</span>
+                                    <span class="badge bg-primary">Ordered</span>
                                 @endif
                              </li>
                              <li><strong>Payment Status : </strong>
@@ -85,11 +85,11 @@
                                     $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                 @endphp
                                 @if ($purchase->due <= 0)
-                                     <span class="badge badge-success">Paid</span>
+                                     <span class="badge bg-success">Paid</span>
                                 @elseif($purchase->due > 0 && $purchase->due < $payable) 
-                                    <span class="badge badge-primary text-white">Partial</span>
+                                    <span class="badge bg-primary text-white">Partial</span>
                                 @elseif($payable == $purchase->due)
-                                    <span class="badge badge-danger text-white">Due</span>
+                                    <span class="badge bg-danger text-white">Due</span>
                                 @endif
                              </li>
                              <li>
@@ -98,8 +98,8 @@
                              </li>
                          </ul>
                      </div>
-
-                 </div><br><br>
+                 </div>
+                 <br>
                  <div class="row">
                      <div class="col-md-12">
                          <div class="table-responsive">
@@ -145,7 +145,8 @@
                              </table>
                          </div>
                      </div>
-                 </div><br><br>
+                 </div>
+
                  <div class="row">
                      <div class="col-md-6">
                          <div class="payment_table">

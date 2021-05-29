@@ -42,7 +42,7 @@
                             @elseif($transfer->status == 2)
                                 <span class="badge bg-primary">Partial</span>
                             @elseif($transfer->status == 3)
-                               <span class="badge bg-success">Complated</span>
+                               <span class="badge bg-success">Completed</span>
                             @endif
                         </li>
                     </ul>
@@ -257,7 +257,7 @@
                 </tfoot>
             </table>
         </div>
-        <br><br>
+        
         <div class="note">
             <div class="row">
                 <div class="col-md-6">

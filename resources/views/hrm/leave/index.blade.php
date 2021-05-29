@@ -20,14 +20,16 @@
                                             <li>
                                                 <a href="" class="text-dark text-muted"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
                                             </li>
-
+                                            
                                             @if (auth()->user()->permission->hrms['leave_type'] == '1')
                                                 <li>
-                                                    <a href="{{ route('hrm.leave.type') }}" class="text-primary"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
+                                                    <a href="{{ route('hrm.leave.type') }}" class="text-dark text-muted"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
                                                 </li>
+                                            @endif
 
+                                            @if (auth()->user()->permission->hrms['leave_approve'] == '1')
                                                 <li>
-                                                    <a href="{{ route('hrm.leave') }}" class="text-dark text-muted"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
+                                                    <a href="{{ route('hrm.leave') }}" class="text-primary"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                                                 </li>
                                             @endif
 
@@ -75,7 +77,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>Leave Types</h6>
+                                        <h6>Leaves</h6>
                                     </div>
 
                                     <div class="col-md-6">
@@ -121,35 +123,67 @@
     <!-- Add Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
+        <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Leave Type</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Add Leave</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
-                    <form id="add_leavetype_form" action="{{ route('hrm.leavetype.store') }}">
-                        <div class="form-group">
-                            <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="leave_type" class="form-control add_input" data-name="leave type" id="leave_type" placeholder="Leave Type" required="" />
-                            <span class="error error_leave_type"></span>
+                    <form id="add_leave_form" action="{{ route('hrm.leave.store') }}">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label><b>Department :</b> <span class="text-danger">*</span></label>
+                                <select class="form-control" name="department_id" id="department_id">
+                                    <option value="">Select Department</option>
+                                    @foreach ($departments as $dep)
+                                        <option value="{{ $dep->id }}">{{ $dep->department_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><b>Employee :</b> <span class="text-danger">*</span></label>
+                                <select class="form-control" name="employee_id" id="employee_id" required>
+                                    <option value="">Select Employee</option>
+                                    @foreach ($employees as $emp)
+                                        <option value="{{ $emp->id }}">{{ $emp->prefix.' '.$emp->name.' '.$emp->last_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group mt-1">
-                            <label><b>Max leave count :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="max_leave_count" class="form-control add_input" data-name="max leave count" id="max_leave_count" placeholder="Max leave count"  />
-                            <span class="error error_max_leave_count"></span>
+                        <div class="form-group row mt-1">
+                            <div class="form-group col-6">
+                                <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
+                                <select class="form-control" name="leave_id" required id="leave_id">
+                                    <option value="">Select Leave Type</option>
+                                    @foreach ($leavetypes as $lt)
+                                        <option value="{{ $lt->id }}">{{ $lt->leave_type }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group mt-1">
-                            <label><b>leave Count Interval :</b> </label>
-                            <select name="leave_count_interval" class="form-control">
-                            	<option value="0">None</option>
-                            	<option value="1">Current Month</option>
-                            	<option value="2">Current Financial year</option>
-                            </select>
+                        <div class="form-group row mt-1">
+                            <div class="form-group col-6">
+                                <label><b>Start Date :</b> <span class="text-danger">*</span></label>
+                                <input type="date" name="start_date" required="" class="form-control">
+                            </div>
+
+                            <div class="form-group col-6">
+                              <label><b>End Date :</b> <span class="text-danger">*</span></label>
+                              <input type="date" name="end_date" required class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="form-group col-12">
+                                <label><b>Reason :</b> </label>
+                                <textarea type="text" name="reason" class="form-control" placeholder="Reason"></textarea>
+                            </div>
                         </div>
 
                         <div class="form-group row mt-3">
@@ -172,30 +206,65 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Leave Type</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Leave</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
-                    <form id="edit_leavetype_form" action="{{ route('hrm.leavetype.update') }}">
+                    <form id="edit_designation_form" action="{{ route('hrm.leave.update') }}">
                         <input type="hidden" name="id" id="id">
-                        <div class="form-group">
-                            <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="leave_type" class="form-control edit_input" data-name="leave type" id="e_leave_type" placeholder="Leave Type" required="" />
-                            <span class="error error_e_leave_type"></span>
-                        </div>
-                        
-                         <div class="form-group">
-                            <label><b>Max Leave Count :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="max_leave_count" class="form-control edit_input" data-name="max leave count" id="e_max_leave_count" placeholder="Max leave count"  />
-                            <span class="error error_e_max_leave_count"></span>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label><b>Department :</b> <span class="text-danger">*</span></label>
+                                <select class="form-control" name="department_id" id="e_department_id">
+                                    <option value="">Select Department</option>
+                                    @foreach ($departments as $dep)
+                                        <option value="{{ $dep->id }}">{{ $dep->department_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><b>Employee :</b> <span class="text-danger">*</span></label>
+                                <select class="form-control" name="employee_id" id="e_employee_id" required="">
+                                    <option value="">Select Employee</option>
+                                    @foreach ($employees as $emp)
+                                        <option value="{{ $emp->id }}">{{ $emp->prefix.' '.$emp->name.' '.$emp->last_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label><b>leave Count Interval :</b></label>
-                            <select name="leave_count_interval" class="form-control" id="e_leave_count_interval">
-                            </select>
+                        <div class="form-group row mt-1">
+                            <div class="form-group col-6">
+                                <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
+                                <select class="form-control" name="leave_id" required id="e_leave_id">
+                                    <option value="">Select Leave Type</option>
+                                    @foreach ($leavetypes as $lt)
+                                        <option value="{{ $lt->id }}">{{ $lt->leave_type }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="form-group col-6">
+                                <label><b>Start Date :</b> <span class="text-danger">*</span></label>
+                                <input type="date" name="start_date" id="e_start_date" required="" class="form-control">
+                            </div>
+
+                            <div class="form-group col-6">
+                              <label><b>End Date :</b> <span class="text-danger">*</span></label>
+                              <input type="date" name="end_date" id="e_end_date" required="" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="form-group col-12">
+                                <label><b>Reason :</b> </label>
+                                <textarea type="text" name="reason" id="e_reason" class="form-control" placeholder="Reason"></textarea>
+                            </div>
                         </div>
 
                         <div class="form-group text-right mt-3">
@@ -211,12 +280,13 @@
     </div>
 @endsection
 @push('scripts')
+
 <script>
     // Get all category by ajax
-    function getAllType(){
+    function getAllLeave(){
         $('.data_preloader').show();
         $.ajax({
-            url:"{{ route('hrm.leavetype.all') }}",
+            url:"{{ route('hrm.leave.all') }}",
             type:'get',
             success:function(data){
                 $('.table-responsive').html(data);
@@ -224,9 +294,43 @@
             }
         });
     }
-    getAllType();
+    getAllLeave();
 
-     // Setup ajax for csrf token.
+    $('#department_id').on('change', function(e){
+        e.preventDefault();
+        var department_id = $(this).val();
+        console.log(department_id);
+        $.ajax({
+            url:"{{ url('hrm/leave/department/employees/') }}"+"/"+department_id,
+            type:'get',
+            success:function(employees){
+                $('#employee_id').empty();
+                $('#employee_id').append('<option value="">Select Employee</option>');
+                $.each(employees, function (key, emp) {
+                    $('#employee_id').append('<option value="'+emp.id+'">'+ emp.prefix+' '+emp.name+' '+emp.last_name +'</option>');
+                });
+            }
+        });
+    });
+
+    $('#e_department_id').on('change', function(e){
+        e.preventDefault();
+        var department_id = $(this).val();
+        console.log(department_id);
+        $.ajax({
+            url:"{{ url('hrm/leave/department/employees/') }}"+"/"+department_id,
+            type:'get',
+            success:function(employees){
+                $('#e_employee_id').empty();
+                $('#e_employee_id').append('<option value="">Select Employee</option>');
+                $.each(employees, function (key, emp) {
+                    $('#e_employee_id').append('<option value="'+emp.id+'">'+ emp.prefix+' '+emp.name+' '+emp.last_name +'</option>');
+                });
+            }
+        });
+    });
+
+    // Setup ajax for csrf token.
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -236,20 +340,18 @@
     // call jquery method 
     $(document).ready(function(){
         // Add department by ajax
-        $('#add_leavetype_form').on('submit', function(e){
+        $('#add_leave_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
-            var request = $(this).serialize();
             var url = $(this).attr('action');
+            var request = $(this).serialize();
             $.ajax({
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
                     toastr.success(data, 'Succeed');
-                    $('#add_leavetype_form')[0].reset();
-                    $('.loading_button').hide();
-                    getAllType();
+                    getAllLeave();
                     $('#addModal').modal('hide');
                 }
             });
@@ -258,42 +360,25 @@
         // pass editable data to edit modal fields
         $(document).on('click', '#edit', function(e){
             e.preventDefault();
-            var typeInfo = $(this).closest('tr').data('info');
-            $('#id').val(typeInfo.id);
-            $('#e_leave_type').val(typeInfo.leave_type);
-            $('#e_max_leave_count').val(typeInfo.max_leave_count);
-            $('#e_leave_count_interval').empty();
-            if (typeInfo.leave_count_interval==1) {
-            	$('#e_leave_count_interval').append(
-            		'<option value="1">Current Month</option>',
-            		'<option value="0"  >None</option>',
-            		'<option value="2"  >Current Financial Year</option>'
-            	)
-            }    
-            if (typeInfo.leave_count_interval==0) {
-            	$('#e_leave_count_interval').append(
-            		'<option value="0"  >None</option>',
-            		'<option value="1">Current Month</option>',
-            		'<option value="2"  >Current Financial Year</option>'
-            	)
-            }
-            if (typeInfo.leave_count_interval==2) {
-            	$('#e_leave_count_interval').append(
-            		'<option value="2"  >Current Financial Year</option>',
-            		'<option value="0"  >None</option>',
-            		'<option value="1">Current Month</option>'	
-            	)
-            }
-
+            $('.error').html('');
+            var data = $(this).closest('tr').data('info');
+            $('#id').val(data.id);
+            $('#e_start_date').val(data.start_date);
+            $('#e_end_date').val(data.end_date);
+            $('#e_reason').val(data.reason);
+            $('#e_employee_id').val(data.employee_id);
+            $('#e_leave_id').val(data.leave_id);
+            $('#e_department_id').val(data.admin_and_user.department_id);
             $('#editModal').modal('show');
         });
 
-        // edit category by ajax
-        $('#edit_leavetype_form').on('submit', function(e){
+        // edit submit form by ajax
+        $('#edit_designation_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
+          
             $.ajax({
                 url:url,
                 type:'post',
@@ -302,7 +387,7 @@
                     console.log(data);
                     toastr.success(data, 'Succeed');
                     $('.loading_button').hide();
-                    getAllType();
+                    getAllLeave();
                     $('#editModal').modal('hide'); 
                 }
             });
@@ -338,7 +423,7 @@
                 async:false,
                 data:request,
                 success:function(data){
-                    getAllType();
+                    getAllLeave();
                     toastr.success(data, 'Succeed');
                     $('#deleted_form')[0].reset();
                 }

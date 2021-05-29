@@ -1,8 +1,25 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {border: 1px solid #7e0d3d;}
-        b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        .form_element {
+            border: 1px solid #7e0d3d;
+        }
+
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        @media only screen and (max-width: 770px) {
+            .sm-mt-65 {
+                margin-top: 65px !important;
+            }
+
+            .row {
+                --bs-gutter-x: 0.5rem !important;
+            }
+        }
+
     </style>
 @endpush
 @section('content')
@@ -10,7 +27,7 @@
         <div class="container-fluid">
             <section class="mt-5">
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="row sm-mt-65">
                         <div class="col-md-8 pe-1">
                             <div class="form_element m-0 mt-4">
                                 <div class="section-header">
@@ -29,21 +46,24 @@
                                     </div>
                                 </div>
 
-                                <form id="reset_password_form" action="{{ route('password.updateCurrent') }}" method="post">
+                                <form id="reset_password_form" action="{{ route('password.updateCurrent') }}"
+                                    method="post">
                                     @csrf
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-2"><span
-                                                        class="text-danger">*</span> <b>Current Password :</b> </label>
+                                                            class="text-danger">*</span> <b>Current Password :</b> </label>
                                                     <div class="col-10">
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock input_i"></i></span>
+                                                                <span class="input-group-text" id="basic-addon1"><i
+                                                                        class="fas fa-lock input_i"></i></span>
                                                             </div>
-                                                            <input type="password" name="current_password" class="form-control"
-                                                            autocomplete="off" placeholder="New password">
+                                                            <input type="password" name="current_password"
+                                                                class="form-control" autocomplete="off"
+                                                                placeholder="New password">
                                                         </div>
                                                         <span class="error error_password"></span>
                                                     </div>
@@ -55,14 +75,15 @@
                                             <div class="col-md-12">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-2"><span
-                                                        class="text-danger">*</span> <b>New Password :</b> </label>
+                                                            class="text-danger">*</span> <b>New Password :</b> </label>
                                                     <div class="col-10">
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock input_i"></i></span>
+                                                                <span class="input-group-text" id="basic-addon1"><i
+                                                                        class="fas fa-lock input_i"></i></span>
                                                             </div>
                                                             <input type="password" name="password" class="form-control"
-                                                            autocomplete="off" placeholder="New password">
+                                                                autocomplete="off" placeholder="New password">
                                                         </div>
                                                         <span class="error error_password"></span>
                                                     </div>
@@ -74,14 +95,16 @@
                                             <div class="col-md-12">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-2"><span
-                                                        class="text-danger">*</span> <b>Confirm password  :</b> </label>
+                                                            class="text-danger">*</span> <b>Confirm password :</b> </label>
                                                     <div class="col-10">
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock input_i"></i></span>
+                                                                <span class="input-group-text" id="basic-addon1"><i
+                                                                        class="fas fa-lock input_i"></i></span>
                                                             </div>
-                                                            <input type="password" name="password_confirmation" class="form-control"
-                                                            autocomplete="off" placeholder="Confirm new password">
+                                                            <input type="password" name="password_confirmation"
+                                                                class="form-control" autocomplete="off"
+                                                                placeholder="Confirm new password">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -89,7 +112,8 @@
                                         </div>
 
                                         <div class="button-area mt-2">
-                                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                             <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
                                         </div>
 
@@ -113,7 +137,8 @@
                                                     <label for="inputEmail3" class="col-3"><b>Prefix :</b> </label>
                                                     <div class="col-9">
                                                         <input type="text" name="prefix" class="form-control"
-                                                            placeholder="Mr / Mrs / Miss" value="{{ auth()->user()->prefix }}">
+                                                            placeholder="Mr / Mrs / Miss"
+                                                            value="{{ auth()->user()->prefix }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -125,7 +150,8 @@
 
                                                     <div class="col-8">
                                                         <input type="text" name="first_name" class="form-control"
-                                                            placeholder="First Name" id="first_name" value="{{ auth()->user()->name }}">
+                                                            placeholder="First Name" id="first_name"
+                                                            value="{{ auth()->user()->name }}">
                                                         <span class="error error_first_name"></span>
                                                     </div>
                                                 </div>
@@ -138,7 +164,8 @@
                                                     <label for="inputEmail3" class="col-4"><b>Last Name :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="last_name" class="form-control"
-                                                            placeholder="Last Name" value="{{ auth()->user()->last_name }}">
+                                                            placeholder="Last Name"
+                                                            value="{{ auth()->user()->last_name }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -149,7 +176,8 @@
                                                             class="text-danger">*</span> <b>Email :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="email" id="email" class="form-control"
-                                                            placeholder="exmple@email.com" value="{{ auth()->user()->email }}">
+                                                            placeholder="exmple@email.com"
+                                                            value="{{ auth()->user()->email }}">
                                                         <span class="error error_email"></span>
                                                     </div>
                                                 </div>
@@ -159,12 +187,17 @@
                                         <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Default Language :</b> </label>
+                                                    <label for="inputEmail3" class="col-4"><b>Default Language :</b>
+                                                    </label>
                                                     <div class="col-8">
                                                         <select name="language" class="form-control">
-                                                            <option {{ auth()->user()->language == 'en' ? 'SELECTED' : '' }} value="en">
+                                                            <option
+                                                                {{ auth()->user()->language == 'en' ? 'SELECTED' : '' }}
+                                                                value="en">
                                                                 English</option>
-                                                            <option {{ auth()->user()->language == 'bn' ? 'SELECTED' : '' }} value="bn">
+                                                            <option
+                                                                {{ auth()->user()->language == 'bn' ? 'SELECTED' : '' }}
+                                                                value="bn">
                                                                 Bangla</option>
                                                         </select>
                                                     </div>
@@ -187,7 +220,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"> <b>Date of birth :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="Date of birth" value="{{ auth()->user()->date_of_birth }}">
+                                                        <input type="text" name="date_of_birth" class="form-control"
+                                                            autocomplete="off" placeholder="Date of birth"
+                                                            value="{{ auth()->user()->date_of_birth }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -198,11 +233,17 @@
                                                     <div class="col-8">
                                                         <select name="gender" class="form-control">
                                                             <option value="">Select Gender</option>
-                                                            <option {{ auth()->user()->gender == 'Male' ? 'SELECTED' : '' }} value="Male">Male
+                                                            <option
+                                                                {{ auth()->user()->gender == 'Male' ? 'SELECTED' : '' }}
+                                                                value="Male">Male
                                                             </option>
-                                                            <option {{ auth()->user()->gender == 'Female' ? 'SELECTED' : '' }} value="Female">
+                                                            <option
+                                                                {{ auth()->user()->gender == 'Female' ? 'SELECTED' : '' }}
+                                                                value="Female">
                                                                 Female</option>
-                                                            <option {{ auth()->user()->gender == 'Others' ? 'SELECTED' : '' }} value="Others">
+                                                            <option
+                                                                {{ auth()->user()->gender == 'Others' ? 'SELECTED' : '' }}
+                                                                value="Others">
                                                                 Others</option>
                                                         </select>
                                                     </div>
@@ -217,11 +258,14 @@
                                                     <div class="col-8">
                                                         <select name="marital_status" class="form-control">
                                                             <option value="">Marital Status</option>
-                                                            <option {{ auth()->user()->marital_status == 'Married' ? 'SELECTED' : '' }}
+                                                            <option
+                                                                {{ auth()->user()->marital_status == 'Married' ? 'SELECTED' : '' }}
                                                                 value="Married">Married</option>
-                                                            <option {{ auth()->user()->marital_status == 'Unmarried' ? 'SELECTED' : '' }}
+                                                            <option
+                                                                {{ auth()->user()->marital_status == 'Unmarried' ? 'SELECTED' : '' }}
                                                                 value="Unmarried">Unmarried</option>
-                                                            <option {{ auth()->user()->marital_status == 'Divorced' ? 'SELECTED' : '' }}
+                                                            <option
+                                                                {{ auth()->user()->marital_status == 'Divorced' ? 'SELECTED' : '' }}
                                                                 value="Divorced">Divorced</option>
                                                         </select>
                                                     </div>
@@ -232,7 +276,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Blood Group :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="blood_group"  class="form-control" placeholder="Blood group" autocomplete="off" value="{{ auth()->user()->blood_group }}">
+                                                        <input type="text" name="blood_group" class="form-control"
+                                                            placeholder="Blood group" autocomplete="off"
+                                                            value="{{ auth()->user()->blood_group }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -243,7 +289,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Phone :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="phone" class="form-control" autocomplete="off" placeholder="Phone number" value="{{ auth()->user()->phone }}">
+                                                        <input type="text" name="phone" class="form-control"
+                                                            autocomplete="off" placeholder="Phone number"
+                                                            value="{{ auth()->user()->phone }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -252,7 +300,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Facebook Link :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="facebook_link" class="form-control" autocomplete="off" placeholder="Facebook link" value="{{ auth()->user()->facebook_link }}">
+                                                        <input type="text" name="facebook_link" class="form-control"
+                                                            autocomplete="off" placeholder="Facebook link"
+                                                            value="{{ auth()->user()->facebook_link }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,7 +313,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Twitter Link :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="twitter_link" class="form-control" autocomplete="off" placeholder="Twitter link" value="{{ auth()->user()->twitter_link }}">
+                                                        <input type="text" name="twitter_link" class="form-control"
+                                                            autocomplete="off" placeholder="Twitter link"
+                                                            value="{{ auth()->user()->twitter_link }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -272,7 +324,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Instagram Link :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="instagram_link" class="form-control" autocomplete="off" placeholder="Instagram link" value="{{ auth()->user()->instagram_link }}">
+                                                        <input type="text" name="instagram_link" class="form-control"
+                                                            autocomplete="off" placeholder="Instagram link"
+                                                            value="{{ auth()->user()->instagram_link }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -283,7 +337,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Guardian Name:</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="guardian_name" class="form-control" autocomplete="off" placeholder="Guardian name" value="{{ auth()->user()->guardian_name }}">
+                                                        <input type="text" name="guardian_name" class="form-control"
+                                                            autocomplete="off" placeholder="Guardian name"
+                                                            value="{{ auth()->user()->guardian_name }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -292,7 +348,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>ID Proof Name :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="id_proof_name" class="form-control" autocomplete="off" placeholder="ID proof name" value="{{ auth()->user()->id_proof_name }}">
+                                                        <input type="text" name="id_proof_name" class="form-control"
+                                                            autocomplete="off" placeholder="ID proof name"
+                                                            value="{{ auth()->user()->id_proof_name }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -303,7 +361,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>ID Proof Number :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="id_proof_number" class="form-control" autocomplete="off" placeholder="ID proof number" value="{{ auth()->user()->id_proof_number }}">
+                                                        <input type="text" name="id_proof_number" class="form-control"
+                                                            autocomplete="off" placeholder="ID proof number"
+                                                            value="{{ auth()->user()->id_proof_number }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -312,9 +372,13 @@
                                         <div class="row mt-2">
                                             <div class="col-md-12">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-2"><b>Permanent Address :</b> </label>
+                                                    <label for="inputEmail3" class="col-2"><b>Permanent Address :</b>
+                                                    </label>
                                                     <div class="col-10">
-                                                        <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="Permanent address" {{ auth()->user()->permanent_address }}>
+                                                        <input type="text" name="permanent_address"
+                                                            class="form-control form-control-sm" autocomplete="off"
+                                                            placeholder="Permanent address"
+                                                            {{ auth()->user()->permanent_address }}>
                                                     </div>
                                                 </div>
                                             </div>
@@ -325,7 +389,10 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-2"><b>Current Address :</b> </label>
                                                     <div class="col-10">
-                                                        <input type="text" name="current_address" class="form-control form-control-sm" placeholder="Current address" {{ auth()->user()->current_address }}>
+                                                        <input type="text" name="current_address"
+                                                            class="form-control form-control-sm"
+                                                            placeholder="Current address"
+                                                            {{ auth()->user()->current_address }}>
                                                     </div>
                                                 </div>
                                             </div>
@@ -347,7 +414,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Account Name :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="bank_ac_holder_name" class="form-control " placeholder="Account holder's name" autocomplete="off" value="{{ auth()->user()->bank_ac_holder_name }}">
+                                                        <input type="text" name="bank_ac_holder_name" class="form-control "
+                                                            placeholder="Account holder's name" autocomplete="off"
+                                                            value="{{ auth()->user()->bank_ac_holder_name }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -356,7 +425,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Account No :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="bank_ac_no" class="form-control" placeholder="Account number" autocomplete="off" value="{{ auth()->user()->bank_ac_no }}">
+                                                        <input type="text" name="bank_ac_no" class="form-control"
+                                                            placeholder="Account number" autocomplete="off"
+                                                            value="{{ auth()->user()->bank_ac_no }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -367,7 +438,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Bank Name :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="bank_name" class="form-control" placeholder="Bank name" autocomplete="off" value="{{ auth()->user()->bank_name }}">
+                                                        <input type="text" name="bank_name" class="form-control"
+                                                            placeholder="Bank name" autocomplete="off"
+                                                            value="{{ auth()->user()->bank_name }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -376,7 +449,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Identifier Code :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="bank_identifier_code" class="form-control" placeholder="Bank identifier code" autocomplete="off" value="{{ auth()->user()->bank_identifier_code }}">
+                                                        <input type="text" name="bank_identifier_code" class="form-control"
+                                                            placeholder="Bank identifier code" autocomplete="off"
+                                                            value="{{ auth()->user()->bank_identifier_code }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -387,7 +462,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Branch :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="bank_branch" class="form-control" placeholder="Branch" autocomplete="off" value="{{ auth()->user()->bank_branch }}">
+                                                        <input type="text" name="bank_branch" class="form-control"
+                                                            placeholder="Branch" autocomplete="off"
+                                                            value="{{ auth()->user()->bank_branch }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -396,7 +473,9 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Tax Payer ID :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="tax_payer_id" class="form-control" placeholder="Tax payer ID" autocomplete="off" value="{{ auth()->user()->tax_payer_id }}">
+                                                        <input type="text" name="tax_payer_id" class="form-control"
+                                                            placeholder="Tax payer ID" autocomplete="off"
+                                                            value="{{ auth()->user()->tax_payer_id }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -408,7 +487,7 @@
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">
                                     <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                     <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
                                 </div>
                             </div>
@@ -448,7 +527,7 @@
         });
 
         // Change password form submit by ajax
-        $(document).on('submit', '#reset_password_form',function(e) {
+        $(document).on('submit', '#reset_password_form', function(e) {
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
@@ -482,5 +561,6 @@
                 }
             });
         });
+
     </script>
 @endpush

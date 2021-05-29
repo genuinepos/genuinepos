@@ -17,7 +17,8 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head">
                                     <div class="head p-1">
-                                        <img src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}" alt="POS" class="logo">
+                                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                                            alt="POS" class="logo">
                                         <span class="head-text">
                                             Genuine POS, Point of Sale software by SpeedDigit
                                         </span>
@@ -32,13 +33,14 @@
                                         @csrf
                                         <div class="left-inner-addon input-container">
                                             <i class="fa fa-user"></i>
-                                            <input name="username" class="form-control form-st"
-                                                placeholder="Username" required/>
+                                            <input type="text" name="username" class="form-control form-st"
+                                                value="{{ old('username') }}" placeholder="Username" required />
                                         </div>
                                         <div class="left-inner-addon input-container">
                                             <i class="fa fa-key"></i>
                                             <input name="password" type="Password"
-                                                class="form-control form-st rounded-bottom" placeholder="Password" required />
+                                                class="form-control form-st rounded-bottom" placeholder="Password"
+                                                required />
                                         </div>
                                         @if (Session::has('errorMsg'))
                                             <div class="bg-danger p-3 mt-4">
@@ -75,7 +77,9 @@
                                             Genuine Point Of Sale
                                         </h2> --}}
                                         <div class="px-2">
-                                            <p class="logo-main-sec"><img src="{{ asset('public/assets/images/genuine_pos.png') }}" alt="POS" class="logo">
+                                            <p class="logo-main-sec"><img
+                                                    src="{{ asset('public/assets/images/genuine_pos.png') }}" alt="POS"
+                                                    class="logo">
                                             </p>
                                             <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>
                                             <p class="details"><span>Support:</span> support@speeddigit.com</p>

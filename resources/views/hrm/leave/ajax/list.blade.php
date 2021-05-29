@@ -28,7 +28,7 @@
                 <td class="text-start"> 
                     <div class="dropdown table-dropdown">
                         <a href="javascript:;" id="edit" title="Edit details" class="action-btn c-edit" id="edit"><span class="fas fa-edit"></span></a>
-                         <a href="{{ route('hrm.leave.delete', $row->id) }}"" class="action-btn c-delete" id="delete"><span class="fas fa-trash "></span></a>
+                        <a href="{{ route('hrm.leave.delete', $row->id) }}"" class="action-btn c-delete" id="delete"><span class="fas fa-trash "></span></a>
                     </div>
                 </td> 
             </tr>

@@ -27,7 +27,11 @@ class PayrollController extends Controller
     public function index()
     {
         
-        return view('hrm.payroll.index');
+        $departments = DB::table('hrm_department')->get(['id', 'department_name']);
+        $employee = DB::table('admin_and_users')
+        ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('hrm.payroll.index', compact('employee', 'departments', 'branches'));
     }
 
     public function getPayrolls(Request $request)
@@ -79,8 +83,8 @@ class PayrollController extends Controller
         // return  $result = (float)$float + $hour;
         // $number = str_replace(['+', '-'], '', filter_var($a, FILTER_SANITIZE_NUMBER_INT));
         
-        $month_year = explode('-', $request->month_year);
-        $month = $month_year[0];
+        $month_year = explode(' ', $request->month_year);
+        $month = date('F', strtotime($month_year[0]));
         $year = $month_year[1];
         // return $employee = AdminAndUser::where('id', $request->employee_id)->first();
         $payroll = Payroll::where('user_id', $request->employee_id)->where('month', $month)->where('year', $year)->first();
@@ -126,8 +130,10 @@ class PayrollController extends Controller
             'duration_time' => 'required',
             'duration_unit' => 'required',
         ]);
+
         //return $request->all();
         // generate invoice ID
+        
         $i = 6;
         $a = 0;
         $invoiceId = '';

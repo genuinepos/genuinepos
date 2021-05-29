@@ -1897,6 +1897,11 @@
             }
         });
 
+        $(document).on('mouseenter', '#list>li>a',function () {
+            $('#list>li>a').removeClass('selectProduct');
+            $(this).addClass('selectProduct');
+        });
+
         function afterCreateSale() {
             $('.loading_button').hide();
             $('.hidden').val(parseFloat(0).toFixed(2)); 

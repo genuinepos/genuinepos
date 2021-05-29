@@ -14,8 +14,7 @@
 
                         <div class="col-md-6 col-12">
                             <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
-                                <a href="#" class=""><img
-                                        src="{{ asset('public/backend/asset/img/icon/package.svg') }}" alt=""></a>
+                                <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/package.svg') }}"></a>
                             </li>
                             <span class="menu-title-t">@lang('menu.product')</span>
                         </div>
@@ -138,7 +137,7 @@
                         </div>
 
                         <div class="col-md-6 col-12">
-                            <li>
+                            <li class="{{request()->is('hrm*') ? "menu_active" : ''}}">
                                 <a href="{{ route('hrm.leave.type') }}" class=""><img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}"></a>
                             </li>
                             <span class="menu-title-t">HRM</span>

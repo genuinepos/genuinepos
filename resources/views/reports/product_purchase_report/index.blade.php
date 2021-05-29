@@ -171,6 +171,7 @@
             "url": "{{ route('reports.product.purchases.index') }}",
             "data": function(d) {
                 d.product_id = $('#product_id').val();
+                d.variant_id = $('#variant_id').val();
                 d.branch_id = $('#branch_id').val();
                 d.supplier_id = $('#supplier_id').val();
                 d.date_range = $('#date_range').val();
@@ -285,6 +286,11 @@
             $('.search_result').hide();
             $('#list').empty();
         }
+    });
+
+    $(document).on('mouseenter', '#list>li>a',function () {
+        $('#list>li>a').removeClass('selectProduct');
+        $(this).addClass('selectProduct');
     });
 </script>
 

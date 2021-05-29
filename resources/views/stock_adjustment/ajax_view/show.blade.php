@@ -3,11 +3,8 @@
     <div class="modal-dialog col-80-modal">
       <div class="modal-content" >
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-                Stock Adjustment Details (Reference No : <strong>{{ $adjustment->invoice_id }}</strong>)
-            </h5>
-            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                class="fas fa-times"></span></a>
+            <h5 class="modal-title" id="exampleModalLabel">Stock Adjustment Details (Reference No : <strong>{{ $adjustment->invoice_id }}</strong>)</h5>
+            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
             <div class="row">

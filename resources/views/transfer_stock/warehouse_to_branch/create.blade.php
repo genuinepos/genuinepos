@@ -131,7 +131,7 @@
                                                                     <th class="text-center">Quantity</th>
                                                                     <th class="text-center">Unit</th>
                                                                     <th class="text-center">SubTotal</th>
-                                                                    <th><i class="fas fa-trash-alt text-white"></i></th>
+                                                                    <th><i class="fas fa-trash-alt text-danger"></i></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="transfer_list">
@@ -963,6 +963,11 @@
                 $('#list').empty();
                 keyName = e.keyCode;
             }
+        });
+
+        $(document).on('mouseenter', '#list>li>a',function () {
+            $('#list>li>a').removeClass('selectProduct');
+            $(this).addClass('selectProduct');
         });
 
         $(document).on('change', '.add_input', function () {

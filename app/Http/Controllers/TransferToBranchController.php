@@ -74,7 +74,7 @@ class TransferToBranchController extends Controller
                     } else if ($row->status == 2) {
                         $html .= '<span class="badge bg-warning text-white">Partial</span>';
                     } else if ($row->status == 3) {
-                        $html .= '<span class="badge bg-success">Complated</span>';
+                        $html .= '<span class="badge bg-success">Completed</span>';
                     }
                     return $html;
                 })

@@ -631,8 +631,6 @@
             $('#'+value).show();
         });
 
-        document.getElementById('search_product').focus();
-
         // Show sweet alert for delete
         var tableRowIndex = 0;
         $(document).on('click', '#delete',function(e){

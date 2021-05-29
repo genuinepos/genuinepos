@@ -44,13 +44,13 @@
                                 @elseif($sendStock->status == 2)
                                     <span class="badge bg-primary">Partial</span>
                                 @elseif($sendStock->status == 3)
-                                <span class="badge bg-success">Complated</span>
+                                <span class="badge bg-success">Completed</span>
                                 @endif
                             </li>
                         </ul>
                     </div>
-                    
-                </div><br><br>
+                </div>
+
                 <div class="row">
                     <div class="table-responsive">
                         <table id="" class="table table-sm custom-table">
@@ -88,7 +88,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div><br><br>
+                </div>
     
               <hr class="p-0 m-0">
               <div class="row">

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\hrm;
 
+use Carbon\Carbon;
 use App\Models\Hrm\Shift;
 use App\Models\AdminAndUser;
 use Illuminate\Http\Request;
 use App\Models\Hrm\Attendance;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
 class AttendanceController extends Controller
 {
@@ -18,15 +19,108 @@ class AttendanceController extends Controller
     }
 
     //attendance index page
-    public function index()
+    public function index(Request $request)
     {
         // $origin = date_create('2009-10-11');
         // $target = date_create('2009-10-13');
         // $interval = date_diff($origin, $target);
         // return  $interval->format('%R%a days');
 
-        $employee = AdminAndUser::where('status', 1)->get();
-        return view('hrm.attendance.index', compact('employee'));
+        if ($request->ajax()) {
+			$attendances = '';
+			$query = DB::table('hrm_attendances')
+				->leftJoin('admin_and_users', 'hrm_attendances.user_id', 'admin_and_users.id')
+				->leftJoin('hrm_shifts', 'hrm_attendances.shift_id', 'hrm_shifts.id');
+
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('admin_and_users.branch_id', NULL);
+                } else {
+                    $query->where('admin_and_users.branch_id', $request->branch_id);
+                }
+            }
+
+			if ($request->user_id) {
+				$query->where('hrm_attendances.user_id', $request->user_id);
+			}
+
+			if ($request->date_range) {
+				$date_range = explode('-', $request->date_range);
+				$form_date = date('Y-m-d', strtotime($date_range[0]));
+				//$form_date = date('Y-m-d', strtotime($date_range[0]. '-1 days'));
+				//$to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+				$to_date = date('Y-m-d', strtotime($date_range[1]));
+				$query->whereBetween('hrm_attendances.at_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+				//$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
+			}
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                $attendances = $query->select(
+                    'hrm_attendances.*',
+                    'hrm_shifts.shift_name',
+                    'admin_and_users.prefix',
+                    'admin_and_users.name',
+                    'admin_and_users.last_name',
+                )->get();
+            }else {
+                $attendances = $query->select(
+                    'hrm_attendances.*',
+                    'hrm_shifts.shift_name',
+                    'admin_and_users.prefix',
+                    'admin_and_users.name',
+                    'admin_and_users.last_name',
+                )->where('branch_id', auth()->user()->branch_id)->get();
+            }
+			
+
+			return DataTables::of($attendances)
+				->addColumn('action', function ($row) {
+					$html = '';
+					$html .= '<div class="dropdown table-dropdown">';
+					$html .= '<a href="' . route('hrm.attendance.edit', [$row->id]) . '" class="btn btn-sm btn-primary me-1" id="edit_attendance" title="Edit">';
+					$html .= '<i class="la la-edit"></i> Edit';
+					$html .= '</a>';
+
+					$html .= '<a href="' . route('hrm.attendance.delete', [$row->id]) . '" class="btn btn-sm btn-danger" id="delete">';
+					$html .= '<i class="la la-trash"></i> Delete';
+					$html .= '</a>';
+					$html .= '</div>';
+					return $html;
+				})
+                ->editColumn('name', function ($row) {
+					return $row->prefix.' '.$row->name.' '.$row->last_name;
+				})
+				->editColumn('date', function ($row) {
+					return date('d/m/Y', strtotime($row->at_date));
+				})
+				->editColumn('clock_in_out', function ($row) {
+					$clockOut = $row->clock_out_ts ? ' - ' . date('d/m/Y h:i a', strtotime($row->clock_out_ts)) : '';
+					return date('d/m/Y h:i a', strtotime($row->clock_in_ts)) . $clockOut;
+				})
+				->editColumn('work_duration', function ($row) {
+					if ($row->clock_out_ts) {
+						if ($row->clock_out_ts) {
+							$startTime = Carbon::parse($row->clock_in);
+							$endTime = Carbon::parse($row->clock_out);
+							$totalDuration = $startTime->diffForHumans($endTime);
+							return str_replace("before", " ", $totalDuration);
+						} else {
+							$startTime = Carbon::parse($row->clock_in_ts);
+							$totalDuration = $startTime->diffForHumans();
+							return str_replace("before", " ", $totalDuration);
+						}
+					}else {
+						return '<span class="badge bg-primary">Duraiton Is Running</span>';
+					}
+				})
+				->rawColumns(['action', 'date', 'clock_in_out', 'work_duration'])
+				->make(true);
+		}
+        $departments = DB::table('hrm_department')->get(['id', 'department_name']);
+        $employee = DB::table('admin_and_users')
+        ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('hrm.attendance.index', compact('employee', 'departments', 'branches'));
     }
 
     // Get all attendance by filter **requested by ajax**

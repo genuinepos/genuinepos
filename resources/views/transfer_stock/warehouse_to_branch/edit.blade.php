@@ -932,6 +932,11 @@
             }
         });
 
+        $(document).on('mouseenter', '#list>li>a',function () {
+            $('#list>li>a').removeClass('selectProduct');
+            $(this).addClass('selectProduct');
+        });
+
         $(document).on('change', '.add_input', function () {
             document.getElementById('search_product').focus();
         });

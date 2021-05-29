@@ -1288,7 +1288,16 @@ class PurchaseController extends Controller
             'state' => $request->state,
             'shipping_address' => $request->shipping_address,
             'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
+            'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
+
+        if ($request->opening_balance && $request->opening_balance >= 0) {
+            $addSupplierLedger = new SupplierLedger();
+            $addSupplierLedger->supplier_id = $addSupplier->id;
+            $addSupplierLedger->row_type = 3;
+            $addSupplierLedger->amount = $request->opening_balance;
+            $addSupplierLedger->save();
+        }
 
         Cache::forget('all-suppliers');
         return response()->json($addSupplier);

@@ -91,11 +91,12 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
         Route::get('create', 'PayrollController@create')->name('hrm.payroll.create');
         Route::post('store', 'PayrollController@store')->name('hrm.payroll.store');
         Route::get('edit/{payrollId}', 'PayrollController@edit')->name('hrm.payrolls.edit');
+        Route::post('update/{payrollId}', 'PayrollController@update')->name('hrm.payrolls.update');
         Route::get('show/{payrollId}', 'PayrollController@show')->name('hrm.payrolls.show');
         Route::delete('delete/{payrollId}', 'PayrollController@delete')->name('hrm.payrolls.delete');
+        Route::get('payment/view/{payrollId}', 'PayrollController@paymentView')->name('hrm.payrolls.payment.view');
         Route::get('payment/{payrollId}', 'PayrollController@payment')->name('hrm.payrolls.payment');
         Route::post('add/payment/{payrollId}', 'PayrollController@addPayment')->name('hrm.payrolls.add.payment');
-        Route::get('payment/list/{payrollId}', 'PayrollController@paymentList')->name('hrm.payrolls.payment.list');
         Route::get('payment/details/{paymentId}', 'PayrollController@paymentDetails')->name('hrm.payrolls.payment.details');
         Route::delete('payment/delete/{paymentId}', 'PayrollController@paymentDelete')->name('hrm.payrolls.payment.delete');
         Route::get('payment/edit/{paymentId}', 'PayrollController@paymentEdit')->name('hrm.payrolls.payment.edit');

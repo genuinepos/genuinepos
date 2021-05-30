@@ -11,14 +11,13 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Employee : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name}}</li>
-                    <li>
-                        <strong>Branch : </strong>
+                    <li><strong>Customer : </strong>{{ $payment->payroll->employee->prefix.' '.$payment->payroll->employee->name.' '.$payment->payroll->employee->last_name}}</li>
+                    <li><strong>Branch/Business : </strong>
                         <span>
-                            @if ($payroll->employee->branch)
-                                {{ $payroll->employee->branch->name.'/'.$payroll->employee->branch->branch_code }}
+                            @if ($payment->payroll->employee->branch)
+                                {{ $payment->payroll->employee->branch->name.'/'.$payment->payroll->employee->branch->branch_code }}
                             @else
-                                {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>) 
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
                             @endif
                         </span>  
                     </li>
@@ -28,7 +27,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Referance ID : </strong><span>{{ $payroll->reference_no }}</span> </li>
+                    <li><strong> Referance No : </strong><span>{{ $payment->payroll->reference_no }}</span> </li>
                     
                 </ul>
             </div>
@@ -39,14 +38,14 @@
                 <ul class="list-unstyled">
                     <li class="sale_due">
                         <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                        <span class="card_text total_due">{{ $payroll->due }}</span> </li>
+                        <span>{{ $payment->payroll->due }}</span> </li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
 
-<form id="payroll_payment_form" action="{{ route('hrm.payrolls.add.payment', $payroll->id) }}" method="POST" enctype="multipart/form-data">
+<form id="payroll_payment_form" action="{{ route('hrm.payrolls.payment.update', $payment->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="form-group row">
         <div class="col-md-4">
@@ -55,8 +54,8 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
                 </div>
-                <input type="hidden" id="available_amount" value="{{ $payroll->due }}">
-                <input type="number" name="amount" class="form-control p_input" step="any" data-name="Amount" id="p_amount" value="{{ $payroll->due }}"/>
+                <input type="hidden" id="available_amount" value="{{ $payment->payroll->due+$payment->paid }}">
+                <input type="number" name="amount" class="form-control p_input" step="any" data-name="Amount" id="p_amount" value="{{ $payment->paid }}"/>
             </div>
             <span class="error error_p_amount"></span>
         </div>
@@ -67,7 +66,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                 </div>
-                <input type="date" name="date" class="form-control  date-picker p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date('Y-m-d') }}">
+                <input type="date" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date("Y-m-d", strtotime($payment->date)) }}">
             </div>
             <span class="error error_p_date"></span>
         </div>
@@ -79,16 +78,16 @@
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
                 </div>
                 <select name="payment_method" class="form-control"  id="payment_method">
-                    <option value="Cash">Cash</option>  
-                    <option value="Advanced">Advanced</option> 
-                    <option value="Card">Card</option> 
-                    <option value="Rocket">Rocket</option> 
-                    <option value="Bkash">Bkash</option> 
-                    <option value="Neged">Neged</option>
-                    <option value="Cheque">Cheque</option> 
-                    <option value="Bank-Transfer">Bank-Transfer</option> 
-                    <option value="Other">Other</option> 
-                    <option value="Custom">Custom Field</option> 
+                    <option {{ $payment->pay_mode == 'Cash' ? 'SELECTED' : '' }} value="Cash">Cash</option>  
+                    <option {{ $payment->pay_mode == 'Advanced' ? 'SELECTED' : '' }} value="Advanced">Advanced</option> 
+                    <option {{ $payment->pay_mode == 'Bkash' ? 'SELECTED' : '' }} value="Bkash">Bkash</option> 
+                    <option {{ $payment->pay_mode == 'Rocket' ? 'SELECTED' : '' }} value="Rocket">Rocket</option> 
+                    <option {{ $payment->pay_mode == 'Neged' ? 'SELECTED' : '' }} value="Neged">Neged</option> 
+                    <option {{ $payment->pay_mode == 'Card' ? 'SELECTED' : '' }} value="Card">Card</option> 
+                    <option {{ $payment->pay_mode == 'Cheque' ? 'SELECTED' : '' }} value="Cheque">Cheque</option> 
+                    <option {{ $payment->pay_mode == 'Bank-Transfer' ? 'SELECTED' : '' }} value="Bank-Transfer">Bank-Transfer</option> 
+                    <option {{ $payment->pay_mode == 'Other' ? 'SELECTED' : '' }} value="Other">Other</option> 
+                    <option {{ $payment->pay_mode == 'Custom' ? 'SELECTED' : '' }} value="Custom">Custom Field</option> 
                 </select>
             </div>
         </div>
@@ -101,12 +100,12 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
                 </div>
-                <select name="account_id" class="form-control"  id="p_account_id">
+                <select name="account_id" class="form-control" id="p_account_id">
                 <option value="">None</option>
-                    @foreach ($accounts as $account)
-                    <option {{ auth()->user()->branch ? auth()->user()->branch->default_account_id == $account->id ? 'SELECTED' : '' : '' }} value="{{ $account->id }}">{{ $account->name }} (A/C:
+                @foreach ($accounts as $account)
+                    <option {{ $payment->account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">{{ $account->name }} (A/C:
                         {{ $account->account_number }}) (Balance: {{ $account->balance }})</option>
-                    @endforeach
+                @endforeach
                 </select>
             </div>
         </div>
@@ -118,30 +117,30 @@
     </div>
 
     <div class="form-group mt-2">
-        <div class="payment_method d-none" id="Card">
+        <div class="payment_method {{ $payment->pay_mode == 'Card' ? '' : 'd-none' }}" id="Card">
             <div class="row">
                 <div class="col-md-3">
                     <label><strong>Card Number :</strong> </label>
-                    <input type="text" class="form-control" name="card_no" id="p_card_no" placeholder="Card number">
+                    <input type="text" class="form-control" name="card_no" id="p_card_no" placeholder="Card number" value="{{ $payment->card_no }}">
                 </div>
 
                 <div class="col-md-3">
                     <label><strong>Card Holder Name :</strong> </label>
-                    <input type="text" class="form-control" name="card_holder_name" id="p_card_holder_name" placeholder="Card holder name">
+                    <input type="text" class="form-control" name="card_holder_name" id="p_card_holder_name" placeholder="Card holder name" value="{{ $payment->card_holder }}">
                 </div>
 
                 <div class="col-md-3">
                     <label><strong>Card Transaction No :</strong> </label>
-                    <input type="text" class="form-control" name="card_transaction_no" id="p_card_transaction_no" placeholder="Card transaction no">
+                    <input type="text" class="form-control" name="card_transaction_no" id="p_card_transaction_no" placeholder="Card transaction no" value="{{ $payment->card_transaction_no }}">
                 </div>
 
                 <div class="col-md-3">
                     <label><strong>Card Type :</strong> </label>
                     <select name="card_type" class="form-control"  id="p_card_type">
-                        <option value="Credit-Card">Credit Card</option>  
-                        <option value="Debit-Card">Debit Card</option> 
-                        <option value="Visa">Visa Card</option> 
-                        <option value="Master-Card">Master Card</option> 
+                        <option {{ $payment->card_type == 'Credit-Card' ? 'SELECTED' : '' }} value="Credit-Card">Credit Card</option>  
+                        <option {{ $payment->card_type == 'Debit-Card' ? 'SELECTED' : '' }} value="Debit-Card">Debit Card</option> 
+                        <option {{ $payment->card_type == 'Visa' ? 'SELECTED' : '' }} value="Visa">Visa Card</option> 
+                        <option {{ $payment->card_type == 'Master-Card' ? 'SELECTED' : '' }} value="Master-Card">Master Card</option> 
                     </select>
                 </div>
             </div>
@@ -149,52 +148,52 @@
             <div class="row mt-2">
                 <div class="col-md-3">
                     <label><strong>Month :</strong> </label>
-                    <input type="text" class="form-control" name="month" id="p_month" placeholder="Month">
+                    <input type="text" class="form-control" name="month" id="p_month" placeholder="Month" value="{{ $payment->card_month }}">
                 </div>
 
                 <div class="col-md-3">
                     <label><strong>Year :</strong> </label>
-                    <input type="text" class="form-control" name="year" id="p_year" placeholder="Year">
+                    <input type="text" class="form-control" name="year" id="p_year" placeholder="Year" value="{{ $payment->card_year }}">
                 </div>
 
                 <div class="col-md-3">
                     <label><strong>Secure Code :</strong> </label>
-                    <input type="text" class="form-control" name="secure_code" id="p_secure_code" placeholder="Secure code">
+                    <input type="text" class="form-control" name="secure_code" id="p_secure_code" placeholder="Secure code" value="{{ $payment->card_secure_code }}">
                 </div>
             </div>
         </div>
 
-        <div class="payment_method d-none" id="Cheque">
+        <div class="payment_method {{ $payment->pay_mode == 'Cheque' ? '' : 'd-none' }}" id="Cheque">
             <div class="row">
                 <div class="col-md-12">
                     <label><strong>Cheque Number :</strong> </label>
-                    <input type="text" class="form-control" name="cheque_no" id="p_cheque_no" placeholder="Cheque number">
+                    <input type="text" class="form-control" name="cheque_no" id="p_cheque_no" placeholder="Cheque number" value="{{ $payment->cheque_no }}">
                 </div>
             </div>
         </div>
 
-        <div class="payment_method d-none" id="Bank-Transfer">
+        <div class="payment_method {{ $payment->pay_mode == 'Bank-Transfer' ? '' : 'd-none' }}" id="Bank-Transfer">
             <div class="row">
                 <div class="col-md-12">
                     <label><strong>Account Number :</strong> </label>
-                    <input type="text" class="form-control" name="account_no" id="p_account_no" placeholder="Account number">
+                    <input type="text" class="form-control" name="account_no" id="p_account_no" placeholder="Account number" value="{{ $payment->account_no }}">
                 </div>
             </div>
         </div>
 
-        <div class="payment_method d-none" id="Custom">
+        <div class="payment_method {{ $payment->pay_mode == 'Custom' ? '' : 'd-none' }}" id="Custom">
             <div class="row">
                 <div class="col-md-12">
                     <label><strong>Transaction No :</strong> </label>
-                    <input type="text" class="form-control" name="transaction_no" id="p_transaction_no" placeholder="Transaction number">
+                    <input type="text" class="form-control" name="transaction_no" id="p_transaction_no" placeholder="Transaction number" value="{{ $payment->transaction_no }}">
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="form-group mt-2">
+    <div class="form-group">
         <label><strong> Payment Note :</strong></label>
-        <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
+        <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note">{{ $payment->note }}</textarea>
     </div>
 
     <div class="form-group row mt-3">

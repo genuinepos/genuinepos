@@ -243,17 +243,40 @@
     </div>
     <!-- Add Modal End-->
 
+    <!--Payment View modal-->
+    <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h6 class="modal-title" id="exampleModalLabel">Payroll Payments</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="payment_view_modal_body">
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
                     <h6 class="modal-title" id="modal_title">Add Payment</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
-                
+
                 <div class="modal-body" id="payment_modal_body">
                     
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewPayrollModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-50-modal" role="document">
+            <div class="modal-content" id="view_payroll_modal_content">
+
             </div>
         </div>
     </div>
@@ -261,6 +284,7 @@
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
 <script>
     // Show session message by toster alert.
     @if (Session::has('successMsg'))
@@ -349,18 +373,18 @@
         });
     });
 
-    // Show payment list modal with date
-    $(document).on('click', '#payment_list', function (e) {
+    // //Show payment view modal with data
+    $(document).on('click', '#view_payment', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
         var url = $(this).attr('href');
         $.ajax({
             url:url,
             type:'get',
-            success:function(data){
-               $('#payment_list_modal_body').html(data);
-               $('.data_preloader').hide();
-               $('#paymentListModal').modal('show');
+            success:function(date){
+                $('#payment_view_modal_body').html(date);
+                $('#paymentViewModal').modal('show');
+                $('.data_preloader').hide();
             }
         });
     });
@@ -402,9 +426,9 @@
     $(document).on('submit', '#payroll_payment_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
-        var available_amount = $('#p_available_amount').val();
+        var available_amount = $('#available_amount').val();
         var paying_amount = $('#p_amount').val();
-        if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
+        if (parseFloat(paying_amount) > parseFloat(available_amount)) {
             $('.error_p_amount').html('Paying amount must not be greater then due amount.');
             $('.loading_button').hide();
             return;
@@ -443,11 +467,9 @@
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
                 }else{
-                    getPayrolls();
-                    $('.payment_method').hide();
+                    table.ajax.reload();
                     $('.loading_button').hide();
-                    $('#paymentModal').modal('hide');
-                    $('#paymentListModal').modal('hide');
+                    $('.modal').modal('hide');
                     toastr.success(data); 
                 }
             }
@@ -461,7 +483,6 @@
         $('#deleted_form').attr('action', url);
         swal({
             title: "Are you sure to delete ?",
-            icon: "warning",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
@@ -474,7 +495,7 @@
     });
 
     // Show add payment modal with date 
-    $(document).on('click', '#show_payroll', function (e) {
+    $(document).on('click', '#view_payroll', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
         var url = $(this).attr('href');
@@ -499,8 +520,8 @@
             type:'post',
             data:request,
             success:function(data){
-                getPayrolls();
-                toastr.success(data, 'Succeed');
+                table.ajax.reload();
+                toastr.success(data);
             }
         });
     });
@@ -512,7 +533,6 @@
         $('#payment_deleted_form').attr('action', url);
         swal({
             title: "Are you sure to delete ?",
-            icon: "warning",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
@@ -534,16 +554,11 @@
             type:'post',
             data:request,
             success:function(data){
-                $('#paymentListModal').modal('hide');
-                toastr.success(data, 'Succeed');
-                getPayrolls();
+                toastr.success(data);
+                $('#paymentViewModal').modal('hide');
+                table.ajax.reload();
             }
         });
-    });
-
-    $(document).on('submit', '#payroll_filter_form', function(e) {
-        e.preventDefault();
-        getPayrolls();
     });
 
     $(document).on('change', '#payment_method',function () {

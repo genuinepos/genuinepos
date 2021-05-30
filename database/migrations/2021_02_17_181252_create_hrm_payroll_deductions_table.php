@@ -24,6 +24,7 @@ class CreateHrmPayrollDeductionsTable extends Migration
             $table->string('date')->nullable();
             $table->string('month')->nullable();
             $table->string('year')->nullable();
+            $table->boolean('is_delete_in_update')->default(0.00);
             $table->timestamps();
             $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
         });

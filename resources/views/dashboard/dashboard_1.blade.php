@@ -452,6 +452,7 @@
                     {{-- Select Location and Filter Buttons --}}
                     <div class="row mx-2 mt-3">
                         <div class="d-flex justify-content-between align-items-center">
+
                             <div class="select-dropdown">
                                 <select>
                                     <option value="">Select Location</option>
@@ -493,6 +494,9 @@
                                     </span>
                                 </label>
 
+                            </div>
+                            <div>
+                                {{-- <input type="text" class="form-control" placeholder="Search..."> --}}
                             </div>
                         </div>
                     </div>

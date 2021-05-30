@@ -4,6 +4,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <style>
+        html {
+            overflow-x: hidden;
+        }
+
         .title {
             font-size: 1.8em;
         }
@@ -278,11 +282,19 @@
             color: #6b082e;
         }
 
+        .table-title {
+            color: #6b082e;
+        }
+
+        .card {
+            border: 1px solid #6b082e;
+        }
+
     </style>
 @endpush
 @section('title', 'Home - ')
 @section('content')
-    <div id="dashboard">
+    <div id="dashboard" class="pb-5">
         <div class="row">
             <div class="main__content">
                 <div class="row mx-3 mt-3">
@@ -599,29 +611,178 @@
                 </div>
             </div>
         </div>
-        <div class="row px-5">
-            <table id="table_id" class="display">
-                <thead>
-                    <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Row 1 Data 1</td>
-                        <td>Row 1 Data 2</td>
-                    </tr>
-                    <tr>
-                        <td>Row 2 Data 1</td>
-                        <td>Row 2 Data 2</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="row px-3 mx-2 m-3">
+            <div class="card p-3">
+                <table id="stock_alert_table" class="display data__table" cellspacing="0" width="100%">
+                    <thead>
+                        <h3 class="table-title">Product Stock Alert</h3>
+                        <tr>
+                            <th>Product</th>
+                            <th>Location</th>
+                            <th>Current Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Row Data</td>
+                            <td>Row Data</td>
+                            <td>Row Data</td>
+                        </tr>
+                        <tr>
+                            <td>Row Data</td>
+                            <td>Row Data</td>
+                            <td>Row Data</td>
+                        </tr>
+                        <tr>
+                            <td>Row Data</td>
+                            <td>Row Data</td>
+                            <td>Row Data</td>
+                        </tr>
+                        <tr>
+                            <td>Row Data</td>
+                            <td>Row Data</td>
+                            <td>Row Data</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="row px-3 mx-2 m-3">
+            <div class="card p-3">
+                <table id="sales_order_table" class="display hover stripe row-border order-column" cellspacing="0"
+                    width="100%">
+                    <thead>
+                        <h3 class="table-title">Sales Order</h3>
+                        <tr>
+                            <th>Product</th>
+                            <th>Location</th>
+                            <th>Current Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Row Data One</td>
+                            <td>Row Data One</td>
+                            <td>Row Data One</td>
+                        </tr>
+                        <tr>
+                            <td>Row Data Two</td>
+                            <td>Row Data Two</td>
+                            <td>Row Data Two</td>
+                        </tr>
+                        <tr>
+                            <td>Row Data Three</td>
+                            <td>Row Data Three</td>
+                            <td>Row Data Three</td>
+                        </tr>
+                        <tr>
+                            <td>Row Data Four</td>
+                            <td>Row Data Four</td>
+                            <td>Row Data Four</td>
+                        </tr>
+
+                        <tr>
+                            <td>Row Data One</td>
+                            <td>Row Data One</td>
+                            <td>Row Data One</td>
+                        </tr>
+                        <tr>
+                            <td>Row Data Two</td>
+                            <td>Row Data Two</td>
+                            <td>Row Data Two</td>
+                        </tr>
+                        <tr>
+                            <td>Row Data Three</td>
+                            <td>Row Data Three</td>
+                            <td>Row Data Three</td>
+                        </tr>
+                        <tr>
+                            <td>Row Data Four</td>
+                            <td>Row Data Four</td>
+                            <td>Row Data Four</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="row px-4">
+            <div class="col">
+                <div class="card p-3">
+                    <table id="sales_payment_due" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <h3 class="table-title">Sales Payment Due</h3>
+                            <tr>
+                                <th>Product</th>
+                                <th>Location</th>
+                                <th>Current Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                            </tr>
+                            <tr>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                            </tr>
+                            <tr>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                            </tr>
+                            <tr>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card p-3">
+                    <table id="purchase_payment_due" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <h3 class="table-title">Purchase Payment Due</h3>
+                            <tr>
+                                <th>Product</th>
+                                <th>Location</th>
+                                <th>Current Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                            </tr>
+                            <tr>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                            </tr>
+                            <tr>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                            </tr>
+                            <tr>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                                <td>Row Data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-
 @endsection
 
 
@@ -631,9 +792,40 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.js">
+    </script>
+
+
     <script>
         $(document).ready(function() {
-            $('#table_id').DataTable({});
+            // $.fn.DataTable.ext.pager.numbers_length = 5;
+
+            $('#stock_alert_table').DataTable({
+                dom: "Bfrtip",
+                buttons: ["excel", "pdf", "print"],
+                searching: false,
+                paging: false,
+            });
+
+            const sales_order_table = $('#sales_order_table').DataTable({
+                dom: "Bfrtip",
+                pageLength: 4,
+                buttons: ["excel", "pdf", "print"],
+            });
+
+            $('#inputSearch').on('keyup', function() {
+                sales_order_table.search(this.value).draw();
+            });
+
+
         });
 
     </script>

@@ -445,6 +445,7 @@
                         </span>
                     </div>
 
+
                     <div></div>
                 </div> --}}
 
@@ -494,9 +495,6 @@
                                     </span>
                                 </label>
 
-                            </div>
-                            <div>
-                                {{-- <input type="text" class="form-control" placeholder="Search..."> --}}
                             </div>
                         </div>
                     </div>

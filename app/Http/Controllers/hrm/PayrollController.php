@@ -371,7 +371,7 @@ class PayrollController extends Controller
     public function show($payrollId)
     {
         $payroll = Payroll::with(['employee', 'allowances', 'deductions'])->where('id', $payrollId)->first();
-        return view('hrm.payroll.ajax_view.payroll_view_modal', compact('payroll'));
+        return view('hrm.payroll.ajax_view.show', compact('payroll'));
     }
 
     // Payroll delete method

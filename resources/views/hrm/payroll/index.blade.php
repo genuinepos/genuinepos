@@ -272,10 +272,19 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="viewPayrollModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-50-modal" role="document">
+            <div class="modal-content" id="view_payroll_modal_content">
+
+            </div>
+        </div>
+    </div>
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
 <script>
     // Show session message by toster alert.
     @if (Session::has('successMsg'))
@@ -486,7 +495,7 @@
     });
 
     // Show add payment modal with date 
-    $(document).on('click', '#show_payroll', function (e) {
+    $(document).on('click', '#view_payroll', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
         var url = $(this).attr('href');

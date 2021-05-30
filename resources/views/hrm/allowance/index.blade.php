@@ -1,0 +1,331 @@
+@extends('layout.master')
+@push('stylesheets')
+    <style>
+        .top-menu-area ul li {display: inline-block;margin-right: 3px;}
+        .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
+    </style>
+@endpush
+@section('content')
+    <div class="body-woaper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="border-class">
+                    <div class="main__content">
+                        <!-- =====================================================================BODY CONTENT================== -->
+                        <div class="sec-name">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="top-menu-area">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <a href="" class="text-dark text-muted"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
+                                            </li>
+                                            
+                                            @if (auth()->user()->permission->hrms['leave_type'] == '1')
+                                                <li>
+                                                    <a href="{{ route('hrm.leave.type') }}" class="text-dark text-muted"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
+                                                </li>
+                                            @endif
+
+                                            @if (auth()->user()->permission->hrms['leave_approve'] == '1')
+                                                <li>
+                                                    <a href="{{ route('hrm.leave') }}" class="text-dark text-muted"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
+                                                </li>
+                                            @endif
+
+                                            <li>
+                                                <a href="{{ route('hrm.attendance.shift') }}" class="text-dark text-muted"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.attendance') }}" class="text-dark text-muted"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.allowance') }}" class="text-primary"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.payroll.index') }}" class="text-dark text-muted"><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.holidays') }}" class="text-dark text-muted"><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.departments') }}" class="text-dark text-muted"><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-sliders-h"></i> <b>@lang('menu.hrm_settings')</b></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- =========================================top section button=================== -->
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form_element">
+                                <div class="section-header">
+                                    <div class="col-md-6">
+                                        <h6>Allowances/Deductions</h6>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="btn_30_blue float-end">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="widget_content">
+                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                    <div class="table-responsive" id="data-list">
+                                        <table class="display data_tbl data__table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Serial</th>
+                                                    <th>Type</th>
+                                                    <th>Max leave</th>
+                                                    <th>Leave Count Interval</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <form id="deleted_form" action="" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-40-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Add Leave</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <!--begin::Form-->
+                    <form id="add_allowance_form" action="{{ route('hrm.allowance.store') }}">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label><b>Description or Title :</b> <span class="text-danger">*</span></label>
+                                <input required type="text" name="description" class="form-control" placeholder="Description or Title"/>
+                                <span class="error error_description"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><b>Type :</b> <span class="text-danger">*</span></label>
+                                <select class="form-control" name="type" required="">
+                                    <option value="Allowance">Allowance</option>
+                                    <option value="Deduction">Deduction</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-6">
+                                <label><b>Amount Type :</b>  <span class="text-danger">*</span></label>
+                                <select class="form-control" name="amount_type" id="amount_type">
+                                    <option value="1">Fixed (0.0)</option>
+                                    <option value="2">Percentage (%)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-6">
+                                <label><b>Amount :</b>  <span class="text-danger">*</span></label>
+                                <input type="number" step="any" name="amount" class="form-control" placeholder="Amount"/>
+                                <span class="error error_amount"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-3">
+                            <div class="col-md-12">
+                                <button type="button" class="btn loading_button d-none"><i
+                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button type="submit" class="c-btn me-0 btn_blue float-end">Save</button>
+                                <button type="reset" data-bs-dismiss="modal"
+                                    class="c-btn btn_orange float-end">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Allowance/Deduction</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="edit_modal_body">
+                    <!--begin::Form-->
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@push('scripts')
+<script>
+    // Get all category by ajax
+    function getAllAllowance(){
+        $('.data_preloader').show();
+        $.ajax({
+            url:"{{ route('hrm.allowance.all') }}",
+            type:'get',
+            success:function(data){
+                $('.table-responsive').html(data);
+                $('.data_preloader').hide();
+            }
+        });
+    }
+    getAllAllowance();
+
+    // Setup ajax for csrf token.
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    // call jquery method 
+    $(document).ready(function(){
+        // Add department by ajax
+        $('#add_allowance_form').on('submit', function(e){
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url:url,
+                type:'post',
+                data: request,
+                success:function(data){
+                    toastr.success(data, 'Succeed');
+                    $('#add_allowance_form')[0].reset();
+                    $('.loading_button').hide();
+                    getAllAllowance();
+                    $('#addModal').modal('hide');
+                },
+                error: function(err) {
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        //console.log(key);
+                        $('.error_' + key + '').html(error[0]);
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '#edit', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url: url,
+                type:'get',
+                success:function (data) {
+                    $('#edit_modal_body').html(data);
+                    $('#editModal').modal('show');
+                }
+            });
+        });
+
+        // edit submit form by ajax
+        $(document).on('submit', '#edit_allowance_form',function(e){
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+          
+            $.ajax({
+                url:url,
+                type:'post',
+                data: request,
+                success:function(data){
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                    getAllAllowance();
+                    $('#editModal').modal('hide'); 
+                },
+                error: function(err) {
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        //console.log(key);
+                        $('.error_e_' + key + '').html(error[0]);
+                    });
+                }
+            });
+        });
+
+        // Show sweet alert for delete
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            swal({
+                title: "Are you sure?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) { 
+                    $('#deleted_form').submit();
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+        });
+
+        //data delete by ajax
+        $(document).on('submit', '#deleted_form',function(e){
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url:url,
+                type:'post',
+                async:false,
+                data:request,
+                success:function(data){
+                    getAllAllowance();
+                    toastr.success(data, 'Succeed');
+                    $('#deleted_form')[0].reset();
+                }
+            });
+        });
+    });
+</script>
+@endpush

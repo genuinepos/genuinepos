@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\hrm;
 
+use DateTime;
 use Carbon\Carbon;
 use App\Models\Account;
 use App\Models\CashFlow;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Models\hrm\PayrollAllowance;
 use App\Models\hrm\PayrollDeduction;
 use Illuminate\Support\Facades\Cache;
+use Yajra\DataTables\Facades\DataTables;
 
 class PayrollController extends Controller
 {
@@ -24,58 +26,109 @@ class PayrollController extends Controller
     }
 
     //Index view of payroll
-    public function index()
+    public function index(Request $request)
     {
-        
+        if ($request->ajax()) {
+            $payrolls = '';
+            $query = DB::table('hrm_payrolls')
+                ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+                ->leftJoin('hrm_department', 'admin_and_users.department_id', 'hrm_department.id')
+                ->leftJoin('hrm_designations', 'admin_and_users.designation_id', 'hrm_designations.id')
+                ->leftJoin('admin_and_users as created_by', 'hrm_payrolls.admin_id', 'created_by.id');
+
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('admin_and_users.branch_id', NULL);
+                } else {
+                    $query->where('admin_and_users.branch_id', $request->branch_id);
+                }
+            }
+
+            if ($request->user_id) {
+                $query->where('hrm_payrolls.user_id', $request->user_id);
+            }
+
+            if ($request->date_range) {
+                $date_range = explode('-', $request->date_range);
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                //$form_date = date('Y-m-d', strtotime($date_range[0]. '-1 days'));
+                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                //$to_date = date('Y-m-d', strtotime($date_range[1]));
+                $query->whereBetween('hrm_payrolls.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+                //$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
+            }
+
+            $payrolls = $query->select(
+                'hrm_payrolls.*',
+                'admin_and_users.prefix as emp_prefix',
+                'admin_and_users.name as emp_name',
+                'admin_and_users.last_name as emp_last_name',
+                'admin_and_users.branch_id',
+                'hrm_department.department_name',
+                'hrm_designations.designation_name',
+                'created_by.prefix as user_prefix',
+                'created_by.name as user_name',
+                'created_by.last_name as user_last_name',
+            )->get();
+
+            return DataTables::of($payrolls)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    // return $action_btn;
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                        </button>';
+
+                    $html .= '<div class="dropdown-menu">';
+                    $html .= '<a href="' . route('hrm.payrolls.show', [$row->id]) . '" class="dropdown-item" id="view_payroll"><i class="far fa-eye text-primary"></i> View</a>';
+
+                    if (auth()->user()->branch_id == $row->branch_id) {
+                        if ($row->due > 0) {
+                            $html .= '<a href="' . route('hrm.payrolls.payment', [$row->id]) . '" class="dropdown-item" id="pay_salary"><i class="far fa-money-bill-alt text-primary"></i> Pay Salary</a>';
+                        }
+
+                        $html .= '<a href="' . route('hrm.payrolls.payment.details', [$row->id]) . '" class="dropdown-item" id="view_payment"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                        $html .= '<a href="' . route('hrm.payrolls.edit', [$row->id]) . '" class="dropdown-item" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a href="' . route('hrm.payrolls.delete', [$row->id]) . '" class="dropdown-item" id="delete"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    }
+                    
+                    $html .= '</div>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->editColumn('employee', function ($row) {
+                    return $row->emp_prefix.' '.$row->emp_name.' '.$row->emp_last_name;
+                })
+                ->editColumn('month_year', function ($row) {
+                    return $row->month . '/' . $row->year;
+                })
+                ->editColumn('payment_status', function ($row) {
+                    $html = '';
+                    if ($row->due <= 0) {
+                        $html = '<span class="badge bg-success">Paid</span>';
+                    } elseif ($row->due > 0 && $row->due < $row->gross_amount) {
+                        $html = '<span class="badge bg-primary text-white">Partial</span>';
+                    } elseif ($row->gross_amount == $row->due) {
+                        $html = '<span class="badge bg-danger text-white">Due</span>';
+                    }
+                    return $html;
+                })
+                ->editColumn('created_by', function ($row) {
+                    return $row->user_prefix.' '.$row->user_name.' '.$row->user_last_name;
+                })
+                ->rawColumns(['action', 'employee', 'month_year', 'payment_status', 'created_by'])
+                ->make(true);
+        }
+
         $departments = DB::table('hrm_department')->get(['id', 'department_name']);
-        $employee = DB::table('admin_and_users')
-        ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+        $employee = DB::table('admin_and_users')->where('branch_id', auth()->user()->branch_id)
+        ->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('hrm.payroll.index', compact('employee', 'departments', 'branches'));
     }
 
-    public function getPayrolls(Request $request)
-    {
-        $payrolls = '';
-        $query = DB::table('hrm_payrolls')
-            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
-            ->leftJoin('hrm_department', 'admin_and_users.department_id', 'hrm_department.id')
-            ->leftJoin('hrm_designations', 'admin_and_users.designation_id', 'hrm_designations.id')
-            ->leftJoin('admin_and_users as created_by', 'hrm_payrolls.admin_id', 'created_by.id');
-        if ($request->employee_id) {
-            $query->where('hrm_payrolls.user_id', $request->employee_id);
-        }
-
-        if ($request->department_id) {
-            $query->where('admin_and_users.department_id', $request->department_id);
-        }
-
-        if ($request->designation_id) {
-            $query->where('admin_and_users.designation_id', $request->designation_id);
-        }
-
-        if ($request->month_year) {
-            $month_year = explode('-', $request->month_year);
-            $month = $month_year[0];
-            $year = $month_year[1];
-            $query->where('hrm_payrolls.month', $month)->where('hrm_payrolls.year', $year);
-        } else {
-            $query->where('hrm_payrolls.month', date('F'))->where('hrm_payrolls.year', date('Y'));
-        }
-
-        $payrolls = $query->select(
-            'admin_and_users.prefix',
-            'admin_and_users.name',
-            'admin_and_users.last_name',
-            'hrm_payrolls.*',
-            'hrm_department.department_name',
-            'hrm_designations.designation_name',
-            'created_by.name as created_by_prefix',
-            'created_by.name as created_by_name',
-            'created_by.last_name as created_by_last_name',
-        )->get();
-        return view('hrm.payroll.ajax_view.payroll_list', compact('payrolls'));
-    }
 
     // Create payroll
     public function create(Request $request)
@@ -83,16 +136,18 @@ class PayrollController extends Controller
         // return  $result = (float)$float + $hour;
         // $number = str_replace(['+', '-'], '', filter_var($a, FILTER_SANITIZE_NUMBER_INT));
         
-        $month_year = explode(' ', $request->month_year);
-        $month = date('F', strtotime($month_year[0]));
-        $year = $month_year[1];
+        $month_year = explode('-', $request->month_year);
+        $year = $month_year[0];
+        $dateTime = DateTime::createFromFormat('m', $month_year[1]);
+        $month = $dateTime->format("F");
+        
         // return $employee = AdminAndUser::where('id', $request->employee_id)->first();
-        $payroll = Payroll::where('user_id', $request->employee_id)->where('month', $month)->where('year', $year)->first();
+        $payroll = DB::table('hrm_payrolls')->where('user_id', $request->user_id)->where('month', $month)->where('year', $year)->first();
         if ($payroll) {
             return redirect()->route('hrm.payrolls.edit', $payroll->id);
         }
 
-        $employee = DB::table('admin_and_users')->where('id', $request->employee_id)->first();
+        $employee = DB::table('admin_and_users')->where('id', $request->user_id)->first();
         $attendances = DB::table('hrm_attendances')->where('user_id', $request->employee_id)
             ->where('month', $month)->where('is_completed', 1)->get();
 
@@ -107,17 +162,8 @@ class PayrollController extends Controller
             //gmdate('H:i:s', $totalHours);
         }
 
-        $allowances = DB::table('allowance_employees')
-            ->where('allowance_employees.user_id', $request->employee_id)
-            ->leftJoin('hrm_allowance', 'allowance_employees.allowance_id', 'hrm_allowance.id')
-            ->where('hrm_allowance.type', 'Allowance')
-            ->get();
-
-        $deductions = DB::table('allowance_employees')
-            ->where('allowance_employees.user_id', $request->employee_id)
-            ->leftJoin('hrm_allowance', 'allowance_employees.allowance_id', 'hrm_allowance.id')
-            ->where('hrm_allowance.type', 'Deduction')
-            ->get();
+        $allowances = DB::table('hrm_allowance')->where('type', 'Allowance')->get();
+        $deductions = DB::table('hrm_allowance')->where('type', 'Deduction')->get();
 
         return view('hrm.payroll.create', compact('employee', 'month', 'year', 'totalHours', 'allowances', 'deductions'));
     }
@@ -131,10 +177,7 @@ class PayrollController extends Controller
             'duration_unit' => 'required',
         ]);
 
-        //return $request->all();
-        // generate invoice ID
-        
-        $i = 6;
+        $i = 4;
         $a = 0;
         $invoiceId = '';
         while ($a < $i) {
@@ -143,7 +186,7 @@ class PayrollController extends Controller
         }
 
         $addPayroll = new Payroll();
-        $addPayroll->reference_no = 'EP' . date('my') . $invoiceId;
+        $addPayroll->reference_no = 'EP' . date('dmy') . $invoiceId;
         $addPayroll->user_id = $request->user_id;
         $addPayroll->duration_time = $request->duration_time;
         $addPayroll->duration_unit = $request->duration_unit;
@@ -170,8 +213,8 @@ class PayrollController extends Controller
                 $addPayrollAllowance->payroll_id = $addPayroll->id;
                 $addPayrollAllowance->allowance_name = $allowance_name;
                 $addPayrollAllowance->amount_type = $al_amount_types[$key];
-                $addPayrollAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $allowance_percents : 0;
-                $addPayrollAllowance->allowance_amount = $allowance_amounts[$key];
+                $addPayrollAllowance->allowance_percent =  $allowance_percents[$key] ? $allowance_percents[$key] : 0;
+                $addPayrollAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
                 $addPayrollAllowance->save();
             }
         }
@@ -187,8 +230,8 @@ class PayrollController extends Controller
                 $addPayrollDeduction->payroll_id = $addPayroll->id;
                 $addPayrollDeduction->deduction_name = $deduction_name;
                 $addPayrollDeduction->amount_type = $de_amount_types[$key];
-                $addPayrollDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $deduction_percents[$key] : 0;
-                $addPayrollDeduction->deduction_amount = $deduction_amounts[$key];
+                $addPayrollDeduction->deduction_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
+                $addPayrollDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
                 $addPayrollDeduction->save();
             }
         }
@@ -309,19 +352,19 @@ class PayrollController extends Controller
             $account->save();
 
             // Add cash flow
-            // $addCashFlow = new CashFlow();
-            // $addCashFlow->account_id = $request->account_id;
-            // $addCashFlow->debit = $request->amount;
-            // $addCashFlow->balance = $account->balance;
-            // $addCashFlow->payroll_payment_id = $addPayrollPayment->id;
-            // $addCashFlow->transaction_type = 8;
-            // $addCashFlow->cash_type = 1;
-            // $addCashFlow->date = $request->date;
-            // $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            // $addCashFlow->month = date('F');
-            // $addCashFlow->year = date('Y');
-            // $addCashFlow->admin_id = auth()->user()->id;
-            // $addCashFlow->save();
+            $addCashFlow = new CashFlow();
+            $addCashFlow->account_id = $request->account_id;
+            $addCashFlow->debit = $request->amount;
+            $addCashFlow->balance = $account->balance;
+            $addCashFlow->payroll_payment_id = $addPayrollPayment->id;
+            $addCashFlow->transaction_type = 8;
+            $addCashFlow->cash_type = 1;
+            $addCashFlow->date = $request->date;
+            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+            $addCashFlow->month = date('F');
+            $addCashFlow->year = date('Y');
+            $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
             Cache::forget('all-accounts');
         }
         return response()->json('Successfully payment is added.');

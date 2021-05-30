@@ -441,7 +441,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="px-1 pt-1 pb-0 text-primary"><b>Human Resource Details</b> </p>
+                                        <p class="px-1 pt-1 pb-0 text-primary"><strong>Human Resource Details</strong> </p>
                                     </div>
 
                                     <div class="element-body">

@@ -14,7 +14,7 @@
                 <div class="head__content__sec">
                     <ul class="head__cn">
                         <li class="top-icon ms-3"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
-                        <li class="dropdown dp__top top-icon">
+                        {{-- <li class="dropdown dp__top top-icon">
                             <span class="notify">30</span>
                             <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown">
                                 <span class="fas fa-exclamation-circle"></span>
@@ -85,7 +85,7 @@
                                 </li>
                                 <a href="" class="btn__sub">View All</a>
                             </ul>
-                        </li>
+                        </li> --}}
 
                         <li class="dropdown dp__top">
                             <a href="" class="top-icon" id="dropdownMenuButton1" data-bs-toggle="dropdown">
@@ -129,16 +129,16 @@
                         <li class="user_info me-5">
                             <span class="user_name">
                                 {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}
-                                |
+
                                 @if (auth()->user()->role_type == 1)
-                                    Super-Admin
+                                    (Super Admin)
                                 @elseif(auth()->user()->role_type == 2)
-                                    Admin
+                                    (Admin)
                                 @else
                                     {{ auth()->user()->role->name }}
                                 @endif
                             </span>
-                            <span><a href="#">Help?</a></span>
+                            <span><a href="#">Need Help?</a></span>
                         </li>
                         <li class="top-icon">
                             <a href="" id="logout_option"><span class="fas fa-power-off" title="Logout"></span></a>

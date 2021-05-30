@@ -15,11 +15,9 @@
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form id="generate_payroll_form" action="{{ route('hrm.payroll.store') }}" method="POST">
+            <form id="update_payroll_form" action="{{ route('hrm.payrolls.update', $payroll->id) }}" method="POST">
                 @csrf
-                <input type="hidden" name="user_id" value="{{ $employee->id }}">
-                <input type="hidden" name="month" value="{{ $month }}">
-                <input type="hidden" name="year" value="{{ $year }}">
+                <input type="hidden" name="user_id" value="{{ $payroll->employee->id }}">
                 <section class="mt-5">
                     <div class="container-fluid">
                         <div class="row">
@@ -28,11 +26,12 @@
                                     <div class="section-header">
                                         <div class="col-md-12">
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <h5>Generate Payroll Of {{ $month.'/'.$year }}</h5>
+                                                <div class="col-md-10">
+                                                    <h6>Edit Payroll Of
+                                                        <b>{{ $payroll->employee->name }}</b> for <b>{{ $payroll->month. ' '.$payroll->year }}</b> (Reference No : {{$payroll->reference_no}})</h6>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-2">
                                                     <a href="{{ url()->previous() }}"
                                                         class="btn text-white btn-sm btn-info float-end"><i
                                                             class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -46,17 +45,17 @@
                                                 <label><b>Total Work Duration :</b> <span class="text-danger">*
                                                     </span> </label>
                                                 <input type="number" step="any" name="duration_time" id="duration_time" class="form-control"
-                                                    placeholder="Total Work Duration" autofocus value="{{ $totalHours }}">
+                                                    placeholder="Total Work Duration" autofocus value="{{ $payroll->duration_time }}">
                                                 <span class="error error_duration_time"></span>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <label><span class="text-danger">* </span><b>Unit (Pay Type) :</b> </label>
                                                 <select name="duration_unit" id="duration_unit" class="form-control">
-                                                    <option value="Hourly">Hourly</option>
-                                                    <option value="Monthly">Monthly</option>
-                                                    <option value="Yearly">Yearly</option>
-                                                    <option value="Daliy">Daliy</option>
+                                                    <option {{ $payroll->duration_unit == 'Hourly' ? 'SELECTED' : '' }} value="Month">Hourly</option>
+                                                    <option {{ $payroll->duration_unit == 'Monthly' ? 'SELECTED' : '' }} value="Day">Monthly</option>
+                                                    <option {{ $payroll->duration_unit == 'Yearly' ? 'SELECTED' : '' }}  value="Yearly">Hour</option>
+                                                    <option {{ $payroll->duration_unit == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">Week</option>
                                                 </select>
                                                 <span class="error error_duration_unit"></span>
                                             </div>
@@ -65,14 +64,14 @@
                                                 <label><b>Amount per unit duration :</b> <span
                                                         class="text-danger">*</span></label>
                                                 <input type="number" step="any" name="amount_per_unit" id="amount_per_unit"
-                                                    class="form-control" placeholder="Amount per unit duration" value="">
+                                                    class="form-control" placeholder="Amount per unit duration" value="{{ $payroll->amount_per_unit }}">
                                                 <span class="error error_amount_per_unit"></span>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <label><b>Total :</b> <span class="text-danger">*</span></label>
                                                 <input readonly type="total" step="any" name="total_amount"
-                                                    id="total_amount" class="form-control" placeholder="total" value="0.00">
+                                                    id="total_amount" class="form-control" placeholder="total" value="{{ $payroll->total_amount }}">
                                             </div>
                                         </div>
                                     </div>
@@ -99,130 +98,96 @@
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="table-responsive w-100">
+                                                <div class="table-responsive">
                                                     <table class="table modal-table table-sm">
                                                         <thead>
                                                             <tr>
                                                                 <th class="text-navy-blue">Allowance</th>
                                                                 <th class="text-navy-blue">Amount Type</th>
                                                                 <th class="text-navy-blue">Amount</th>
-                                                                <th class="text-right"><i
-                                                                        class="fas fa-trash-alt text-dark"></i></th>
+                                                                <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="allowance_body">
                                                             @php $index = 0; @endphp
-                                                            @if (count($allowances) > 0)
-                                                                @foreach ($allowances as $allowance)
+                                                            @if (count($payroll->allowances) > 0)
+                                                                @foreach ($payroll->allowances as $allowance)
                                                                     <tr>
                                                                         <td>
-                                                                            <input type="hidden"
-                                                                                class="allowance-{{ $index }}"
-                                                                                id="allowances">
-                                                                            <input type="text"
-                                                                                name="allowance_names[{{ $index }}]"
-                                                                                class="form-control"
-                                                                                id="allowance_name" placeholder="Allowance Name"
-                                                                                value="{{ $allowance->description }}">
+                                                                            <input type="hidden" name="payroll_allowance_id[{{ $index }}]" value="{{ $allowance->id }}">
+                                                                            <input type="hidden" class="allowance-{{ $index }}" id="allowances">
+                                                                            <input type="text" name="allowance_names[{{ $index }}]" class="form-control" id="allowance_name" placeholder="Allowance Name" value="{{ $allowance->allowance_name }}">
                                                                         </td>
-    
+                        
                                                                         <td>
-                                                                            <select class="form-control"
-                                                                                name="al_amount_types[{{ $index }}]"
-                                                                                id="al_amount_type">
-                                                                                <option
-                                                                                    {{ $allowance->amount_type == 1 ? 'SELECTED' : '' }}
-                                                                                    value="1">Fixed</option>
-                                                                                <option
-                                                                                    {{ $allowance->amount_type == 2 ? 'SELECTED' : '' }}
-                                                                                    value="2">Percentage</option>
+                                                                            <select class="form-control" name="al_amount_types[{{ $index }}]" id="al_amount_type">
+                                                                                <option {{ $allowance->amount_type == 1 ? 'SELECTED' : '' }}  value="1">Fixed</option>
+                                                                                <option {{ $allowance->amount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage</option>
                                                                             </select>
-    
-                                                                            <div
-                                                                                class="input-group allowance_percent_field {{ $allowance->amount_type == 1 ? 'd-none' : '' }} ">
-                                                                                <input type="number" step="any"
-                                                                                    name="allowance_percents[{{ $index }}]"
-                                                                                    class="form-control"
-                                                                                    autocomplete="off"
-                                                                                    value="{{ $allowance->amount_type == 2 ? $allowance->amount : 0.0 }}"
-                                                                                    id="allowance_percent">
+                        
+                                                                            <div class="input-group allowance_percent_field {{ $allowance->amount_type == 1 ? 'd-none' : '' }} ">
+                        
+                                                                                <input type="number" step="any" name="allowance_percents[{{ $index }}]" class="form-control" autocomplete="off" value="{{ $allowance->amount_type == 2 ? $allowance->allowance_percent : 0.00 }}" id="allowance_percent">
+                        
                                                                                 <div class="input-group-prepend">
-                                                                                    <span class="input-group-text"
-                                                                                        id="basic-addon1">
+                                                                                    <span class="input-group-text" id="basic-addon1">
                                                                                         <i class="fas fa-percentage input_i"></i>
                                                                                     </span>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
-    
+                        
                                                                         <td>
-                                                                            <input type="number" step="any"
-                                                                                name="allowance_amounts[{{ $index }}]"
-                                                                                class="form-control"
-                                                                                id="allowance_amount" placeholder="Amount"
-                                                                                value="{{ $allowance->amount }}">
+                                                                            <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="Amount" value="{{ $allowance->allowance_amount }}">
                                                                         </td>
-    
+                        
                                                                         <td class="text-right">
-                                                                            <a href="#" id="remove_allowane"
-                                                                                class="btn btn-sm btn-danger mt-1">X</a>
+                                                                            <a href="#" id="remove_allowane" class="btn btn-sm btn-danger mt-1">X</a>
                                                                         </td>
-                                                                    </tr>
+                                                                    </tr> 
                                                                     @php $index++; @endphp
                                                                 @endforeach
-                                                            @endif
-                                                            <tr>
-                                                                <td>
-                                                                    <input type="hidden" class="allowance-{{ $index }}"
-                                                                        id="allowances">
-                                                                    <input type="text"
-                                                                        name="allowance_names[{{ $index }}]"
-                                                                        class="form-control" id="allowance_name"
-                                                                        placeholder="Allowance Name">
-                                                                </td>
-    
-                                                                <td>
-                                                                    <select class="form-control"
-                                                                        name="al_amount_types[{{ $index }}]"
-                                                                        id="al_amount_type">
-                                                                        <option value="1">Fixed</option>
-                                                                        <option value="2">Percentage</option>
-                                                                    </select>
-    
-                                                                    <div class="input-group allowance_percent_field d-none">
-                                                                        <input type="number" step="any"
-                                                                            name="allowance_percents[{{ $index }}]"
-                                                                            class="form-control"
-                                                                            autocomplete="off" value="0.00"
-                                                                            id="allowance_percent">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text" id="basic-addon1">
-                                                                                <i class="fas fa-percentage input_i"></i>
-                                                                            </span>
+                                                            @else  
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="hidden" name="payroll_allowance_id[{{ $index }}]" value="noid">
+                                                                        <input type="hidden" class="allowance-{{ $index }}" id="allowances">
+                                                                        <input type="text" name="allowance_names[{{ $index }}]" class="form-control" id="allowance_name" placeholder="Allowance Name">
+                                                                    </td>
+                        
+                                                                    <td>
+                                                                        <select class="form-control" name="al_amount_types[{{ $index }}]" id="al_amount_type">
+                                                                            <option value="1">Fixed</option>
+                                                                            <option value="2">Percentage</option>
+                                                                        </select>
+                        
+                                                                        <div class="input-group allowance_percent_field d-none">
+                                                                            <input type="number" step="any" name="allowance_percents[{{ $index }}]" class="form-control" autocomplete="off" value="0.00" id="allowance_percent">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text" id="basic-addon1">
+                                                                                    <i class="fas fa-percentage input_i"></i>
+                                                                                </span>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </td>
-    
-                                                                <td>
-                                                                    <input type="number" step="any"
-                                                                        name="allowance_amounts[{{ $index }}]"
-                                                                        class="form-control"
-                                                                        id="allowance_amount" placeholder="Amount" value="0.00">
-                                                                </td>
-    
-                                                                <td class="text-right">
-                                                                    <a href="#" id="remove_allowane"
-                                                                        class="btn btn-sm btn-danger mt-1">X</a>
-                                                                </td>
-                                                            </tr>
+                                                                    </td>
+                        
+                                                                    <td>
+                                                                        <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="Amount" value="0.00">
+                                                                    </td>
+                        
+                                                                    <td class="text-right">
+                                                                        <a href="#" id="remove_allowane" class="btn btn-sm btn-danger mt-1">X</a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <th colspan="2" class="text-end">Total:</th>
-                                                                <th colspan="2" class="text-start">
-                                                                    <span class="span_total_allowance_amount">0.00</span>
-                                                                    <input name="total_allowance_amount" type="hidden"
-                                                                        id="total_allowance_amount" value="0.00">
+                                                                <th class="text-navy-blue" colspan="2">Total</th>
+                                                                <th class="text-navy-blue" colspan="2">
+                                                                    $ 
+                                                                    <span class="span_total_allowance_amount">{{ $payroll->total_allowance_amount }}</span>
+                                                                    <input name="total_allowance_amount" type="hidden" id="total_allowance_amount" value="{{ $payroll->total_allowance_amount }}">
                                                                 </th>
                                                             </tr>
                                                         </tfoot>
@@ -254,8 +219,8 @@
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="table-responsive w-100">
-                                                    <table class="table modal-table table-sm">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm">
                                                         <thead>
                                                             <tr>
                                                                 <th class="text-navy-blue">Deduction</th>
@@ -266,12 +231,13 @@
                                                         </thead>
                                                         <tbody id="deduction_body">
                                                             @php $index2 = 0; @endphp
-                                                            @if (count($deductions) > 0)
-                                                                @foreach ($deductions as $deduction)
+                                                            @if (count($payroll->deductions) > 0)
+                                                                @foreach ($payroll->deductions as $deduction)
                                                                     <tr>
                                                                         <td>
+                                                                            <input type="hidden" name="payroll_deduction_id[{{$index2}}]" value="{{ $deduction->id }}">
                                                                             <input type="hidden" class="deduction-{{ $index2 }}" id="deductions">
-                                                                            <input type="text" name="deduction_names[{{ $index2 }}]" id="deduction_name" class="form-control" placeholder="Deduction Name" value="{{ $deduction->description }}">
+                                                                            <input type="text" name="deduction_names[{{ $index2 }}]" id="deduction_name" class="form-control" placeholder="Deduction Name" value="{{ $deduction->deduction_name }}">
                                                                         </td>
                         
                                                                         <td>
@@ -282,17 +248,18 @@
                         
                                                                             <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-none' : '' }} ">
                         
-                                                                                <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="{{ $deduction->amount_type == 2 ? $deduction->amount : 0.00 }}" id="deduction_percent">
+                                                                                <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="{{ $deduction->amount_type == 2 ? $deduction->deduction_percent : 0.00 }}" id="deduction_percent">
                         
                                                                                 <div class="input-group-prepend">
-                                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-percentage input_i"></i>
+                                                                                    <span class="input-group-text" id="basic-addon1">
+                                                                                        <i class="fas fa-percentage input_i"></i>
                                                                                     </span>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
                         
                                                                         <td>
-                                                                            <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" id="deduction_amount" class="form-control" placeholder="Amount" value="{{ $deduction->amount }}">
+                                                                            <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" id="deduction_amount" class="form-control" placeholder="Amount" value="{{ $deduction->deduction_amount }}">
                                                                         </td>
                         
                                                                         <td class="text-right">
@@ -301,46 +268,49 @@
                                                                     </tr> 
                                                                     @php $index2++; @endphp
                                                                 @endforeach
-                                                            @endif
-                                                    
-                                                            <tr>
-                                                                <td>
-                                                                    <input type="hidden" class="deduction-{{ $index2 }}" id="deductions">
-                                                                    <input type="text"  name="deduction_names[{{ $index2 }}]" id="deduction_name" class="form-control" placeholder="Deduction Name">
-                                                                </td>
+                                                            @else 
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="hidden" name="payroll_deduction_id[{{$index2}}]" value="noid">
+                                                                        <input type="hidden" class="deduction-{{ $index2 }}" id="deductions">
+                                                                        <input type="text"  name="deduction_names[{{ $index2 }}]" id="deduction_name" class="form-control" placeholder="Allowance Name">
+                                                                    </td>
                         
-                                                                <td>
-                                                                    <select class="form-control" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
-                                                                        <option value="1">Fixed</option>
-                                                                        <option value="2">Percentage</option>
-                                                                    </select>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
+                                                                            <option value="1">Fixed</option>
+                                                                            <option value="2">Percentage</option>
+                                                                        </select>
                         
-                                                                    <div class="input-group deduction_percent_field d-none">
-                                                                        <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="" id="deduction_percent">
+                                                                        <div class="input-group deduction_percent_field d-none">
+                                                                            <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="" id="deduction_percent">
                         
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text" id="basic-addon1">
-                                                                                <i class="fas fa-percentage input_i"></i>
-                                                                            </span>
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text" id="basic-addon1">
+                                                                                    <i class="fas fa-percentage input_i"></i>
+                                                                                </span>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </td>
+                                                                    </td>
                         
-                                                                <td>
-                                                                    <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" class="form-control" id="deduction_amount" placeholder="Amount" value="0.00">
-                                                                </td>
+                                                                    <td>
+                                                                        <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" class="form-control" id="deduction_amount" placeholder="Amount" value="0.00">
+                                                                    </td>
                         
-                                                                <td class="text-right">
-                                                                    <a href="#" id="remove_deduction" class="btn btn-sm btn-danger mt-1">X</a>
-                                                                </td>
-                                                            </tr>
+                                                                    <td class="text-right">
+                                                                        <a href="#" id="remove_deduction" class="btn btn-sm btn-danger mt-1">X</a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <th colspan="2" class="text-end">Total:</th>
-                                                                <th colspan="2" class="text-start">
-                                                                    <span class="span_total_deduction_amount">0.00</span>
-                                                                    <input name="total_deduction_amount" type="hidden" id="total_deduction_amount" value="0.00">
+                                                                <th class="text-navy-blue" colspan="2">Total</th>
+                                                                <th class="text-navy-blue" colspan="2">
+                                                                    $ <span class="span_total_deduction_amount">
+                                                                        {{ $payroll->total_deduction_amount }}
+                                                                    </span>
+                                                                    <input name="total_deduction_amount" type="hidden" id="total_deduction_amount" value="{{ $payroll->total_deduction_amount }}">
                                                                 </th>
                                                             </tr>
                                                         </tfoot>
@@ -358,8 +328,8 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <h6 class="float-end">
-                                                    Gross Amount : <b><span class="span_gross_amount"><b>0.00</b></span></b>
-                                                    <input type="hidden" name="gross_amount" id="gross_amount">
+                                                    Gross Amount : <span class="span_gross_amount"><b>{{ $payroll->gross_amount }}</b></span>
+                                                    <input type="hidden" name="gross_amount" id="gross_amount" {{ $payroll->gross_amount }}>
                                                 </h6>
                                             </div>
                                         </div>
@@ -468,6 +438,7 @@
         var html = '';
         html += '<tr>';
         html += '<td>';
+        html += '<input type="hidden" name="payroll_allowance_id['+(index+1)+']" value="noid">';
         html += '<input type="hidden" class="allowance-'+(index+1)+'" id="allowances">';
         html += '<input type="text" name="allowance_names['+(index+1)+']" class="form-control" id="allowance_name" placeholder="Allowance Name">';
         html += '</td>';
@@ -507,6 +478,7 @@
         var html = '';
         html += '<tr>';
         html += '<td>';
+            html += '<input type="hidden" name="payroll_deduction_id['+(index2+1)+']" value="noid">';
         html += '<input type="hidden" class="deduction-'+(index2+1)+'" id="deductions">';
         html += '<input type="text"  name="deduction_names['+(index2+1)+']" id="deduction_name" class="form-control" placeholder="Deduction Name">';
         html += '</td>';
@@ -586,7 +558,7 @@
     });
 
     // Add product by ajax
-    $('#generate_payroll_form').on('submit', function(e) {
+    $('#update_payroll_form').on('submit', function(e) {
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
@@ -603,7 +575,7 @@
                 } else {
                     toastr.error(data.errorMsg);
                     $('.error').html('');
-                 
+                    $('.form-control').removeClass('is-invalid');
                 }
             },
             error: function(err) {
@@ -611,9 +583,11 @@
                 toastr.error('Please check again all form fields.',
                     'Some thing want wrong.');
                 $('.error').html('');
+                $('.form-control').removeClass('is-invalid');
                 $.each(err.responseJSON.errors, function(key, error) {
                     //console.log(key);
                     $('.error_' + key + '').html(error[0]);
+                    $('#' + key).addClass('is-invalid');
                 });
             }
         });

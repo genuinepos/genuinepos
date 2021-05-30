@@ -286,6 +286,10 @@
             color: #6b082e;
         }
 
+        .card {
+            border: 1px solid #6b082e;
+        }
+
     </style>
 @endpush
 @section('title', 'Home - ')
@@ -609,7 +613,7 @@
         </div>
         <div class="row px-3 mx-2 m-3">
             <div class="card p-3">
-                <table id="stock_alert_table" class="display" cellspacing="0" width="100%">
+                <table id="stock_alert_table" class="display data__table" cellspacing="0" width="100%">
                     <thead>
                         <h3 class="table-title">Product Stock Alert</h3>
                         <tr>
@@ -646,7 +650,8 @@
         </div>
         <div class="row px-3 mx-2 m-3">
             <div class="card p-3">
-                <table id="sales_order_table" class="display" cellspacing="0" width="100%">
+                <table id="sales_order_table" class="display hover stripe row-border order-column" cellspacing="0"
+                    width="100%">
                     <thead>
                         <h3 class="table-title">Sales Order</h3>
                         <tr>
@@ -801,6 +806,8 @@
 
     <script>
         $(document).ready(function() {
+            // $.fn.DataTable.ext.pager.numbers_length = 5;
+
             $('#stock_alert_table').DataTable({
                 dom: "Bfrtip",
                 buttons: ["excel", "pdf", "print"],
@@ -808,11 +815,16 @@
                 paging: false,
             });
 
-            $('#sales_order_table').DataTable({
+            const sales_order_table = $('#sales_order_table').DataTable({
                 dom: "Bfrtip",
-                paging: true,
+                pageLength: 4,
                 buttons: ["excel", "pdf", "print"],
             });
+
+            $('#inputSearch').on('keyup', function() {
+                sales_order_table.search(this.value).draw();
+            });
+
 
         });
 

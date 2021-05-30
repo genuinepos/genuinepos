@@ -4671,6 +4671,33 @@ Date:		September 2008
     font-size: 11px;
 }
 
+.btn_30_blue_small a {
+    height: 20px;
+    border: #05447F 1px solid;
+    display: inline-block;
+    box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    -moz-box-shadow: 0px 0px 2px rgba(000, 000, 000, 0.8), inset 0 1px 1px -1px #fff;
+    -webkit-box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    text-shadow: 0px -1px 0px rgb(0 0 0 / 50%), 0px 1px 0px rgb(255 255 255 / 20%);
+    line-height: 17px;
+    text-align: center;
+    color: #fff;
+    padding: 0 3px;
+    background: #19a6d3;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzE5YTZkMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzA4NTNhMSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzA2NDQ5MiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMjI4NmUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, #19a6d3 0%, #0853a1 50%, #064492 51%, #02286e 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #19a6d3), color-stop(50%, #0853a1), color-stop(51%, #064492), color-stop(100%, #02286e));
+    background: -webkit-linear-gradient(top, #19a6d3 0%, #0853a1 50%, #064492 51%, #02286e 100%);
+    background: -o-linear-gradient(top, #19a6d3 0%, #0853a1 50%, #064492 51%, #02286e 100%);
+    background: -ms-linear-gradient(top, #19a6d3 0%, #0853a1 50%, #064492 51%, #02286e 100%);
+    background: linear-gradient(top, #19a6d3 0%, #0853a1 50%, #064492 51%, #02286e 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#19a6d3', endColorstr='#02286e', GradientType=0);
+    font-size: 11px;
+}
+
 .btn_30_blue a:hover {
     box-shadow: 0px 0px 4px rgba(000, 000, 000, 1), inset 0 1px 1px -1px #fff;
     -moz-box-shadow: 0px 0px 4px rgba(000, 000, 000, 1), inset 0 1px 1px -1px #fff;

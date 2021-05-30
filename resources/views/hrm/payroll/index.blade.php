@@ -188,8 +188,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Select Employee & Month</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
@@ -207,7 +206,7 @@
 
                             <div class="col-md-6">
                                 <label class="text-navy-blue"><b>Employee :</b></label>
-                                <select  class="form-control" id="employee">
+                                <select name="user_id" class="form-control" id="employee">
                                     <option disabled selected> Select Employee </option>
                                     @foreach($employee as $row)
                                        <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
@@ -243,6 +242,21 @@
         </div>
     </div>
     <!-- Add Modal End-->
+
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h6 class="modal-title" id="modal_title">Add Payment</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                
+                <div class="modal-body" id="payment_modal_body">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
@@ -253,21 +267,43 @@
         toastr.success('{{ session('successMsg') }}');
     @endif
 
-    // Filter toggle
-    $('.filter_btn').on('click', function (e) {
-        e.preventDefault();
-        $('.filter_body').toggle(500);
+    var table = $('.data_tbl').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "searching" : true,
+        aaSorting: [
+            [1, 'asc']
+        ],
+        "ajax": {
+            "url": "{{ route('hrm.payroll.index') }}",
+            "data": function(d) {
+                d.branch_id = $('#branch_id').val();
+                d.user_id = $('#user_id').val();
+                d.date_range = $('#date_range').val();
+            }
+        },
+        columns: [
+            {data: 'employee', name: 'employee'},
+            {data: 'department_name', name: 'department_name'},
+            {data: 'designation_name', name: 'designation_name'},
+            {data: 'month_year', name: 'month_year'},
+            {data: 'reference_no', name: 'reference_no'},
+            {data: 'gross_amount', name: 'total_amount'},
+            {data: 'payment_status', name: 'payment_status'},
+            {data: 'created_by', name: 'created_by'},
+            {data: 'action'},
+        ],
     });
 
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function () {
-        $('#purchase_filter_form').submit();
+        table.ajax.reload();
     });
 
     //Submit filter form by date-range field blur 
     $(document).on('blur', '.submit_able_input', function () {
         setTimeout(function() {
-            $('#purchase_filter_form').submit();
+            table.ajax.reload();
         }, 800);
     });
 
@@ -278,43 +314,6 @@
             $('.submit_able_input').blur();
         }, 1000);
     });
-
-
-    //Submit filter form by select input changing
-    $(document).on('change', '.common_submitable', function () {
-        $('#payroll_filter_form').submit();
-    });
-
-    //Submit filter form by date-range field blur 
-    $(document).on('blur', '.submitable_input', function () {
-        setTimeout(function() {
-            $('#payroll_filter_form').submit();
-        }, 500);
-    });
-
-    // function getPayrolls() {
-    //     $('.data_preloader').show();
-    //     var employee_id = $('#employee_id').val();
-    //     var department_id = $('#department_id').val();
-    //     var designation_id = $('#designation_id').val();
-    //     var month_year = $('#month_year').val();
-    //     $.ajax({
-    //         url:"{{ route('hrm.payroll.get.payrolls') }}",
-    //         type:'get',
-    //         data: {
-    //             employee_id, 
-    //             department_id, 
-    //             designation_id, 
-    //             month_year, 
-    //         },
-    //         success:function(data){
-    //             //console.log(data);
-    //             $('#data-list').html(data);
-    //             $('.data_preloader').hide();
-    //         }
-    //     });
-    // }
-    // getPayrolls();
 
     $('#department_id').on('change', function(e){
         e.preventDefault();
@@ -342,11 +341,10 @@
             url:url,
             type:'get',
             success:function(data){
-                $('#modal_title').html('Add Payment');
+               $('#modal_title').html('Add Payment');
                $('#payment_modal_body').html(data);
                $('.data_preloader').hide();
                $('#paymentModal').modal('show');
-               // Acivate date picker
             }
         });
     });

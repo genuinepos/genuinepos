@@ -164,12 +164,13 @@
         /* Arrow */
         .select-dropdown::after {
             font-family: "Font Awesome 5 Free";
-            font-weight: 900;
+            font-weight: 600;
             content: "\f063";
             position: absolute;
+            font-size: 10px;
             top: 0;
             right: 0;
-            padding: 2px 2em;
+            padding: 0px 1em;
             cursor: pointer;
             pointer-events: none;
             -webkit-transition: .25s all ease;
@@ -269,7 +270,7 @@
             padding: 5%;
             box-shadow: inset 0 0 5px#ddd;
             height: 60px;
-            width: 100%;
+            width: 90%;
             font-size: 25px;
         }
 

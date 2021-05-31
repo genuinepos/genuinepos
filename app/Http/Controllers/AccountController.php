@@ -7,7 +7,6 @@ use App\Models\Account;
 use App\Models\AccountType;
 use App\Models\CashFlow;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class AccountController extends Controller
 {
@@ -72,7 +71,6 @@ class AccountController extends Controller
             $addCashflow->save();
         }
 
-        Cache::forget('all-accounts');
         return response()->json('Successfully account is added');
     }
 
@@ -94,7 +92,6 @@ class AccountController extends Controller
             'remark' => $request->remark,
         ]);
 
-        Cache::forget('all-accounts');
         return response()->json('Successfully account is updated');
     }
 
@@ -104,32 +101,26 @@ class AccountController extends Controller
         if (!is_null($deleteAccount)) {
             $deleteAccount->delete();
         }
-        Cache::forget('all-accounts');
+
         return response()->json('Successfully bank is deleted');
     }
 
     public function allBanks()
     {
-        $banks = Cache::rememberForever('all-banks', function () {
-            return $banks = Bank::select('id', 'name', 'branch_name')->get();
-        });
+        $banks = Bank::select('id', 'name', 'branch_name')->get();
 
         return response()->json($banks);
     }
 
     public function allAccountTypes()
     {
-        $types = Cache::rememberForever('all-account_types', function () {
-            return $types = AccountType::where('status', 1)->get();
-        });
+        $types = AccountType::where('status', 1)->get();
         return response()->json($types);
     }
 
     public function allFromAccount()
     {
-        $accounts = Cache::rememberForever('all-accounts', function () {
-            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        });
+        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         return response()->json($accounts);
     }
 
@@ -139,12 +130,10 @@ class AccountController extends Controller
         if ($statusChange->status == 1) {
             $statusChange->status = 0;
             $statusChange->save();
-            Cache::forget('all-accounts');
             return response()->json('Successfully account type is activated');
         } else {
             $statusChange->status = 1;
             $statusChange->save();
-            Cache::forget('all-accounts');
             return response()->json('Successfully account is closed');
         }
     }
@@ -202,10 +191,9 @@ class AccountController extends Controller
         $cashFlow2->admin_id = auth()->user()->id;
         $cashFlow2->save();
 
-
         $cashFlow1->related_cash_flow_id = $cashFlow2->id;
         $cashFlow1->save();
-        Cache::forget('all-accounts');
+
         return response()->json('Successfully account fund transfer is created.');
     }
 
@@ -254,7 +242,6 @@ class AccountController extends Controller
             $cashFlow1->related_cash_flow_id = $cashFlow2->id;
             $cashFlow1->save();
         }
-        Cache::forget('all-accounts');
         return response()->json('Successfully account deposit is created.');
     }
 
@@ -353,7 +340,6 @@ class AccountController extends Controller
             }
             $deleteCashflow->delete();
         }
-        Cache::forget('all-accounts');
         return response()->json('Successfully cashflow is deleted');
     }
 }

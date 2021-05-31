@@ -17,10 +17,8 @@ use App\Models\ProductVariant;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
-use Illuminate\Support\Facades\Cache;
 use App\Models\CashRegisterTransaction;
 use App\Models\ProductWarehouseVariant;
-use Yajra\DataTables\Facades\DataTables;
 
 class POSController extends Controller
 {
@@ -185,7 +183,6 @@ class POSController extends Controller
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_id = $addSale->id;
                 $addCustomerLedger->save();
-                Cache::forget('all-customers');
             }
         } else {
             $addSale->total_payable_amount = $request->total_invoice_payable;
@@ -317,7 +314,6 @@ class POSController extends Controller
         ])->where('id', $addSale->id)->first();
 
         if ($request->action == 1) {
-            Cache::forget('all-products');
             return view('sales.save_and_print_template.pos_sale_print', compact(
                 'sale',
                 'previous_due',
@@ -418,7 +414,6 @@ class POSController extends Controller
                 $account->credit -= $sale_payment->paid_amount;
                 $account->balance -= $sale_payment->paid_amount;
                 $account->save();
-                Cache::forget('all-accounts');
             }  
             $sale_payment->delete();
         }
@@ -445,7 +440,6 @@ class POSController extends Controller
                 }
             
                 $customer->save();
-                Cache::forget('all-customers');
             }
         }
 
@@ -696,7 +690,6 @@ class POSController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
-                Cache::forget('all-accounts');
             }
 
             if ($request->customer_id) {
@@ -716,7 +709,6 @@ class POSController extends Controller
 
         if ($request->action == 1) {
             $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])->where('id', $updateSale->id)->first();
-            Cache::forget('all-products');
             return view('sales.save_and_print_template.pos_sale_print', compact(
                 'sale',
                 'previous_due',
@@ -866,7 +858,6 @@ class POSController extends Controller
             $addCustomerLedger->save();
         }
 
-        Cache::forget('all-customers');
         return response()->json($addCustomer);
     }
 
@@ -977,7 +968,6 @@ class POSController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($request->customer_id) {
@@ -1055,7 +1045,6 @@ class POSController extends Controller
                                     $addCashFlow->year = date('Y');
                                     $addCashFlow->admin_id = auth()->user()->id;
                                     $addCashFlow->save();
-                                    Cache::forget('all-accounts');
                                 }
 
                                 if ($request->customer_id) {
@@ -1128,7 +1117,6 @@ class POSController extends Controller
                                     $addCashFlow->year = date('Y');
                                     $addCashFlow->admin_id = auth()->user()->id;
                                     $addCashFlow->save();
-                                    Cache::forget('all-accounts');
                                 }
 
                                 if ($request->customer_id) {
@@ -1198,7 +1186,6 @@ class POSController extends Controller
                                     $addCashFlow->year = date('Y');
                                     $addCashFlow->admin_id = auth()->user()->id;
                                     $addCashFlow->save();
-                                    Cache::forget('all-accounts');
                                 }
 
                                 if ($request->customer_id) {
@@ -1272,7 +1259,6 @@ class POSController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($request->customer_id) {
@@ -1339,7 +1325,6 @@ class POSController extends Controller
                     $addCashFlow->year = date('Y');
                     $addCashFlow->admin_id = auth()->user()->id;
                     $addCashFlow->save();
-                    Cache::forget('all-accounts');
                 }
 
                 if ($request->customer_id) {

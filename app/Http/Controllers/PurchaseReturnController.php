@@ -14,7 +14,6 @@ use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\PurchaseReturnProduct;
-use Illuminate\Support\Facades\Cache;
 use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -447,7 +446,6 @@ class PurchaseReturnController extends Controller
             'purchase_return_products.product',
             'purchase_return_products.purchase_product'
         ])->where('purchase_id', $purchaseId)->first();
-        Cache::forget('all-products');
         if ($purchaseReturn) {
             return view('purchases.purchase_return.save_and_print_template.purchase_return_print_view', compact('purchaseReturn'));
         }
@@ -570,7 +568,6 @@ class PurchaseReturnController extends Controller
         }
 
         $purchaseReturn->delete();
-        Cache::forget('all-products');
         return response()->json('Successfully purchase return is deleted');
     }
 
@@ -866,7 +863,6 @@ class PurchaseReturnController extends Controller
             $addPurchaseReturnProduct->save();
             $index++;
         }
-        Cache::forget('all-products');
         return response()->json('Successfully purchase return is added.');
     }
 
@@ -1089,7 +1085,6 @@ class PurchaseReturnController extends Controller
             $purchaseReturnProduct->delete();
         }
 
-        Cache::forget('all-products');
         session()->flash('successMsg', 'Successfully purchase return is updated');
         return response()->json('Successfully purchase return is added.');
     }

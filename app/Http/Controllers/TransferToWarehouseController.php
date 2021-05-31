@@ -9,7 +9,6 @@ use App\Models\ProductBranch;
 use App\Models\ProductVariant;
 use App\Models\ProductWarehouse;
 use App\Models\ProductBranchVariant;
-use Illuminate\Support\Facades\Cache;
 use App\Models\ProductWarehouseVariant;
 use App\Models\TransferStockToWarehouse;
 use App\Models\TransferStockToWarehouseProduct;
@@ -344,9 +343,7 @@ class TransferToWarehouseController extends Controller
     // Get all warehouse requested by ajax
     public function getAllWarehouse()
     {
-        $warehouses = Cache::rememberForever('all-warehouses', function() {
-            return $warehouses = Warehouse::select('id', 'warehouse_name', 'warehouse_code')->get();
-        });
+        $warehouses = Warehouse::select('id', 'warehouse_name', 'warehouse_code')->get();
         return response()->json($warehouses);
     }
 }

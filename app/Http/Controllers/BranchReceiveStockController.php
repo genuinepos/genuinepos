@@ -203,7 +203,6 @@ class BranchReceiveStockController extends Controller
                     }
                 }
             }
-
             $index++;
         }
 

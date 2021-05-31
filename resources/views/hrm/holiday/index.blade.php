@@ -41,7 +41,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('hrm.allowance') }}" class="text-primary"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
+                                            <a href="{{ route('hrm.allowance') }}" class="text-dark text-muted"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
                                         </li>
 
                                         <li>
@@ -49,7 +49,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('hrm.holidays') }}" class="text-dark text-muted"><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
+                                            <a href="{{ route('hrm.holidays') }}" class="text-primary"><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
                                         </li>
 
                                         <li>
@@ -66,6 +66,13 @@
                                     </ul>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="top-menu-area">
+                                       
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
@@ -75,12 +82,13 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>Allowances/Deductions</h6>
+                                        <h6>Holidays</h6>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
+                                                    class="fas fa-plus-square"></i> Add</a>
                                         </div>
                                     </div>
                                 </div>
@@ -91,10 +99,11 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
-                                                    <th>Serial</th>
-                                                    <th>Type</th>
-                                                    <th>Max leave</th>
-                                                    <th>Leave Count Interval</th>
+                                                    <th>S/L</th>
+                                                    <th>Name</th>
+                                                    <th>Date</th>
+                                                    <th>Allowed Branch</th>
+                                                    <th>Note</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -123,53 +132,54 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Leave</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Add Holiday</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
-                    <form id="add_allowance_form" action="{{ route('hrm.allowance.store') }}">
-                        <div class="form-group row">
+                    <form id="add_holiday_form" action="{{ route('hrm.holidays.store') }}">
+                        <div class="form-group ">
+                            <label><b>Holiday Name :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="holiday_name" required class="form-control" placeholder="Holiday Name">
+                        </div>
+
+                        <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Description or Title :</b> <span class="text-danger">*</span></label>
-                                <input required type="text" name="description" class="form-control" placeholder="Description or Title"/>
-                                <span class="error error_description"></span>
+                                <label><b>Start Date :</b> <span class="text-danger">*</span></label>
+                                <input type="date" name="start_date" required class="form-control">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Type :</b> <span class="text-danger">*</span></label>
-                                <select class="form-control" name="type" required="">
-                                    <option value="Allowance">Allowance</option>
-                                    <option value="Deduction">Deduction</option>
-                                </select>
+                                <label><b>End Date :</b> <span class="text-danger">*</span></label>
+                                <input type="date" name="end_date" required class="form-control">
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-6">
-                                <label><b>Amount Type :</b>  <span class="text-danger">*</span></label>
-                                <select class="form-control" name="amount_type" id="amount_type">
-                                    <option value="1">Fixed (0.0)</option>
-                                    <option value="2">Percentage (%)</option>
+                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                            <div class="form-group mt-1">
+                                <label><b>Allowed Branch</b> <span class="text-danger">*</span></label>
+                                <select class="form-control" name="branch_id" required>
+                                    <option value="All"> All </option>
+                                    <option value=""> {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>) </option>
+                                    @foreach($branches as $row)
+                                        <option value="{{ $row->name }}"> {{ $row->name.'/'.$row->branch_code }}</option>
+                                    @endforeach
                                 </select>
                             </div>
-
-                            <div class="col-6">
-                                <label><b>Amount :</b>  <span class="text-danger">*</span></label>
-                                <input type="number" step="any" name="amount" class="form-control" placeholder="Amount"/>
-                                <span class="error error_amount"></span>
-                            </div>
+                        @endif
+                        
+                        <div class="form-group mt-1">
+                            <label><b>Note :</b> </label>
+                            <textarea name="notes" class="form-control" cols="10" rows="3" placeholder="Note"></textarea>
+                            
                         </div>
 
-                        <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn me-0 btn_blue float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
-                            </div>
+                        <div class="form-group  mt-3">
+                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                            <button type="submit" class="c-btn me-0 btn_blue float-end">Save</button>
+                            <button type="reset" data-bs-dismiss="modal"
+                                class="c-btn btn_orange float-end">Close</button>
                         </div>
                     </form>
                 </div>
@@ -182,12 +192,13 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Allowance/Deduction</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Holiday</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="edit_modal_body">
                     <!--begin::Form-->
+                    
                 </div>
             </div>
         </div>
@@ -196,10 +207,10 @@
 @push('scripts')
 <script>
     // Get all category by ajax
-    function getAllAllowance(){
+    function getAllHoliday(){
         $('.data_preloader').show();
         $.ajax({
-            url:"{{ route('hrm.allowance.all') }}",
+            url:"{{ route('hrm.holidays.all') }}",
             type:'get',
             success:function(data){
                 $('.table-responsive').html(data);
@@ -207,7 +218,7 @@
             }
         });
     }
-    getAllAllowance();
+    getAllHoliday();
 
     // Setup ajax for csrf token.
     $.ajaxSetup({
@@ -219,53 +230,46 @@
     // call jquery method 
     $(document).ready(function(){
         // Add department by ajax
-        $('#add_allowance_form').on('submit', function(e){
+        $('#add_holiday_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
+            $('.submit_button').hide();
             var url = $(this).attr('action');
             var request = $(this).serialize();
+    
             $.ajax({
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
                     toastr.success(data, 'Succeed');
-                    $('#add_allowance_form')[0].reset();
+                    $('#add_holiday_form')[0].reset();
                     $('.loading_button').hide();
-                    getAllAllowance();
+                    getAllHoliday();
                     $('#addModal').modal('hide');
-                },
-                error: function(err) {
-                    $('.loading_button').hide();
-                    $('.error').html('');
-                    $.each(err.responseJSON.errors, function(key, error) {
-                        //console.log(key);
-                        $('.error_' + key + '').html(error[0]);
-                    });
                 }
             });
         });
 
-        $(document).on('click', '#edit', function (e) {
+
+        // pass editable data to edit modal fields
+        $(document).on('click', '#edit', function(e){
             e.preventDefault();
+            $('.data_preloader').show();
             var url = $(this).attr('href');
-            $.ajax({
-                url: url,
-                type:'get',
-                success:function (data) {
-                    $('#edit_modal_body').html(data);
-                    $('#editModal').modal('show');
-                }
+            $.get(url, function(data) {
+                $('.data_preloader').hide();
+                $('#edit_modal_body').html(data);
+                $('#editModal').modal('show');
             });
         });
 
-        // edit submit form by ajax
-        $(document).on('submit', '#edit_allowance_form',function(e){
+        // edit category by ajax
+        $(document).on('submit', '#edit_holiday_form', function(e){
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-          
             $.ajax({
                 url:url,
                 type:'post',
@@ -273,16 +277,8 @@
                 success:function(data){
                     toastr.success(data, 'Succeed');
                     $('.loading_button').hide();
-                    getAllAllowance();
+                    getAllHoliday();
                     $('#editModal').modal('hide'); 
-                },
-                error: function(err) {
-                    $('.loading_button').hide();
-                    $('.error').html('');
-                    $.each(err.responseJSON.errors, function(key, error) {
-                        //console.log(key);
-                        $('.error_e_' + key + '').html(error[0]);
-                    });
                 }
             });
         });
@@ -294,7 +290,6 @@
             $('#deleted_form').attr('action', url);
             swal({
                 title: "Are you sure?",
-                icon: "warning",
                 buttons: true,
                 dangerMode: true,
             })
@@ -318,7 +313,7 @@
                 async:false,
                 data:request,
                 success:function(data){
-                    getAllAllowance();
+                    getAllHoliday();
                     toastr.success(data, 'Succeed');
                     $('#deleted_form')[0].reset();
                 }

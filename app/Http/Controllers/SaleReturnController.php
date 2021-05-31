@@ -14,7 +14,6 @@ use App\Models\ProductWarehouse;
 use App\Models\SaleReturnProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
-use Illuminate\Support\Facades\Cache;
 use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -461,8 +460,6 @@ class SaleReturnController extends Controller
         }
 
         $saleReturn = SaleReturn::with(['sale', 'branch', 'sale.customer', 'sale_return_products', 'sale_return_products.sale_product'])->where('sale_id', $saleId)->first();
-        Cache::forget('all-products');
-
         if ($saleReturn) {
             return view('sales.sale_return.save_and_print_template.sale_return_print_view', compact('saleReturn'));
         }
@@ -516,7 +513,6 @@ class SaleReturnController extends Controller
         }
 
         $saleReturn->delete();
-        Cache::forget('all-products');
         return response()->json('Successfully sale return is deleted');
     }
 }

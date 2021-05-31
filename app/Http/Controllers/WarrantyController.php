@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Warranty;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class WarrantyController extends Controller
 {
@@ -37,8 +36,6 @@ class WarrantyController extends Controller
             'description' => $request->description,
         ]);
 
-        Cache::forget('all-products');
-        Cache::forget('all-warranties');
         return response()->json('Successfully warranty is added');
     }
 
@@ -58,8 +55,6 @@ class WarrantyController extends Controller
             'duration_type' => $request->duration_type,
             'description' => $request->description,
         ]);
-        Cache::forget('all-products');
-        Cache::forget('all-warranties');
         return response()->json('Successfully warranty is updated');
     }
 
@@ -70,9 +65,6 @@ class WarrantyController extends Controller
         if (!is_null($deleteWarranty)) {
             $deleteWarranty->delete();
         }
-        
-        Cache::forget('all-products');
-        Cache::forget('all-warranties');
         return response()->json('Successfully warranty is deleted');
     }
 }

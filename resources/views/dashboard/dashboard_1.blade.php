@@ -444,22 +444,7 @@
                     </div>
 
                 </div>
-                {{-- <div class="sec-name pt-2 pb-1 d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="shortcut-icons p-2">
-                            <i class="fas fa-home"></i>
-                        </span>
-                        <span class="shortcut-icons p-2">
-                            <i class="fas fa-calculator"></i>
-                        </span>
-                        <span class="shortcut-icons p-2">
-                            <i class="fas fa-user"></i>
-                        </span>
-                    </div>
-
-
-                    <div></div>
-                </div> --}}
+         
 
                 <div class="">
                     {{-- Select Location and Filter Buttons --}}
@@ -469,44 +454,41 @@
                             <div class="select-dropdown">
                                 <select>
                                     <option value="">Select Location</option>
-
-                                    <option value="Option 1">Custom Shop Name 1</option>
-                                    <option value="Option 1">Custom Shop Name 2</option>
-                                    <option value="Option 1">Custom Shop Name 3</option>
-                                    <option value="Option 1">Custom Shop Name 4</option>
-                                    <option value="Option 1">Custom Shop Name 5</option>
-                                    <option value="Option 1">Custom Shop Name 6</option>
-                                    <option value="Option 1">Custom Shop Name 7</option>
-
+                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                    @foreach ($branches as $br)
+                                        <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
                             <div class="button-group">
-                                <label class="button-group__btn">
-                                    <input type="radio" name="group" />
+                                <label class="button-group__btn" id="today">
+                                    <input type="radio" name="today" id="today"/>
                                     <span class="button-group__label">
                                         Today
                                     </span>
                                 </label>
+
                                 <label class="button-group__btn">
-                                    <input type="radio" name="group" />
+                                    <input type="radio" name="group" id="this_week"/>
                                     <span class="button-group__label">
                                         This Week
                                     </span>
                                 </label>
+
                                 <label class="button-group__btn">
                                     <input type="radio" name="group" />
                                     <span class="button-group__label">
                                         This Month
                                     </span>
                                 </label>
+
                                 <label class="button-group__btn">
                                     <input type="radio" name="group" />
                                     <span class="button-group__label">
                                         This Financial Year
                                     </span>
                                 </label>
-
                             </div>
                         </div>
                     </div>

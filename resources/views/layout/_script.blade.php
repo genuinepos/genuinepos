@@ -1,6 +1,8 @@
-     <script src="{{asset('public/backend/js/jquery-1.7.1.min.js')}}"></script>
+    <script src="{{asset('public/backend/js/jquery-1.7.1.min.js')}}"></script>
+    <!--Jquery Cdn-->
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-   
+    <!--Jquery Cdn End-->
+
     <script src="{{ asset('public/backend/asset/js/bootstrap.bundle.min.js') }}"></script>
     {{-- <script src="a{{ asset('public/backend/sset/js/canvas-main.js') }}"></script> --}}
     <script src="{{ asset('public/backend/asset/js/jquery.fontstar.js') }}"></script>
@@ -18,7 +20,7 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>
     <!--Toaster.js js link end-->
 
-    <script src="{{ asset('public') }}/assets/plugins/custom/calculator/calc.min.js"></script>
+    {{-- <script src="{{ asset('public') }}/assets/plugins/custom/calculator/calc.min.js"></script> --}}
 
     {{-- <script src="{{ asset('public') }}/assets/plugins/custom/summernote/summernote.min.js"></script> --}}
       {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/plugins/piexif.min.js"
@@ -35,7 +37,12 @@
 
 
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.17.0/math.min.js"></script> --}}
+
+    <!-- DataTable Cdn -->
     <script type="text/javascript"  src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script> 
+    <!-- DataTable Cdn End-->
+
+
     {{-- <script src="{{asset('public/backend/js/jquery-ui-1.8.18.custom.min.js')}}"></script>
     <script src="{{asset('public/backend/js/jquery.ui.touch-punch.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/chosen.jquery.js')}}"></script> --}}

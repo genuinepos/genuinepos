@@ -38,7 +38,6 @@ class AccountTypeController extends Controller
             'remark' => $request->remark,
         ]);
         
-        Cache::forget('all-account_types');
         return response()->json('Successfully account type is added');
     }
 
@@ -55,7 +54,6 @@ class AccountTypeController extends Controller
             'remark' => $request->remark,
         ]);
         
-        Cache::forget('all-account_types');
         return response()->json('Successfully account type is updated');
     }
 
@@ -65,7 +63,6 @@ class AccountTypeController extends Controller
         if (!is_null($deleteAccountType)) {
             $deleteAccountType->delete();  
         }
-        Cache::forget('all-account_types');
         return response()->json('Successfully account type is deleted');
     }
 
@@ -75,12 +72,10 @@ class AccountTypeController extends Controller
         if ($statusChange->status == 1) {
             $statusChange->status = 0;
             $statusChange->save();
-            Cache::forget('all-account_types');
             return response()->json('Successfully account type is deactivated');
         } else {
             $statusChange->status = 1;
             $statusChange->save();
-            Cache::forget('all-account_types');
             return response()->json('Successfully account type is activated');
         }
     }

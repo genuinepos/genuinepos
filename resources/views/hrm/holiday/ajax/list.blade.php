@@ -1,0 +1,41 @@
+<table class="display data_tbl data__table">
+    <thead>
+        <tr class="text-center">
+            <th>S/L</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Allowed Branch</th>
+            <th>Note</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($holidays as $key => $row)
+            <tr data-info="{{ $row }}" class="text-center">
+                <td>{{ $key+1 }}</td> 
+                <td>{{ $row->holiday_name }}</td> 
+                <td>{{ $row->start_date }} to {{ $row->end_date }} </td> 
+                <td>
+                    @if ($row->is_all)
+                        All
+                    @elseif($row->branch_id)
+                        {{ $row->branch->name.'/'.$row->branch->branch_code }}
+                    @else 
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }}  (<b>Head Office</b>)
+                    @endif
+                </td> 
+                <td>{{ $row->notes }}</td> 
+                <td> 
+                    <div class="dropdown table-dropdown">
+                        <a href="{{ route('hrm.holidays.edit', $row->id) }}" id="edit" title="Edit details" class="action-btn c-edit" id="edit"><span class="fas fa-edit"></span></a>
+                        <a href="{{ route('hrm.holidays.delete', $row->id) }}" class="action-btn c-delete" id="delete"><span class="fas fa-trash "></span></a>
+                    </div>
+                </td> 
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
+<script>
+    $('.data_tbl').DataTable();
+</script>

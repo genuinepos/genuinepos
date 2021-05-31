@@ -31,7 +31,7 @@
     <!--Toaster.js js link-->
     <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>
     <!--Toaster.js js link end-->
-    {{-- <script src="{{asset('public')}}/backend/js/jquery-1.7.1.min.js "></script> --}}
+  
     <script src="{{asset('public')}}/backend/asset/js/bootstrap.bundle.min.js "></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script src="{{asset('public')}}/assets/plugins/custom/Shortcuts-master/shortcuts.js"></script>

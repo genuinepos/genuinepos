@@ -251,7 +251,7 @@
                 "searchable": false
             }],
             columns: [
-                {data: 'action',},
+                {data: 'action'},
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id', name: 'invoice_id'},
                 {data: 'from', name: 'from'},
@@ -262,17 +262,21 @@
                 {data: 'sale_return_amount', name: 'sale_return_amount'},
                 {data: 'sale_return_due', name: 'sale_return_due'},
                 {data: 'paid_status', name: 'paid_status'},
-            ],
+            ],fnDrawCallback: function() {
+                $('.data_preloader').hide();
+            },
         });
 
         //Submit filter form by select input changing
         $(document).on('change', '.submit_able', function () {
+            $('.data_preloader').show();
             sales_table.ajax.reload();
         });
 
         //Submit filter form by date-range field blur 
         $(document).on('blur', '.submit_able_input', function () {
             setTimeout(function() {
+                $('.data_preloader').show();
                 sales_table.ajax.reload();
             }, 500);
         });

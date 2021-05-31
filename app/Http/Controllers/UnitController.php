@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-
 class UnitController extends Controller
 {
     public function __construct()
@@ -35,8 +33,7 @@ class UnitController extends Controller
         $addUnit->name = $request->name;
         $addUnit->code_name = $request->code;
         $addUnit->save();
-        Cache::forget('all-products');
-        Cache::forget('all-unites');
+ 
         return response()->json('Successfully branch is added');
     }
     
@@ -51,8 +48,6 @@ class UnitController extends Controller
         $updateUnit->name = $request->name;
         $updateUnit->code_name = $request->code;
         $updateUnit->save();
-        Cache::forget('all-products');
-        Cache::forget('all-unites');
         return response()->json('Successfully unit is updated');
     }
 
@@ -62,8 +57,6 @@ class UnitController extends Controller
         if (!is_null($deleteUnit)) {
             $deleteUnit->delete();
         }
-        Cache::forget('all-products');
-        Cache::forget('all-unites');
         return response()->json('Successfully unit is deleted'); 
     }
 }

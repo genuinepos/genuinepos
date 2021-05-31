@@ -23,7 +23,6 @@ use App\Models\SupplierProduct;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
-use Illuminate\Support\Facades\Cache;
 use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -592,7 +591,6 @@ class PurchaseController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
-                Cache::forget('all-accounts');
             }
 
             // Add supplier ledger
@@ -603,7 +601,6 @@ class PurchaseController extends Controller
             $addSupplierLedger->save();
         }
 
-        Cache::forget('all-products');
         session()->flash('successMsg', 'Successfully purchase is added');
         return response()->json('Successfully purchase is added');
     }
@@ -972,7 +969,6 @@ class PurchaseController extends Controller
         foreach ($deletedPurchaseProducts as $deletedPurchaseProduct) {
             $deletedPurchaseProduct->delete();
         }
-        Cache::forget('all-products');
         session()->flash('successMsg', 'Successfully purchase is updated');
         return response()->json('Successfully purchase is updated');
     }
@@ -1004,36 +1000,28 @@ class PurchaseController extends Controller
     // Get all supplier requested by ajax
     public function getAllSupplier()
     {
-        $suppliers = Cache::rememberForever('all-suppliers', function () {
-            return $suppliers = Supplier::select('id',  'name',  'pay_term', 'pay_term_number', 'phone')->get();
-        });
+        $suppliers = Supplier::select('id',  'name',  'pay_term', 'pay_term_number', 'phone')->get();
         return response()->json($suppliers);
     }
 
     // Get all warehouse requested by ajax
     public function getAllWarehouse()
     {
-        $warehouses = Cache::rememberForever('all-warehouses', function () {
-            return $warehouses = Warehouse::select('id', 'warehouse_name', 'warehouse_code')->get();
-        });
+        $warehouses = Warehouse::select('id', 'warehouse_name', 'warehouse_code')->get();
         return response()->json($warehouses);
     }
 
     // Get all warehouse requested by ajax
     public function getAllUnit()
     {
-        $unites = Cache::rememberForever('all-unites', function () {
-            return $unites = Unit::select('id', 'name')->get();
-        });
+        $unites = Unit::select('id', 'name')->get();
         return response()->json($unites);
     }
 
     // Get all warehouse requested by ajax
     public function getAllTax()
     {
-        $taxes = Cache::rememberForever('all-taxes', function () {
-            return $taxes = Tax::select('id', 'tax_name', 'tax_percent')->get();
-        });
+        $taxes = Tax::select('id', 'tax_name', 'tax_percent')->get();
         return response()->json($taxes);
     }
 
@@ -1161,33 +1149,17 @@ class PurchaseController extends Controller
         }
 
         $deletePurchase->delete();
-        Cache::forget('all-products');
         return response()->json('Successfully purchase is deleted');
     }
 
     // Add product modal view with data
     public function addProductModalVeiw()
     {
-        $units = Cache::rememberForever('all-unites', function () {
-            return Unit::select(['id', 'name'])->get();
-        });
-
-        $warranties = Cache::rememberForever('all-warranties', function () {
-            return Warranty::select(['id', 'name', 'type'])->get();
-        });
-
-        $taxes = Cache::rememberForever('all-taxes', function () {
-            return Tax::select(['id', 'tax_name', 'tax_percent'])->get();
-        });
-
-        $categories = Cache::rememberForever('all-parent-categories', function () {
-            return Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
-        });
-
-        $brands = Cache::rememberForever('all-brands', function () {
-            return $brands = Brand::all();
-        });
-
+        $units =  Unit::select(['id', 'name'])->get();
+        $warranties = Warranty::select(['id', 'name', 'type'])->get();
+        $taxes = Tax::select(['id', 'tax_name', 'tax_percent'])->get();
+        $categories =  Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
+        $brands = $brands = Brand::all();
         return view('purchases.ajax_view.add_product_modal_view', compact('units', 'warranties', 'taxes', 'categories', 'brands'));
     }
 
@@ -1237,8 +1209,6 @@ class PurchaseController extends Controller
         $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
         $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
         $addProduct->save();
-
-        Cache::forget('all-products');
         return response()->json($addProduct);
     }
 
@@ -1248,9 +1218,7 @@ class PurchaseController extends Controller
         $product = Product::with(['tax', 'unit'])
             ->where('id', $product_id)
             ->first();
-        $units = Cache::rememberForever('all-unites', function () {
-            return Unit::select(['id', 'name'])->get();
-        });
+        $units = Unit::select(['id', 'name'])->get();
         return view('purchases.ajax_view.recent_product_view', compact('product', 'units'));
     }
 
@@ -1299,7 +1267,6 @@ class PurchaseController extends Controller
             $addSupplierLedger->save();
         }
 
-        Cache::forget('all-suppliers');
         return response()->json($addSupplier);
     }
 
@@ -1446,7 +1413,6 @@ class PurchaseController extends Controller
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
             $addCashFlow->save();
-            Cache::forget('all-accounts');
         }
 
         $addSupplierLedger = new SupplierLedger();
@@ -1566,7 +1532,7 @@ class PurchaseController extends Controller
                 $updatePurchasePayment->cashFlow->delete();
             }
         }
-        Cache::forget('all-accounts');
+
         return response()->json('Successfully payment is updated.');
     }
 
@@ -1669,7 +1635,6 @@ class PurchaseController extends Controller
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
             $addCashFlow->save();
-            Cache::forget('all-accounts');
         }
 
         $addSupplierLedger = new SupplierLedger();
@@ -1804,8 +1769,6 @@ class PurchaseController extends Controller
                 $updatePurchasePayment->cashFlow->delete();
             }
         }
-        Cache::forget('all-accounts');
-
         return response()->json('Successfully payment is updated.');
     }
 
@@ -1854,7 +1817,6 @@ class PurchaseController extends Controller
             }
 
             $deletePurchasePayment->delete();
-            Cache::forget('all-accounts');
         }
         return response()->json('Successfully payment is deleted.');
     }

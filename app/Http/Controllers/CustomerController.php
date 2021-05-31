@@ -37,9 +37,7 @@ class CustomerController extends Controller
 
     public function getAllGroup()
     {
-        $groups = Cache::rememberForever('all-customer_groups', function () {
-            return $groups = CustomerGroup::all();
-        });
+        $groups =  CustomerGroup::all();
         return response()->json($groups);
     }
 
@@ -82,7 +80,6 @@ class CustomerController extends Controller
             $addCustomerLedger->save();
         }
 
-        Cache::forget('all-customers');
         return response()->json('Successfully supplier is added');
     }
 
@@ -121,7 +118,6 @@ class CustomerController extends Controller
             'shipping_address' => $request->shipping_address,
         ]);
 
-        Cache::forget('all-customers');
         return response()->json('Successfully customer is updated');
     }
 
@@ -131,7 +127,6 @@ class CustomerController extends Controller
         if (!is_null($deleteCustomer)) {
             $deleteCustomer->delete();
         }
-        Cache::forget('all-customers');
         return response()->json('Successfully supplier is deleted');
     }
 
@@ -142,12 +137,10 @@ class CustomerController extends Controller
         if ($statusChange->status == 1) {
             $statusChange->status = 0;
             $statusChange->save();
-            Cache::forget('all-customers');
             return response()->json('Successfully Customer is deactivated');
         } else {
             $statusChange->status = 1;
             $statusChange->save();
-            Cache::forget('all-customers');
             return response()->json('Successfully Customer is activated');
         }
     }
@@ -346,10 +339,7 @@ class CustomerController extends Controller
     public function payment($customerId)
     {
         $customer = DB::table('customers')->where('id', $customerId)->first();
-        $accounts = Cache::rememberForever('all-accounts', function () {
-            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        });
-
+        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts'));
     }
 
@@ -442,7 +432,6 @@ class CustomerController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($dueInvoice->customer_id) {
@@ -521,7 +510,6 @@ class CustomerController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($dueInvoice->customer_id) {
@@ -596,7 +584,6 @@ class CustomerController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($dueInvoice->customer_id) {
@@ -621,9 +608,7 @@ class CustomerController extends Controller
     public function returnPayment($customerId)
     {
         $customer = DB::table('customers')->where('id', $customerId)->first();
-        $accounts = Cache::rememberForever('all-accounts', function () {
-            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        });
+        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         return view('contacts.customers.ajax_view.return_payment_modal', compact('customer', 'accounts'));
     }
 
@@ -717,7 +702,6 @@ class CustomerController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($customer) {
@@ -810,7 +794,6 @@ class CustomerController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($customer) {
@@ -904,7 +887,6 @@ class CustomerController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($customer) {

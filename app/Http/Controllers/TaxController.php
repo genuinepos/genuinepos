@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Tax;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class TaxController extends Controller
 {
@@ -35,7 +34,6 @@ class TaxController extends Controller
         $addTax->tax_name = $request->tax_name;
         $addTax->tax_percent = $request->tax_percent;
         $addTax->save();
-        Cache::forget('all-taxes');
         return response()->json('Successfully Tax is added');
     }
     
@@ -50,7 +48,6 @@ class TaxController extends Controller
         $updateTax->tax_name = $request->tax_name;
         $updateTax->tax_percent = $request->tax_percent;
         $updateTax->save();
-        Cache::forget('all-taxes');
         return response()->json('Successfully Tax is updated');
     }
 
@@ -60,7 +57,6 @@ class TaxController extends Controller
         if (!is_null($deleteVat)) {
             $deleteVat->delete();
         }
-        Cache::forget('all-taxes');
         return response()->json('Successfully Tax is deleted'); 
     }
 }

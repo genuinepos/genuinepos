@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class WarehouseController extends Controller
 {
@@ -37,7 +36,6 @@ class WarehouseController extends Controller
         $addWarehouse->phone = $request->phone;
         $addWarehouse->address = $request->address;
         $addWarehouse->save();
-        Cache::forget('all-warehouses');
         return response()->json('Successfully warehouse is added');
     }
     
@@ -55,7 +53,6 @@ class WarehouseController extends Controller
         $updateWarehouse->phone = $request->phone;
         $updateWarehouse->address = $request->address;
         $updateWarehouse->save();
-        Cache::forget('all-warehouses');
         return response()->json('Successfully warehouse is updated');
     }
 
@@ -65,7 +62,6 @@ class WarehouseController extends Controller
         if (!is_null($deleteWarehouse->delete())) {
             $deleteWarehouse->delete();
         }
-        Cache::forget('all-warehouses');
         return response()->json('Successfully warehouse is deleted');
         
     }

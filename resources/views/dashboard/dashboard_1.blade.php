@@ -788,13 +788,13 @@
 
 @push('scripts')
     <script>
-        window.onload((function() {
-            window.setTimeout(() => {
-                const totalPurchase = document.getElementById('total_purchase');
-                totalPurchase.innerHTML = "$32432";
-            }, 2000);
+        // window.onload((function() {
+        //     window.setTimeout(() => {
+        //         const totalPurchase = document.getElementById('total_purchase');
+        //         totalPurchase.innerHTML = "$32432";
+        //     }, 2000);
 
-        })())
+        // })())
 
     </script>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>

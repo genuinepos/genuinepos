@@ -23,19 +23,19 @@ class HolidayController extends Controller
         return view('hrm.holiday.index', compact('branches'));
     }
 
-    //all holidays data get for holida pages
+    //all holidays data get for holiday pages
     public function allHolidays()
     {
         $holidays = '';
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $holidays = Holiday::with('branch')->orderBy('id', 'DESC')->get();
-        }else {
+        } else {
             $holidays = Holiday::with('branch')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->orWhere('is_all', 1)
-            ->orderBy('id', 'DESC')->get();
+                ->where('branch_id', auth()->user()->branch_id)
+                ->orWhere('is_all', 1)
+                ->orderBy('id', 'DESC')->get();
         }
-        
+
         return view('hrm.holiday.ajax.list', compact('holidays'));
     }
 
@@ -47,7 +47,7 @@ class HolidayController extends Controller
             'start_date' => 'required',
             'end_date' => 'required',
         ]);
-        
+
         $addHoliday = new Holiday();
         $addHoliday->holiday_name = $request->holiday_name;
         $addHoliday->start_date = $request->start_date;
@@ -57,18 +57,18 @@ class HolidayController extends Controller
             if ($request->branch_id == 'All') {
                 $addHoliday->is_all = 1;
                 $addHoliday->branch_id = NULL;
-            }elseif($request->branch_id == '') {
+            } elseif ($request->branch_id == '') {
                 $addHoliday->branch_id = NULL;
-            }else {
+            } else {
                 $addHoliday->branch_id = $request->branch_id;
             }
-        }else {
+        } else {
             $addHoliday->branch_id = auth()->user()->branch_id;
         }
 
         $addHoliday->notes = $request->notes;
         $addHoliday->save();
-        
+
         return response()->json('Successfully Holiday Added!');
     }
 
@@ -88,7 +88,7 @@ class HolidayController extends Controller
             'start_date' => 'required',
             'end_date' => 'required',
         ]);
-        
+
         $updateHoliday = Holiday::where('id', $request->id)->first();
         $updateHoliday->holiday_name = $request->holiday_name;
         $updateHoliday->start_date = $request->start_date;
@@ -100,9 +100,9 @@ class HolidayController extends Controller
             if ($request->branch_id == 'All') {
                 $updateHoliday->is_all = 1;
                 $updateHoliday->branch_id = NULL;
-            }elseif(!$request->branch_id) {
+            } elseif (!$request->branch_id) {
                 $updateHoliday->branch_id = NULL;
-            }elseif($request->branch_id) {
+            } elseif ($request->branch_id) {
                 $updateHoliday->branch_id = $request->branch_id;
             }
         }
@@ -110,7 +110,7 @@ class HolidayController extends Controller
         $updateHoliday->notes = $request->notes;
         $updateHoliday->save();
 
-        return response()->json('Successfully Holdiays Updated!');
+        return response()->json('Successfully Holidays Updated!');
     }
 
     //destroy holidays
@@ -120,7 +120,7 @@ class HolidayController extends Controller
         if (!is_null($holiday)) {
             $holiday->delete();
         }
-        
+
         return response()->json('Successfully Holiday Deleted');
     }
 }

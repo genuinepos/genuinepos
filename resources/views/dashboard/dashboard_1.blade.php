@@ -97,9 +97,7 @@
 
         }
 
-
-
-        .card-counter i {
+        .card-counter .icon {
             font-size: 3.5em;
             padding: 10px;
             opacity: 0.5;
@@ -503,7 +501,9 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Total Purchase</h3>
-                                        <h1 class="title">10,324</h1>
+                                        <h1 class="title" id="total_purchase">
+                                            <i class="fas fa-sync fa-spin"></i>
+                                        </h1>
                                     </div>
                                 </div>
                             </div>
@@ -632,8 +632,8 @@
         </div>
         <div class="row px-3 mx-2 m-3">
             <div class="card p-3">
-                <table id="sales_order_table" class="display hover stripe row-border order-column" cellspacing="0"
-                    width="100%">
+                <table id="sales_order_table" class="display hover stripe row-border order-column data_tbl data__table"
+                    cellspacing="0" width="100%">
                     <thead>
                         <h3 class="table-title">Sales Order</h3>
                         <tr>
@@ -769,6 +769,16 @@
 
 
 @push('scripts')
+    <script>
+        // window.onload((function() {
+        //     window.setTimeout(() => {
+        //         const totalPurchase = document.getElementById('total_purchase');
+        //         totalPurchase.innerHTML = "$32432";
+        //     }, 2000);
+
+        // })())
+
+    </script>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -809,6 +819,8 @@
 
 
         });
+
+        // AJAX Call
 
     </script>
     <script>

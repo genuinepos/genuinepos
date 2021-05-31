@@ -97,9 +97,7 @@
 
         }
 
-
-
-        .card-counter i {
+        .card-counter .icon {
             font-size: 3.5em;
             padding: 10px;
             opacity: 0.5;
@@ -521,7 +519,9 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Total Purchase</h3>
-                                        <h1 class="title">10,324</h1>
+                                        <h1 class="title">
+                                            <i class="fas fa-sync fa-spin"></i>
+                                        </h1>
                                     </div>
                                 </div>
                             </div>
@@ -827,6 +827,8 @@
 
 
         });
+
+        // AJAX Call
 
     </script>
     <script>

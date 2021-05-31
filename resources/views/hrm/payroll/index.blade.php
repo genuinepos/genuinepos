@@ -280,6 +280,26 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-50-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Payment Details</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="payment_details_modal_body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group text-end">
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                        <button type="submit" class="c-btn btn_blue" id="payment_details_print">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>

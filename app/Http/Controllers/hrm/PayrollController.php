@@ -486,7 +486,8 @@ class PayrollController extends Controller
     // Get payment details **requested by ajax**
     public function paymentDetails($paymentId)
     {
-        $payment = PayrollPayment::with('payroll', 'payroll.employee')->where('id', $paymentId)->first();
+        $payment = PayrollPayment::with('payroll', 'payroll.employee', 'payroll.employee.branch')
+            ->where('id', $paymentId)->first();
         return view('hrm.payroll.ajax_view.payment_details', compact('payment'));
     }
 

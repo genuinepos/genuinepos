@@ -13,10 +13,10 @@
                     <div class="company_name text-center">
                         @if ($payroll->employee->branch)
                             {{ $payroll->employee->branch->name . '/' . $payroll->employee->branch->branch_code }} <br>
-                            {{ $payroll->employee->branch->add_sale_invoice_layout->branch_city == 1 ? $payroll->employee->branch->city : '' }},
-                            {{ $payroll->employee->branch->add_sale_invoice_layout->branch_state == 1 ? $payroll->employee->branch->state : '' }},
-                            {{ $payroll->employee->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $payroll->employee->branch->zip_code : '' }},
-                            {{ $payroll->employee->branch->add_sale_invoice_layout->branch_country == 1 ? $payroll->employee->branch->country : '' }}.
+                            {{ $payroll->employee->branch->city == 1 ? $payroll->employee->branch->city : '' }},
+                            {{ $payroll->employee->branch->state == 1 ? $payroll->employee->branch->state : '' }},
+                            {{ $payroll->employee->branch->zip_code == 1 ? $payroll->employee->branch->zip_code : '' }},
+                            {{ $payroll->employee->branch->country == 1 ? $payroll->employee->branch->country : '' }}.
                         @else
                             <h6>{{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>)</h6>
                             <p>{{json_decode($generalSettings->business, true)['address']}} </p> 

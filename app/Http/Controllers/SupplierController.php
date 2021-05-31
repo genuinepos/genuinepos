@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class SupplierController extends Controller
@@ -82,8 +81,6 @@ class SupplierController extends Controller
             $addSupplierLedger->amount = $request->opening_balance;
             $addSupplierLedger->save();
         }
-
-        Cache::forget('all-suppliers');
         return response()->json('Successfully supplier is added');
     }
 
@@ -130,8 +127,6 @@ class SupplierController extends Controller
             'prefix' => $request->prefix ? $request->prefix : $firstLetterOfSupplier . $code,
             'shipping_address' => $request->shipping_address,
         ]);
-
-        Cache::forget('all-suppliers');
         return response()->json('Successfully supplier is updated');
     }
 
@@ -141,7 +136,6 @@ class SupplierController extends Controller
         if (!is_null($deleteSupplier)) {
             $deleteSupplier->delete();
         }
-        Cache::forget('all-suppliers');
         return response()->json('Successfully supplier is deleted');
     }
 
@@ -152,12 +146,10 @@ class SupplierController extends Controller
         if ($statusChange->status == 1) {
             $statusChange->status = 0;
             $statusChange->save();
-            Cache::forget('all-suppliers');
             return response()->json('Successfully Supplier is deactivated');
         } else {
             $statusChange->status = 1;
             $statusChange->save();
-            Cache::forget('all-suppliers');
             return response()->json('Successfully Supplier is activated');
         }
     }
@@ -338,10 +330,7 @@ class SupplierController extends Controller
     public function payment($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
-        $accounts = Cache::rememberForever('all-accounts', function () {
-            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        });
-
+        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         return view('contacts.suppliers.ajax_view.payment_modal', compact('supplier', 'accounts'));
     }
 
@@ -435,7 +424,6 @@ class SupplierController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     $addSupplierLedger = new SupplierLedger();
@@ -512,7 +500,6 @@ class SupplierController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     $addSupplierLedger = new SupplierLedger();
@@ -585,7 +572,6 @@ class SupplierController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     $addSupplierLedger = new SupplierLedger();
@@ -608,9 +594,7 @@ class SupplierController extends Controller
     public function returnPayment($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
-        $accounts = Cache::rememberForever('all-accounts', function () {
-            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        });
+        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         return view('contacts.suppliers.ajax_view.return_payment_modal', compact('supplier', 'accounts'));
     }
 
@@ -705,7 +689,6 @@ class SupplierController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     $addSupplierLedger = new SupplierLedger();
@@ -798,7 +781,6 @@ class SupplierController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     $addSupplierLedger = new SupplierLedger();
@@ -891,7 +873,6 @@ class SupplierController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     $addSupplierLedger = new SupplierLedger();

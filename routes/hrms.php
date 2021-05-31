@@ -35,7 +35,7 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
         Route::get('/', 'HolidayController@index')->name('hrm.holidays');
         Route::get('/ajax-all-holidays', 'HolidayController@allholidays')->name('hrm.holidays.all');
         Route::post('/hrm/holidays/store', 'HolidayController@storeholidays')->name('hrm.holidays.store');
-        Route::get('/ajax-all-branchget', 'HolidayController@getbranch')->name('hrm.get.all.branch');
+        Route::get('/hrm/holidays/edit/{id}', 'HolidayController@edit')->name('hrm.holidays.edit');
         Route::post('/hrm/holidays/update', 'HolidayController@updateholiday')->name('hrm.holidays.update');
         Route::delete('hrm/holidays/{id}', 'HolidayController@deleteholidays')->name('hrm.holidays.delete');
     });

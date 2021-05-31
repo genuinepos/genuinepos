@@ -15,61 +15,59 @@
                     <div class="main__content">
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="top-menu-area">
-                                        <ul class="list-unstyled">
+                            <div class="breadCrumbHolder module w-100">
+                                <div id="breadCrumb3" class="breadCrumb module white_lin">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="" class="text-dark text-muted"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
+                                        </li>
+                                        
+                                        @if (auth()->user()->permission->hrms['leave_type'] == '1')
                                             <li>
-                                                <a href="" class="text-dark text-muted"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
+                                                <a href="{{ route('hrm.leave.type') }}" class="text-dark text-muted"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
                                             </li>
-                                            
-                                            @if (auth()->user()->permission->hrms['leave_type'] == '1')
-                                                <li>
-                                                    <a href="{{ route('hrm.leave.type') }}" class="text-dark text-muted"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
-                                                </li>
-                                            @endif
+                                        @endif
 
-                                            @if (auth()->user()->permission->hrms['leave_approve'] == '1')
-                                                <li>
-                                                    <a href="{{ route('hrm.leave') }}" class="text-dark text-muted"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
-                                                </li>
-                                            @endif
-                                            
+                                        @if (auth()->user()->permission->hrms['leave_approve'] == '1')
                                             <li>
-                                                <a href="{{ route('hrm.attendance.shift') }}" class="text-dark text-muted"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                                                <a href="{{ route('hrm.leave') }}" class="text-dark text-muted"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                                             </li>
-                                            
-                                            @if (auth()->user()->permission->hrms['attendance_all'] == '1')
-                                                <li>
-                                                    <a href="{{ route('hrm.attendance') }}" class="text-dark text-muted"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
-                                                </li>
-                                            @endif
+                                        @endif
+                                        
+                                        <li>
+                                            <a href="{{ route('hrm.attendance.shift') }}" class="text-dark text-muted"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                                        </li>
+                                        
+                                        @if (auth()->user()->permission->hrms['attendance_all'] == '1')
+                                            <li>
+                                                <a href="{{ route('hrm.attendance') }}" class="text-dark text-muted"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                                            </li>
+                                        @endif
 
-                                            <li>
-                                                <a href="{{ route('hrm.allowance') }}" class="text-dark text-muted"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
-                                            </li>
+                                        <li>
+                                            <a href="{{ route('hrm.allowance') }}" class="text-dark text-muted"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
+                                        </li>
 
-                                            <li>
-                                                <a href="{{ route('hrm.payroll.index') }}" class="text-primary "><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
-                                            </li>
+                                        <li>
+                                            <a href="{{ route('hrm.payroll.index') }}" class="text-primary "><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
+                                        </li>
 
-                                            <li>
-                                                <a href="{{ route('hrm.holidays') }}" class="text-dark text-muted"><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
-                                            </li>
+                                        <li>
+                                            <a href="{{ route('hrm.holidays') }}" class="text-dark text-muted"><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
+                                        </li>
 
-                                            <li>
-                                                <a href="{{ route('hrm.departments') }}" class="text-dark text-muted"><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
-                                            </li>
+                                        <li>
+                                            <a href="{{ route('hrm.departments') }}" class="text-dark text-muted"><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
+                                        </li>
 
-                                            <li>
-                                                <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
-                                            </li>
+                                        <li>
+                                            <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
+                                        </li>
 
-                                            <li>
-                                                <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-sliders-h"></i> <b>@lang('menu.hrm_settings')</b></a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                        <li>
+                                            <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-sliders-h"></i> <b>@lang('menu.hrm_settings')</b></a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -277,6 +275,26 @@
         <div class="modal-dialog col-50-modal" role="document">
             <div class="modal-content" id="view_payroll_modal_content">
 
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-50-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Payment Details</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="payment_details_modal_body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group text-end">
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                        <button type="submit" class="c-btn btn_blue" id="payment_details_print">Print</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

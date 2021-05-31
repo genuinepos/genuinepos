@@ -55,12 +55,8 @@
     // select single product and add stock adjustment table
     var keyName = 1;
     function singleProduct(e) {
-        document.getElementById('search_product').focus();
         $('.select_area').hide();
         $('#search_product').val("");
-        if (keyName == 13 || keyName == 1) {
-            document.getElementById('search_product').focus();
-        }
         var warehouse_id = $('#warehouse_id').val();
         var branch_id = $('#branch_id').val();
         var product_id = e.getAttribute('data-p_id');
@@ -190,11 +186,7 @@
     }
 
     // select variant product and add purchase table
-    function salectVariant(e){   
-        if (keyName == 13 || keyName == 1) {
-            document.getElementById('search_product').focus();
-        }
-        document.getElementById('search_product').focus();
+    function salectVariant(e){
         $('.select_area').hide();
         $('#search_product').val("");
         var branch_id = $('#branch_id').val();
@@ -512,7 +504,6 @@
         e.preventDefault();
         $(this).closest('tr').remove();
         calculateTotalAmount();
-        document.getElementById('search_product').focus();
     });
 
     // Get all unite for form field
@@ -561,8 +552,8 @@
 
     // Automatic remove searching product is found signal 
     setInterval(function(){
-            $('#search_product').removeClass('is-invalid');
-        }, 500); 
+        $('#search_product').removeClass('is-invalid');
+    }, 500); 
 
     setInterval(function(){
         $('#search_product').removeClass('is-valid');

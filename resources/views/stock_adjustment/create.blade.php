@@ -44,7 +44,7 @@
                                                         class="text-danger">*</span> <b>Warehouse :</b></label>
                                                     <div class="col-8">
                                                         <select class="form-control changeable add_input"
-                                                            name="warehouse_id" data-name="Warehouse" id="warehouse_id">
+                                                            name="warehouse_id" data-name="Warehouse" id="warehouse_id" autofocus>
                                                         </select>
                                                         <span class="error error_warehouse_id"></span>
                                                     </div>
@@ -127,11 +127,8 @@
                                                         
                                                     </div>
                                                     <div class="select_area">
-                                                        {{-- <div class="remove_select_area_btn">X</div> --}}
                                                         <ul id="list" class="variant_list_area">
-                                                            {{-- <li>
-                                                                <a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="" data-v_id="" data-p_name="" data-p_tax_id="" data-unit="" data-tax_percent="" data-tax_amount="" data-v_code="" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:30px; height:30px;" src=""> Samsung A30 (4GB, 64Gb) Price-510000 </a>
-                                                            </li> --}}
+                                                           
                                                         </ul>
                                                     </div>
                                                 </div>

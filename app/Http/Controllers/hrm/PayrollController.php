@@ -229,7 +229,8 @@ class PayrollController extends Controller
                 $addPayrollAllowance->payroll_id = $addPayroll->id;
                 $addPayrollAllowance->allowance_name = $allowance_name;
                 $addPayrollAllowance->amount_type = $al_amount_types[$key];
-                $addPayrollAllowance->allowance_percent =  $allowance_percents[$key] ? $allowance_percents[$key] : 0;
+                $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
+                $addPayrollAllowance->allowance_percent =  $al_amount_types[$key] == 2 ? $al_percent : 0;
                 $addPayrollAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
                 $addPayrollAllowance->save();
             }
@@ -246,7 +247,8 @@ class PayrollController extends Controller
                 $addPayrollDeduction->payroll_id = $addPayroll->id;
                 $addPayrollDeduction->deduction_name = $deduction_name;
                 $addPayrollDeduction->amount_type = $de_amount_types[$key];
-                $addPayrollDeduction->deduction_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
+                $de_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
+                $addPayrollDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $de_percent : 0;
                 $addPayrollDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
                 $addPayrollDeduction->save();
             }
@@ -304,7 +306,8 @@ class PayrollController extends Controller
             if ($salaryAllowance) {
                 $salaryAllowance->allowance_name = $allowance_name;
                 $salaryAllowance->amount_type = $al_amount_types[$key];
-                $salaryAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $allowance_percents : 0;
+                $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
+                $salaryAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $al_percent : 0;
                 $salaryAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
                 $salaryAllowance->is_delete_in_update = 0;
                 $salaryAllowance->save();
@@ -314,7 +317,8 @@ class PayrollController extends Controller
                     $addSalaryAllowance->payroll_id = $updatePayroll->id;
                     $addSalaryAllowance->allowance_name = $allowance_name;
                     $addSalaryAllowance->amount_type = $al_amount_types[$key];
-                    $addSalaryAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $allowance_percents : 0;
+                    $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
+                    $addSalaryAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $al_percent : 0;
                     $addSalaryAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
                     $addSalaryAllowance->save();
                 }
@@ -332,8 +336,9 @@ class PayrollController extends Controller
             if ($salaryDeduction) {
                 $salaryDeduction->deduction_name = $deduction_name;
                 $salaryDeduction->amount_type = $de_amount_types[$key];
-                $salaryDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $deduction_percents[$key] : 0;
-                $salaryDeduction->deduction_amount = $deduction_amounts[$key];
+                $d_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
+                $salaryDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $d_percent : 0;
+                $salaryDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
                 $salaryDeduction->is_delete_in_update = 0;
                 $salaryDeduction->save();
             } else {
@@ -342,8 +347,9 @@ class PayrollController extends Controller
                     $addSalaryDeduction->payroll_id = $updatePayroll->id;
                     $addSalaryDeduction->deduction_name = $deduction_name;
                     $addSalaryDeduction->amount_type = $de_amount_types[$key];
-                    $addSalaryDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $deduction_percents[$key] : 0;
-                    $addSalaryDeduction->deduction_amount = $deduction_amounts[$key];
+                    $d_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
+                    $addSalaryDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $d_percent : 0;
+                    $addSalaryDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
                     $addSalaryDeduction->save();
                 }
             }
@@ -486,7 +492,8 @@ class PayrollController extends Controller
     // Get payment details **requested by ajax**
     public function paymentDetails($paymentId)
     {
-        $payment = PayrollPayment::with('payroll', 'payroll.employee')->where('id', $paymentId)->first();
+        $payment = PayrollPayment::with('payroll', 'payroll.employee', 'payroll.employee.branch')
+            ->where('id', $paymentId)->first();
         return view('hrm.payroll.ajax_view.payment_details', compact('payment'));
     }
 

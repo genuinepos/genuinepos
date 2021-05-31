@@ -24,7 +24,6 @@ use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
-use Illuminate\Support\Facades\Cache;
 use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -682,7 +681,6 @@ class SaleController extends Controller
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_id = $addSale->id;
                 $addCustomerLedger->save();
-                Cache::forget('all-customers');
             }
         } else {
             $addSale->total_payable_amount = $request->total_invoice_payable;
@@ -844,7 +842,6 @@ class SaleController extends Controller
                             $addCashFlow->year = date('Y');
                             $addCashFlow->admin_id = auth()->user()->id;
                             $addCashFlow->save();
-                            Cache::forget('all-accounts');
                         }
 
                         if ($request->customer_id) {
@@ -929,7 +926,6 @@ class SaleController extends Controller
                                             $addCashFlow->year = date('Y');
                                             $addCashFlow->admin_id = auth()->user()->id;
                                             $addCashFlow->save();
-                                            Cache::forget('all-accounts');
                                         }
 
                                         if ($dueInvoice->customer_id) {
@@ -1009,7 +1005,6 @@ class SaleController extends Controller
                                             $addCashFlow->year = date('Y');
                                             $addCashFlow->admin_id = auth()->user()->id;
                                             $addCashFlow->save();
-                                            Cache::forget('all-accounts');
                                         }
 
                                         if ($dueInvoice->customer_id) {
@@ -1085,7 +1080,6 @@ class SaleController extends Controller
                                             $addCashFlow->year = date('Y');
                                             $addCashFlow->admin_id = auth()->user()->id;
                                             $addCashFlow->save();
-                                            Cache::forget('all-accounts');
                                         }
 
                                         if ($dueInvoice->customer_id) {
@@ -1167,7 +1161,6 @@ class SaleController extends Controller
                             $addCashFlow->year = date('Y');
                             $addCashFlow->admin_id = auth()->user()->id;
                             $addCashFlow->save();
-                            Cache::forget('all-accounts');
                         }
 
                         if ($request->customer_id) {
@@ -1232,7 +1225,6 @@ class SaleController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($request->customer_id) {
@@ -1265,7 +1257,6 @@ class SaleController extends Controller
 
         if ($request->action == 'save_and_print') {
             if ($request->status == 1) {
-                Cache::forget('all-products');
                 return view('sales.save_and_print_template.sale_print', compact(
                     'sale',
                     'previous_due',
@@ -1283,7 +1274,6 @@ class SaleController extends Controller
         } else {
             if ($request->status == 1) {
                 session()->flash('successMsg', 'Successfully sale is added');
-                Cache::forget('all-products');
                 return response()->json(['finalMsg' => 'Successfully sale is added']);
             } elseif ($request->status == 2) {
                 session()->flash('successMsg', 'Successfully sale draft is added');
@@ -1591,7 +1581,6 @@ class SaleController extends Controller
 
         if ($request->status == 1) {
             session()->flash('successMsg', 'Successfully sale is updated');
-            Cache::forget('all-products');
             return response()->json(['successMsg' => 'Successfully sale is updated']);
         } elseif ($request->status == 2) {
             session()->flash('successMsg', 'Successfully sale draft is updated');
@@ -1619,7 +1608,6 @@ class SaleController extends Controller
                 $customer->total_sale_due -= $deleteSale->due > 0 ? $deleteSale->due : 0;
                 $customer->total_sale_return_due -= $deleteSale->sale_return_due;
                 $customer->save();
-                Cache::forget('all-customers');
             }
         }
 
@@ -1670,7 +1658,6 @@ class SaleController extends Controller
         }
 
         $deleteSale->delete();
-        Cache::forget('all-products');
         return response()->json('Successfully data is deleted');
     }
 
@@ -1843,12 +1830,10 @@ class SaleController extends Controller
     // Get all customers requested by ajax
     public function getAllCustomer()
     {
-        $customers = Cache::rememberForever('all-customers', function () {
-            return $customers = Customer::select('id', 'name',  'pay_term', 'pay_term_number', 'phone', 'total_sale_due')
+        $customers = Customer::select('id', 'name',  'pay_term', 'pay_term_number', 'phone', 'total_sale_due')
                 ->where('is_walk_in_customer', 0)
                 ->orderBy('id', 'desc')
                 ->get();
-        });
         return response()->json($customers);
     }
 
@@ -2160,10 +2145,7 @@ class SaleController extends Controller
     // Show payment modal
     public function paymentModal($saleId)
     {
-        $accounts = Cache::rememberForever('all-accounts', function () {
-            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        });
-
+        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         $sale = Sale::with('branch', 'warehouse', 'customer')->where('id', $saleId)->first();
         return view('sales.ajax_view.add_payment', compact('sale', 'accounts'));
     }
@@ -2257,7 +2239,6 @@ class SaleController extends Controller
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
             $addCashFlow->save();
-            Cache::forget('all-accounts');
         }
 
         if ($customer) {
@@ -2274,9 +2255,7 @@ class SaleController extends Controller
     // Show payment modal
     public function paymentEdit($paymentId)
     {
-        $accounts = Cache::rememberForever('all-accounts', function () {
-            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        });
+        $accounts =  Account::orderBy('id', 'DESC')->where('status', 1)->get();
         $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch', 'sale.warehouse')->where('id', $paymentId)->first();
         return view('sales.ajax_view.edit_payment', compact('payment', 'accounts'));
     }
@@ -2391,19 +2370,13 @@ class SaleController extends Controller
                 $addCashFlow->save();
             }
         }
-        Cache::forget('all-accounts');
-
-
         return response()->json('Successfully payment is updated.');
     }
 
     // Show payment modal
     public function returnPaymentModal($saleId)
     {
-        $accounts = Cache::rememberForever('all-accounts', function () {
-            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        });
-
+        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         $sale = Sale::with('branch', 'warehouse', 'customer')->where('id', $saleId)->first();
         return view('sales.ajax_view.add_return_payment', compact('sale', 'accounts'));
     }
@@ -2497,7 +2470,6 @@ class SaleController extends Controller
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
             $addCashFlow->save();
-            Cache::forget('all-accounts');
         }
 
         if ($customer) {
@@ -2513,10 +2485,7 @@ class SaleController extends Controller
 
     public function returnPaymentEdit($paymentId)
     {
-        $accounts = Cache::rememberForever('all-accounts', function () {
-            return $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        });
-
+        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch', 'sale.warehouse')->where('id', $paymentId)->first();
         return view('sales.ajax_view.edit_return_payment', compact('payment', 'accounts'));
     }
@@ -2638,7 +2607,6 @@ class SaleController extends Controller
                 $updateSalePayment->cashFlow->delete();
             }
         }
-        Cache::forget('all-accounts');
         return response()->json('Successfully payment is updated.');
     }
 
@@ -2682,7 +2650,6 @@ class SaleController extends Controller
                 }
 
                 $deleteSalePayment->delete();
-                Cache::forget('all-accounts');
             } elseif ($deleteSalePayment->payment_type == 2) {
                 if ($deleteSalePayment->customer) {
                     $deleteSalePayment->customer->total_sale_return_due += $deleteSalePayment->paid_amount;
@@ -2713,7 +2680,6 @@ class SaleController extends Controller
                 }
 
                 $deleteSalePayment->delete();
-                Cache::forget('all-accounts');
             }
         }
         return response()->json('Successfully payment is deleted.');
@@ -2722,26 +2688,11 @@ class SaleController extends Controller
     // Add product modal view with data
     public function addProductModalVeiw()
     {
-        $units = Cache::rememberForever('all-unites', function () {
-            return Unit::select(['id', 'name'])->get();
-        });
-
-        $warranties = Cache::rememberForever('all-warranties', function () {
-            return Warranty::select(['id', 'name', 'type'])->get();
-        });
-
-        $taxes = Cache::rememberForever('all-taxes', function () {
-            return Tax::select(['id', 'tax_name', 'tax_percent'])->get();
-        });
-
-        $categories = Cache::rememberForever('all-parent-categories', function () {
-            return Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
-        });
-
-        $brands = Cache::rememberForever('all-brands', function () {
-            return $brands = Brand::all();
-        });
-
+        $units = Unit::select(['id', 'name'])->get();
+        $warranties =  Warranty::select(['id', 'name', 'type'])->get();
+        $taxes = Tax::select(['id', 'tax_name', 'tax_percent'])->get();
+        $categories = Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
+        $brands = $brands = Brand::all();
         return view('sales.ajax_view.add_product_modal_view', compact('units', 'warranties', 'taxes', 'categories', 'brands'));
     }
 
@@ -2846,8 +2797,6 @@ class SaleController extends Controller
                 $index++;
             }
         }
-
-        Cache::forget('all-products');
         return response()->json($addProduct);
     }
 
@@ -2902,7 +2851,6 @@ class SaleController extends Controller
         $change_amount = $sale->change_amount;
 
         if ($sale->status == 1) {
-            Cache::forget('all-products');
             if ($sale->created_by == 1) {
                 return view('sales.save_and_print_template.sale_print', compact(
                     'sale',

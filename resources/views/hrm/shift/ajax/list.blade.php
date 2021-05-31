@@ -26,6 +26,6 @@
     </tbody>
 </table>
 
-<!--Data table js active link-->
-<script src="{{ asset('public') }}/assets/plugins/custom/data-table/datatable.active.js"></script>
-<!--Data table js active link end-->
+<script>
+    $('.data_tbl').DataTable();
+</script>

@@ -11,7 +11,6 @@ use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
 use App\Models\ExpenseDescription;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -268,7 +267,6 @@ class ExpanseController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
-                Cache::forget('all-accounts');
             }
         }
 
@@ -395,9 +393,7 @@ class ExpanseController extends Controller
     // Get all form Categories by ajax request
     public function allCategories()
     {
-        $categories = Cache::rememberForever('all-expanse-categories', function () {
-            return ExpanseCategory::orderBy('id', 'DESC')->get();
-        });
+        $categories = ExpanseCategory::orderBy('id', 'DESC')->get();
         return response()->json($categories);
     }
 
@@ -502,7 +498,6 @@ class ExpanseController extends Controller
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
             $addCashFlow->save();
-            Cache::forget('all-accounts');
         }
         return response()->json('Successfully payment is added.');
     }
@@ -616,7 +611,6 @@ class ExpanseController extends Controller
                 $updateExpansePayment->cashFlow->delete();
             }
         }
-        Cache::forget('all-accounts');
         return response()->json('Successfully payment is added.');
     }
 
@@ -645,7 +639,6 @@ class ExpanseController extends Controller
             }
 
             $deleteExpansePayment->delete();
-            Cache::forget('all-accounts');
         }
 
         return response()->json('Successfully payment is deleted.');

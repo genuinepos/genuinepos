@@ -84,10 +84,6 @@ class CategoryControlle extends Controller
                 'name' => $request->name,
             ]);
         }
-        Cache::forget('all-parent-categories');
-        Cache::forget('all-categories');
-        Cache::forget('all-main_categories');
-        Cache::forget('all-products');
         return response()->json('Successfully category is added');
     }
 
@@ -125,10 +121,6 @@ class CategoryControlle extends Controller
                 'name' => $request->name,
             ]);
         }
-        Cache::forget('all-categories');
-        Cache::forget('all-parent-categories');
-        Cache::forget('all-main_categories');
-        Cache::forget('all-products');
         return response()->json('Successfully category is updated');
     }
 
@@ -145,10 +137,6 @@ class CategoryControlle extends Controller
             $deleteCategory->delete();  
         }
         
-        Cache::forget('all-parent-categories');
-        Cache::forget('all-categories');
-        Cache::forget('all-main_categories');
-        Cache::forget('all-products');
         return response()->json('Successfully category is deleted');
     }
 }

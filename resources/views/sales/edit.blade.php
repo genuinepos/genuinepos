@@ -140,7 +140,7 @@
                                                     </div>
                                                     <input type="text" name="search_product" class="form-control scanable"
                                                         autocomplete="off" id="search_product"
-                                                        placeholder="Search Product by product code(SKU) / Scan bar code">
+                                                        placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
                                                     <div class="input-group-prepend">
                                                         <span id="add_product" class="input-group-text add_button"><i
                                                                 class="fas fa-plus-square text-dark"></i></span>
@@ -174,81 +174,6 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="sale_list">
-                                                                {{-- <tr>
-                                                                    <td colspan="2" class="text-start">
-                                                                        <a href="#" class="text-success" id="edit_product">
-                                                                            <span class="product_name">Samsung A30</span>
-                                                                            <span class="product_variant">4GB, 64GB</span>
-                                                                            <span class="product_code">PO745555</span>
-                                                                        </a><br/><input
-                                                                            type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'"
-                                                                            name="descriptions[]"
-                                                                            class="form-control scanable mb-1"
-                                                                            placeholder="IMEI, Serial number or other info.">
-                                                                        <input value="'+variant_product.product.id+'"
-                                                                            type="hidden"
-                                                                            class="productId-'+variant_product.product.id+'"
-                                                                            id="product_id" name="product_ids[]">
-                                                                        <input value="'+variant_product.id+'" type="hidden"
-                                                                            class="variantId-'+variant_product.id+'"
-                                                                            id="variant_id" name="variant_ids[]">
-                                                                        <input name="unit_tax_percents[]" type="hidden"
-                                                                            id="unit_tax_percent" value="'+tax_percent+'">
-                                                                        <input name="unit_tax_amounts[]" type="hidden"
-                                                                            id="unit_tax_amount"
-                                                                            value="'+parseFloat(tax_amount).toFixed(2)+'">
-                                                                        <input value="1" name="unit_discount_types[]"
-                                                                            type="hidden" id="unit_discount_type">
-                                                                        <input value="0.00" name="unit_discounts[]"
-                                                                            type="hidden" id="unit_discount">
-                                                                        <input value="0.00" name="unit_discount_amounts[]"
-                                                                            type="hidden" id="unit_discount_amount">
-                                                                        <input name="unit_costs_inc_tax[]" type="hidden"
-                                                                            id="unit_cost_inc_tax"
-                                                                            value="'+variant_product.variant_cost_with_tax+'">
-                                                                        <input type="hidden" id="qty_limit"
-                                                                            value="'+qty_limit+'">
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <div class="input-group">
-                                                                            <div class="input-group-prepend">
-                                                                                <a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>
-                                                                            </div>
-                                                                            <input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center " id="quantity">
-                                                                            <div class="input-group-prepend">
-                                                                                <a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="text">
-                                                                        <b><span class="span_unit">Pieces</span></b>
-                                                                        <input name="units[]" type="hidden" id="unit" value="">
-                                                                    </td>
-
-                                                                    <td>
-
-                                                                        <input name="unit_prices_exc_tax[]" type="hidden"
-                                                                            value="" id="unit_price_exc_tax">
-
-                                                                        <input readonly name="unit_prices[]" type="text"
-                                                                            class="form-control text-center"
-                                                                            id="unit_price" value="">
-                                                                    </td>
-
-                                                                    <td class="text text-center">
-                                                                        <strong><span
-                                                                                class="span_subtotal">100.00</span></strong>
-                                                                        <input
-                                                                            value="'+parseFloat(unitPriceIncTax).toFixed(2)+'"
-                                                                            readonly name="subtotals[]" type="hidden"
-                                                                            id="subtotal">
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <a href="" id="remove_product_btn" class=""><i
-                                                                                class="fas fa-trash-alt text-danger mt-2"></i></a>
-                                                                    </td>
-                                                                </tr> --}}
                                                             </tbody>
                                                         </table>
                                                     </div>

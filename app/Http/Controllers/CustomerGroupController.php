@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CustomerGroup;
-use Illuminate\Support\Facades\Cache;
 
 class CustomerGroupController extends Controller
 {
@@ -37,8 +36,6 @@ class CustomerGroupController extends Controller
             'group_name' => $request->name,
             'calc_percentage' => $request->calculation_percent ? $request->calculation_percent : 0.00,
         ]);
-        
-        Cache::forget('all-customer_groups');
         return response()->json('Successfully customer group is added');
     }
 
@@ -54,8 +51,6 @@ class CustomerGroupController extends Controller
             'group_name' => $request->name,
             'calc_percentage' => $request->calculation_percent ? $request->calculation_percent : 0.00,
         ]);
-        
-        Cache::forget('all-customer_groups');
         return response()->json('Successfully customer group is updated');
     }
 
@@ -66,7 +61,6 @@ class CustomerGroupController extends Controller
         if (!is_null($deleteCustomerGroup)) {
             $deleteCustomerGroup->delete();  
         }
-        Cache::forget('all-customer_groups');
         return response()->json('Successfully customer group is deleted');
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
@@ -71,8 +70,8 @@ class SubCategoryController extends Controller
     //edit
     public function edit($id)
     {
-        $data=DB::table('categories')->where('id',$id)->first();
-        $category=DB::table('categories')->where('parent_category_id',NULL)->get();
+        $data = DB::table('categories')->where('id',$id)->first();
+        $category = DB::table('categories')->where('parent_category_id',NULL)->get();
         return view('product.sub_categories.ajax_view.edit',compact('category','data'));
     }
 
@@ -101,9 +100,6 @@ class SubCategoryController extends Controller
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
             ]);
         }
-        Cache::forget('all-categories');
-        Cache::forget('all-main_categories');
-        Cache::forget('all-products');
         return response()->json('Successfully category is added');
     }
 
@@ -138,9 +134,6 @@ class SubCategoryController extends Controller
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
             ]);
         }
-        Cache::forget('all-categories');
-        Cache::forget('all-main_categories');
-        Cache::forget('all-products');
         return response()->json('Successfully category is updated');
     }
 
@@ -157,9 +150,6 @@ class SubCategoryController extends Controller
         if (!is_null($deleteCategory)) {
             $deleteCategory->delete();
         }
-        Cache::forget('all-categories');
-        Cache::forget('all-main_categories');
-        Cache::forget('all-products');
         return response()->json('Successfully category is deleted');
     }
 }

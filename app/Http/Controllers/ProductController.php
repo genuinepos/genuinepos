@@ -21,7 +21,6 @@ use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
-use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
@@ -389,7 +388,6 @@ class ProductController extends Controller
         //     }
         // }
 
-        Cache::forget('all-products');
         session()->flash('successMsg', 'Successfully product is added');
         return response()->json('Successfully product is added');
     }
@@ -612,8 +610,6 @@ class ProductController extends Controller
             }
         }
 
-
-        Cache::forget('all-products');
         return response()->json('Successfully product opening stock is added');
     }
 
@@ -912,73 +908,8 @@ class ProductController extends Controller
                 }
             }
         }
-
-        Cache::forget('all-products');
         session()->flash('successMsg', 'Successfully product is updated');
         return response()->json('Successfully product is updated');
-    }
-
-    //Filter product method
-    public function filterProduct(Request $request)
-    {
-        //return $request->status;
-        $filteredProducts = '';
-        $query = Product::with([
-            'product_branches',
-            'product_branches.branch',
-            'product_variants',
-            'category',
-            'child_category',
-            'brand',
-            'tax',
-            'unit',
-            'comboProducts',
-            'comboProducts.child_category',
-            'comboProducts.product_variant',
-            'comboProducts.child_category.category',
-            'comboProducts.parentProduct.child_category',
-            'comboProducts.parentProduct.brand'
-        ]);
-        //return $request->all();
-        if ($request->product_type == 1) {
-            $query->where('type', 1)->where('is_variant', 0);
-        }
-
-        if ($request->product_type == 2) {
-            $query->where('is_variant', 1)->where('type', 1);
-        }
-
-        if ($request->product_type == 3) {
-            $query->where('type', 2)->where('is_combo', 1);
-        }
-
-        if ($request->category_id) {
-            $query->where('category_id', $request->category_id);
-        }
-
-        if ($request->unit_id) {
-            $query->where('unit_id', $request->unit_id);
-        }
-
-        if ($request->tax_id) {
-            $query->where('tax_id', $request->tax_id);
-        }
-
-        if ($request->brand_id) {
-            $query->where('brand_id', $request->brand_id);
-        }
-
-        if ($request->status != '') {
-            $query->where('status', $request->status);
-        }
-
-        if (isset($request->is_for_sale)) {
-            $query->where('is_for_sale', 0);
-        }
-
-        $filteredProducts = $query->get();
-
-        return view('product.products.ajax_view.filtered_product_list', compact('filteredProducts'));
     }
 
     // delete product
@@ -1012,7 +943,6 @@ class ProductController extends Controller
 
             $deleteProduct->delete();
         }
-        Cache::forget('all-products');
         return response()->json('Successfully product is deleted');
     }
 
@@ -1060,7 +990,6 @@ class ProductController extends Controller
                 $product->status = 0;
                 $product->save();
             }
-            Cache::forget('all-products');
             return response()->json('Successfully all selected product status is deactived');
         }
     }
@@ -1072,12 +1001,10 @@ class ProductController extends Controller
         if ($statusChange->status == 1) {
             $statusChange->status = 0;
             $statusChange->save();
-            Cache::forget('all-products');
             return response()->json('Successfully Product is deactivated');
         } else {
             $statusChange->status = 1;
             $statusChange->save();
-            Cache::forget('all-products');
             return response()->json('Successfully Product is activated');
         }
     }
@@ -1093,52 +1020,41 @@ class ProductController extends Controller
     // Get all form brand by ajax
     public function allFromBrand()
     {
-        $allFromBrand = Cache::rememberForever('all-brands', function () {
-            return $allFromBrand = Brand::all();
-        });
+        $allFromBrand = Brand::all();
         return response()->json($allFromBrand);
     }
 
     // Get all form Categories by ajax request
     public function getAllFormCategories()
     {
-        $categories = Cache::rememberForever('all-categories', function () {
-            return Category::orderBy('id', 'DESC')->get();
-        });
+        $categories = Category::orderBy('id', 'DESC')->get();
         return response()->json($categories);
     }
 
     // Get all form Units by ajax request
     public function getAllFormUnits()
     {
-        $units = Cache::rememberForever('all-unites', function () {
-            return Unit::select(['id', 'name', 'code_name'])->get();
-        });
+        $units =  Unit::select(['id', 'name', 'code_name'])->get();
         return response()->json($units);
     }
 
     // Get all form warranties by ajax request
     public function getAllFormWarrties()
     {
-        $warranties = Cache::rememberForever('all-warranties', function () {
-            return Warranty::select(['id', 'name', 'type'])->get();
-        });
+        $warranties = Warranty::select(['id', 'name', 'type'])->get();
         return response()->json($warranties);
     }
 
     // Get all form taxes by ajax request
     public function getAllFormTaxes()
     {
-        $taxes = Cache::rememberForever('all-taxes', function () {
-            return Tax::select(['id', 'tax_name', 'tax_percent'])->get();
-        });
+        $taxes = Tax::select(['id', 'tax_name', 'tax_percent'])->get();
         return response()->json($taxes);
     }
 
     public function searchProduct($productCode)
     {
         $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $productCode)->first();
-
         if ($product) {
             return response()->json(['product' => $product]);
         } else {
@@ -1196,11 +1112,6 @@ class ProductController extends Controller
         $addBrand = new Category();
         $addBrand->name = $request->name;
         $addBrand->save();
-
-        Cache::forget('all-categories');
-        Cache::forget('all-parent-categories');
-        Cache::forget('all-main_categories');
-        Cache::forget('all-products');
         return response()->json($addBrand);
     }
 
@@ -1215,8 +1126,6 @@ class ProductController extends Controller
         $addBrand->name = $request->name;
         $addBrand->save();
 
-        Cache::forget('all-brands');
-        Cache::forget('all-products');
         return response()->json($addBrand);
     }
 
@@ -1232,8 +1141,6 @@ class ProductController extends Controller
         $addUnit->name = $request->name;
         $addUnit->code_name = $request->code;
         $addUnit->save();
-        Cache::forget('all-products');
-        Cache::forget('all-unites');
         return response()->json($addUnit);
     }
 
@@ -1251,8 +1158,6 @@ class ProductController extends Controller
        $add->duration_type = $request->duration_type;
        $add->description = $request->description;
        $add->save();
-        Cache::forget('all-products');
-        Cache::forget('all-warranties');
         return response()->json($add);
     }
 

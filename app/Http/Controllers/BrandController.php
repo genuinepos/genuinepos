@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
@@ -85,15 +84,13 @@ class BrandController extends Controller
             ]);
         }
         
-         Cache::forget('all-brands');
-         Cache::forget('all-products');
         return response()->json(__('brand.add_success'));
     }
 
     //edit method
     public function edit($id)
     {
-        $data=DB::table('brands')->where('id',$id)->first();
+        $data = DB::table('brands')->where('id',$id)->first();
         return view('product.brands.ajax_view.edit',compact('data'));
     }
 
@@ -126,8 +123,6 @@ class BrandController extends Controller
                     'name' => $request->name,
                 ]);
             }
-            Cache::forget('all-brands');
-            Cache::forget('all-products');
             return response()->json(__('brand.update_success'));
     }
 
@@ -142,9 +137,7 @@ class BrandController extends Controller
             } 
         }
         if (!is_null($deleteBrand)) {
-            $deleteBrand->delete();  
-            Cache::forget('all-brands');
-            Cache::forget('all-products');
+            $deleteBrand->delete(); 
         }
         return response()->json(__('brand.update_success'));
     }

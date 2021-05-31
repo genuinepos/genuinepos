@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\BranchPaymentMethod;
 
 class BranchController extends Controller
 {

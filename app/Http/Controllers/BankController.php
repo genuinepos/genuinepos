@@ -40,7 +40,6 @@ class BankController extends Controller
             'address' => $request->address,
         ]);
         
-        Cache::forget('all-banks');
         return response()->json('Successfully bank is added');
     }
 
@@ -59,7 +58,6 @@ class BankController extends Controller
             'address' => $request->address,
         ]);
         
-        Cache::forget('all-banks');
         return response()->json('Successfully bank is updated');
     }
 
@@ -69,7 +67,7 @@ class BankController extends Controller
         if (!is_null($deleteBank)) {
             $deleteBank->delete();  
         }
-        Cache::forget('all-banks');
+ 
         return response()->json('Successfully bank is deleted');
     }
 }

@@ -11,7 +11,6 @@ use App\Models\MoneyReceipt;
 use Illuminate\Http\Request;
 use App\Models\CustomerLedger;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 
 class MoneyReceiptController extends Controller
 {
@@ -187,7 +186,6 @@ class MoneyReceiptController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($dueInvoice->customer_id) {
@@ -246,7 +244,6 @@ class MoneyReceiptController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($dueInvoice->customer_id) {
@@ -300,7 +297,6 @@ class MoneyReceiptController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
-                        Cache::forget('all-accounts');
                     }
 
                     if ($dueInvoice->customer_id) {
@@ -340,7 +336,6 @@ class MoneyReceiptController extends Controller
                     $addCashFlow->year = date('Y');
                     $addCashFlow->admin_id = auth()->user()->id;
                     $addCashFlow->save();
-                    Cache::forget('all-accounts');
                 }
             }
             
@@ -373,7 +368,6 @@ class MoneyReceiptController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
-                Cache::forget('all-accounts');
             }
 
             $addCustomerLedger = new CustomerLedger();
@@ -383,7 +377,6 @@ class MoneyReceiptController extends Controller
             $addCustomerLedger->amount = $request->amount;
             $addCustomerLedger->save();
         }
-        Cache::forget('all-customers');
         return response()->json('Successfully money receipt voucher is completed.');
     }
 

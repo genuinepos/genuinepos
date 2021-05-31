@@ -11,7 +11,6 @@ use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\TransferStockToBranch;
-use Illuminate\Support\Facades\Cache;
 use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\TransferStockToBranchProduct;
@@ -166,11 +165,9 @@ class TransferToBranchController extends Controller
         }
 
         if ($request->action == 'save') {
-            Cache::forget('all-products');
             session()->flash('successMsg', 'Successfully transfer stock is added');
             return response()->json(['successMsg' => 'Successfully transfer stock is added']);
         } else {
-            Cache::forget('all-products');
             $transfer = TransferStockToBranch::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $addTransferToBranch->id)->first();
             return view('transfer_stock.warehouse_to_branch.save_and_print_template.print', compact('transfer'));
         }
@@ -453,9 +450,7 @@ class TransferToBranchController extends Controller
     // Get all warehouse requested by ajax
     public function getAllWarehouse()
     {
-        $warehouses = Cache::rememberForever('all-warehouses', function () {
-            return $warehouses = Warehouse::select('id', 'warehouse_name', 'warehouse_code')->get();
-        });
+        $warehouses = Warehouse::select('id', 'warehouse_name', 'warehouse_code')->get();
         return response()->json($warehouses);
     }
 }

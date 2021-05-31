@@ -2,7 +2,7 @@
 @push('stylesheets')
     <style>
         .top-menu-area ul li {display: inline-block;margin-right: 3px;}
-        .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
+        .top-menu-area a {border-radius: 3px;font-size: 11px;}
     </style>
 @endpush
 @section('content')
@@ -13,14 +13,13 @@
                     <div class="main__content">
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="top-menu-area">
+                            <div class="top-menu-area w-100">
+                                <div class="breadCrumbHolder module">
+                                    <div id="breadCrumb3" class="breadCrumb module white_lin">
                                         <ul class="list-unstyled">
                                             <li>
                                                 <a href="" class="text-dark text-muted"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
                                             </li>
-
                                             @if (auth()->user()->permission->hrms['leave_type'] == '1')
                                                 <li>
                                                     <a href="{{ route('hrm.leave.type') }}" class="text-primary"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
@@ -65,6 +64,7 @@
                                         </ul>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

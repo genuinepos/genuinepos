@@ -10,7 +10,6 @@ use App\Models\StockAdjustment;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
-use Illuminate\Support\Facades\Cache;
 use App\Models\StockAdjustmentProduct;
 use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
@@ -277,7 +276,6 @@ class StockAdjustmentController extends Controller
             $index++;
         }
         session()->flash('successMsg', 'Successfully stock adjustment is added');
-        Cache::forget('all-products');
         return response()->json('Successfully stock adjustment is added');
     }
 
@@ -320,8 +318,6 @@ class StockAdjustmentController extends Controller
             }
             $deleteAdjustment->delete();
         }
-
-        Cache::forget('all-products');
         return response()->json('Successfully stock adjustment is deleted.');
     }
 

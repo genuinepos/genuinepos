@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ExpanseCategory;
-use Illuminate\Support\Facades\Cache;
 
 class ExpanseCategoryController extends Controller
 {
@@ -39,8 +38,6 @@ class ExpanseCategoryController extends Controller
             'name' => $request->name,
             'code' => $request->code,
         ]);
-
-        Cache::forget('all-expanse-categories');
         return response()->json('Successfully expanse category is added');
     }
 
@@ -59,8 +56,6 @@ class ExpanseCategoryController extends Controller
             'name' => $request->name,
             'code' => $request->code,
         ]);
-
-        Cache::forget('all-expanse-categories');
         return response()->json('Successfully expanse category is updated');
     }
 
@@ -72,8 +67,6 @@ class ExpanseCategoryController extends Controller
         if (!is_null($deleteCategory)) {
             $deleteCategory->delete();
         }
-
-        Cache::forget('all-expanse-categories');
         return response()->json('Successfully expanse category is deleted');
     }
 }

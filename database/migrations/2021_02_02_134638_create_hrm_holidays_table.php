@@ -18,9 +18,11 @@ class CreateHrmHolidaysTable extends Migration
             $table->string('holiday_name');
             $table->string('start_date');
             $table->string('end_date');
-            $table->string('shop_name');
+            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->boolean('is_all')->default(0);
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }
 

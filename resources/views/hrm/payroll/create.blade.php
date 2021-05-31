@@ -519,7 +519,7 @@
 
         html += '<div class="input-group deduction_percent_field d-none">';
 
-        html += '<input type="number" step="any" name="deduction_percents['+(index2+1)+']" class="form-control" autocomplete="off" value="" id="deduction_percent">';
+        html += '<input type="number" step="any" name="deduction_percents['+(index2+1)+']" class="form-control" autocomplete="off" value="0.00" id="deduction_percent">';
 
         html += '<div class="input-group-prepend">';
         html += '<span class="input-group-text" id="basic-addon1">';

@@ -62,7 +62,7 @@
                                                         class="text-danger">*</span> <b>Warehosue :</b> </label>
                                                     <div class="col-8">
                                                         <select name="warehouse_id" data-name="Warehouse"
-                                                            class="form-control add_input" id="warehouse_id">
+                                                            class="form-control add_input" id="warehouse_id" autofocus>
                                                             <option value="">Select Warehouse</option>
                                                             @foreach ($warehouses as $warehouse)
                                                                 <option value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
@@ -161,9 +161,7 @@
                                                 <div class="select_area">
                                                     {{-- <div class="remove_select_area_btn">X</div> --}}
                                                     <ul id="list" class="variant_list_area">
-                                                        {{-- <li>
-                                                            <a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="" data-v_id="" data-p_name="" data-p_tax_id="" data-unit="" data-tax_percent="" data-tax_amount="" data-v_code="" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:30px; height:30px;" src=""> Samsung A30 (4GB, 64Gb) Price-510000 </a>
-                                                        </li> --}}
+                                                       
                                                     </ul>
                                                 </div>
                                             </div>
@@ -1215,7 +1213,6 @@
                 $('#pay_term_number').val('');
             }
             calculateTotalAmount();
-            document.getElementById('search_product').focus();
         });
 
         // Get all unite for form field
@@ -1628,7 +1625,6 @@
             tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
             tr.find('#quantity').addClass('.form-control:focus');
             tr.find('#quantity').blur();
-            document.getElementById('search_product').focus();
         });
 
         // Iecrease qty
@@ -1640,7 +1636,6 @@
             tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
             tr.find('#quantity').addClass('.form-control:focus');
             tr.find('#quantity').blur();
-            document.getElementById('search_product').focus();
         })
 
         // Automatic remove searching product is found signal 
@@ -1873,11 +1868,6 @@
             } else{
                 $('.payment_body').hide();
             }
-            document.getElementById('search_product').focus();
-        });
-
-        $('#warehouse_id').on('change', function () {
-            document.getElementById('search_product').focus();
         });
 
         $(document).keypress(".scanable",function(event){

@@ -22,7 +22,7 @@ class HolidayController extends Controller
         return view('hrm.holiday.index', compact('branches'));
     }
 
-    //all holidays data get for holida pages
+    //all holidays data get for holiday pages
     public function allHolidays()
     {
         $holidays = Holiday::orderBy('id', 'DESC')->get();
@@ -35,7 +35,7 @@ class HolidayController extends Controller
         $this->validate($request, [
             'holiday_name' => 'required',
         ]);
-        
+
         Holiday::insert([
             'holiday_name' => $request->holiday_name,
             'start_date' => $request->start_date,
@@ -69,7 +69,7 @@ class HolidayController extends Controller
             'notes' => $request->notes,
         ]);
 
-        return response()->json('Successfully Holdiays Updated!');
+        return response()->json('Successfully Holidays Updated!');
     }
 
     //destroy holidays

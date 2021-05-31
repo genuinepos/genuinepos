@@ -6,15 +6,15 @@ use DateTime;
 use Carbon\Carbon;
 use App\Models\Account;
 use App\Models\CashFlow;
-use App\Models\hrm\Payroll;
+use App\Models\Hrm\Payroll;
 use App\Models\AdminAndUser;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Type\Decimal;
 use App\Models\Hrm\PayrollPayment;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\hrm\PayrollAllowance;
-use App\Models\hrm\PayrollDeduction;
+use App\Models\Hrm\PayrollAllowance;
+use App\Models\Hrm\PayrollDeduction;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 

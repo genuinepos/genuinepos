@@ -220,7 +220,7 @@
         }
 
         input:checked+.button-group__label {
-            background-color: #91264f;
+            background-color: #ca6d91;
             border-bottom-color: #fff;
             border-top-color: #fff;
             color: #fff;
@@ -443,45 +443,44 @@
 
                 </div>
          
-
                 <div class="">
                     {{-- Select Location and Filter Buttons --}}
                     <div class="row mx-2 mt-3">
                         <div class="d-flex justify-content-between align-items-center">
-
                             <div class="select-dropdown">
-                                <select>
-                                    <option value="">Select Location</option>
+                                <select name="branch_id" id="branch_id">
+                                    <option value="">All Branch</option>
                                     <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                     @foreach ($branches as $br)
                                         <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                                     @endforeach
                                 </select>
+                                <input type="hidden" id="date_range" value="{{ $thisMonth }}">
                             </div>
 
                             <div class="button-group">
-                                <label class="button-group__btn" id="today">
-                                    <input type="radio" name="today" id="today"/>
+                                <label class="button-group__btn" id="date" data-value="{{ $toDay }}">
+                                    <input type="radio" name="group"/>
                                     <span class="button-group__label">
                                         Today
                                     </span>
                                 </label>
 
                                 <label class="button-group__btn">
-                                    <input type="radio" name="group" id="this_week"/>
+                                    <input type="radio" name="group" id="date" data-value="{{ $thisWeek }}"/>
                                     <span class="button-group__label">
                                         This Week
                                     </span>
                                 </label>
 
-                                <label class="button-group__btn">
-                                    <input type="radio" name="group" />
+                                <label class="button-group__btn" id="date" data-value="{{ $thisMonth }}">
+                                    <input type="radio" checked name="group" />
                                     <span class="button-group__label">
                                         This Month
                                     </span>
                                 </label>
 
-                                <label class="button-group__btn">
+                                <label class="button-group__btn" id="date" data-value="{{ $thisYear }}">
                                     <input type="radio" name="group" />
                                     <span class="button-group__label">
                                         This Financial Year
@@ -501,12 +500,14 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Total Purchase</h3>
-                                        <h1 class="title" id="total_purchase">
-                                            <i class="fas fa-sync fa-spin"></i>
+                                        <h1 class="title">
+                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                            <span class="card_amount" id="total_purchase"></span>
                                         </h1>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="card-counter success d-flex justify-content-around align-content-center">
                                     <div class="icon">
@@ -514,10 +515,14 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Total Sale</h3>
-                                        <h1 class="title">11,4324</h1>
+                                        <h1 class="title">
+                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                            <span class="card_amount" id="total_sale"></span>
+                                        </h1>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="card-counter info d-flex justify-content-around align-content-center">
                                     <div class="icon">
@@ -525,10 +530,14 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Purchase Due</h3>
-                                        <h1 class="title">4324</h1>
+                                        <h1 class="title">
+                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                            <span class="card_amount" id="total_purchase_due"></span>
+                                        </h1>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="card-counter danger d-flex justify-content-around align-content-center">
                                     <div class="icon">
@@ -536,12 +545,15 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Invoice Due</h3>
-                                        <h1 class="title">9234</h1>
+                                        <h1 class="title">
+                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                            <span class="card_amount" id="total_sale_due"></span>
+                                        </h1>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="card-counter info d-flex justify-content-around align-content-center">
@@ -550,10 +562,14 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Expense</h3>
-                                        <h1 class="title">13,3224</h1>
+                                        <h1 class="title">
+                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                            <span class="card_amount" id="total_expense"></span>
+                                        </h1>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="card-counter danger d-flex justify-content-around align-content-center">
                                     <div class="icon">
@@ -561,10 +577,14 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Total User</h3>
-                                        <h1 class="title">250</h1>
+                                        <h1 class="title">
+                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                            <span class="card_amount" id="total_user"></span>
+                                        </h1>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="card-counter blue d-flex justify-content-around align-content-center">
                                     <div class="icon">
@@ -572,10 +592,14 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Total Products</h3>
-                                        <h1 class="title">150</h1>
+                                        <h1 class="title">
+                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                            <span id="total_product"></span>
+                                        </h1>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="card-counter success d-flex justify-content-around align-content-center">
                                     <div class="icon">
@@ -583,7 +607,9 @@
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">Total Adjustment</h3>
-                                        <h1 class="title">2580
+                                        <h1 class="title">
+                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                            <span class="card_amount" id="total_adjustment"></span>
                                         </h1>
                                     </div>
                                 </div>
@@ -775,31 +801,24 @@
         //         const totalPurchase = document.getElementById('total_purchase');
         //         totalPurchase.innerHTML = "$32432";
         //     }, 2000);
-
         // })())
-
     </script>
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    {{-- <script src="https://code.highcharts.com/highcharts.js"></script> --}}
+    {{-- <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-
-
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script> --}}
     <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.css" />
-
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script type="text/javascript"
         src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.js">
     </script>
 
-
     <script>
         $(document).ready(function() {
             // $.fn.DataTable.ext.pager.numbers_length = 5;
-
             $('#stock_alert_table').DataTable({
                 dom: "Bfrtip",
                 buttons: ["excel", "pdf", "print"],
@@ -816,14 +835,45 @@
             $('#inputSearch').on('keyup', function() {
                 sales_order_table.search(this.value).draw();
             });
-
-
         });
-
         // AJAX Call
 
+        $(document).on('click', '#date',function () {
+            var date_range = $(this).data('value');
+            $('#date_range').val(date_range);
+            getCardAmount();
+        });
+
+        $(document).on('change', '#branch_id',function () {
+            getCardAmount();
+        });
+
+        var __currency = "{{ json_decode($generalSettings->business, true)['currency'] }}";
+        function getCardAmount() {
+            var date_range = $('#date_range').val();
+            var branch_id = $('#branch_id').val();
+            $('.card_preloader').show();
+            $('.card_amount').html('');
+            $.ajax({
+                url:"{{ route('dashboard.card.data') }}",
+                type:'get',
+                data: {branch_id, date_range},
+                success:function(data){
+                    $('.card_preloader').hide(); 
+                    $('#total_purchase').html(__currency+' '+parseFloat(data.totalPurchase).toFixed(2));
+                    $('#total_sale').html(__currency+' '+parseFloat(data.total_sale).toFixed(2));
+                    $('#total_purchase_due').html(__currency+' '+parseFloat(data.totalPurchaseDue).toFixed(2));
+                    $('#total_sale_due').html(__currency+' '+parseFloat(data.totalSaleDue).toFixed(2));
+                    $('#total_expense').html(__currency+' '+parseFloat(data.totalExpense).toFixed(2));
+                    $('#total_user').html(data.users);
+                    $('#total_product').html(data.products);
+                    $('#total_adjustment').html(__currency+' '+parseFloat(data.total_adjustment).toFixed(2));
+                }
+            });
+        }
+        getCardAmount();
     </script>
-    <script>
+    {{-- <script>
         Highcharts.chart('chart1', {
             chart: {
                 type: 'area'
@@ -884,5 +934,5 @@
             }]
         });
 
-    </script>
+    </script> --}}
 @endpush

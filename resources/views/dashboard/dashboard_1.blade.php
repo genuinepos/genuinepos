@@ -63,8 +63,6 @@
             /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to left, #3c1053, #ad5389);
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
         }
 
         .card-counter.blue {
@@ -74,7 +72,6 @@
             /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to left, #093637, #44A08D);
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
         }
 
         .card-counter.green {
@@ -84,7 +81,6 @@
             /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to left, #093637, #44A08D);
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
         }
 
         .card-counter.info {
@@ -94,7 +90,6 @@
             /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to right, #2F80ED, #56CCF2);
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
         }
 
         .card-counter .icon {
@@ -301,6 +296,10 @@
             padding: 0px 8px !important;
             margin-top: 3px;
             margin-bottom: 3px;
+            border: 0px solid transparent;
+            background-color: #6083b1;
+            color: white;
+            border-radius: 4px;
         }
 
         .table-responsive {
@@ -308,6 +307,34 @@
             padding-left: 8px;
             padding-right: 8px;
             margin-bottom: 5px !important;
+        }
+
+        .dataTables_paginate {
+            padding-right: 8px;
+            padding-left: 8px;
+            padding-top: 9px;
+            font-family: monospace;
+        }
+
+        .dataTables_paginate a.paginate_button {
+            padding: 2px 8px;
+            background: #65667b;
+            margin: 3px;
+            color: #fff !important;
+            cursor: pointer;
+        }
+
+        .dataTables_paginate a.paginate_button.current {
+            background: #6083b1;
+        }
+
+        .disabled {
+            color: #fff;
+            background: #828d9bb6 !important;
+        }
+
+        .section-header {
+            /* color: #6b082e; */
         }
 
     </style>
@@ -623,8 +650,10 @@
                     <div class="row">
                         <div class="form_element">
                             <div class="section-header">
-                                <span class="fas fa-table"></span>
-                                <p>Product Order Alert</p>
+                                <h4>
+                                    <span class="fas fa-table"></span>
+                                    Product Order Alert
+                                </h4>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -700,7 +729,7 @@
                         <div class="form_element">
                             <div class="section-header">
                                 <span class="fas fa-table"></span>
-                                <p>Sales Order</p>
+                                <h4>Sales Order</h4>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -770,7 +799,7 @@
                 </div>
             </section>
         </div>
-        <div class="row px-4">
+        <div class="row px-2">
             <div class="col">
                 <section>
                     <div class="container">
@@ -778,7 +807,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <span class="fas fa-table"></span>
-                                    <p>Sales Payment Due</p>
+                                    <h4>Sales Payment Due</h4>
                                 </div>
                                 <div class="widget_content">
                                     <div class="table-responsive">
@@ -855,7 +884,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <span class="fas fa-table"></span>
-                                    <p>Purchase Payment Due</p>
+                                    <h4>Purchase Payment Due</h4>
                                 </div>
                                 <div class="widget_content">
                                     <div class="table-responsive">

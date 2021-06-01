@@ -143,7 +143,7 @@
             font-size: 14px !important;
             font-weight: normal;
             max-width: 100%;
-            padding: 0px 90px 0px 15px;
+            padding: 0px 18px 0px 8px;
             border: none;
             background-color: #6b082e;
             -webkit-appearance: none;

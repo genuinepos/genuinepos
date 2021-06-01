@@ -250,7 +250,6 @@
             data: request,
             success:function(data){
                 $('.loading_button').hide();
-                console.log(data);
                 if(!$.isEmptyObject(data.errorMsg)){
                     toastr.error(data.errorMsg,'Attention'); 
                     $('.submit_preloader').hide();
@@ -274,10 +273,10 @@
                     $('.submit_preloader').hide();
                     document.getElementById('search_product').focus();
                 }else {
+                    toastr.success(actionMessage);
                     $('.modal').modal('hide');
                     $('#pos_submit_form')[0].reset();
                     $('.payment_method').hide();
-                    toastr.success(actionMessage);
                     $('#product_list').empty();
                     calculateTotalAmount();
                     $('.submit_preloader').hide();

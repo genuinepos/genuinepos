@@ -55,9 +55,9 @@
                         </tr>
                     </tbody>
                     <tfoot>
-                        <tr class="bg-secondary">
-                            <th width="50%" class="text-start text-white">Total : ({{ $payroll->duration_time }} * {{  $payroll->amount_per_unit }})</th>
-                            <th width="50%" class="text-start text-white">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->total_amount }}</th>
+                        <tr>
+                            <th width="50%" class="text-start">Total : ({{ $payroll->duration_time }} * {{  $payroll->amount_per_unit }})</th>
+                            <th width="50%" class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->total_amount }}</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -86,9 +86,9 @@
                         @endif
                     </tbody>
                     <tfoot>
-                        <tr class="bg-success">
-                            <th width="50%" class="text-start text-white">Total : </th>
-                            <th width="50%" class="text-start text-white">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->total_allowance_amount }}</th>
+                        <tr>
+                            <th width="50%" class="text-start">Total : </th>
+                            <th width="50%" class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->total_allowance_amount }}</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -119,9 +119,9 @@
                         @endif
                     </tbody>
                     <tfoot>
-                        <tr class="bg-danger">
-                            <th width="50%" class="text-start text-white">Total : </th>
-                            <th class="text-start text-white" width="50%">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->total_deduction_amount }}</th>
+                        <tr>
+                            <th width="50%" class="text-start">Total : </th>
+                            <th class="text-start text-danger" width="50%">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->total_deduction_amount }}</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -132,13 +132,13 @@
             <div class="table-responsive">
                 <table class="table table-sm">
                     <tbody>
-                        <tr class="bg-primary">
-                            <th width="50%" class="text-start text-white">
+                        <tr>
+                            <th width="50%" class="text-start">
                                 Gross Amount : <br>
                                 ({{ $payroll->total_amount }} + {{ $payroll->total_allowance_amount }} -
                                 {{ $payroll->total_deduction_amount }})
                             </th>
-                            <td width="50%" class="text-start text-white"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->gross_amount }}</b> </td>
+                            <td width="50%" class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->gross_amount }}</b> </td>
                         </tr>
                     </tbody>
                 </table>
@@ -149,12 +149,12 @@
             <div class="table-responsive">
                 <table class="table modal-table table-sm">
                     <tbody>
-                        <tr class="bg-success">
+                        <tr>
                             <th width="50%" class="text-start">Paid :</th>
                             <td width="50%" class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->paid }}</b> </td>
                         </tr>
     
-                        <tr class="bg-danger">
+                        <tr>
                             <th width="50%" class="text-start">Due :</th>
                             <td width="50%" class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->due }}</b> </td>
                         </tr>
@@ -180,6 +180,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal-footer">
     <div class="form-group text-end">
         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>

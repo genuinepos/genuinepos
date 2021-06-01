@@ -369,6 +369,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::post('add/customer', 'POSController@addCustomer')->name('sales.pos.add.customer');
         Route::get('get/recent/product/{branch_id}/{warehouse_id}/{product_id}', 'POSController@getRecentProduct');
         Route::get('close/cash/registser/modal/view', 'POSController@close');
+        Route::get('search/exchangeable/invoice', 'POSController@searchExchangeableInv')->name('sales.pos.serc.ex.inv');
     });
 });
 
@@ -569,6 +570,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('prefix/settings', 'GeneralSettingController@prefixSettings')->name('settings.prefix.settings');
         Route::post('module/settings', 'GeneralSettingController@moduleSettings')->name('settings.module.settings');
         Route::post('email/settings', 'GeneralSettingController@emailSettings')->name('settings.email.settings');
+        Route::post('rp/settings', 'GeneralSettingController@rewardPoingSettings')->name('settings.reward.point.settings');
     });
 
     Route::group(['prefix' => 'invoices'], function () {

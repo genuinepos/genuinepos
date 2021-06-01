@@ -348,148 +348,99 @@
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-chart-line	"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-chart-line"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fa fa-group"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fa fa-group"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-receipt"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-receipt"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-home"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-home"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-file-invoice"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-file-invoice"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-chart-pie"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-chart-pie"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-chart-line	"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-chart-line"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fa fa-group"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fa fa-group"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-receipt"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-receipt"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-home"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-home"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-file-invoice"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-file-invoice"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
                         <div class="switch_bar">
                             <a href="" class="bar-link">
-                                <span>
-                                    <i class="fas fa-chart-pie"></i>
-                                </span>
-                                <p>
-
-                                </p>
+                                <span><i class="fas fa-chart-pie"></i></span>
+                                <p></p>
                             </a>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="">
@@ -512,30 +463,22 @@
                             <div class="button-group">
                                 <label class="button-group__btn" id="date" data-value="{{ $toDay }}">
                                     <input type="radio" name="group" />
-                                    <span class="button-group__label">
-                                        Today
-                                    </span>
+                                    <span class="button-group__label">Today</span>
                                 </label>
 
                                 <label class="button-group__btn">
                                     <input type="radio" name="group" id="date" data-value="{{ $thisWeek }}" />
-                                    <span class="button-group__label">
-                                        This Week
-                                    </span>
+                                    <span class="button-group__label">This Week</span>
                                 </label>
 
                                 <label class="button-group__btn" id="date" data-value="{{ $thisMonth }}">
                                     <input type="radio" checked name="group" />
-                                    <span class="button-group__label">
-                                        This Month
-                                    </span>
+                                    <span class="button-group__label">This Month</span>
                                 </label>
 
                                 <label class="button-group__btn" id="date" data-value="{{ $thisYear }}">
                                     <input type="radio" name="group" />
-                                    <span class="button-group__label">
-                                        This Financial Year
-                                    </span>
+                                    <span class="button-group__label">This Financial Year</span>
                                 </label>
                             </div>
                         </div>

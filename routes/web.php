@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 
+
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
+Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
 
 Route::get('route-list', function () {
     if (env('APP_DEBUG') === true) {

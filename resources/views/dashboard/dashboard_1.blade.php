@@ -289,6 +289,28 @@
         }
 
     </style>
+    <style>
+        .dt-buttons {
+            padding-top: 2px !important;
+            padding-bottom: 2px !important;
+            float: right;
+            margin-right: 5px;
+        }
+
+        .dt-buttons button {
+            padding: 0px 8px !important;
+            margin-top: 3px;
+            margin-bottom: 3px;
+        }
+
+        .table-responsive {
+            margin-top: -13px;
+            padding-left: 8px;
+            padding-right: 8px;
+            margin-bottom: 5px !important;
+        }
+
+    </style>
 @endpush
 @section('title', 'Home - ')
 @section('content')
@@ -442,7 +464,7 @@
                     </div>
 
                 </div>
-         
+
 
                 <div class="">
                     {{-- Select Location and Filter Buttons --}}
@@ -452,37 +474,39 @@
                             <div class="select-dropdown">
                                 <select>
                                     <option value="">Select Location</option>
-                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                        (Head Office)</option>
                                     @foreach ($branches as $br)
-                                        <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
+                                        <option value="{{ $br->id }}">{{ $br->name . '/' . $br->branch_code }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="button-group">
-                                <label class="button-group__btn" id="today">
-                                    <input type="radio" name="today" id="today"/>
+                                <label class="button-group__btn">
+                                    <input type="radio" name="group" id="today" />
                                     <span class="button-group__label">
                                         Today
                                     </span>
                                 </label>
 
                                 <label class="button-group__btn">
-                                    <input type="radio" name="group" id="this_week"/>
+                                    <input type="radio" name="group" id="this_week" />
                                     <span class="button-group__label">
                                         This Week
                                     </span>
                                 </label>
 
                                 <label class="button-group__btn">
-                                    <input type="radio" name="group" />
+                                    <input type="radio" name="group" id="this_month" />
                                     <span class="button-group__label">
                                         This Month
                                     </span>
                                 </label>
 
                                 <label class="button-group__btn">
-                                    <input type="radio" name="group" />
+                                    <input type="radio" name="group" id="this_financial_year" />
                                     <span class="button-group__label">
                                         This Financial Year
                                     </span>
@@ -593,175 +617,313 @@
                 </div>
             </div>
         </div>
-        <div class="row px-3 mx-2 m-3">
-            <div class="card p-3">
-                <table id="stock_alert_table" class="display data__table" cellspacing="0" width="100%">
-                    <thead>
-                        <h3 class="table-title">Product Stock Alert</h3>
-                        <tr>
-                            <th>Product</th>
-                            <th>Location</th>
-                            <th>Current Stock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Row Data</td>
-                            <td>Row Data</td>
-                            <td>Row Data</td>
-                        </tr>
-                        <tr>
-                            <td>Row Data</td>
-                            <td>Row Data</td>
-                            <td>Row Data</td>
-                        </tr>
-                        <tr>
-                            <td>Row Data</td>
-                            <td>Row Data</td>
-                            <td>Row Data</td>
-                        </tr>
-                        <tr>
-                            <td>Row Data</td>
-                            <td>Row Data</td>
-                            <td>Row Data</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="row">
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="form_element">
+                            <div class="section-header">
+                                <span class="fas fa-table"></span>
+                                <p>Product Order Alert</p>
+                            </div>
+                            <div class="widget_content">
+                                <div class="table-responsive">
 
-        </div>
-        <div class="row px-3 mx-2 m-3">
-            <div class="card p-3">
-                <table id="sales_order_table" class="display hover stripe row-border order-column data_tbl data__table"
-                    cellspacing="0" width="100%">
-                    <thead>
-                        <h3 class="table-title">Sales Order</h3>
-                        <tr>
-                            <th>Product</th>
-                            <th>Location</th>
-                            <th>Current Stock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Row Data One</td>
-                            <td>Row Data One</td>
-                            <td>Row Data One</td>
-                        </tr>
-                        <tr>
-                            <td>Row Data Two</td>
-                            <td>Row Data Two</td>
-                            <td>Row Data Two</td>
-                        </tr>
-                        <tr>
-                            <td>Row Data Three</td>
-                            <td>Row Data Three</td>
-                            <td>Row Data Three</td>
-                        </tr>
-                        <tr>
-                            <td>Row Data Four</td>
-                            <td>Row Data Four</td>
-                            <td>Row Data Four</td>
-                        </tr>
+                                    <table id="stock_alert_table" class="display data__table data_tble" cellspacing="0"
+                                        width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Location</th>
+                                                <th>Current Stock</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Row Data 1</td>
+                                                <td>Row Data 1</td>
+                                                <td>Row Data 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 2</td>
+                                                <td>Row Data 2</td>
+                                                <td>Row Data 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 3</td>
+                                                <td>Row Data 3</td>
+                                                <td>Row Data 3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 4</td>
+                                                <td>Row Data 4</td>
+                                                <td>Row Data 4</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 5</td>
+                                                <td>Row Data 5</td>
+                                                <td>Row Data 5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 6</td>
+                                                <td>Row Data 6</td>
+                                                <td>Row Data 6</td>
+                                            </tr>
 
-                        <tr>
-                            <td>Row Data One</td>
-                            <td>Row Data One</td>
-                            <td>Row Data One</td>
-                        </tr>
-                        <tr>
-                            <td>Row Data Two</td>
-                            <td>Row Data Two</td>
-                            <td>Row Data Two</td>
-                        </tr>
-                        <tr>
-                            <td>Row Data Three</td>
-                            <td>Row Data Three</td>
-                            <td>Row Data Three</td>
-                        </tr>
-                        <tr>
-                            <td>Row Data Four</td>
-                            <td>Row Data Four</td>
-                            <td>Row Data Four</td>
-                        </tr>
+                                            <tr>
+                                                <td>Row Data 7</td>
+                                                <td>Row Data 7</td>
+                                                <td>Row Data 7</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 8</td>
+                                                <td>Row Data 8</td>
+                                                <td>Row Data 8</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 9</td>
+                                                <td>Row Data 9</td>
+                                                <td>Row Data 9</td>
+                                            </tr>
 
-                    </tbody>
-                </table>
-            </div>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="form_element">
+                            <div class="section-header">
+                                <span class="fas fa-table"></span>
+                                <p>Sales Order</p>
+                            </div>
+                            <div class="widget_content">
+                                <div class="table-responsive">
 
+                                    <table id="sales_order_table" class="display data__table data_tble" cellspacing="0"
+                                        width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Location</th>
+                                                <th>Current Stock</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Row Data 1</td>
+                                                <td>Row Data 1</td>
+                                                <td>Row Data 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 2</td>
+                                                <td>Row Data 2</td>
+                                                <td>Row Data 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 3</td>
+                                                <td>Row Data 3</td>
+                                                <td>Row Data 3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 4</td>
+                                                <td>Row Data 4</td>
+                                                <td>Row Data 4</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 5</td>
+                                                <td>Row Data 5</td>
+                                                <td>Row Data 5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 6</td>
+                                                <td>Row Data 6</td>
+                                                <td>Row Data 6</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Row Data 7</td>
+                                                <td>Row Data 7</td>
+                                                <td>Row Data 7</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 8</td>
+                                                <td>Row Data 8</td>
+                                                <td>Row Data 8</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Row Data 9</td>
+                                                <td>Row Data 9</td>
+                                                <td>Row Data 9</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
         <div class="row px-4">
             <div class="col">
-                <div class="card p-3">
-                    <table id="sales_payment_due" class="display" cellspacing="0" width="100%">
-                        <thead>
-                            <h3 class="table-title">Sales Payment Due</h3>
-                            <tr>
-                                <th>Product</th>
-                                <th>Location</th>
-                                <th>Current Stock</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                            </tr>
-                            <tr>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                            </tr>
-                            <tr>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                            </tr>
-                            <tr>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <section>
+                    <div class="container">
+                        <div class="row">
+                            <div class="form_element">
+                                <div class="section-header">
+                                    <span class="fas fa-table"></span>
+                                    <p>Sales Payment Due</p>
+                                </div>
+                                <div class="widget_content">
+                                    <div class="table-responsive">
+
+                                        <table id="sales_payment_due_table" class="display data__table data_tble"
+                                            cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Location</th>
+                                                    <th>Current Stock</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Row Data 1</td>
+                                                    <td>Row Data 1</td>
+                                                    <td>Row Data 1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 2</td>
+                                                    <td>Row Data 2</td>
+                                                    <td>Row Data 2</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 3</td>
+                                                    <td>Row Data 3</td>
+                                                    <td>Row Data 3</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 4</td>
+                                                    <td>Row Data 4</td>
+                                                    <td>Row Data 4</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 5</td>
+                                                    <td>Row Data 5</td>
+                                                    <td>Row Data 5</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 6</td>
+                                                    <td>Row Data 6</td>
+                                                    <td>Row Data 6</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Row Data 7</td>
+                                                    <td>Row Data 7</td>
+                                                    <td>Row Data 7</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 8</td>
+                                                    <td>Row Data 8</td>
+                                                    <td>Row Data 8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 9</td>
+                                                    <td>Row Data 9</td>
+                                                    <td>Row Data 9</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
             <div class="col">
-                <div class="card p-3">
-                    <table id="purchase_payment_due" class="display" cellspacing="0" width="100%">
-                        <thead>
-                            <h3 class="table-title">Purchase Payment Due</h3>
-                            <tr>
-                                <th>Product</th>
-                                <th>Location</th>
-                                <th>Current Stock</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                            </tr>
-                            <tr>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                            </tr>
-                            <tr>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                            </tr>
-                            <tr>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                                <td>Row Data</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <section>
+                    <div class="container">
+                        <div class="row">
+                            <div class="form_element">
+                                <div class="section-header">
+                                    <span class="fas fa-table"></span>
+                                    <p>Purchase Payment Due</p>
+                                </div>
+                                <div class="widget_content">
+                                    <div class="table-responsive">
+
+                                        <table id="purchase_payment_due_table" class="display data__table data_tble"
+                                            cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Location</th>
+                                                    <th>Current Stock</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Row Data 1</td>
+                                                    <td>Row Data 1</td>
+                                                    <td>Row Data 1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 2</td>
+                                                    <td>Row Data 2</td>
+                                                    <td>Row Data 2</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 3</td>
+                                                    <td>Row Data 3</td>
+                                                    <td>Row Data 3</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 4</td>
+                                                    <td>Row Data 4</td>
+                                                    <td>Row Data 4</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 5</td>
+                                                    <td>Row Data 5</td>
+                                                    <td>Row Data 5</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 6</td>
+                                                    <td>Row Data 6</td>
+                                                    <td>Row Data 6</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Row Data 7</td>
+                                                    <td>Row Data 7</td>
+                                                    <td>Row Data 7</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 8</td>
+                                                    <td>Row Data 8</td>
+                                                    <td>Row Data 8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Row Data 9</td>
+                                                    <td>Row Data 9</td>
+                                                    <td>Row Data 9</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
@@ -786,11 +948,14 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.css" />
+    {{-- <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.css" /> --}}
+
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
     <script type="text/javascript"
         src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.js">
     </script>
@@ -798,26 +963,40 @@
 
     <script>
         $(document).ready(function() {
-            // $.fn.DataTable.ext.pager.numbers_length = 5;
 
             $('#stock_alert_table').DataTable({
                 dom: "Bfrtip",
                 buttons: ["excel", "pdf", "print"],
-                searching: false,
-                paging: false,
-            });
-
-            const sales_order_table = $('#sales_order_table').DataTable({
-                dom: "Bfrtip",
                 pageLength: 4,
+            });
+
+            $('#sales_order_table').DataTable({
+                dom: "Bfrtip",
                 buttons: ["excel", "pdf", "print"],
-            });
-
-            $('#inputSearch').on('keyup', function() {
-                sales_order_table.search(this.value).draw();
+                pageLength: 4,
             });
 
 
+            $('#sales_payment_due_table').DataTable({
+                dom: "Bfrtip",
+                buttons: ["excel", "pdf", "print"],
+                pageLength: 4,
+            });
+
+            $('#purchase_payment_due_table').DataTable({
+                dom: "Bfrtip",
+                buttons: ["excel", "pdf", "print"],
+                pageLength: 4,
+            });
+
+
+
+
+
+            // $.fn.DataTable.ext.pager.numbers_length = 5;
+            // $('#inputSearch').on('keyup', function() {
+            //     sales_order_table.search(this.value).draw();
+            // });
         });
 
         // AJAX Call

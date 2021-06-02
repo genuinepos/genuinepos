@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/bootstrap.min.css') }}">
     {{-- <link rel="stylesheet" href="{{asset('public/backend/asset/css/selectize.css')}}"> --}}
     {{-- <link rel="stylesheet" href="{{asset('public/backend/asset/css/dropzone.css')}}"> --}}
-    <link rel="stylesheet" href="{{asset('public/backend/asset/css/calculator.css')}}">
+    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
 
     <link href="{{ asset('public/backend/css/reset.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
@@ -82,6 +82,10 @@
             font-size: 10px !important;
             /* font-family: monospace; */
             /* text-align: left; */
+        }
+
+        body {
+            overflow-x: hidden;
         }
 
     </style>

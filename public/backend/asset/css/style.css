@@ -72,12 +72,12 @@ ul#search_box {
     border: 1px solid #ccc5c5;
     line-height: 20px;
     border-radius: 5px;
-    /* background: #fff; */
-    padding: 5%;
     box-shadow: inset 0 0 5px#ddd;
-    height: 77px;
-    width: 100%;
     font-size: 42px;
+    height: 70px;
+    width: 74px;
+    padding: 4px;
+    margin-right: 8px;
 }
 
 .switch_bar i {
@@ -111,10 +111,10 @@ a.bar-link {
     width: 100%;
     border-radius: 4px;
     background: #f9f9f9!important;
-    padding: 1%;
     box-shadow: inset 0 0 5px#ddd;
     height: 100%;
     margin-top: 0px;
+    padding: 4px 3px;
 }
 
 .main-button-sec {
@@ -125,7 +125,6 @@ a.bar-link {
     border-left: 1px solid #ddd;
     padding: 0;
 }
-
 
 /* ============================================Chart===================================== */
 
@@ -1031,12 +1030,12 @@ legend {
 
 .sub-menu_t {
     position: absolute;
-    width: 86%;
+    width: 90%;
     background: #fff;
     top: 62px !important;
-    height: 85vh;
+    height: 83vh;
     z-index: 20;
-    left: 14%;
+    left: 142px;
     display: none;
     padding: 0 10px;
 }

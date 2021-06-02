@@ -18,16 +18,21 @@
 
 </head>
 
-<body style="background: #EEF0F8!important;">
+<body id="dashboard-8" style="background: #EEF0F8!important;">
     <div class="all__content">
         @include('partials.sidebar')
 
-        <div class="main-woaper_t">
+        <div class="main-woaper">
             @include('partials.header')
             <div style="background: #EEF0F8;">
                 @yield('content')
             </div>
         </div>
+        <footer>
+            <div class="logo_wrapper">
+                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="" class="logo">
+            </div>
+        </footer>
     </div>
     @include('layout._script')
     @stack('scripts')

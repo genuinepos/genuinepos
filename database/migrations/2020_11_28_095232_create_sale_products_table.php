@@ -30,6 +30,8 @@ class CreateSaleProductsTable extends Migration
             $table->decimal('unit_price_inc_tax', 22,2)->default(0.00);
             $table->decimal('subtotal', 22,2)->default(0.00);
             $table->mediumText('description',)->nullable();
+            $table->decimal('ex_quantity', 22,2)->default(0.00);
+            $table->tinyInteger('ex_status')->default(0)->comment('0=no_exchanged,1=prepare_to_exchange,2=exchanged');
             $table->boolean('delete_in_update')->default(0);
             $table->timestamps();
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');

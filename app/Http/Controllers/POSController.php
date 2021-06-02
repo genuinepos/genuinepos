@@ -50,7 +50,7 @@ class POSController extends Controller
     // Store pos sale
     public function store(Request $request)
     {
-        //return $request->all();
+        return $request->all();
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
@@ -1403,5 +1403,76 @@ class POSController extends Controller
         }else {
             return response()->json(['errorMsg' => 'Invoice Not Fount']);
         }
+    }
+
+    public function prepareExchange(Request $request)
+    {
+        //return $request->all();
+        $sale_id = $request->sale_id;
+        $sale = Sale::where('id', $sale_id)->first();
+        $ex_quantities = $request->ex_quantities;
+        $product_ids = $request->product_ids;
+        $variant_ids = $request->variant_ids;
+        $product_row_ids = $request->product_row_ids;
+        $sold_prices_inc_tax = $request->sold_prices_inc_tax;
+        $sold_quantities = $request->sold_quantities;
+        $sold_subtotals = $request->sold_subtotals;
+        $unit_tax_amounts = $request->unit_tax_amounts;
+        $unit_tax_percents = $request->unit_tax_percents;
+
+        $index=0;
+        $exchange_item_total_price = 0;
+        foreach ($ex_quantities as $ex_quantity) {
+            $__ex_qty = $ex_quantity ? $ex_quantity : 0;
+            if ($__ex_qty != 0) {
+                $exchange_item_total_price += $__ex_qty * $sold_prices_inc_tax[$index];
+                $soldProduct = SaleProduct::where('id', $product_row_ids[$index])->first();
+                $soldProduct->ex_quantity = $__ex_qty;
+                $soldProduct->ex_status = 1;
+                $soldProduct->save();
+            }
+            $index++;
+        }
+
+        $ex_items = SaleProduct::with('product', 'variant')->where('sale_id', $sale->id)
+        ->where('ex_status', 1)->get();
+
+        $qty_limits = [];
+        foreach ($ex_items as $sale_product) {
+            if ($sale_product->sale->branch_id) {
+                $productBranch = ProductBranch::where('branch_id', $sale_product->sale->branch_id)
+                    ->where('product_id', $sale_product->product_id)->first();
+                if ($sale_product->product->type == 2) {
+                    $qty_limits[] = 500000;
+                } elseif ($sale_product->product_variant_id) {
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $sale_product->product_id)
+                        ->where('product_variant_id', $sale_product->product_variant_id)
+                        ->first();
+                    $qty_limits[] = $productBranchVariant->variant_quantity;
+                } else {
+                    $qty_limits[] = $productBranch->product_quantity;
+                }
+            } else {
+                $productWarehouse = ProductWarehouse::where('warehouse_id', $sale_product->sale->warehouse_id)
+                    ->where('product_id', $sale_product->product_id)->first();
+                if ($sale_product->product->type == 2) {
+                    $qty_limits[] = 500000;
+                } elseif ($sale_product->product_variant_id) {
+                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $sale_product->product_id)
+                        ->where('product_variant_id', $sale_product->product_variant_id)
+                        ->first();
+                    $qty_limits[] = $productWarehouseVariant->variant_quantity;
+                } else {
+                    $qty_limits[] = $productWarehouse->product_quantity;
+                }
+            }
+        }
+
+        return response()->json([
+            'sale' => $sale,
+            'ex_items' => $ex_items,
+            'qty_limits' => $qty_limits,
+            'exchange_item_total_price' => $exchange_item_total_price,
+        ]);
     }
 }

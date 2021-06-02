@@ -618,8 +618,7 @@
             parseFloat(shipmentCharge) + 
             parseFloat(previousDue) +
             parseFloat(ex_inv_payable_amount) -
-            parseFloat(ex_inv_paid) +
-            parseFloat(exchange_item_total_price);
+            parseFloat(ex_inv_paid);
             
             $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
             //$('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));

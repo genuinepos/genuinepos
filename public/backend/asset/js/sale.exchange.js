@@ -33,9 +33,9 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
             $('#account_id').val(defaultAccount);
             var qty_limits = data.qty_limits;
             $('#ex_sale_id').val(data.sale.id);
-            $('#ex_inv_payable_amount').val(parseFloat(data.sale.total_payable_amount).toFixed(2));
+            var ex_inv_payable_amount = parseFloat(data.sale.total_payable_amount) + data.exchange_item_total_price;
+            $('#ex_inv_payable_amount').val(parseFloat(ex_inv_payable_amount).toFixed(2));
             $('#ex_inv_paid').val(parseFloat(data.sale.paid).toFixed(2));
-            $('#exchange_item_total_price').val(parseFloat(data.exchange_item_total_price).toFixed(2));
             var html = '';
             $.each(data.ex_items, function (key, item) {
                 html += '<tr>';

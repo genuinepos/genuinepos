@@ -2,7 +2,7 @@
     <div class="first__left">
         <div class="main__nav">
             <ul id="" class="">
-                <li data-menu="dashboardmenu" class="{{ request()->is('/') ? 'menu_active' : '' }}">
+                <li data-menu="dashboardmenu" class="">
                     <a href="{{ route('dashboard.dashboard') }}" class="">
                         <img src="{{ asset('public/backend/asset/img/icon/pie-chart.svg') }}" alt="">
                         <p class="title">Dashboard</p>

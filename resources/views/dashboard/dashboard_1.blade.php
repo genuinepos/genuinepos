@@ -266,7 +266,7 @@
             /* background: #fff; */
             padding: 5%;
             box-shadow: inset 0 0 5px#ddd;
-            height: 60px;
+            height: 64px;
             width: 90%;
             font-size: 25px;
         }

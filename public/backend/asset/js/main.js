@@ -3,8 +3,8 @@
 //     $('#sidebar div').first().addClass('active');
 // })
 
-$(document).ready(function() {
-    $('.main__nav ul li').on('click', function() {
+$(document).ready(function () {
+    $('.main__nav ul li').on('click', function () {
         $('.main__nav ul li').removeClass('active');
         $(this).addClass('active');
         let menuID = $(this).data('menu')
@@ -12,7 +12,7 @@ $(document).ready(function() {
         $('#' + menuID).addClass('active')
     })
 })
-    // =============================================================side manu====================
+// =============================================================side manu====================
 
 // $(document).ready(function() {
 //     $('.main__nav_t ul li').on('click', function() {
@@ -23,7 +23,7 @@ $(document).ready(function() {
 //         $('#' + menuID).addClass('active')
 //     })
 // })
-    // ===============================================================sub menu active ====================
+// ===============================================================sub menu active ====================
 // $(document).ready(function() {
 //     $('#sidenav li').on('click', function() {
 //         $('#sidenav li').removeClass('active');
@@ -33,41 +33,41 @@ $(document).ready(function() {
 //         $('#' + sidemenu).addClass('active')
 //     })
 // })
-    // ===============================================================sub menu active end ====================
-    // ===============================================================sub menu active ====================
-$(document).ready(function() {
-    $('.close-model').on('click', function() {
+// ===============================================================sub menu active end ====================
+// ===============================================================sub menu active ====================
+$(document).ready(function () {
+    $('.close-model').on('click', function () {
         $('.sub-menu').removeClass('active');
     })
 })
 
 
-$(document).ready(function() {
-        $('.close-model').on('click', function() {
-            $('.sub-menu_t').removeClass('active');
-        })
+$(document).ready(function () {
+    $('.close-model').on('click', function () {
+        $('.sub-menu_t').removeClass('active');
     })
-    // ===============================================================sub menu close end ====================
+})
+// ===============================================================sub menu close end ====================
 
-$(document).ready(function() {
-    $('#left_bar_toggle').on('click', function() {
+$(document).ready(function () {
+    $('#left_bar_toggle').on('click', function () {
         $('#primary_nav').toggleClass('active');
         $('.top-main-menu').toggleClass('active');
 
-        $('.top-menu-dropdown').on('click', function() {
+        $('.top-menu-dropdown').on('click', function () {
             $('.top-dp-menu-one').toggleClass('first-menu-active');
         });
 
-        if ( $(window).width() < 768 && $(window).width() > 500 ) {  
+        if ($(window).width() < 768 && $(window).width() > 500) {
             $('.body-woaper').toggleClass('toggle_reduce_body_woaper_tab');
             $('.main-woaper').toggleClass('toggle_reduce_main_woaper_tab');
             $('.navigation').toggleClass('toggle_reduce_navigation_width_tab');
-            $('#left_bar_toggle').css('margin-right','0px!important');
-        } else if ($(window).width() < 500 ) {
+            $('#left_bar_toggle').css('margin-right', '0px!important');
+        } else if ($(window).width() < 500) {
             $('.body-woaper').toggleClass('toggle_reduce_body_woaper_mobile');
             $('.main-woaper').toggleClass('toggle_reduce_main_woaper_mobile');
             $('.navigation').toggleClass('toggle_reduce_navigation_width_mobile');
-            $('#left_bar_toggle').css('margin-right','0px!important');
+            $('#left_bar_toggle').css('margin-right', '0px!important');
         }
     })
 })
@@ -76,7 +76,7 @@ $(document).ready(function() {
 
 // ===============================================toltip==============================
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
@@ -113,67 +113,67 @@ var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
 // });
 
 // ==================================================================data table==================
-$(document).ready(function() {
+$(document).ready(function () {
     $('#example').DataTable({
         select: true
     });
 });
 
 // =====================================================form repetar==========
-$(document).ready(function() {
+$(document).ready(function () {
 
     $('.repeater').repeater({
-        show: function() {
+        show: function () {
             $(this).slideDown();
         },
-        hide: function(deleteElement) {
+        hide: function (deleteElement) {
             if (confirm('Are you sure you want to delete this element?')) {
                 $(this).slideUp(deleteElement);
             }
         },
-        ready: function(setIndexes) {
+        ready: function (setIndexes) {
 
         }
     });
 });
 
 // ===========================================date picer==================
-$(function() {
-    $("#start-date").datepicker({
-        autoclose: true,
-        todayHighlight: true
-    }).datepicker('update', new Date());
-});
-$(function() {
-    $("#end-date").datepicker({
-        autoclose: true,
-        todayHighlight: true
-    }).datepicker('update', new Date());
-});
+// $(function() {
+//     $("#start-date").datepicker({
+//         autoclose: true,
+//         todayHighlight: true
+//     }).datepicker('update', new Date());
+// });
+// $(function() {
+//     $("#end-date").datepicker({
+//         autoclose: true,
+//         todayHighlight: true
+//     }).datepicker('update', new Date());
+// });
 
 
 // ======================================================button switch============
-$(function() {
-    $('div.switch-grup button').on('click', function() {
+$(function () {
+    $('div.switch-grup button').on('click', function () {
         $(this).addClass('selected').siblings().removeClass('selected');
     });
 });
 
 
 // =========================================rating===============
-$('.star').fontstar({}, function(value, self) {
+$('.star').fontstar({}, function (value, self) {
 
     console.log("hello " + value);
 });
 
 // =========================================clickeditor==================
-$(document).ready(function() {
+$(document).ready(function () {
     $("#textEditor").cleditor();
 });
 
 
 
 // ===============================================search and select================
-$(function() {
-    $("#searchSelect").customselect();
+$(function () {
+    // $("#searchSelect").customselect();
 });

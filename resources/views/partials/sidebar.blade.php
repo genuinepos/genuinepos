@@ -111,23 +111,12 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
-                    <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
-                        <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
-                            <p class="title">@lang('menu.setup')</p>
-                        </a>
-                    </li>
-                @endif
-
-                @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
-                    <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
-                        <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
-                            <p class="title">@lang('menu.setup')</p>
-                        </a>
-                    </li>
-                @endif
+                <li class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
+                    <a href="{{ route('hrm.leave.type') }}">
+                        <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
+                        <p class="title">HRM</p>
+                    </a>
+                </li>
 
                 <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
                     <a href="#">
@@ -136,12 +125,14 @@
                     </a>
                 </li>
 
-                <li class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
-                    <a href="{{ route('hrm.leave.type') }}">
-                        <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
-                        <p class="title">HRM</p>
-                    </a>
-                </li>
+                @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
+                    <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
+                            <p class="title">@lang('menu.setup')</p>
+                        </a>
+                    </li>
+                @endif
 
             </ul>
         </div>

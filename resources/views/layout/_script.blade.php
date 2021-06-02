@@ -53,7 +53,6 @@
     {{-- <script src="{{asset('public/backend/js/selectToUISlider.jQuery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/fg.menu.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/jquery.tagsinput.js')}}"></script> --}}
-    <script src="{{asset('public/backend/asset/js/SimpleCalculadorajQuery.js')}}"></script>
 
     <script src="{{asset('public/backend/asset/js/jquery.cleditor.js')}}"></script>
 
@@ -109,6 +108,8 @@
     <script src="{{asset('public/backend/js/chart-plugins/jqplot.meterGaugeRenderer.min.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/custom-scripts.js')}}"></script>
     <script src="{{asset('public/backend/asset/js/main.js')}}"></script>
+    <script src="{{asset('public/backend/asset/js/SimpleCalculadorajQuery.js')}}" defer></script>
+
     <script>
       toastr.options = {
         "positionClass": "toast-top-right",

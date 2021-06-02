@@ -679,12 +679,12 @@ footer img.logo {
 }
 
 /*============================ Calculator design =====================*/
-#calculatorModal .modal.show .modal-dialog {
+#dashboard-8 .modal.show .modal-dialog {
     /* width: 287px; */
     top: 61px;
 }
 
-#calculatorModal .modal-content {
+#dashboard-8 .modal-content {
     background-color: rgba(255, 255, 255, 0);
     width: 200px;
     border-radius: 27px;
@@ -692,7 +692,7 @@ footer img.logo {
     float: right;
 }
 
-#calculatorModal .modal.show .modal-dialog {
+#dashboard-8 .modal.show .modal-dialog {
     /* width: 287px; */
     top: 34px;
     height: 100%;
@@ -700,23 +700,23 @@ footer img.logo {
     right: 21%;
 }
 
-#calculatorModal .modal-backdrop.show {
+#dashboard-8 .modal-backdrop.show {
     opacity: .5;
     display: none;
 }
 
 @media(max-width: 768px) {
-    #calculatorModal .modal.show .modal-dialog {
+    #dashboard-8 .modal.show .modal-dialog {
         right: 41%;
     }
 }
 @media(max-width: 576px) {
-    #calculatorModal .modal.show .modal-dialog {
+    #dashboard-8 .modal.show .modal-dialog {
         top: 60px;
     }
 }
 @media(max-width: 500px) {
-    #calculatorModal .modal.show .modal-dialog {
+    #dashboard-8 .modal.show .modal-dialog {
         top: 53px;
         right: 20%;
     }

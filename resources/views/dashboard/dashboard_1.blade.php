@@ -266,7 +266,7 @@
             /* background: #fff; */
             padding: 5%;
             box-shadow: inset 0 0 5px#ddd;
-            height: 60px;
+            height: 64px;
             width: 90%;
             font-size: 25px;
         }
@@ -281,60 +281,6 @@
 
         .card {
             border: 1px solid #6b082e;
-        }
-
-    </style>
-    <style>
-        .dt-buttons {
-            padding-top: 2px !important;
-            padding-bottom: 2px !important;
-            float: right;
-            margin-right: 5px;
-        }
-
-        .dt-buttons button {
-            padding: 0px 8px !important;
-            margin-top: 3px;
-            margin-bottom: 3px;
-            border: 0px solid transparent;
-            background-color: #6083b1;
-            color: white;
-            border-radius: 4px;
-        }
-
-        .table-responsive {
-            margin-top: -13px;
-            padding-left: 8px;
-            padding-right: 8px;
-            margin-bottom: 5px !important;
-        }
-
-        .dataTables_paginate {
-            padding-right: 8px;
-            padding-left: 8px;
-            padding-top: 9px;
-            font-family: monospace;
-        }
-
-        .dataTables_paginate a.paginate_button {
-            padding: 2px 8px;
-            background: #65667b;
-            margin: 3px;
-            color: #fff !important;
-            cursor: pointer;
-        }
-
-        .dataTables_paginate a.paginate_button.current {
-            background: #6083b1;
-        }
-
-        .disabled {
-            color: #fff;
-            background: #828d9bb6 !important;
-        }
-
-        .section-header {
-            /* color: #6b082e; */
         }
 
     </style>

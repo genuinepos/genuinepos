@@ -5,7 +5,7 @@
     <tr>
         <td class="serial">{{$index + 1 }}</td>
         <td class="text-start">
-            <a class="product-name text-info" id="edit_product" title="{{ $product->variant ? $product->variant->variant_code : $product->product_code }}" href="#">
+            <a class="product-name text-info" id="edit_product" title="{{ $product->variant ? $product->variant->variant_code : $product->product->product_code }}" href="#">
                 {{ $product->product->name . ($product->variant ? ' - '.$product->variant->variant_name : '')}}
             </a><br/><input type="{{$product->product->is_show_emi_on_pos == 1 ? 'text' : 'hidden'}}" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other informations here." value="{{$product->description ? $product->description : ''}}">
             <input value="{{$product->product_id}}" type="hidden" class="productId-{{ $product->product_id }}" id="product_id"

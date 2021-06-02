@@ -50,7 +50,7 @@ class POSController extends Controller
     // Store pos sale
     public function store(Request $request)
     {
-        return $request->all();
+        //return $request->all();
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
@@ -1422,10 +1422,12 @@ class POSController extends Controller
 
         $index=0;
         $exchange_item_total_price = 0;
+        $sold_item_total_price = 0;
         foreach ($ex_quantities as $ex_quantity) {
             $__ex_qty = $ex_quantity ? $ex_quantity : 0;
             if ($__ex_qty != 0) {
                 $exchange_item_total_price += $__ex_qty * $sold_prices_inc_tax[$index];
+                $sold_item_total_price += $sold_quantities[$index] * $sold_prices_inc_tax[$index];
                 $soldProduct = SaleProduct::where('id', $product_row_ids[$index])->first();
                 $soldProduct->ex_quantity = $__ex_qty;
                 $soldProduct->ex_status = 1;
@@ -1473,6 +1475,7 @@ class POSController extends Controller
             'ex_items' => $ex_items,
             'qty_limits' => $qty_limits,
             'exchange_item_total_price' => $exchange_item_total_price,
+            'sold_item_total_price' => $sold_item_total_price
         ]);
     }
 }

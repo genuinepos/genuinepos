@@ -17,23 +17,20 @@
 
                 @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
                     @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
-                        
-                        <li data-menu="contact"
-                            class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
-                            <a href="#" class=""><img
-                                    src="{{ asset('public/backend/asset/img/icon/agenda.svg') }}">
+
+                        <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
+                            <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/agenda.svg') }}">
                                 <p class="title">@lang('menu.contacts')</p>
                             </a>
                         </li>
-                        
+
                     @endif
                 @endif
 
                 @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                        
-                        <li data-menu="purchases"
-                            class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
+
+                        <li data-menu="purchases" class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
                             <a href="#" class="">
                                 <img src="{{ asset('public/backend/asset/img/icon/bill.svg') }}">
                                 <p class="title">@lang('menu.purchases')</p>
@@ -42,7 +39,7 @@
                     @else
                         @if (auth()->user()->branch->purchase_permission == 1)
                             @if (auth()->user()->permission->purchase['purchase_all'] == '1')
-                                
+
                                 <li data-menu="purchases"
                                     class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
                                     <a href="#" class="">
@@ -56,26 +53,27 @@
                 @endif
 
                 @if (auth()->user()->permission->sale['pos_all'] == '1' || auth()->user()->permission->sale['sale_access'] == '1')
-                <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
-                    <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/shopping-bag.svg') }}">
-                        <p class="title">@lang('menu.sales')</p>
-                    </a>
-                </li>
+                    <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/shopping-bag.svg') }}">
+                            <p class="title">@lang('menu.sales')</p>
+                        </a>
+                    </li>
                 @endif
 
                 @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
-                <li data-menu="transfer" class="{{ request()->is('transfer/stocks*') ? 'menu_active' : '' }}">
-                    <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/transfer.svg') }}">
-                        <p class="title">@lang('menu.transfer')</p>
-                    </a>
-                </li>
+                    <li data-menu="transfer" class="{{ request()->is('transfer/stocks*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/transfer.svg') }}">
+                            <p class="title">@lang('menu.transfer')</p>
+                        </a>
+                    </li>
                 @endif
 
                 @if (json_decode($generalSettings->modules, true)['stock_adjustment'] == '1')
                     @if (auth()->user()->permission->s_adjust['adjustment_all'] == '1')
-                        <li data-menu="adjustment" class="{{ request()->is('stock/adjustments*') ? 'menu_active' : '' }}">
+                        <li data-menu="adjustment"
+                            class="{{ request()->is('stock/adjustments*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('public/backend/asset/img/icon/slider-tool.svg') }}">
                                 <p class="title">@lang('menu.adjustment')</p>
@@ -113,11 +111,7 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->permission->setup['branch'] == '1'
-                    || auth()->user()->permission->setup['warehouse'] == '1'
-                    || auth()->user()->permission->setup['tax'] == '1'
-                    || auth()->user()->permission->setup['g_settings'] == '1'
-                )
+                @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
                     <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
@@ -126,11 +120,7 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->permission->setup['branch'] == '1'
-                    || auth()->user()->permission->setup['warehouse'] == '1'
-                    || auth()->user()->permission->setup['tax'] == '1'
-                    || auth()->user()->permission->setup['g_settings'] == '1'
-                )
+                @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
                     <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
@@ -192,7 +182,8 @@
                             @endif
 
                             @if (auth()->user()->permission->brand['brand_all'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.brands.index') }}" class="bar-link">
                                             <span><img
@@ -204,7 +195,8 @@
                             @endif
 
                             @if (auth()->user()->permission->product['product_all'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('products.all.product') }}" class="bar-link">
                                             <span><img
@@ -216,7 +208,8 @@
                             @endif
 
                             @if (auth()->user()->permission->product['product_add'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('products.add.view') }}" class="bar-link">
                                             <span><img src="{{ asset('public/backend/asset/img/add.png') }}"></span>
@@ -226,7 +219,8 @@
                                 </div>
                             @endif
 
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                            <div
+                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('product.variants.index') }}" class="bar-link">
                                         <span><img
@@ -237,7 +231,8 @@
                             </div>
 
                             @if (auth()->user()->permission->product['product_add'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.import.create') }}" class="bar-link">
                                             <span><img
@@ -248,7 +243,8 @@
                                 </div>
                             @endif
 
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                            <div
+                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('barcode.index') }}" class="bar-link">
                                         <span><img src="{{ asset('public/backend/asset/img/barcode.png') }}"></span>
@@ -257,7 +253,8 @@
                                 <p class="switch_text">@lang('menu.generate_barcode')</p>
                             </div>
 
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                            <div
+                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('product.warranties.index') }}" class="bar-link">
                                         <span><img src="{{ asset('public/backend/asset/img/warranty.png') }}"></span>
@@ -283,10 +280,12 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     @if (auth()->user()->permission->supplier['supplier_all'] == '1')
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                        <div
+                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                             <div class="switch_bar">
                                                 <a href="{{ route('contacts.supplier.index') }}" class="bar-link">
-                                                    <span><img src="{{ asset('public/backend/asset/img/supplier.png') }}"></span>
+                                                    <span><img
+                                                            src="{{ asset('public/backend/asset/img/supplier.png') }}"></span>
                                                 </a>
                                             </div>
                                             <p class="switch_text">@lang('menu.suppliers')</p>
@@ -294,20 +293,24 @@
                                     @endif
 
                                     @if (auth()->user()->permission->customers['customer_all'] == '1')
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                        <div
+                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                             <div class="switch_bar">
                                                 <a href="{{ route('contacts.customer.index') }}" class="bar-link">
-                                                    <span><img src="{{ asset('public/backend/asset/img/user.png') }}"></span>
+                                                    <span><img
+                                                            src="{{ asset('public/backend/asset/img/user.png') }}"></span>
                                                 </a>
                                             </div>
                                             <p class="switch_text">@lang('menu.customers') </p>
                                         </div>
 
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                        <div
+                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                             <div class="switch_bar">
                                                 <a href="{{ route('contacts.customers.groups.index') }}"
                                                     class="bar-link">
-                                                    <span><img src="{{ asset('public/backend/asset/img/group.png') }}"></span>
+                                                    <span><img
+                                                            src="{{ asset('public/backend/asset/img/group.png') }}"></span>
                                                 </a>
                                             </div>
                                             <p class="switch_text">@lang('menu.customer_groups')</p>
@@ -331,27 +334,33 @@
                             </div>
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('purchases.create') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/add.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/add.png') }}"></span>
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.add_purchase')</p>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('purchases.index_v2') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/list.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/list.png') }}"></span>
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.purchase_list')</p>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <span class="notify-grin">30</span>
                                             <a href="{{ route('purchases.returns.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/back-arrow.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/back-arrow.png') }}"></span>
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.purchase_return_list')</p>
@@ -372,7 +381,8 @@
                                     <div class="container-fluid">
                                         <div class="row">
                                             @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                                <div
+                                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                                     <div class="switch_bar">
                                                         <a href="{{ route('purchases.create') }}" class="bar-link">
                                                             <span><img
@@ -384,10 +394,12 @@
                                                 </div>
                                             @endif
 
-                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                            <div
+                                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                                 <div class="switch_bar">
                                                     <a href="{{ route('purchases.index_v2') }}" class="bar-link">
-                                                        <span><img src="{{ asset('public/backend/asset/img/list.png') }}"
+                                                        <span><img
+                                                                src="{{ asset('public/backend/asset/img/list.png') }}"
                                                                 alt=""></span>
                                                     </a>
                                                 </div>
@@ -395,12 +407,14 @@
                                             </div>
 
                                             @if (auth()->user()->permission->purchase['purchase_return'] == '1')
-                                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                                <div
+                                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                                     <div class="switch_bar">
                                                         <span class="notify-grin">30</span>
                                                         <a href="{{ route('purchases.returns.index') }}"
                                                             class="bar-link">
-                                                            <span><img src="{{ asset('public/backend/asset/img/back-arrow.png') }}"
+                                                            <span><img
+                                                                    src="{{ asset('public/backend/asset/img/back-arrow.png') }}"
                                                                     alt=""></span>
                                                         </a>
                                                     </div>
@@ -428,19 +442,23 @@
                         <div class="row">
                             @if (json_decode($generalSettings->modules, true)['add_sale'] == '1')
                                 @if (auth()->user()->permission->sale['sale_access'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.create') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/sale.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/sale.png') }}"></span>
                                             </a>
                                         </div>
                                         <p class="switch_text"> @lang('menu.add_sale')</p>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.index2') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/wishlist.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/wishlist.png') }}"></span>
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.sale_list')</p>
@@ -449,7 +467,8 @@
                             @endif
 
                             @if (auth()->user()->permission->sale['pos_all'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('sales.pos.create') }}" class="bar-link">
                                             <span><img src="{{ asset('public/backend/asset/img/pos.png') }}"></span>
@@ -460,10 +479,12 @@
                             @endif
 
                             @if (auth()->user()->permission->sale['sale_draft'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('sales.drafts') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/drafting.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/drafting.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.draft_list')</p>
@@ -471,10 +492,12 @@
                             @endif
 
                             @if (auth()->user()->permission->sale['sale_quotation'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('sales.quotations') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/quotes.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/quotes.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.quotation_list')</p>
@@ -482,10 +505,12 @@
                             @endif
 
                             @if (auth()->user()->permission->sale['return_access'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('sales.returns.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/back-arrow.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/back-arrow.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.sale_return_list')</p>
@@ -493,10 +518,12 @@
                             @endif
 
                             @if (auth()->user()->permission->sale['shipment_access'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('sales.shipments') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/delivery-truck.png') }}"
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/delivery-truck.png') }}"
                                                     alt=""></span>
                                         </a>
                                     </div>
@@ -518,26 +545,32 @@
                         <div class="container-fluid">
                             <div class="row">
                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
-                                            <a href="{{ route('transfer.stock.to.branch.create') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/transfer.png') }}"></span>
+                                            <a href="{{ route('transfer.stock.to.branch.create') }}"
+                                                class="bar-link">
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/transfer.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.add_transfer') <small
                                                 class="ml-1"><b>(@lang('menu.to_branch'))</small></b></p>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('transfer.stock.to.branch.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/list.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/list.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.transfer_list')</p>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('transfer.stocks.to.branch.receive.stock.index') }}"
                                                 class="bar-link">
@@ -548,32 +581,38 @@
                                         <p>@lang('menu.receive_stocks')</p>
                                     </div>
                                 @else
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/transfer.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/transfer.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.add_transfer') <small class="ml-1">
                                                 (@lang('menu.to_warehouse'))</small></p>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/list.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/list.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.transfer_list') <small class="ml-1">
                                                 (@lang('menu.to_warehouse'))</small></p>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <span class="notify-grin">30</span>
                                             <a href="{{ route('transfer.stocks.to.warehouse.receive.stock.index') }}"
                                                 class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/delivered.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/delivered.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.receive_stocks')</p>
@@ -596,7 +635,8 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     @if (auth()->user()->permission->s_adjust['adjustment_add'] == '1')
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                        <div
+                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                             <div class="switch_bar">
                                                 <a href="{{ route('stock.adjustments.create') }}" class="bar-link">
                                                     <span><img src="{{ asset('public/backend/asset/img/add.png') }}"
@@ -607,7 +647,8 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('stock.adjustments.index') }}" class="bar-link">
                                                 <span><img src="{{ asset('public/backend/asset/img/list.png') }}"
@@ -623,7 +664,7 @@
                 @endif
             @endif
 
-        
+
             @if (json_decode($generalSettings->modules, true)['expenses'] == '1')
                 <div class="sub-menu_t" id="expenses">
                     <div class="sub-menu-width">
@@ -632,7 +673,8 @@
                         </div>
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('expanses.create') }}" class="bar-link">
                                             <span><img src="{{ asset('public/backend/asset/img/add.png') }}"></span>
@@ -640,8 +682,9 @@
                                     </div>
                                     <p>@lang('menu.add_expense')</p>
                                 </div>
-                           
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('expanses.index') }}" class="bar-link">
                                             <span><img src="{{ asset('public/backend/asset/img/list.png') }}"></span>
@@ -650,10 +693,12 @@
                                     <p>@lang('menu.expense_list')</p>
                                 </div>
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('expanses.categories.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/categories.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/categories.png') }}"></span>
                                         </a>
                                     </div>
                                     <p>@lang('menu.expense_categories')</p>
@@ -673,55 +718,67 @@
                             </div>
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.banks.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/bank.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/bank.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.bank')</p>
                                     </div>
-                            
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.types.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/folder.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/folder.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.account_types')</p>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.accounts.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/financial.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/financial.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.accounts')</p>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.balance.sheet') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/balance.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/balance.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.balance_sheet')</p>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.trial.balance') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/balance (1).png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/balance (1).png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.trial_balance')</p>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.cash.flow') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/cash-flow.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/cash-flow.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.cash_flow')</p>
@@ -742,10 +799,12 @@
                         <div class="container-fluid">
                             <div class="row">
                                 @if (auth()->user()->permission->user['user_view'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('users.create') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/add.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/add.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.add_user')</p>
@@ -753,10 +812,12 @@
                                 @endif
 
                                 @if (auth()->user()->permission->user['user_view'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('users.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/group.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/group.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.user_list')</p>
@@ -764,10 +825,12 @@
                                 @endif
 
                                 @if (auth()->user()->permission->roles['role_add'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('users.role.create') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/plus.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/plus.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.add_role')</p>
@@ -775,10 +838,12 @@
                                 @endif
 
                                 @if (auth()->user()->permission->roles['role_view'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('users.role.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/shield.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/shield.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.role_list')</p>
@@ -790,11 +855,7 @@
                 </div>
             @endif
 
-            @if (auth()->user()->permission->setup['branch'] == '1'
-                || auth()->user()->permission->setup['warehouse'] == '1'
-                || auth()->user()->permission->setup['tax'] == '1'
-                || auth()->user()->permission->setup['g_settings'] == '1'
-            )
+            @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
                 <div class="sub-menu_t" id="settings">
                     <div class="sub-menu-width">
                         <div class="model__close">
@@ -803,10 +864,12 @@
                         <div class="container-fluid">
                             <div class="row">
                                 @if (auth()->user()->permission->setup['branch'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('settings.branches.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/branch.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/branch.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.branches')</p>
@@ -814,30 +877,36 @@
                                 @endif
 
                                 @if (auth()->user()->permission->setup['warehouse'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('settings.warehouses.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/warehouse.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/warehouse.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.warehouses') </p>
                                     </div>
                                 @endif
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('settings.units.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/weighing-machine.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/weighing-machine.png') }}"></span>
                                         </a>
                                     </div>
                                     <p>@lang('menu.units')</p>
                                 </div>
 
                                 @if (auth()->user()->permission->setup['tax'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('settings.taxes.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/taxes.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/taxes.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.taxes')</p>
@@ -845,29 +914,35 @@
                                 @endif
 
                                 @if (auth()->user()->permission->setup['g_settings'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('settings.general.index') }}" class="bar-link">
-                                                <span><img src="{{ asset('public/backend/asset/img/setup.png') }}"></span>
+                                                <span><img
+                                                        src="{{ asset('public/backend/asset/img/setup.png') }}"></span>
                                             </a>
                                         </div>
                                         <p>@lang('menu.general_settings')</p>
                                     </div>
                                 @endif
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('invoices.schemas.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/bill.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/bill.png') }}"></span>
                                         </a>
                                     </div>
                                     <p>@lang('menu.invoice_schema')</p>
                                 </div>
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('invoices.layouts.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/invoice.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/invoice.png') }}"></span>
                                         </a>
                                     </div>
                                     <p>@lang('menu.invoice_layout')</p>
@@ -878,8 +953,8 @@
                 </div>
             @endif
 
-             <!-- ===========================================FILE SIDEBAR=================== -->
-             <div class="sub-menu_t" id="reports">
+            <!-- ===========================================FILE SIDEBAR=================== -->
+            <div class="sub-menu_t" id="reports">
                 <div class="sub-menu-width">
                     <div class="model__close">
                         <button type="button" class="btn-close close-model"></button>
@@ -887,10 +962,12 @@
                     <div class="container-fluid">
                         <div class="row">
                             @if (auth()->user()->permission->report['loss_profit_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.profit.loss.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/financial-profit.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/financial-profit.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.profit_loss')</p>
@@ -898,10 +975,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['purchase_sale_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.sales.purchases.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/shopping-bag.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/shopping-bag.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.purchase_sale')</p>
@@ -909,10 +988,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['tax_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.taxes.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/taxesr.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/taxesr.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.tax_report')</p>
@@ -920,19 +1001,23 @@
                             @endif
 
                             @if (auth()->user()->permission->report['cus_sup_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.supplier.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/inventory.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/inventory.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.supplier_report')</p>
                                 </div>
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.customer.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/consumer.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/consumer.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.customer_report')</p>
@@ -940,10 +1025,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['stock_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.stock.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/stock-market.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/stock-market.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.stock_report')</p>
@@ -951,10 +1038,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['stock_adjustment_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.stock.adjustments.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/slider.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/slider.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.stock_adjustment_report')</p>
@@ -962,10 +1051,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['pro_purchase_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.product.purchases.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/add-to-cart.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/add-to-cart.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.product_purchase_report')</p>
@@ -973,10 +1064,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['pro_sale_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.product.sales.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/shopping-items.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/shopping-items.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.product_sale_report')</p>
@@ -984,10 +1077,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['purchase_payment_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.purchase.payments.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/payment-method.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/payment-method.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.purchase_payment_report')</p>
@@ -995,7 +1090,8 @@
                             @endif
 
                             @if (auth()->user()->permission->report['sale_payment_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.sale.payments.index') }}" class="bar-link">
                                             <span><img src="{{ asset('public/backend/asset/img/pay.png') }}"></span>
@@ -1006,10 +1102,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['register_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.cash.registers.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/cashier.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/cashier.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.register_report')</p>
@@ -1017,10 +1115,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['representative_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.sale.representive.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/representation.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/representation.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.sales_representative_report')</p>
@@ -1028,10 +1128,12 @@
                             @endif
 
                             @if (auth()->user()->permission->report['expanse_report'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.expenses.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/file.png') }}"></span>
+                                            <span><img
+                                                    src="{{ asset('public/backend/asset/img/file.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.expense_report')</p>
@@ -1043,7 +1145,7 @@
             </div>
             <!-- ===========================================FILE SIDEBAR=================== -->
             <!-- ===========================================Hrm sub-menu=================== -->
-             <div class="sub-menu_t" id="hrm">
+            <div class="sub-menu_t" id="hrm">
                 <div class="sub-menu-width">
                     <div class="model__close">
                         <button type="button" class="btn-close close-model"></button>
@@ -1051,7 +1153,8 @@
                     <div class="container-fluid">
                         <div class="row">
                             @if (auth()->user()->permission->hrms['leave_type'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('hrm.leave.type') }}" class="bar-link">
                                             <span><i class="fas fa-th-large"></i></span>
@@ -1060,14 +1163,15 @@
                                     <p class="switch_text">@lang('menu.leave_type')</p>
                                 </div>
                             @endif
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('hrm.leave.type') }}" class="bar-link">
-                                            <span><i class="fas fa-th-large"></i></span>
-                                        </a>
-                                    </div>
-                                    <p class="switch_text">@lang('menu.leave_type')</p>
+                            <div
+                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('hrm.leave.type') }}" class="bar-link">
+                                        <span><i class="fas fa-th-large"></i></span>
+                                    </a>
                                 </div>
+                                <p class="switch_text">@lang('menu.leave_type')</p>
+                            </div>
                         </div>
                     </div>
                 </div>

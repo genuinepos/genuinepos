@@ -11,6 +11,45 @@
                     <div class="head__content__sec">
                         <ul class="head__cn">
                             <li class="top-icon ms-3"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
+                            <li class="top-icon ms-3">
+                                <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
+                                    <span class="fas fa-calculator"></span>
+                                </a>
+                                <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modail-body" id="calculator">
+                                            <div class="calculator-bg">
+                                                <div class="calculator-bg__main">
+                                                    <div class="calculator-bg__main__screen">
+                                                        <div class="calculator-bg__main__screen__first"></div>
+                                                        <div class="calculator-bg__main__screen__second">0</div>
+                                                    </div>
+                                                    <button class="calculator-bg__main__ac">AC</button>
+                                                    <button class="calculator-bg__main__del">DEL</button>
+                                                    <button class="calculator-bg__main__operator">/</button>
+                                                    <button class="calculator-bg__main__num">7</button>
+                                                    <button class="calculator-bg__main__num">8</button>
+                                                    <button class="calculator-bg__main__num">9</button>
+                                                    <button class="calculator-bg__main__operator">x</button>
+                                                    <button class="calculator-bg__main__num">4</button>
+                                                    <button class="calculator-bg__main__num">5</button>
+                                                    <button class="calculator-bg__main__num">6</button>
+                                                    <button class="calculator-bg__main__operator">+</button>
+                                                    <button class="calculator-bg__main__num">1</button>
+                                                    <button class="calculator-bg__main__num">2</button>
+                                                    <button class="calculator-bg__main__num">3</button>
+                                                    <button class="calculator-bg__main__operator">-</button>
+                                                    <button class="calculator-bg__main__num decimal">.</button>
+                                                    <button class="calculator-bg__main__num">0</button>
+                                                    <button class="calculator-bg__main__result">=</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
                             <li class="dropdown dp__top">
                                 <a href="" class="top-icon" id="dropdownMenuButton1" data-bs-toggle="dropdown">
                                     <i class="fas fa-language"></i>

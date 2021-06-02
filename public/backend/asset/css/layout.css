@@ -678,14 +678,57 @@ footer img.logo {
     transform: translate(-50% , -50%);
 }
 
+/*============================ Calculator design =====================*/
+.modal.show .modal-dialog {
+    /* width: 287px; */
+    top: 61px;
+}
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0);
+    width: 200px;
+    border-radius: 27px;
+    /* right: -452px; */
+    float: right;
+}
+
+.modal.show .modal-dialog {
+    /* width: 287px; */
+    top: 34px;
+    height: 100%;
+    position: absolute;
+    right: 21%;
+}
+
+.modal-backdrop.show {
+    opacity: .5;
+    display: none;
+}
+
+@media(max-width: 768px) {
+    .modal.show .modal-dialog {
+        right: 41%;
+    }
+}
+@media(max-width: 576px) {
+    .modal.show .modal-dialog {
+        top: 60px;
+    }
+}
+@media(max-width: 500px) {
+    .modal.show .modal-dialog {
+        top: 53px;
+        right: 20%;
+    }
+}
 /* =============================== Dashboard 8 design =================================== */
 #dashboard-8 .navigation{
     width: 90%;
 }
 
-/* #dashboard-8 .main__nav ul li.menu_active a p.title {
+#dashboard-8 .main__nav ul li.menu_active a p.title {
     color: #581A3B;
-} */
+}
 
 #dashboard-8 .main__nav li:hover {
     background: #fff!important;
@@ -696,7 +739,7 @@ footer img.logo {
 }
 
 #dashboard-8 .menu_active {
-    background: linear-gradient(#8c0437ee, #1e000d)!important;
+    background: #fff!important;
 }
 
 #dashboard-8 #primary_nav .main__nav img {
@@ -868,6 +911,9 @@ footer img.logo {
     #dashboard-8 .toggle_reduce_navigation_width_mobile {
         width: 95%;
         margin-left: -68px;
+    }
+    #dashboard-8 #dashboard-8 .main__nav {
+        height: 98px;
     }
     #dashboard-8 .toggle_reduce_main_woaper_mobile {
         width: 80%!important;

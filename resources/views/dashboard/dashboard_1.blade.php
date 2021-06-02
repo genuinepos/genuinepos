@@ -143,7 +143,7 @@
             font-size: 14px !important;
             font-weight: normal;
             max-width: 100%;
-            padding: 0px 18px 0px 8px;
+            padding: 0px 28px 0px 8px;
             border: none;
             background-color: #6b082e;
             -webkit-appearance: none;
@@ -289,7 +289,7 @@
 @endpush
 @section('title', 'Home - ')
 @section('content')
-    <div id="dashboard" class="pb-5">
+    <div id="dashboard" class="pb-5 mb-2">
         <div class="row">
             <div class="main__content">
                 <div class="row mx-3 mt-3">
@@ -539,155 +539,151 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row px-3 m-1">
             <section>
-                <div class="container">
-                    <div class="row">
-                        <div class="form_element">
-                            <div class="section-header">
-                                <h4>
-                                    <span class="fas fa-table"></span>
-                                    Product Order Alert
-                                </h4>
-                            </div>
-                            <div class="widget_content">
-                                <div class="table-responsive">
+                <div class="row">
+                    <div class="form_element">
+                        <div class="section-header">
+                            <h4>
+                                <span class="fas fa-table"></span>
+                                Product Order Alert
+                            </h4>
+                        </div>
+                        <div class="widget_content">
+                            <div class="table-responsive">
 
-                                    <table id="stock_alert_table" class="display data__table data_tble" cellspacing="0"
-                                        width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Location</th>
-                                                <th>Current Stock</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Row Data 1</td>
-                                                <td>Row Data 1</td>
-                                                <td>Row Data 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 2</td>
-                                                <td>Row Data 2</td>
-                                                <td>Row Data 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 3</td>
-                                                <td>Row Data 3</td>
-                                                <td>Row Data 3</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 4</td>
-                                                <td>Row Data 4</td>
-                                                <td>Row Data 4</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 5</td>
-                                                <td>Row Data 5</td>
-                                                <td>Row Data 5</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 6</td>
-                                                <td>Row Data 6</td>
-                                                <td>Row Data 6</td>
-                                            </tr>
+                                <table id="stock_alert_table" class="display data__table data_tble" cellspacing="0"
+                                    width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Location</th>
+                                            <th>Current Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Row Data 1</td>
+                                            <td>Row Data 1</td>
+                                            <td>Row Data 1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 2</td>
+                                            <td>Row Data 2</td>
+                                            <td>Row Data 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 3</td>
+                                            <td>Row Data 3</td>
+                                            <td>Row Data 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 4</td>
+                                            <td>Row Data 4</td>
+                                            <td>Row Data 4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 5</td>
+                                            <td>Row Data 5</td>
+                                            <td>Row Data 5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 6</td>
+                                            <td>Row Data 6</td>
+                                            <td>Row Data 6</td>
+                                        </tr>
 
-                                            <tr>
-                                                <td>Row Data 7</td>
-                                                <td>Row Data 7</td>
-                                                <td>Row Data 7</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 8</td>
-                                                <td>Row Data 8</td>
-                                                <td>Row Data 8</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 9</td>
-                                                <td>Row Data 9</td>
-                                                <td>Row Data 9</td>
-                                            </tr>
+                                        <tr>
+                                            <td>Row Data 7</td>
+                                            <td>Row Data 7</td>
+                                            <td>Row Data 7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 8</td>
+                                            <td>Row Data 8</td>
+                                            <td>Row Data 8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 9</td>
+                                            <td>Row Data 9</td>
+                                            <td>Row Data 9</td>
+                                        </tr>
 
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
             <section>
-                <div class="container">
-                    <div class="row">
-                        <div class="form_element">
-                            <div class="section-header">
-                                <span class="fas fa-table"></span>
-                                <h4>Sales Order</h4>
-                            </div>
-                            <div class="widget_content">
-                                <div class="table-responsive">
+                <div class="row">
+                    <div class="form_element">
+                        <div class="section-header">
+                            <span class="fas fa-table"></span>
+                            <h4>Sales Order</h4>
+                        </div>
+                        <div class="widget_content">
+                            <div class="table-responsive">
 
-                                    <table id="sales_order_table" class="display data__table data_tble" cellspacing="0"
-                                        width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Location</th>
-                                                <th>Current Stock</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Row Data 1</td>
-                                                <td>Row Data 1</td>
-                                                <td>Row Data 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 2</td>
-                                                <td>Row Data 2</td>
-                                                <td>Row Data 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 3</td>
-                                                <td>Row Data 3</td>
-                                                <td>Row Data 3</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 4</td>
-                                                <td>Row Data 4</td>
-                                                <td>Row Data 4</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 5</td>
-                                                <td>Row Data 5</td>
-                                                <td>Row Data 5</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 6</td>
-                                                <td>Row Data 6</td>
-                                                <td>Row Data 6</td>
-                                            </tr>
+                                <table id="sales_order_table" class="display data__table data_tble" cellspacing="0"
+                                    width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Location</th>
+                                            <th>Current Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Row Data 1</td>
+                                            <td>Row Data 1</td>
+                                            <td>Row Data 1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 2</td>
+                                            <td>Row Data 2</td>
+                                            <td>Row Data 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 3</td>
+                                            <td>Row Data 3</td>
+                                            <td>Row Data 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 4</td>
+                                            <td>Row Data 4</td>
+                                            <td>Row Data 4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 5</td>
+                                            <td>Row Data 5</td>
+                                            <td>Row Data 5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 6</td>
+                                            <td>Row Data 6</td>
+                                            <td>Row Data 6</td>
+                                        </tr>
 
-                                            <tr>
-                                                <td>Row Data 7</td>
-                                                <td>Row Data 7</td>
-                                                <td>Row Data 7</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 8</td>
-                                                <td>Row Data 8</td>
-                                                <td>Row Data 8</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 9</td>
-                                                <td>Row Data 9</td>
-                                                <td>Row Data 9</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        <tr>
+                                            <td>Row Data 7</td>
+                                            <td>Row Data 7</td>
+                                            <td>Row Data 7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 8</td>
+                                            <td>Row Data 8</td>
+                                            <td>Row Data 8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 9</td>
+                                            <td>Row Data 9</td>
+                                            <td>Row Data 9</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

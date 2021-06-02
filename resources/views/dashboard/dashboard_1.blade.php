@@ -263,12 +263,14 @@
             border: 1px solid #ccc5c5;
             line-height: 20px;
             border-radius: 5px;
-            /* background: #fff; */
-            padding: 5%;
+            background: #fff;
             box-shadow: inset 0 0 5px#ddd;
-            height: 60px;
-            width: 90%;
             font-size: 25px;
+            margin-bottom: 9px;
+            height: 70px;
+            width: 74px;
+            padding: 4px;
+            margin-right: 8px;
         }
 
         .switch_bar i {
@@ -284,60 +286,6 @@
         }
 
     </style>
-    <style>
-        .dt-buttons {
-            padding-top: 2px !important;
-            padding-bottom: 2px !important;
-            float: right;
-            margin-right: 5px;
-        }
-
-        .dt-buttons button {
-            padding: 0px 8px !important;
-            margin-top: 3px;
-            margin-bottom: 3px;
-            border: 0px solid transparent;
-            background-color: #6083b1;
-            color: white;
-            border-radius: 4px;
-        }
-
-        .table-responsive {
-            margin-top: -13px;
-            padding-left: 8px;
-            padding-right: 8px;
-            margin-bottom: 5px !important;
-        }
-
-        .dataTables_paginate {
-            padding-right: 8px;
-            padding-left: 8px;
-            padding-top: 9px;
-            font-family: monospace;
-        }
-
-        .dataTables_paginate a.paginate_button {
-            padding: 2px 8px;
-            background: #65667b;
-            margin: 3px;
-            color: #fff !important;
-            cursor: pointer;
-        }
-
-        .dataTables_paginate a.paginate_button.current {
-            background: #6083b1;
-        }
-
-        .disabled {
-            color: #fff;
-            background: #828d9bb6 !important;
-        }
-
-        .section-header {
-            /* color: #6b082e; */
-        }
-
-    </style>
 @endpush
 @section('title', 'Home - ')
 @section('content')
@@ -345,102 +293,80 @@
         <div class="row">
             <div class="main__content">
                 <div class="row mx-3 mt-3">
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-chart-line"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-chart-line"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fa fa-group"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-group"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-receipt"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-receipt"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-home"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-home"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-file-invoice"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-file-invoice"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-chart-pie"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-chart-pie"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-chart-line"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-chart-line"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fa fa-group"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-group"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-receipt"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-receipt"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-home"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-home"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-file-invoice"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-file-invoice"></i></span>
+                            <p></p>
+                        </a>
                     </div>
-                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1">
-                        <div class="switch_bar">
-                            <a href="" class="bar-link">
-                                <span><i class="fas fa-chart-pie"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-chart-pie"></i></span>
+                            <p></p>
+                        </a>
                     </div>
+
                 </div>
 
                 <div class="">

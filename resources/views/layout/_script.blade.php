@@ -1,6 +1,6 @@
     <script src="{{asset('public/backend/js/jquery-1.7.1.min.js')}}"></script>
     <!--Jquery Cdn-->
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="{{asset('public/backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Jquery Cdn End-->
 
     <script src="{{ asset('public/backend/asset/js/bootstrap.bundle.min.js') }}"></script>
@@ -39,7 +39,7 @@
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.17.0/math.min.js"></script> --}}
 
     <!-- DataTable Cdn -->
-    <script type="text/javascript"  src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script> 
+    <script type="text/javascript"  src="{{asset('public/backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script> 
     <!-- DataTable Cdn End-->
 
 
@@ -108,6 +108,8 @@
     <script src="{{asset('public/backend/js/chart-plugins/jqplot.meterGaugeRenderer.min.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/custom-scripts.js')}}"></script>
     <script src="{{asset('public/backend/asset/js/main.js')}}"></script>
+    <script src="{{asset('public/backend/asset/js/SimpleCalculadorajQuery.js')}}" defer></script>
+
     <script>
       toastr.options = {
         "positionClass": "toast-top-right",

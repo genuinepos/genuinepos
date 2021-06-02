@@ -1,154 +1,164 @@
-<div id="primary_nav" class="g_blue toggle-leftbar_t">
+<div id="primary_nav" class="g_blue toggle-leftbar">
     <div class="first__left">
-        <div class="main__nav_t">
-            <ul>
-                <div class="col-md-12 left-side-L">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xl-12 text-center">
-                            <li class="text-center">
-                                <a href="{{ route('dashboard.dashboard') }}" class="dashboard_icon text-center {{ request()->is('/') ? 'menu_active' : '' }}"><img
-                                        src="{{ asset('public/backend/asset/img/icon/pie-chart.svg') }}" alt=""></a>
-                            </li>
-                            <span class="menu-title-t">Dashboard</span>
-                        </div>
+        <div class="main__nav">
+            <ul id="" class="">
+                <li data-menu="dashboardmenu" class="">
+                    <a href="{{ route('dashboard.dashboard') }}" class="">
+                        <img src="{{ asset('public/backend/asset/img/icon/pie-chart.svg') }}" alt="">
+                        <p class="title">Dashboard</p>
+                    </a>
+                </li>
+                <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
+                    <a href="#">
+                        <img src="{{ asset('public/backend/asset/img/icon/package.svg') }}" alt="">
+                        <p class="title">@lang('menu.product')</p>
+                    </a>
+                </li>
 
-                        <div class="col-md-6 col-12">
-                            <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
-                                <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/package.svg') }}"></a>
-                            </li>
-                            <span class="menu-title-t">@lang('menu.product')</span>
-                        </div>
-
-                        @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
-                            @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
-                                <div class="col-md-6 col-12">
-                                    <li data-menu="contact"
-                                        class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
-                                        <a href="#" class=""><img
-                                                src="{{ asset('public/backend/asset/img/icon/agenda.svg') }}"></a>
-                                    </li>
-                                    <span class="menu-title-t">@lang('menu.contacts')</span>
-                                </div>
-                            @endif
-                        @endif
-
-                        @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
-                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                <div class="col-md-6 col-12">
-                                    <li data-menu="purchases"
-                                        class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
-                                        <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/bill.svg') }}"></a>
-                                    </li>
-                                    <span class="menu-title-t">@lang('menu.purchases')</span>
-                                </div>
-                            @else
-                                @if (auth()->user()->branch->purchase_permission == 1)
-                                    @if (auth()->user()->permission->purchase['purchase_all'] == '1')
-                                        <div class="col-md-6 col-12">
-                                            <li data-menu="purchases"
-                                                class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
-                                                <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/bill.svg') }}"></a>
-                                            </li>
-                                            <span class="menu-title-t">@lang('menu.purchases')</span>
-                                        </div>
-                                    @endif
-                                @endif
-                            @endif
-                        @endif
-
-                        @if (auth()->user()->permission->sale['pos_all'] == '1' || auth()->user()->permission->sale['sale_access'] == '1')
-                            <div class="col-md-6 col-12">
-                                <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
-                                    <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/shopping-bag.svg') }}"></a>
-                                </li>
-                                <span class="menu-title-t">@lang('menu.sales')</span>
-                            </div>
-                        @endif
-
-                        @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
-                            <div class="col-md-6 col-12">
-                                <li data-menu="transfer" class="{{ request()->is('transfer/stocks*') ? 'menu_active' : '' }}">
-                                    <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/transfer.svg') }}"
-                                            alt=""></a>
-                                </li>
-                                <span class="menu-title-t">@lang('menu.transfer')</span>
-                            </div>
-                        @endif
-
-                        @if (json_decode($generalSettings->modules, true)['stock_adjustment'] == '1')
-                            @if (auth()->user()->permission->s_adjust['adjustment_all'] == '1')
-                                <div class="col-md-6 col-12">
-                                    <li data-menu="adjustment" class="{{ request()->is('stock/adjustments*') ? 'menu_active' : '' }}">
-                                        <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/slider-tool.svg') }}"
-                                                alt=""></a>
-                                    </li>
-                                    <span class="menu-title-t">@lang('menu.adjustment')</span>
-                                </div>
-                            @endif
-                        @endif
-
-                        @if (json_decode($generalSettings->modules, true)['expenses'] == '1')
-                            <div class="col-md-6 col-12">
-                                <li data-menu="expenses" class="{{ request()->is('expanses*') ? 'menu_active' : '' }}">
-                                    <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/budget.svg') }}" alt=""></a>
-                                </li>
-                                <span class="menu-title-t">@lang('menu.expenses')</span>
-                            </div>
-                        @endif
-
-                        @if (json_decode($generalSettings->modules, true)['accounting'] == '1')
-                            @if (auth()->user()->permission->accounting['ac_access'] == '1')
-                                <div class="col-md-6 col-12">
-                                    <li data-menu="accounting" class="{{ request()->is('accounting*') ? 'menu_active' : '' }}">
-                                        <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/accounting.svg') }}"></a>
-                                    </li>
-                                    <span class="menu-title-t">@lang('menu.accounting')</span>
-                                </div>
-                            @endif
-                        @endif
+                @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
+                    @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
                         
-                        @if (auth()->user()->permission->user['user_view'] == '1')
-                            <div class="col-md-6 col-12">
-                                <li data-menu="users" class="{{ request()->is('users*') ? 'menu_active' : '' }}">
-                                    <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/team.svg') }}"></a>
+                        <li data-menu="contact"
+                            class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
+                            <a href="#" class=""><img
+                                    src="{{ asset('public/backend/asset/img/icon/agenda.svg') }}">
+                                <p class="title">@lang('menu.contacts')</p>
+                            </a>
+                        </li>
+                        
+                    @endif
+                @endif
+
+                @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
+                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                        
+                        <li data-menu="purchases"
+                            class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
+                            <a href="#" class="">
+                                <img src="{{ asset('public/backend/asset/img/icon/bill.svg') }}">
+                                <p class="title">@lang('menu.purchases')</p>
+                            </a>
+                        </li>
+                    @else
+                        @if (auth()->user()->branch->purchase_permission == 1)
+                            @if (auth()->user()->permission->purchase['purchase_all'] == '1')
+                                
+                                <li data-menu="purchases"
+                                    class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
+                                    <a href="#" class="">
+                                        <img src="{{ asset('public/backend/asset/img/icon/bill.svg') }}">
+                                        <p class="title">@lang('menu.purchases')</p>
+                                    </a>
                                 </li>
-                                <span class="menu-title-t">@lang('menu.users')</span>
-                            </div>
+                            @endif
                         @endif
+                    @endif
+                @endif
 
-                        @if (auth()->user()->permission->setup['branch'] == '1'
-                            || auth()->user()->permission->setup['warehouse'] == '1'
-                            || auth()->user()->permission->setup['tax'] == '1'
-                            || auth()->user()->permission->setup['g_settings'] == '1'
-                        )
-                            <div class="col-md-6 col-12">
-                                <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
-                                    <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}"></a>
-                                </li>
-                                <span class="menu-title-t">@lang('menu.setup')</span>
-                            </div>
-                        @endif
+                @if (auth()->user()->permission->sale['pos_all'] == '1' || auth()->user()->permission->sale['sale_access'] == '1')
+                <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
+                    <a href="#">
+                        <img src="{{ asset('public/backend/asset/img/icon/shopping-bag.svg') }}">
+                        <p class="title">@lang('menu.sales')</p>
+                    </a>
+                </li>
+                @endif
 
-                        <div class="col-md-6 col-12">
-                            <li data-menu="reports" class="{{request()->is('reports*') ? "menu_active" : ''}}">
-                                <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}"></a>
-                            </li>
-                            <span class="menu-title-t">Reports</span>
-                        </div>
+                @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
+                <li data-menu="transfer" class="{{ request()->is('transfer/stocks*') ? 'menu_active' : '' }}">
+                    <a href="#">
+                        <img src="{{ asset('public/backend/asset/img/icon/transfer.svg') }}">
+                        <p class="title">@lang('menu.transfer')</p>
+                    </a>
+                </li>
+                @endif
 
-                        <div class="col-md-6 col-12">
-                            <li class="{{request()->is('hrm*') ? "menu_active" : ''}}">
-                                <a href="{{ route('hrm.leave.type') }}" class=""><img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}"></a>
-                            </li>
-                            <span class="menu-title-t">HRM</span>
-                        </div>
-                    </div>
-                </div>
+                @if (json_decode($generalSettings->modules, true)['stock_adjustment'] == '1')
+                    @if (auth()->user()->permission->s_adjust['adjustment_all'] == '1')
+                        <li data-menu="adjustment" class="{{ request()->is('stock/adjustments*') ? 'menu_active' : '' }}">
+                            <a href="#">
+                                <img src="{{ asset('public/backend/asset/img/icon/slider-tool.svg') }}">
+                                <p class="title">@lang('menu.adjustment')</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
+                @if (json_decode($generalSettings->modules, true)['expenses'] == '1')
+                    <li data-menu="expenses" class="{{ request()->is('expanses*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/budget.svg') }}">
+                            <p class="title">@lang('menu.expenses')</p>
+                        </a>
+                    </li>
+                @endif
+
+                @if (json_decode($generalSettings->modules, true)['accounting'] == '1')
+                    @if (auth()->user()->permission->accounting['ac_access'] == '1')
+                        <li data-menu="accounting" class="{{ request()->is('accounting*') ? 'menu_active' : '' }}">
+                            <a href="#">
+                                <img src="{{ asset('public/backend/asset/img/icon/accounting.svg') }}">
+                                <p class="title">@lang('menu.accounting')</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
+                @if (auth()->user()->permission->user['user_view'] == '1')
+                    <li data-menu="users" class="{{ request()->is('users*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/team.svg') }}">
+                            <p class="title">@lang('menu.users')</p>
+                        </a>
+                    </li>
+                @endif
+
+                @if (auth()->user()->permission->setup['branch'] == '1'
+                    || auth()->user()->permission->setup['warehouse'] == '1'
+                    || auth()->user()->permission->setup['tax'] == '1'
+                    || auth()->user()->permission->setup['g_settings'] == '1'
+                )
+                    <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
+                            <p class="title">@lang('menu.setup')</p>
+                        </a>
+                    </li>
+                @endif
+
+                @if (auth()->user()->permission->setup['branch'] == '1'
+                    || auth()->user()->permission->setup['warehouse'] == '1'
+                    || auth()->user()->permission->setup['tax'] == '1'
+                    || auth()->user()->permission->setup['g_settings'] == '1'
+                )
+                    <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
+                            <p class="title">@lang('menu.setup')</p>
+                        </a>
+                    </li>
+                @endif
+
+                <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
+                    <a href="#">
+                        <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">
+                        <p class="title">Reports</p>
+                    </a>
+                </li>
+
+                <li class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
+                    <a href="{{ route('hrm.leave.type') }}">
+                        <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
+                        <p class="title">HRM</p>
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>
     <div class="category-bar">
         <div id="sidebar_t">
+
             <!-- ===========================================DASHBOARD SIDEBAR=================== -->
 
             <!-- ===========================================FILE SIDEBAR=================== -->
@@ -259,6 +269,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- ===========================================FILE SIDEBAR=================== -->
 
             <!-- ===========================================CALENDER SIDEBAR=================== -->
@@ -309,6 +320,7 @@
                 @endif
             @endif
             <!-- ===========================================CALENDER SIDEBAR=================== -->
+
             <!-- ===========================================CONACT SIDEBAR=================== -->
             @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -349,6 +361,7 @@
                         </div>
                     </div>
                 @else
+
                     @if (auth()->user()->branch->purchase_permission == 1)
                         @if (auth()->user()->permission->purchase['purchase_all'] == '1')
                             <div class="sub-menu_t" id="purchases">
@@ -403,6 +416,7 @@
                 @endif
             @endif
             <!-- ===========================================CANTACT SIDEBAR=================== -->
+
             <!-- ===========================================FOLDER SIDEBAR=================== -->
 
             <div class="sub-menu_t" id="sales">
@@ -1028,9 +1042,8 @@
                 </div>
             </div>
             <!-- ===========================================FILE SIDEBAR=================== -->
-
-             <!-- ===========================================Hrm sub-menu=================== -->
-             {{-- <div class="sub-menu_t" id="hrm">
+            <!-- ===========================================Hrm sub-menu=================== -->
+             <div class="sub-menu_t" id="hrm">
                 <div class="sub-menu-width">
                     <div class="model__close">
                         <button type="button" class="btn-close close-model"></button>
@@ -1058,8 +1071,9 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
             <!-- ===========================================Hrm sub-menu=================== -->
+
         </div>
     </div>
 </div>

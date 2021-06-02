@@ -256,31 +256,15 @@
                     return;
                 }else if(data.suspendMsg){
                     toastr.success(data.suspendMsg);
-                    $('.payment_method').hide();
-                    $('#pos_submit_form')[0].reset();
-                    $('#product_list').empty();
-                    calculateTotalAmount();
-                    $('.modal').modal('hide');
-                    $('.submit_preloader').hide();
+                    afterSubmitForm();
                     document.getElementById('search_product').focus();
                 }else if(data.holdInvoiceMsg){
                     toastr.success(data.holdInvoiceMsg);
-                    $('.payment_method').hide();
-                    $('#pos_submit_form')[0].reset();
-                    $('#product_list').empty();
-                    calculateTotalAmount();
-                    $('.modal').modal('hide');
-                    $('.submit_preloader').hide();
+                    afterSubmitForm();
                     document.getElementById('search_product').focus();
                 }else {
                     toastr.success(actionMessage);
-                    $('.modal').modal('hide');
-                    $('#pos_submit_form')[0].reset();
-                    $('.payment_method').hide();
-                    $('#product_list').empty();
-                    calculateTotalAmount();
-                    $('.submit_preloader').hide();
-                    $('#account_id').val(defaultAccount);
+                    afterSubmitForm();
                     $(data).printThis({
                         debug: false,                   
                         importCSS: true,                
@@ -457,5 +441,17 @@
                 $('#stock_preloader').hide();
             }
         });
+    }
+
+    function afterSubmitForm() {
+        $('.modal').modal('hide');
+        $('#pos_submit_form')[0].reset();
+        $('.payment_method').hide();
+        $('#product_list').empty();
+        calculateTotalAmount();
+        $('.submit_preloader').hide();
+        $('#account_id').val(defaultAccount);
+        var store_url = $('#store_url').val();
+        $('#pos_submit_form').attr('action', store_url);
     }
 </script>

@@ -190,7 +190,6 @@ class POSController extends Controller
         }
 
         $addSale->save();
-
         // update product quantity
         $quantities = $request->quantities;
         $units = $request->units;
@@ -1481,5 +1480,10 @@ class POSController extends Controller
             'exchange_item_total_price' => $exchange_item_total_price,
             'sold_item_total_price' => $sold_item_total_price
         ]);
+    }
+
+    public function exchangeConfirm(Request $request)
+    {
+        return $request->all();
     }
 }

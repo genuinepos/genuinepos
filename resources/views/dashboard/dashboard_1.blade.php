@@ -41,10 +41,15 @@
             /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to right, #8f94fb, #4e54c8);
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
             color: #FFF;
         }
+
+        .table-responsive {
+            margin-top: -13px;
+            padding-left: 8px;
+            padding-right: 8px;
+            margin-bottom: 5px !important;
+        } 
 
         .card-counter.danger {
             background: #000428;
@@ -550,8 +555,7 @@
                             </h4>
                         </div>
                         <div class="widget_content">
-                            <div class="table-responsive">
-
+                            <div class="mtr-table">
                                 <table id="stock_alert_table" class="display data__table data_tble" cellspacing="0"
                                     width="100%">
                                     <thead>

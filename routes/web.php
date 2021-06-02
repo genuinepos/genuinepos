@@ -371,6 +371,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::get('close/cash/registser/modal/view', 'POSController@close');
         Route::get('search/exchangeable/invoice', 'POSController@searchExchangeableInv')->name('sales.pos.serc.ex.inv');
         Route::post('prepare/exchange', 'POSController@prepareExchange')->name('sales.pos.prepare.exchange');
+        Route::post('exchange/confirm', 'POSController@exchangeConfirm')->name('sales.pos.exchange.confirm');
     });
 });
 

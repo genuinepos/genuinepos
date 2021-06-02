@@ -43,12 +43,12 @@
             border-radius: 4px;
         }
 
-        .table-responsive {
+        .mtr-table {
             margin-top: -13px;
             padding-left: 8px;
             padding-right: 8px;
             margin-bottom: 5px !important;
-        }
+        } 
 
         .dataTables_paginate {
             padding-right: 8px;

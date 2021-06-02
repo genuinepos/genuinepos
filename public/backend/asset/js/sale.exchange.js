@@ -33,7 +33,7 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
             $('#account_id').val(defaultAccount);
             var qty_limits = data.qty_limits;
             $('#ex_sale_id').val(data.sale.id);
-            var ex_inv_payable_amount = parseFloat(data.sale.total_payable_amount) - parseFloat(data.sold_item_total_price) + parseFloat(data.exchange_item_total_price);
+            var ex_inv_payable_amount = parseFloat(data.sale.total_payable_amount);
             $('#ex_inv_payable_amount').val(parseFloat(ex_inv_payable_amount).toFixed(2));
             $('#ex_inv_paid').val(parseFloat(data.sale.paid).toFixed(2));
             $('#customer_id').val(data.sale.customer_id);
@@ -58,7 +58,7 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
                 html += '</td>';
         
                 html += '<td>';
-                html += '<input readonly value="'+(parseFloat(parseFloat(item.quantity) + parseFloat(item.ex_quantity)).toFixed(2))+'" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                html += '<input readonly value="'+parseFloat(item.ex_quantity).toFixed(2)+'" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
                 html += '</td>';
                 html += '<td>';
                 html += '<b><span class="span_unit">'+item.unit+'</span></b>';
@@ -70,7 +70,7 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
                 html += '<b><span class="span_unit_price_inc_tax">'+item.unit_price_inc_tax+'</span></b>';
                 html += '</td>';
                 html += '<td>';
-                var ex_quantity = parseFloat(item.quantity) + parseFloat(item.ex_quantity);
+                var ex_quantity = parseFloat(item.ex_quantity);
                 var subtotal = parseFloat(item.unit_price_inc_tax) * parseFloat(ex_quantity)
                 html += '<input value="'+parseFloat(subtotal).toFixed(2)+'" name="subtotals[]" type="hidden" id="subtotal">';
                 html += '<b><span class="span_subtotal">'+parseFloat(subtotal).toFixed(2)+'</span></b>';
@@ -81,6 +81,8 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
           
             $('#product_list').prepend(html);
             calculateTotalAmount();
+            var exchange_url = $('#exchange_url').val();
+            $('#pos_submit_form').attr('action', exchange_url);
             $('#exchangeModal').modal('hide');
         }
     });

@@ -39,6 +39,7 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/sweet-alert/sweet-alert.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
     <!--Sweet alert js link end-->
+    <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
 </head>
 
 <body>
@@ -510,7 +511,7 @@
     <!--Quick Cash receive modal End-->
 
     <!-- Exchange modal -->
-    <div class="modal fade" id="exchangeModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal fade" id="exchangeModal"tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content" id="exchange_body">
                 <div class="modal-header">
@@ -520,7 +521,7 @@
 
                 <div class="modal-body">
                     <div class="form-area">
-                        <form id="search_inv_form" action="" method="GET">
+                        <form id="search_inv_form" action="{{ route('sales.pos.serc.ex.inv') }}" method="GET">
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <input required type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Search invoice">
@@ -528,7 +529,7 @@
 
                                 <div class="col-md-2">
                                     <div class="btn_30_blue m-0">
-                                        <a href="#"><i class="fas fa-plus-square"></i> Search</a>
+                                        <a id="submit_form_btn" href="#"><i class="fas fa-plus-square"></i> Search</a>
                                     </div>
                                 </div>
                             </div>
@@ -542,7 +543,7 @@
                     </div>
 
                     <div class="mt-2" id="invoice_description">
-                        <h6>Comming Soon...</h6>
+                        
                     </div>
                 </div>
             </div>
@@ -664,7 +665,7 @@
                 data:request,
                 success:function(data){
                     pickHoldInvoice();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     var productTableRow = $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
                     $('#recent_trans_preloader').hide();
                     allSuspends();
@@ -713,6 +714,38 @@
                 }
             });
         });
+
+        //data delete by ajax
+        $(document).on('submit', '#search_inv_form',function(e){
+            e.preventDefault();
+            $('#get_inv_preloader').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({ 
+                url:url,
+                type:'get',
+                data:request,
+                success:function(data){
+                    $('#get_inv_preloader').hide();
+                    $('#invoice_description').empty();
+                    if (!$.isEmptyObject(data.errorMsg)) {
+                        toastr.error(data.errorMsg);
+                    }else{
+                        $('#invoice_description').html(data);
+                    }
+                }
+            });
+        });
+
+        $('#submit_form_btn').on('click', function (e) {
+            e.preventDefault();
+            $('#search_inv_form').submit();
+        });
+
+        $('#exchange_btn').on('click', function (e) {
+            e.preventDefault();
+            $('#invoice_description').empty();$('#invoice_id').val('');
+        })
     </script>
     @stack('js')
 </body>

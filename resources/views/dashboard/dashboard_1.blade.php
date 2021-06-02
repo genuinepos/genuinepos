@@ -143,7 +143,7 @@
             font-size: 14px !important;
             font-weight: normal;
             max-width: 100%;
-            padding: 0px 90px 0px 15px;
+            padding: 0px 18px 0px 8px;
             border: none;
             background-color: #6b082e;
             -webkit-appearance: none;
@@ -443,30 +443,22 @@
                             <div class="button-group">
                                 <label class="button-group__btn" id="date" data-value="{{ $toDay }}">
                                     <input type="radio" name="group" />
-                                    <span class="button-group__label">
-                                        Today
-                                    </span>
+                                    <span class="button-group__label">Today</span>
                                 </label>
 
                                 <label class="button-group__btn">
                                     <input type="radio" name="group" id="date" data-value="{{ $thisWeek }}" />
-                                    <span class="button-group__label">
-                                        This Week
-                                    </span>
+                                    <span class="button-group__label">This Week</span>
                                 </label>
 
                                 <label class="button-group__btn" id="date" data-value="{{ $thisMonth }}">
                                     <input type="radio" checked name="group" />
-                                    <span class="button-group__label">
-                                        This Month
-                                    </span>
+                                    <span class="button-group__label">This Month</span>
                                 </label>
 
                                 <label class="button-group__btn" id="date" data-value="{{ $thisYear }}">
                                     <input type="radio" name="group" />
-                                    <span class="button-group__label">
-                                        This Financial Year
-                                    </span>
+                                    <span class="button-group__label">This Financial Year</span>
                                 </label>
                             </div>
                         </div>

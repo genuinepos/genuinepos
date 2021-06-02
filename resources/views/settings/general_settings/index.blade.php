@@ -69,6 +69,10 @@
                                         </li>
 
                                         <li class="menu_list">
+                                            <a class="menu_btn" data-form="point_settings_form" href="#">Reward Point Settings</a>
+                                        </li>
+
+                                        <li class="menu_list">
                                             <a class="menu_btn" data-form="module_settings_form" href="#">Modules Settings</a>
                                         </li>
 
@@ -762,6 +766,87 @@
                                     </div>
                                 </form>
 
+                                <form id="point_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.reward.point.settings') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <h6 class="text-primary mb-3"><b>Reward Point Settings</b></h6>
+                                    </div>
+
+                                    <div class="form-group row mt-2">
+                                        <div class="col-md-4">
+                                            <div class="row ">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" {{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1' ? 'CHECKED' : '' }} name="enable_cus_point"> &nbsp; <b>Enable Reward Point</b>  
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Reward Point Display Name :</strong></label>
+                                            <input type="text" name="point_display_name" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-2">
+                                        <h6 class="text-primary mb-1"><b>Earning Settings</b></h6>
+                                        <div class="col-md-4">
+                                            <label><strong>Amount spend for unit point : </strong>
+                                                <i data-bs-toggle="tooltip" data-placement="top" title="Example: If you set it as 10, then for every $10 spent by customer they will get one reward points. If the customer purchases for $1000 then they will get 100 reward points." class="fas fa-info-circle tp"></i></label>
+                                            <input type="number" step="any" name="amount_for_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['amount_for_unit_rp'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Minimum order total to earn reward :</strong> <i data-bs-toggle="tooltip" data-placement="top" title="Example: If you set it as 100 then customer will get reward points only if there invoice total is greater or equal to 100. If invoice total is 99 then they won’t get any reward points.You can set it as minimum 1." class="fas fa-info-circle tp"></i></label>
+                                            <input type="number" step="any" name="min_order_total_for_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_rp'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Maximum points per order :</strong> <i data-bs-toggle="tooltip" data-placement="top" title="Maximum reward points customers can earn in one invoice. Leave it empty if you don’t want any such restrictions." class="fas fa-info-circle tp"></i></label>
+                                            <input type="number" step="any" name="max_rp_per_order" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['max_rp_per_order'] }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-2">
+                                        
+                                        <h6 class="text-primary mb-1"><b>Redeem Points Settings</b></h6>
+                                       
+                                        <div class="col-md-4">
+                                            <label><strong>Redeem amount per unit point : </strong>
+                                                <i data-bs-toggle="tooltip" data-placement="top" title="example: If 1 point is $1 then enter the value as 1. If 2 points is $1 then enter the value as 0.50" class="fas fa-info-circle tp"></i></label>
+                                            <input type="number" step="any" name="redeem_amount_per_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Minimum order total to redeem points : </strong>
+                                                <i data-bs-toggle="tooltip" data-placement="top" title="Minimum order total for which customers can redeem points. Leave it blank if you don’t need this restriction or you need to give something for free." class="fas fa-info-circle tp"></i></label>
+                                            <input type="number" step="any" name="min_order_total_for_redeem" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_redeem'] }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Minimum redeem point : </strong>
+                                                <i data-bs-toggle="tooltip" data-placement="top" title="Minimum redeem points that can be used per invoice. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
+                                            <input type="number" step="any" name="min_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_redeem_point'] }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-2">
+                                        <div class="col-md-4">
+                                            <label><strong>Maximum redeem point per order : </strong>
+                                                <i data-bs-toggle="tooltip" data-placement="top" title="Maximum points that can be used in one order. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
+                                            <input type="number" step="any" name="max_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['max_redeem_point'] }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
                                 <form id="module_settings_form" class="setting_form d-none"
                                     action="{{ route('settings.module.settings') }}" method="post">
                                     @csrf
@@ -1212,6 +1297,25 @@
         });
 
         $('#prefix_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data, 'Succeed');
+                    $('.loading_button').hide();
+                }
+            });
+        });
+        
+
+        $('#point_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');

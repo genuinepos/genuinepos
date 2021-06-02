@@ -25,6 +25,7 @@ class CreateGeneralSettingsTable extends Migration
             $table->longText('system')->nullable();
             $table->longText('prefix')->nullable();
             $table->longText('email_setting')->nullable();
+            $table->longText('reward_poing_settings')->nullable();
             $table->longText('sms_setting')->nullable();
             $table->longText('modules')->nullable();
             $table->timestamps();

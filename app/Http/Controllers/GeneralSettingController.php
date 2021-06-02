@@ -225,6 +225,26 @@ class GeneralSettingController extends Controller
         return response()->json('Successfully modules settings is updated');
     }
 
+    public function rewardPoingSettings(Request $request)
+    {
+        $updateRewardPointgSettings = General_setting::first();
+        $RewardPointgSettings = [
+            'enable_cus_point' => isset($request->enable_cus_point) ? 1 : 0,
+            'point_display_name' => $request->point_display_name ? $request->point_display_name : 0,
+            'amount_for_unit_rp' => $request->amount_for_unit_rp ? $request->amount_for_unit_rp : 0,
+            'min_order_total_for_rp' => $request->min_order_total_for_rp ? $request->min_order_total_for_rp : 0,
+            'max_rp_per_order' => $request->max_rp_per_order ? $request->max_rp_per_order : 0,
+            'redeem_amount_per_unit_rp' => $request->redeem_amount_per_unit_rp ? $request->redeem_amount_per_unit_rp : 0,
+            'min_order_total_for_redeem' => $request->min_order_total_for_redeem ? $request->min_order_total_for_redeem : 0,
+            'min_redeem_point' => $request->min_redeem_point ? $request->min_redeem_point : 0,
+            'max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : 0,
+        ];
+
+        $updateRewardPointgSettings->reward_poing_settings = json_encode($RewardPointgSettings);
+        $updateRewardPointgSettings->save();
+        return response()->json('Successfully reward point settings is updated');
+    }
+
     public function emailSettings(Request $request)
     { 
         //return request()->all();

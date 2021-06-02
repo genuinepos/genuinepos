@@ -1387,4 +1387,21 @@ class POSController extends Controller
 
         return view('sales.pos.ajax_view.stock', compact('products', 'warehouse', 'branch'));
     }
+
+    public function searchExchangeableInv(Request $request)
+    {
+        $sale = Sale::with([
+            'customer',
+            'sale_products',
+            'sale_products.product',
+            'sale_products.variant',
+            'sale_payments',
+        ])->where('invoice_id', $request->invoice_id)->first();
+
+        if ($sale) {
+            return view('sales.pos.ajax_view.exchange_able_invoice', compact('sale'));
+        }else {
+            return response()->json(['errorMsg' => 'Invoice Not Fount']);
+        }
+    }
 }

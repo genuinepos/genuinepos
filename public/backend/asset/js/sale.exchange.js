@@ -33,9 +33,10 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
             $('#account_id').val(defaultAccount);
             var qty_limits = data.qty_limits;
             $('#ex_sale_id').val(data.sale.id);
-            var ex_inv_payable_amount = parseFloat(data.sale.total_payable_amount) + parseFloat(data.exchange_item_total_price);
+            var ex_inv_payable_amount = parseFloat(data.sale.total_payable_amount) - parseFloat(data.sold_item_total_price) + parseFloat(data.exchange_item_total_price);
             $('#ex_inv_payable_amount').val(parseFloat(ex_inv_payable_amount).toFixed(2));
             $('#ex_inv_paid').val(parseFloat(data.sale.paid).toFixed(2));
+            $('#customer_id').val(data.sale.customer_id);
             var html = '';
             $.each(data.ex_items, function (key, item) {
                 html += '<tr>';
@@ -57,7 +58,7 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
                 html += '</td>';
         
                 html += '<td>';
-                html += '<input value="'+(parseFloat(parseFloat(item.quantity) + parseFloat(item.ex_quantity)).toFixed(2))+'" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                html += '<input readonly value="'+(parseFloat(parseFloat(item.quantity) + parseFloat(item.ex_quantity)).toFixed(2))+'" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
                 html += '</td>';
                 html += '<td>';
                 html += '<b><span class="span_unit">'+item.unit+'</span></b>';
@@ -74,7 +75,7 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
                 html += '<input value="'+parseFloat(subtotal).toFixed(2)+'" name="subtotals[]" type="hidden" id="subtotal">';
                 html += '<b><span class="span_subtotal">'+parseFloat(subtotal).toFixed(2)+'</span></b>';
                 html += '</td>';
-                html += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn"><span class="fas fa-trash "></span></a></td>';
+                html += '<td><a href="#" class="action-btn c-delete"><span class="fas fa-trash text-dark"></span></a></td>';
                 html += '</tr>';
             });
           

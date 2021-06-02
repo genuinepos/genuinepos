@@ -827,6 +827,9 @@ footer img.logo {
     #dashboard-8 .toggle-leftbar {
         width: 71px;
     }
+    #dashboard-8 .main__nav ul {
+        width: 71px;
+    }
     #dashboard-8 .main__nav ul li {
         width: 71px;
         height: 72px;
@@ -863,8 +866,8 @@ footer img.logo {
 }
 @media (max-width: 400px) {
     #dashboard-8 .toggle_reduce_navigation_width_mobile {
-        width: 82%;
-        margin-left: 0;
+        width: 95%;
+        margin-left: -68px;
     }
     #dashboard-8 .toggle_reduce_main_woaper_mobile {
         width: 80%!important;

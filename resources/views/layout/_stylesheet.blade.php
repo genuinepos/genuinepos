@@ -78,4 +78,10 @@
             /* color: #6b082e; */
         }
 
+        .sub-menu-width .switch_text {
+            font-size: 10px !important;
+            /* font-family: monospace; */
+            /* text-align: left; */
+        }
+
     </style>

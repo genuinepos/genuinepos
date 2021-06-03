@@ -677,6 +677,8 @@
                     toastr.success(data);
                     var productTableRow = $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
                     $('#recent_trans_preloader').hide();
+                    $('#suspendedSalesModal').modal('hide');
+                    $('#holdInvoiceModal').modal('hide');
                 }
             });
         });

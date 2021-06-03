@@ -85,6 +85,7 @@
             dataType: 'json',
             success: function(singleProductQty) {
                 if ($.isEmptyObject(singleProductQty.errorMsg)) {
+                    $('#stock_quantity').val(singleProductQty);
                     var product_ids = document.querySelectorAll('#product_id');
                     var sameProduct = 0;
                     product_ids.forEach(function(input) {
@@ -143,38 +144,35 @@
                         tr += '</td>';
 
                         tr += '<td>';
-                      
                         tr +='<input type="number" name="quantities[]" value="1.00" class="form-control text-center" id="quantity">';
-                      
                         tr += '</td>';
+
                         tr += '<td>';
                         tr += '<b><span class="span_unit">' + product_unit + '</span></b>';
                         tr += '<input name="units[]" type="hidden" id="unit" value="' +
                             product_unit + '">';
                         tr += '</td>';
+
                         tr += '<td>';
                         tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="' +
                             product_price_exc_tax + '" id="unit_price_exc_tax">';
-
                         var unitPriceIncTax = parseFloat(product_price_exc_tax) / 100 *
                             parseFloat(p_tax_percent) + parseFloat(product_price_exc_tax);
-
                         tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="' +
                             parseFloat(unitPriceIncTax).toFixed(2) + '">';
-
                         tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(
                             unitPriceIncTax).toFixed(2) + '</span> </b>';
                         tr += '</td>';
+
                         tr += '<td>';
                         tr += '<input value="' + parseFloat(unitPriceIncTax).toFixed(2) +
                             '" name="subtotals[]" type="hidden" id="subtotal">';
                         tr += '<b><span class="span_subtotal">' + parseFloat(unitPriceIncTax)
                             .toFixed(2) + '</span></b>';
                         tr += '</td>';
-
+                        
                         tr +='<td><a href="#" class="action-btn c-delete" id="remove_product_btn"><span class="fas fa-trash "></span></a></td>';
                         tr += '</tr>';
-
                         $('#product_list').prepend(tr);
                         calculateTotalAmount();
                         if (keyName == 9) {
@@ -224,8 +222,9 @@
             type: 'get',
             dataType: 'json',
             success: function(branchVariantQty) {
+                
                 if ($.isEmptyObject(branchVariantQty.errorMsg)) {
-                    $('#current_stock').val(parseFloat(branchVariantQty));
+                    $('#stock_quantity').val(branchVariantQty);
                     var variant_ids = document.querySelectorAll('#variant_id');
                     var sameVariant = 0;
                     variant_ids.forEach(function(input) {

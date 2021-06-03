@@ -1485,5 +1485,12 @@ class POSController extends Controller
     public function exchangeConfirm(Request $request)
     {
         return $request->all();
+        $sale = Sale::with('customer')->where('id', $request->ex_sale_id)->first();
+
+        if ($sale->customer) {
+            $sale->customer->total_sale_due += $request->total_due;
+            $sale->customer->total_sale += $request->;
+            $sale->customer->total_paid += $request->total_sale;
+        }
     }
 }

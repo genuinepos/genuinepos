@@ -4,7 +4,7 @@
             <div class="function-sec">
                 <div class="row">
                     @if (json_decode($generalSettings->pos, true)['is_disable_draft'] == '0')
-                        <div class="col-4 p-1">
+                        <div class="col-4 px-2 py-1">
                             <div class="btn-bg">
                                 <a href="" class="bg-orange function-card" data-button_type="0" data-action_id="2" id="submit_btn">
                                     <small>Draft</small>
@@ -15,7 +15,7 @@
                     @endif
 
                     @if (json_decode($generalSettings->pos, true)['is_disable_quotation'] == '0')
-                        <div class="col-4 p-1">
+                        <div class="col-4 px-2 py-1">
                             <div class="btn-bg">
                                 <a href="" class="bg-orange function-card" id="submit_btn" data-button_type="0" data-action_id="4">
                                     <small>Quotation</small>
@@ -25,7 +25,7 @@
                         </div>
                     @endif
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="" class="bg-orange function-card" id="exchange_btn" data-bs-toggle="modal" data-bs-target="#exchangeModal">
                                 <small>Exchange</small>
@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="" class="bg-gren function-card" id="show_stock">
                                 <small>Stock</small>
@@ -44,7 +44,7 @@
                     </div>
 
                     @if (json_decode($generalSettings->pos, true)['is_disable_hold_invoice'] == '0')
-                        <div class="col-4 p-1">
+                        <div class="col-4 px-2 py-1">
                             <div class="btn-bg">
                                 <a href="" class="bg-gren function-card" id="submit_btn" data-button_type="0" data-action_id="5">
                                     <small>Hold Invoice</small>
@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        <div class="col-4 p-1">
+                        <div class="col-4 px-2 py-1">
                             <div class="btn-bg">
                                 <a href="#" class="bg-gren function-card" id="pick_hold_btn">
                                     <small>Pick Hold</small>
@@ -63,7 +63,7 @@
                         </div>
                     @endif
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="{{ route('settings.general.index') }}" class="bg-swit function-card">
                                 <small>Setup</small>
@@ -72,7 +72,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="" class="bg-swit function-card" id="submit_btn" data-button_type="0" data-action_id="6">
                                 <small>Suspend</small>
@@ -81,7 +81,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#" class="bg-swit function-card" onclick="cancel(); return false;">
                                 <small>Cancel</small>
@@ -166,9 +166,9 @@
 
             <div class="sub-btn-sec">
                 <div class="row">
-                    <div class="col-4 p-1">
+                    <div class="col-lg-4 col-12 p-1">
                         @if (json_decode($generalSettings->pos, true)['is_show_credit_sale_button'] == '1')
-                            <div class="btn-bg">
+                            <div class="btn-bg mb-1">
                                 <a href="#" class="bg-orange btn-pos" data-button_type="0" id="full_due_button"><i class="fas fa-check"></i> Credit Sale</a>
                             </div>
                         @endif
@@ -180,7 +180,7 @@
                         @endif
                     </div>
 
-                    <div class="col-4 p-1">
+                    <div class="col-lg-4 col-6 p-1 btn-bottom">
                         <div class="btn-bg">
                             <a href="#" class="bg-parpal function-card other_payment_method">
                                 <small><i class="fas fa-credit-card"></i> Other Method</small>
@@ -189,7 +189,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4 p-1">
+                    <div class="col-lg-4 col-6 p-1 btn-bottom">
                         <div class="btn-bg">
                             <a href="" class="bg-parpal function-card" id="submit_btn" data-button_type="1" data-action_id="1">
                                  <small><i class="far fa-money-bill-alt"></i> Cash</small>

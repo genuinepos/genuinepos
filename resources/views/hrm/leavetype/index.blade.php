@@ -15,7 +15,7 @@
                         <div class="sec-name">
                             <div class="top-menu-area w-100">
                                 <div class="breadCrumbHolder module">
-                                    <div id="breadCrumb3" class="breadCrumb module white_lin">
+                                    <div id="breadCrumb3" class="breadCrumb module">
                                         <ul class="list-unstyled">
                                             <li>
                                                 <a href="" class="text-dark text-muted"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>

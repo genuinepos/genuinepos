@@ -49,7 +49,7 @@
             padding-left: 8px;
             padding-right: 8px;
             margin-bottom: 5px !important;
-        } 
+        }
 
         .card-counter.danger {
             background: #000428;
@@ -292,9 +292,9 @@
 
     </style>
 @endpush
-@section('title', 'Home - ')
+@section('title', 'Dashboard - ')
 @section('content')
-    <div id="dashboard" class="pb-5 mb-2">
+    <div id="dashboard" class="pb-5">
         <div class="row">
             <div class="main__content">
                 <div class="row mx-3 mt-3">

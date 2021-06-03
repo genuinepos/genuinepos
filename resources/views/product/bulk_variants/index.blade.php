@@ -3,7 +3,7 @@
 @endpush
 @section('content')
     
-    <div class="body-woaper">
+    <div class="body-woaper" style="margin-top: 64px;">
         <div class="container-fluid">
             <div class="container">
                 <div class="row">

@@ -679,6 +679,10 @@ footer img.logo {
 }
 
 /*============================ Calculator design =====================*/
+#calculatorModal {
+    overflow-y: hidden;
+}
+
 #calculatorModal.modal.show .modal-dialog {
     /* width: 287px; */
     top: 61px;
@@ -700,7 +704,7 @@ footer img.logo {
     right: 21%;
 }
 
-#calculatorModal .modal-backdrop.show {
+.modal-backdrop.show {
     opacity: .5;
     display: none;
 }
@@ -808,6 +812,7 @@ footer img.logo {
 #dashboard-8 .main-woaper {
     width: 90%;
     margin-left: 142px;
+    margin-bottom: 200px;
 }
 
 @media (max-width: 767px){

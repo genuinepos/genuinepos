@@ -67,12 +67,12 @@
             </div>  
         </div>
         
-        <div class="col-lg-7 col-sm-9 col-xs-9 input-buttob-sec">
+        <div class="col-lg-7 col-sm-9 col-12 input-buttob-sec">
             <div class="input-section">
                 <div class="row">
                     <div class="input-sec col-sm-6 col-12">
                         <div class="row">
-                            <div class="col-lg-7">
+                            <div class="col-lg-7 col-12 sm-input-sec-w">
                                 <div class="input-group mb-1">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>

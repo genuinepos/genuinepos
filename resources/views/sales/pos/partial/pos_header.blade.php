@@ -24,7 +24,7 @@
     <input type="hidden" id="store_url" value="{{ route('sales.pos.store') }}">
     <input type="hidden" id="exchange_url" value="{{ route('sales.pos.exchange.confirm') }}">
     <nav class="pos-navigation">
-        <div class="col-lg-4 col-sm-12 col-12 nav-left-sec">
+        <div class="col-lg-5 col-sm-3 col-xs-3 nav-left-sec">
             <div class="col-lg-4 col-sm-12 col-12 logo-sec">
                 <div class="pos-logo">
                     <img src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}" alt="">
@@ -67,10 +67,10 @@
             </div>  
         </div>
         
-        <div class="col-lg-8 col-sm-12 col-12 input-buttob-sec">
+        <div class="col-lg-7 col-sm-9 col-xs-9 input-buttob-sec">
             <div class="input-section">
                 <div class="row">
-                    <div class="input-sec col-lg-7">
+                    <div class="input-sec col-sm-6 col-12">
                         <div class="row">
                             <div class="col-lg-7">
                                 <div class="input-group mb-1">
@@ -120,24 +120,24 @@
                                     </div>
                                     <input type="text" class="form-control">
                                 </div>
-                                <div class="input-group col-6 w-50">
+                                <div class="input-group col-6">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">SQ</span>
                                     </div>
-                                    <input type="text" class="form-control w-50" id="stock_quantity">
+                                    <input type="text" class="form-control" id="stock_quantity">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-5 btn-section">
+                    <div class="col-sm-6 btn-section">
                         <div class="date">
                             <p>{{ date('d-m-Y') }} <span id="time">6:58 AM</span></p>
                         </div>
 
                         <div class="btn-sec">
                             <a href="" class="pos-btn status" id="suspends"><i class="fas text-warning fa-pause"></i></a>
-                            <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
+                            <a href="" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal">
                                 <span class="fas fa-calculator"></span>
                             </a>
                             <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

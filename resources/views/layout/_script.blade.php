@@ -119,7 +119,7 @@
           $('#logout_option').on('click', function(e) {
               e.preventDefault();
               swal({
-                  title: "Are you sure to logout?",
+                  title: "Are you sure to logout ?",
                   buttons: true,
                   dangerMode: true,
               })

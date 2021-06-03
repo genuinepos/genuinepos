@@ -16,8 +16,13 @@
     @endif
     
     <input type="hidden" name="action" id="action" value="">
+    <input type="text" class="d-none" name="ex_sale_id" id="ex_sale_id" value="">
+    <input type="number" step="any" class="d-none" name="ex_inv_payable_amount" id="ex_inv_payable_amount" value="0.00">
+    <input type="number" step="any" class="d-none" name="ex_inv_paid" id="ex_inv_paid" value="0.00">
     <input type="hidden" name="cash_register_id" value="{{ $openedCashRegister->id }}">
     <input type="text" class="d-none" name="button_type" id="button_type" value="0">
+    <input type="hidden" id="store_url" value="{{ route('sales.pos.store') }}">
+    <input type="hidden" id="exchange_url" value="{{ route('sales.pos.exchange.confirm') }}">
     <nav class="pos-navigation">
         <div class="col-lg-4 col-sm-12 col-12 nav-left-sec">
             <div class="col-lg-4 col-sm-12 col-12 logo-sec">

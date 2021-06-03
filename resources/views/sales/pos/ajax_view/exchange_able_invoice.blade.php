@@ -1,4 +1,5 @@
-<form id="prepare_to_exchange" action="">
+<form id="prepare_to_exchange" action="{{ route('sales.pos.prepare.exchange') }}" method="POST">
+    @csrf
     <input type="hidden" name="sale_id" value="{{ $sale->id }}">
     <div class="invoice_info">
         <div class="row">
@@ -34,6 +35,7 @@
                                 <td class="text-start">
                                     <a class="product-name" href="#">{{ $item->product->name }} {{$item->variant ? $item->variant->variant_name : ''}}</a>
                                     <input value="{{ $item->product_id }}" type="hidden" class="productId-{{ $item->product_id }}" id = "product_id" name="product_ids[]">
+                                    <input value="{{ $item->id }}" type="hidden" id = "product_row_id" name="product_row_ids[]">
                                     <input input value="{{$item->product_variant_id  ? $item->product_variant_id  : 'noid'}}" type="hidden" class="variantId-{{$item->variant_id ? $item->variant_id : ''}}" id="variant_id" name="variant_ids[]" value="{{$item->product_variant_id  ? $item->product_variant_id  : ''}}">
                                     <input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="{{ bcadd($item->tax_percent, 0, 2) }}">
                                     <input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="{{ bcadd($item->tax_amount, 0, 2) }}">

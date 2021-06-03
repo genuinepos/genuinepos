@@ -41,10 +41,15 @@
             /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to right, #8f94fb, #4e54c8);
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
             color: #FFF;
         }
+
+        .table-responsive {
+            margin-top: -13px;
+            padding-left: 8px;
+            padding-right: 8px;
+            margin-bottom: 5px !important;
+        } 
 
         .card-counter.danger {
             background: #000428;
@@ -143,7 +148,7 @@
             font-size: 14px !important;
             font-weight: normal;
             max-width: 100%;
-            padding: 0px 18px 0px 8px;
+            padding: 0px 28px 0px 8px;
             border: none;
             background-color: #6b082e;
             -webkit-appearance: none;
@@ -263,7 +268,7 @@
             border: 1px solid #ccc5c5;
             line-height: 20px;
             border-radius: 5px;
-             background: #fff;
+            background: #fff;
             box-shadow: inset 0 0 5px#ddd;
             font-size: 25px;
             margin-bottom: 9px;
@@ -286,68 +291,14 @@
         }
 
     </style>
-    <style>
-        .dt-buttons {
-            padding-top: 2px !important;
-            padding-bottom: 2px !important;
-            float: right;
-            margin-right: 5px;
-        }
-
-        .dt-buttons button {
-            padding: 0px 8px !important;
-            margin-top: 3px;
-            margin-bottom: 3px;
-            border: 0px solid transparent;
-            background-color: #6083b1;
-            color: white;
-            border-radius: 4px;
-        }
-
-        .table-responsive {
-            margin-top: -13px;
-            padding-left: 8px;
-            padding-right: 8px;
-            margin-bottom: 5px !important;
-        }
-
-        .dataTables_paginate {
-            padding-right: 8px;
-            padding-left: 8px;
-            padding-top: 9px;
-            font-family: monospace;
-        }
-
-        .dataTables_paginate a.paginate_button {
-            padding: 2px 8px;
-            background: #65667b;
-            margin: 3px;
-            color: #fff !important;
-            cursor: pointer;
-        }
-
-        .dataTables_paginate a.paginate_button.current {
-            background: #6083b1;
-        }
-
-        .disabled {
-            color: #fff;
-            background: #828d9bb6 !important;
-        }
-
-        .section-header {
-            /* color: #6b082e; */
-        }
-
-    </style>
 @endpush
 @section('title', 'Home - ')
 @section('content')
-    <div id="dashboard" class="pb-5">
+    <div id="dashboard" class="pb-5 mb-2">
         <div class="row">
             <div class="main__content">
                 <div class="row mx-3 mt-3">
-                    
+
                     <div class="switch_bar">
                         <a href="#" class="bar-link">
                             <span><i class="fas fa-chart-line"></i></span>
@@ -420,7 +371,7 @@
                             <p></p>
                         </a>
                     </div>
-                    
+
                 </div>
 
                 <div class="">
@@ -593,155 +544,150 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row px-3 m-1">
             <section>
-                <div class="container">
-                    <div class="row">
-                        <div class="form_element">
-                            <div class="section-header">
-                                <h4>
-                                    <span class="fas fa-table"></span>
-                                    Product Order Alert
-                                </h4>
-                            </div>
-                            <div class="widget_content">
-                                <div class="table-responsive">
+                <div class="row">
+                    <div class="form_element">
+                        <div class="section-header">
+                            <h4>
+                                <span class="fas fa-table"></span>
+                                Product Order Alert
+                            </h4>
+                        </div>
+                        <div class="widget_content">
+                            <div class="mtr-table">
+                                <table id="stock_alert_table" class="display data__table data_tble" cellspacing="0"
+                                    width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Location</th>
+                                            <th>Current Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Row Data 1</td>
+                                            <td>Row Data 1</td>
+                                            <td>Row Data 1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 2</td>
+                                            <td>Row Data 2</td>
+                                            <td>Row Data 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 3</td>
+                                            <td>Row Data 3</td>
+                                            <td>Row Data 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 4</td>
+                                            <td>Row Data 4</td>
+                                            <td>Row Data 4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 5</td>
+                                            <td>Row Data 5</td>
+                                            <td>Row Data 5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 6</td>
+                                            <td>Row Data 6</td>
+                                            <td>Row Data 6</td>
+                                        </tr>
 
-                                    <table id="stock_alert_table" class="display data__table data_tble" cellspacing="0"
-                                        width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Location</th>
-                                                <th>Current Stock</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Row Data 1</td>
-                                                <td>Row Data 1</td>
-                                                <td>Row Data 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 2</td>
-                                                <td>Row Data 2</td>
-                                                <td>Row Data 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 3</td>
-                                                <td>Row Data 3</td>
-                                                <td>Row Data 3</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 4</td>
-                                                <td>Row Data 4</td>
-                                                <td>Row Data 4</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 5</td>
-                                                <td>Row Data 5</td>
-                                                <td>Row Data 5</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 6</td>
-                                                <td>Row Data 6</td>
-                                                <td>Row Data 6</td>
-                                            </tr>
+                                        <tr>
+                                            <td>Row Data 7</td>
+                                            <td>Row Data 7</td>
+                                            <td>Row Data 7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 8</td>
+                                            <td>Row Data 8</td>
+                                            <td>Row Data 8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 9</td>
+                                            <td>Row Data 9</td>
+                                            <td>Row Data 9</td>
+                                        </tr>
 
-                                            <tr>
-                                                <td>Row Data 7</td>
-                                                <td>Row Data 7</td>
-                                                <td>Row Data 7</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 8</td>
-                                                <td>Row Data 8</td>
-                                                <td>Row Data 8</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 9</td>
-                                                <td>Row Data 9</td>
-                                                <td>Row Data 9</td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
             <section>
-                <div class="container">
-                    <div class="row">
-                        <div class="form_element">
-                            <div class="section-header">
-                                <span class="fas fa-table"></span>
-                                <h4>Sales Order</h4>
-                            </div>
-                            <div class="widget_content">
-                                <div class="table-responsive">
+                <div class="row">
+                    <div class="form_element">
+                        <div class="section-header">
+                            <span class="fas fa-table"></span>
+                            <h4>Sales Order</h4>
+                        </div>
+                        <div class="widget_content">
+                            <div class="table-responsive">
 
-                                    <table id="sales_order_table" class="display data__table data_tble" cellspacing="0"
-                                        width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Location</th>
-                                                <th>Current Stock</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Row Data 1</td>
-                                                <td>Row Data 1</td>
-                                                <td>Row Data 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 2</td>
-                                                <td>Row Data 2</td>
-                                                <td>Row Data 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 3</td>
-                                                <td>Row Data 3</td>
-                                                <td>Row Data 3</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 4</td>
-                                                <td>Row Data 4</td>
-                                                <td>Row Data 4</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 5</td>
-                                                <td>Row Data 5</td>
-                                                <td>Row Data 5</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 6</td>
-                                                <td>Row Data 6</td>
-                                                <td>Row Data 6</td>
-                                            </tr>
+                                <table id="sales_order_table" class="display data__table data_tble" cellspacing="0"
+                                    width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Location</th>
+                                            <th>Current Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Row Data 1</td>
+                                            <td>Row Data 1</td>
+                                            <td>Row Data 1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 2</td>
+                                            <td>Row Data 2</td>
+                                            <td>Row Data 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 3</td>
+                                            <td>Row Data 3</td>
+                                            <td>Row Data 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 4</td>
+                                            <td>Row Data 4</td>
+                                            <td>Row Data 4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 5</td>
+                                            <td>Row Data 5</td>
+                                            <td>Row Data 5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 6</td>
+                                            <td>Row Data 6</td>
+                                            <td>Row Data 6</td>
+                                        </tr>
 
-                                            <tr>
-                                                <td>Row Data 7</td>
-                                                <td>Row Data 7</td>
-                                                <td>Row Data 7</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 8</td>
-                                                <td>Row Data 8</td>
-                                                <td>Row Data 8</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Row Data 9</td>
-                                                <td>Row Data 9</td>
-                                                <td>Row Data 9</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        <tr>
+                                            <td>Row Data 7</td>
+                                            <td>Row Data 7</td>
+                                            <td>Row Data 7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 8</td>
+                                            <td>Row Data 8</td>
+                                            <td>Row Data 8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Row Data 9</td>
+                                            <td>Row Data 9</td>
+                                            <td>Row Data 9</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

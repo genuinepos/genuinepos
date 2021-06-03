@@ -608,8 +608,18 @@
             var calcInvoicePayable = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge);
 
             $('#total_invoice_payable').val(parseFloat(calcInvoicePayable).toFixed(2));
+            var ex_inv_payable_amount = $('#ex_inv_payable_amount').val() ? $('#ex_inv_payable_amount').val() : 0;
+            var ex_inv_paid = $('#ex_inv_paid').val() ? $('#ex_inv_paid').val() : 0;
+            var exchange_item_total_price = $('#exchange_item_total_price').val() ? $('#exchange_item_total_price').val() : 0;
 
-            var calcTotalPayableAmount = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge) + parseFloat(previousDue);
+            var calcTotalPayableAmount = parseFloat(netTotalAmount) - 
+            parseFloat(orderDiscountAmount) + 
+            parseFloat(calcOrderTaxAmount) + 
+            parseFloat(shipmentCharge) + 
+            parseFloat(previousDue) +
+            parseFloat(ex_inv_payable_amount) -
+            parseFloat(ex_inv_paid);
+            
             $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
             //$('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
             // Update purchase due

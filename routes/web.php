@@ -370,6 +370,8 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::get('get/recent/product/{branch_id}/{warehouse_id}/{product_id}', 'POSController@getRecentProduct');
         Route::get('close/cash/registser/modal/view', 'POSController@close');
         Route::get('search/exchangeable/invoice', 'POSController@searchExchangeableInv')->name('sales.pos.serc.ex.inv');
+        Route::post('prepare/exchange', 'POSController@prepareExchange')->name('sales.pos.prepare.exchange');
+        Route::post('exchange/confirm', 'POSController@exchangeConfirm')->name('sales.pos.exchange.confirm');
     });
 });
 
@@ -737,8 +739,12 @@ Route::get('/test', function () {
     //return date('h:i:s a');
     //return bcadd(100.2, 0, 2);
     //return Hash::make('12345');
-    DB::statement('create database new_inventory_2');
-    Artisan::call('migrate');
+    
+    // DB::statement('create database new_inventory_2');
+    // Artisan::call('migrate');
+    $a = 1;
+    $b = -1;
+    return $qty = $a + $b;
 });
 
 Auth::routes();

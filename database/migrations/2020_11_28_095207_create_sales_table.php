@@ -50,6 +50,7 @@ class CreateSalesTable extends Migration
             $table->string('month')->nullable();
             $table->string('year')->nullable();
             $table->boolean('is_return_available')->default(0);
+            $table->boolean('ex_status')->default(0)->comment('0=exchangeed,1=exchanged');
             $table->string('attachment')->nullable();
             $table->tinyInteger('created_by')->default(1)->comment('1=add_sale;2=pos');
             $table->timestamps();

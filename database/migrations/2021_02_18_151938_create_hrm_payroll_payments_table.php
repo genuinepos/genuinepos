@@ -21,10 +21,11 @@ class CreateHrmPayrollPaymentsTable extends Migration
             $table->decimal('paid', 22,2)->default(0);
             $table->decimal('due', 22,2)->default(0);
             $table->string('pay_mode')->nullable();
-            $table->string('date');
-            $table->string('month');
-            $table->string('year');
-            $table->timestamp('report_date');
+            $table->string('date')->nullable();
+            $table->string('time')->nullable();
+            $table->string('month')->nullable();
+            $table->string('year')->nullable();
+            $table->timestamp('report_date')->nullable();
             $table->string('card_no')->nullable();
             $table->string('card_holder')->nullable();
             $table->string('card_type')->nullable();

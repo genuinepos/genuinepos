@@ -92,4 +92,9 @@
             overflow-y: hidden;
         }
 
+        .dataTables_filter input {
+            padding-right: 8px;
+            padding-left: 26px;
+        }
+
     </style>

@@ -22,21 +22,7 @@
             </thead>
 
             <tbody id="product_list">
-                {{-- <tr>
-                    <td>1</td>
-                    <td><a href="" class="product-name text-info">This is a product name</a></td>
-                    <td>
-                        <input type="number" name="qty" value="2" class="form-control qty-input" id="quantity">
-                    </td>
-                    <td><b>Cartoon</b></td>
-                    <td><b>10000.00</b> </td>
-                    <td><b>10000.00</b> </td>
-                    <td>
-                        <a href="#" class="action-btn c-delete ">
-                            <span class="fas fa-trash "></span>
-                        </a>
-                    </td>
-                </tr> --}}
+                
             </tbody>
         </table>
     </div>

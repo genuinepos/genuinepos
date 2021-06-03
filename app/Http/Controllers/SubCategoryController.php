@@ -100,7 +100,7 @@ class SubCategoryController extends Controller
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
             ]);
         }
-        return response()->json('Successfully category is added');
+        return response()->json('Subcategory created successfully');
     }
 
     public function update(Request $request)
@@ -134,7 +134,7 @@ class SubCategoryController extends Controller
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
             ]);
         }
-        return response()->json('Successfully category is updated');
+        return response()->json('Subcategory updated Successfully');
     }
 
     public function delete(Request $request, $categoryId)
@@ -150,6 +150,6 @@ class SubCategoryController extends Controller
         if (!is_null($deleteCategory)) {
             $deleteCategory->delete();
         }
-        return response()->json('Successfully category is deleted');
+        return response()->json('Subcategory deleted Successfully');
     }
 }

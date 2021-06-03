@@ -24,7 +24,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>All Taxes</h6>
+                                        <h6>All Tax</h6>
                                     </div>
 
                                     <div class="col-md-6">
@@ -172,7 +172,6 @@
         $('#add_tax_form').on('submit', function(e){
             e.preventDefault();
              $('.loading_button').show();
-             $('.submit_button').hide();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
@@ -191,7 +190,6 @@
             });
             if(countErrorField > 0){
                  $('.loading_button').hide();
-                 $('.submit_button').show();
                 return;
             }
             $.ajax({
@@ -199,10 +197,9 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_tax_form')[0].reset();
                     $('.loading_button').hide();
-                    $('.submit_button').show();
                     getAllUnit();
                     $('#addModal').modal('hide');
                 }
@@ -226,7 +223,6 @@
         $('#edit_tax_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
-            $('.submit_button').hide();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.edit_input');
@@ -245,7 +241,6 @@
             });
             if(countErrorField > 0){
                 $('.loading_button').hide();
-                $('.submit_button').show();
                 return;
             }
             $.ajax({
@@ -254,9 +249,8 @@
                 data:request,
                 success:function(data){
                     $('#editModal').modal('hide');
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
-                    $('.submit_button').show();
                     getAllUnit();
                 }
             });
@@ -276,8 +270,6 @@
             .then((willDelete) => {
                 if (willDelete) { 
                     $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });
@@ -294,9 +286,9 @@
                 success:function(data){
                     if($.isEmptyObject(data.errorMsg)){
                         getAllUnit();
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                     }else{
-                        toastr.error(data.errorMsg, 'Error'); 
+                        toastr.error(data.errorMsg); 
                     }
                 }
             });

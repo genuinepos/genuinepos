@@ -38,7 +38,7 @@ class ExpanseCategoryController extends Controller
             'name' => $request->name,
             'code' => $request->code,
         ]);
-        return response()->json('Successfully expanse category is added');
+        return response()->json('Expanse category created successfully');
     }
 
     // Update expanse category
@@ -56,7 +56,7 @@ class ExpanseCategoryController extends Controller
             'name' => $request->name,
             'code' => $request->code,
         ]);
-        return response()->json('Successfully expanse category is updated');
+        return response()->json('Expanse category updated successfully');
     }
 
     public function delete(Request $request, $categoryId)
@@ -67,6 +67,6 @@ class ExpanseCategoryController extends Controller
         if (!is_null($deleteCategory)) {
             $deleteCategory->delete();
         }
-        return response()->json('Successfully expanse category is deleted');
+        return response()->json('Expanse category deleted successfully');
     }
 }

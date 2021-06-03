@@ -388,8 +388,8 @@ class ProductController extends Controller
         //     }
         // }
 
-        session()->flash('successMsg', 'Successfully product is added');
-        return response()->json('Successfully product is added');
+        session()->flash('successMsg', 'Product create Successfully');
+        return response()->json('Product create Successfully');
     }
 
     public function view($productId)
@@ -943,7 +943,7 @@ class ProductController extends Controller
 
             $deleteProduct->delete();
         }
-        return response()->json('Successfully product is deleted');
+        return response()->json('Product deleted successfully');
     }
 
     // multiple delete method
@@ -990,7 +990,7 @@ class ProductController extends Controller
                 $product->status = 0;
                 $product->save();
             }
-            return response()->json('Successfully all selected product status is deactived');
+            return response()->json('Successfully all selected product status deactived');
         }
     }
 

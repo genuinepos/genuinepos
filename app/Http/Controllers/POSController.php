@@ -348,7 +348,7 @@ class POSController extends Controller
         return view('sales.pos.edit', compact('sale', 'categories', 'brands'));
     }
 
-    // Get invoice products **reqeusted by ajax**
+    // Get invoice products **requested by ajax**
     public function invoiceProducts($saleId)
     {
         $invoiceProducts = SaleProduct::with(['sale', 'product', 'variant'])->where('sale_id', $saleId)->get();
@@ -391,7 +391,7 @@ class POSController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
-        $updateSale = Sale::with(['sale_payments','sale_products', 'sale_products.product', 'sale_products.variant', 'sale_products.product.comboProducts'])->where('id', $request->sale_id)->first();
+        $updateSale = Sale::with(['sale_payments', 'sale_products', 'sale_products.product', 'sale_products.variant', 'sale_products.product.comboProducts'])->where('id', $request->sale_id)->first();
         //return $request->all();
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
@@ -413,7 +413,7 @@ class POSController extends Controller
                 $account->credit -= $sale_payment->paid_amount;
                 $account->balance -= $sale_payment->paid_amount;
                 $account->save();
-            }  
+            }
             $sale_payment->delete();
         }
 
@@ -432,12 +432,12 @@ class POSController extends Controller
             if ($customer) {
                 $customer->total_sale -= $updateSale->total_payable_amount;
                 $customer->total_sale += $request->total_payable_amount;
-                
+
                 if ($request->total_due > 0) {
                     $customer->total_sale_due -= $updateSale->due;
                     $customer->total_sale_due += $request->total_due;
                 }
-            
+
                 $customer->save();
             }
         }
@@ -460,7 +460,7 @@ class POSController extends Controller
         $updateSale->total_payable_amount = $request->total_payable_amount;
 
         $updateSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
-        
+
         if ($request->action == 1) {
             if ($request->paying_amount == 0) {
                 $updateSale->due = $request->total_payable_amount;
@@ -577,7 +577,7 @@ class POSController extends Controller
 
                             $productBranchVariant->variant_quantity -= $quantities[$index];
                             $productBranchVariant->save();
-                        }else {
+                        } else {
                             $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
                                 ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])
                                 ->first();
@@ -724,7 +724,7 @@ class POSController extends Controller
             return view('sales.save_and_print_template.quotation_print', compact('sale'));
         } elseif ($request->action == 5) {
             return response()->json(['holdInvoiceMsg' => 'Holded Invoice is updated successfully.']);
-        }elseif ($request->action == 6) {
+        } elseif ($request->action == 6) {
             return response()->json(['suspendMsg' => 'Suspended invoice is updated.']);
         }
     }
@@ -1344,44 +1344,44 @@ class POSController extends Controller
         $branch = '';
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $warehouse = DB::table('warehouses')
-            ->where('id', $request->warehouse_id)
-            ->select('warehouse_name', 'warehouse_code')->first();
+                ->where('id', $request->warehouse_id)
+                ->select('warehouse_name', 'warehouse_code')->first();
             $products = DB::table('product_warehouses')
-            ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
-            ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
-            ->leftJoin('products', 'product_warehouses.product_id', 'products.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->select(
-                'product_warehouses.product_quantity',
-                'products.name as pro_name',
-                'products.product_code as pro_code',
-                'product_variants.variant_name as var_name',
-                'product_variants.variant_code as var_code',
-                'product_warehouse_variants.variant_quantity',
-                'units.code_name as u_code',
-            )
-            ->where('warehouse_id', $request->warehouse_id)
-            ->get();
+                ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
+                ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
+                ->leftJoin('products', 'product_warehouses.product_id', 'products.id')
+                ->leftJoin('units', 'products.unit_id', 'units.id')
+                ->select(
+                    'product_warehouses.product_quantity',
+                    'products.name as pro_name',
+                    'products.product_code as pro_code',
+                    'product_variants.variant_name as var_name',
+                    'product_variants.variant_code as var_code',
+                    'product_warehouse_variants.variant_quantity',
+                    'units.code_name as u_code',
+                )
+                ->where('warehouse_id', $request->warehouse_id)
+                ->get();
         } else {
             $branch = DB::table('branches')
-            ->where('id', auth()->user()->branch_id)
-            ->select('name', 'branch_code')->first();
+                ->where('id', auth()->user()->branch_id)
+                ->select('name', 'branch_code')->first();
             $products = DB::table('product_branches')
-            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
-            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
-            ->leftJoin('products', 'product_branches.product_id', 'products.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->select(
-                'product_branches.product_quantity',
-                'products.name as pro_name',
-                'products.product_code as pro_code',
-                'product_variants.variant_name as var_name',
-                'product_variants.variant_code as var_code',
-                'product_branch_variants.variant_quantity',
-                'units.code_name as u_code',
-            )
-            ->where('branch_id', auth()->user()->branch_id)
-            ->get();
+                ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+                ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+                ->leftJoin('products', 'product_branches.product_id', 'products.id')
+                ->leftJoin('units', 'products.unit_id', 'units.id')
+                ->select(
+                    'product_branches.product_quantity',
+                    'products.name as pro_name',
+                    'products.product_code as pro_code',
+                    'product_variants.variant_name as var_name',
+                    'product_variants.variant_code as var_code',
+                    'product_branch_variants.variant_quantity',
+                    'units.code_name as u_code',
+                )
+                ->where('branch_id', auth()->user()->branch_id)
+                ->get();
         }
 
         return view('sales.pos.ajax_view.stock', compact('products', 'warehouse', 'branch'));
@@ -1399,7 +1399,7 @@ class POSController extends Controller
 
         if ($sale) {
             return view('sales.pos.ajax_view.exchange_able_invoice', compact('sale'));
-        }else {
+        } else {
             return response()->json(['errorMsg' => 'Invoice Not Fount']);
         }
     }
@@ -1407,6 +1407,7 @@ class POSController extends Controller
     public function prepareExchange(Request $request)
     {
         //return $request->all();
+        
         $sale_id = $request->sale_id;
         $sale = Sale::where('id', $sale_id)->first();
         $ex_quantities = $request->ex_quantities;
@@ -1419,7 +1420,7 @@ class POSController extends Controller
         $unit_tax_amounts = $request->unit_tax_amounts;
         $unit_tax_percents = $request->unit_tax_percents;
 
-        $index=0;
+        $index = 0;
         $exchange_item_total_price = 0;
         $sold_item_total_price = 0;
         foreach ($ex_quantities as $ex_quantity) {
@@ -1431,7 +1432,7 @@ class POSController extends Controller
                 $soldProduct->ex_quantity = $__ex_qty;
                 $soldProduct->ex_status = 1;
                 $soldProduct->save();
-            }else {
+            } else {
                 $soldProduct->ex_quantity = 0;
                 $soldProduct->ex_status = 0;
                 $soldProduct->save();
@@ -1440,7 +1441,7 @@ class POSController extends Controller
         }
 
         $ex_items = SaleProduct::with('product', 'variant')->where('sale_id', $sale->id)
-        ->where('ex_status', 1)->get();
+            ->where('ex_status', 1)->get();
 
         $qty_limits = [];
         foreach ($ex_items as $sale_product) {
@@ -1484,13 +1485,203 @@ class POSController extends Controller
 
     public function exchangeConfirm(Request $request)
     {
-        return $request->all();
-        $sale = Sale::with('customer')->where('id', $request->ex_sale_id)->first();
-
-        if ($sale->customer) {
-            $sale->customer->total_sale_due += $request->total_due;
-            $sale->customer->total_sale += $request->;
-            $sale->customer->total_paid += $request->total_sale;
+        //return $request->all();
+        if ($request->action != 1) {
+            return response()->json(['errorMsg' => 'You can not create another entry when item exchange in going on.']);
         }
+
+        $updateSale = Sale::with('customer')->where('id', $request->ex_sale_id)->first();
+
+        if ($request->total_due > 0 && $updateSale->customer_id == NULL) {
+            return response()->json(['errorMsg' => 'Listed Customer is required when exchange is due or partial.']);
+        }
+
+        if ($updateSale->customer) {
+            $updateSale->customer->total_sale_due += $request->total_due;
+            $updateSale->customer->total_sale += $request->total_payable_amount;
+            $updateSale->customer->total_paid += $request->paying_amount;
+            $updateSale->customer->save();
+        }
+
+        $updateSale->net_total_amount = $updateSale->net_total_amount + $request->net_total_amount;
+        $updateSale->total_payable_amount = $updateSale->total_payable_amount + $request->total_payable_amount;
+        $updateSale->paid = $updateSale->paid + $request->paying_amount;
+        $updateSale->due = $request->total_due;
+        $updateSale->ex_status = 1;
+        $updateSale->save();
+
+        $product_ids = $request->product_ids;
+        $variant_ids = $request->variant_ids;
+        $descriptions = $request->descriptions;
+        $quantities = $request->quantities;
+        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
+        $subtotals = $request->subtotals;
+        $unit_discount_types = $request->unit_discount_types;
+        $unit_discounts = $request->unit_discounts;
+        $unit_discount_amounts = $request->unit_discount_amounts;
+        $unit_tax_percents = $request->unit_tax_percents;
+        $unit_tax_amounts = $request->unit_tax_amounts;
+        $unit_prices_inc_tax = $request->unit_prices_inc_tax;
+        $units = $request->units;
+
+        $index = 0;
+        foreach ($product_ids as $product_id) {
+            $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $saleProduct = SaleProduct::where('sale_id', $request->ex_sale_id)
+                ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
+
+            if ($updateSale->branch_id) {
+                $productBranch = ProductBranch::where('branch_id', $saleProduct->branch_id)
+                    ->where('product_id', $product_id)
+                    ->first();
+                $productBranch->product_quantity -= $saleProduct->quantity;
+                $productBranch->save();
+                if ($variant_id) {
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
+                        ->where('product_id', $product_id)
+                        ->where('product_variant_id', $variant_id)
+                        ->first();
+                    $productBranchVariant->variant_quantity -= $quantities[$index];
+                    $productBranchVariant->save();
+                }
+            } else {
+                $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSale->warehouse_id)
+                    ->where('product_id', $product_id)
+                    ->first();
+                $productWarehouse->product_quantity -= $quantities[$index];
+                $productWarehouse->save();
+                if ($variant_id) {
+                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
+                        ->where('product_id', $product_id)
+                        ->where('product_variant_id', $variant_id)
+                        ->first();
+                    $productWarehouseVariant->variant_quantity -= $quantities[$index];
+                    $productWarehouseVariant->save();
+                }
+            }
+           
+            if ($saleProduct) {
+                if ($saleProduct->ex_status == 1) {
+                    $saleProduct->quantity += $quantities[$index];
+                    $saleProduct->ex_quantity = $quantities[$index];
+                    $saleProduct->description = $descriptions[$index];
+                    $saleProduct->subtotal += $subtotals[$index];
+                    $saleProduct->ex_status = 2;
+                    $saleProduct->save();
+                }
+            } else {
+                $addSaleProduct = new SaleProduct();
+                $addSaleProduct->sale_id = $request->ex_sale_id;
+                $addSaleProduct->product_id = $product_ids[$index];
+                $addSaleProduct->product_variant_id = $variant_id;
+                $addSaleProduct->quantity = $quantities[$index];
+                $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
+                $addSaleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$index];
+                $addSaleProduct->unit_discount_type = $unit_discount_types[$index];
+                $addSaleProduct->unit_discount = $unit_discounts[$index];
+                $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$index];
+                $addSaleProduct->unit_tax_percent = $unit_tax_percents[$index];
+                $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$index];
+                $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$index];
+                $addSaleProduct->unit = $units[$index];
+                $addSaleProduct->description = $descriptions[$index];
+                $addSaleProduct->subtotal = $subtotals[$index];
+                $addSaleProduct->save();
+            }
+            $index++;
+        }
+
+        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+
+        $i = 5;
+        $a = 0;
+        $invoiceId = '';
+        while ($a < $i) {
+            $invoiceId .= rand(1, 9);
+            $a++;
+        }
+        // Add new payment 
+        if ($request->paying_amount > 0) {
+            $addSalePayment = new SalePayment();
+            $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+            $addSalePayment->sale_id = $request->ex_sale_id;
+            $addSalePayment->customer_id = $request->customer_id ? $request->customer_id : NULL;
+            $addSalePayment->account_id = $request->account_id;
+            $addSalePayment->paid_amount = $request->paying_amount;
+            $addSalePayment->date = date('d-m-Y');
+            $addSalePayment->time = date('h:i:s');
+            $addSalePayment->report_date = date('Y-m-d');
+            $addSalePayment->month = date('F');
+            $addSalePayment->year = date('Y');
+            $addSalePayment->pay_mode = $request->payment_method;
+            $addSalePayment->note = $request->payment_note;
+
+            if ($request->payment_method == 'Card') {
+                $addSalePayment->card_no = $request->card_no;
+                $addSalePayment->card_holder = $request->card_holder_name;
+                $addSalePayment->card_transaction_no = $request->card_transaction_no;
+                $addSalePayment->card_type = $request->card_type;
+                $addSalePayment->card_month = $request->month;
+                $addSalePayment->card_year = $request->year;
+                $addSalePayment->card_secure_code = $request->secure_code;
+            } elseif ($request->payment_method == 'Cheque') {
+                $addSalePayment->cheque_no = $request->cheque_no;
+            } elseif ($request->payment_method == 'Bank-Transfer') {
+                $addSalePayment->account_no = $request->account_no;
+            } elseif ($request->payment_method == 'Custom') {
+                $addSalePayment->transaction_no = $request->transaction_no;
+            }
+
+            $addSalePayment->admin_id = auth()->user()->id;
+            $addSalePayment->save();
+
+            if ($request->account_id) {
+                // update account
+                $account = Account::where('id', $request->account_id)->first();
+                $account->credit += $request->paying_amount;
+                $account->balance += $request->paying_amount;
+                $account->save();
+
+                // Add cash flow
+                $addCashFlow = new CashFlow();
+                $addCashFlow->account_id = $request->account_id;
+                $addCashFlow->credit = $request->paying_amount;
+                $addCashFlow->balance = $account->balance;
+                $addCashFlow->sale_payment_id = $addSalePayment->id;
+                $addCashFlow->transaction_type = 2;
+                $addCashFlow->cash_type = 2;
+                $addCashFlow->date = date('d-m-Y');
+                $addCashFlow->report_date = date('Y-m-d');
+                $addCashFlow->month = date('F');
+                $addCashFlow->year = date('Y');
+                $addCashFlow->admin_id = auth()->user()->id;
+                $addCashFlow->save();
+            }
+
+            if ($request->customer_id) {
+                $addCustomerLedger = new CustomerLedger();
+                $addCustomerLedger->customer_id = $request->customer_id;
+                $addCustomerLedger->sale_payment_id = $addSalePayment->id;
+                $addCustomerLedger->row_type = 2;
+                $addCustomerLedger->save();
+            }
+        }
+
+        $previous_due = 0;
+        $total_payable_amount = $request->total_payable_amount;
+        $paying_amount = $request->paying_amount;
+        $total_due = $request->total_due;
+        $change_amount = $request->change_amount;
+
+        $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])->where('id', $request->ex_sale_id)->first();
+        return view('sales.save_and_print_template.pos_sale_print', compact(
+            'sale',
+            'previous_due',
+            'total_payable_amount',
+            'paying_amount',
+            'total_due',
+            'change_amount'
+        ));
     }
 }

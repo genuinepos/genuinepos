@@ -210,11 +210,11 @@
         var action = $(this).data('action_id');
         var button_type = $(this).data('button_type');
         if (action == 1) {
-            actionMessage = 'Successfully sale is created.';
+            actionMessage = 'Sale created Successfully.';
         }else if (action == 2) {
-            actionMessage = 'Successfully draft is created.';
+            actionMessage = ' Draft created successfully.';
         }else if (action == 4) {
-            actionMessage = 'Successfully quotation is created.';
+            actionMessage = 'Quotation created Successfully.';
         }
         $('#action').val(action);
         $('#button_type').val(button_type);
@@ -237,7 +237,7 @@
         $('#pos_submit_form').submit();
     }
 
-    var actionMessage = 'Successfull data inserted.';
+    var actionMessage = 'Data inserted Successfull.';
     $('#pos_submit_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();
@@ -292,7 +292,7 @@
                 $('#pos_submit_form')[0].reset();
                 calculateTotalAmount();
                 $('#account_id').val(defaultAccount);
-                toastr.error('Sale is cancelled.');
+                toastr.error('Sale has been cancelled.');
                 document.getElementById('search_product').focus();
                 var store_url = $('#store_url').val();
                 $('#pos_submit_form').attr('action', store_url);

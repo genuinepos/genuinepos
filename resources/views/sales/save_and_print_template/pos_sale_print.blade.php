@@ -155,7 +155,7 @@
                                     <td class="text-start">
                                         {{ $sale_product->product->name }}
                                         @if ($sale_product->variant)
-                                            -{{ $sale_product->variant->variant_name }}
+                                            -{{ $sale_product->variant->variant_name }}{!! $sale_product->ex_quantity != 0 ? '(<b>EX:</b>'.$sale_product->ex_quantity.')' : '' !!}
                                         @endif
                                         {!! $sale->branch->pos_sale_invoice_layout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                     </td>
@@ -547,7 +547,7 @@
                                         @php
                                             $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
                                         @endphp
-                                        <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }} </th>
+                                        <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }}{!! $saleProduct->ex_quantity != 0 ? '(<b>EX:</b>'.$saleProduct->ex_quantity.')' : '' !!} </th>
                                         
                                         <th class="text-center">{{ (float) $saleProduct->quantity }}</th>
                                         <th class="text-center">{{ $saleProduct->unit_price_inc_tax }}</th>
@@ -907,7 +907,7 @@
                                     <td class="text-start">
                                         {{ $sale_product->product->name }}
                                         @if ($sale_product->variant)
-                                            -{{ $sale_product->variant->variant_name }}
+                                            -{{ $sale_product->variant->variant_name }}{!! $sale_product->ex_quantity != 0 ? '(<b>EX:</b>'.$sale_product->ex_quantity.')' : '' !!}
                                         @endif
                                         {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                     </td>
@@ -1333,7 +1333,7 @@
                                         @php
                                             $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
                                         @endphp
-                                        <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }} </th>
+                                        <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }}{!! $saleProduct->ex_quantity != 0 ? '(<b>EX:</b>'.$saleProduct->ex_quantity.')' : '' !!} </th>
                                         
                                         <th class="text-center">{{ (float) $saleProduct->quantity }}</th>
                                         <th class="text-center">{{ $saleProduct->unit_price_inc_tax }}</th>

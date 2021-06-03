@@ -112,7 +112,7 @@
 
     <script>
       toastr.options = {
-        "positionClass": "toast-top-right",
+        "positionClass": "toast-top-center",
       }
 
       $(document).ready(function() {
@@ -126,10 +126,7 @@
               .then((willDelete) => {
                   if (willDelete) {
                     $('#logout_form').submit();
-                  } 
-                  // else {
-                  //     swal("Okay");
-                  // }
+                  }
               });
           });
       });

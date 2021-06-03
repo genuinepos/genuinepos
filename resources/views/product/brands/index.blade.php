@@ -23,7 +23,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>All Brands</h6>
+                                        <h6>All Brand</h6>
                                     </div>
                                     @if (auth()->user()->permission->brand['brand_add'] == '1')
                                         <div class="col-md-6">

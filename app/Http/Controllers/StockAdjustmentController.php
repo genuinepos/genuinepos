@@ -275,8 +275,8 @@ class StockAdjustmentController extends Controller
 
             $index++;
         }
-        session()->flash('successMsg', 'Successfully stock adjustment is added');
-        return response()->json('Successfully stock adjustment is added');
+        session()->flash('successMsg', 'Stock adjustment created successfully');
+        return response()->json('Stock adjustment created successfully');
     }
 
     // Delete stock adjustment
@@ -318,7 +318,7 @@ class StockAdjustmentController extends Controller
             }
             $deleteAdjustment->delete();
         }
-        return response()->json('Successfully stock adjustment is deleted.');
+        return response()->json('Stock adjustment deleted successfully.');
     }
 
     // Search product

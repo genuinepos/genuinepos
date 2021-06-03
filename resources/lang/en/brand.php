@@ -21,9 +21,7 @@ return [
     'processing' => 'Processing',
     'delete_alert' => 'Are you sure to delete?',
     'delete_cancel' => 'Your imaginary file is safe!',
-    'add_success' => 'Successfully brand is added.',
-    'update_success' => 'Successfully brand is updated.',
-    'add_success' => 'Successfully brand is deleted.',
-    'add_success' => 'Successfully brand is deleted.',
+    'add_success' => 'Brand created successfully.',
+    'update_success' => 'Brand updated successfully.',
 ];
 

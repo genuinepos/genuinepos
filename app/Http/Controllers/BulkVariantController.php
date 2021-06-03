@@ -42,7 +42,7 @@ class BulkVariantController extends Controller
             $addVariantChild->save();
         }
 
-        return response()->json('Successfully variant is added');
+        return response()->json('Variant created Successfully');
     }
     
     public function update(Request $request)
@@ -82,7 +82,7 @@ class BulkVariantController extends Controller
                 $deleteBulkVariantChild->delete();
             }
         }
-        return response()->json('Successfully variant is updated');
+        return response()->json('Variant is updated successfully');
     }
 
     public function delete(Request $request, $variantId)
@@ -90,7 +90,7 @@ class BulkVariantController extends Controller
         $deleteVariant = BulkVariant::where('id', $variantId)->first();
         if (!is_null($deleteVariant)) {
             $deleteVariant->delete();
-            return response()->json('Successfully bulk variant is deleted');
+            return response()->json('Variant deleted successfully');
         }
     }
 }

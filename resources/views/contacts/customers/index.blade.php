@@ -23,7 +23,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>All Customers</h6>
+                                        <h6>All Customer</h6>
                                     </div>
 
                                     <div class="col-md-6">
@@ -85,7 +85,7 @@
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
-                    <form id="add_customer_form" action="{{ route('product.categories.store') }}" method="POST"
+                    <form id="add_customer_form" action="{{ route('contacts.customer.store') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row mt-1">
@@ -553,7 +553,7 @@
                     type: 'post',
                     data: request,
                     success: function(data) {
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('#add_customer_form')[0].reset();
                         getAllCustomer();
                         $('.loading_button').hide();
@@ -621,7 +621,7 @@
                     data: request,
                     success: function(data) {
                         console.log(data);
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('.loading_button').hide();
                         getAllCustomer();
                         $('#editModal').modal('hide');
@@ -643,8 +643,6 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $('#deleted_form').submit();
-                        } else {
-                            swal("Your imaginary file is safe!");
                         }
                     });
             });
@@ -661,7 +659,7 @@
                     data: request,
                     success: function(data) {
                         getAllCustomer();
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('#deleted_form')[0].reset();
                     }
                 });
@@ -938,8 +936,6 @@
                     if (willDelete) {
                         $('#receipt_deleted_form').submit();
                         tr.remove();
-                    } else {
-                        swal("Your imaginary file is safe!");
                     }
                 });
             });
@@ -955,7 +951,7 @@
                     async: false,
                     data: request,
                     success: function(data) {
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('#receipt_deleted_form')[0].reset();
                     }
                 });

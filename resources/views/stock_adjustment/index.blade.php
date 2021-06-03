@@ -74,8 +74,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-10">
-                                        <h6>All Adjustments <small>Note: Initially current year's data is available here, if
-                                                another year's data go to the data filter.</small></h6>
+                                        <h6>All Adjustment <small>Note: Initially current year's data is available here, if need another year's data go to the data filter.</small></h6>
                                     </div>
     
                                     <div class="col-md-2">
@@ -218,14 +217,11 @@
             $('#deleted_form').attr('action', url);
             swal({
                 title: "Are you sure to delete ?",
-                icon: "warning",
                 buttons: true,
                 dangerMode: true,
             }).then((willDelete) => {
                 if (willDelete) { 
                     $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });
@@ -241,7 +237,7 @@
                 data:request,
                 success:function(data){
                     adjustment_table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                 }
             });
         });

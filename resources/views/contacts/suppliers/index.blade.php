@@ -25,7 +25,7 @@
                         <div class="form_element">
                             <div class="section-header">
                                 <div class="col-md-6">
-                                    <h6>All Suppliers</h6>
+                                    <h6>All Supplier</h6>
                                 </div>
                                
                                 <div class="col-md-6">
@@ -448,7 +448,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_supplier_form')[0].reset();
                     getAllSupplier();
                     $('.loading_button').hide();
@@ -516,7 +516,7 @@
                 data: request,
                 success:function(data){
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     $('#edit_supplier_form')[0].reset();
                     getAllSupplier();
@@ -532,16 +532,12 @@
             $('#deleted_form').attr('action', url);
             swal({
                 title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this imaginary file!",
-                icon: "warning",
                 buttons: true,
                 dangerMode: true,
             })
             .then((willDelete) => {
                 if (willDelete) { 
                     $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });
@@ -669,13 +665,6 @@
             var value = $(this).val();
             $('.payment_method').hide();
             $('#'+value).show();
-        });
-
-        // Acivate date picker
-        $('.date-picker').datepicker({
-            format: 'yyyy-mm-dd',
-            todayHighlight: true,
-            autoclose: true,
         });
     });
 </script>

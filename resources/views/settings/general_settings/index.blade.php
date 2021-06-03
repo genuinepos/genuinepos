@@ -1106,7 +1106,7 @@
                 processData: false,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });
@@ -1143,7 +1143,7 @@
                 data: request,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });
@@ -1180,7 +1180,7 @@
                 data: request,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });
@@ -1217,7 +1217,7 @@
                 data: request,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });
@@ -1235,7 +1235,7 @@
                 data: request,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });
@@ -1253,7 +1253,7 @@
                 data: request,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });
@@ -1290,7 +1290,7 @@
                 data: request,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });
@@ -1308,7 +1308,7 @@
                 data: request,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });
@@ -1327,7 +1327,7 @@
                 data: request,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });
@@ -1345,7 +1345,7 @@
                 data: request,
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                 }
             });

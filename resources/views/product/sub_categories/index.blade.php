@@ -11,7 +11,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
-                                <h5>Sub-Categories</h5>
+                                <h5>SubCategories</h5>
                             </div>
                         </div>
                     </div>
@@ -21,7 +21,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>All Sub-Categories</h6>
+                                        <h6>All SubCategory</h6>
                                     </div>
                                     @if (auth()->user()->permission->category['category_add'] == '1')
                                         <div class="col-md-6">
@@ -186,7 +186,7 @@
                     cache: false,
                     processData: false,
                     success: function(data) {
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('#add_sub_category_form')[0].reset();
                         $('.loading_button').hide();
                         table.ajax.reload();
@@ -229,7 +229,7 @@
                     processData: false,
                     success: function(data) {
                         console.log(data);
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('.loading_button').hide();
                         $('#edit_sub_category_form')[0].reset();
                         table.ajax.reload();
@@ -256,16 +256,13 @@
                 $('#deleted_form').attr('action', url);
                 swal({
                         title: "Are you sure ?",
-                        icon: "warning",
                         buttons: true,
                         dangerMode: true,
                     })
                     .then((willDelete) => {
                         if (willDelete) {
                             $('#deleted_form').submit();
-                        } else {
-                            swal("Your imaginary file is safe!");
-                        }
+                        } 
                     });
             });
 
@@ -281,7 +278,7 @@
                     data: request,
                     success: function(data) {
                         $('.data_tbl').DataTable().ajax.reload();
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('#deleted_form')[0].reset();
                     }
                 });

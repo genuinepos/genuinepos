@@ -84,7 +84,7 @@ class CategoryControlle extends Controller
                 'name' => $request->name,
             ]);
         }
-        return response()->json('Successfully category is added');
+        return response()->json('Category created Successfully');
     }
 
     public function edit($categoryId)
@@ -121,7 +121,7 @@ class CategoryControlle extends Controller
                 'name' => $request->name,
             ]);
         }
-        return response()->json('Successfully category is updated');
+        return response()->json('Category updated successfully');
     }
 
     public function delete(Request $request, $categoryId)
@@ -137,6 +137,6 @@ class CategoryControlle extends Controller
             $deleteCategory->delete();  
         }
         
-        return response()->json('Successfully category is deleted');
+        return response()->json('Category deleted Successfully');
     }
 }

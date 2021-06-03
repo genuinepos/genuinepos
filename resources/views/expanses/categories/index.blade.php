@@ -11,7 +11,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
-                                <h5>Expense Categories</h5>
+                                <h5>Expense Category</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
@@ -251,7 +251,7 @@
                 data: request,
                 success:function(data){
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     getAllCateogry();
                     $('#editModal').modal('hide'); 
@@ -273,8 +273,6 @@
             .then((willDelete) => {
                 if (willDelete) { 
                     $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });
@@ -291,7 +289,7 @@
                 data:request,
                 success:function(data){
                     getAllCateogry();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });

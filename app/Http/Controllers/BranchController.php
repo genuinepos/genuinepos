@@ -61,7 +61,7 @@ class BranchController extends Controller
             $addBranch->logo = $branchLogoName;
         }
         $addBranch->save();
-        return response()->json('Successfully branch is added');
+        return response()->json('Branch created successfully');
     }
     
     public function update(Request $request)
@@ -107,7 +107,7 @@ class BranchController extends Controller
         }
         
         $updateBranch->save();
-        return response()->json('Successfully branch is updated');
+        return response()->json('Branch updated successfully');
     }
 
     public function delete(Request $request)
@@ -117,7 +117,7 @@ class BranchController extends Controller
             return response()->json(['errorMsg' => 'You can not delete main branch.']); 
         }else{
             $updateBranch->delete();
-            return response()->json('Successfully branch is deleted');
+            return response()->json('Branch deleted successfully');
         }
     }
 

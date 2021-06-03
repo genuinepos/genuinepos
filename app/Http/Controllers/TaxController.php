@@ -34,7 +34,7 @@ class TaxController extends Controller
         $addTax->tax_name = $request->tax_name;
         $addTax->tax_percent = $request->tax_percent;
         $addTax->save();
-        return response()->json('Successfully Tax is added');
+        return response()->json('Tax added successfully');
     }
     
     public function update(Request $request)
@@ -48,7 +48,7 @@ class TaxController extends Controller
         $updateTax->tax_name = $request->tax_name;
         $updateTax->tax_percent = $request->tax_percent;
         $updateTax->save();
-        return response()->json('Successfully Tax is updated');
+        return response()->json('Tax updated successfully');
     }
 
     public function delete(Request $request, $taxId)
@@ -57,6 +57,6 @@ class TaxController extends Controller
         if (!is_null($deleteVat)) {
             $deleteVat->delete();
         }
-        return response()->json('Successfully Tax is deleted'); 
+        return response()->json('Tax deleted successfully'); 
     }
 }

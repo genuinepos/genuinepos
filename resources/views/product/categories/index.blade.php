@@ -24,7 +24,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>All Categories</h6>
+                                        <h6>All Category</h6>
                                     </div>
                                     @if (auth()->user()->permission->category['category_add'] == '1')
                                         <div class="col-md-6">

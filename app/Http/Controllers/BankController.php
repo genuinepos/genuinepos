@@ -40,7 +40,7 @@ class BankController extends Controller
             'address' => $request->address,
         ]);
         
-        return response()->json('Successfully bank is added');
+        return response()->json('Bank created successfully');
     }
 
     // Update bank
@@ -58,7 +58,7 @@ class BankController extends Controller
             'address' => $request->address,
         ]);
         
-        return response()->json('Successfully bank is updated');
+        return response()->json('Bank updated successfully');
     }
 
     public function delete(Request $request, $bankId)
@@ -68,6 +68,6 @@ class BankController extends Controller
             $deleteBank->delete();  
         }
  
-        return response()->json('Successfully bank is deleted');
+        return response()->json('Bank deleted successfully');
     }
 }

@@ -28,58 +28,65 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
         type:'post',
         data:request,
         success:function(data){
-            $('#pos_submit_form')[0].reset();
-            $('#product_list').empty();
-            $('#account_id').val(defaultAccount);
+            
+            if (data.ex_items.length == 0) {
+                return;
+            }
             var qty_limits = data.qty_limits;
+            var tr = '';
+            $.each(data.ex_items, function (key, item) {
+                tr += '<tr>';
+                tr += '<td class="serial">'+(key + 1)+'</td>';
+                tr += '<td class="text-start">';
+                tr += '<a class="product-name text-info" title="'+'SKU-'+(item.variant ? item.variant.variant_code : item.product.product_code )+'" id="edit_product" href="#">' + item.product.name +(item.variant ? ' - '+item.variant.variant_name : '') +'</a><br/><input type="'+(item.description ? item.description : '')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info" value="'+(item.description ? item.description : '')+'">';
+                tr += '<input value="'+item.product_id+'" type="hidden" name="product_ids[]">';
+                tr +='<input value="'+(item.product_variant_id ? item.product_variant_id : 'noid')+'" type="hidden" name="variant_ids[]">';
+                tr +='<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+item.unit_tax_percent+'">';
+                tr +='<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+item.unit_tax_amount+'">';
+                tr +='<input value="'+item.unit_discount_type+'" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
+                tr +='<input value="'+item.unit_discount+'" name="unit_discounts[]" type="hidden" id="unit_discount">';
+                tr +='<input value="'+item.unit_discount_amount+'" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
+                tr += '<input value="'+item.unit_cost_inc_tax+'" name="unit_costs_inc_tax[]" type="hidden" id="unit_costs_inc_tax">';
+                tr += '<input type="hidden" id="previous_qty" value="'+item.quantity+'">';
+                tr += '<input type="hidden" id="qty_limit" value="'+qty_limits[key]+'">';
+                tr += '<input class="index-'+(key + 1)+'" type="hidden" id="index">';
+                tr += '</td>';
+
+                tr += '<td>';
+                tr +='<input type="number" name="quantities[]" value="'+item.ex_quantity+'" class="form-control text-center" id="quantity">';
+                tr += '</td>';
+
+                tr += '<td>';
+                tr += '<b><span class="span_unit">'+item.unit+'</span></b>';
+                tr += '<input name="units[]" type="hidden" id="unit" value="'+item.unit+'">';
+                tr += '</td>';
+
+                tr += '<td>';
+                tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+item.unit_price_exc_tax +'" id="unit_price_exc_tax">';
+
+                tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="'+item.unit_price_inc_tax+'">';
+                tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(item.unit_price_inc_tax).toFixed(2) + '</span> </b>';
+                tr += '</td>';
+
+                tr += '<td>';
+                var ex_quantity = parseFloat(item.ex_quantity);
+                var subtotal = parseFloat(item.unit_price_inc_tax) * parseFloat(ex_quantity);
+                tr += '<input value="'+parseFloat(subtotal).toFixed(2)+'" name="subtotals[]" type="hidden" id="subtotal">';
+                tr += '<b><span class="span_subtotal">' + parseFloat(subtotal).toFixed(2) + '</span></b>';
+                tr += '</td>';
+                tr +='<td><a href="#" class="action-btn c-delete"><span class="fas fa-trash text-dark"></span></a></td>';
+                tr += '</tr>';
+            });
+            $('#product_list').empty();
+            $('#product_list').prepend(tr);
+            $('#pos_submit_form')[0].reset();
+            $('#account_id').val(defaultAccount);
+            
             $('#ex_sale_id').val(data.sale.id);
             var ex_inv_payable_amount = parseFloat(data.sale.total_payable_amount);
             $('#ex_inv_payable_amount').val(parseFloat(ex_inv_payable_amount).toFixed(2));
             $('#ex_inv_paid').val(parseFloat(data.sale.paid).toFixed(2));
             $('#customer_id').val(data.sale.customer_id);
-            var html = '';
-            $.each(data.ex_items, function (key, item) {
-                html += '<tr>';
-                html += '<td class="serial">'+( key + 1 )+'</td>';
-                html += '<td class="text-start">';
-                html += '<a class="product-name text-info" id="edit_product" title="'+(item.variant ? item.variant.variant_code : item.product.product_code )+'" href="#">'+ item.product.name +(item.variant ? ' - '+item.variant.variant_name : '')+'</a><br/>';
-                html += '<input type="'+(item.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other informations here." value="'+(item.description ? item.description : '')+'">';
-                html += '<input value="'+item.product_id+'" type="hidden" class="productId-'+ item.product_id +'" id="product_id" name="product_ids[]">';
-                html += '<input input value="'+(item.product_variant_id ? item.product_variant_id : 'noid')+'" type="hidden" class="variantId-'+(item.product_variant_id ? item.product_variant_id : '' )+'" id="variant_id" name="variant_ids[]">';
-                html += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+ item.unit_tax_percent +'">'; 
-                html += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+item.unit_tax_amount+'">';
-                html += '<input value="'+item.unit_discount_type+'" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
-                html += '<input value="'+item.unit_discount+'" name="unit_discounts[]" type="hidden" id="unit_discount">';
-                html += '<input value="'+item.unit_discount_amount+'" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                html += '<input value="'+item.unit_cost_inc_tax+'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
-                html += '<input type="hidden" id="previous_qty" value="'+item.quantity+'">';
-                html += '<input type="hidden" id="qty_limit" value="'+qty_limits[key]+'">';
-                html += '<input class="index-'+key+'" type="hidden" id="index">';
-                html += '</td>';
-        
-                html += '<td>';
-                html += '<input readonly value="'+parseFloat(item.ex_quantity).toFixed(2)+'" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                html += '</td>';
-                html += '<td>';
-                html += '<b><span class="span_unit">'+item.unit+'</span></b>';
-                html += '<input name="units[]" type="hidden" id="unit" value="'+item.unit+'">';
-                html += '</td>';
-                html += '<td>';
-                html += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+item.unit_price_exc_tax +'" id="unit_price_exc_tax">';
-                html += '<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="'+item.unit_price_inc_tax +'">';
-                html += '<b><span class="span_unit_price_inc_tax">'+item.unit_price_inc_tax+'</span></b>';
-                html += '</td>';
-                html += '<td>';
-                var ex_quantity = parseFloat(item.ex_quantity);
-                var subtotal = parseFloat(item.unit_price_inc_tax) * parseFloat(ex_quantity)
-                html += '<input value="'+parseFloat(subtotal).toFixed(2)+'" name="subtotals[]" type="hidden" id="subtotal">';
-                html += '<b><span class="span_subtotal">'+parseFloat(subtotal).toFixed(2)+'</span></b>';
-                html += '</td>';
-                html += '<td><a href="#" class="action-btn c-delete"><span class="fas fa-trash text-dark"></span></a></td>';
-                html += '</tr>';
-            });
-          
-            $('#product_list').prepend(html);
             calculateTotalAmount();
             var exchange_url = $('#exchange_url').val();
             $('#pos_submit_form').attr('action', exchange_url);

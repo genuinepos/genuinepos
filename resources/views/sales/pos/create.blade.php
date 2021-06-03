@@ -89,6 +89,7 @@
                     var product_ids = document.querySelectorAll('#product_id');
                     var sameProduct = 0;
                     product_ids.forEach(function(input) {
+                        console.log('same');
                         console.log(input.value);
                         if (input.value == product_id) {
                             sameProduct += 1;
@@ -129,7 +130,7 @@
                         tr += '<a class="product-name text-info" title="'+'SKU-'+product_code+'" id="edit_product" href="#">' + product_name +'</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info">';
                         tr += '<input value="' + product_id + '" type="hidden" class="productId-' +
                             product_id + '" id = "product_id" name="product_ids[]" >';
-                        tr +='<input input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                        tr +='<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                         tr +='<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="' +p_tax_percent + '">';
                         tr +='<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="' +parseFloat(p_tax_amount).toFixed(2) + '">';
                         tr +='<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
@@ -222,13 +223,11 @@
             type: 'get',
             dataType: 'json',
             success: function(branchVariantQty) {
-                
                 if ($.isEmptyObject(branchVariantQty.errorMsg)) {
                     $('#stock_quantity').val(branchVariantQty);
                     var variant_ids = document.querySelectorAll('#variant_id');
                     var sameVariant = 0;
                     variant_ids.forEach(function(input) {
-                        console.log(input.value);
                         if (input.value != 'noid') {
                             if (input.value == variant_id) {
                                 sameVariant += 1;
@@ -267,6 +266,7 @@
                     });
 
                     if (sameVariant == 0) {
+                        console.log('not same');
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
@@ -274,8 +274,7 @@
                         tr += '<a class="product-name text-info" title="'+'SKU-'+variant_code+'" id="edit_product" href="#">' + product_name +' - ' + variant_name + '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info">';
                         tr += '<input value="' + product_id + '" type="hidden" class="productId-' +
                             product_id + '" id = "product_id" name="product_ids[]">';
-                        tr += '<input input value="' + variant_id +
-                            '" type="hidden" class="variantId-' + variant_id +
+                        tr += '<input value="' + variant_id +'" type="hidden" class="variantId-' + variant_id +
                             '" id="variant_id" name="variant_ids[]">';
                         tr +='<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="' +
                             tax_percent + '">';

@@ -10,7 +10,9 @@
                 <div class="notify-menu">
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon ms-3"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
+                            @if (json_decode($generalSettings->modules, true)['pos'] == '1')
+                                <li class="top-icon ms-3"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
+                            @endif
                             <li class="top-icon ms-3">
                                 <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
                                     <span class="fas fa-calculator"></span>

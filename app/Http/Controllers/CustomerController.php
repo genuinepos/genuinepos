@@ -80,7 +80,7 @@ class CustomerController extends Controller
             $addCustomerLedger->save();
         }
 
-        return response()->json('Successfully supplier is added');
+        return response()->json('Customer created successfully');
     }
 
     public function getCustomer($customerId)
@@ -118,7 +118,7 @@ class CustomerController extends Controller
             'shipping_address' => $request->shipping_address,
         ]);
 
-        return response()->json('Successfully customer is updated');
+        return response()->json('Customer updated successfully');
     }
 
     public function delete(Request $request, $customerId)
@@ -127,7 +127,7 @@ class CustomerController extends Controller
         if (!is_null($deleteCustomer)) {
             $deleteCustomer->delete();
         }
-        return response()->json('Successfully supplier is deleted');
+        return response()->json('Customer deleted successfully');
     }
 
     // Change stauts method
@@ -137,11 +137,11 @@ class CustomerController extends Controller
         if ($statusChange->status == 1) {
             $statusChange->status = 0;
             $statusChange->save();
-            return response()->json('Successfully Customer is deactivated');
+            return response()->json('Customer deactivated successfully');
         } else {
             $statusChange->status = 1;
             $statusChange->save();
-            return response()->json('Successfully Customer is activated');
+            return response()->json('Customer activated successfully');
         }
     }
 
@@ -602,7 +602,7 @@ class CustomerController extends Controller
                 $index++;
             }
         }
-        return response()->json('Successfully payment is added.');
+        return response()->json('payment added successfully.');
     }
 
     public function returnPayment($customerId)
@@ -901,6 +901,6 @@ class CustomerController extends Controller
             }
         }
 
-        return response()->json('Successfully return amount is paid.');
+        return response()->json('Return amount paid successfully.');
     }
 }

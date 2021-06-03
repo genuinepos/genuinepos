@@ -67,7 +67,7 @@ class GeneralSettingController extends Controller
 
         $updateBussinessSettings->business = json_encode($businessSettings);
         $updateBussinessSettings->save();
-        return response()->json('Successfully business settings is updated');
+        return response()->json('Business settings updated successfully');
     }
 
     // Add tax settings
@@ -85,7 +85,7 @@ class GeneralSettingController extends Controller
 
         $updateTaxSettings->tax = json_encode($taxSettings);
         $updateTaxSettings->save();
-        return response()->json('Successfully tax settings is updated');
+        return response()->json('Tax settings updated successfully');
     }
 
     // Add tax settings
@@ -104,7 +104,7 @@ class GeneralSettingController extends Controller
 
         $updateProductSettings->product = json_encode($productSettings);
         $updateProductSettings->save();
-        return response()->json('Successfully product settings is updated');
+        return response()->json('Product settings updated successfully');
     }
 
 
@@ -120,7 +120,7 @@ class GeneralSettingController extends Controller
 
         $updateSaleSettings->sale = json_encode($saleSettings);
         $updateSaleSettings->save();
-        return response()->json('Successfully sale settings is updated');
+        return response()->json('Sale settings updated successfully');
     }
 
     // Add tax settings
@@ -152,7 +152,7 @@ class GeneralSettingController extends Controller
 
         $updatePosSettings->pos = json_encode($posSettings);
         $updatePosSettings->save();
-        return response()->json('Successfully pos settings is updated');
+        return response()->json('POS settings updated successfully');
     }
 
     // Update purchase setting
@@ -167,7 +167,7 @@ class GeneralSettingController extends Controller
 
         $updatePurchaseSettings->purchase = json_encode($purchaseSettings);
         $updatePurchaseSettings->save();
-        return response()->json('Successfully purchase settings is updated');
+        return response()->json('Purchase settings updated successfully.');
     } 
 
     public function dashboardSettings(Request $request)
@@ -179,7 +179,7 @@ class GeneralSettingController extends Controller
 
         $updateDashboardSettings->dashboard = json_encode($dashboardSettings);
         $updateDashboardSettings->save();
-        return response()->json('Successfully dashboard settings is updated');
+        return response()->json('Dashboard settings updated successfully.');
     }
 
     public function prefixSettings(Request $request)
@@ -201,7 +201,7 @@ class GeneralSettingController extends Controller
 
         $updatePrefixSettings->prefix = json_encode($prefixSettings);
         $updatePrefixSettings->save();
-        return response()->json('Successfully prefix settings is updated');
+        return response()->json('Prefix settings updated Successfully');
     }
 
     public function moduleSettings(Request $request)
@@ -222,7 +222,7 @@ class GeneralSettingController extends Controller
 
         $updateModuleSettings->modules = json_encode($moduleSettings);
         $updateModuleSettings->save();
-        return response()->json('Successfully modules settings is updated');
+        return response()->json('modules settings updated successfully');
     }
 
     public function rewardPoingSettings(Request $request)
@@ -242,7 +242,7 @@ class GeneralSettingController extends Controller
 
         $updateRewardPointgSettings->reward_poing_settings = json_encode($RewardPointgSettings);
         $updateRewardPointgSettings->save();
-        return response()->json('Successfully reward point settings is updated');
+        return response()->json('Reward point settings updated Successfully');
     }
 
     public function emailSettings(Request $request)
@@ -257,6 +257,6 @@ class GeneralSettingController extends Controller
         Artisan::call("env:set MAIL_ENCRYPTION='".$request->get('MAIL_ENCRYPTION')."'");
         Artisan::call("env:set MAIL_FROM_ADDRESS='".$request->get('MAIL_FROM_ADDRESS')."'");
         Artisan::call("env:set MAIL_FROM_NAME='".$request->get('MAIL_FROM_NAME')."'");
-        return response()->json('Successfully email settings is updated');
+        return response()->json('Email settings updated successfully');
     }
 }

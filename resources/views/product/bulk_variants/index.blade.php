@@ -258,7 +258,7 @@
                     type: 'post',
                     data: request,
                     success: function(data) {
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('#add_variant_form')[0].reset();
                         $('.loading_button').hide();
                         $('.submit_button').show();
@@ -369,7 +369,7 @@
                     data: request,
                     success: function(data) {
                         console.log(data);
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('.loading_button').hide();
                         $('.submit_button').show();
                         getAllVariant();
@@ -411,7 +411,7 @@
                     data: request,
                     success: function(data) {
                         getAllVariant();
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                     }
                 });
             });

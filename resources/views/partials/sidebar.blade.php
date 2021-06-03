@@ -457,18 +457,19 @@
                                 @endif
                             @endif
 
-                            @if (auth()->user()->permission->sale['pos_all'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('sales.pos.create') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/pos.png') }}"></span>
-                                        </a>
+                            @if (json_decode($generalSettings->modules, true)['pos'] == '1')
+                                @if (auth()->user()->permission->sale['pos_all'] == '1')
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('sales.pos.create') }}" class="bar-link">
+                                                <span><img src="{{ asset('public/backend/asset/img/pos.png') }}"></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.pos')</p>
                                     </div>
-                                    <p class="switch_text">@lang('menu.pos')</p>
-                                </div>
+                                @endif
                             @endif
-
                             @if (auth()->user()->permission->sale['sale_draft'] == '1')
                                 <div
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column">

@@ -84,7 +84,7 @@
                 <div class="card card-custom">
                     <div class="section-header">
                         <div class="col-md-6">
-                            <h6>All Products</h6>
+                            <h6>All Product</h6>
                         </div>
                         @if (auth()->user()->permission->category['category_add'] == '1')
                             <div class="col-md-6">

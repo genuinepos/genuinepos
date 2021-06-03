@@ -1273,14 +1273,14 @@ class SaleController extends Controller
             } 
         } else {
             if ($request->status == 1) {
-                session()->flash('successMsg', 'Successfully sale is added');
-                return response()->json(['finalMsg' => 'Successfully sale is added']);
+                session()->flash('successMsg', 'Sale created successfully');
+                return response()->json(['finalMsg' => 'Sale created successfully']);
             } elseif ($request->status == 2) {
-                session()->flash('successMsg', 'Successfully sale draft is added');
-                return response()->json(['draftMsg' => 'Successfully sale draft is added']);
+                session()->flash('successMsg', 'Sale draft created successfully');
+                return response()->json(['draftMsg' => 'Sale draft created successfully']);
             } elseif ($request->status == 4) {
-                session()->flash('successMsg', 'Successfully sale quotation is added');
-                return response()->json(['quotationMsg' => 'Successfully sale quotation is added']);
+                session()->flash('successMsg', 'Sale quotation created successfully');
+                return response()->json(['quotationMsg' => 'Sale quotation created successfully']);
             }
         }
     }
@@ -1580,14 +1580,14 @@ class SaleController extends Controller
         }
 
         if ($request->status == 1) {
-            session()->flash('successMsg', 'Successfully sale is updated');
-            return response()->json(['successMsg' => 'Successfully sale is updated']);
+            session()->flash('successMsg', 'Sale updated successfully');
+            return response()->json(['successMsg' => 'Sale updated successfully']);
         } elseif ($request->status == 2) {
-            session()->flash('successMsg', 'Successfully sale draft is updated');
-            return response()->json(['successMsg' => 'Successfully sale draft is updated']);
+            session()->flash('successMsg', 'Sale draft updated successfully');
+            return response()->json(['successMsg' => 'Sale draft updated successfully']);
         } elseif ($request->status == 4) {
-            session()->flash('successMsg', 'Successfully sale quotation is updated');
-            return response()->json(['successMsg' => 'Successfully sale quotation is updated']);
+            session()->flash('successMsg', 'Sale quotation updated successfully');
+            return response()->json(['successMsg' => 'Sale quotation updated successfully']);
         }
     }
 
@@ -1658,7 +1658,7 @@ class SaleController extends Controller
         }
 
         $deleteSale->delete();
-        return response()->json('Successfully data is deleted');
+        return response()->json('Sale deleted successfully');
     }
 
     // Sale Packing Slip
@@ -2249,7 +2249,7 @@ class SaleController extends Controller
             $addCustomerLedger->save();
         }
 
-        return response()->json('Successfully payment is added.');
+        return response()->json('Payment added successfully.');
     }
 
     // Show payment modal
@@ -2370,7 +2370,7 @@ class SaleController extends Controller
                 $addCashFlow->save();
             }
         }
-        return response()->json('Successfully payment is updated.');
+        return response()->json('Payment updated successfully.');
     }
 
     // Show payment modal
@@ -2480,7 +2480,7 @@ class SaleController extends Controller
             $addCustomerLedger->save();
         }
 
-        return response()->json('Successfully return amount is paid.');
+        return response()->json('Return amount paid successfully.');
     }
 
     public function returnPaymentEdit($paymentId)
@@ -2607,7 +2607,7 @@ class SaleController extends Controller
                 $updateSalePayment->cashFlow->delete();
             }
         }
-        return response()->json('Successfully payment is updated.');
+        return response()->json('Payment is updated successfully.');
     }
 
     // payemnt details
@@ -2682,7 +2682,7 @@ class SaleController extends Controller
                 $deleteSalePayment->delete();
             }
         }
-        return response()->json('Successfully payment is deleted.');
+        return response()->json('Payment deleted successfully.');
     }
 
     // Add product modal view with data

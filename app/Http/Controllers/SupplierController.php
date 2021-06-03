@@ -81,7 +81,7 @@ class SupplierController extends Controller
             $addSupplierLedger->amount = $request->opening_balance;
             $addSupplierLedger->save();
         }
-        return response()->json('Successfully supplier is added');
+        return response()->json('Supplier created successfully');
     }
 
     public function getSupplier($supplierId)
@@ -127,7 +127,7 @@ class SupplierController extends Controller
             'prefix' => $request->prefix ? $request->prefix : $firstLetterOfSupplier . $code,
             'shipping_address' => $request->shipping_address,
         ]);
-        return response()->json('Successfully supplier is updated');
+        return response()->json('Supplier updated successfully');
     }
 
     public function delete(Request $request, $supplierId)
@@ -136,7 +136,7 @@ class SupplierController extends Controller
         if (!is_null($deleteSupplier)) {
             $deleteSupplier->delete();
         }
-        return response()->json('Successfully supplier is deleted');
+        return response()->json('supplier deleted successfully');
     }
 
     // Change stauts method
@@ -146,11 +146,11 @@ class SupplierController extends Controller
         if ($statusChange->status == 1) {
             $statusChange->status = 0;
             $statusChange->save();
-            return response()->json('Successfully Supplier is deactivated');
+            return response()->json('Supplier deactivated successfully');
         } else {
             $statusChange->status = 1;
             $statusChange->save();
-            return response()->json('Successfully Supplier is activated');
+            return response()->json('Supplier activated successfully');
         }
     }
 
@@ -588,7 +588,7 @@ class SupplierController extends Controller
                 $index++;
             }
         }
-        return response()->json('Successfully payment is added.');
+        return response()->json('Payment added successfully.');
     }
 
     public function returnPayment($supplierId)
@@ -885,6 +885,6 @@ class SupplierController extends Controller
             }
         }
 
-        return response()->json('Successfully return amount is received.');
+        return response()->json('Return amount received successfully.');
     }
 }

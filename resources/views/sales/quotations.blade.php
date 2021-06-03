@@ -69,8 +69,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-10">
-                                        <h6>All Quotations <small>Note: Initially current year's data is available here, if
-                                                another year's data go to the data filter.</small></h6>
+                                        <h6>All Quotation <small>Note: Initially current year's data is available here, if need another year's data go to the data filter.</small></h6>
                                     </div>
                                     @if (auth()->user()->permission->purchase['purchase_add'] == '1')
                                         <div class="col-md-2">

@@ -52,7 +52,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-10">
-                                        <h6>All Users </h6>
+                                        <h6>All User </h6>
                                     </div>
                                     @if (auth()->user()->permission->user['user_add'] == '1')
                                         <div class="col-md-2">
@@ -148,14 +148,11 @@
             $('#deleted_form').attr('action', url);
             swal({
                 title: "Are you sure to delete ?",
-                icon: "warning",
                 buttons: true,
                 dangerMode: true,
             }).then((willDelete) => {
                 if (willDelete) { 
                     $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });
@@ -171,7 +168,7 @@
                 data:request,
                 success:function(data){
                     table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                 }
             });
         });

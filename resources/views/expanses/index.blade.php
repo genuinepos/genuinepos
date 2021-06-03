@@ -64,7 +64,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-10">
-                                        <h6>All Expenses <small>Note: Initially current year's data is available here, if
+                                        <h6>All Expense <small>Note: Initially current year's data is available here, if
                                                 another year's data go to the data filter.</small></h6>
                                     </div>
                                     @if (auth()->user()->permission->purchase['purchase_add'] == '1')
@@ -469,8 +469,6 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });

@@ -36,7 +36,7 @@ class WarrantyController extends Controller
             'description' => $request->description,
         ]);
 
-        return response()->json('Successfully warranty is added');
+        return response()->json('Warranty is created Successfully');
     }
 
     // Update warranty
@@ -55,7 +55,7 @@ class WarrantyController extends Controller
             'duration_type' => $request->duration_type,
             'description' => $request->description,
         ]);
-        return response()->json('Successfully warranty is updated');
+        return response()->json('Warranty updated successfully');
     }
 
     // Delete warranty
@@ -65,6 +65,6 @@ class WarrantyController extends Controller
         if (!is_null($deleteWarranty)) {
             $deleteWarranty->delete();
         }
-        return response()->json('Successfully warranty is deleted');
+        return response()->json('Warranty deleted successfully');
     }
 }

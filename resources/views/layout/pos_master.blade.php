@@ -18,6 +18,9 @@
     <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
 
+    <!-- Calculator -->
+    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
+
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">

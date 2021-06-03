@@ -14,7 +14,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module white_lin">
+                                <div id="breadCrumb3" class="breadCrumb module">
                                     <ul >
                                         <li>
                                             <a href="" class="text-dark text-muted"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>

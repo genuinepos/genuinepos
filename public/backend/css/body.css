@@ -7982,9 +7982,7 @@ tr.el-finder-droppable td.icon p {
 .breadCrumb {
     display: block;
     height: 30px;
-    overflow: hidden;
     padding: 5px;
-    border: solid 1px #ccc;
     background: #fff;
 }
 
@@ -8001,11 +7999,12 @@ tr.el-finder-droppable td.icon p {
     position: relative;
     height: 21px;
     overflow: hidden;
-    line-height: 21px;
+    line-height: 24px;
     margin: 0px 6px 0px 0;
     padding: 0px 10px 0px 0;
     font-size: .9167em;
-    background: url(../images/chevron.png) no-repeat 100% 0;
+    background: url(../images/chevron.png) no-repeat 100% 50%;
+    background-size: 5px 14px;
 }
 
 .breadCrumb ul li div.chevronOverlay {

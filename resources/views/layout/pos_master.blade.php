@@ -660,7 +660,7 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     $('#deleted_form').submit();
-                    $('#recent_trans_preloader').show()
+                    $('#recent_trans_preloader').show();
                 } else {
                     swal("Your imaginary file is safe!");
                 }
@@ -677,11 +677,9 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    pickHoldInvoice();
                     toastr.success(data);
                     var productTableRow = $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
                     $('#recent_trans_preloader').hide();
-                    allSuspends();
                 }
             });
         });

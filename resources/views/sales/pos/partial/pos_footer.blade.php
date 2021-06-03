@@ -8,6 +8,40 @@
         @endif
     </div>
 </div>
+<div class="sub_total" id="footer_fixed">
+    <div class="row">
+        <div class="sub-total-input">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-5">
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label text-white">Total Qty:</label>
+                            <div class="col-sm-8 ">
+                                <input type="text" name="" value="3" class="form-control " disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label text-white">Total Item:</label>
+                            <div class="col-sm-8 ">
+                                <input type="text" name="" value="10" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 text-center">
+                        <div class="footer_trasc_btn">
+                        @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '0')
+                            <a href="#" class="resent-tn"><span class="fas fa-clock"></span></a>
+                        @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{asset('public/backend/asset/js/SimpleCalculadorajQuery.js')}}" defer></script>
 <script>
     $(document).on('click', '.resent-tn',function (e) {
         e.preventDefault();

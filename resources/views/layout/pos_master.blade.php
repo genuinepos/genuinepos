@@ -18,6 +18,9 @@
     <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
 
+    <!-- Calculator -->
+    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
+
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">
@@ -757,6 +760,7 @@
             $('#invoice_description').empty();$('#invoice_id').val('');
         })
 
+<<<<<<< HEAD
 
         $(document).on('input', '#ex_quantity',function () {
     var ex_qty = $(this).val();
@@ -854,6 +858,9 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
         }
     });
 });
+=======
+        $('button').prop('type','button');
+>>>>>>> 627c0338677e06e873405b87088d55ea69a160da
     </script>
     @stack('js')
 </body>

@@ -4,7 +4,7 @@
             <div class="function-sec">
                 <div class="row">
                     @if (json_decode($generalSettings->pos, true)['is_disable_draft'] == '0')
-                        <div class="col-4 p-1">
+                        <div class="col-4 px-2 py-1">
                             <div class="btn-bg">
                                 <a href="" class="bg-orange function-card" data-action_id="2" id="submit_btn">
                                     <small>Draft</small>
@@ -15,7 +15,7 @@
                     @endif
 
                     @if (json_decode($generalSettings->pos, true)['is_disable_quotation'] == '0')
-                        <div class="col-4 p-1">
+                        <div class="col-4 px-2 py-1">
                             <div class="btn-bg">
                                 <a href="" class="bg-orange function-card" id="submit_btn" data-action_id="4">
                                     <small>Quotation</small>
@@ -25,7 +25,7 @@
                         </div>
                     @endif
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="" class="bg-orange function-card">
                                 <small>Challan</small>
@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="" class="bg-gren function-card" id="show_stock">
                                 <small>Show Stock</small>
@@ -44,7 +44,7 @@
                     </div>
 
                     @if (json_decode($generalSettings->pos, true)['is_disable_hold_invoice'] == '0')
-                        <div class="col-4 p-1">
+                        <div class="col-4 px-2 py-1">
                             <div class="btn-bg">
                                 <a href="" class="bg-gren function-card" id="submit_btn" data-action_id="5">
                                     <small>Hold Invoice</small>
@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        <div class="col-4 p-1">
+                        <div class="col-4 px-2 py-1">
                             <div class="btn-bg">
                                 <a href="" class="bg-gren function-card" id="pick_hold_btn">
                                     <small>Pick Hold</small>
@@ -63,7 +63,7 @@
                         </div>
                     @endif
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="{{ route('settings.general.index') }}" class="bg-swit function-card">
                                 <small>Setup</small>
@@ -72,7 +72,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="" class="bg-swit function-card" id="submit_btn" data-action_id="6">
                                 <small>Suspend</small>
@@ -81,7 +81,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4 p-1">
+                    <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#" class="bg-swit function-card" onclick="cancel(); return false;">
                                 <small>Cancel</small>

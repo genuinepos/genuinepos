@@ -48,7 +48,7 @@
             padding-left: 8px;
             padding-right: 8px;
             margin-bottom: 5px !important;
-        } 
+        }
 
         .dataTables_paginate {
             padding-right: 8px;
@@ -87,4 +87,9 @@
         body {
             overflow-x: hidden;
         }
+
+        #dashboard-8 .main__nav {
+            overflow-y: hidden;
+        }
+
     </style>

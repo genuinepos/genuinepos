@@ -757,6 +757,8 @@
             e.preventDefault();
             $('#invoice_description').empty();$('#invoice_id').val('');
         })
+
+        $('button').prop('type','button');
     </script>
     @stack('js')
 </body>

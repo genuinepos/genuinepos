@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2021 at 12:55 PM
+-- Generation Time: Jun 05, 2021 at 02:47 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.1
 
@@ -504,7 +504,8 @@ INSERT INTO `cash_registers` (`id`, `branch_id`, `warehouse_id`, `account_id`, `
 (7, NULL, 7, 15, 2, '2021-06-05 05:35:00', '12455.00', 1, 0, 0, NULL, '2021-05-17 11:52:31', '2021-06-05 05:35:38'),
 (8, 24, NULL, NULL, 7, '2021-05-24 04:52:00', '1000.00', 0, 0, 0, NULL, '2021-05-18 08:13:09', '2021-05-24 04:52:54'),
 (9, 24, NULL, NULL, 7, NULL, '0.00', NULL, NULL, 1, NULL, '2021-05-24 04:53:01', '2021-05-24 04:53:01'),
-(10, NULL, 7, 16, 2, '2021-06-05 07:45:00', '362.50', 0, 0, 0, NULL, '2021-06-05 05:35:52', '2021-06-05 07:45:44');
+(10, NULL, 7, 16, 2, '2021-06-05 07:45:00', '362.50', 0, 0, 0, NULL, '2021-06-05 05:35:52', '2021-06-05 07:45:44'),
+(11, NULL, 7, 15, 2, NULL, '0.00', NULL, NULL, 1, NULL, '2021-06-05 12:36:54', '2021-06-05 12:36:54');
 
 -- --------------------------------------------------------
 
@@ -566,7 +567,8 @@ INSERT INTO `cash_register_transactions` (`id`, `cash_register_id`, `sale_id`, `
 (51, 7, 199, 2, 2, NULL, '2021-06-03 13:28:35', '2021-06-03 13:28:35'),
 (52, 7, 200, 2, 2, NULL, '2021-06-03 13:31:57', '2021-06-03 13:31:57'),
 (53, 10, NULL, 2, 1, '100.00', '2021-06-05 05:35:52', '2021-06-05 05:35:52'),
-(54, 10, 201, 2, 2, NULL, '2021-06-05 05:36:29', '2021-06-05 05:36:29');
+(54, 10, 201, 2, 2, NULL, '2021-06-05 05:36:29', '2021-06-05 05:36:29'),
+(55, 11, NULL, 2, 1, '100.00', '2021-06-05 12:36:54', '2021-06-05 12:36:54');
 
 -- --------------------------------------------------------
 
@@ -595,7 +597,7 @@ INSERT INTO `categories` (`id`, `name`, `parent_category_id`, `photo`, `status`,
 (38, 'Service', NULL, 'default.png', 1, NULL, '2021-05-06 03:35:47'),
 (39, 'Matarial', NULL, 'default.png', 1, NULL, '2021-05-06 03:35:03'),
 (41, 'Garments', NULL, '609363d78e259.jpg', 1, NULL, '2021-05-06 03:34:47'),
-(46, 'EM Edited', 39, 'default.png', 1, NULL, '2021-04-20 09:38:49'),
+(46, 'EM Edited', 39, '60bb686bddc76.png', 1, NULL, '2021-06-05 12:05:00'),
 (47, 'Electronic', NULL, '6092360456595.jpg', 1, '2021-04-28 05:18:58', '2021-05-05 06:07:00'),
 (48, 'Sam', NULL, 'default.png', 1, NULL, NULL);
 
@@ -841,7 +843,8 @@ INSERT INTO `customers` (`id`, `type`, `contact_id`, `customer_group_id`, `name`
 (54, NULL, NULL, NULL, 'ou', NULL, '1000', '1000', '1000', NULL, NULL, NULL, '1000.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '6736.39', '14573.89', '0.00', '0.00', 1, 0, '2021-05-02 10:27:50', '2021-06-03 13:22:55'),
 (55, 2, NULL, NULL, 'Mr.Billarin', 'X Business', '01745865214', '01745865214', '01745865214', NULL, NULL, NULL, '2000.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1292.81', '0.00', '0.00', '0.00', 1, 0, '2021-05-09 04:02:53', '2021-06-05 05:59:31'),
 (56, 3, 'A temporibus quod ei', 5, 'Janna Huber', 'Kylan Alvarado', '+1 (942) 854-1783', '+1 (942) 854-1783', '+1 (942) 854-1783', 'xygava@mailinator.com', '09-Jul-1976', '920', '86.00', 3, 675, 'Quo fuga Eu soluta', 'Aliqua Quam aut vel', 'Aut lorem tempore a', 'Sunt proident exer', 'Consequatur Mollit', '64557', '0.00', '0.00', '86.00', '0.00', 1, 0, '2021-06-03 12:21:39', '2021-06-03 12:21:39'),
-(57, 2, 'Sit laborum Est vol', 4, 'Joel Mcguire', 'Hilel Chan', '+1 (531) 725-2663', '+1 (531) 725-2663', '+1 (531) 725-2663', 'vyqalepaj@mailinator.com', '11-Nov-1990', '398', '88.00', 2, 259, 'Obcaecati dolore eli', 'Atque nulla id labo', 'Cupiditate iure ipsu', 'Officiis et fugit v', 'Incidunt sit volupt', '17477', '0.00', '0.00', '88.00', '0.00', 1, 0, '2021-06-05 05:04:04', '2021-06-05 05:04:04');
+(57, 2, 'Sit laborum Est vol', 4, 'Joel Mcguire', 'Hilel Chan', '+1 (531) 725-2663', '+1 (531) 725-2663', '+1 (531) 725-2663', 'vyqalepaj@mailinator.com', '11-Nov-1990', '398', '88.00', 2, 259, 'Obcaecati dolore eli', 'Atque nulla id labo', 'Cupiditate iure ipsu', 'Officiis et fugit v', 'Incidunt sit volupt', '17477', '0.00', '0.00', '88.00', '0.00', 1, 0, '2021-06-05 05:04:04', '2021-06-05 05:04:04'),
+(58, 3, 'In sint minima est', 5, 'Lawrence Atkinson', 'Steven Carney', '+1 (869) 203-1139', '+1 (869) 203-1139', '+1 (869) 203-1139', 'lydohaju@mailinator.com', '30-Oct-1986', '904', '21.00', 3, 960, 'Veniam voluptas rep', 'Vero explicabo In e', 'Architecto voluptate', 'Quos ipsum excepturi', 'Sit duis dolor quam', '36148', '0.00', '0.00', '21.00', '0.00', 1, 0, '2021-06-05 12:33:24', '2021-06-05 12:33:24');
 
 -- --------------------------------------------------------
 
@@ -1079,7 +1082,8 @@ INSERT INTO `customer_ledgers` (`id`, `customer_id`, `sale_id`, `sale_payment_id
 (220, 46, NULL, 159, NULL, 2, NULL, 0, '2021-06-03 13:25:26', '2021-06-03 13:25:26'),
 (221, 46, NULL, 160, NULL, 2, NULL, 0, '2021-06-03 13:26:04', '2021-06-03 13:26:04'),
 (222, 46, NULL, 161, NULL, 2, NULL, 0, '2021-06-03 13:26:45', '2021-06-03 13:26:45'),
-(223, 57, NULL, NULL, NULL, 3, '88.00', 0, '2021-06-05 05:04:04', '2021-06-05 05:04:04');
+(223, 57, NULL, NULL, NULL, 3, '88.00', 0, '2021-06-05 05:04:04', '2021-06-05 05:04:04'),
+(224, 58, NULL, NULL, NULL, 3, '21.00', 0, '2021-06-05 12:33:24', '2021-06-05 12:33:24');
 
 -- --------------------------------------------------------
 
@@ -1400,7 +1404,8 @@ CREATE TABLE `hrm_holidays` (
 --
 
 INSERT INTO `hrm_holidays` (`id`, `holiday_name`, `start_date`, `end_date`, `branch_id`, `is_all`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 'Weekend', '2021-06-05', '2021-06-05', NULL, 0, NULL, '2021-06-05 07:16:01', '2021-06-05 07:16:01');
+(1, 'Weekend', '2021-06-05', '2021-06-05', NULL, 0, NULL, '2021-06-05 07:16:01', '2021-06-05 07:16:01'),
+(2, 'Week', '2021-06-05', '2021-06-05', 26, 0, NULL, '2021-06-05 11:56:50', '2021-06-05 11:56:50');
 
 -- --------------------------------------------------------
 
@@ -1593,10 +1598,9 @@ INSERT INTO `hrm_payroll_payments` (`id`, `reference_no`, `payroll_id`, `account
 CREATE TABLE `hrm_shifts` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `shift_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `shift_type` int(11) NOT NULL,
   `start_time` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `late_count` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `endtime` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `holiday` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1605,8 +1609,9 @@ CREATE TABLE `hrm_shifts` (
 -- Dumping data for table `hrm_shifts`
 --
 
-INSERT INTO `hrm_shifts` (`id`, `shift_name`, `shift_type`, `start_time`, `endtime`, `holiday`, `created_at`, `updated_at`) VALUES
-(1, 'Morning', 1, '19:30', '19:30', 'Friday', NULL, NULL);
+INSERT INTO `hrm_shifts` (`id`, `shift_name`, `start_time`, `late_count`, `endtime`, `created_at`, `updated_at`) VALUES
+(1, 'Morning', '19:30', NULL, '19:30', NULL, NULL),
+(2, 'tt', '17:12', NULL, '17:18', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1988,7 +1993,7 @@ INSERT INTO `products` (`id`, `type`, `name`, `product_code`, `category_id`, `pa
 (106, 1, 'Dell Brand PC', '7885555', 35, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '193.00', '0.00', 0, 0, 0, 0, 0, 1, 1, NULL, '609775917673f.jpg', NULL, 'This is a Brand PC.', '0', 'CODE128', NULL, 'New', 1, '10.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-05 06:03:29', '2021-06-03 05:22:10'),
 (107, 1, 'Dell Brand PC', '7885555', 35, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '99.00', '0.00', 0, 0, 0, 0, 0, 0, 1, NULL, '609775a2bd344.png', NULL, 'This is a Brand PC.', '0', 'CODE128', NULL, 'New', 1, '2.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-05 06:03:40', '2021-06-03 05:22:08'),
 (108, 1, '60/80 Mash', '788554555', 35, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '1054.00', '0.00', 0, 0, 0, 0, 0, 1, 1, NULL, '609280fc422fd.jpg', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '16.00', '0.00', '20.00', NULL, NULL, NULL, '2021-04-05 06:05:35', '2021-06-02 08:57:23'),
-(109, 1, '60/80 Mash', '788554555', 35, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '-1.00', '0.00', 0, 0, 0, 0, 0, 0, 1, NULL, '609281217b756.png', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '1.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-05 06:05:41', '2021-05-09 13:00:03'),
+(109, 1, '60/80 Mash', '788554555', 46, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '-1.00', '0.00', 0, 0, 0, 0, 0, 0, 1, NULL, '609281217b756.png', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '1.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-05 06:05:41', '2021-06-05 12:28:27'),
 (110, 1, '60/80 Mash', '788554555', 35, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '100.00', '0.00', 0, 0, 0, 0, 0, 0, 1, NULL, '6092812e1de39.jpg', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '3.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-05 06:06:39', '2021-06-03 05:22:08'),
 (112, 1, '60/80 Mash', '788554555', 35, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '100.00', '0.00', 0, 0, 0, 0, 0, 0, 1, NULL, '60928138827b9.jpg', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '0.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-05 06:09:55', '2021-05-09 13:00:03'),
 (113, 1, '60/80 Mash', '788554555', 35, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '40.00', '0.00', 0, 0, 0, 0, 0, 0, 1, NULL, '609281449ee8f.png', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '60.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-05 06:13:35', '2021-06-03 05:22:08'),
@@ -3736,7 +3741,7 @@ INSERT INTO `suppliers` (`id`, `type`, `contact_id`, `name`, `business_name`, `p
 (27, 2, 'CO45555', 'Emi Coleman', 'Chester Byrd', '+1 (456) 444-9615', '+1 (456) 444-9615', NULL, '+1 (456) 444-9615', 'lufejawy@mailinator.com', '06-Jun-2017', '201', '94.00', 1, 884, 'Quae sint nulla offi', 'Animi asperiores qu', 'Lorem ipsum repudian', 'Incidunt non eius v', 'Explicabo Qui id po', '50575', '17225.00', '16595.00', '5355.00', '1050.00', 1, 'Eos consectetur ull', '2021-03-16 10:15:28', '2021-04-28 09:18:38'),
 (28, NULL, NULL, 'a', NULL, '411', '411', NULL, '411', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', '0.00', '0.00', '0.00', 1, 'a34', '2021-03-24 04:39:27', '2021-04-21 05:49:10'),
 (29, 1, NULL, 'M.Flug', NULL, '12255877', '12255877', NULL, '12255877', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', '0.00', '0.00', '0.00', 1, NULL, '2021-04-24 07:07:46', '2021-04-24 07:07:46'),
-(30, 1, 'CO123', 'General supplier', NULL, '123456789', '123456789', NULL, '123456789', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '3377430.00', '3377430.00', '0.00', '0.00', 1, NULL, '2021-04-28 08:31:05', '2021-04-28 09:14:24');
+(30, 1, 'CO123', 'General supplier', NULL, '123456789', '123456789', NULL, '123456789', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '3377430.00', '3377430.00', '0.00', '0.00', 1, 'G476747', '2021-04-28 08:31:05', '2021-06-05 12:32:11');
 
 -- --------------------------------------------------------
 
@@ -4950,7 +4955,7 @@ ALTER TABLE `branch_payment_methods`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `bulk_variants`
@@ -4974,13 +4979,13 @@ ALTER TABLE `cash_flows`
 -- AUTO_INCREMENT for table `cash_registers`
 --
 ALTER TABLE `cash_registers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `cash_register_transactions`
 --
 ALTER TABLE `cash_register_transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -5004,7 +5009,7 @@ ALTER TABLE `currencies`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `customer_groups`
@@ -5016,7 +5021,7 @@ ALTER TABLE `customer_groups`
 -- AUTO_INCREMENT for table `customer_ledgers`
 --
 ALTER TABLE `customer_ledgers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
 
 --
 -- AUTO_INCREMENT for table `expanses`
@@ -5082,7 +5087,7 @@ ALTER TABLE `hrm_designations`
 -- AUTO_INCREMENT for table `hrm_holidays`
 --
 ALTER TABLE `hrm_holidays`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `hrm_leaves`
@@ -5124,7 +5129,7 @@ ALTER TABLE `hrm_payroll_payments`
 -- AUTO_INCREMENT for table `hrm_shifts`
 --
 ALTER TABLE `hrm_shifts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `invoice_layouts`

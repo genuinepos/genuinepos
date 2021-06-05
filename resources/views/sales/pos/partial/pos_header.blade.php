@@ -22,7 +22,7 @@
     <input type="hidden" id="store_url" value="{{ route('sales.pos.store') }}">
     <input type="hidden" id="exchange_url" value="{{ route('sales.pos.exchange.confirm') }}">
     <nav class="pos-navigation">
-        <div class="col-lg-5 col-sm-3 col-xs-3 nav-left-sec">
+        <div class="col-lg-4 col-sm-3 col-xs-3 nav-left-sec">
             <div class="col-lg-4 col-sm-12 col-12 logo-sec">
                 <div class="pos-logo">
                     <img src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}" alt="">
@@ -65,10 +65,10 @@
             </div>  
         </div>
         
-        <div class="col-lg-7 col-sm-9 col-12 input-buttob-sec">
+        <div class="col-lg-8 col-sm-9 col-12 input-buttob-sec">
             <div class="input-section">
                 <div class="row">
-                    <div class="input-sec col-sm-6 col-12">
+                    <div class="input-sec col-sm-8 col-12">
                         <div class="row">
                             <div class="col-lg-7 col-12 sm-input-sec-w">
                                 <div class="input-group mb-1">
@@ -128,7 +128,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6 btn-section">
+                    <div class="col-sm-4 btn-section">
                         <div class="date">
                             <p>{{ date('d-m-Y') }} <span id="time">6:58 AM</span></p>
                         </div>

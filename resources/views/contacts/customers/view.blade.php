@@ -228,24 +228,16 @@
         
     </div>
 
-    @if (auth()->user()->permission->sale['sale_payment'] == '1')
-    <!-- Edit Shipping modal -->
-    <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+   <!-- Edit Shipping modal -->
+   <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Shipment - <span class="sinvoice_id"></span></h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body" id="edit_shipment_modal_body">
-                   
-                </div>
+            <div class="modal-content" id="edit_shipment_modal_content">
+                
             </div>
         </div>
     </div>
 
+    @if (auth()->user()->permission->sale['sale_payment'] == '1')
     <!--Payment View modal-->
     <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
@@ -471,7 +463,7 @@
                         importCSS: true,                
                         importStyle: true,          
                         loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: true, 
+                        removeInline: false, 
                         printDelay: 700, 
                         header: null,        
                     });
@@ -489,7 +481,7 @@
                 type:'get',
                 success:function(data){
                     $('.data_preloader').hide();
-                    $('#edit_shipment_modal_body').html(data);
+                    $('#edit_shipment_modal_content').html(data);
                     $('#editShipmentModal').modal('show');
                 }
             });
@@ -508,8 +500,6 @@
             }).then((willDelete) => {
                 if (willDelete) { 
                     $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });
@@ -524,55 +514,8 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    getAllSale();
+                    sales_table.ajax.reload();
                     toastr.success(data, 'Succeed');
-                }
-            });
-        });
-
-        // Print Packing slip
-        $(document).on('click', '#print_packing_slip', function (e) {
-            e.preventDefault();
-            var sale = $(this).closest('tr').data('info');
-            $('.customer_name').html(sale.customer ? sale.customer.name : 'Walk-In-Customer');
-            $('.customer_address').html(sale.customer ? sale.customer.address : 'N/A');
-            $('.customer_tax_number').html(sale.customer ? sale.customer.tax_number : 'N/A');
-            $('.customer_phone').html(sale.customer ? sale.customer.phone : 'N/A');
-            $('.sale_date').html(sale.date);
-            $('.invoice_id').html(sale.invoice_id);
-            $('.shipping_address').html(sale.shipment_address ? sale.shipment_address : 'N/A');
-           
-            // Get all sale products
-            $.ajax({
-                url:"{{url('sales/product/list')}}"+"/"+sale.id,
-                type:'get',
-                dataType:'json',
-                success:function(products){
-                    console.log(products);
-                    var tr = '';
-                    $.each(products,function (key, product) {
-                        tr += '<tr>';
-                            tr += '<td>'+(key + 1)+'</td>';
-                        var variant = product.variant ? ' ('+product.variant.variant_name+')' : '';
-                        tr += '<td>'+product.product.name+variant+'</td>';
-                        tr += '<td>'+product.unit+'</td>';
-                        tr += '<td>'+product.quantity+'</td>';
-                        tr += '</tr>';
-                    });
-
-                    $('.packing_product_list').empty();
-                    $('.packing_product_list').html(tr);
-
-                    var body = $('.packing_slip_print_template').html();
-                    $(body).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: true, 
-                        printDelay: 1000, 
-                        header: null,        
-                    });
                 }
             });
         });
@@ -833,8 +776,6 @@
                 if (willDelete) { 
                     $('#payment_deleted_form').submit();
                     button.closest('tr').remove();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });

@@ -1433,7 +1433,6 @@ class POSController extends Controller
                 $soldProduct->ex_status = 1;
                 $soldProduct->save();
             } else {
-                $soldProduct->ex_quantity = 0;
                 $soldProduct->ex_status = 0;
                 $soldProduct->save();
             }
@@ -1497,9 +1496,9 @@ class POSController extends Controller
         }
 
         if ($updateSale->customer) {
-            $updateSale->customer->total_sale_due += $request->total_due;
-            $updateSale->customer->total_sale += $request->total_payable_amount;
-            $updateSale->customer->total_paid += $request->paying_amount;
+            $updateSale->customer->total_sale_due = $updateSale->customer->total_sale_due + $request->total_due;
+            $updateSale->customer->total_sale = $updateSale->customer->total_sale + $request->total_payable_amount;
+            $updateSale->customer->total_paid = $updateSale->customer->total_paid + $request->paying_amount;
             $updateSale->customer->save();
         }
 
@@ -1567,6 +1566,23 @@ class POSController extends Controller
                     $saleProduct->description = $descriptions[$index];
                     $saleProduct->subtotal += $subtotals[$index];
                     $saleProduct->ex_status = 2;
+                    $saleProduct->save();
+                }else {
+                    $saleProduct->sale_id = $request->ex_sale_id;
+                    $saleProduct->product_id = $product_ids[$index];
+                    $saleProduct->product_variant_id = $variant_id;
+                    $saleProduct->quantity = $quantities[$index];
+                    $saleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
+                    $saleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$index];
+                    $saleProduct->unit_discount_type = $unit_discount_types[$index];
+                    $saleProduct->unit_discount = $unit_discounts[$index];
+                    $saleProduct->unit_discount_amount = $unit_discount_amounts[$index];
+                    $saleProduct->unit_tax_percent = $unit_tax_percents[$index];
+                    $saleProduct->unit_tax_amount = $unit_tax_amounts[$index];
+                    $saleProduct->unit_tax_amount = $unit_tax_amounts[$index];
+                    $saleProduct->unit = $units[$index];
+                    $saleProduct->description = $descriptions[$index];
+                    $saleProduct->subtotal = $subtotals[$index];
                     $saleProduct->save();
                 }
             } else {

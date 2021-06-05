@@ -33,7 +33,7 @@
                                 <a class="dropdown-item" id="pay_receive_button" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Receive Purchase Return Amount</a> 
                             @endif
                             
-                            <a class="dropdown-item" href="{{ url('contacts/suppliers/view', $supplier->id) }}"><i class="far fa-eye mr-1 text-primary"></i>View</a>
+                            <a class="dropdown-item" href="{{ url('contacts/suppliers/view', $supplier->id) }}"><i class="far fa-eye mr-1 text-primary"></i> View</a>
 
                             @if (auth()->user()->permission->supplier['supplier_edit'] == '1')
                                 <a class="dropdown-item" href="#" id="edit"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>
@@ -67,9 +67,9 @@
                 <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_purchase_return_due }}</b></td>
                 <td>
                     @if ($supplier->status == 1)
-                        <i class="far fa-thumbs-up mr-1 text-success"></i>
+                        <span class="text-success"><b>Active</b></span>
                     @else 
-                        <i class="far fa-thumbs-down mr-1 text-danger"></i>
+                        <span class="text-danger"><b>Deactivated</b></span>
                     @endif
                 </td>
                  

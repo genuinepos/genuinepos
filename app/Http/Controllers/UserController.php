@@ -119,7 +119,8 @@ class UserController extends Controller
         }
         $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
         $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
-        return view('users.create', compact('departments', 'designations'));
+        $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
+        return view('users.create', compact('departments', 'designations', 'shifts'));
     }
 
     // Add/Store user
@@ -201,6 +202,8 @@ class UserController extends Controller
         $addUser->bank_identifier_code = $request->bank_identifier_code;
         $addUser->bank_branch = $request->bank_branch;
         $addUser->tax_payer_id = $request->tax_payer_id;
+        $addUser->emp_id = $request->emp_id;
+        $addUser->shift_id = $request->shift_id;
         $addUser->department_id = $request->department_id;
         $addUser->designation_id = $request->designation_id;
         $addUser->salary = $request->salary;
@@ -226,7 +229,8 @@ class UserController extends Controller
         $branches = Branch::select('id', 'name', 'branch_code')->orderBy('id', 'DESC')->get();
         $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
         $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
-        return view('users.edit', compact('user', 'roles', 'branches', 'departments', 'designations'));
+        $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
+        return view('users.edit', compact('user', 'roles', 'branches', 'departments', 'designations', 'shifts'));
     }
 
     // Update user
@@ -325,13 +329,15 @@ class UserController extends Controller
         $updateUser->bank_identifier_code = $request->bank_identifier_code;
         $updateUser->bank_branch = $request->bank_branch;
         $updateUser->tax_payer_id = $request->tax_payer_id;
+        $updateUser->emp_id = $request->emp_id;
+        $updateUser->shift_id = $request->shift_id;
         $updateUser->department_id = $request->department_id;
         $updateUser->designation_id = $request->designation_id;
         $updateUser->salary = $request->salary;
         $updateUser->salary_type = $request->pay_type;
         $updateUser->save();
-        session()->flash('successMsg', 'Successfully user is updated');
-        return response()->json('Successfully user is updated');
+        session()->flash('successMsg', 'Successfully user updated');
+        return response()->json('User updated successfully');
     }
 
     // Delete user

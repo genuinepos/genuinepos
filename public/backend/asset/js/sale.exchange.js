@@ -83,9 +83,6 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
             $('#account_id').val(defaultAccount);
             
             $('#ex_sale_id').val(data.sale.id);
-            var ex_inv_payable_amount = parseFloat(data.sale.total_payable_amount);
-            $('#ex_inv_payable_amount').val(parseFloat(ex_inv_payable_amount).toFixed(2));
-            $('#ex_inv_paid').val(parseFloat(data.sale.paid).toFixed(2));
             $('#customer_id').val(data.sale.customer_id);
             calculateTotalAmount();
             var exchange_url = $('#exchange_url').val();

@@ -52,7 +52,7 @@ class LeaveController extends Controller
             'reason' => $request->reason,
             'status' => 0,
         ]);
-        return response()->json('Successfully Leave Added!');
+        return response()->json('Leave created successfully');
     }
 
     //update leave
@@ -73,7 +73,7 @@ class LeaveController extends Controller
             'end_date' => $request->end_date,
             'reason' => $request->reason,
         ]);
-        return response()->json('Successfully Leave Updated!');
+        return response()->json('Leave Updated successfully');
     }
 
     //destroy leave
@@ -81,7 +81,7 @@ class LeaveController extends Controller
     {
         $Leave = Leave::find($id);
         $Leave->delete();
-        return response()->json('Successfully leave Deleted');
+        return response()->json('Leave Deleted successfully');
     }
 
     public function departmentEmployees($depId)

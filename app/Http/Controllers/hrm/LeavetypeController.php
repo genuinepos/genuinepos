@@ -38,7 +38,7 @@ class LeavetypeController extends Controller
                 'max_leave_count' => $request->max_leave_count,
                 'leave_count_interval' => $request->leave_count_interval,
         ]);
-        return response()->json('Successfully Type Added!');
+        return response()->json('Type created successfully');
     }
 
     //Leavetype update method
@@ -54,7 +54,7 @@ class LeavetypeController extends Controller
                 'max_leave_count' => $request->max_leave_count,
                 'leave_count_interval' => $request->leave_count_interval,
             ]);
-        return response()->json('Successfully Type Updated!');
+        return response()->json('Type updated successfully');
     }
 
     //destroy leave type
@@ -62,7 +62,7 @@ class LeavetypeController extends Controller
     {
     	$deleteCategory = Leavetype::find($id);
         $deleteCategory->delete();  
-        return response()->json('Successfully Type Deleted');
+        return response()->json('Type deleted successfully');
     }
 
 }

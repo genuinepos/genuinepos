@@ -15,7 +15,7 @@ return [
   'reports' => 'Reports',
   // Menu childs of Products module
   'categories' => 'Categories',
-  'sub_categories' => 'Sub-Categories',
+  'sub_categories' => 'SubCategories',
   'brand' => 'Brand',
   'product_list' => 'Product List',
   'add_product' => 'Add Product',

@@ -180,8 +180,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table_area">
-                                        <div class="data_preloader">
-                                            <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                        <div class="data_preloader" id="purchase_table_preloader">
+                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                         </div>
                                         <div class="table-responsive" id="purchase_list_table">
                                             <table class="display data_tbl data__table">
@@ -235,9 +235,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Update Purchase Status</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
@@ -270,9 +268,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body" id="payment_list_modal_body">
 
@@ -293,9 +289,7 @@
                 <div class="modal-content payment_details_contant">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span class="payment_invoice"></span>)</h6>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
                         <div class="payment_details_area">
@@ -303,14 +297,18 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 text-right">
+                            <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
-                                    <li class="mt-3" id="payment_attachment"></li>
+                                    <li class="mt-1" id="payment_attachment"></li>
                                 </ul>
                             </div>
-                            <div class="col-md-6 text-right">
+                            <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
-                                    <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li>
+                                    <li class="mt-1">
+                                        {{-- <a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a> --}}
+                                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                                        <button type="submit" id="print_payment" class="c-btn me-0 btn_blue">Print</button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -408,7 +406,6 @@
                 type: 'get',
                 dataType: 'json',
                 success: function(supplier) {
-                    console.log(supplier);
                     $('.name').html(supplier.name);
                     $('.address').html(supplier.address);
                     $('.business').html(supplier.business_name);
@@ -429,7 +426,6 @@
                 url: "{{ route('contacts.supplier.payment.list', $supplierId) }}",
                 type: 'get',
                 success: function(paymentList) {
-                    console.log(paymentList);
                     $('#payment_list_table').html(paymentList);
                 }
             });
@@ -438,13 +434,13 @@
 
          // Pass sale details in the details modal
          function purchaseDetails(url) {
-            $('.data_preloader').show();
+            $('#purchase_table_preloader').show();
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
                     $('#purchase_details').html(data);
-                    $('.data_preloader').hide();
+                    $('#purchase_table_preloader').hide();
                     $('#detailsModal').modal('show');
                 }
             });
@@ -454,7 +450,6 @@
         $(document).on('click', '.details_button', function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            console.log(url);
             purchaseDetails(url);
         });
 
@@ -465,16 +460,12 @@
             purchaseDetails(purchase);
         });
 
-        var lastPurchaseRow = '';
-        
          // Show change status modal and pass actual link in the change status form
          $(document).on('click', '#change_status', function (e) {
             e.preventDefault();
             var purchase = $(this).closest('tr').data('info');
-            console.log(purchase.purchase_status);
             var url = $(this).attr('href');
             $('#change_purchase_status_form').attr('action', url);
-            console.log(purchase)
             $('#purchase_status').val(purchase.purchase_status);
             $('#changeStatusModal').modal('show'); 
         });
@@ -511,8 +502,6 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });
@@ -527,8 +516,8 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    getAllPurchase();
-                    toastr.success(data, 'Succeed');
+                    purchase_table.ajax.reload();
+                    toastr.success(data);
                 }
             });
         });
@@ -544,9 +533,8 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
-                    getAllPurchase();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
+                    purchase_table.ajax.reload();
                     $('.loading_button').hide();
                     $('#changeStatusModal').modal('hide');
                 }
@@ -563,18 +551,12 @@
                 importCSS: true,
                 importStyle: true,
                 loadCSS: "{{ asset('public/assets/css/print/purchase.print.css') }}",
-                removeInline: true,
+                removeInline: false,
                 printDelay: 500,
                 header: null,
             });
         });
-        // Date picker
-        $('.date-picker').datepicker({
-            format: 'dd-mm-yyyy',
-            todayHighlight: true,
-            autoclose: true,
-        });
-
+     
         $(document).on('change', '#payment_method', function () {
             var value = $(this).val();
             $('.payment_method').hide();
@@ -582,8 +564,8 @@
         });
 
         $(document).on('click', '#add_payment', function (e) {
-           e.preventDefault();
-            $('.data_preloader').show();
+            e.preventDefault();
+            $('#purchase_table_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
                 url:url,
@@ -591,14 +573,14 @@
                 success:function(data){
                     $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
-                    $('.data_preloader').hide();
+                    $('#purchase_table_preloader').hide();
                 }
             });
         });
 
         $(document).on('click', '#add_return_payment', function (e) {
             e.preventDefault();
-            $('.data_preloader').show();
+            $('#purchase_table_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
                 url:url,
@@ -606,7 +588,7 @@
                 success:function(data){
                     $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
-                    $('.data_preloader').hide(); 
+                    $('#purchase_table_preloader').hide(); 
                 }
             });
         });
@@ -614,7 +596,7 @@
         // show payment edit modal with data
         $(document).on('click', '#edit_payment', function (e) {
             e.preventDefault();
-            $('.data_preloader').show();
+            $('#purchase_table_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
                 url:url,
@@ -622,7 +604,7 @@
                 success:function(data){
                     $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
-                    $('.data_preloader').hide();
+                    $('#purchase_table_preloader').hide();
                 }
             });
         });
@@ -631,14 +613,14 @@
         $(document).on('click', '#edit_return_payment', function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('.data_preloader').show();
+            $('#purchase_table_preloader').show();
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
                     $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
-                    $('.data_preloader').hide(); 
+                    $('#purchase_table_preloader').hide(); 
                 }
             });
         });
@@ -646,7 +628,7 @@
         // //Show payment view modal with data
         $(document).on('click', '#view_payment', function (e) {
            e.preventDefault();
-           $('.data_preloader').show();
+           $('#purchase_table_preloader').show();
            var url = $(this).attr('href');
             $.ajax({
                 url:url,
@@ -654,7 +636,7 @@
                 success:function(date){
                     $('#payment_list_modal_body').html(date);
                     $('#paymentViewModal').modal('show');
-                    $('.data_preloader').hide();
+                    $('#purchase_table_preloader').hide();
                 }
             });
         });
@@ -738,7 +720,7 @@
                 importCSS: true,                
                 importStyle: true,          
                 loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                removeInline: true, 
+                removeInline: false, 
                 printDelay: 500, 
                 header: header,  
                 footer: footer
@@ -758,9 +740,7 @@
             }).then((willDelete) => {
                 if (willDelete) { 
                     $('#payment_deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
-                }
+                } 
             });
         });
             
@@ -768,7 +748,6 @@
         $(document).on('submit', '#payment_deleted_form',function(e){
             e.preventDefault();
             var url = $(this).attr('action');
-            console.log(url);
             var request = $(this).serialize();
             $.ajax({
                 url:url,

@@ -18,6 +18,7 @@ class CreateAdminAndUsersTable extends Migration
             $table->string('prefix')->nullable();
             $table->string('name');
             $table->string('last_name')->nullable();
+            $table->string('emp_id')->nullable();
             $table->string('username')->nullable();
             $table->string('email')->unique();
             $table->integer('role_type')->nullable()->comment('1=super_admin,2=admin,3=others');

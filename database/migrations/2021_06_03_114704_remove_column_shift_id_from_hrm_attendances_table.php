@@ -14,6 +14,7 @@ class RemoveColumnShiftIdFromHrmAttendancesTable extends Migration
     public function up()
     {
         Schema::table('hrm_attendances', function (Blueprint $table) {
+            $table->dropForeign(['shift_id']);
             $table->dropColumn('shift_id');
         });
     }

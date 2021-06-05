@@ -254,8 +254,8 @@ class PayrollController extends Controller
             }
         }
 
-        session()->flash('successMsg', 'Successfully payroll is added');
-        return response()->json('Successfully payroll is added');
+        session()->flash('successMsg', 'Payroll created successfully');
+        return response()->json('Payroll created successfully');
     }
 
     // Payroll Edit view
@@ -274,7 +274,6 @@ class PayrollController extends Controller
             'duration_unit' => 'required',
         ]);
         //return $request->all();
-
         $updatePayroll = Payroll::with(['allowances', 'deductions'])->where('id', $salaryId)->first();
         $updatePayroll->duration_time = $request->duration_time;
         $updatePayroll->duration_unit = $request->duration_unit;
@@ -369,11 +368,11 @@ class PayrollController extends Controller
             }
         }
 
-        session()->flash('successMsg', 'Successfully salary is updated.');
-        return response()->json('Successfully salary is updated.');
+        session()->flash('successMsg', 'Payroll updated successfully.');
+        return response()->json('Payroll updated successfully.');
     }
 
-    // Show payroll mentod
+    // Show payroll method
     public function show($payrollId)
     {
         $payroll = Payroll::with(['employee', 'allowances', 'deductions'])->where('id', $payrollId)->first();
@@ -387,7 +386,7 @@ class PayrollController extends Controller
         if (!is_null($deletePayroll)) {
             $deletePayroll->delete();
         }
-        return response()->json('Successfully payroll is deleted');
+        return response()->json('Payroll deleted successfully.');
     }
 
     public function paymentView($payrollId)
@@ -404,7 +403,7 @@ class PayrollController extends Controller
         return view('hrm.payroll.ajax_view.add_payment', compact('payroll', 'accounts'));
     }
 
-    // Add payment menthod
+    // Add payment method 
     public function addPayment(Request $request, $payrollId)
     {
         $updatePayroll = Payroll::where('id', $payrollId)->first();
@@ -486,7 +485,7 @@ class PayrollController extends Controller
             $addCashFlow->save();
             Cache::forget('all-accounts');
         }
-        return response()->json('Successfully payment is added.');
+        return response()->json('Payment added successfully.');
     }
 
     // Get payment details **requested by ajax**
@@ -508,7 +507,7 @@ class PayrollController extends Controller
             $deletePayrollPayment->payroll->due += $deletePayrollPayment->paid;
             $deletePayrollPayment->payroll->save();
 
-            // Update previoues account and delete previous cashflow.
+            // Update previous account and delete previous cashflow.
             if ($deletePayrollPayment->account) {
                 $deletePayrollPayment->account->debit -= $deletePayrollPayment->paid;
                 $deletePayrollPayment->account->balance += $deletePayrollPayment->paid;
@@ -524,7 +523,7 @@ class PayrollController extends Controller
             $deletePayrollPayment->delete();
             Cache::forget('all-accounts');
         }
-        return response()->json('Successfully payment is deleted.');
+        return response()->json('Payment deleted successfully.');
     }
 
     // Edit payroll payment modal view 
@@ -634,7 +633,7 @@ class PayrollController extends Controller
             }
         }
         Cache::forget('all-accounts');
-        return response()->json('Successfully payment is updated.');
+        return response()->json('Payment updated successfully.');
     }
 
     public function getAllEmployee()

@@ -307,18 +307,18 @@
                         </div>
                     </div>
                 </div> 
-                <hr class="p-0 m-0">
+                <hr>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <h6>Shipping Details : </h6>
+                            <p><b>Shipping Details</b> : </p>
                             <p class="shipping_details">
                                 {{ $sale->shipment_details ? $sale->shipment_details : 'N/A' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="details_area">
-                            <h6>Sale Note : </h6>
+                            <p><b>Sale Note</b> : </p>
                             <p class="sale_note">{{ $sale->sale_note ? $sale->sale_note : 'N/A' }}</p>
                         </div>
                     </div>

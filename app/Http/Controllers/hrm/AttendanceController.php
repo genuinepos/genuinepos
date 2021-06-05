@@ -30,7 +30,7 @@ class AttendanceController extends Controller
 			$attendances = '';
 			$query = DB::table('hrm_attendances')
 				->leftJoin('admin_and_users', 'hrm_attendances.user_id', 'admin_and_users.id')
-				->leftJoin('hrm_shifts', 'hrm_attendances.shift_id', 'hrm_shifts.id');
+				->leftJoin('hrm_shifts', 'admin_and_users.shift_id', 'hrm_shifts.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
@@ -123,41 +123,7 @@ class AttendanceController extends Controller
         return view('hrm.attendance.index', compact('employee', 'departments', 'branches'));
     }
 
-    // Get all attendance by filter **requested by ajax**
-    public function allAttendance(Request $request)
-    {
-        $attendances = '';
-        $attendance_query = DB::table('hrm_attendances')
-            ->leftJoin('admin_and_users', 'hrm_attendances.user_id', 'admin_and_users.id')
-            ->leftJoin('hrm_shifts', 'hrm_attendances.shift_id', 'hrm_shifts.id');
-
-        if ($request->user_id) {
-            $attendance_query->where('hrm_attendances.user_id', $request->user_id);
-        }
-
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-            $attendance_query->whereBetween('hrm_attendances.at_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-        } else {
-            $attendance_query->whereDate('hrm_attendances.at_date_ts', date('Y-m-d'));
-        }
-
-        $attendances = $attendance_query->select(
-            'hrm_attendances.*',
-            'admin_and_users.id as user_id',
-            'admin_and_users.prefix',
-            'admin_and_users.name',
-            'admin_and_users.last_name',
-            'hrm_shifts.shift_name'
-        )
-            ->orderBy('hrm_attendances.id', 'desc')
-            ->get();
-
-        return view('hrm.attendance.ajax_view.attendance_list', compact('attendances'));
-    }
+   
 
     //attendance store method
     public function storeAttendance(Request $request)
@@ -201,7 +167,6 @@ class AttendanceController extends Controller
                     $data->clock_out_ts = date('Y-m-d ') . $request->clock_outs[$key];
                     $data->is_completed = 1;
                 }
-                $data->shift_id = $request->shift_ids[$key];
                 $data->clock_in_note = $request->clock_in_notes[$key];
                 $data->clock_out_note = $request->clock_out_notes[$key];
                 $data->month = date('F');

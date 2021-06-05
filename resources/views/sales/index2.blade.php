@@ -144,16 +144,16 @@
         
     </div>
 
-    @if (auth()->user()->permission->sale['sale_payment'] == '1')
-        <!-- Edit Shipping modal -->
-        <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog double-col-modal" role="document">
-                <div class="modal-content" id="edit_shipment_modal_content">
-                    
-                </div>
+    <!-- Edit Shipping modal -->
+    <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content" id="edit_shipment_modal_content">
+                
             </div>
         </div>
+    </div>
 
+    @if (auth()->user()->permission->sale['sale_payment'] == '1')
         <!--Payment View modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">

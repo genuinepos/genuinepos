@@ -237,19 +237,18 @@
                             </table>
                         </div>
                     </div>
-                         
-                 </div> <br> <br>
-                 <hr class="p-0 m-0 pb-1">
+                 </div> 
+                 <hr>
                  <div class="row">
                      <div class="col-md-6">
                          <div class="details_area">
-                             <h6>Shipping Details : </h6>
+                             <p><b>Shipping Details</b> : </p>
                              <p class="shipping_details">{{ $purchase->shipment_details }}</p>
                          </div>
                      </div>
                      <div class="col-md-6">
                          <div class="details_area">
-                             <h6>Purchase Note : </h6>
+                             <p><b>Purchase Note</b> : </p>
                              <p class="purchase_note">{{ $purchase->purchase_note }}</p>
                          </div>
                      </div>

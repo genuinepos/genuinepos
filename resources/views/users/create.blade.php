@@ -448,6 +448,30 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
+                                                    <label for="inputEmail3" class="col-4"><b>Employee ID :</b> </label>
+                                                    <div class="col-8">
+                                                        <input type="text" class="form-control" name="emp_id" placeholder="Employee ID">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-4"><b>Shift :</b> </label>
+                                                    <div class="col-8">
+                                                        <select name="shift_id" class="form-control">
+                                                            @foreach ($shifts as $shift)
+                                                                <option value="{{ $shift->id }}">{{ $shift->shift_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-1">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Department :</b> </label>
                                                     <div class="col-8">
                                                         <select name="department_id" class="form-control">

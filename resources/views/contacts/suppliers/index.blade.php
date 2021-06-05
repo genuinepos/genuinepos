@@ -554,7 +554,7 @@
                 data:request,
                 success:function(data){
                     getAllSupplier();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });
@@ -569,7 +569,7 @@
                 url:url,
                 type:'get',
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     getAllSupplier();
                 }
             });

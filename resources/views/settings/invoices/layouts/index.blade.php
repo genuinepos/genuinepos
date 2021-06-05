@@ -119,7 +119,7 @@
                     async:false,
                     data:request,
                     success:function(data){
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         table.ajax.reload();
                         $('#deleted_form')[0].reset();
                     }

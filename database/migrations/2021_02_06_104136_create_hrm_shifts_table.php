@@ -16,7 +16,6 @@ class CreateHrmShiftsTable extends Migration
         Schema::create('hrm_shifts', function (Blueprint $table) {
             $table->id();
             $table->string('shift_name');
-            $table->integer('shift_type');
             $table->string('start_time')->nullable();
             $table->string('endtime')->nullable();
             $table->string('holiday')->nullable();

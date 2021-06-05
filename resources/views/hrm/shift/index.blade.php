@@ -251,7 +251,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_shift_form')[0].reset();
                     $('.loading_button').hide();
                     getAllShift();
@@ -287,7 +287,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     $('#edit_shift_form')[0].reset();
                     getAllShift();
@@ -327,7 +327,7 @@
                 data:request,
                 success:function(data){
                     getAllShift();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });

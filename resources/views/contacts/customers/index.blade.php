@@ -674,7 +674,7 @@
                     url: url,
                     type: 'get',
                     success: function(data) {
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         getAllCustomer();
                     }
                 });

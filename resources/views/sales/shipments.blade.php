@@ -247,7 +247,7 @@
                 data:request,
                 success:function(data){
                     table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     $('#editShipmentModal').modal('hide'); 
                 }

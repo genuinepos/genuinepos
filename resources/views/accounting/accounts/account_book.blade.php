@@ -187,7 +187,7 @@
            data:request,
            success:function(data){
                getCashFlow();
-               toastr.success(data, 'Succeed');
+               toastr.success(data);
                $('#deleted_form')[0].reset();
            }
        });

@@ -222,7 +222,7 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_warehouse_form')[0].reset();
                     $('.loading_button').hide();
                     getAllWarehouse();
@@ -276,7 +276,7 @@
                 data:request,
                 success:function(data){
                     $('#editModal').modal('hide');
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     getAllWarehouse();
                 }
@@ -317,7 +317,7 @@
                 success:function(data){
                     if($.isEmptyObject(data.errorMsg)){
                         getAllWarehouse();
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                     }else{
                         toastr.error(data.errorMsg, 'Error'); 
                     }

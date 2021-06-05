@@ -289,7 +289,7 @@
                 data:request,
                 success:function(data){
                     qutotation_table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                 }
             });
         });

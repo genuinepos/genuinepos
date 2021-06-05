@@ -40,8 +40,8 @@
                                                 <tr>
                                                     <th>Serial</th>
                                                     <th>Photo</th>
-                                                    <th>Category</th>
-                                                    <th>Subcategory</th>
+                                                    <th>SubCategory</th>
+                                                    <th>Parent Category</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -151,12 +151,12 @@
                     name: 'category.photo'
                 },
                 {
-                    data: 'parentname',
-                    name: 'category.parentname'
-                },
-                {
                     data: 'name',
                     name: 'category.name'
+                },
+                {
+                    data: 'parentname',
+                    name: 'category.parentname'
                 },
                 {
                     data: 'action',

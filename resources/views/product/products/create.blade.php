@@ -1441,7 +1441,7 @@
                     $('#category_id').append('<option value="' + data.id + '">' + data.name +
                         '</option>');
                     $('#category_id').val(data.id);
-                    toastr.success(data, 'Succeed');    
+                    toastr.success(data);    
                 }
             });
         });

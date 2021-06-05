@@ -427,7 +427,7 @@
                                         <div class="row">
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Shipment Cost:</label>
                                             <div class="col-sm-7">
-                                                <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00"> 
+                                                <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="0.00"> 
                                             </div>
                                         </div>
 
@@ -561,7 +561,7 @@
 
                                 <div class="col-md-6">
                                     <label><strong>Discount</strong>  :</label>
-                                    <input type="number" class="form-control form-control-sm" id="e_unit_discount" value="0.00"/>
+                                    <input type="number" step="any" class="form-control form-control-sm" id="e_unit_discount" value="0.00"/>
                                     <input type="hidden" id="e_discount_amount"/>
                                 </div>
                             </div>
@@ -569,14 +569,14 @@
 
                         <div class="form-group">
                             <label><strong>Tax</strong> :</label>
-                            <select class="form-control form-control-sm" id="e_unit_tax">
+                            <select class="form-control" id="e_unit_tax">
                                 
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label><strong>Sale Unit</strong> :</label>
-                            <select class="form-control form-control-sm" id="e_unit">
+                            <select class="form-control" id="e_unit">
 
                             </select>
                         </div>
@@ -1704,7 +1704,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_customer_form')[0].reset();
                     $('.loading_button').hide();
                     $('#addCustomerModal').modal('hide');

@@ -348,7 +348,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     getAllLeave();
                     $('#addModal').modal('hide');
                 }
@@ -383,7 +383,7 @@
                 data: request,
                 success:function(data){
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     getAllLeave();
                     $('#editModal').modal('hide'); 
@@ -422,7 +422,7 @@
                 data:request,
                 success:function(data){
                     getAllLeave();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });

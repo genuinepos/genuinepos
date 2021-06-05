@@ -362,7 +362,7 @@
                        toastr.error(data.errorMsg);
                        $('.loading_button').hide();
                    }else{
-                       toastr.success(data, 'Succeed');
+                       toastr.success(data);
                        $('#add_attendance_form')[0].reset();
                        $('.loading_button').hide();
                        att_table.ajax.reload();
@@ -393,7 +393,7 @@
                type:'post',
                data: request,
                success:function(data){
-                   toastr.success(data, 'Succeed');
+                   toastr.success(data);
                    $('#add_attendance_form')[0].reset();
                    $('.loading_button').hide();
                    att_table.ajax.reload();

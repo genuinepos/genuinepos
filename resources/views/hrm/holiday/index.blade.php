@@ -163,7 +163,7 @@
                                     <option value="All"> All </option>
                                     <option value=""> {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>) </option>
                                     @foreach($branches as $row)
-                                        <option value="{{ $row->name }}"> {{ $row->name.'/'.$row->branch_code }}</option>
+                                        <option value="{{ $row->id }}"> {{ $row->name.'/'.$row->branch_code }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -242,7 +242,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_holiday_form')[0].reset();
                     $('.loading_button').hide();
                     getAllHoliday();
@@ -275,7 +275,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     getAllHoliday();
                     $('#editModal').modal('hide'); 
@@ -314,7 +314,7 @@
                 data:request,
                 success:function(data){
                     getAllHoliday();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });

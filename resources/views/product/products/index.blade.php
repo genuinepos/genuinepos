@@ -129,7 +129,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="12">
+                                            <th colspan="13">
                                                 @if (auth()->user()->permission->product['product_delete'])
                                                     <a href="" class="btn btn-sm btn-danger multipla_delete_btn">Delete
                                                         Selected</a>

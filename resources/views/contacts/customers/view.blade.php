@@ -515,7 +515,7 @@
                 data:request,
                 success:function(data){
                     sales_table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                 }
             });
         });
@@ -567,7 +567,7 @@
                 success:function(data){
                     console.log(data);
                     sales_table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     $('#editShipmentModal').modal('hide'); 
                 }

@@ -36,7 +36,7 @@ class CustomerGroupController extends Controller
             'group_name' => $request->name,
             'calc_percentage' => $request->calculation_percent ? $request->calculation_percent : 0.00,
         ]);
-        return response()->json('Successfully customer group is added');
+        return response()->json('Customer group created successfully');
     }
 
     // Update customer group
@@ -51,7 +51,7 @@ class CustomerGroupController extends Controller
             'group_name' => $request->name,
             'calc_percentage' => $request->calculation_percent ? $request->calculation_percent : 0.00,
         ]);
-        return response()->json('Successfully customer group is updated');
+        return response()->json(' Customer group updated successfully');
     }
 
     // delete customer group
@@ -61,6 +61,6 @@ class CustomerGroupController extends Controller
         if (!is_null($deleteCustomerGroup)) {
             $deleteCustomerGroup->delete();  
         }
-        return response()->json('Successfully customer group is deleted');
+        return response()->json('Customer group deleted successfully');
     }
 }

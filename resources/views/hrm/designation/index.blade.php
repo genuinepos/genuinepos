@@ -75,13 +75,12 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>designations</h6>
+                                        <h6>Designations</h6>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +226,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_designation_form')[0].reset();
                     $('.loading_button').hide();
                     getAllDesignation();
@@ -262,7 +261,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     $('#edit_designation_form')[0].reset();
                     getAllDesignation();
@@ -302,7 +301,7 @@
                 data:request,
                 success:function(data){
                     getAllDesignation();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });

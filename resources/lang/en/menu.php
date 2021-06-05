@@ -16,7 +16,7 @@ return [
   // Menu childs of Products module
   'categories' => 'Categories',
   'sub_categories' => 'SubCategories',
-  'brand' => 'Brand',
+  'brand' => 'Brands',
   'product_list' => 'Product List',
   'add_product' => 'Add Product',
   'variants' => 'Variants',

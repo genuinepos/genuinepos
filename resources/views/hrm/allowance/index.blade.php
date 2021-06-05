@@ -229,7 +229,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_allowance_form')[0].reset();
                     $('.loading_button').hide();
                     getAllAllowance();
@@ -271,7 +271,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     getAllAllowance();
                     $('#editModal').modal('hide'); 
@@ -319,7 +319,7 @@
                 data:request,
                 success:function(data){
                     getAllAllowance();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });

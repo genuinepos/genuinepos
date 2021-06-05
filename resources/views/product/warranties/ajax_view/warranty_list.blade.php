@@ -1,12 +1,12 @@
 <table id="kt_datatable" class="display data_tbl data__table">
     <thead>
         <tr>
-            <th class="text-white">Serial</th>
-            <th class="text-white">Name</th>
-            <th class="text-white">Duration</th>
-            <th class="text-white">Type</th>
-            <th class="text-white">Description</th>
-            <th class="text-white">Action</th>
+            <th>Serial</th>
+            <th>Name</th>
+            <th>Duration</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>

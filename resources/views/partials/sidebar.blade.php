@@ -177,8 +177,7 @@
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-center align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.brands.index') }}" class="bar-link">
-                                            <span><img
-                                                    src="{{ asset('public/backend/asset/img/brand.png') }}"></span>
+                                            <span><img src="{{ asset('public/backend/asset/img/brand.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.brand')</p>

@@ -420,7 +420,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_account_form')[0].reset();
                     $('.loading_button').hide();
                     getAllAccount();
@@ -473,7 +473,7 @@
                 data: request,
                 success:function(data){
                     console.log(data);
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     getAllAccount();
                     $('#editModal').modal('hide'); 
@@ -512,7 +512,7 @@
                 data:request,
                 success:function(data){
                     getAllAccount();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });
@@ -526,7 +526,7 @@
                 type:'get',
                 success:function(data){
                     getAllAccount();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                 }
             });
         });
@@ -627,7 +627,7 @@
                 setAccount();
                 $('.loading_button').hide();
                 $('#fund_transfer_form')[0].reset();
-                toastr.success(data, 'Succeed');
+                toastr.success(data);
                 $('#fundTransferModal').modal('hide');
             }
         });
@@ -665,7 +665,7 @@
             success:function(data){
                 getAllAccount();
                 setAccount();
-                toastr.success(data, 'Succeed');
+                toastr.success(data);
                 $('#fund_transfer_form')[0].reset();
                 $('.loading_button').hide();
                 $('#depositModal').modal('hide');

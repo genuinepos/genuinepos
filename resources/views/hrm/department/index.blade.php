@@ -59,10 +59,6 @@
                                         <li>
                                             <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
                                         </li>
-
-                                        <li>
-                                            <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-sliders-h"></i> <b>@lang('menu.hrm_settings')</b></a>
-                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -80,8 +76,7 @@
 
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
                                     </div>
                                 </div>
@@ -242,7 +237,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_department_form')[0].reset();
                     $('.loading_button').hide();
                     getAllDepartment();
@@ -276,7 +271,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     getAllDepartment();
                     $('#editModal').modal('hide'); 
@@ -297,8 +292,6 @@
             .then((willDelete) => {
                 if (willDelete) { 
                     $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
                 }
             });
         });
@@ -315,7 +308,7 @@
                 data:request,
                 success:function(data){
                     getAllDepartment();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });

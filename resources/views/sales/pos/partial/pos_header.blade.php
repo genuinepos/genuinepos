@@ -237,7 +237,7 @@
             type:'post',
             data: request,
             success:function(data){
-                toastr.success(data, 'Succeed');
+                toastr.success(data);
                 $('#add_customer_form')[0].reset();
                 $('.loading_button').hide();
                 $('#addCustomerModal').modal('hide');

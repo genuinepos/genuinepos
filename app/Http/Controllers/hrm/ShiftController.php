@@ -41,6 +41,7 @@ class ShiftController extends Controller
             'start_time' => $request->start_time,
             'endtime' => $request->endtime,
         ]);
+
         return response()->json('Shift created successfully');
     }
 
@@ -59,6 +60,6 @@ class ShiftController extends Controller
             'start_time' => $request->start_time,
             'endtime' => $request->endtime,
         ]);
-        return response()->json('Shift is updated successfully.');
+        return response()->json('Shift updated successfully.');
     }
 }

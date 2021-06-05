@@ -168,7 +168,7 @@
                     cache: false,
                     processData: false,
                     success: function(data) {
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('#add_category_form')[0].reset();
                         $('.loading_button').hide();
                         $('.data_tbl').DataTable().ajax.reload();
@@ -214,7 +214,7 @@
                     cache: false,
                     processData: false,
                     success: function(data) {
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('.loading_button').hide();
                         table.ajax.reload();
                         $('#editModal').modal('hide');
@@ -263,7 +263,7 @@
                     async: false,
                     data: request,
                     success: function(data) {
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('.data_tbl').DataTable().ajax.reload();
                         $('#deleted_form')[0].reset();
                     }

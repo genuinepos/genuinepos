@@ -127,7 +127,7 @@
                 data:request,
                 success:function(data){
                     getAllRoles();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#deleted_form')[0].reset();
                 }
             });

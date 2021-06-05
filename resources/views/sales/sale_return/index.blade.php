@@ -148,7 +148,7 @@
                 data:request,
                 success:function(data){
                     table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                 }
             });
         });

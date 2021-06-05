@@ -20,7 +20,7 @@
     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
         <div class="form-group mt-1">
             <label><b>Allowed Branch</b> <span class="text-danger">*</span></label>
-            <select class="form-control" name="branch_id" required>
+            <select class="form-control" name="branch_id">
                 <option {{ $holiday->is_all == 1 ? 'SELECTED' : '' }} value="All"> All </option>
                 <option {{ !$holiday->branch_id ? 'SELECTED' : '' }} value=""> {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>) </option>
                 @foreach($branches as $row)

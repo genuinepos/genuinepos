@@ -336,7 +336,7 @@
                 success:function(data){
                     console.log(data);
                     if (!$.isEmptyObject(data.successMsg)) {
-                        toastr.success(data.successMsg, 'Succeed');
+                        toastr.success(data.successMsg);
                         tr.remove();
                     }
                 }

@@ -232,7 +232,7 @@
                     type:'post',
                     data: request,
                     success:function(data){
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('#add_schema_form')[0].reset();
                         $('.loading_button').hide();
                         table.ajax.reload();
@@ -345,7 +345,7 @@
                     async:false,
                     data:request,
                     success:function(data){
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                         $('#kt_datatable').DataTable().ajax.reload();
                         $('#deleted_form')[0].reset();
                     }

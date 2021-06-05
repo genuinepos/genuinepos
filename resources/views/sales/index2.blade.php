@@ -116,9 +116,9 @@
                                                     <th>Total Amount</th>
                                                     <th>Total Paid</th>
                                                     <th>Sell Due</th>
+                                                    <th>Payment Status</th>
                                                     <th>Return Amount</th>
                                                     <th>Return Due</th>
-                                                    <th>Payment Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -259,9 +259,9 @@
                 {data: 'total_payable_amount', name: 'total_payable_amount'},
                 {data: 'paid', name: 'paid'},
                 {data: 'due', name: 'due'},
+                {data: 'paid_status', name: 'paid_status'},
                 {data: 'sale_return_amount', name: 'sale_return_amount'},
                 {data: 'sale_return_due', name: 'sale_return_due'},
-                {data: 'paid_status', name: 'paid_status'},
             ],fnDrawCallback: function() {
                 $('.data_preloader').hide();
             },
@@ -471,7 +471,7 @@
                 data:request,
                 success:function(data){
                     sales_table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     $('#editShipmentModal').modal('hide'); 
                 }
@@ -582,7 +582,7 @@
                 data:request,
                 success:function(data){
                     sales_table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                 }
             });
         });

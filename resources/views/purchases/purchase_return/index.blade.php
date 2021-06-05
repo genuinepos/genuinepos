@@ -254,7 +254,7 @@
                         toastr.error(data.errorMsg);
                     }else{
                         table.ajax.reload();
-                        toastr.success(data, 'Succeed');
+                        toastr.success(data);
                     }
                 }
             });

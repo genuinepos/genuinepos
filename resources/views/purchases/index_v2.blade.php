@@ -361,7 +361,7 @@
                 data: request,
                 success: function(data) {
                     purchase_table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                 }
             });
         });
@@ -378,7 +378,7 @@
                 data: request,
                 success: function(data) {
                     purchase_table.ajax.reload();
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('.loading_button').hide();
                     $('#changeStatusModal').modal('hide');
                 }
@@ -571,7 +571,7 @@
                 success: function(data) {
                     purchase_table.ajax.reload();
                     $('#paymentViewModal').modal('hide');
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                 }
             });
         });

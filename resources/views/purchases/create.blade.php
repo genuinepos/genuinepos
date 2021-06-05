@@ -1637,7 +1637,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    toastr.success(data, 'Succeed');
+                    toastr.success(data);
                     $('#add_supplier_form')[0].reset();
                     $('.loading_button').hide();
                     $('#addSupplierModal').modal('hide');

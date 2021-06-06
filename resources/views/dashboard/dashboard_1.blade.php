@@ -271,15 +271,20 @@
             background: #fff;
             box-shadow: inset 0 0 5px#ddd;
             font-size: 25px;
+            margin: 0 4px;
             margin-bottom: 9px;
             height: 70px;
             width: 74px;
             padding: 4px;
-            margin-right: 8px;
         }
 
         .switch_bar i {
             color: #6b082e;
+        }
+
+        .switch_bar_cards {
+            align-items: center;
+            justify-content: center;
         }
 
         .table-title {
@@ -297,7 +302,7 @@
     <div id="dashboard" class="pb-5">
         <div class="row">
             <div class="main__content">
-                <div class="row mx-3 mt-3">
+                <div class="row mx-3 mt-3 switch_bar_cards">
 
                     <div class="switch_bar">
                         <a href="#" class="bar-link">

@@ -31,6 +31,9 @@
                                         <select id="category_id" name="category_id"
                                             class="form-control form-control-sm submit_able">
                                             <option value="">All</option>
+                                            @foreach ($categories as $cate)
+                                                <option value="{{ $cate->id }}">{{ $cate->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
@@ -39,6 +42,9 @@
                                         <select id="unit_id" name="unit_id"
                                             class="form-control form-control-sm submit_able">
                                             <option value="">All</option>
+                                            @foreach ($units as $unit)
+                                                <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
@@ -46,6 +52,9 @@
                                         <strong>Tax</strong>
                                         <select id="tax_id" name="tax_id" class="form-control form-control-sm submit_able">
                                             <option value="">All</option>
+                                            @foreach ($taxes as $tax)
+                                                <option value="{{ $tax->id }}">{{ $tax->tax_name.' ('.$unit->code_name.')' }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -56,6 +65,9 @@
                                         <select id="brand_id" name="brand_id"
                                             class="form-control form-control-sm submit_able">
                                             <option value="">All</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
@@ -283,8 +295,6 @@
             $(document).on('click', '#check_pur_and_gan_bar_button', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
-                console.log(url);
-
                 $.ajax({
                     url: url,
                     type: 'get',
@@ -314,8 +324,6 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $('#deleted_form').submit();
-                        } else {
-                            swal("Your imaginary file is safe!");
                         }
                     });
             });
@@ -360,12 +368,9 @@
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,
-                    })
-                    .then((willDelete) => {
+                    }).then((willDelete) => {
                         if (willDelete) {
                             $('#multiple_action_form').submit();
-                        } else {
-                            swal("Your imaginary file is safe!");
                         }
                     });
             });
@@ -383,9 +388,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $('#multiple_action_form').submit();
-                        } else {
-                            swal("Your imaginary file is safe!");
-                        }
+                        } 
                     });
             });
 
@@ -409,74 +412,6 @@
                     }
                 });
             });
-
-            // Get all parent category
-            function setParentCategory() {
-                $.ajax({
-                    url: "{{ route('products.add.get.all.form.categories') }}",
-                    async: true,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(categories) {
-                        $.each(categories, function(key, val) {
-                            $('#category_id').append('<option value="' + val.id + '">' + val.name +
-                                '</option>');
-                        });
-                    }
-                });
-            }
-            setParentCategory();
-
-            // Set brnads in brnad form field
-            function setBrands() {
-                $.ajax({
-                    url: "{{ route('products.add.get.all.form.brand') }}",
-                    async: true,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(brands) {
-                        $.each(brands, function(key, val) {
-                            $('#brand_id').append('<option value="' + val.id + '">' + val.name +
-                                '</option>');
-                        });
-                    }
-                });
-            }
-            setBrands();
-
-            // Set all vats in form units field
-            function setVats() {
-                $.ajax({
-                    url: "{{ route('products.add.get.all.form.taxes') }}",
-                    async: true,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(taxes) {
-                        $.each(taxes, function(key, val) {
-                            $('#tax_id').append('<option value="' + val.id + '">' + val.tax_name +
-                                '</option>');
-                        });
-                    }
-                });
-            }
-            setVats();
-
-            // Set all units in form units field
-            function setAllUnitsInFormUnitsField() {
-                $.ajax({
-                    url: "{{ route('products.add.get.all.form.units') }}",
-                    async: true,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(units) {
-                        $.each(units, function(key, val) {
-                            $('#unit_id').append('<option value="' + val.id + '">' + val.name +
-                                '</option>');
-                        });
-                    }
-                });
-            }
-            setAllUnitsInFormUnitsField();
 
             // Show opening stock modal with data
             $(document).on('click', '#opening_stock', function(e) {

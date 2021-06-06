@@ -182,7 +182,11 @@ class ProductController extends Controller
                 ])
                 ->make(true);
         }
-        return view('product.products.index');
+        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
+        $brands = DB::table('brands')->get(['id', 'name']);
+        $units = DB::table('units')->get(['id', 'name', 'code_name']);
+        $taxes = DB::table('taxes')->get(['id', 'tax_name']);
+        return view('product.products.index', compact('categories', 'brands', 'units', 'taxes'));
     }
 
     // Add product view

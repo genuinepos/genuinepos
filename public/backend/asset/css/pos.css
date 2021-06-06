@@ -988,3 +988,8 @@ a.resent-tn:hover {
         padding: 20% 0;
     }
 }
+
+.big_field {
+    font-size: 28px!important;
+    font-weight: 500!important;
+}

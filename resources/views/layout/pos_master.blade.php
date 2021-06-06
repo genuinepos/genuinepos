@@ -471,14 +471,14 @@
                     <div class="form-group row ">
                         <div class="col-md-6">
                             <div class="input-box-4 bg-dark">
-                                <label class="text-white"><strong>Total Payable :</strong> </label>
+                                <label class="text-white big_label"><strong>Total Payable :</strong> </label>
                                 <input readonly type="text" class="form-control big_field" id="modal_total_payable" value="0">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-2 bg-info">
-                                <label class="text-white"><strong>Change :</strong></label>
+                                <label class="text-white big_label"><strong>Change :</strong></label>
                                 <input type="text" class="form-control big_field text-info" id="modal_change_amount" value="0">
                             </div>
                         </div>
@@ -487,14 +487,14 @@
                     <div class="form-group row mt-1">
                         <div class="col-md-6">
                             <div class="input-box bg-success">
-                                <label class="text-white"><strong>Cash Receive :</strong> <span class="text-danger">*</span></label>
+                                <label class="text-white big_label"><strong>Cash Receive :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="modal_paying_amount" class="form-control text-success big_field m-paying" id="modal_paying_amount" value="0" autofocus>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-3 bg-danger">
-                                <label class="text-white"><strong>Due :</strong> </label>
+                                <label class="text-white big_label"><strong>Due :</strong> </label>
                                 <input type="text" class="form-control text-danger big_field" id="modal_total_due" value="0">
                             </div>
                         </div>

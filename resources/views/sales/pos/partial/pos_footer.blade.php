@@ -3,7 +3,7 @@
         <span class="float-start text-white mt-3 badge bg-primary">Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
         @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '0')
             <div class="pos-foot-con">
-                <a href="#" class="resent-tn"><span class="fas fa-clock"></span> Recent Transection</a>
+                <a href="#" class="resent-tn"><span class="fas fa-clock"></span> Recent Transaction</a>
             </div>
         @endif
     </div>
@@ -29,11 +29,12 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-2 text-center">
                         <div class="footer_trasc_btn">
-                        @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '0')
-                            <a href="#" class="resent-tn"><span class="fas fa-clock"></span></a>
-                        @endif
+                            @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '0')
+                                <a href="#" class="resent-tn"><span class="fas fa-clock"></span></a>
+                            @endif
                         </div>
                     </div>
                 </div>

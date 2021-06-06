@@ -223,16 +223,19 @@ class PayrollController extends Controller
         $al_amount_types = $request->al_amount_types;
         $allowance_percents = $request->allowance_percents;
         $allowance_amounts = $request->allowance_amounts;
-        foreach ($allowance_names as $key => $allowance_name) {
-            if ($allowance_amounts[$key] > 0) {
-                $addPayrollAllowance = new PayrollAllowance();
-                $addPayrollAllowance->payroll_id = $addPayroll->id;
-                $addPayrollAllowance->allowance_name = $allowance_name;
-                $addPayrollAllowance->amount_type = $al_amount_types[$key];
-                $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
-                $addPayrollAllowance->allowance_percent =  $al_amount_types[$key] == 2 ? $al_percent : 0;
-                $addPayrollAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
-                $addPayrollAllowance->save();
+
+        if ($request->allowance_amounts != null) {
+            foreach ($allowance_names as $key => $allowance_name) {
+                if ($allowance_amounts[$key] > 0) {
+                    $addPayrollAllowance = new PayrollAllowance();
+                    $addPayrollAllowance->payroll_id = $addPayroll->id;
+                    $addPayrollAllowance->allowance_name = $allowance_name;
+                    $addPayrollAllowance->amount_type = $al_amount_types[$key];
+                    $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
+                    $addPayrollAllowance->allowance_percent =  $al_amount_types[$key] == 2 ? $al_percent : 0;
+                    $addPayrollAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
+                    $addPayrollAllowance->save();
+                }
             }
         }
 
@@ -240,20 +243,20 @@ class PayrollController extends Controller
         $de_amount_types = $request->de_amount_types;
         $deduction_percents = $request->deduction_percents;
         $deduction_amounts = $request->deduction_amounts;
-
-        foreach ($deduction_names as $key => $deduction_name) {
-            if ($deduction_amounts[$key] > 0) {
-                $addPayrollDeduction = new PayrollDeduction();
-                $addPayrollDeduction->payroll_id = $addPayroll->id;
-                $addPayrollDeduction->deduction_name = $deduction_name;
-                $addPayrollDeduction->amount_type = $de_amount_types[$key];
-                $de_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
-                $addPayrollDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $de_percent : 0;
-                $addPayrollDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
-                $addPayrollDeduction->save();
+        if ($request->deduction_amounts != null) {
+            foreach ($deduction_names as $key => $deduction_name) {
+                if ($deduction_amounts[$key] > 0) {
+                    $addPayrollDeduction = new PayrollDeduction();
+                    $addPayrollDeduction->payroll_id = $addPayroll->id;
+                    $addPayrollDeduction->deduction_name = $deduction_name;
+                    $addPayrollDeduction->amount_type = $de_amount_types[$key];
+                    $de_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
+                    $addPayrollDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $de_percent : 0;
+                    $addPayrollDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
+                    $addPayrollDeduction->save();
+                }
             }
         }
-
         session()->flash('successMsg', 'Payroll created successfully');
         return response()->json('Payroll created successfully');
     }
@@ -273,7 +276,7 @@ class PayrollController extends Controller
             'duration_time' => 'required',
             'duration_unit' => 'required',
         ]);
-        //return $request->all();
+
         $updatePayroll = Payroll::with(['allowances', 'deductions'])->where('id', $salaryId)->first();
         $updatePayroll->duration_time = $request->duration_time;
         $updatePayroll->duration_unit = $request->duration_unit;
@@ -300,26 +303,29 @@ class PayrollController extends Controller
         $al_amount_types = $request->al_amount_types;
         $allowance_percents = $request->allowance_percents;
         $allowance_amounts = $request->allowance_amounts;
-        foreach ($allowance_names as $key => $allowance_name) {
-            $salaryAllowance = PayrollAllowance::where('id', $allowance_id[$key])->first();
-            if ($salaryAllowance) {
-                $salaryAllowance->allowance_name = $allowance_name;
-                $salaryAllowance->amount_type = $al_amount_types[$key];
-                $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
-                $salaryAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $al_percent : 0;
-                $salaryAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
-                $salaryAllowance->is_delete_in_update = 0;
-                $salaryAllowance->save();
-            } else {
-                if ($allowance_name || $allowance_amounts[$key]) {
-                    $addSalaryAllowance = new PayrollAllowance();
-                    $addSalaryAllowance->payroll_id = $updatePayroll->id;
-                    $addSalaryAllowance->allowance_name = $allowance_name;
-                    $addSalaryAllowance->amount_type = $al_amount_types[$key];
+
+        if ($request->allowance_amounts != null) {
+            foreach ($allowance_names as $key => $allowance_name) {
+                $salaryAllowance = PayrollAllowance::where('id', $allowance_id[$key])->first();
+                if ($salaryAllowance) {
+                    $salaryAllowance->allowance_name = $allowance_name;
+                    $salaryAllowance->amount_type = $al_amount_types[$key];
                     $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
-                    $addSalaryAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $al_percent : 0;
-                    $addSalaryAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
-                    $addSalaryAllowance->save();
+                    $salaryAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $al_percent : 0;
+                    $salaryAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
+                    $salaryAllowance->is_delete_in_update = 0;
+                    $salaryAllowance->save();
+                } else {
+                    if ($allowance_name || $allowance_amounts[$key]) {
+                        $addSalaryAllowance = new PayrollAllowance();
+                        $addSalaryAllowance->payroll_id = $updatePayroll->id;
+                        $addSalaryAllowance->allowance_name = $allowance_name;
+                        $addSalaryAllowance->amount_type = $al_amount_types[$key];
+                        $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
+                        $addSalaryAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $al_percent : 0;
+                        $addSalaryAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
+                        $addSalaryAllowance->save();
+                    }
                 }
             }
         }
@@ -330,26 +336,28 @@ class PayrollController extends Controller
         $deduction_percents = $request->deduction_percents;
         $deduction_amounts = $request->deduction_amounts;
 
-        foreach ($deduction_names as $key => $deduction_name) {
-            $salaryDeduction = PayrollDeduction::where('id', $deduction_id[$key])->first();
-            if ($salaryDeduction) {
-                $salaryDeduction->deduction_name = $deduction_name;
-                $salaryDeduction->amount_type = $de_amount_types[$key];
-                $d_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
-                $salaryDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $d_percent : 0;
-                $salaryDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
-                $salaryDeduction->is_delete_in_update = 0;
-                $salaryDeduction->save();
-            } else {
-                if ($deduction_name || $deduction_amounts[$key]) {
-                    $addSalaryDeduction = new PayrollDeduction();
-                    $addSalaryDeduction->payroll_id = $updatePayroll->id;
-                    $addSalaryDeduction->deduction_name = $deduction_name;
-                    $addSalaryDeduction->amount_type = $de_amount_types[$key];
+        if ($request->deduction_amounts != null) {
+            foreach ($deduction_names as $key => $deduction_name) {
+                $salaryDeduction = PayrollDeduction::where('id', $deduction_id[$key])->first();
+                if ($salaryDeduction) {
+                    $salaryDeduction->deduction_name = $deduction_name;
+                    $salaryDeduction->amount_type = $de_amount_types[$key];
                     $d_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
-                    $addSalaryDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $d_percent : 0;
-                    $addSalaryDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
-                    $addSalaryDeduction->save();
+                    $salaryDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $d_percent : 0;
+                    $salaryDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
+                    $salaryDeduction->is_delete_in_update = 0;
+                    $salaryDeduction->save();
+                } else {
+                    if ($deduction_name || $deduction_amounts[$key]) {
+                        $addSalaryDeduction = new PayrollDeduction();
+                        $addSalaryDeduction->payroll_id = $updatePayroll->id;
+                        $addSalaryDeduction->deduction_name = $deduction_name;
+                        $addSalaryDeduction->amount_type = $de_amount_types[$key];
+                        $d_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
+                        $addSalaryDeduction->deduction_percent = $de_amount_types[$key] == 2 ? $d_percent : 0;
+                        $addSalaryDeduction->deduction_amount = $deduction_amounts[$key] ? $deduction_amounts[$key] : 0;
+                        $addSalaryDeduction->save();
+                    }
                 }
             }
         }

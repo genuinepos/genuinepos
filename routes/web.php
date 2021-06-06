@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
+Route::get('dashboard/stock/alert', 'App\Http\Controllers\DashboardController@stockAlert')->name('dashboard.stock.alert');
+Route::get('dashboard/sale/order', 'App\Http\Controllers\DashboardController@saleOrder')->name('dashboard.sale.order');
+Route::get('dashboard/sale/due', 'App\Http\Controllers\DashboardController@saleDue')->name('dashboard.sale.due');
+Route::get('dashboard/purchase/due', 'App\Http\Controllers\DashboardController@purchaseDue')->name('dashboard.purchase.due');
 
 Route::get('route-list', function () {
     if (env('APP_DEBUG') === true) {
@@ -445,10 +449,8 @@ Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Ht
 });
 
 // Expense route group
-Route::group(['prefix' => 'expanses', 'namespace' => 'App\Http\Controllers'], function () {
+Route::group(['prefix' => 'expenses', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/', 'ExpanseController@index')->name('expanses.index');
-    Route::get('all/expanse', 'ExpanseController@allExpanse')->name('expanses.all.expanse');
-    Route::get('filter', 'ExpanseController@filter')->name('expanses.filter');
     Route::get('create', 'ExpanseController@create')->name('expanses.create');
     Route::post('store', 'ExpanseController@store')->name('expanses.store');
     Route::get('edit/{expanseId}', 'ExpanseController@edit')->name('expanses.edit');

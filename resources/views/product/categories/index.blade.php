@@ -246,9 +246,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $('#deleted_form').submit();
-                        } else {
-                            swal("Your imaginary file is safe!");
-                        }
+                        } 
                     });
             });
 

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Editor\Fields\DateTime;
 
 
@@ -15,14 +16,14 @@ class DashboardController extends Controller
     {
         $this->middleware('auth:admin_and_user');
     }
-    
+
     // Admin dashboard
     public function index()
-    { 
-        $thisWeek = Carbon::now()->startOfWeek().'~'.Carbon::now()->endOfWeek();
-        $thisYear = Carbon::now()->startOfYear().'~'.Carbon::now()->endOfYear();
-        $thisMonth = Carbon::now()->startOfMonth().'~'.Carbon::now()->endOfMonth();
-        $toDay = Carbon::now().'~'.Carbon::now();
+    {
+        $thisWeek = Carbon::now()->startOfWeek() . '~' . Carbon::now()->endOfWeek();
+        $thisYear = Carbon::now()->startOfYear() . '~' . Carbon::now()->endOfYear();
+        $thisMonth = Carbon::now()->startOfMonth() . '~' . Carbon::now()->endOfMonth();
+        $toDay = Carbon::now() . '~' . Carbon::now();
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('dashboard.dashboard_1', compact('branches', 'thisWeek', 'thisYear', 'thisMonth', 'toDay'));
     }
@@ -89,20 +90,31 @@ class DashboardController extends Controller
             $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
         }
 
-        $sales = $saleQuery->groupBy('sales.id')->get();
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $sales = $saleQuery->groupBy('sales.id')->get();
+            $purchases = $purchaseQuery->groupBy('purchases.id')->get();
+            $expenses = $expenseQuery->groupBy('expanses.id')->get();
+            $users = $userQuery->count();
+            $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
+        } else {
+            $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)->groupBy('sales.id')->get();
+            $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->groupBy('purchases.id')->get();
+            $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->groupBy('expanses.id')->get();
+            $users = $userQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->count();
+            $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)
+            ->groupBy('stock_adjustments.id')->get();
+        }
+
+
         $totalSales = $sales->sum('total_sale');
         $totalSaleDue = $sales->sum('total_due');
 
-        $purchases = $purchaseQuery->groupBy('purchases.id')->get();
         $totalPurchase = $purchases->sum('total_purchase');
         $totalPurchaseDue = $purchases->sum('total_due');
 
-        $expenses = $expenseQuery->groupBy('expanses.id')->get();
         $totalExpense = $expenses->sum('total_expense');
 
         $products = $productQuery->count();
-        $users = $userQuery->count();
-        $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
         $total_adjustment = $adjustments->sum('total_adjustment');
 
         return response()->json([
@@ -115,9 +127,238 @@ class DashboardController extends Controller
             'products' => $products,
             'total_adjustment' => $total_adjustment,
         ]);
-
     }
-    
+
+    public function stockAlert(Request $request)
+    {
+        if ($request->ajax()) {
+            $products = DB::table('products')->where('quantity', '<=', 'alert_quantity')
+                ->join('units', 'products.unit_id', 'units.id')
+                ->select(
+                    [
+                        'products.name',
+                        'products.product_code',
+                        'products.alert_quantity',
+                        'products.quantity',
+                        'units.name as unit_name',
+                    ]
+                )->get();
+
+            return DataTables::of($products)
+                ->addIndexColumn()
+                ->editColumn('stock', function ($row) {
+                    $quantity = '';
+                    if ($row->quantity <= 0) {
+                        $quantity = '<span class="text-danger"><b>' . $row->quantity . '</b></span>';
+                    } else {
+                        $quantity = '<b>' . $row->quantity . '</b>';
+                    }
+
+                    return $quantity . ' (' . $row->unit_name . ')';
+                })->rawColumns(['stock'])->make(true);
+        }
+    }
+
+    public function saleOrder(Request $request)
+    {
+        if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
+            $sales = '';
+            $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
+                ->leftJoin('customers', 'sales.customer_id', 'customers.id')
+                ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
+
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('sales.branch_id', NULL);
+                } else {
+                    $query->where('sales.branch_id', $request->branch_id);
+                }
+            }
+
+            if ($request->date_range) {
+                $date_range = explode('~', $request->date_range);
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            }
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                $sales = $query->select(
+                    'sales.*',
+                    'branches.id as branch_id',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                    'customers.name as customer_name',
+                    'admin_and_users.prefix as c_prefix',
+                    'admin_and_users.name as c_name',
+                    'admin_and_users.last_name as c_last_name',
+                )->orderBy('id', 'desc')->where('sales.shipment_status', 1)->get();
+            } else {
+                $sales = $query->select(
+                    'sales.*',
+                    'branches.id as branch_id',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                    'customers.name as customer_name',
+                    'admin_and_users.prefix as c_prefix',
+                    'admin_and_users.name as c_name',
+                    'admin_and_users.last_name as c_last_name',
+                )->where('sales.branch_id', auth()->user()->branch_id)->where('sales.shipment_status', 1)->get();
+            }
+
+            return DataTables::of($sales)
+                ->editColumn('date', function ($row) {
+                    return date('d/m/Y', strtotime($row->date));
+                })
+                ->editColumn('from',  function ($row) use ($generalSettings) {
+                    if ($row->branch_name) {
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    } else {
+                        return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HF</b>)';
+                    }
+                })
+                ->editColumn('shipment_status',  function ($row) {
+                    if ($row->shipment_status == 1) {
+                        return '<span class="badge bg-warning">Ordered</span>';
+                    }
+                })
+                ->editColumn('customer',  function ($row) {
+                    return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
+                })
+                ->editColumn('created_by',  function ($row) {
+                    return $row->c_prefix . ' ' . $row->c_name . ' ' . $row->c_last_name;
+                })
+                ->rawColumns(['date', 'from', 'customer', 'created_by', 'shipment_status'])
+                ->make(true);
+        }
+    }
+
+    public function saleDue(Request $request)
+    {
+        if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
+            $sales = '';
+            $query = DB::table('sales')
+                ->leftJoin('branches', 'sales.branch_id', 'branches.id')
+                ->leftJoin('customers', 'sales.customer_id', 'customers.id');
+
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('sales.branch_id', NULL);
+                } else {
+                    $query->where('sales.branch_id', $request->branch_id);
+                }
+            }
+
+            if ($request->date_range) {
+                $date_range = explode('~', $request->date_range);
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            }
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                $sales = $query->select(
+                    'sales.*',
+                    'branches.id as branch_id',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                    'customers.name as customer_name',
+                )->where('sales.due', '>', 0)->orderBy('id', 'desc')->get();
+            } else {
+                $sales = $query->select(
+                    'sales.*',
+                    'branches.id as branch_id',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                    'customers.name as customer_name',
+                )->where('sales.branch_id', auth()->user()->branch_id)->where('sales.due', '>', 0)->get();
+            }
+
+            return DataTables::of($sales)
+                ->editColumn('date', function ($row) {
+                    return date('d/m/Y', strtotime($row->date));
+                })
+                ->editColumn('from',  function ($row) use ($generalSettings) {
+                    if ($row->branch_name) {
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    } else {
+                        return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HF</b>)';
+                    }
+                })
+                ->editColumn('customer',  function ($row) {
+                    return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
+                })
+                ->editColumn('due',  function ($row) use ($generalSettings) {
+                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
+                })
+                ->rawColumns(['date', 'from', 'customer', 'due'])
+                ->make(true);
+        }
+    }
+
+    public function purchaseDue(Request $request)
+    {
+        if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
+            $purchases = '';
+            $query = DB::table('purchases')
+                ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
+                ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id');
+
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('purchases.branch_id', NULL);
+                } else {
+                    $query->where('purchases.branch_id', $request->branch_id);
+                }
+            }
+
+            if ($request->date_range) {
+                $date_range = explode('~', $request->date_range);
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            }
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                $purchases = $query->select(
+                    'purchases.*',
+                    'branches.id as branch_id',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                    'suppliers.name as sup_name',
+                )->where('purchases.due', '!=', 0)->orderBy('id', 'desc')->get();
+            } else {
+                $purchases = $query->select(
+                    'purchases.*',
+                    'branches.id as branch_id',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                    'suppliers.name as sup_name',
+                )->where('purchases.branch_id', auth()->user()->branch_id)->where('purchases.due', '!=', 0)->get();
+            }
+
+            return DataTables::of($purchases)
+                ->editColumn('date', function ($row) {
+                    return date('d/m/Y', strtotime($row->date));
+                })
+                ->editColumn('from',  function ($row) use ($generalSettings) {
+                    if ($row->branch_name) {
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    } else {
+                        return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HF</b>)';
+                    }
+                })
+                ->editColumn('due',  function ($row) use ($generalSettings) {
+                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
+                })
+                ->rawColumns(['date', 'from', 'due'])
+                ->make(true);
+        }
+    }
+
     public function changeLang($lang)
     {
         session(['lang' => $lang]);

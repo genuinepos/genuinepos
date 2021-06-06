@@ -579,8 +579,8 @@ class SaleController extends Controller
             return response()->json(['errorMsg' => 'product table is empty']);
         }
 
-        if ($request->total_payable_amount != $request->paying_amount && !$request->customer_id) {
-            return response()->json(['errorMsg' => 'Customer is required when sale is due or partial.']);
+        if ($request->paying_amount < $request->total_payable_amount && !$request->customer_id) {
+            return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
         }
 
         // generate invoice ID

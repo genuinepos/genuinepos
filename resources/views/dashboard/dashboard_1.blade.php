@@ -1,7 +1,5 @@
 @extends('layout.master')
-
 @push('stylesheets')
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <style>
         html {
@@ -294,11 +292,11 @@
 @endpush
 @section('title', 'Dashboard - ')
 @section('content')
+@if (auth()->user()->permission->dashboard['dash_data'] == '1')
     <div id="dashboard" class="pb-5">
         <div class="row">
             <div class="main__content">
                 <div class="row mx-3 mt-3">
-
                     <div class="switch_bar">
                         <a href="#" class="bar-link">
                             <span><i class="fas fa-chart-line"></i></span>
@@ -373,28 +371,30 @@
                     </div>
 
                 </div>
-
                 <div class="">
-                    {{-- Select Location and Filter Buttons --}}
                     <div class="row mx-2 mt-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="select-dropdown">
-                                <select name="branch_id" id="branch_id">
-                                    <option value="">All Branch</option>
-                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                        (Head Office)</option>
-                                    @foreach ($branches as $br)
-                                        <option value="{{ $br->id }}">{{ $br->name . '/' . $br->branch_code }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <input type="hidden" id="date_range" value="{{ $thisMonth }}">
-                            </div>
-
+                            <input type="hidden" id="date_range" value="{{ $thisMonth }}">
+                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                <div class="select-dropdown">
+                                    <select name="branch_id" id="branch_id">
+                                        <option value="">All Branch</option>
+                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                            (Head Office)</option>
+                                        @foreach ($branches as $br)
+                                            <option value="{{ $br->id }}">{{ $br->name . '/' . $br->branch_code }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @else 
+                                <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                            @endif
+                            
                             <div class="button-group">
                                 <label class="button-group__btn" id="date" data-value="{{ $toDay }}">
                                     <input type="radio" name="group" />
-                                    <span class="button-group__label">Today</span>
+                                    <span class="button-group__label">Current Day</span>
                                 </label>
 
                                 <label class="button-group__btn">
@@ -409,7 +409,7 @@
 
                                 <label class="button-group__btn" id="date" data-value="{{ $thisYear }}">
                                     <input type="radio" name="group" />
-                                    <span class="button-group__label">This Financial Year</span>
+                                    <span class="button-group__label">This Year</span>
                                 </label>
                             </div>
                         </div>
@@ -549,143 +549,54 @@
                 <div class="row">
                     <div class="form_element">
                         <div class="section-header">
-                            <h4>
-                                <span class="fas fa-table"></span>
-                                Product Order Alert
-                            </h4>
+                            <h6><span class="fas fa-table"></span>Product Stock Alert</h6>
                         </div>
                         <div class="widget_content">
                             <div class="mtr-table">
-                                <table id="stock_alert_table" class="display data__table data_tble" cellspacing="0"
+                                <div class="table-responsive">
+                                    <table id="stock_alert_table" class="display data__table data_tble stock_table"
                                     width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Location</th>
-                                            <th>Current Stock</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Row Data 1</td>
-                                            <td>Row Data 1</td>
-                                            <td>Row Data 1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 2</td>
-                                            <td>Row Data 2</td>
-                                            <td>Row Data 2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 3</td>
-                                            <td>Row Data 3</td>
-                                            <td>Row Data 3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 4</td>
-                                            <td>Row Data 4</td>
-                                            <td>Row Data 4</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 5</td>
-                                            <td>Row Data 5</td>
-                                            <td>Row Data 5</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 6</td>
-                                            <td>Row Data 6</td>
-                                            <td>Row Data 6</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Row Data 7</td>
-                                            <td>Row Data 7</td>
-                                            <td>Row Data 7</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 8</td>
-                                            <td>Row Data 8</td>
-                                            <td>Row Data 8</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 9</td>
-                                            <td>Row Data 9</td>
-                                            <td>Row Data 9</td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
+                                        <thead>
+                                            <tr>
+                                                <th>S/L</th>
+                                                <th>Product</th>
+                                                <th>Product Code(SKU)</th>
+                                                <th>Current Stock</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
             <section>
                 <div class="row">
                     <div class="form_element">
                         <div class="section-header">
                             <span class="fas fa-table"></span>
-                            <h4>Sales Order</h4>
+                            <h6>Sales Order</h6>
                         </div>
                         <div class="widget_content">
                             <div class="table-responsive">
-
-                                <table id="sales_order_table" class="display data__table data_tble" cellspacing="0"
+                                <table id="sales_order_table" class="display data__table data_tble order_table" cellspacing="0"
                                     width="100%">
                                     <thead>
                                         <tr>
-                                            <th>Product</th>
-                                            <th>Location</th>
-                                            <th>Current Stock</th>
+                                            <th>Date</th>
+                                            <th>Invoice ID</th>
+                                            <th>Branch</th>
+                                            <th>Customer</th>
+                                            <th>Shipment Status</th>
+                                            <th>Created By</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Row Data 1</td>
-                                            <td>Row Data 1</td>
-                                            <td>Row Data 1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 2</td>
-                                            <td>Row Data 2</td>
-                                            <td>Row Data 2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 3</td>
-                                            <td>Row Data 3</td>
-                                            <td>Row Data 3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 4</td>
-                                            <td>Row Data 4</td>
-                                            <td>Row Data 4</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 5</td>
-                                            <td>Row Data 5</td>
-                                            <td>Row Data 5</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 6</td>
-                                            <td>Row Data 6</td>
-                                            <td>Row Data 6</td>
-                                        </tr>
 
-                                        <tr>
-                                            <td>Row Data 7</td>
-                                            <td>Row Data 7</td>
-                                            <td>Row Data 7</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 8</td>
-                                            <td>Row Data 8</td>
-                                            <td>Row Data 8</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Row Data 9</td>
-                                            <td>Row Data 9</td>
-                                            <td>Row Data 9</td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -695,74 +606,28 @@
             </section>
         </div>
         <div class="row px-2">
-            <div class="col">
+            <div class="col-md-6">
                 <section>
                     <div class="container">
                         <div class="row">
                             <div class="form_element">
                                 <div class="section-header">
                                     <span class="fas fa-table"></span>
-                                    <h4>Sales Payment Due</h4>
+                                    <h6>Sales Payment Due</h6>
                                 </div>
                                 <div class="widget_content">
                                     <div class="table-responsive">
 
-                                        <table id="sales_payment_due_table" class="display data__table data_tble"
-                                            cellspacing="0" width="100%">
+                                        <table id="sales_payment_due_table" class="display data__table data_tble due_table" width="100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Product</th>
-                                                    <th>Location</th>
-                                                    <th>Current Stock</th>
+                                                    <th>Customer</th>
+                                                    <th>Invoice ID</th>
+                                                    <th>Branch</th>
+                                                    <th>Due Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Row Data 1</td>
-                                                    <td>Row Data 1</td>
-                                                    <td>Row Data 1</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 2</td>
-                                                    <td>Row Data 2</td>
-                                                    <td>Row Data 2</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 3</td>
-                                                    <td>Row Data 3</td>
-                                                    <td>Row Data 3</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 4</td>
-                                                    <td>Row Data 4</td>
-                                                    <td>Row Data 4</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 5</td>
-                                                    <td>Row Data 5</td>
-                                                    <td>Row Data 5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 6</td>
-                                                    <td>Row Data 6</td>
-                                                    <td>Row Data 6</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>Row Data 7</td>
-                                                    <td>Row Data 7</td>
-                                                    <td>Row Data 7</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 8</td>
-                                                    <td>Row Data 8</td>
-                                                    <td>Row Data 8</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 9</td>
-                                                    <td>Row Data 9</td>
-                                                    <td>Row Data 9</td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -772,74 +637,30 @@
                     </div>
                 </section>
             </div>
-            <div class="col">
+
+            <div class="col-md-6">
                 <section>
                     <div class="container">
                         <div class="row">
                             <div class="form_element">
                                 <div class="section-header">
                                     <span class="fas fa-table"></span>
-                                    <h4>Purchase Payment Due</h4>
+                                    <h6>Purchase Payment Due</h6>
                                 </div>
                                 <div class="widget_content">
                                     <div class="table-responsive">
 
-                                        <table id="purchase_payment_due_table" class="display data__table data_tble"
-                                            cellspacing="0" width="100%">
+                                        <table id="purchase_payment_due_table" class="display data__table data_tble purchase_due_table" width="100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Product</th>
-                                                    <th>Location</th>
-                                                    <th>Current Stock</th>
+                                                    <th>Supplier</th>
+                                                    <th>P.Invoice ID</th>
+                                                    <th>Branch</th>
+                                                    <th>Due Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Row Data 1</td>
-                                                    <td>Row Data 1</td>
-                                                    <td>Row Data 1</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 2</td>
-                                                    <td>Row Data 2</td>
-                                                    <td>Row Data 2</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 3</td>
-                                                    <td>Row Data 3</td>
-                                                    <td>Row Data 3</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 4</td>
-                                                    <td>Row Data 4</td>
-                                                    <td>Row Data 4</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 5</td>
-                                                    <td>Row Data 5</td>
-                                                    <td>Row Data 5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 6</td>
-                                                    <td>Row Data 6</td>
-                                                    <td>Row Data 6</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>Row Data 7</td>
-                                                    <td>Row Data 7</td>
-                                                    <td>Row Data 7</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 8</td>
-                                                    <td>Row Data 8</td>
-                                                    <td>Row Data 8</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Row Data 9</td>
-                                                    <td>Row Data 9</td>
-                                                    <td>Row Data 9</td>
-                                                </tr>
+                                      
                                             </tbody>
                                         </table>
                                     </div>
@@ -851,27 +672,195 @@
             </div>
         </div>
     </div>
+@else 
+    <div id="dashboard" class="pb-5">
+        <div class="row">
+            <div class="main__content">
+                <div class="row mx-3 mt-3">
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-chart-line"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-group"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-receipt"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-home"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-file-invoice"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-chart-pie"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-chart-line"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-group"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-receipt"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-home"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-file-invoice"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                    <div class="switch_bar">
+                        <a href="#" class="bar-link">
+                            <span><i class="fas fa-chart-pie"></i></span>
+                            <p></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="text-primary">Welcome, {{ auth()->user()->prefix.' '.auth()->user()->name.' '.auth()->user()->last_name }}!</h1>
+            </div>
+        </div>
+    </div>
+@endif
+
 @endsection
-
-
 @push('scripts')
+@if (auth()->user()->permission->dashboard['dash_data'] == '1')
     <script>
-        // window.onload((function() {
-        //     window.setTimeout(() => {
-        //         const totalPurchase = document.getElementById('total_purchase');
-        //         totalPurchase.innerHTML = "$32432";
-        //     }, 2000);
-        // })())
+        $(document).on('click', '#date', function() {
+            var date_range = $(this).data('value');
+            $('#date_range').val(date_range);
+            getCardAmount();
+            sale_order_table.ajax.reload();
+            sale_due_table.ajax.reload();
+            purchase_due_table.ajax.reload();
+        });
 
+        $(document).on('change', '#branch_id', function() {
+            getCardAmount();
+            sale_order_table.ajax.reload();
+            sale_due_table.ajax.reload();
+            purchase_due_table.ajax.reload();
+        });
+
+        var table = $('.stock_table').DataTable({
+            dom: "Bfrtip",
+            buttons: ["excel", "pdf", "print"],
+            processing: true,
+            serverSide: true,
+            searchable: true,
+            ajax: "{{ route('dashboard.stock.alert') }}",
+            columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
+                {data: 'name',name: 'name'},
+                {data: 'product_code',name: 'product_code'},
+                {data: 'stock',name: 'stock'},
+            ],
+        });
+
+        var sale_order_table = $('.order_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            aaSorting: [[3, 'asc']],
+            "ajax": {
+                "url": "{{ route('dashboard.sale.order') }}",
+                "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
+                    d.date_range = $('#date_range').val();
+                }
+            },
+            columns: [
+                {data: 'date',name: 'date'},
+                {data: 'invoice_id',name: 'invoice_id'},
+                {data: 'from',name: 'from'},
+                {data: 'customer',name: 'customer'},
+                {data: 'shipment_status',name: 'shipment_status'},
+                {data: 'created_by',name: 'created_by'},
+            ],
+        });
+        
+        var sale_due_table = $('.due_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            aaSorting: [[3, 'asc']],
+            "ajax": {
+                "url": "{{ route('dashboard.sale.due') }}",
+                "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
+                    d.date_range = $('#date_range').val();
+                }
+            },
+            columns: [
+                {data: 'customer',name: 'customer'},
+                {data: 'invoice_id',name: 'invoice_id'},
+                {data: 'from',name: 'from'},
+                {data: 'due',name: 'due'},
+            ],
+        });
+
+        var purchase_due_table = $('.purchase_due_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            aaSorting: [[3, 'asc']],
+            "ajax": {
+                "url": "{{ route('dashboard.purchase.due') }}",
+                "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
+                    d.date_range = $('#date_range').val();
+                }
+            },
+            columns: [
+                {data: 'sup_name',name: 'sup_name'},
+                {data: 'invoice_id',name: 'invoice_id'},
+                {data: 'from',name: 'from'},
+                {data: 'due',name: 'due'},
+            ],
+        });
     </script>
 
     {{-- <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.css" /> --}}
 
-
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script> --}}
 
     <script type="text/javascript"
         src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.js">
@@ -879,45 +868,32 @@
 
     <script>
         $(document).ready(function() {
-            $('#stock_alert_table').DataTable({
-                dom: "Bfrtip",
-                buttons: ["excel", "pdf", "print"],
-                pageLength: 4,
-            });
+            // $('#stock_alert_table').DataTable({
+            //     dom: "Bfrtip",
+            //     buttons: ["excel", "pdf", "print"],
+            //     pageLength: 4,
+            // });
 
-            $('#sales_order_table').DataTable({
-                dom: "Bfrtip",
-                buttons: ["excel", "pdf", "print"],
-                pageLength: 4,
-            });
+            // $('#sales_order_table').DataTable({
+            //     dom: "Bfrtip",
+            //     buttons: ["excel", "pdf", "print"],
+            //     pageLength: 4,
+            // });
 
+            // $('#sales_payment_due_table').DataTable({
+            //     dom: "Bfrtip",
+            //     buttons: ["excel", "pdf", "print"],
+            //     pageLength: 4,
+            // });
 
-            $('#sales_payment_due_table').DataTable({
-                dom: "Bfrtip",
-                buttons: ["excel", "pdf", "print"],
-                pageLength: 4,
-            });
-
-            $('#purchase_payment_due_table').DataTable({
-                dom: "Bfrtip",
-                buttons: ["excel", "pdf", "print"],
-                pageLength: 4,
-            });
+            // $('#purchase_payment_due_table').DataTable({
+            //     dom: "Bfrtip",
+            //     buttons: ["excel", "pdf", "print"],
+            //     pageLength: 4,
+            // });
         });
         // AJAX Call
-
-        $(document).on('click', '#date', function() {
-            var date_range = $(this).data('value');
-            $('#date_range').val(date_range);
-            getCardAmount();
-        });
-
-        $(document).on('change', '#branch_id', function() {
-            getCardAmount();
-        });
-
         var __currency = "{{ json_decode($generalSettings->business, true)['currency'] }}";
-
         function getCardAmount() {
             var date_range = $('#date_range').val();
             var branch_id = $('#branch_id').val();
@@ -934,14 +910,12 @@
                     $('.card_preloader').hide();
                     $('#total_purchase').html(__currency + ' ' + parseFloat(data.totalPurchase).toFixed(2));
                     $('#total_sale').html(__currency + ' ' + parseFloat(data.total_sale).toFixed(2));
-                    $('#total_purchase_due').html(__currency + ' ' + parseFloat(data.totalPurchaseDue).toFixed(
-                        2));
+                    $('#total_purchase_due').html(__currency + ' ' + parseFloat(data.totalPurchaseDue).toFixed(2));
                     $('#total_sale_due').html(__currency + ' ' + parseFloat(data.totalSaleDue).toFixed(2));
                     $('#total_expense').html(__currency + ' ' + parseFloat(data.totalExpense).toFixed(2));
                     $('#total_user').html(data.users);
                     $('#total_product').html(data.products);
-                    $('#total_adjustment').html(__currency + ' ' + parseFloat(data.total_adjustment).toFixed(
-                        2));
+                    $('#total_adjustment').html(__currency + ' ' + parseFloat(data.total_adjustment).toFixed(2));
                 }
             });
         }
@@ -1010,4 +984,5 @@
         });
 
     </script> --}}
+    @endif
 @endpush

@@ -86,7 +86,7 @@ class POSController extends Controller
         }
 
         if ($request->button_type == 1 && $request->paying_amount == 0) {
-            return response()->json(['errorMsg' => 'If yout want to sale in full credit, so click credit sale button.']);
+            return response()->json(['errorMsg' => 'If you want to sale in full credit, so click credit sale button.']);
         }
 
         // generate invoice ID

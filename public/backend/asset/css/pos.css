@@ -738,20 +738,33 @@ a.resent-tn:hover {
 
 @media (min-width: 1200px) and (max-width: 1400px) {
     .set-height {
-        height: 63vh;
+        height: 60vh;
         overflow-x: scroll;
     }
     .check-out-woaper {
         height: 85vh;
     }
     .product-area {
-        height: 71vh;
+        height: 67vh;
     }
     .all-cat {
-        height: 77.5vh;
+        height: 74.5vh;
     }
     .show-product {
-        height: 78.5vh;
+        height: 75.5vh;
+    }
+    .pos-footer {
+        bottom: 0px;
+    }
+    .function-sec {
+        margin-bottom: 3px;
+    }
+    .function-card {
+        padding: 10px 0px;
+    }
+    .function-sec .col-4.px-2.py-1 {
+        padding-top: 3px!important;
+        padding-bottom: 0px!important;
     }
 }
 

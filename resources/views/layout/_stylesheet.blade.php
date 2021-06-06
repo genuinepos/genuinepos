@@ -88,13 +88,15 @@
             overflow-x: hidden;
         }
 
-        #dashboard-8 .main__nav {
-            overflow-y: hidden;
-        }
-
         .dataTables_filter input {
             padding-right: 8px;
             padding-left: 26px;
+        }
+
+        @media screen and (min-width: 960px) {
+            #dashboard-8 .main__nav {
+                overflow-y: hidden;
+            }
         }
 
     </style>

@@ -194,20 +194,12 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 
         Route::group(['prefix' => 'money/receipt'], function () {
             Route::get('/voucher/list/{customerId}', 'MoneyReceiptController@moneyReceiptList')->name('money.receipt.voucher.list');
-
             Route::get('create/{customerId}', 'MoneyReceiptController@moneyReceiptCreate')->name('money.receipt.voucher.create');
-
             Route::post('store/{customerId}', 'MoneyReceiptController@store')->name('money.receipt.voucher.store');
-
             Route::get('voucher/print/{receiptId}', 'MoneyReceiptController@moneyReceiptPrint')->name('money.receipt.voucher.print');
-
             Route::get('voucher/print/{receiptId}', 'MoneyReceiptController@moneyReceiptPrint')->name('money.receipt.voucher.print');
-
-
             Route::get('voucher/status/change/modal/{receiptId}', 'MoneyReceiptController@changeStatusModal')->name('money.receipt.voucher.status.change.modal');
-
             Route::post('voucher/status/change/{receiptId}', 'MoneyReceiptController@changeStatus')->name('money.receipt.voucher.status.change');
-
             Route::delete('voucher/delete/{receiptId}', 'MoneyReceiptController@delete')->name('money.receipt.voucher.delete');
         });
 
@@ -435,7 +427,9 @@ Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Ht
     Route::post('update/{transferId}', 'TransferToWarehouseController@update')->name('transfer.stock.to.warehouse.update');
     Route::delete('delete/{transferId}', 'TransferToWarehouseController@delete')->name('transfer.stock.to.warehouse.delete');
     Route::get('sarach/product/{product_code}/{branch_id}', 'TransferToWarehouseController@productSearch');
+    Route::get('check/single/product/stock/{product_id}/{branch_id}', 'TransferToWarehouseController@checkBranchSingleProduct');
     Route::get('check/branch/variant/qty/{product_id}/{variant_id}/{branch_id}', 'TransferToWarehouseController@checkBranchProductVariant');
+    
 
     // Receive stock from branch **route group**
     Route::group(['prefix' => 'receive'], function () {

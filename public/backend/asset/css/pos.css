@@ -110,7 +110,7 @@ span.input-group-text.valus {
 }
 
 .category-sec {
-    margin-top: 3px;
+    margin-top: 4px;
 }
 
 .pos-content {
@@ -617,18 +617,18 @@ a.resent-tn:hover {
         height: 89.7vh;
     }
     .set-height {
-        height: 82.4vh;
+        height: 75.4vh;
         overflow-x: scroll;
     }
     .product-area {
-        height: 83.5vh;
+        height: 80.5vh;
         overflow: scroll;
         overflow-x: hidden;
     }
     .all-cat {
         border: 1px solid #000;
         background: #fff;
-        height: 87vh;
+        height: 85vh;
         overflow-y: scroll;
         border-radius: 3px;
     }
@@ -667,28 +667,28 @@ a.resent-tn:hover {
 
 @media (min-width: 1400px) and (max-width: 1600px) {
     .product-area {
-        height: 80vh;
+        height: 76vh;
         overflow: scroll;
         overflow-x: hidden;
     }
     .set-height {
-        height: 74vh;
+        height: 70vh;
         overflow-x: scroll;
     }
     .sub_total {
         bottom: 53px;
     }
     .all-cat {
-        height: 85.2vh;
+        height: 81.2vh;
     }
     .check-out-woaper {
         height: 85.7vh;
     }
     .show-product {
-        height: 86.2vh;
+        height: 82vh;
     }
     .product-inner {
-        height: 85vh;
+        height: 81vh;
     }
 }
 
@@ -738,20 +738,33 @@ a.resent-tn:hover {
 
 @media (min-width: 1200px) and (max-width: 1400px) {
     .set-height {
-        height: 63vh;
+        height: 60vh;
         overflow-x: scroll;
     }
     .check-out-woaper {
         height: 85vh;
     }
     .product-area {
-        height: 71vh;
+        height: 67vh;
     }
     .all-cat {
-        height: 77.5vh;
+        height: 74.5vh;
     }
     .show-product {
-        height: 78.5vh;
+        height: 75.5vh;
+    }
+    .pos-footer {
+        bottom: 0px;
+    }
+    .function-sec {
+        margin-bottom: 3px;
+    }
+    .function-card {
+        padding: 10px 0px;
+    }
+    .function-sec .col-4.px-2.py-1 {
+        padding-top: 3px!important;
+        padding-bottom: 0px!important;
     }
 }
 
@@ -817,7 +830,7 @@ a.resent-tn:hover {
     }
     .check-out-woaper {
         height: auto;
-        margin-bottom: 35px;
+        margin-bottom: 28px;
     }
     .checkout-input-sec {
         padding-top: 20px;
@@ -850,9 +863,10 @@ a.resent-tn:hover {
         height: 41px;
     }
     .sub_total {
-        width: 100%;
+        /* width: 100%;
         overflow: hidden;
-        position: inherit;
+        position: inherit; */
+        display: none;
     }
     .btn-bg {
         width: 50%;
@@ -874,7 +888,12 @@ a.resent-tn:hover {
     #calculatorModal .modal-content {
         right: -285px;
     }
-    
+    .set-height {
+        height: 60.6vh;
+    }
+    .resent-tn {
+        padding: 6px 12px;
+    }
 }
 
 @media (max-width: 840px) {
@@ -921,7 +940,7 @@ a.resent-tn:hover {
         display: none;
     }
     .check-out-woaper {
-        margin-bottom: 69px;
+        margin-bottom: 52px;
     }
     #footer_fixed .modal-content {
         right: -212px;

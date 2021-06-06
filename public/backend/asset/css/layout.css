@@ -724,6 +724,15 @@ footer img.logo {
         top: 53px;
         right: 20%;
     }
+    #dashboard .button-group__label {
+        padding: 0 10px!important;
+    }
+}
+@media(max-width: 400px) {
+    #dashboard .button-group__label {
+        padding: 0 5px!important;
+        font-size: 10px;
+    }
 }
 /* =============================== Dashboard 8 design =================================== */
 #dashboard-8 .navigation{

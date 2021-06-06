@@ -77,7 +77,7 @@ ul#search_box {
     height: 70px;
     width: 74px;
     padding: 4px;
-    margin-right: 8px;
+    /* margin-right: 8px; */
 }
 
 .switch_bar i {

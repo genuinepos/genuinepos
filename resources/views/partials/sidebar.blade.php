@@ -139,9 +139,7 @@
     </div>
     <div class="category-bar">
         <div id="sidebar_t">
-
             <!-- ===========================================DASHBOARD SIDEBAR=================== -->
-
             <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="product">
                 <div class="sub-menu-width">
@@ -572,7 +570,7 @@
                                     <div
                                         class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
-                                            <a href="" class="bar-link">
+                                            <a href="{{ route('transfer.stock.to.warehouse.index') }}" class="bar-link">
                                                 <span><img src="{{ asset('public/backend/asset/img/list.png') }}"></span>
                                             </a>
                                         </div>
@@ -931,8 +929,7 @@
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.profit.loss.index') }}" class="bar-link">
-                                            <span><img
-                                                    src="{{ asset('public/backend/asset/img/financial-profit.png') }}"></span>
+                                            <span><img src="{{ asset('public/backend/asset/img/financial-profit.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.profit_loss')</p>

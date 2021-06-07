@@ -18,12 +18,18 @@ class AccountController extends Controller
     // Bank main page/index page
     public function index()
     {
+        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
         return view('accounting.accounts.index');
     }
 
     // Get all banks by ajax
     public function allAccounts()
     {
+        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
         $accounts = Account::with(['bank', 'account_type', 'admin', 'admin.role'])->orderBy('id', 'DESC')->where('status', 1)->get();
         return view('accounting.accounts.ajax_view.account_list', compact('accounts'));
     }
@@ -31,6 +37,9 @@ class AccountController extends Controller
     //Get account book
     public function accountBook($accountId)
     {
+        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
         $account = Account::with(['bank', 'account_type', 'cash_flows'])->where('id', $accountId)->first();
         return view('accounting.accounts.account_book', compact('account'));
     }
@@ -107,8 +116,10 @@ class AccountController extends Controller
 
     public function allBanks()
     {
+        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
         $banks = Bank::select('id', 'name', 'branch_name')->get();
-
         return response()->json($banks);
     }
 

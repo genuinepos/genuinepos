@@ -234,7 +234,7 @@
         sales_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
-            aaSorting: [[3, 'asc']],
+            aaSorting: [[0, 'desc']],
             "ajax": {
                 "url": "{{ route('sales.index2') }}",
                 "data": function(d) {

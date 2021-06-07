@@ -146,7 +146,7 @@
                                                     <a href="" class="btn btn-sm btn-danger multipla_delete_btn">Delete
                                                         Selected</a>
                                                 @endif
-                                                <a href="" class="btn btn-sm btn-warning multipla_deactive_btn">Deactivate
+                                                <a href="" class="btn btn-sm btn-warning multipla_deactive_btn text-white">Deactivate
                                                     Selected</a>
                                             </th>
                                         </tr>
@@ -207,7 +207,7 @@
                 "processing": true,
                 "serverSide": true,
                 aaSorting: [
-                    [3, 'asc']
+                    [0, 'asc']
                 ],
                 "ajax": {
                     "url": "{{ route('products.all.product') }}",
@@ -226,7 +226,8 @@
                     "orderable": false,
                     "searchable": false
                 }],
-                columns: [{data: 'multiple_delete',},
+                columns: [
+                    {data: 'multiple_delete',},
                     {data: 'photo',name: 'photo'},
                     {data: 'action',name: 'action'},
                     {data: 'name',name: 'name'},

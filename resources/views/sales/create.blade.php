@@ -180,7 +180,7 @@
                                                                     <th>Unit</th>
                                                                     <th class="text-center">Price Inc.Tax</th>
                                                                     <th>SubTotal</th>
-                                                                    <th><i class="fas fa-trash-alt text-danger"></i></th>
+                                                                    <th><i class="fas fa-minus text-dark"></i></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="sale_list">

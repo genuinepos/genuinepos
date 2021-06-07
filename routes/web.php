@@ -417,8 +417,7 @@ Route::group(['prefix' => 'stock/adjustments', 'namespace' => 'App\Http\Controll
 //Transfer stok to warehouse all route
 Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/', 'TransferToWarehouseController@index')->name('transfer.stock.to.warehouse.index');
-    Route::get('transfer/products/{transferId}', 'TransferToWarehouseController@transferProduct');
-    Route::get('all/transfer/', 'TransferToWarehouseController@allTransfer')->name('transfer.stock.to.warehouse.all.transfer');
+    Route::get('show/{id}', 'TransferToWarehouseController@show')->name('transfer.stock.to.warehouse.show');
     Route::get('create', 'TransferToWarehouseController@create')->name('transfer.stock.to.warehouse.create');
     Route::post('store', 'TransferToWarehouseController@store')->name('transfer.stock.to.warehouse.store');
     Route::get('get/all/warehouse', 'TransferToWarehouseController@getAllWarehouse')->name('transfer.stock.to.warehouse.all.warehouse');

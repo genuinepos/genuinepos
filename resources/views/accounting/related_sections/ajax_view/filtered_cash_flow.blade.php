@@ -1,14 +1,14 @@
 <table class="display data_tbl data__table">
     <thead>
-        <tr class="bg-navey-blue">
-            <th class="text-white">Date</th>
-            <th class="text-white">Account</th>
-            <th class="text-white">Description</th>
-            <th class="text-white">Created By</th>
-            <th class="text-white">Debit</th>
-            <th class="text-white">Credit</th>
-            <th class="text-white">Balance</th>
-            <th class="text-white text-center">Action</th>
+        <tr>
+            <th class="text-start">Date</th>
+            <th class="text-start">Account</th>
+            <th class="text-start">Description</th>
+            <th class="text-start">Created By</th>
+            <th class="text-start">Debit</th>
+            <th class="text-start">Credit</th>
+            <th class="text-start">Balance</th>
+            <th class="text-start">Action</th>
         </tr>
     </thead>
     <tbody>

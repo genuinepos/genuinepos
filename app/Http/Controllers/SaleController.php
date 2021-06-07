@@ -95,7 +95,7 @@ class SaleController extends Controller
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
                     'customers.name as customer_name',
-                )->orderBy('id', 'desc')->where('sales.status', 1)
+                )->where('sales.status', 1)
                     ->orderBy('id', 'desc')
                     ->get();
             } else {

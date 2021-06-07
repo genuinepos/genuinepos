@@ -92,14 +92,11 @@ class ProductController extends Controller
                     'sub_cate.name as sub_cate_name',
                     'brands.name as brand_name',
                 ]
-            )
-                ->get();
+            )->orderBy('id', 'desc')->get();
 
             return DataTables::of($products)
                 ->addColumn('multiple_delete', function ($row) {
-                    if (auth()->user()->permission->product['product_delete']  == '1') {
-                        return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
-                    }
+                    return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
                 })
                 ->editColumn('photo', function ($row) use ($img_url) {
                     return '<img loading="lazy" class="rounded" width="40" height="40" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
@@ -212,13 +209,11 @@ class ProductController extends Controller
             [
                 'name' => 'required',
                 'code' => 'required|min:3|max:40|unique:products,product_code',
-                'category_id' => 'required',
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
                 'image.*' => 'sometimes|image|max:2048',
             ],
             [
-                'category_id.required' => 'Category field is required.',
                 'unit_id.required' => 'Product unit field is required.',
                 'code.required' => 'Product code field is required.',
             ]
@@ -665,13 +660,11 @@ class ProductController extends Controller
             [
                 'name' => 'required',
                 'code' => 'required',
-                'category_id' => 'required',
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
                 'image.*' => 'sometimes|image|max:2048',
             ],
             [
-                'category_id.required' => 'Category field is required.',
                 'unit_id.required' => 'Product unit field is required.',
                 'code.required' => 'Product code field is required.',
             ]

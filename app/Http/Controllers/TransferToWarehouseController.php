@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\ProductVariant;
 use App\Models\ProductWarehouse;
+use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\ProductWarehouseVariant;
 use App\Models\TransferStockToWarehouse;
+use Yajra\DataTables\Facades\DataTables;
 use App\Models\TransferStockToWarehouseProduct;
 
 class TransferToWarehouseController extends Controller
@@ -21,23 +23,74 @@ class TransferToWarehouseController extends Controller
     }
 
     // Index view of Transfer stock to branch 
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
+            $transfers = DB::table('transfer_stock_to_warehouses')
+                ->leftJoin('warehouses', 'transfer_stock_to_warehouses.warehouse_id', 'warehouses.id')
+                ->leftJoin('branches', 'transfer_stock_to_warehouses.branch_id', 'branches.id')->select(
+                    'transfer_stock_to_warehouses.*',
+                    'warehouses.warehouse_name',
+                    'warehouses.warehouse_code',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                )->where('branch_id', auth()->user()->branch_id)->orderBy('id', 'desc')->get();
+
+            return DataTables::of($transfers)
+                ->addColumn('action', function ($row) {
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" href="'. route('transfer.stock.to.warehouse.edit', $row->id).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('transfer.stock.to.warehouse.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '</div>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->editColumn('date', function ($row) {
+                    return date('d/m/Y', strtotime($row->date));
+                })
+                ->editColumn('from',  function ($row) {
+                    return  $row->branch_name . '/' . $row->branch_code;
+                })
+                ->editColumn('to',  function ($row) {
+                    return  $row->warehouse_name . '/' . $row->warehouse_code;
+                })
+                ->editColumn('shipping_charge', function ($row) use ($generalSettings) {
+                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->shipping_charge . '</b>';
+                })
+                ->editColumn('net_total_amount', function ($row) use ($generalSettings) {
+                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . $row->net_total_amount  . '</b>';
+                })
+                ->editColumn('status', function ($row) {
+                    $html = '';
+                    if ($row->status == 1) {
+                        $html .= '<span class="badge bg-danger">Pending</span>';
+                    } else if ($row->status == 2) {
+                        $html .= '<span class="badge bg-warning text-white">Partial</span>';
+                    } else if ($row->status == 3) {
+                        $html .= '<span class="badge bg-success">Completed</span>';
+                    }
+                    return $html;
+                })
+                ->setRowAttr([
+                    'data-href' => function ($row) {
+                        return route('transfer.stock.to.warehouse.show', [$row->id]);
+                    }
+                ])
+                ->setRowClass('clickable_row text-start')
+                ->rawColumns(['date', 'from', 'to', 'shipping_charge', 'net_total_amount', 'status', 'action'])
+                ->make(true);
+        }
         return view('transfer_stock.branch_to_warehouse.index');
     }
 
-    // Get all transfers requested by ajax
-    public function allTransfer()
+    public function show($id)
     {
-        $transferStocks = TransferStockToWarehouse::with('branch', 'warehouse')->orderBy('id', 'desc')->where('branch_id', auth()->user()->branch_id)->get();
-        return view('transfer_stock.branch_to_warehouse.ajax_view.transfer_list', compact('transferStocks'));
-    }
-
-    // Transfer products by transfer id **requested by ajax
-    public function transferProduct($transferId)
-    {
-        $transferProducts = TransferStockToWarehouseProduct::with(['product', 'variant'])->where('transfer_stock_id', $transferId)->get();
-        return response()->json($transferProducts);
+        $transfer = TransferStockToWarehouse::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $id)->first();
+        return view('transfer_stock.branch_to_warehouse.ajax_view.show', compact('transfer'));
     }
 
     // Add transfer stock to branch create view
@@ -49,7 +102,6 @@ class TransferToWarehouseController extends Controller
     // Store transfer products form warehouse to branch
     public function store(Request $request)
     {
-        //return $request->all();
         $this->validate($request, [
             'warehouse_id' => 'required',
             'branch_id' => 'required',
@@ -102,11 +154,11 @@ class TransferToWarehouseController extends Controller
         }
 
         if ($request->action == 'save') {
-            session()->flash('successMsg', 'Successfully transfer stock is added');
+            session()->flash('successMsg', ' Transfer stock created successfully');
             return response()->json(['successMsg' => 'Successfully transfer stock is added']);
         } else {
-            $transferStock = TransferStockToWarehouse::with('branch', 'warehouse', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $addTransferToWarehouse->id)->first();
-            return response()->json($transferStock);
+            $transfer = TransferStockToWarehouse::with('branch', 'warehouse', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $addTransferToWarehouse->id)->first();
+            return view('transfer_stock.branch_to_warehouse.save_and_print_template.print', compact('transfer'));
         }
     }
 
@@ -114,10 +166,12 @@ class TransferToWarehouseController extends Controller
     public function edit($transferId)
     {
         $transferId = $transferId;
-        return view('transfer_stock.branch_to_warehouse.edit', compact('transferId'));
+        $transfer = DB::table('transfer_stock_to_warehouses')->where('id', $transferId)->select('id', 'warehouse_id', 'date')->first();
+        $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->get();
+        return view('transfer_stock.branch_to_warehouse.edit', compact('transferId', 'transfer','warehouses'));
     }
 
-    // Get editable transfer **reqeusted by ajax
+    // Get editable transfer **requested by ajax
     public function editableTransfer($transferId)
     {
         $transfer = TransferStockToWarehouse::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $transferId)->first();
@@ -126,7 +180,8 @@ class TransferToWarehouseController extends Controller
             $productBranch = ProductBranch::where('branch_id', $transfer->branch_id)
                 ->where('product_id', $transfer_product->product_id)->first();
             if ($transfer_product->product_variant_id) {
-                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $transfer_product->product_id)
+                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
+                    ->where('product_id', $transfer_product->product_id)
                     ->where('product_variant_id', $transfer_product->product_variant_id)
                     ->first();
                 $qty_limits[] = $productBranchVariant->variant_quantity;
@@ -222,13 +277,7 @@ class TransferToWarehouseController extends Controller
             $deleteableTransferProduct->delete();
         }
 
-        if ($request->action == 'save') {
-            session()->flash('successMsg', 'Successfully transfer stock is updated');
-            return response()->json(['successMsg' => 'Successfully transfer stock is updated']);
-        } else {
-            $transferStock = TransferStockToWarehouse::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $transferId)->first();
-            return response()->json($transferStock);
-        }
+        return response()->json(['successMsg' => 'Transfer stock updated successfully']);
     }
 
     // delete transfer

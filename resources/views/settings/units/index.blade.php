@@ -83,13 +83,13 @@
                     <form id="add_unit_form" action="{{ route('settings.units.store') }}">
                         <div class="form-group">
                             <label><b>Unit Name :</b><span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Name" id="name" placeholder="Unit Name"/>
+                            <input type="text" name="name" class="form-control form-control-sm" data-name="Name" id="name" placeholder="Unit Name"/>
                             <span class="error error_name"></span>
                         </div>
 
                         <div class="form-group mt-1">
                             <label><b>Code Name :</b><span class="text-danger">*</span></label>
-                            <input type="text" name="code" class="form-control form-control-sm add_input" data-name="Code name" id="code" placeholder="Code name"/>
+                            <input type="text" name="code" class="form-control form-control-sm" data-name="Code name" id="code" placeholder="Code name"/>
                             <span class="error error_code"></span>
                         </div>
 
@@ -120,13 +120,13 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label><b>Unit Name :</b><span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm edit_input" data-name="Name" id="e_name" placeholder="Unit Name"/>
+                            <input type="text" name="name" class="form-control form-control-sm" data-name="Name" id="e_name" placeholder="Unit Name"/>
                             <span class="error error_e_name"></span>
                         </div>
 
                         <div class="form-group mt-1">
                             <label><b>Code Name :</b><span class="text-danger">*</span></label>
-                            <input type="text" name="code" class="form-control form-control-sm edit_input" data-name="Code name" id="e_code" placeholder="Branch Name"/>
+                            <input type="text" name="code" class="form-control form-control-sm" data-name="Code name" id="e_code" placeholder="Branch Name"/>
                             <span class="error error_e_code"></span>
                         </div>
 
@@ -171,42 +171,28 @@
     // call jquery method 
     $(document).ready(function(){
         // Add branch by ajax
-        $('#add_unit_form').on('submit', function(e){
+        $(document).on('submit', '#add_unit_form', function(e) {
             e.preventDefault();
-             $('.loading_button').show();
-             $('.submit_button').hide();
+            $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-            var inputs = $('.add_input');
-                inputs.removeClass('is-invalid');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val()
-                if(idValue == ''){
-                    countErrorField += 1;
-                    $('#'+inputId).addClass('is-invalid');
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                } 
-            });
-            if(countErrorField > 0){
-                 $('.loading_button').hide();
-                 $('.submit_button').show();
-                return;
-            }
             $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
                     toastr.success(data);
                     $('#add_unit_form')[0].reset();
                     $('.loading_button').hide();
-                    $('.submit_button').show();
-                    getAllUnit();
                     $('#addModal').modal('hide');
+                    getAllUnit();
+                },
+                error: function(err) {
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
@@ -226,41 +212,28 @@
         });
 
         // edit branch by ajax
-        $('#edit_unit_form').on('submit', function(e){
+        // edit category by ajax
+        $(document).on('submit', '#edit_unit_form', function(e) {
             e.preventDefault();
             $('.loading_button').show();
-            $('.submit_button').hide();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-            var inputs = $('.edit_input');
-                inputs.removeClass('is-invalid');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val()
-                if(idValue == ''){
-                    countErrorField += 1;
-                    $('#'+inputId).addClass('is-invalid');
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                } 
-            });
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                $('.submit_button').show();
-                return;
-            }
             $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-                    $('#editModal').modal('hide');
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
                     toastr.success(data);
                     $('.loading_button').hide();
-                    $('.submit_button').show();
+                    $('#editModal').modal('hide');
                     getAllUnit();
+                },
+                error: function(err) {
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_e_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
@@ -278,12 +251,7 @@
             })
             .then((willDelete) => {
                 if (willDelete) { 
-                {{--  swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                });   --}}
-                $('#deleted_form').submit();
-                } else {
-                swal("Your imaginary file is safe!");
+                    $('#deleted_form').submit();
                 }
             });
         });

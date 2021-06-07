@@ -20,6 +20,9 @@ class AccountingRelatedSectionController extends Controller
     // balance sheet view
     public function balanceSheet()
     {
+        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
         return view('accounting.related_sections.balance_sheet');
     }
 
@@ -80,6 +83,9 @@ class AccountingRelatedSectionController extends Controller
     // Trial balance view
     public function trialBalance()
     {
+        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
         return view('accounting.related_sections.trial_balance');
     }
 
@@ -126,6 +132,9 @@ class AccountingRelatedSectionController extends Controller
     // Cash flow view
     public function cashFow()
     {
+        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
         return view('accounting.related_sections.cash_flow');
     }
 

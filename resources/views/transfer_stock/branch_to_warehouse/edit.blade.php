@@ -14,9 +14,8 @@
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form id="add_transfer_to_warehouse_form" action="{{ route('transfer.stock.to.warehouse.store') }}" method="POST">
+            <form id="edit_transfer_to_warehouse_form" action="{{ route('transfer.stock.to.warehouse.update', $transferId) }}" method="POST">
                 @csrf
-                <input class="hidden_sp" type="hidden" name="action" id="action">
                 <section class="mt-5">
                     <div class="container-fluid">
                         <div class="row">
@@ -25,7 +24,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <h5>Add Transfer Stock (To Warehouse)</h5>
+                                                <h5>Edit Transfer Stock (To Warehouse)</h5>
                                             </div>
 
                                             <div class="col-md-6">
@@ -56,6 +55,9 @@
                                                     <select class="form-control changeable add_input"
                                                         name="warehouse_id" data-name="Warehouse" id="warehouse_id">
                                                         <option value="">Select Warehouse</option>
+                                                        @foreach ($warehouses as $warehouse)
+                                                            <option {{ $warehouse->id == $transfer->warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
+                                                        @endforeach
                                                     </select>
                                                     <span class="error error_warehouse_id"></span>
                                                 </div>
@@ -196,8 +198,7 @@
                     <div class="row">
                         <div class="col-md-12 text-end">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" value="save_and_print" class="btn btn-sm btn-primary submit_button">Save & Print </button>
-                            <button type="submit" value="save" class="btn btn-sm btn-primary submit_button">Save </button>
+                            <button type="submit" class="btn btn-sm btn-primary submit_button">Update </button>
                         </div>
                     </div>
                 </div>
@@ -208,18 +209,7 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script>
-        // Set Warehouse in form field
-        function setWarehouses(){
-            $.get("{{route('transfer.stock.to.branch.all.warehouse')}}",  function(warehouses) {
-                $.each(warehouses, function(key, val){
-                    $('#warehouse_id').append('<option value="'+val.id+'">'+ val.warehouse_name +' ('+val.warehouse_code+')'+'</option>');
-                });
-            });
-        }
-        setWarehouses();
-       
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
             var quantities = document.querySelectorAll('#quantity');
@@ -794,8 +784,8 @@
             calculateTotalAmount();
         });
 
-        //Add purchase request by ajax
-        $('#add_transfer_to_warehouse_form').on('submit', function(e){
+        //Edit transfer request by ajax
+        $('#edit_transfer_to_warehouse_form').on('submit', function(e){
             e.preventDefault();
             var totalItem = $('#total_item').val();
             if (parseFloat(totalItem) == 0) {
@@ -803,11 +793,9 @@
                 return;
             }
             $('.loading_button').show();
-
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
-                inputs.removeClass('is-invalid');
                 $('.error').html('');  
                 var countErrorField = 0;  
             $.each(inputs, function(key, val){
@@ -839,22 +827,7 @@
                     if(!$.isEmptyObject(data.successMsg)){
                         $('.loading_button').hide();
                         toastr.success(data.successMsg); 
-                        window.location = "{{route('transfer.stock.to.branch.index')}}";
-                    }else{
-                        $('.loading_button').hide();
-                        $('#add_transfer_to_warehouse_form')[0].reset();
-                        $('.hidden_sp').val('');
-                        toastr.success(' Transfer stock created successfully.');
-                        $('#transfer_list').empty();
-                        $(data).printThis({
-                            debug: false,                   
-                            importCSS: true,                
-                            importStyle: true,          
-                            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                            removeInline: false, 
-                            printDelay: 1000, 
-                            header: null,        
-                        });
+                         window.location = "{{route('transfer.stock.to.warehouse.index')}}";
                     }
                 }
             });
@@ -871,8 +844,8 @@
             tr.find('#quantity').blur();
         });
 
-         // Iecrease qty
-         $(document).on('click', '.increase_qty_btn', function (e) {
+        // Iecrease qty
+        $(document).on('click', '.increase_qty_btn', function (e) {
             e.preventDefault();
             var tr = $(this).closest('tr');
             var presentQty = tr.find('#quantity').val();
@@ -880,7 +853,7 @@
             tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
             tr.find('#quantity').addClass('.form-control:focus');
             tr.find('#quantity').blur();
-        })
+        });
         // Automatic remove searching product is found signal 
 
         setInterval(function(){
@@ -918,5 +891,78 @@
         $(document).on('change', '.add_input', function () {
             document.getElementById('search_product').focus();
         });
+
+          // Get editable data by ajax
+          function getEditableTransfer(){
+            $.ajax({
+                url:"{{ route('transfer.stock.to.warehouse.editable.transfer', $transferId) }}",
+                async:true,
+                type:'get',
+                dataType: 'json',
+                success:function(transfer){
+                    console.log(transfer);
+                    var qty_limits = transfer.qty_limits;
+                    var transfer = transfer.transfer;
+                    $('#invoice_id').val(transfer.invoice_id);
+                    $('#date').val(transfer.date);
+                    $('#shipping_charge').val(transfer.shipping_charge);
+                    $('#additional_note').val(transfer.additional_note);
+
+                    $.each(transfer.transfer_products, function (key, transferProduct) {
+                        var tr = '';
+                        tr += '<tr>';
+                        tr += '<td colspan="2" class="text-start">';
+                        tr += '<a href="#" class="text-success" id="edit_product">';
+                        tr += '<span class="product_name">'+transferProduct.product.name+'</span>';
+                        var variant = transferProduct.product_variant_id != null ? ' -'+transferProduct.variant.variant_name+'- ' : '';
+                        tr += '<span class="product_variant">'+variant+'</span>'; 
+                        var code = transferProduct.product_variant_id != null ? transferProduct.variant.variant_code : transferProduct.product.product_code;
+                        tr += '<span class="product_code">'+'('+code+')'+'</span>';
+                        tr += '</a>';
+                        tr += '<input value="'+transferProduct.product_id+'" type="hidden" class="productId-'+transferProduct.product_id+'" id="product_id" name="product_ids[]">';
+
+                        if (transferProduct.product_variant_id != null) {
+                            tr += '<input value="'+transferProduct.product_variant_id+'" type="hidden" class="variantId-'+transferProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">'; 
+                        }else{
+                            tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
+                        }   
+
+                        tr += '<input readonly name="unit_prices[]" type="hidden"  id="unit_price" value="'+transferProduct.unit_price+'">';
+                        tr += '<input type="hidden" id="previous_quantity" value="'+transferProduct.quantity+'">';
+                        tr += '<input type="hidden" id="qty_limit" value="'+qty_limits[key]+'">';
+                        tr += '</td>';
+
+                        tr += '<td>';
+                        tr += '<div class="input-group">';
+                        tr += '<div class="input-group-prepend">';
+                        tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
+                        tr += '</div>';
+                        tr += '<input type="number" step="any" value="'+transferProduct.quantity+'" required name="quantities[]" class="form-control text-center" id="quantity">';
+                        tr += '<div class="input-group-prepend">';
+                        tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
+                        tr += '</div>';
+                        tr += '</div>';
+                        tr += '</td>';
+                        tr += '<td class="text">';
+                        tr += '<span class="span_unit">'+transferProduct.unit+'</span>'; 
+                        tr += '<input  name="units[]" type="hidden" id="unit" value="'+transferProduct.unit+'">';
+                        tr += '</td>';
+                        
+                        tr += '<td class="text text-center">';
+                        tr += '<strong><span class="span_subtotal">'+transferProduct.subtotal+'</span></strong>'; 
+                        tr += '<input value="'+transferProduct.subtotal+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
+                        tr += '</td>';
+                        tr += '<td class="text-center">';
+                        tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
+                        tr += '</td>';
+                        tr += '</tr>';
+                        $('#transfer_list').append(tr);
+                    });
+                    calculateTotalAmount();
+                    productTable();
+                }
+            });
+        }
+        getEditableTransfer();
     </script>
 @endpush

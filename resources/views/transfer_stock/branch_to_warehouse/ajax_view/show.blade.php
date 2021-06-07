@@ -13,10 +13,10 @@
             <div class="row">
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>Branch (From) : </strong></li>
+                        <li><strong>Branch (Form) : </strong></li>
                         <li><strong>Name :</strong> {{ $transfer->branch->name.'/'.$transfer->branch->branch_code }}</li>
                         <li><strong>Phone : </strong> {{ $transfer->branch->phone }}</li>
-                        <li><strong>Address : </strong>
+                        <li><strong>Address : </strong> 
                             {{ $transfer->branch->city }},
                             {{ $transfer->branch->state }},
                             {{ $transfer->branch->zip_code }},
@@ -96,18 +96,18 @@
                         <table class="table modal-table table-sm">
                             <tr>
                                 <th class="text-start" colspan="6">Net Total Amount :</th>
-                                <td class="text-start" colspan="2">
+                                <th class="text-start" colspan="2">
                                     {{json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $transfer->net_total_amount }}
-                                </td>
+                                </th>
                             </tr>
                         
                             <tr>
                                 <th class="text-start" colspan="6">Shipping Charge</th>
-                                <td class="text-start" colspan="2">
+                                <th class="text-start" colspan="2">
                                     {{json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $transfer->shipping_charge }}
-                                </td>
+                                </th>
                             </tr>
         
                             <tr>
@@ -115,10 +115,10 @@
                                 @php
                                     $grandTotal = $transfer->net_total_amount  + $transfer->shipping_charge;
                                 @endphp
-                                <td class="text-start" colspan="2">
+                                <th class="text-start" colspan="2">
                                     {{json_decode($generalSettings->business, true)['currency'] }}
                                     {{ bcadd($grandTotal, 0, 2) }}
-                                </td>
+                                </th>
                             </tr>
                         </table>
                     </div>
@@ -157,10 +157,10 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
-                        <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                        <small class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</small><br>
-                        <small class="company_address">Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</small>
-                        <h6 class="bill_name">Transfer Stock Invoice (To Branch)</h6>
+                        <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                        <p>{{ json_decode($generalSettings->business, true)['address'] }}</p>
+                        <p>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                        <h6>Transfer Stock Invoice (To Warehouse)</h6>
                     </div>
                 </div>
             </div>
@@ -176,6 +176,7 @@
                         <li><strong>Address : </strong> {{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
+
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>Branch (To) : </strong></li>
@@ -195,11 +196,11 @@
                         <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
                         <li><strong>Status : </strong> 
                             @if ($transfer->status == 1) 
-                                <span class="badge bg-danger">Pending</span>
+                                Pending
                             @elseif($transfer->status == 2)
-                                <span class="badge bg-primary">Partial</span>
+                                Partial
                             @elseif($transfer->status == 3)
-                               <span class="badge bg-success">Complated</span>
+                               Complated
                             @endif
                         </li>
                     </ul>
@@ -240,26 +241,36 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="text-start" colspan="6"><strong>Net Total Amount :</strong></td>
-                        <td class="text-start" colspan="2">{{ $transfer->net_total_amount }}</td>
+                        <th class="text-start" colspan="6">Net Total Amount :</th>
+                        <th class="text-start" colspan="2">
+                            {{json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $transfer->net_total_amount }}
+                        </th>
                     </tr>
                    
                     <tr>
-                        <th class="text-start" colspan="6">Shipping Charge</th>
-                        <td class="text-start" colspan="2">{{ $transfer->shipping_charge }}</td>
+                        <th class="text-start" colspan="6">Shipping Charge :</th>
+                        <th class="text-start" colspan="2">
+                            {{json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $transfer->shipping_charge }}
+                        </th>
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="6">Grand Total</th>
+                        <th class="text-start" colspan="6">Grand Total :</th>
                         @php
                             $grandTotal = $transfer->net_total_amount  + $transfer->shipping_charge;
                         @endphp
-                        <td class="text-start" colspan="2">{{ bcadd($grandTotal, 0, 2) }}</td>
+                        <th class="text-start" colspan="2">
+                            {{json_decode($generalSettings->business, true)['currency'] }}
+                            {{ bcadd($grandTotal, 0, 2) }}
+                        </th>
                     </tr>
                 </tfoot>
             </table>
         </div>
         
+        <br><br>
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
@@ -267,6 +278,14 @@
                 </div>
                 <div class="col-md-6 text-end">
                     <p><strong>Signature Of Authority</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="barcode">
+            <div class="row">
+                <div class="col-md-12">
+                    
                 </div>
             </div>
         </div>

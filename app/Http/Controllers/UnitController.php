@@ -25,8 +25,8 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'code' => 'required',
+            'name' => 'required|unique:units,name',
+            'code' => 'required|unique:units,code_name',
         ]);
 
         $addUnit = new Unit();
@@ -40,8 +40,8 @@ class UnitController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'code' => 'required',
+            'name' => 'required|unique:units,name,'.$request->id,
+            'code' => 'required|unique:units,code_name,'.$request->id,
         ]);
 
         $updateUnit = Unit::where('id', $request->id)->first();

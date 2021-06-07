@@ -7,7 +7,7 @@
             <th class="text-start">Debit</th>
             <th class="text-start">Credit</th>
             <th class="text-start">Balance</th>
-            <th class="text-start text-center">Action</th>
+            <th class="text-start">Action</th>
         </tr>
     </thead>
     <tbody>

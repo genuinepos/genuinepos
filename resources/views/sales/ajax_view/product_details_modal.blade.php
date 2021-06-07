@@ -1,4 +1,4 @@
- @php
+@php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
 @endphp 
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

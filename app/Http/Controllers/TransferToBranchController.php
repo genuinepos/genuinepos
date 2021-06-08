@@ -43,9 +43,9 @@ class TransferToBranchController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye mr-1 text-primary"></i>View</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('transfer.stock.to.branch.edit', $row->id) . '"><i class="far fa-edit mr-1 text-primary"></i>Edit</a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('transfer.stock.to.branch.delete', $row->id) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
+                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye me-1 text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('transfer.stock.to.branch.edit', $row->id) . '"><i class="far fa-edit me-1 text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('transfer.stock.to.branch.delete', $row->id) . '"><i class="far fa-trash-alt me-1 text-primary"></i> Delete</a>';
 
                     $html .= '</div>';
                     $html .= '</div>';

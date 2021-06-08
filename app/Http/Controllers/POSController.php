@@ -1505,7 +1505,7 @@ class POSController extends Controller
         $updateSale->net_total_amount = $updateSale->net_total_amount + $request->net_total_amount;
         $updateSale->total_payable_amount = $updateSale->total_payable_amount + $request->total_payable_amount;
         $updateSale->paid = $updateSale->paid + $request->paying_amount;
-        $updateSale->due = $request->total_due;
+        $updateSale->due = $updateSale->due + $request->total_due;
         $updateSale->ex_status = 1;
         $updateSale->save();
 

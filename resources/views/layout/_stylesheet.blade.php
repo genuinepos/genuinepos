@@ -93,6 +93,27 @@
             padding-left: 26px;
         }
 
+
+        .dataTables_filter {
+            width: 65%;
+        }
+
+        .dataTables_length {
+            padding-right: 15px;
+        }
+
+        /* .dataTables_info {
+            width: 60%;
+        } */
+
+        .text-custom-blue {
+            color: #6083b1;
+        }
+
+        .monospace {
+            font-family: monospace;
+        }
+
         @media screen and (min-width: 960px) {
             #dashboard-8 .main__nav {
                 overflow-y: hidden;

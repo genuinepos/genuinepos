@@ -8,6 +8,7 @@
                     </a>
                 </div>
                 <div class="notify-menu">
+                    <p class="text-white float-start d-none d-md-block"><b>Location</b> : {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code.' <b>(BR)</b>' : json_decode($generalSettings->business, true)['shop_name'].' (Head Office)' !!}</p>
                     <div class="head__content__sec">
                         <ul class="head__cn">
                             <li class="top-icon ms-3"><a href=""><b>Today</b></a></li>

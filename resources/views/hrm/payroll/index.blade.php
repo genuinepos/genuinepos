@@ -63,10 +63,6 @@
                                         <li>
                                             <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
                                         </li>
-
-                                        <li>
-                                            <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-sliders-h"></i> <b>@lang('menu.hrm_settings')</b></a>
-                                        </li>
                                     </ul>
                                 </div>
                             </div>

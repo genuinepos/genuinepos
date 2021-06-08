@@ -285,13 +285,13 @@ ul.dropdown-menu.dropdown__main__menu.show {
 }
 
 .sub-menu-width {
-    margin-top: 25px;
+    margin-top: 0px;
 }
 
 .model__close {
     text-align: right;
-    margin-bottom: 10px;
-    padding: 0 23px;
+    margin-bottom: 17px;
+    padding: 6px 23px;
 }
 
 button.btn-close.close-model:focus {
@@ -701,7 +701,7 @@ footer img.logo {
     top: 34px;
     height: 100%;
     position: absolute;
-    right: 21%;
+    right: 6%;
 }
 
 .modal-backdrop.show {

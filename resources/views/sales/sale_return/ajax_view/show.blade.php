@@ -86,17 +86,34 @@
                             <table class="table modal-table tabl-sm">
                                 <tr>
                                     <th class="text-start">Net Total Amount : </th>
-                                    <td class="net_total ">10000.00</td>
+                                    <td class="text-start net_total ">
+                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ $saleReturn->net_total_amount }}
+                                    </td>
                                 </tr>
 
                                 <tr>
                                     <th class="text-start">Return Discount : </th>
-                                    <td class="return_discount">400.00</td>
+                                    <td class="text-start return_discount">
+                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ $saleReturn->return_discount_amount }}
+                                    </td>
                                 </tr>
 
                                 <tr>
                                     <th class="text-start">Total Amount : </th>
-                                    <td class="total_return_amount">10000.00</td>
+                                    <td class="text-start total_return_amount">
+                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ $saleReturn->total_return_amount }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-start">Total Due : </th>
+                                    <td class="text-start total_return_amount">
+                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ $saleReturn->total_return_due }}
+                                    </td>
                                 </tr>
                             </table>
                         </div>

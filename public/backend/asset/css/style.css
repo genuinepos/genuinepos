@@ -1034,7 +1034,7 @@ legend {
     z-index: 20;
     left: 142px;
     display: none;
-    padding: 0 10px;
+    padding: 0 0px;
 }
 
 .main__nav_t ul li a:hover {

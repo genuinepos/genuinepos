@@ -1015,3 +1015,8 @@ a.resent-tn:hover {
     font-size: 28px!important;
     font-weight: 500!important;
 }
+
+.big_label {
+    font-size: 15px;
+    padding-left: 5px;
+}

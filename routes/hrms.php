@@ -106,3 +106,10 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
         Route::get('all/designations', 'PayrollController@getAllDesignation')->name('hrm.payroll.get.designations');
     });
 });
+
+
+// HRM Dashboard, Need Help,  and Profile View Page Routes
+
+Route::group(['prefix' => 'pages'], function () {
+    Route::get('dashboard', fn () => view('dashboard.hrm_dashboard'));
+});

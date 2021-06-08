@@ -2,6 +2,11 @@
 @section('title', 'HRM Dashboard - ')
     @push('stylesheets')
         <style>
+            #small-badge {
+                font-size: 12px !important;
+                padding: 0px !important;
+            }
+
             .leave_application table.display thead th {
                 padding: 0px 10px 0px 10px;
                 border-top: none;
@@ -15,12 +20,12 @@
             }
 
             /* .leave_application .dataTables_filter {
-                                width: 95% !important;
-                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        width: 95% !important;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
 
-                            .leave_application .dataTables_filter input {
-                                width: 100% !important;
-                            } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    .leave_application .dataTables_filter input {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        width: 100% !important;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    } */
 
         </style>
     @endpush
@@ -43,11 +48,12 @@
                                     <span class="fas fa-users"></span>
                                     Users
                                 </h6>
-                                <p class="">
-                                    <span class="badge bg-secondary text-white">
+                                <span class="badge bg-secondary text-white">
+                                    <div id="small-badge">
+                                        Total:
                                         4324
-                                    </span>
-                                </p>
+                                    </div>
+                                </span>
                             </div>
                             <div class="widget_content">
                                 <div class="mtr-table">
@@ -312,10 +318,40 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col">
+                        <div class="form_element">
+                            <div class="section-header d-flex justify-content-between align-items-center px-3">
+                                <h6>
+                                    <span class="far fa-file-alt"></span>
+                                    Holidays
+                                </h6>
+                            </div>
+                            <div class="widget_content">
+                                <div class="px-3 pt-2">
+                                    <div class="px-1"><strong>Today:</strong></div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item list-group-item-success">Its' work day</li>
+                                    </ul>
+                                </div>
+                                <div class="px-3 pt-2 pb-2">
+                                    <div class="px-1">
+                                        <span><strong>Upcoming Holidays:</strong></span>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item list-group-item-warning">A simple warning list group item
+                                        </li>
+                                        <li class="list-group-item list-group-item-warning">A simple warning list group item
+                                        </li>
+                                        <li class="list-group-item list-group-item-warning">A simple warning list group item
+                                        <li class="list-group-item list-group-item-warning">A simple warning list group item
+                                        </li>
 
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -337,11 +373,18 @@
         });
         const leaveApplicationTable = $('#leave_application_table').DataTable({
             dom: "Bfrtip",
-            pageLength: 5,
+            pageLength: 6,
             ordering: false,
             info: false,
             // searching: false,
         });
+        // const holidaysTable = $('#holidays_table').DataTable({
+        //     dom: "Bfrtip",
+        //     pageLength: 5,
+        //     ordering: false,
+        //     info: false,
+        //     // searching: false,
+        // });
 
     </script>
 @endpush

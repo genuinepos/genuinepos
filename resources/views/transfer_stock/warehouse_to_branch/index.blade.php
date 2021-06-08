@@ -1,5 +1,37 @@
 @extends('layout.master')
 @push('stylesheets')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<style>
+    .jconfirm .jconfirm-box {
+        padding: 0;
+    }
+    .jconfirm .jconfirm-box div.jconfirm-title-c {
+        padding-bottom: 15px;
+        background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
+        color: #fff;
+        padding-top: 9px;
+        text-align: center;
+    }
+    .jconfirm-content {
+        text-align: center;
+        margin-top: 9px;
+    }
+    .jconfirm .jconfirm-box .jconfirm-buttons {
+        margin-right: 158px;
+    }
+    .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
+        background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
+        background: linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
+    }
+    .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default {
+        color: #fff;
+    }
+    .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover {
+        background: -webkit-linear-gradient(top, #07a7d9 0%,#0853a1 50%,#034ba6 51%,#001741 100%);
+    }
+
+</style>
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -32,7 +64,7 @@
                                     <div class="data_preloader">
                                         <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                     </div>
-                                    <div class="table-responsive" id="data-list">
+                                    <div class="table-responsive" id="data-list"  style="min-height: 50vh;">
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
@@ -70,7 +102,9 @@
     </div>
 @endsection
 @push('scripts')
+
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script>
         var table = $('.data_tbl').DataTable({
             "processing": true,
@@ -120,20 +154,42 @@
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure to delete ?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) { 
-                    $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
+            $('#deleted_form').attr('action', url);           
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'message': 'You are about to delete this item. <br />It cannot be restored at a later time! Continue?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes bg-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });
+
+            // swal({
+            //     title: "Are you sure to delete ?",
+            //     icon: "warning",
+            //     buttons: true,
+            //     showCloseButton: true,
+            //     dangerMode: true,
+            // }).then((willDelete) => {
+            //     if (willDelete) { 
+            //         $('#deleted_form').submit();
+            //     } else {
+            //         swal("Your imaginary file is safe!");
+            //     }
+            // });
+
+       
             
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){

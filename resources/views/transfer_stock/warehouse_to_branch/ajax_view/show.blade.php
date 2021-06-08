@@ -11,9 +11,18 @@
         </div>
         <div class="modal-body">
             <div class="row">
+                <div class="col-md-4">
+                    <ul class="list-unstyled">
+                        <li><strong>Warehouse (From) : </strong></li>
+                        <li><strong>Name :</strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
+                        <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
+                        <li><strong>Address : </strong>{{ $transfer->warehouse->address }}</li>
+                    </ul>
+                </div>
+
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>Branch (From) : </strong></li>
+                        <li><strong>Branch (To) : </strong></li>
                         <li><strong>Name :</strong> {{ $transfer->branch->name.'/'.$transfer->branch->branch_code }}</li>
                         <li><strong>Phone : </strong> {{ $transfer->branch->phone }}</li>
                         <li><strong>Address : </strong>
@@ -22,15 +31,6 @@
                             {{ $transfer->branch->zip_code }},
                             {{ $transfer->branch->country }}.
                         </li>
-                    </ul>
-                </div>
-
-                <div class="col-md-4">
-                    <ul class="list-unstyled">
-                        <li><strong>Warehouse (To) : </strong></li>
-                        <li><strong>Name :</strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
-                        <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
-                        <li><strong>Address : </strong>{{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
 

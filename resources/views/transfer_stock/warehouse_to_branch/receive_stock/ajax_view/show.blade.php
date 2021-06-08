@@ -11,18 +11,9 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-4">
-                        <ul class="list-unstyled">
-                            <li><strong>Warehouse (From) : </strong></li>
-                            <li><strong>Name :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
-                            <li><strong>Phone : </strong> {{ $sendStock->warehouse->phone }}</li>
-                            <li><strong>Address : </strong> {{ $sendStock->warehouse->address }}</li>
-                        </ul>
-                    </div>
-
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li><strong>Branch (To) : </strong></li>
+                            <li><strong>Branch (From) : </strong></li>
                             <li><strong>Name :</strong> {{ $sendStock->branch->name.'/'.$sendStock->branch->branch_code }}</li>
                             <li><strong>Phone : </strong>{{ $sendStock->branch->phone }}</li>
                             <li><strong>Address : </strong> 
@@ -31,6 +22,15 @@
                                 {{ $sendStock->branch->zip_code }},
                                 {{ $sendStock->branch->country }}.
                             </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-4">
+                        <ul class="list-unstyled">
+                            <li><strong>Warehouse (To) : </strong></li>
+                            <li><strong>Name :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
+                            <li><strong>Phone : </strong> {{ $sendStock->warehouse->phone }}</li>
+                            <li><strong>Address : </strong> {{ $sendStock->warehouse->address }}</li>
                         </ul>
                     </div>
 

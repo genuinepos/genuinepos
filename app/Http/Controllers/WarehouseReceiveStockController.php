@@ -39,7 +39,7 @@ class WarehouseReceiveStockController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="'.route('transfer.stocks.to.warehouse.receive.stock.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('transfer.stocks.to.warehouse.receive.stock.process.view', [$row->id] ) . '"><i class="far fa-edit text-primary"></i> Process To Receive</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('transfer.stocks.to.branch.receive.stock.process.view', [$row->id] ) . '"><i class="far fa-edit text-primary"></i> Process To Receive</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;

@@ -9,7 +9,7 @@
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form id="receive_stock_form" action="{{ route('transfer.stocks.to.warehouse.receive.stock.process.save', $sendStockId) }}" method="POST">
+            <form id="receive_stock_form" action="{{ route('transfer.stocks.to.branch.receive.stock.process.save', $sendStockId) }}" method="POST">
                 @csrf
                 <section class="mt-5">
                     <div class="container-fluid">
@@ -39,8 +39,8 @@
                                             <p class="m-0"><strong>Date: </strong> <span class="transfer_date">05-12-2020</span></p> 
                                          </div>
                                          <div class="col-md-6">
-                                             <p class="m-0"><strong>Warehouse (From) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p> 
-                                             <p class="m-0"><strong>Branch : </strong> <span class="branch">Dhaka Branch - 145225</span></p>
+                                            <p class="m-0"><strong>Branch (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
+                                             <p class="m-0"><strong>Warehouse (To) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p> 
                                          </div>
                                     </div>
                                 </div>
@@ -132,15 +132,15 @@
     // Get editable data by ajax
     function getReceiveableStock(){
         $.ajax({
-            url:"{{route('transfer.stocks.to.warehouse.receive.stock.get.receivable.stock', $sendStockId)}}",
+            url:"{{route('transfer.stocks.to.branch.receive.stock.get.receivable.stock', $sendStockId)}}",
             async:true,
             type:'get',
             dataType: 'json',
             success:function(sendStock){
                 console.log(sendStock);
                 $('.transfer_invoice_id').html(sendStock.invoice_id);
-                $('.warehouse').html(sendStock.warehouse.warehouse_name+'/'+sendStock.warehouse.warehouse_code);
-                $('.branch').html(sendStock.branch.name+'/'+sendStock.branch.branch_code);
+                $('.warehouse').html(sendStock.warehouse.warehouse_name+' - '+sendStock.warehouse.warehouse_code);
+                $('.branch').html(sendStock.branch.name+' - '+sendStock.branch.branch_code);
                 $('.transfer_date').html(sendStock.date);
                 $('#receiver_note').val(sendStock.receiver_note);
                 $.each(sendStock.transfer_products, function (key, sendProduct) {
@@ -180,7 +180,7 @@
                     tr += '</td>';
 
                     tr += '<td>';
-                    tr += '<input value="'+sendProduct.received_qty+'" required name="receive_quantities[]" type="text" class="form-control text-center form-control-sm" id="receive_quantity">';
+                    tr += '<input value="'+sendProduct.received_qty+'" required name="receive_quantities[]" type="number" step="any" class="form-control text-center form-control-sm" id="receive_quantity" >';
                     tr += '</td>';
                     tr += '</tr>';
                     $('#send_stock_list').append(tr);
@@ -224,6 +224,7 @@
         }
     });
    
+
     //Add purchase request by ajax
     $('#receive_stock_form').on('submit', function(e){
         e.preventDefault();
@@ -267,10 +268,23 @@
                 }else{
                     $('.loading_button').hide();
                     toastr.success(data.successMsg); 
-                    window.location = "{{route('transfer.stocks.to.warehouse.receive.stock.index')}}";
+                    window.location = "{{route('transfer.stocks.to.branch.receive.stock.index')}}";
                 }
             }
         });
+    });
+
+    // Acivate date picker
+    $('.date-picker').datepicker({
+        format: 'dd-mm-yyyy',
+        todayHighlight: true,
+        autoclose: true,
+    });
+
+    // Automatic remove searching product is found signal 
+    $('.submit_button').on('click', function () {
+        var value = $(this).val();
+        $('#action').val(value); 
     });
 </script>
 @endpush

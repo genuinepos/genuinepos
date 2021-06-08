@@ -319,7 +319,8 @@ class TransferToBranchController extends Controller
                 }
 
                 // update branch product qty for adjustment
-                $productBranch = ProductBranch::where('branch_id', $deleteTransferToBranch->branch_id)->where('product_id', $transfer_product->product_id)->first();
+                $productBranch = ProductBranch::where('branch_id', $deleteTransferToBranch->branch_id)
+                ->where('product_id', $transfer_product->product_id)->first();
                 $productBranch->product_quantity -= $transfer_product->received_qty;
                 $productBranch->save();
 

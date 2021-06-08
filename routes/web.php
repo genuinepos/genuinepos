@@ -387,6 +387,7 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
     Route::get('sarach/product/{product_code}/{warehouse_id}', 'TransferToBranchController@productSearch');
     Route::get('check/warehouse/variant/qty/{product_id}/{variant_id}/{warehouse_id}', 'TransferToBranchController@checkWarehouseProductVariant');
     Route::get('check/warehouse/qty/{product_id}/{warehouse_id}', 'TransferToBranchController@checkWarehouseSingleProduct');
+    
     // Receive stock from warehouse **route group**
     Route::group(['prefix' => 'receive'], function () {
         Route::get('/', 'WarehouseReceiveStockController@index')->name('transfer.stocks.to.branch.receive.stock.index');

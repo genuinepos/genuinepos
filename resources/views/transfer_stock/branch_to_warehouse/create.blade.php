@@ -839,7 +839,7 @@
                     if(!$.isEmptyObject(data.successMsg)){
                         $('.loading_button').hide();
                         toastr.success(data.successMsg); 
-                        window.location = "{{route('transfer.stock.to.branch.index')}}";
+                        window.location = "{{route('transfer.stock.to.warehouse.index')}}";
                     }else{
                         $('.loading_button').hide();
                         $('#add_transfer_to_warehouse_form')[0].reset();

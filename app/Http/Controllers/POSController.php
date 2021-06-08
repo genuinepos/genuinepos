@@ -138,12 +138,12 @@ class POSController extends Controller
         $addSale->shipment_charge = 0.00;
         $addSale->created_by = 2;
         //
-        $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0.00;
+        $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
         $paidAmount = $request->paying_amount - $changedAmount;
         //
 
         if ($request->action == 1) {
-            $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0.00;
+            $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
             $paidAmount = $request->paying_amount - $changedAmount;
             if ($request->previous_due > 0) {
                 $addSale->total_payable_amount = $request->total_invoice_payable;
@@ -158,9 +158,9 @@ class POSController extends Controller
                 }
             } else {
                 $addSale->total_payable_amount = $request->total_payable_amount;
-                $addSale->paid = $request->paying_amount;
-                $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
-                $addSale->due = $request->total_due > 0 ? $request->total_due : 0.00;
+                $addSale->paid = $request->paying_amount - $changedAmount;
+                $addSale->change_amount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
+                $addSale->due = $request->total_due >= 0 ? $request->total_due : 0.00;
             }
 
             $addSale->save();
@@ -459,7 +459,7 @@ class POSController extends Controller
         $updateSale->shipment_charge = 0.00;
         $updateSale->total_payable_amount = $request->total_payable_amount;
 
-        $updateSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
+        $updateSale->change_amount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
 
         if ($request->action == 1) {
             if ($request->paying_amount == 0) {

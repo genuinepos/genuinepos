@@ -185,11 +185,11 @@ class TransferToBranchController extends Controller
         return view('transfer_stock.warehouse_to_branch.edit', compact('transferId', 'transfer', 'warehouses', 'branches'));
     }
 
-    // Get editable transfer **reqeusted by ajax
+    // Get editable transfer **requested by ajax
     public function editableTransfer($transferId)
     {
-        $transfer = TransferStockToBranch::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $transferId)->first();
-
+        $transfer = TransferStockToBranch::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')
+        ->where('id', $transferId)->first();
         $qty_limits = [];
         foreach ($transfer->Transfer_products as $transfer_product) {
             $productWarehouse = ProductWarehouse::where('warehouse_id', $transfer->warehouse_id)
@@ -384,7 +384,7 @@ class TransferToBranchController extends Controller
 
         $namedProducts = '';
         $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', '%' . $product_code . '%')
+            ->where('name', 'LIKE', $product_code . '%')
             ->where('status', 1)
             ->get();
 

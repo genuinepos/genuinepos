@@ -324,7 +324,7 @@ class StockAdjustmentController extends Controller
     // Search product
     public function searchProduct($keyword, $branch_id)
     {
-        $namedProducts = Product::with(['product_variants', 'tax', 'unit'])->where('name', 'LIKE', '%' . $keyword . '%')->where('status', 1)->get();
+        $namedProducts = Product::with(['product_variants', 'tax', 'unit'])->where('name', 'LIKE', $keyword . '%')->where('status', 1)->get();
         if ($namedProducts->count() > 0) {
             return response()->json(['namedProducts' => $namedProducts]);
         }

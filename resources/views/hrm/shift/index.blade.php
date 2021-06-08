@@ -14,7 +14,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module white_lin">
+                                <div id="breadCrumb3" class="breadCrumb module">
                                     <ul class="list-unstyled">
                                         <li>
                                             <a href="" class="text-dark text-muted"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
@@ -31,14 +31,16 @@
                                                 <a href="{{ route('hrm.leave') }}" class="text-dark text-muted"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                                             </li>
                                         @endif
-
+                                        
                                         <li>
                                             <a href="{{ route('hrm.attendance.shift') }}" class="text-primary"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                                         </li>
-
-                                        <li>
-                                            <a href="{{ route('hrm.attendance') }}" class="text-dark text-muted"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
-                                        </li>
+                                        
+                                        @if (auth()->user()->permission->hrms['attendance_all'] == '1')
+                                            <li>
+                                                <a href="{{ route('hrm.attendance') }}" class="text-dark text-muted"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                                            </li>
+                                        @endif
 
                                         <li>
                                             <a href="{{ route('hrm.allowance') }}" class="text-dark text-muted"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
@@ -58,10 +60,6 @@
 
                                         <li>
                                             <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
-                                        </li>
-
-                                        <li>
-                                            <a href="{{ route('hrm.designations') }}" class="text-dark text-muted"><i class="fas fa-sliders-h"></i> <b>@lang('menu.hrm_settings')</b></a>
                                         </li>
                                     </ul>
                                 </div>

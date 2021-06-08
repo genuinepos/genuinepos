@@ -364,7 +364,7 @@ class TransferToWarehouseController extends Controller
 
         $namedProducts = '';
         $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', '%' . $product_code . '%')
+            ->where('name', 'LIKE', $product_code . '%')
             ->where('status', 1)
             ->get();
 

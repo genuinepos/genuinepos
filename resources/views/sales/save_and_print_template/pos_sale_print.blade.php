@@ -61,7 +61,6 @@
                                     @if ($sale->branch->pos_sale_invoice_layout->branch_email)
                                         <h6>Email : {{ $sale->branch->email }}</h6>
                                     @endif
-
                                 </div>
                             </div>
                         </div>
@@ -262,7 +261,7 @@
                                     <td class="text-start"><strong> Order Tax : </strong></td>
                                     <td class="order_tax text-end">
                                         <b>
-                                            {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                            {{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ $sale->order_tax_amount }}
                                             ({{ $sale->order_tax_percent }} %)</b>
                                     </td>
@@ -272,18 +271,18 @@
                                     <td class="text-start"><strong> Shipment charge : </strong></td>
                                     <td class="shipment_charge text-end">
                                         <b>
-                                            {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                            {{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format($sale->shipment_charge, 2) }}
                                         </b>
                                     </td>
                                 </tr>
 
-                                @if ($previous_due > 0)
+                                {{-- @if ($previous_due > 0) --}}
                                     <tr>
                                         <td class="text-start"><strong> Previous Due : </strong></td>
                                         <td class="total_payable text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($previous_due, 2) }}
                                             <b>
                                         </td>
@@ -293,7 +292,7 @@
                                         <td class="text-start"><strong> Total Payable : </strong></td>
                                         <td class="total_payable text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($total_payable_amount, 2) }}
                                             </b>
                                         </td>
@@ -303,37 +302,39 @@
                                         <td class="text-start"><strong> Total Paid : </strong></td>
                                         <td class="total_paid text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($paying_amount, 2) }}
                                             </b>
                                         </td>
                                     </tr>
 
-                                    {{-- <tr>
-                                        <td class="text-start"><strong> Change Amount : </strong></td>
-                                        <td class="total_paid text-end">
-                                            <b>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                                {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
-                                            </b>
-                                        </td>
-                                    </tr> --}}
-
+                                    @if ($change_amount > 0)
+                                        <tr>
+                                            <td class="text-start"><strong> Change Amount : </strong></td>
+                                            <td class="total_paid text-end">
+                                                <b>
+                                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                    {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
+                                                </b>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    
                                     <tr>
                                         <td class="text-start"><strong> Total Due : </strong></td>
                                         <td class="total_due text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($total_due > 0 ? $total_due : 0, 2) }}
                                             </b>
                                         </td>
                                     </tr>
-                                @else
+                                {{-- @else
                                     <tr>
                                         <td class="text-start"><strong> Total Payable : </strong></td>
                                         <td class="total_payable text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }} 
                                                 {{ number_format($sale->total_payable_amount, 2) }}
                                             </b>
                                         </td>
@@ -343,13 +344,13 @@
                                         <td class="text-start"><strong> Total Paid : </strong></td>
                                         <td class="total_paid text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }} 
                                                 {{ number_format($sale->paid, 2) }}
                                             </b>
                                         </td>
                                     </tr>
 
-                                    {{-- <tr>
+                                    <tr>
                                         <td class="text-start"><strong> Change Amount : </strong></td>
                                         <td class="total_paid text-end">
                                             <b>
@@ -357,18 +358,18 @@
                                                 {{ number_format($sale->change_amount, 2) }}
                                             </b>
                                         </td>
-                                    </tr> --}}
+                                    </tr> 
 
                                     <tr>
                                         <td class="text-start"><strong> Total Due : </strong></td>
                                         <td class="total_paid text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }} 
                                                 {{ number_format($sale->due, 2) }}
                                             </b>
                                         </td>
                                     </tr>
-                                @endif
+                                @endif --}}
                             </tbody>
                         </table>
                     </div>
@@ -582,7 +583,7 @@
                                     </th>
                                 </tr>
 
-                                 @if ($previous_due > 0)
+                                 {{-- @if ($previous_due > 0) --}}
                                     <tr>
                                         <th class="text-end">Previous Due : </th>
                                         <th class="text-end">
@@ -613,16 +614,18 @@
                                         </th>
                                     </tr>
 
-                                    {{-- <tr>
-                                        <td class="text-start"><strong> Change Amount : </strong></td>
-                                        <td class="total_paid text-end">
-                                            <b>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                                {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
-                                            </b>
-                                        </td>
-                                    </tr> --}}
-
+                                    @if ($change_amount > 0)
+                                        <tr>
+                                            <td class="text-start"><strong> Change Amount : </strong></td>
+                                            <td class="total_paid text-end">
+                                                <b>
+                                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                    {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
+                                                </b>
+                                            </td>
+                                        </tr> 
+                                    @endif
+                                    
                                     <tr>
                                         <th class="text-end"> Due : </th>
                                         <th class="text-end">
@@ -632,7 +635,7 @@
                                             </span>
                                         </th>
                                     </tr>
-                                @else
+                                {{-- @else
                                     <tr>
                                         <th class="text-end"> Payable : </th>
                                         <th class="text-end">
@@ -653,7 +656,7 @@
                                         </th>
                                     </tr>
 
-                                    {{-- <tr>
+                                     <tr>
                                         <td class="text-start"><strong> Change Amount : </strong></td>
                                         <td class="total_paid text-end">
                                             <b>
@@ -661,7 +664,7 @@
                                                 {{ number_format($sale->change_amount, 2) }}
                                             </b>
                                         </td>
-                                    </tr> --}}
+                                    </tr> 
 
                                     <tr>
                                         <th class="text-end"> Due : </th>
@@ -672,7 +675,7 @@
                                             </span>
                                         </th>
                                     </tr>
-                                @endif
+                                @endif --}}
                             </thead>
                         </table>
                     </div>
@@ -1012,7 +1015,7 @@
                                     <td class="text-start"><strong> Order Tax : </strong></td>
                                     <td class="order_tax text-end">
                                         <b>
-                                            {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                             {{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ $sale->order_tax_amount }}
                                             ({{ $sale->order_tax_percent }} %)
                                         </b>
@@ -1023,18 +1026,18 @@
                                     <td class="text-start"><strong> Shipment charge : </strong></td>
                                     <td class="shipment_charge text-end">
                                         <b>
-                                            {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
                                             {{ number_format($sale->shipment_charge, 2) }}
                                         </b>
                                     </td>
                                 </tr>
 
-                                @if ($previous_due > 0)
+                                {{-- @if ($previous_due > 0) --}}
                                     <tr>
                                         <td class="text-start"><strong> Previous Due : </strong></td>
                                         <td class="total_payable text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($previous_due, 2) }}
                                             </b>
                                         </td>
@@ -1044,7 +1047,7 @@
                                         <td class="text-start"><strong> Total Payable : </strong></td>
                                         <td class="total_payable text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($total_payable_amount, 2) }}
                                             </b>
                                         </td>
@@ -1054,44 +1057,37 @@
                                         <td class="text-start"><strong> Total Paid : </strong></td>
                                         <td class="total_paid text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($paying_amount, 2) }}
                                             </b>
                                         </td>
                                     </tr>
 
-                                    {{-- <tr>
-                                        <td class="text-start"><strong> Change Amount : </strong></td>
-                                        <td class="total_paid text-end">
-                                            <b>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                                {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
-                                            </b>
-                                        </td>
-                                    </tr> --}}
-
-                                    <tr>
-                                        <td class="text-start"><strong> Change Amount : </strong></td>
-                                        <td class="total_paid text-end">
-                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                            {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}</b>
-                                        </td>
-                                    </tr>
+                                    @if ($change_amount > 0)
+                                        <tr>
+                                            <td class="text-start"><strong> Change Amount : </strong></td>
+                                            <td class="total_paid text-end">
+                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}
+                                                {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}</b>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    
 
                                     <tr>
                                         <td class="text-start"><strong> Total Due : </strong></td>
                                         <td class="total_due text-end">
                                         <b>
-                                            {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
                                             {{ number_format($total_due > 0 ? $total_due : 0, 2) }}</b>
                                         </td>
                                     </tr>
-                                @else
+                                {{-- @else
                                     <tr>
                                         <td class="text-start"><strong> Total Payable : </strong></td>
                                         <td class="total_payable text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($sale->total_payable_amount, 2) }}
                                             </b>
                                         </td>
@@ -1101,7 +1097,7 @@
                                         <td class="text-start"><strong> Total Paid : </strong></td>
                                         <td class="total_paid text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($sale->paid, 2) }}
                                             </b>
                                         </td>
@@ -1115,25 +1111,25 @@
                                         </td>
                                     </tr>
 
-                                    {{-- <tr>
+                                    <tr>
                                         <td class="text-start"><strong> Change Amount : </strong></td>
                                         <td class="total_paid text-end">
                                             <b>
-                                                {{-- {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
                                                 {{ number_format($sale->change_amount, 2) }}
                                             </b>
                                         </td>
-                                    </tr> --}}
+                                    </tr> 
 
                                     <tr>
                                         <td class="text-start"><strong> Total Due : </strong></td>
                                         <td class="total_paid text-end">
                                         <b>
-                                            {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
+                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
                                             {{ number_format($sale->due, 2) }}</b>
                                         </td>
                                     </tr>
-                                @endif
+                                @endif --}}
                             </tbody>
                         </table>
                     </div>
@@ -1368,7 +1364,7 @@
                                     </th>
                                 </tr>
 
-                                 @if ($previous_due > 0)
+                                 {{-- @if ($previous_due > 0) --}}
                                     <tr>
                                         <th class="text-end">Previous Due : </th>
                                         <th class="text-end">
@@ -1399,16 +1395,16 @@
                                         </th>
                                     </tr>
 
-                                    {{-- <tr>
-                                        <td class="text-start"><strong> Change Amount : </strong></td>
-                                        <td class="total_paid text-end">
-                                            <b>
+                                    @if ($change_amount > 0)
+                                        <tr>
+                                            <th class="text-end"> Change Amount : </th>
+                                            <th class="total_paid text-end">
                                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
                                                 {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
-                                            </b>
-                                        </td>
-                                    </tr> --}}
-
+                                            </th>
+                                        </tr> 
+                                    @endif
+                                    
                                     <tr>
                                         <th class="text-end"> Due : </th>
                                         <th class="text-end">
@@ -1418,7 +1414,7 @@
                                             </span>
                                         </th>
                                     </tr>
-                                @else
+                                {{-- @else
                                     <tr>
                                         <th class="text-end"> Payable : </th>
                                         <th class="text-end">
@@ -1439,7 +1435,7 @@
                                         </th>
                                     </tr>
 
-                                    {{-- <tr>
+                                    <tr>
                                         <td class="text-start"><strong> Change Amount : </strong></td>
                                         <td class="total_paid text-end">
                                             <b>
@@ -1447,7 +1443,7 @@
                                                 {{ number_format($sale->change_amount, 2) }}
                                             </b>
                                         </td>
-                                    </tr> --}}
+                                    </tr>
 
                                     <tr>
                                         <th class="text-end"> Due : </th>
@@ -1458,7 +1454,7 @@
                                             </span>
                                         </th>
                                     </tr>
-                                @endif
+                                @endif --}}
                             </thead>
                         </table>
                     </div>

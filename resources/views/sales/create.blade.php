@@ -1294,9 +1294,9 @@
             // Update purchase due
             var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
             var changeAmount = parseFloat(payingAmount) - parseFloat(calcTotalPayableAmount);
-            $('#change_amount').val(parseFloat(changeAmount).toFixed(2));
+            $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
             var calcTotalDue = parseFloat(calcTotalPayableAmount) - parseFloat(payingAmount);
-            $('#total_due').val(parseFloat(calcTotalDue).toFixed(2));
+            $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
         }
 
         // Quantity increase or dicrease and clculate row amount
@@ -1383,7 +1383,7 @@
             var calcDueAmount = parseFloat(total_payable_amount) - parseFloat(payingAmount);
 
             var changeAmount = parseFloat(payingAmount) - parseFloat(total_payable_amount);
-            $('#change_amount').val(parseFloat(changeAmount).toFixed(2));
+            $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
 
             $('.label_total_due').html(parseFloat(calcDueAmount).toFixed(2));
             $('#total_due').val(parseFloat(calcDueAmount).toFixed(2));

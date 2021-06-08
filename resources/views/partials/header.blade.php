@@ -10,6 +10,8 @@
                 <div class="notify-menu">
                     <div class="head__content__sec">
                         <ul class="head__cn">
+                            <li class="top-icon ms-3"><a href=""><b>Today</b></a></li>
+                            <li class="top-icon ms-3"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
                                 <li class="top-icon ms-3"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
                             @endif
@@ -74,14 +76,27 @@
                                 </ul>
                             </li>
                             <li class="dropdown dp__top top-icon">
-                                <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown">
+                                <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown" title="User">
                                     <span class="fas fa-user"></span>
                                 </a>
 
                                 <ul class="dropdown-menu dropdown__main__menu" aria-labelledby="dropdownMenuButton1">
                                     <li>
+                                         <span class="user_name text-primary">
+                                            {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}
+
+                                            @if (auth()->user()->role_type == 1)
+                                                (Super Admin)
+                                            @elseif(auth()->user()->role_type == 2)
+                                                (Admin)
+                                            @else
+                                                {{ auth()->user()->role->name }}
+                                            @endif
+                                        </span> 
+                                    </li>
+                                    <li>
                                         <i class="fas fa-eye text-primary"></i><a class="dropdown-item d-block"
-                                            href="#">View Profile</a>
+                                            href="{{ route('users.profile.view', auth()->user()->id) }}">View Profile</a>
                                     </li>
                                     <li>
                                         <i class="fas fa-edit text-primary"></i></span><a class="dropdown-item d-block"
@@ -89,8 +104,8 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="user_info me-5">
-                            <span class="user_name">
+                            {{-- <li class="user_info me-5"> --}}
+                            {{-- <span class="user_name">
                                 {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}
 
                                 @if (auth()->user()->role_type == 1)
@@ -100,8 +115,8 @@
                                 @else
                                     {{ auth()->user()->role->name }}
                                 @endif
-                            </span>
-                            <span><a href="#">Need Help?</a></span>
+                            </span> --}}
+                            {{-- <span><a href="#">Need Help?</a></span> --}}
                         </li>
                         <li class="top-icon">
                             <a href="" id="logout_option"><span class="fas fa-power-off" title="Logout"></span></a>

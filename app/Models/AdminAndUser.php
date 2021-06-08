@@ -32,7 +32,7 @@ class AdminAndUser extends Authenticatable
 
     public function department()
     {
-        return $this->belongsTo(Department::class, 'branch_id');
+        return $this->belongsTo(Department::class, 'department_id');
     }
 
     public function designation()

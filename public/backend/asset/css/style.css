@@ -5,10 +5,7 @@ body {
 .container-fluid {
     overflow: hidden;
 }
-
-
 /* =========================================body search bar==================================== */
-
 .main__content {
     margin-top: 62px;
 }
@@ -1037,7 +1034,7 @@ legend {
     z-index: 20;
     left: 142px;
     display: none;
-    padding: 0 10px;
+    padding: 0 0px;
 }
 
 .main__nav_t ul li a:hover {
@@ -1312,5 +1309,9 @@ li.dp-link {
 
 .input_i {
     font-size: 12px;
+}
+
+div#sidebar_t {
+    height: 100vh;
 }
 

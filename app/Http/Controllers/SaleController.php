@@ -1948,7 +1948,7 @@ class SaleController extends Controller
 
         $namedProducts = '';
         $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', '%' . $product_code . '%')
+            ->where('name', 'LIKE',  $product_code.'%')
             ->where('status', 1)
             ->get();
 
@@ -2044,7 +2044,7 @@ class SaleController extends Controller
 
         $namedProducts = '';
         $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', '%' . $product_code . '%')
+            ->where('name', 'LIKE', $product_code . '%')
             ->where('status', 1)
             ->get();
 
@@ -2848,7 +2848,7 @@ class SaleController extends Controller
         $total_payable_amount = $sale->total_payable_amount;
         $paying_amount = $sale->paid;
         $total_due = $sale->due;
-        $change_amount = $sale->change_amount;
+        $change_amount = 0;
 
         if ($sale->status == 1) {
             if ($sale->created_by == 1) {

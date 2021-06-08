@@ -209,8 +209,8 @@ class UserController extends Controller
         $addUser->salary = $request->salary;
         $addUser->salary_type = $request->pay_type;
         $addUser->save();
-        session()->flash('successMsg', 'Successfully user is added');
-        return response()->json('Successfully user is added');
+        session()->flash('successMsg', 'User created successfully');
+        return response()->json('User created successfully');
     }
 
     // User Edit view 
@@ -361,11 +361,11 @@ class UserController extends Controller
 
     public function show($userId)
     {
-        $user = AdminAndUser::with(['role'])->where('id', $userId)->firstOrFail();
-        $firstName = str_split($user->name)[0];
-        $lastName = $user->last_name ? str_split($user->last_name)[0] : '';
-        $namePrefix = $firstName.' '.$lastName; 
-        return view('users.show', compact('user', 'namePrefix'));
+        $user = AdminAndUser::with(['role', 'department', 'designation'])->where('id', $userId)->firstOrFail();
+        // $firstName = str_split($user->name)[0];
+        // $lastName = $user->last_name ? str_split($user->last_name)[0] : '';
+        // $namePrefix = $firstName.' '.$lastName; 
+        return view('users.show', compact('user'));
     }
 
     // All Roles For user create form 

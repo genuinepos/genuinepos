@@ -364,13 +364,14 @@
 
     // Input paying amount and clculate due amount
     $(document).on('input', '#paying_amount', function(){
-        var payingAmount = $(this).val() ? $(this).val() : 0;
-        var total_payable_amount = $('#total_payable_amount').val() ? $('#total_payable_amount').val() : 0;
-        var calcDueAmount = parseFloat(total_payable_amount) - parseFloat(payingAmount);
+        // var payingAmount = $(this).val() ? $(this).val() : 0;
+        // var total_payable_amount = $('#total_payable_amount').val() ? $('#total_payable_amount').val() : 0;
+        // var calcDueAmount = parseFloat(total_payable_amount) - parseFloat(payingAmount);
 
-        var changeAmount = parseFloat(payingAmount) - parseFloat(total_payable_amount);
-        $('#change_amount').val(parseFloat(changeAmount).toFixed(2));
-        $('#total_due').val(parseFloat(calcDueAmount).toFixed(2));
+        // var changeAmount = parseFloat(payingAmount) - parseFloat(total_payable_amount);
+        // $('#change_amount').val(parseFloat(changeAmount).toFixed(2));
+        // $('#total_due').val(parseFloat(calcDueAmount).toFixed(2));
+        calculateTotalAmount();
     });
 
     // Input order discount and clculate total amount
@@ -521,13 +522,13 @@
             // Update purchase due
         var payingAmount = $(this).val() ? $(this).val() : 0;
         var changeAmount = parseFloat(payingAmount) - parseFloat(totalPayable);
-        $('#modal_change_amount').val(parseFloat(changeAmount).toFixed(2));
+        $('#modal_change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
         var calcTotalDue = parseFloat(totalPayable) - parseFloat(payingAmount);
-        $('#modal_total_due').val(parseFloat(calcTotalDue).toFixed(2)); 
+        $('#modal_total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2)); 
 
         $('#paying_amount').val(parseFloat(payingAmount).toFixed(2));
-        $('#change_amount').val(parseFloat(changeAmount).toFixed(2));
-        $('#total_due').val(parseFloat(calcTotalDue).toFixed(2));
+        $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
+        $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
     });
 
     // Get all unite for form field

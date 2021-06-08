@@ -127,7 +127,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
     });
 
     // Import product route group
-    // Barcode route group
     Route::group(['prefix' => 'imports'], function () {
         Route::get('create', 'ProductImportController@create')->name('product.import.create');
         Route::post('store', 'ProductImportController@store')->name('product.import.store');
@@ -415,7 +414,7 @@ Route::group(['prefix' => 'stock/adjustments', 'namespace' => 'App\Http\Controll
     Route::delete('delete/{adjustmentId}', 'StockAdjustmentController@delete')->name('stock.adjustments.delete');
 });
 
-//Transfer stok to warehouse all route
+//Transfer stock to warehouse all route
 Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/', 'TransferToWarehouseController@index')->name('transfer.stock.to.warehouse.index');
     Route::get('show/{id}', 'TransferToWarehouseController@show')->name('transfer.stock.to.warehouse.show');
@@ -617,6 +616,7 @@ Route::group(['prefix' => 'users',  'namespace' => 'App\Http\Controllers'], func
     Route::group(['prefix' => 'profile'], function () {
         Route::get('/', 'UserProfileController@index')->name('users.profile.index');
         Route::post('update', 'UserProfileController@update')->name('users.profile.update');
+        Route::get('view/{id}', 'UserProfileController@view')->name('users.profile.view');
     });
 });
 

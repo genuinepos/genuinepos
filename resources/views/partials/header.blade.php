@@ -81,7 +81,7 @@
                                 <ul class="dropdown-menu dropdown__main__menu" aria-labelledby="dropdownMenuButton1">
                                     <li>
                                         <i class="fas fa-eye text-primary"></i><a class="dropdown-item d-block"
-                                            href="#">View Profile</a>
+                                            href="{{ route('users.profile.view', auth()->user()->id) }}">View Profile</a>
                                     </li>
                                     <li>
                                         <i class="fas fa-edit text-primary"></i></span><a class="dropdown-item d-block"

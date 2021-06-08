@@ -5,10 +5,7 @@ body {
 .container-fluid {
     overflow: hidden;
 }
-
-
 /* =========================================body search bar==================================== */
-
 .main__content {
     margin-top: 62px;
 }
@@ -1312,5 +1309,9 @@ li.dp-link {
 
 .input_i {
     font-size: 12px;
+}
+
+div#sidebar_t {
+    height: 100vh;
 }
 

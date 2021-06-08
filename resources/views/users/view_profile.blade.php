@@ -18,7 +18,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <h5>View User</h5>
+                                                    <h5>View Profile</h5>
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -94,7 +94,6 @@
                                                 <p><b>Phone Number : </b> {{ $user->phone }}</p>
                                                 <p><b>ID proof name : </b> {{ $user->id_proof_name }}</p>
                                                 <p><b>ID proof Number : </b> {{ $user->id_proof_number }}</p>
-                                                
                                             </div>
                                         </div>
                                     </div>

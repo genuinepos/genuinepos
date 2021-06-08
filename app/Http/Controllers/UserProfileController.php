@@ -57,4 +57,14 @@ class UserProfileController extends Controller
         session(['lang' => $updateProfile->language]);
         return response()->json('Successfully user profile is updated');
     }
+
+    // View logged in user profile
+    public function view($id)
+    {
+        $user = AdminAndUser::with(['role', 'department', 'designation'])->where('id', $id)->firstOrFail();
+        // $firstName = str_split($user->name)[0];
+        // $lastName = $user->last_name ? str_split($user->last_name)[0] : '';
+        // $namePrefix = $firstName.' '.$lastName; 
+        return view('users.view_profile', compact('user'));
+    }
 }

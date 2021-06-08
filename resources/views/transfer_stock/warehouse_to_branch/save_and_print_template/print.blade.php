@@ -46,7 +46,7 @@
                             @elseif($transfer->status == 2)
                                 Partial
                             @elseif($transfer->status == 3)
-                               Complated
+                               Completed
                             @endif
                         </li>
                     </ul>

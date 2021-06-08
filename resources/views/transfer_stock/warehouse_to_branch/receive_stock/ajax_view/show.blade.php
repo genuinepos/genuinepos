@@ -158,7 +158,7 @@
                                 @elseif($sendStock->status == 2)
                                     Partial
                                 @elseif($sendStock->status == 3)
-                                    Complated
+                                    Completed
                                 @endif
                             </li>
                         </ul>

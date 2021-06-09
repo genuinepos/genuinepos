@@ -1358,6 +1358,9 @@
             var tr = $(this).closest('tr');
             var presentQty = tr.find('#quantity').val();
             var updateQty = parseFloat(presentQty) - 1;
+            if (updateQty < 0) {
+                updateQty = parseFloat(0).toFixed(2);
+            }
             tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
             tr.find('#quantity').addClass('.form-control:focus');
             tr.find('#quantity').blur();

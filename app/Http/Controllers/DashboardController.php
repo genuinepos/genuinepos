@@ -116,7 +116,7 @@ class DashboardController extends Controller
 
         $products = $productQuery->count();
         $total_adjustment = $adjustments->sum('total_adjustment');
-
+      
         return response()->json([
             'total_sale' => $totalSales,
             'totalSaleDue' => $totalSaleDue,
@@ -367,7 +367,7 @@ class DashboardController extends Controller
         $totalPurchaseReturn = 0;
         $totalExpense = 0;
         $total_recovered = 0;
-        $totalPayroll = 0;
+        // $totalPayroll = 0;
 
         $purchases = '';
         $purchaseReturn = '';
@@ -375,7 +375,7 @@ class DashboardController extends Controller
         $saleReturn = '';
         $expenses = '';
         $adjustments = '';
-        $payrolls = '';
+        // $payrolls = '';
 
         $purchaseQuery = DB::table('purchases')->select(
             DB::raw('sum(total_purchase_amount) as total_purchase'),
@@ -395,7 +395,7 @@ class DashboardController extends Controller
         );
 
         $expenseQuery = DB::table('expanses')->select(
-            DB::raw('sum(net_total_amount) as total_expense'),
+            DB::raw('sum(net_total_amount) as total_expense')
         );
 
         $adjustmentQuery = DB::table('stock_adjustments')->select(
@@ -403,18 +403,22 @@ class DashboardController extends Controller
             DB::raw('sum(recovered_amount) as total_recovered'),
         );
 
-        $payrollQuery = DB::table('hrm_payrolls')
-        ->select(DB::raw('sum(paid) as total_payroll'));
+        // $payrollQuery = DB::table('hrm_payrolls')
+        // ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+        // ->select(
+        //     DB::raw('sum(paid) as total_payroll'),
+        //     'admin_and_users.branch_id'
+        // );
 
         if ($request->branch_id) {
-            if ($request->branch_id == 'NULL') {
+            if ($request->branch_id == 'HF') {
                 $purchaseQuery->where('purchases.branch_id', NULL);
                 $saleQuery->where('sales.branch_id', NULL);
                 $expenseQuery->where('expanses.branch_id', NULL);
                 $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
                 $purchaseReturnQuery->where('purchase_returns.branch_id', NULL);
                 $saleReturnQuery->where('sale_returns.branch_id', NULL);
-                $payrollQuery->where('hrm_payrolls.branch_id', NULL);
+                // $payrollQuery->where('admin_and_users.branch_id', NULL);
             } else {
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id);
@@ -422,7 +426,7 @@ class DashboardController extends Controller
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
                 $purchaseReturnQuery->where('purchase_returns.branch_id', $request->branch_id);
                 $saleReturnQuery->where('sale_returns.branch_id', $request->branch_id);
-                $payrollQuery->where('hrm_payrolls.branch_id', $request->branch_id);
+                // $payrollQuery->where('admin_and_users.branch_id', NULL);
             }
         }
 
@@ -433,7 +437,9 @@ class DashboardController extends Controller
             $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->whereDate('created_at', Carbon::today())->get();
             $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')->whereDate('created_at', Carbon::today())->get();
             $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')->whereDate('created_at', Carbon::today())->get();
-            $payrolls = $payrollQuery->groupBy('hrm_payrolls.id')->whereDate('created_at', Carbon::today())->get();
+
+            // $payrolls = $payrollQuery->groupBy('hrm_payrolls.id')->groupBy('admin_and_users.branch_id')
+            // ->whereDate('created_at', Carbon::today())->get();
         } else {
             $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
             ->groupBy('sales.id')->whereDate('created_at', Carbon::today())->get();
@@ -457,11 +463,10 @@ class DashboardController extends Controller
             ->where('sale_returns.branch_id', auth()->user()->branch_id)
             ->whereDate('created_at', Carbon::today())->get();
 
-            $payrolls = $payrollQuery->groupBy('hrm_payrolls.id')
-            ->where('stock_adjustments.branch_id', auth()->user()->branch_id)
-            ->whereDate('created_at', Carbon::today())->get();
+            // $payrolls = $payrollQuery->groupBy('hrm_payrolls.id')->groupBy('admin_and_users.branch_id')
+            // ->where('admin_and_users.branch_id', auth()->user()->branch_id)
+            // ->whereDate('created_at', Carbon::today())->get();
         }
-
 
         $totalSales = $sales->sum('total_sale');
         $totalSalesReturn = $saleReturn->sum('total_return');
@@ -470,8 +475,9 @@ class DashboardController extends Controller
         $totalExpense = $expenses->sum('total_expense');
         $total_adjustment = $adjustments->sum('total_adjustment');
         $total_recovered = $adjustments->sum('total_recovered');
-        $totalPayroll = $payrolls->sum('total_payroll');
-
+        // $totalPayroll = $payrolls->sum('total_payroll');
+        $branch_id = $request->branch_id;
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('dashboard.ajax_view.today_summery', compact(
             'totalSales', 
             'totalSalesReturn', 
@@ -480,7 +486,8 @@ class DashboardController extends Controller
             'totalExpense',
             'total_adjustment',
             'total_recovered',
-            'totalPayroll',
+            'branches',
+            'branch_id',
         ));
     }
 

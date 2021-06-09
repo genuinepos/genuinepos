@@ -1030,7 +1030,7 @@ class PurchaseController extends Controller
     {
         $namedProducts = '';
         $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', '%' . $product_code . '%')
+            ->where('name', 'LIKE', $product_code . '%')
             ->where('status', 1)
             ->get();
 
@@ -1277,46 +1277,6 @@ class PurchaseController extends Controller
         $purchase->purchase_status = $request->purchase_status;
         $purchase->save();
         return response()->json('Successfully purchase status is changed.');
-    }
-
-    // Filter Purchase
-    public function filterPurchase(Request $request)
-    {
-        //return $request->all();
-        $filteredPurchases = '';
-        $query = Purchase::with(['warehouse', 'branch', 'supplier', 'admin', 'admin.role'])->orderBy('id', 'desc');
-
-        if ($request->warehouse_id != '') {
-            $query->where('warehouse_id', $request->warehouse_id);
-        }
-
-        if ($request->branch_id != '') {
-            $query->where('branch_id', $request->branch_id);
-        }
-
-        if ($request->supplier_id != '') {
-            $query->where('supplier_id', $request->supplier_id);
-        }
-
-        if ($request->purchase_status != '') {
-            $query->where('purchase_status', $request->purchase_status);
-        }
-
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            //date_sub($date,date_interval_create_from_date_string("2 days"));
-            $query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-        }
-
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $filteredPurchases = $query->orderBy('id', 'desc')->get();
-        } else {
-            $filteredPurchases = $query->where('branch_id', auth()->user()->branch_id)->orderBy('id', 'desc')->get();
-        }
-        return view('purchases.ajax_view.filtered_purchase_list', compact('filteredPurchases'));
     }
 
     public function paymentModal($purchaseId)

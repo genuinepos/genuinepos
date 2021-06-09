@@ -67,7 +67,7 @@
         <div class="card pt-3 px-4 mt-1">
             <div class="card-title mt-4 ps-4">
                 <h1 class="text-start text-primary pl-5">
-                    <i class="fas fa-anchor"></i>
+                    <i class="fas fa-tachometer-alt"></i>
                     <span class="">HRM</span> Dashboard
                 </h1>
             </div>

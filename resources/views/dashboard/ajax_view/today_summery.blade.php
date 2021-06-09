@@ -1,9 +1,20 @@
 <!--begin::Form-->
 <div class="form-group row">
+    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+        <div class="col-md-6">
+            <select name="branch_id" id="today_branch_id" class="form-control">
+                <option value="">All Branch</option>
+                <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ json_decode($generalSettings->business, true)['shop_name'] }}(HF)</option>
+                @foreach ($branches as $br)
+                    <option {{ $branch_id == $br->id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
+                @endforeach
+            </select>
+        </div>
+    @endif
     <div class="col-md-6">
-        <select name="branch_id" id="today_branch_id" class="form-control">
-            <option value="">All Branch</option>
-        </select>
+        <div class="loader d-none">
+            <i class="fas fa-sync fa-spin ts_preloader text-primary"></i> <b>Processing...</b>  
+        </div>
     </div>
 </div>
 
@@ -29,13 +40,13 @@
 
                     <tr>
                         <th class="text-start">Total Sale Return :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalPayroll, 0,2) }}</td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-start">Total Payroll :</th>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSalesReturn, 0,2) }}</td>
                     </tr>
+
+                    {{-- <tr>
+                        <th class="text-start">Total Payroll :</th>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSalesReturn, 0,2) }}</td>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>

@@ -524,7 +524,6 @@ class SaleReturnController extends Controller
                      $productWarehouseVariant->save();
                  }
             }
-            
         }
 
         $saleReturn->delete();

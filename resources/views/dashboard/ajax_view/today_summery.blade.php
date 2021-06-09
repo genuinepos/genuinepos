@@ -14,27 +14,27 @@
                 <tbody>
                     <tr>
                         <th class="text-start">Total Purchase :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalPurchase, 0,2) }}</td>
                     </tr>
 
                     <tr>
                         <th class="text-start">Total Adjustment :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($total_adjustment, 0,2) }}</td>
                     </tr>
 
                     <tr>
                         <th class="text-start">Total Expense :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalExpense, 0,2) }}</td>
                     </tr>
 
                     <tr>
                         <th class="text-start">Total Sale Return :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalPayroll, 0,2) }}</td>
                     </tr>
 
                     <tr>
                         <th class="text-start">Total Payroll :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSalesReturn, 0,2) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -44,17 +44,17 @@
                 <tbody>
                     <tr>
                         <th class="text-start">Total sale :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSales, 0,2) }}</td>
                     </tr>
 
                     <tr>
                         <th class="text-start">Total Stock Recovered :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($total_recovered, 0,2) }}</td>
                     </tr>
 
                     <tr>
                         <th class="text-start">Total Purchase Return :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalPurchaseReturn, 0,2) }}</td>
                     </tr>
                 </tbody>
             </table>

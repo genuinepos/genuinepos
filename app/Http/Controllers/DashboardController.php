@@ -403,11 +403,8 @@ class DashboardController extends Controller
             DB::raw('sum(recovered_amount) as total_recovered'),
         );
 
-        $payrollQuery = DB::table('hrm_payroll_payments')
-        ->leftJoin('')
-        ->select(
-            DB::raw('sum(paid) as total_payroll')
-        );
+        $payrollQuery = DB::table('hrm_payrolls')
+        ->select(DB::raw('sum(paid) as total_payroll'));
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
@@ -417,14 +414,15 @@ class DashboardController extends Controller
                 $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
                 $purchaseReturnQuery->where('purchase_returns.branch_id', NULL);
                 $saleReturnQuery->where('sale_returns.branch_id', NULL);
-                $payrollQuery->where('sale_returns.branch_id', NULL);
+                $payrollQuery->where('hrm_payrolls.branch_id', NULL);
             } else {
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
-                $purchaseReturnQuery->where('stock_adjustments.branch_id', $request->branch_id);
+                $purchaseReturnQuery->where('purchase_returns.branch_id', $request->branch_id);
                 $saleReturnQuery->where('sale_returns.branch_id', $request->branch_id);
+                $payrollQuery->where('hrm_payrolls.branch_id', $request->branch_id);
             }
         }
 
@@ -434,7 +432,8 @@ class DashboardController extends Controller
             $expenses = $expenseQuery->groupBy('expanses.id')->whereDate('created_at', Carbon::today())->get();
             $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->whereDate('created_at', Carbon::today())->get();
             $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')->whereDate('created_at', Carbon::today())->get();
-            $saleReturn = $purchaseReturnQuery->groupBy('sale_returns.id')->whereDate('created_at', Carbon::today())->get();
+            $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')->whereDate('created_at', Carbon::today())->get();
+            $payrolls = $payrollQuery->groupBy('hrm_payrolls.id')->whereDate('created_at', Carbon::today())->get();
         } else {
             $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
             ->groupBy('sales.id')->whereDate('created_at', Carbon::today())->get();
@@ -451,10 +450,14 @@ class DashboardController extends Controller
             ->whereDate('created_at', Carbon::today())->get();
 
             $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')
-            ->where('stock_adjustments.branch_id', auth()->user()->branch_id)
+            ->where('purchase_returns.branch_id', auth()->user()->branch_id)
             ->whereDate('created_at', Carbon::today())->get();
 
-            $saleReturn = $purchaseReturnQuery->groupBy('sale_returns.id')
+            $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')
+            ->where('sale_returns.branch_id', auth()->user()->branch_id)
+            ->whereDate('created_at', Carbon::today())->get();
+
+            $payrolls = $payrollQuery->groupBy('hrm_payrolls.id')
             ->where('stock_adjustments.branch_id', auth()->user()->branch_id)
             ->whereDate('created_at', Carbon::today())->get();
         }
@@ -467,13 +470,18 @@ class DashboardController extends Controller
         $totalExpense = $expenses->sum('total_expense');
         $total_adjustment = $adjustments->sum('total_adjustment');
         $total_recovered = $adjustments->sum('total_recovered');
+        $totalPayroll = $payrolls->sum('total_payroll');
 
-        return response()->json([
-            'total_sale' => $totalSales,
-            'totalPurchase' => $totalPurchase,
-            'totalExpense' => $totalExpense,
-            'total_adjustment' => $total_adjustment,
-        ]);
+        return view('dashboard.ajax_view.today_summery', compact(
+            'totalSales', 
+            'totalSalesReturn', 
+            'totalPurchase',
+            'totalPurchaseReturn',
+            'totalExpense',
+            'total_adjustment',
+            'total_recovered',
+            'totalPayroll',
+        ));
     }
 
     public function changeLang($lang)

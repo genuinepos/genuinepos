@@ -499,20 +499,35 @@ class SaleReturnController extends Controller
                 $productVariant->save();
             }
 
-            // Addition product branch qty for adjustment
-            $productBranch = ProductBranch::where('branch_id', $saleReturn->branch_id)->where('product_id', $saleProduct->product_id)->first();
-            $productBranch->product_quantity -= $sale_return_product->return_qty;
-            $productBranch->save();
+            if ($saleReturn->branch_id) {
+               // Addition product branch qty for adjustment
+                $productBranch = ProductBranch::where('branch_id', $saleReturn->branch_id)->where('product_id', $saleProduct->product_id)->first();
+                $productBranch->product_quantity -= $sale_return_product->return_qty;
+                $productBranch->save();
 
-            // Addition product branch variant qty for adjustment
-            if ($saleProduct->product_variant_id) {
-                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $saleProduct->product_id)->where('product_variant_id', $saleProduct->product_variant_id)->first();
-                $productBranchVariant->variant_quantity -= $sale_return_product->return_qty;
-                $productBranchVariant->save();
+                // Addition product branch variant qty for adjustment
+                if ($saleProduct->product_variant_id) {
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $saleProduct->product_id)->where('product_variant_id', $saleProduct->product_variant_id)->first();
+                    $productBranchVariant->variant_quantity -= $sale_return_product->return_qty;
+                    $productBranchVariant->save();
+                }
+            }else {
+                 // Addition product branch qty for adjustment
+                 $productWarehouse = ProductWarehouse::where('warehouse_id', $saleReturn->warehouse_id)->where('product_id', $saleProduct->product_id)->first();
+                 $productWarehouse->product_quantity -= $sale_return_product->return_qty;
+                 $productWarehouse->save();
+ 
+                 // Addition product branch variant qty for adjustment
+                 if ($saleProduct->product_variant_id) {
+                     $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $saleProduct->product_id)->where('product_variant_id', $saleProduct->product_variant_id)->first();
+                     $productWarehouseVariant->variant_quantity -= $sale_return_product->return_qty;
+                     $productWarehouseVariant->save();
+                 }
             }
+            
         }
 
         $saleReturn->delete();
-        return response()->json('Successfully sale return is deleted');
+        return response()->json('Sale return deleted successfully');
     }
 }

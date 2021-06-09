@@ -147,8 +147,12 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    table.ajax.reload();
-                    toastr.success(data);
+                    if ($.isEmptyObject(data.errorMsg)) {
+                        table.ajax.reload();
+                        toastr.success(data);
+                    }else{
+                        toastr.error(data.errorMsg);
+                    }
                 }
             });
         });

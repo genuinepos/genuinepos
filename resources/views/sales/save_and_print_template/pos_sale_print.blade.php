@@ -616,7 +616,7 @@
 
                                     @if ($change_amount > 0)
                                         <tr>
-                                            <td class="text-start"><strong> Change Amount : </strong></td>
+                                            <td class="text-end"><strong> Change Amount : </strong></td>
                                             <td class="total_paid text-end">
                                                 <b>
                                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
@@ -1065,7 +1065,7 @@
 
                                     @if ($change_amount > 0)
                                         <tr>
-                                            <td class="text-start"><strong> Change Amount : </strong></td>
+                                            <td class="text-end"><strong> Change Amount : </strong></td>
                                             <td class="total_paid text-end">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}</b>

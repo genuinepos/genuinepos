@@ -176,7 +176,6 @@
             data:{ branch_id, date_range },
             type: 'get',
             success: function(data) {
-                console.log(data[0].total_normal);
                 $('.total_normal').html(__currency_symbol+' '+(data[0].total_normal ? data[0].total_normal : parseFloat(0).toFixed(2)));
                 $('.total_abnormal').html(__currency_symbol+' '+(data[0].total_abnormal ? data[0].total_abnormal : parseFloat(0).toFixed(2)));
                 $('.total_adjustment').html(__currency_symbol+' '+(data[0].t_amount ? data[0].t_amount : parseFloat(0).toFixed(2)));

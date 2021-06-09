@@ -151,7 +151,6 @@
                 date_range, 
             },
             success:function(data){
-                //console.log(data);
                 $('#data-list').html(data);
                 $('.data_preloader').hide();
             }

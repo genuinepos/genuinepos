@@ -618,13 +618,11 @@
                             $('.select_area').hide();
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
-                            console.log(variant_product); 
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
                             var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
-                                console.log(input.value);
                                 if(input.value != 'noid'){
                                     if(input.value == variant_product.id){
                                         sameVariant += 1;
@@ -787,7 +785,6 @@
                         var product_ids = document.querySelectorAll('#product_id');
                         var sameProduct = 0;
                         product_ids.forEach(function(input){
-                            console.log(input.value);
                             if(input.value == product_id){
                                 sameProduct += 1;
                                 var className = input.getAttribute('class');
@@ -930,7 +927,6 @@
                         var variant_ids = document.querySelectorAll('#variant_id');
                         var sameVariant = 0;
                         variant_ids.forEach(function(input){
-                            console.log(input.value);
                             if(input.value != 'noid'){
                                 if(input.value == variant_id){
                                     sameVariant += 1;
@@ -1037,13 +1033,11 @@
         // Quantity increase or dicrease and clculate row amount
         $(document).on('input', '#quantity', function(){
             var qty = $(this).val() ? $(this).val() : 0;
-            console.log(qty);
             if (parseFloat(qty) >= 0) {
                 var tr = $(this).closest('tr');
                 var previousQty = tr.find('#previous_quantity').val();
                 var limit = tr.find('#qty_limit').val()
                 var qty_limit = parseFloat(previousQty) + parseFloat(limit);
-                console.log(qty_limit);
                 if(parseInt(qty) > parseInt(qty_limit)){
                     alert('Quantity exceeds stock quantity!');
                     $(this).val(parseFloat(qty_limit).toFixed(2));
@@ -1066,7 +1060,9 @@
 
         $(document).on('blur', '#quantity', function(){
             var qty = $(this).val() ? $(this).val() : 0;
-            console.log(qty);
+            if (qty < 0) {
+                $(this).val(0);
+            }
             if (parseFloat(qty) >= 0) {
                 var tr = $(this).closest('tr');
                 var previousQty = tr.find('#previous_quantity').val();
@@ -1244,7 +1240,6 @@
             var previous_quantity = productTableRow.find('#previous_quantity').val();
             var limit = productTableRow.find('#qty_limit').val();
             var qty_limit = parseFloat(previous_quantity) + parseFloat(limit);
-            console.log(qty_limit);
             if (parseFloat(e_quantity) > parseFloat(qty_limit)) {
                 alert('Quantity exceeds stock quantity!');
                 productTableRow.find('.span_unit').html(e_unit);
@@ -1345,7 +1340,6 @@
                 cache: false,
                 processData: false,
                 success:function(data){
-                    console.log(data);
                     if(!$.isEmptyObject(data.errorMsg)){
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();
@@ -1534,7 +1528,6 @@
         });
 
         function costCalculate() {
-            console.log(tax_percent);
             var product_cost = $('#sale_product_cost').val() ? $('#sale_product_cost').val() : 0;
             var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent ? tax_percent : 0);
             var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
@@ -1546,7 +1539,6 @@
         }
 
         $(document).on('input', '#sale_product_cost',function() {
-            console.log($(this).val());
             $('.os_unit_costs_exc_tax').val(parseFloat($(this).val()).toFixed(2));
             costCalculate();
         });
@@ -1609,7 +1601,6 @@
                         url:"{{url('sales/get/recent/product')}}"+"/"+branch_id+"/"+warehouse_id+"/"+data.id,
                         type:'get',
                         success:function(data){
-                            console.log(data);
                             $('.loading_button').hide();
                             $('#addProductModal').modal('hide');
                             if (!$.isEmptyObject(data.errorMsg)) {
@@ -1627,7 +1618,6 @@
                     toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                     $('.error').html('');
                     $.each(err.responseJSON.errors, function(key, error) {
-                        //console.log(key);
                         $('.error_sale_' + key + '').html(error[0]);
                     });
                 }

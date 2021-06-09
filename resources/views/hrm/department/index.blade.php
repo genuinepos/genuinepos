@@ -280,22 +280,45 @@
         });
 
         // Show sweet alert for delete
+        // $(document).on('click', '#delete',function(e){
+        //     e.preventDefault();
+        //     var url = $(this).attr('href');
+        //     $('#deleted_form').attr('action', url);
+        //     swal({
+        //         title: "Are you sure?",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     })
+        //     .then((willDelete) => {
+        //         if (willDelete) { 
+        //             $('#deleted_form').submit();
+        //         }
+        //     });
+        // });
+
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure?",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) { 
-                    $('#deleted_form').submit();
+            $('#deleted_form').attr('action', url);           
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'message': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes bg-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no bg-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });
-
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
@@ -308,7 +331,7 @@
                 data:request,
                 success:function(data){
                     getAllDepartment();
-                    toastr.success(data);
+                    toastr.error(data);
                     $('#deleted_form')[0].reset();
                 }
             });

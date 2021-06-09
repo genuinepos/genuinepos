@@ -305,20 +305,44 @@
         });
 
         // Show sweet alert for delete
+        // $(document).on('click', '#delete',function(e){
+        //     e.preventDefault();
+        //     var url = $(this).attr('href');
+        //     $('#deleted_form').attr('action', url);
+        //     swal({
+        //         title: "Are you sure?",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     })
+        //     .then((willDelete) => {
+        //         if (willDelete) { 
+        //             $('#deleted_form').submit();
+        //         } else {
+        //             swal("Your imaginary file is safe!");
+        //         }
+        //     });
+        // });
+
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure?",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) { 
-                    $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
+            $('#deleted_form').attr('action', url);           
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'message': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes bg-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no bg-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });
@@ -335,7 +359,7 @@
                 data:request,
                 success:function(data){
                     getAllType();
-                    toastr.success(data);
+                    toastr.error(data);
                     $('#deleted_form')[0].reset();
                 }
             });

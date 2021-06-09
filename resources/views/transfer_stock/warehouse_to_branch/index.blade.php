@@ -1,35 +1,8 @@
 @extends('layout.master')
 @push('stylesheets')
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
 <style>
-    .jconfirm .jconfirm-box {
-        padding: 0;
-    }
-    .jconfirm .jconfirm-box div.jconfirm-title-c {
-        padding-bottom: 15px;
-        background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
-        color: #fff;
-        padding-top: 9px;
-        text-align: center;
-    }
-    .jconfirm-content {
-        text-align: center;
-        margin-top: 9px;
-    }
-    .jconfirm .jconfirm-box .jconfirm-buttons {
-        margin-right: 158px;
-    }
-    .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
-        background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
-        background: linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
-    }
-    .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default {
-        color: #fff;
-    }
-    .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover {
-        background: -webkit-linear-gradient(top, #07a7d9 0%,#0853a1 50%,#034ba6 51%,#001741 100%);
-    }
 
 </style>
 @endpush
@@ -104,7 +77,7 @@
 @push('scripts')
 
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
     <script>
         var table = $('.data_tbl').DataTable({
             "processing": true,
@@ -160,13 +133,13 @@
                 'message': 'You are about to delete this item. <br />It cannot be restored at a later time! Continue?',
                 'buttons': {
                     'Yes': {
-                        'class': 'yes bg-primary',
+                        'btnClass': 'yes btn-danger',
                         'action': function() {
                             $('#deleted_form').submit();
                         }
                     },
                     'No': {
-                        'class': 'no',
+                        'class': 'no btn-modal-primary',
                         'action': function() {
                             // alert('Deleted canceled.')
                         } 
@@ -202,7 +175,7 @@
                 data:request,
                 success:function(data){
                     table.ajax.reload();
-                    toastr.success(data);
+                    toastr.error(data);
                 }
             });
         });

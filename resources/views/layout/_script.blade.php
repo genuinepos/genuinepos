@@ -15,7 +15,7 @@
     <!--Sweet alert js link-->
     <script src="{{ asset('public') }}/assets/plugins/custom/sweet-alert/sweet-alert.min.js"></script>
     <!--Sweet alert js link end-->
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>
     <!--Toaster.js js link end-->
@@ -115,19 +115,42 @@
         "positionClass": "toast-top-center",
       }
 
-      $(document).ready(function() {
-          $('#logout_option').on('click', function(e) {
-              e.preventDefault();
-              swal({
-                  title: "Are you sure to logout ?",
-                  buttons: true,
-                  dangerMode: true,
-              })
-              .then((willDelete) => {
-                  if (willDelete) {
-                    $('#logout_form').submit();
-                  }
-              });
-          });
-      });
+      // $(document).ready(function() {
+      //     $('#logout_option').on('click', function(e) {
+      //         e.preventDefault();
+      //         swal({
+      //             title: "Are you sure to logout ?",
+      //             buttons: true,
+      //             dangerMode: true,
+      //         })
+      //         .then((willDelete) => {
+      //             if (willDelete) {
+      //               $('#logout_form').submit();
+      //             }
+      //         });
+      //     });
+      // });
+      $(document).on('click', '#logout_option',function(e){
+            e.preventDefault();
+            // var url = $(this).attr('href');
+            // $('#logout_form').attr('action', url);           
+            $.confirm({
+                'title': 'Logout Confirmation',
+                'content': 'Are you sure, you want to logout?',
+                'buttons': {
+                    'Yes': {
+                        'btnClass': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#logout_form').submit();
+                        }
+                    },
+                    'No': {
+                        'btnClass': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
+                }
+            });
+        });
     </script>

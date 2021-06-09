@@ -549,23 +549,50 @@
         });
 
         // Show sweet alert for delete
+        // var tableRowIndex = 0;
+        // $(document).on('click', '#delete',function(e){
+        //     e.preventDefault();
+        //     var parentTableRow = $(this).closest('tr');
+        //     tableRowIndex = parentTableRow.index();
+        //     var url = $(this).attr('href');
+        //     $('#deleted_form').attr('action', url);
+        //     swal({
+        //         title: "Are you sure to delete ?",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) {
+        //             $('#deleted_form').submit();
+        //             $('#recent_trans_preloader').show()
+        //         } else {
+        //             swal("Your imaginary file is safe!");
+        //         }
+        //     });
+        // });
         var tableRowIndex = 0;
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var parentTableRow = $(this).closest('tr');
-            tableRowIndex = parentTableRow.index();
+            tableRowIndex = parentTableRow.index();  
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure to delete ?",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $('#deleted_form').submit();
-                    $('#recent_trans_preloader').show()
-                } else {
-                    swal("Your imaginary file is safe!");
+            $('#deleted_form').attr('action', url);       
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                            $('#recent_trans_preloader').show()
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });
@@ -581,7 +608,7 @@
                 data:request,
                 success:function(data){
                     pickHoldInvoice();
-                    toastr.success(data);
+                    toastr.error(data);
                     var productTableRow = $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
                     $('#recent_trans_preloader').hide();
                 }
@@ -589,19 +616,42 @@
         });
 
         // Show sweet alert for delete
+        // $(document).on('click', '#pos_exit_button',function(e){
+        //     e.preventDefault();
+        //     var url = $(this).attr('href');
+        //     $('#payment_deleted_form').attr('action', url);
+        //     swal({
+        //         title: "Are you sure to exit ?",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) {
+        //             window.location = "{{ route('dashboard.dashboard') }}";
+        //         } else {
+        //             swal("OK, Continue the selling.");
+        //         }
+        //     });
+        // });
         $(document).on('click', '#pos_exit_button',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure to exit ?",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    window.location = "{{ route('dashboard.dashboard') }}";
-                } else {
-                    swal("OK, Continue the selling.");
+            $('#payment_deleted_form').attr('action', url);           
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure, you want to exit?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#payment_deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });

@@ -586,21 +586,44 @@
         })
 
          // Show sweet alert for multiple generate completed
-         $(document).on('click', '.multiple_completed',function(e){
+        //  $(document).on('click', '.multiple_completed',function(e){
+        //     e.preventDefault();
+        //     $('#action').val('multipla_deactive');
+        //     swal({
+        //         title: "Are you sure ?",
+        //         text: "Once deleted, you will not be able to recover this imaginary file!",
+        //         icon: "warning",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     })
+        //     .then((willDelete) => {
+        //         if (willDelete) { 
+        //             $('#multiple_completed_form').submit();
+        //         } else {
+        //             swal("Your imaginary file is safe!");
+        //         }
+        //     });
+        // });
+        
+        $(document).on('click', '.multiple_completed',function(e){
             e.preventDefault();
-            $('#action').val('multipla_deactive');
-            swal({
-                title: "Are you sure ?",
-                text: "Once deleted, you will not be able to recover this imaginary file!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) { 
-                    $('#multiple_completed_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
+            $('#action').val('multipla_deactive');         
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Once deleted, you will not be able to recover this file!',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#multiple_completed_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });

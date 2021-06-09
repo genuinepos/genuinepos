@@ -332,20 +332,44 @@
         });
 
         // Show sweet alert for delete
-        $(document).on('click', '#delete', function(e) {
-            e.preventDefault();
+        // $(document).on('click', '#delete', function(e) {
+        //     e.preventDefault();
+        //     var url = $(this).attr('href');
+        //     $('#deleted_form').attr('action', url);
+        //     swal({
+        //         title: "Are you sure to delete ?",
+        //         icon: "warning",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) {
+        //             $('#deleted_form').submit();
+        //         } else {
+        //             swal("Your imaginary file is safe!");
+        //         }
+        //     });
+        // });
+
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault(); 
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure to delete ?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $('#deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
+            $('#deleted_form').attr('action', url);       
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure, you want to delete?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });
@@ -361,7 +385,7 @@
                 data: request,
                 success: function(data) {
                     purchase_table.ajax.reload();
-                    toastr.success(data);
+                    toastr.error(data);
                 }
             });
         });
@@ -554,6 +578,30 @@
                     $('#payment_deleted_form').submit();
                 } else {
                     swal("Your imaginary file is safe!");
+                }
+            });
+        });
+
+        $(document).on('click', '#delete_payment',function(e){
+            e.preventDefault(); 
+            var url = $(this).attr('href');
+            $('#payment_deleted_form').attr('action', url);       
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure, you want to delete?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#payment_deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });

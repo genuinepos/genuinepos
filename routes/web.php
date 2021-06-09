@@ -22,6 +22,8 @@ Route::get('dashboard/sale/order', 'App\Http\Controllers\DashboardController@sal
 Route::get('dashboard/sale/due', 'App\Http\Controllers\DashboardController@saleDue')->name('dashboard.sale.due');
 Route::get('dashboard/purchase/due', 'App\Http\Controllers\DashboardController@purchaseDue')->name('dashboard.purchase.due');
 
+Route::get('dashboard/today/summery', 'App\Http\Controllers\DashboardController@todaySummery')->name('dashboard.today.summery');
+
 Route::get('route-list', function () {
     if (env('APP_DEBUG') === true) {
         Artisan::call('route:list --columns=Method,URI,Name,Action');

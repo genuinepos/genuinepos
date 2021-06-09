@@ -8,10 +8,10 @@
                     </a>
                 </div>
                 <div class="notify-menu">
-                    <p class="text-white float-start d-none d-md-block"> {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] !!}</p>
+                    <p class="text-white float-start d-none d-md-block">{!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] !!}</p>
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon ms-3"><a href=""><b>Today</b></a></li>
+                            <li class="top-icon ms-3"><a href="" id="today_summery"><b>Today</b></a></li>
                             <li class="top-icon ms-3"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
                                 <li class="top-icon ms-3"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>

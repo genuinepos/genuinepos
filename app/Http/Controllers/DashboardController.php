@@ -359,6 +359,123 @@ class DashboardController extends Controller
         }
     }
 
+    public function todaySummery(Request $request)
+    {
+        $totalSales = 0;
+        $totalSalesReturn = 0;
+        $totalPurchase = 0;
+        $totalPurchaseReturn = 0;
+        $totalExpense = 0;
+        $total_recovered = 0;
+        $totalPayroll = 0;
+
+        $purchases = '';
+        $purchaseReturn = '';
+        $sales = '';
+        $saleReturn = '';
+        $expenses = '';
+        $adjustments = '';
+        $payrolls = '';
+
+        $purchaseQuery = DB::table('purchases')->select(
+            DB::raw('sum(total_purchase_amount) as total_purchase'),
+        );
+
+        $purchaseReturnQuery = DB::table('purchase_returns')->select(
+            DB::raw('sum(total_return_amount) as total_return'),
+        );
+
+        $saleQuery = DB::table('sales')->select(
+            DB::raw('sum(total_payable_amount) as total_sale'),
+        );
+
+        $saleReturnQuery = DB::table('sale_returns')
+        ->select(
+            DB::raw('sum(total_return_amount) as total_return'),
+        );
+
+        $expenseQuery = DB::table('expanses')->select(
+            DB::raw('sum(net_total_amount) as total_expense'),
+        );
+
+        $adjustmentQuery = DB::table('stock_adjustments')->select(
+            DB::raw('sum(net_total_amount) as total_adjustment'),
+            DB::raw('sum(recovered_amount) as total_recovered'),
+        );
+
+        $payrollQuery = DB::table('hrm_payroll_payments')
+        ->leftJoin('')
+        ->select(
+            DB::raw('sum(paid) as total_payroll')
+        );
+
+        if ($request->branch_id) {
+            if ($request->branch_id == 'NULL') {
+                $purchaseQuery->where('purchases.branch_id', NULL);
+                $saleQuery->where('sales.branch_id', NULL);
+                $expenseQuery->where('expanses.branch_id', NULL);
+                $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
+                $purchaseReturnQuery->where('purchase_returns.branch_id', NULL);
+                $saleReturnQuery->where('sale_returns.branch_id', NULL);
+                $payrollQuery->where('sale_returns.branch_id', NULL);
+            } else {
+                $purchaseQuery->where('purchases.branch_id', $request->branch_id);
+                $saleQuery->where('sales.branch_id', $request->branch_id);
+                $expenseQuery->where('expanses.branch_id', $request->branch_id);
+                $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
+                $purchaseReturnQuery->where('stock_adjustments.branch_id', $request->branch_id);
+                $saleReturnQuery->where('sale_returns.branch_id', $request->branch_id);
+            }
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $sales = $saleQuery->groupBy('sales.id')->whereDate('created_at', Carbon::today())->get();
+            $purchases = $purchaseQuery->groupBy('purchases.id')->whereDate('created_at', Carbon::today())->get();
+            $expenses = $expenseQuery->groupBy('expanses.id')->whereDate('created_at', Carbon::today())->get();
+            $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->whereDate('created_at', Carbon::today())->get();
+            $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')->whereDate('created_at', Carbon::today())->get();
+            $saleReturn = $purchaseReturnQuery->groupBy('sale_returns.id')->whereDate('created_at', Carbon::today())->get();
+        } else {
+            $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
+            ->groupBy('sales.id')->whereDate('created_at', Carbon::today())->get();
+
+            $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)
+            ->groupBy('purchases.id')->whereDate('created_at', Carbon::today())->get();
+
+            $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)
+            ->groupBy('expanses.id')
+            ->whereDate('created_at', Carbon::today())->get();
+
+            $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)
+            ->groupBy('stock_adjustments.id')
+            ->whereDate('created_at', Carbon::today())->get();
+
+            $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')
+            ->where('stock_adjustments.branch_id', auth()->user()->branch_id)
+            ->whereDate('created_at', Carbon::today())->get();
+
+            $saleReturn = $purchaseReturnQuery->groupBy('sale_returns.id')
+            ->where('stock_adjustments.branch_id', auth()->user()->branch_id)
+            ->whereDate('created_at', Carbon::today())->get();
+        }
+
+
+        $totalSales = $sales->sum('total_sale');
+        $totalSalesReturn = $saleReturn->sum('total_return');
+        $totalPurchase = $purchases->sum('total_purchase');
+        $totalPurchaseReturn = $purchaseReturn->sum('total_return');
+        $totalExpense = $expenses->sum('total_expense');
+        $total_adjustment = $adjustments->sum('total_adjustment');
+        $total_recovered = $adjustments->sum('total_recovered');
+
+        return response()->json([
+            'total_sale' => $totalSales,
+            'totalPurchase' => $totalPurchase,
+            'totalExpense' => $totalExpense,
+            'total_adjustment' => $total_adjustment,
+        ]);
+    }
+
     public function changeLang($lang)
     {
         session(['lang' => $lang]);

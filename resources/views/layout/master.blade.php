@@ -34,8 +34,38 @@
             </div>
         </footer>
     </div>
+
+    <div class="modal fade" id="todaySummeryModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Today Summery</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="today_summery_modal_body">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
     @include('layout._script')
     @stack('scripts')
+    <script>
+        $(document).on('click', '#today_summery', function (e) {
+            e.preventDefault();
+            var branch_id = $('#today_branch_id').val();
+            $.ajax({
+                url: "{{ route('dashboard.today.summery') }}",
+                type: 'get',
+                data: {branch_id},
+                success: function(data) {
+                    $('#today_summery_modal_body').html(data);
+                    $('#todaySummeryModal').modal('show');
+                }
+            });
+        })
+    </script>
     <!-- Logout form for global -->
     <form id="logout_form" class="d-none" action="{{ route('logout') }}" method="POST">@csrf</form>
     <!-- Logout form for global end -->

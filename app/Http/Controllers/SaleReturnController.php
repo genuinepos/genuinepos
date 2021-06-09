@@ -119,6 +119,9 @@ class SaleReturnController extends Controller
                     }
                     return $html;
                 })
+                ->editColumn('customer', function ($row) {
+                    return $row->cus_name ? $row->cus_name : 'Walk-In-Customer';
+                })
                 ->setRowAttr([
                     'data-href' => function ($row) {
                         return route('sales.returns.show', [$row->id]);

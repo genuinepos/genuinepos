@@ -143,10 +143,10 @@
             <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="product">
                 <div class="sub-menu-width">
-                    <div class="model__close bg-secondary">
+                    <div class="model__close bg-secondary-2">
                         <div class="row">
                             <div class="col-md-8">
-                                <p class="text-white float-start mt-1"><strong>Product Management</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>Product Management</strong></p>
                             </div>
                             <div class="col-md-4">
                                 <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -269,10 +269,10 @@
                 @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
                     <div class="sub-menu_t" id="contact">
                         <div class="sub-menu-width">
-                            <div class="model__close bg-secondary">
+                            <div class="model__close bg-secondary-2">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <p class="text-white float-start mt-1"><strong>Contact Management</strong></p>
+                                        <p class="text-muted float-start mt-1"><strong>Contact Management</strong></p>
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -331,10 +331,10 @@
                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                     <div class="sub-menu_t" id="purchases">
                         <div class="sub-menu-width">
-                            <div class="model__close bg-secondary">
+                            <div class="model__close bg-secondary-2">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <p class="text-white float-start mt-1"><strong>Purchase Management</strong></p>
+                                        <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -383,10 +383,10 @@
                         @if (auth()->user()->permission->purchase['purchase_all'] == '1')
                             <div class="sub-menu_t" id="purchases">
                                 <div class="sub-menu-width">
-                                    <div class="model__close bg-secondary">
+                                    <div class="model__close bg-secondary-2">
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <p class="text-white float-start mt-1"><strong>Purchase Management</strong></p>
+                                                <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
                                             </div>
                                             <div class="col-md-4">
                                                 <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -445,10 +445,10 @@
 
             <div class="sub-menu_t" id="sales">
                 <div class="sub-menu-width">
-                    <div class="model__close bg-secondary">
+                    <div class="model__close bg-secondary-2">
                         <div class="row">
                             <div class="col-md-8">
-                                <p class="text-white float-start mt-1"><strong>Sale Management</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>Sale Management</strong></p>
                             </div>
                             <div class="col-md-4">
                                 <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -552,10 +552,10 @@
             @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
                 <div class="sub-menu_t" id="transfer">
                     <div class="sub-menu-width">
-                        <div class="model__close bg-secondary">
+                        <div class="model__close bg-secondary-2">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p class="text-white float-start mt-1"><strong>Stock Transfer Management</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>Stock Transfer Management</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -643,10 +643,10 @@
                 @if (auth()->user()->permission->s_adjust['adjustment_all'] == '1')
                     <div class="sub-menu_t" id="adjustment">
                         <div class="sub-menu-width">
-                            <div class="model__close bg-secondary">
+                            <div class="model__close bg-secondary-2">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <p class="text-white float-start mt-1"><strong>Stock Adjustment</strong></p>
+                                        <p class="text-muted float-start mt-1"><strong>Stock Adjustment</strong></p>
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -689,10 +689,10 @@
             @if (json_decode($generalSettings->modules, true)['expenses'] == '1')
                 <div class="sub-menu_t" id="expenses">
                     <div class="sub-menu-width">
-                        <div class="model__close bg-secondary">
+                        <div class="model__close bg-secondary-2">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p class="text-white float-start mt-1"><strong>Expense Management</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>Expense Management</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -740,10 +740,10 @@
                 @if (auth()->user()->permission->accounting['ac_access'] == 1)
                     <div class="sub-menu_t" id="accounting">
                         <div class="sub-menu-width">
-                            <div class="model__close bg-secondary">
+                            <div class="model__close bg-secondary-2">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <p class="text-white float-start mt-1"><strong>Account Management</strong></p>
+                                        <p class="text-muted float-start mt-1"><strong>Account Management</strong></p>
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -822,10 +822,10 @@
             @if (auth()->user()->permission->user['user_view'] == '1')
                 <div class="sub-menu_t" id="users">
                     <div class="sub-menu-width">
-                        <div class="model__close bg-secondary">
+                        <div class="model__close bg-secondary-2">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p class="text-white float-start mt-1"><strong>User Management</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>User Management</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -891,10 +891,10 @@
             @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
                 <div class="sub-menu_t" id="settings">
                     <div class="sub-menu-width">
-                        <div class="model__close bg-secondary">
+                        <div class="model__close bg-secondary-2">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p class="text-white float-start mt-1"><strong>Settings</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>Settings</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -996,10 +996,10 @@
             <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="reports">
                 <div class="sub-menu-width">
-                    <div class="model__close bg-secondary">
+                    <div class="model__close bg-secondary-2">
                         <div class="row">
                             <div class="col-md-8">
-                                <p class="text-white float-start mt-1"><strong>All Report</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>All Report</strong></p>
                             </div>
                             <div class="col-md-4">
                                 <button type="button" class="btn-close close-model mt-1 text-danger"></button>

@@ -1407,7 +1407,6 @@ class POSController extends Controller
     public function prepareExchange(Request $request)
     {
         //return $request->all();
-        
         $sale_id = $request->sale_id;
         $sale = Sale::where('id', $sale_id)->first();
         $ex_quantities = $request->ex_quantities;

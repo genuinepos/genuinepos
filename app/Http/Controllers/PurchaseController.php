@@ -300,7 +300,7 @@ class PurchaseController extends Controller
                 $addSupplierProduct->label_qty = $quantities[$i];
                 $addSupplierProduct->save();
             } else {
-                $SupplierProduct->label_qty += $quantities[$i];
+                $SupplierProduct->label_qty = $SupplierProduct->label_qty + $quantities[$i];
                 $SupplierProduct->save();
             }
             $i++;
@@ -320,7 +320,7 @@ class PurchaseController extends Controller
         foreach ($product_ids as $productId) {
             $updateProductQty = Product::where('id', $productId)->first();
             $updateProductQty->is_purchased = 1;
-            $updateProductQty->quantity += $quantities[$productIndex];
+            $updateProductQty->quantity = $updateProductQty->quantity + $quantities[$productIndex];
             if ($updateProductQty->is_variant == 0) {
                 $updateProductQty->product_cost = $unit_costs[$productIndex];
                 $updateProductQty->product_cost_with_tax = $unit_costs_inc_tax[$productIndex];
@@ -334,7 +334,7 @@ class PurchaseController extends Controller
 
             if ($variant_ids[$productIndex] != 'noid') {
                 $updateVariantQty = ProductVariant::where('id', $variant_ids[$productIndex])->where('product_id', $productId)->first();
-                $updateVariantQty->variant_quantity += $quantities[$productIndex];
+                $updateVariantQty->variant_quantity = $updateVariantQty->variant_quantity + $quantities[$productIndex];
                 $updateVariantQty->variant_cost = $unit_costs[$productIndex];
                 $updateVariantQty->variant_cost_with_tax = $unit_costs_inc_tax[$productIndex];
 
@@ -441,13 +441,13 @@ class PurchaseController extends Controller
                 // add warehouse product
                 $productWarehouse = ProductWarehouse::where('warehouse_id', $request->warehouse_id)->where('product_id', $productId)->first();
                 if ($productWarehouse) {
-                    $productWarehouse->product_quantity += $quantities[$index2];
+                    $productWarehouse->product_quantity = $productWarehouse->product_quantity + $quantities[$index2];
                     $productWarehouse->save();
                     if ($variant_ids[$index2] != 'noid') {
                         // add warehouse product variant 
                         $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
                         if ($productWarehouseVariant) {
-                            $productWarehouseVariant->variant_quantity += $quantities[$index2];
+                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $quantities[$index2];
                             $productWarehouseVariant->save();
                         } else {
                             $addProductWarehousehVariant = new ProductWarehouseVariant();
@@ -488,13 +488,13 @@ class PurchaseController extends Controller
                 // add branch product
                 $productBranch = ProductBranch::where('branch_id', auth()->user()->branch_id)->where('product_id', $productId)->first();
                 if ($productBranch) {
-                    $productBranch->product_quantity += $quantities[$index2];
+                    $productBranch->product_quantity = $productBranch->product_quantity + $quantities[$index2];
                     $productBranch->save();
                     if ($variant_ids[$index2] != 'noid') {
                         // add warehouse product variant 
                         $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
                         if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity += $quantities[$index2];
+                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $quantities[$index2];
                             $productBranchVariant->save();
                         } else {
                             $addProductBranchVariant = new ProductBranchVariant();

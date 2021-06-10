@@ -1577,6 +1577,7 @@
                 cache: false,
                 processData: false,
                 success:function(data){
+                    console.log(data);
                     if(!$.isEmptyObject(data.errorMsg)){
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();

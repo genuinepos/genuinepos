@@ -1073,8 +1073,6 @@ class PurchaseReturnController extends Controller
                     $productBranchVariant->save();
                 }
             }
-
-
             $index++;
         }
 

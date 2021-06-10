@@ -236,7 +236,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [
-                [3, 'asc']
+                [0, 'asc']
             ],
             "ajax": {
                 "url": "{{ route('purchases.index_v2') }}",

@@ -164,7 +164,7 @@ class PurchaseController extends Controller
                     return $html;
                 })
                 ->editColumn('from',  function ($row) {
-                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code).'<b>(BRANCH)</b>' : ($row->warehouse_name . '/' . $row->warehouse_code).'<b>(WAREHOUSE)</b>';
+                    return $row->branch_name != null ? ($row->branch_name).'<b>(BR)</b>' : $row->warehouse_name .'<b>(WH)</b>';
                 })
                 ->editColumn('total_purchase_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_purchase_amount . '</b>';

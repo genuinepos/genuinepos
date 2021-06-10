@@ -30,7 +30,6 @@
     .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover {
         background: -webkit-linear-gradient(top, #07a7d9 0%,#0853a1 50%,#034ba6 51%,#001741 100%);
     }
-
 </style>
 @endpush
 @section('content')
@@ -109,7 +108,9 @@
         var table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
-            aaSorting: [[3, 'asc']],
+            aaSorting: [
+                [0, 'asc']
+            ],
             ajax: "{{ route('transfer.stock.to.branch.index') }}",
             // columnDefs: [{
             //     "targets": [0],

@@ -740,9 +740,32 @@ Route::get('/test', function () {
     
     // DB::statement('create database new_inventory_2');
     // Artisan::call('migrate');
-    $a = 1;
-    $b = -1;
-    return $qty = $a + $b;
+ 
+    return $products = DB::table('product_branches')
+        ->join('products', 'product_branches.product_id', 'products.id')
+        ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+        ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+        ->leftJoin('units', 'products.unit_id', 'units.id')->select(
+            'products.id',
+            'products.number_of_sale',
+            'products.thumbnail_photo',
+            'products.name',
+            'products.product_code',
+            'products.product_cost_with_tax',
+            'products.profit',
+            'products.product_price',
+            'products.is_show_emi_on_pos',
+            'units.name as unit_name',
+            'taxes.id as tax_id',
+            'taxes.tax_percent',
+            'product_variants.id as variant_id',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'product_variants.variant_cost_with_tax',
+            'product_variants.variant_profit',
+            'product_variants.variant_price',
+        )->where('branch_id', 24)
+        ->get();
 });
 
 Auth::routes();

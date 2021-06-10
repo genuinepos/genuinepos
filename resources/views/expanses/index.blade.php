@@ -195,7 +195,7 @@
         var table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
-            aaSorting: [[3, 'asc']],
+            aaSorting: [[0, 'asc']],
             "ajax": {
                 "url": "{{ route('expanses.index') }}",
                 "data": function(d) {

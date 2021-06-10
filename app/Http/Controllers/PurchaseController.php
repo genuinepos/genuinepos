@@ -468,7 +468,7 @@ class PurchaseController extends Controller
                         // add warehouse product variant 
                         $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $addProductWarehouse->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
                         if ($productWarehouseVariant) {
-                            $productWarehouseVariant->variant_quantity += $quantities[$index2];
+                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $quantities[$index2];
                             $productWarehouseVariant->save();
                         } else {
                             $addProductWarehouseVariant = new ProductWarehouseVariant();
@@ -515,7 +515,7 @@ class PurchaseController extends Controller
                         // add warehouse product variant 
                         $productBranchVariant = ProductBranchVariant::where('product_branch_id', $addProductBranch->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
                         if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity += $quantities[$index2];
+                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $quantities[$index2];
                             $productBranchVariant->save();
                         } else {
                             $addProductBranchVariant = new ProductWarehouseVariant();
@@ -573,8 +573,8 @@ class PurchaseController extends Controller
             if ($request->account_id) {
                 // update account
                 $account = Account::where('id', $request->account_id)->first();
-                $account->debit += $request->paying_amount;
-                $account->balance -= $request->paying_amount;
+                $account->debit = $account->debit + $request->paying_amount;
+                $account->balance = $account->balance - $request->paying_amount;
                 $account->save();
 
                 // Add cash flow

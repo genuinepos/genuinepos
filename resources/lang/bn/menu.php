@@ -103,4 +103,7 @@ return [
     'expense_report' => 'ব্যয় রিপোর্ট',
     'register_report' => 'রিপোর্ট নিবন্ধ',
     'sales_representative_report' => 'বিক্রয় প্রতিনিধি রিপোর্ট',
+    'payroll_report' => 'বেতন রিপোর্ট',
+    'payroll_payment_report' => 'বেতন পেমেন্ট রিপোর্ট',
+    'attendance_report' => 'উপস্থিতি রিপোর্ট',
 ];

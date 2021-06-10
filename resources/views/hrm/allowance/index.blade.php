@@ -17,7 +17,7 @@
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul>
                                         <li>
-                                            <a href="{{ route('hrm.dashboard.index') }}" class="text-white "><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
+                                            <a href="{{ route('hrm.dashboard.index') }}" class="text-white "><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
                                         </li>
                                         
                                         @if (auth()->user()->permission->hrms['leave_type'] == '1')

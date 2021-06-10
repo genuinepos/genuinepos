@@ -114,7 +114,7 @@
                 <li class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
                     <a href="{{ route('hrm.leave.type') }}">
                         <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
-                        <p class="title">HRM</p>
+                        <p class="title">@lang('menu.hrm')</p>
                     </a>
                 </li>
 
@@ -1184,50 +1184,40 @@
                                     <p class="switch_text">@lang('menu.expense_report')</p>
                                 </div>
                             @endif
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="" class="bar-link">
+                                        <span><img src="{{ asset('public/backend/asset/img/file.png') }}"></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.payroll_report')</p>
+                            </div>
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="" class="bar-link">
+                                        <span><img src="{{ asset('public/backend/asset/img/file.png') }}"></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.payroll_payment_report')</p>
+                            </div>
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="" class="bar-link">
+                                        <span><img src="{{ asset('public/backend/asset/img/file.png') }}"></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.attendance_report')</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- ===========================================FILE SIDEBAR=================== -->
             <!-- ===========================================Hrm sub-menu=================== -->
-            {{-- <div class="sub-menu_t" id="hrm">
-                <div class="sub-menu-width">
-                    <div class="model__close bg-secondary">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p class="text-white float-start mt-1"><strong>Human Resource Management</strong></p>
-                            </div>
-                            <div class="col-md-4">
-                                <button type="button" class="btn-close close-model mt-1 text-danger"></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container-fluid">
-                        <div class="row">
-                            @if (auth()->user()->permission->hrms['leave_type'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('hrm.leave.type') }}" class="bar-link">
-                                            <span><i class="fas fa-th-large"></i></span>
-                                        </a>
-                                    </div>
-                                    <p class="switch_text">@lang('menu.leave_type')</p>
-                                </div>
-                            @endif
-                            <div
-                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.leave.type') }}" class="bar-link">
-                                        <span><i class="fas fa-th-large"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.leave_type')</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
+       
             <!-- ===========================================Hrm sub-menu=================== -->
         </div>
     </div>

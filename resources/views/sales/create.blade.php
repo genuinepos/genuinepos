@@ -117,6 +117,10 @@
                                                     <span class="error error_status"></span>
                                                 </div>
                                             </div>
+
+                                            <div class="input-group">
+                                                <small class="text-danger">Max Attachment Size 2MB.</small>
+                                            </div>
                                         </div>
 
                                         <div class="col-md-3">

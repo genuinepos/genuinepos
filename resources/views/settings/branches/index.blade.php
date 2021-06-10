@@ -151,7 +151,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label> <strong>Branch Logo :</strong> </label>
+                                <label> <strong>Branch Logo :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
                                 <input type="file" name="logo" class="form-control form-control-sm" id="logo"/>
                             </div>
 
@@ -289,7 +289,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label> <strong>Branch Logo :</strong> </label>
+                                <label> <strong>Branch Logo :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
                                 <input type="file" name="logo" class="form-control form-control-sm" id="logo"/>
                             </div>
 

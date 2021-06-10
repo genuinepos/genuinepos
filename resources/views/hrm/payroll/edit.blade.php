@@ -52,8 +52,8 @@
                                             <div class="col-md-3">
                                                 <label><span class="text-danger">* </span><b>Unit (Pay Type) :</b> </label>
                                                 <select name="duration_unit" id="duration_unit" class="form-control">
-                                                    <option {{ $payroll->duration_unit == 'Hourly' ? 'SELECTED' : '' }} value="Month">Hourly</option>
-                                                    <option {{ $payroll->duration_unit == 'Monthly' ? 'SELECTED' : '' }} value="Day">Monthly</option>
+                                                    <option {{ $payroll->duration_unit == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">Hourly</option>
+                                                    <option {{ $payroll->duration_unit == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">Monthly</option>
                                                     <option {{ $payroll->duration_unit == 'Yearly' ? 'SELECTED' : '' }}  value="Yearly">Hour</option>
                                                     <option {{ $payroll->duration_unit == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">Week</option>
                                                 </select>

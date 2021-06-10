@@ -271,8 +271,10 @@ class AccountController extends Controller
             'expanse_payment.expense',
             'money_receipt',
             'money_receipt.customer',
+            'payroll',
+            'payroll_payment',
         ])
-            ->where('account_id', $accountId)->orderBy('id', 'DESC')->get();
+            ->where('account_id', $accountId)->orderBy('id', 'desc')->get();
         return view('accounting.accounts.ajax_view.account_cash_flow_list', compact('accountCashFlows'));
     }
 
@@ -292,8 +294,9 @@ class AccountController extends Controller
             'expanse_payment.expense',
             'money_receipt',
             'money_receipt.customer',
-        ])
-            ->where('account_id', $accountId);
+            'payroll',
+            'payroll_payment',
+        ])->where('account_id', $accountId);
 
         if ($request->date_range) {
             $date_range = explode('-', $request->date_range);

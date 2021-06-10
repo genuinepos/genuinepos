@@ -154,7 +154,9 @@ class AccountingRelatedSectionController extends Controller
                 'expanse_payment',
                 'expanse_payment.expense',
                 'money_receipt',
-                'money_receipt.customer'
+                'money_receipt.customer',
+                'payroll',
+                'payroll_payment',
             ]
         )
             ->orderBy('id', 'desc')
@@ -180,6 +182,8 @@ class AccountingRelatedSectionController extends Controller
                 'expanse_payment.expense',
                 'money_receipt',
                 'money_receipt.customer',
+                'payroll',
+                'payroll_payment',
             ]
         );
 

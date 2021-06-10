@@ -57,6 +57,10 @@
                         <b>Advance From Money Receipt</b><br>
                         <b>Customer : </b> {{ $cashFlow->money_receipt->customer->name }}<br>
                         <span class="mt-1"><b>Voucher No :</b> {!! '<span class="text-primary">'.$cashFlow->money_receipt->invoice_id.'</span>'  !!}</span>  
+                    @elseif($cashFlow->transaction_type == 8)  
+                        <b>Payroll Payment</b><br>
+                        <b>Reference No : </b> {{ $cashFlow->payroll->reference_no }}<br>
+                        <span class="mt-1"><b>Payment Voucher No :</b> {!! '<span class="text-primary">'.$cashFlow->payroll_payment->reference_no.'</span>'  !!}</span>  
                     @endif
                 </td> 
                 <td class="text-start">{{ $cashFlow->admin ? $cashFlow->admin->prefix.' '.$cashFlow->admin->name.' '.$cashFlow->admin->last_name : '' }}</td>
@@ -76,6 +80,8 @@
 </table>
 
 <script>
-    $('.data_tbl').DataTable();
+    $('.data_tbl').DataTable({
+        "order": [[ 1, "desc" ]]
+    });
 </script>
 

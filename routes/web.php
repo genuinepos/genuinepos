@@ -719,7 +719,6 @@ Route::get('add-admin', function () {
     //1=super_admin;2=admin;3=Other;
 });
 
-
 Route::get('/test', function () {
     // $bussinessSettings = General_setting::first();
     // return json_decode($bussinessSettings->business, true);

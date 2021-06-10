@@ -765,6 +765,16 @@ Route::get('/test', function () {
     //         'product_variants.variant_price',
     //     )->where('branch_id', 24)
     //     ->get();
+
+    return $users = DB::table('hrm_department')
+    ->leftJoin('admin_and_users', 'hrm_department.id', 'admin_and_users.department_id')
+    ->select(
+        DB::raw('COUNT(admin_and_users.id) as total_users'),
+        'hrm_department.department_name'
+    )
+    ->groupBy('admin_and_users.department_id')
+    ->groupBy('department_name')
+    ->get();
 });
 
 Auth::routes();

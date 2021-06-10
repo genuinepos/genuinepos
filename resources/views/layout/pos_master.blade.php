@@ -559,6 +559,22 @@
     </div>
     <!-- Exchange modal End-->
 
+    <div class="modal fade" id="pointReedemModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-40-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Reedem Point</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <div class="heading p-5 text-center">
+                        <h4>Comming Soon...</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--Data delete form-->
     <form id="deleted_form" action="" method="post">
         @method('DELETE')
@@ -813,6 +829,11 @@
         })
 
         $('.calculator-bg__main button').prop('type','button');
+
+        $('#reedem_point_button').on('click', function (e) {
+            e.preventDefault();
+            $('#pointReedemModal').modal('show');
+        })
     </script>
     @stack('js')
 </body>

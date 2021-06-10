@@ -88,7 +88,7 @@
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id',name: 'invoice_id'},
                 {data: 'parent_invoice_id',name: 'parent_invoice_id'},
-                {data: 'cus_name',name: 'cus_name'},
+                {data: 'customer',name: 'customer'},
                 {data: 'from',name: 'from'},
                 {data: 'payment_status',name: 'payment_status'},
                 {data: 'total_return_amount',name: 'total_return_amount'},

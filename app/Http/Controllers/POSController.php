@@ -1407,7 +1407,6 @@ class POSController extends Controller
     public function prepareExchange(Request $request)
     {
         //return $request->all();
-        
         $sale_id = $request->sale_id;
         $sale = Sale::where('id', $sale_id)->first();
         $ex_quantities = $request->ex_quantities;
@@ -1502,10 +1501,12 @@ class POSController extends Controller
             $updateSale->customer->save();
         }
 
+        $change = $request->change_amount > 0 ? $request->change_amount : 0; 
         $updateSale->net_total_amount = $updateSale->net_total_amount + $request->net_total_amount;
         $updateSale->total_payable_amount = $updateSale->total_payable_amount + $request->total_payable_amount;
-        $updateSale->paid = $updateSale->paid + $request->paying_amount;
-        $updateSale->due = $request->total_due;
+        $updateSale->paid = $updateSale->paid + $request->paying_amount - $change;
+        $updateSale->due = $updateSale->due + $request->total_due ;
+        $updateSale->change_amount = $updateSale->change_amount + $change;
         $updateSale->ex_status = 1;
         $updateSale->save();
 
@@ -1530,10 +1531,10 @@ class POSController extends Controller
                 ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
 
             if ($updateSale->branch_id) {
-                $productBranch = ProductBranch::where('branch_id', $saleProduct->branch_id)
+                $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
                     ->where('product_id', $product_id)
                     ->first();
-                $productBranch->product_quantity -= $saleProduct->quantity;
+                $productBranch->product_quantity -= $quantities[$index];
                 $productBranch->save();
                 if ($variant_id) {
                     $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
@@ -1684,13 +1685,13 @@ class POSController extends Controller
             }
         }
 
-        $previous_due = 0;
-        $total_payable_amount = $request->total_payable_amount;
-        $paying_amount = $request->paying_amount;
-        $total_due = $request->total_due;
-        $change_amount = $request->change_amount;
-
         $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])->where('id', $request->ex_sale_id)->first();
+        $previous_due = 0;
+        $total_payable_amount = $sale->total_payable_amount;
+        $paying_amount = $sale->paid;
+        $total_due = $sale->due;
+        $change_amount = $sale->change_amount;
+
         return view('sales.save_and_print_template.pos_sale_print', compact(
             'sale',
             'previous_due',

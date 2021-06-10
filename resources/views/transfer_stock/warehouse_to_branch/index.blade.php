@@ -3,7 +3,6 @@
 
 
 <style>
-
 </style>
 @endpush
 @section('content')
@@ -82,7 +81,9 @@
         var table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
-            aaSorting: [[3, 'asc']],
+            aaSorting: [
+                [0, 'asc']
+            ],
             ajax: "{{ route('transfer.stock.to.branch.index') }}",
             // columnDefs: [{
             //     "targets": [0],

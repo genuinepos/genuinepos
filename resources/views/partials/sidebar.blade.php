@@ -114,7 +114,7 @@
                 <li class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
                     <a href="{{ route('hrm.leave.type') }}">
                         <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
-                        <p class="title">HRM</p>
+                        <p class="title">@lang('menu.hrm')</p>
                     </a>
                 </li>
 
@@ -143,10 +143,10 @@
             <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="product">
                 <div class="sub-menu-width">
-                    <div class="model__close bg-secondary">
+                    <div class="model__close bg-secondary-2">
                         <div class="row">
                             <div class="col-md-8">
-                                <p class="text-white float-start mt-1"><strong>Product Management</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>Product Management</strong></p>
                             </div>
                             <div class="col-md-4">
                                 <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -269,10 +269,10 @@
                 @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
                     <div class="sub-menu_t" id="contact">
                         <div class="sub-menu-width">
-                            <div class="model__close bg-secondary">
+                            <div class="model__close bg-secondary-2">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <p class="text-white float-start mt-1"><strong>Contact Management</strong></p>
+                                        <p class="text-muted float-start mt-1"><strong>Contact Management</strong></p>
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -331,10 +331,10 @@
                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                     <div class="sub-menu_t" id="purchases">
                         <div class="sub-menu-width">
-                            <div class="model__close bg-secondary">
+                            <div class="model__close bg-secondary-2">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <p class="text-white float-start mt-1"><strong>Purchase Management</strong></p>
+                                        <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -383,10 +383,10 @@
                         @if (auth()->user()->permission->purchase['purchase_all'] == '1')
                             <div class="sub-menu_t" id="purchases">
                                 <div class="sub-menu-width">
-                                    <div class="model__close bg-secondary">
+                                    <div class="model__close bg-secondary-2">
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <p class="text-white float-start mt-1"><strong>Purchase Management</strong></p>
+                                                <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
                                             </div>
                                             <div class="col-md-4">
                                                 <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -445,10 +445,10 @@
 
             <div class="sub-menu_t" id="sales">
                 <div class="sub-menu-width">
-                    <div class="model__close bg-secondary">
+                    <div class="model__close bg-secondary-2">
                         <div class="row">
                             <div class="col-md-8">
-                                <p class="text-white float-start mt-1"><strong>Sale Management</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>Sale Management</strong></p>
                             </div>
                             <div class="col-md-4">
                                 <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -552,10 +552,10 @@
             @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
                 <div class="sub-menu_t" id="transfer">
                     <div class="sub-menu-width">
-                        <div class="model__close bg-secondary">
+                        <div class="model__close bg-secondary-2">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p class="text-white float-start mt-1"><strong>Stock Transfer Management</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>Stock Transfer Management</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -643,10 +643,10 @@
                 @if (auth()->user()->permission->s_adjust['adjustment_all'] == '1')
                     <div class="sub-menu_t" id="adjustment">
                         <div class="sub-menu-width">
-                            <div class="model__close bg-secondary">
+                            <div class="model__close bg-secondary-2">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <p class="text-white float-start mt-1"><strong>Stock Adjustment</strong></p>
+                                        <p class="text-muted float-start mt-1"><strong>Stock Adjustment</strong></p>
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -689,10 +689,10 @@
             @if (json_decode($generalSettings->modules, true)['expenses'] == '1')
                 <div class="sub-menu_t" id="expenses">
                     <div class="sub-menu-width">
-                        <div class="model__close bg-secondary">
+                        <div class="model__close bg-secondary-2">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p class="text-white float-start mt-1"><strong>Expense Management</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>Expense Management</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -740,10 +740,10 @@
                 @if (auth()->user()->permission->accounting['ac_access'] == 1)
                     <div class="sub-menu_t" id="accounting">
                         <div class="sub-menu-width">
-                            <div class="model__close bg-secondary">
+                            <div class="model__close bg-secondary-2">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <p class="text-white float-start mt-1"><strong>Account Management</strong></p>
+                                        <p class="text-muted float-start mt-1"><strong>Account Management</strong></p>
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -822,10 +822,10 @@
             @if (auth()->user()->permission->user['user_view'] == '1')
                 <div class="sub-menu_t" id="users">
                     <div class="sub-menu-width">
-                        <div class="model__close bg-secondary">
+                        <div class="model__close bg-secondary-2">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p class="text-white float-start mt-1"><strong>User Management</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>User Management</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -891,10 +891,10 @@
             @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
                 <div class="sub-menu_t" id="settings">
                     <div class="sub-menu-width">
-                        <div class="model__close bg-secondary">
+                        <div class="model__close bg-secondary-2">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p class="text-white float-start mt-1"><strong>Settings</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>Settings</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" class="btn-close close-model mt-1 text-danger"></button>
@@ -996,13 +996,13 @@
             <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="reports">
                 <div class="sub-menu-width">
-                    <div class="model__close bg-secondary">
+                    <div class="model__close bg-secondary-2">
                         <div class="row">
                             <div class="col-md-8">
-                                <p class="text-white float-start mt-1"><strong>All Report</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>All Report</strong></p>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                <button type="button" class="btn-close close-model"></button>
                             </div>
                         </div>
                     </div>
@@ -1075,8 +1075,7 @@
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.stock.index') }}" class="bar-link">
-                                            <span><img
-                                                    src="{{ asset('public/backend/asset/img/stock-market.png') }}"></span>
+                                            <span><img src="{{ asset('public/backend/asset/img/stock-market.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.stock_report')</p>
@@ -1185,50 +1184,40 @@
                                     <p class="switch_text">@lang('menu.expense_report')</p>
                                 </div>
                             @endif
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="" class="bar-link">
+                                        <span><img src="{{ asset('public/backend/asset/img/file.png') }}"></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.payroll_report')</p>
+                            </div>
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="" class="bar-link">
+                                        <span><img src="{{ asset('public/backend/asset/img/file.png') }}"></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.payroll_payment_report')</p>
+                            </div>
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="" class="bar-link">
+                                        <span><img src="{{ asset('public/backend/asset/img/file.png') }}"></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.attendance_report')</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- ===========================================FILE SIDEBAR=================== -->
             <!-- ===========================================Hrm sub-menu=================== -->
-            {{-- <div class="sub-menu_t" id="hrm">
-                <div class="sub-menu-width">
-                    <div class="model__close bg-secondary">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p class="text-white float-start mt-1"><strong>Human Resource Management</strong></p>
-                            </div>
-                            <div class="col-md-4">
-                                <button type="button" class="btn-close close-model mt-1 text-danger"></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container-fluid">
-                        <div class="row">
-                            @if (auth()->user()->permission->hrms['leave_type'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('hrm.leave.type') }}" class="bar-link">
-                                            <span><i class="fas fa-th-large"></i></span>
-                                        </a>
-                                    </div>
-                                    <p class="switch_text">@lang('menu.leave_type')</p>
-                                </div>
-                            @endif
-                            <div
-                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.leave.type') }}" class="bar-link">
-                                        <span><i class="fas fa-th-large"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.leave_type')</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
+       
             <!-- ===========================================Hrm sub-menu=================== -->
         </div>
     </div>

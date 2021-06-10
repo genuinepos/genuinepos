@@ -8026,6 +8026,9 @@ tr.el-finder-droppable td.icon p {
     line-height: 21px;
     overflow: hidden;
     float: left;
+    background: linear-gradient(to right,#2d9dcf, #0d55a2);
+    padding: 0px 10px;
+    border-radius: 10px;
 }
 
 .breadCrumb ul li.first a {

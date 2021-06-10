@@ -379,6 +379,7 @@ class CustomerController extends Controller
                     $addSalePayment->account_id = $request->account_id;
                     $addSalePayment->paid_amount = $request->amount;
                     $addSalePayment->date = date('d-m-Y', strtotime($request->date));
+                    $addSalePayment->time = date('h:i:s a');
                     $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
                     $addSalePayment->month = date('F');
                     $addSalePayment->year = date('Y');
@@ -423,7 +424,7 @@ class CustomerController extends Controller
                         $addCashFlow->account_id = $request->account_id;
                         $addCashFlow->credit = $request->amount;
                         $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addSalePayment->id;
+                        $addCashFlow->sale_payment_id = $addSalePayment->id;
                         $addCashFlow->transaction_type = 2;
                         $addCashFlow->cash_type = 2;
                         $addCashFlow->date = date('d-m-Y', strtotime($request->date));
@@ -457,6 +458,7 @@ class CustomerController extends Controller
                     $addSalePayment->account_id = $request->account_id;
                     $addSalePayment->paid_amount = $request->amount;
                     $addSalePayment->date = date('d-m-Y', strtotime($request->date));
+                    $addSalePayment->time = date('h:i:s a');
                     $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
                     $addSalePayment->month = date('F');
                     $addSalePayment->year = date('Y');
@@ -501,7 +503,7 @@ class CustomerController extends Controller
                         $addCashFlow->account_id = $request->account_id;
                         $addCashFlow->credit = $request->amount;
                         $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addSalePayment->id;
+                        $addCashFlow->sale_payment_id = $addSalePayment->id;
                         $addCashFlow->transaction_type = 2;
                         $addCashFlow->cash_type = 2;
                         $addCashFlow->date = date('d-m-Y', strtotime($request->date));
@@ -531,6 +533,7 @@ class CustomerController extends Controller
                     $addSalePayment->account_id = $request->account_id;
                     $addSalePayment->paid_amount = $dueInvoice->due;
                     $addSalePayment->date = date('d-m-Y', strtotime($request->date));
+                    $addSalePayment->time = date('h:i:s a');
                     $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
                     $addSalePayment->month = date('F');
                     $addSalePayment->year = date('Y');

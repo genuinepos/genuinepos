@@ -22,6 +22,8 @@ Route::get('dashboard/sale/order', 'App\Http\Controllers\DashboardController@sal
 Route::get('dashboard/sale/due', 'App\Http\Controllers\DashboardController@saleDue')->name('dashboard.sale.due');
 Route::get('dashboard/purchase/due', 'App\Http\Controllers\DashboardController@purchaseDue')->name('dashboard.purchase.due');
 
+Route::get('dashboard/today/summery', 'App\Http\Controllers\DashboardController@todaySummery')->name('dashboard.today.summery');
+
 Route::get('route-list', function () {
     if (env('APP_DEBUG') === true) {
         Artisan::call('route:list --columns=Method,URI,Name,Action');
@@ -717,7 +719,6 @@ Route::get('add-admin', function () {
     //1=super_admin;2=admin;3=Other;
 });
 
-
 Route::get('/test', function () {
     // $bussinessSettings = General_setting::first();
     // return json_decode($bussinessSettings->business, true);
@@ -738,9 +739,42 @@ Route::get('/test', function () {
     
     // DB::statement('create database new_inventory_2');
     // Artisan::call('migrate');
-    $a = 1;
-    $b = -1;
-    return $qty = $a + $b;
+ 
+    // return $products = DB::table('product_branches')
+    //     ->join('products', 'product_branches.product_id', 'products.id')
+    //     ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+    //     ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+    //     ->leftJoin('units', 'products.unit_id', 'units.id')->select(
+    //         'products.id',
+    //         'products.number_of_sale',
+    //         'products.thumbnail_photo',
+    //         'products.name',
+    //         'products.product_code',
+    //         'products.product_cost_with_tax',
+    //         'products.profit',
+    //         'products.product_price',
+    //         'products.is_show_emi_on_pos',
+    //         'units.name as unit_name',
+    //         'taxes.id as tax_id',
+    //         'taxes.tax_percent',
+    //         'product_variants.id as variant_id',
+    //         'product_variants.variant_name',
+    //         'product_variants.variant_code',
+    //         'product_variants.variant_cost_with_tax',
+    //         'product_variants.variant_profit',
+    //         'product_variants.variant_price',
+    //     )->where('branch_id', 24)
+    //     ->get();
+
+    return $users = DB::table('hrm_department')
+    ->leftJoin('admin_and_users', 'hrm_department.id', 'admin_and_users.department_id')
+    ->select(
+        DB::raw('COUNT(admin_and_users.id) as total_users'),
+        'hrm_department.department_name'
+    )
+    ->groupBy('admin_and_users.department_id')
+    ->groupBy('department_name')
+    ->get();
 });
 
 Auth::routes();

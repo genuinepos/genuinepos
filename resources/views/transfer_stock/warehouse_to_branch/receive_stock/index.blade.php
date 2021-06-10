@@ -75,7 +75,7 @@
         var table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
-            aaSorting: [[3, 'asc']],
+            aaSorting: [[0, 'asc']],
             ajax: "{{ route('transfer.stocks.to.branch.receive.stock.index') }}",
             // columnDefs: [{
             //     "targets": [0],

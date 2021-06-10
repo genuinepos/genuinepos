@@ -103,4 +103,7 @@ return [
   'expense_report' => 'Expense Report',
   'register_report' => 'Register Report',
   'sales_representative_report' => 'Sales Representative Report',
+  'payroll_report' => 'Payroll Report',
+  'payroll_payment_report' => 'Payroll Payment Report',
+  'attendance_report' => 'Attendance Report',
 ];

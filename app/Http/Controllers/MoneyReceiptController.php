@@ -160,7 +160,6 @@ class MoneyReceiptController extends Controller
                     $addSalePayment->month = date('F');
                     $addSalePayment->year = date('Y');
                     $addSalePayment->pay_mode = $request->payment_method;
-
                     $addSalePayment->admin_id = auth()->user()->id;
                     $addSalePayment->payment_on = 1;
                     $addSalePayment->save();
@@ -217,8 +216,6 @@ class MoneyReceiptController extends Controller
                     $addSalePayment->month = date('F');
                     $addSalePayment->year = date('Y');
                     $addSalePayment->pay_mode = $request->payment_method;
-
-
                     $addSalePayment->admin_id = auth()->user()->id;
                     $addSalePayment->payment_on = 1;
                     $addSalePayment->save();
@@ -345,7 +342,6 @@ class MoneyReceiptController extends Controller
             $addCustomerLedger->money_receipt_id = $receipt->id;
             $addCustomerLedger->amount = $request->amount;
             $addCustomerLedger->save();
-
         } else {
             if ($request->account_id) {
                 // update account

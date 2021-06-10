@@ -56,9 +56,13 @@
                         <span class="mt-1"><b>Expense ReferenceID :</b> {!! '<span class="text-primary">'.$cashFlow->expanse_payment->expense->invoice_id.'</span>'  !!}</span>  <br>
                         <span class="mt-1">{!! '<b>Pay Invoice : </b>'.'<span class="text-primary">'. $cashFlow->expanse_payment->invoice_id.'</span>' !!}</span>  
                     @elseif($cashFlow->transaction_type == 9)  
-                        <b>Advance From Money Receipt</b><br>
+                        <b>Received Amount By Receipt</b><br>
                         <b>Customer : </b> {{ $cashFlow->money_receipt->customer->name }}<br>
-                        <span class="mt-1"><b>Voucher No :</b> {!! '<span class="text-primary">'.$cashFlow->money_receipt->invoice_id.'</span>'  !!}</span>       
+                        <span class="mt-1"><b>Voucher No :</b> {!! '<span class="text-primary">'.$cashFlow->money_receipt->invoice_id.'</span>'  !!}</span>   
+                    @elseif($cashFlow->transaction_type == 8)  
+                        <b>Payroll Payment</b><br>
+                        <b>Reference No : </b> {{ $cashFlow->payroll->reference_no }}<br>
+                        <span class="mt-1"><b>Payment Voucher No :</b> {!! '<span class="text-primary">'.$cashFlow->payroll_payment->reference_no.'</span>'  !!}</span>      
                     @endif
                 </td> 
                 <td class="text-start">{{ $cashFlow->admin ? $cashFlow->admin->prefix.' '.$cashFlow->admin->name.' '.$cashFlow->admin->last_name : '' }}</td>

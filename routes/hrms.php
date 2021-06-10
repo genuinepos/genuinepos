@@ -105,6 +105,12 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
         Route::get('all/departments', 'PayrollController@getAllDeparment')->name('hrm.payroll.get.department');
         Route::get('all/designations', 'PayrollController@getAllDesignation')->name('hrm.payroll.get.designations');
     });
+
+     //Attendance  routes group
+     Route::group(['prefix' => 'dashboard'], function () {
+        Route::get('/', 'DashboardController@index')->name('hrm.dashboard.index');
+      
+    });
 });
 
 

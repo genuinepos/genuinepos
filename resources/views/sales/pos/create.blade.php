@@ -89,8 +89,6 @@
                     var product_ids = document.querySelectorAll('#product_id');
                     var sameProduct = 0;
                     product_ids.forEach(function(input) {
-                        console.log('same');
-                        console.log(input.value);
                         if (input.value == product_id) {
                             sameProduct += 1;
                             var className = input.getAttribute('class');
@@ -266,7 +264,6 @@
                     });
 
                     if (sameVariant == 0) {
-                        console.log('not same');
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
@@ -335,6 +332,9 @@
 
     $(document).on('input', '#quantity', function(){
         var qty = $(this).val() ? $(this).val() : 0;
+        if (qty < 0) {
+            $(this).val(0);
+        }
         if (parseFloat(qty) >= 0) {
             var tr = $(this).closest('tr');
             var qty_limit = tr.find('#qty_limit').val();
@@ -576,7 +576,6 @@
     setAccount();
 
     $('body').keyup(function(e){
-        console.log();
         if (e.keyCode == 13 || e.keyCode == 9){  
             $(".selectProduct").click();
             $('#list').empty();

@@ -117,6 +117,10 @@
                                                     <span class="error error_status"></span>
                                                 </div>
                                             </div>
+
+                                            <div class="input-group">
+                                                <small class="text-danger">Max Attachment Size 2MB.</small>
+                                            </div>
                                         </div>
 
                                         <div class="col-md-3">
@@ -768,13 +772,11 @@
                             $('.select_area').hide();
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
-                            console.log(variant_product); 
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
                             var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
-                                console.log(input.value);
                                 if(input.value != 'noid'){
                                     if(input.value == variant_product.id){
                                         sameVariant += 1;
@@ -937,7 +939,6 @@
                         var product_ids = document.querySelectorAll('#product_id');
                         var sameProduct = 0;
                         product_ids.forEach(function(input){
-                            console.log(input.value);
                             if(input.value == product_id){
                                 sameProduct += 1;
                                 var className = input.getAttribute('class');
@@ -945,7 +946,6 @@
                                 var closestTr = $('.'+className).closest('tr');
                                 var presentQty = closestTr.find('#quantity').val();
                                 var qty_limit = closestTr.find('#qty_limit').val();
-                                console.log('pq - '+presentQty+', ql - '+qty_limit);
                                 if(parseFloat(qty_limit) === parseFloat(presentQty)){
                                     alert('Quantity Limit is - '+qty_limit+' '+product_unit);
                                     return;
@@ -1079,7 +1079,6 @@
                         var variant_ids = document.querySelectorAll('#variant_id');
                         var sameVariant = 0;
                         variant_ids.forEach(function(input){
-                            console.log(input.value);
                             if(input.value != 'noid'){
                                 if(input.value == variant_id){
                                     sameVariant += 1;
@@ -1088,7 +1087,6 @@
                                     var closestTr = $('.'+className).closest('tr');
                                     var presentQty = closestTr.find('#quantity').val();
                                     var qty_limit = closestTr.find('#qty_limit').val();
-                                    console.log('pq - '+presentQty+', ql - '+qty_limit);
                                     if(parseFloat(qty_limit)  === parseFloat(presentQty)){
                                         alert('Quantity Limit is - '+qty_limit+' '+product_unit);
                                         return;
@@ -1199,7 +1197,6 @@
             });
             
             if (customer.length > 0) {
-                console.log(customer);
                 $('#previous_due').val(customer[0].total_sale_due);
                 if (customer[0].pay_term != null && customer[0].pay_term_number != null) {
                     $('#pay_term').val(customer[0].pay_term);
@@ -1302,7 +1299,9 @@
         // Quantity increase or dicrease and clculate row amount
         $(document).on('input', '#quantity', function(){
             var qty = $(this).val() ? $(this).val() : 0;
-            console.log(qty);
+            if (qty < 0) {
+                $(this).val(0);
+            }
             if (parseFloat(qty) >= 0) {
                 var tr = $(this).closest('tr');
                 var qty_limit = tr.find('#qty_limit').val();
@@ -1329,7 +1328,6 @@
 
         $(document).on('blur', '#quantity', function(){
             var qty = $(this).val() ? $(this).val() : 0;
-            console.log(qty);
             if (parseFloat(qty) >= 0) {
                 var tr = $(this).closest('tr');
                 var qty_limit = tr.find('#qty_limit').val();
@@ -1622,6 +1620,9 @@
             var tr = $(this).closest('tr');
             var presentQty = tr.find('#quantity').val();
             var updateQty = parseFloat(presentQty) - 1;
+            if (updateQty < 0) {
+                updateQty = parseFloat(0).toFixed(2);
+            }
             tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
             tr.find('#quantity').addClass('.form-control:focus');
             tr.find('#quantity').blur();
@@ -1710,7 +1711,6 @@
                     $('#addCustomerModal').modal('hide');
                     $('#customer_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
                     $('#customer_id').val(data.id);
-                    console.log(parseFloat(data.total_sale_due).toFixed(2));
                     $('#previous_due').val(parseFloat(data.total_sale_due).toFixed(2));
                     calculateTotalAmount();
                 }
@@ -1739,7 +1739,6 @@
             if (tax) {
                 var split = tax.split('-');
                 tax_percent = split[1];
-                console.log(split);
             }else{
                 tax_percent = 0;
             }
@@ -1757,7 +1756,6 @@
         }
 
         $(document).on('input', '#sale_product_cost',function() {
-            console.log($(this).val());
             $('.os_unit_costs_exc_tax').val(parseFloat($(this).val()).toFixed(2));
             costCalculate();
         });
@@ -1820,7 +1818,6 @@
                         url:"{{url('sales/get/recent/product')}}"+"/"+branch_id+"/"+warehouse_id+"/"+data.id,
                         type:'get',
                         success:function(data){
-                            console.log(data);
                             $('.loading_button').hide();
                             $('#addProductModal').modal('hide');
                             if (!$.isEmptyObject(data.errorMsg)) {
@@ -1838,7 +1835,6 @@
                     toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                     $('.error').html('');
                     $.each(err.responseJSON.errors, function(key, error) {
-                        //console.log(key);
                         $('.error_sale_' + key + '').html(error[0]);
                     });
                 }

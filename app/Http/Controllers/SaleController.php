@@ -663,12 +663,11 @@ class SaleController extends Controller
 
             $customer = Customer::where('id', $request->customer_id)->first();
             if ($customer) {
-                $customer->total_sale += $request->total_payable_amount - $request->previous_due;
-                $customer->total_paid += $request->paying_amount ? $request->paying_amount : 0;
+                $customer->total_sale = $customer->total_sale + $request->total_payable_amount - $request->previous_due;
+                $customer->total_paid = $customer->total_paid + ($request->paying_amount ? $request->paying_amount : 0);
                 if ($request->paying_amount <= 0) {
                     $customer->total_sale_due = $request->total_payable_amount;
                 } else {
-
                     if ($request->total_due > 0) {
                         $customer->total_sale_due = $request->total_due;
                     } else {
@@ -710,50 +709,50 @@ class SaleController extends Controller
                 if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                     $updateProductQty = Product::where('id', $product_id)->first();
                     if ($updateProductQty->type == 1) {
-                        $updateProductQty->quantity -= $quantities[$index];
-                        $updateProductQty->number_of_sale += $quantities[$index];
+                        $updateProductQty->quantity = $updateProductQty->quantity - $quantities[$index];
+                        $updateProductQty->number_of_sale = $updateProductQty->number_of_sale + $quantities[$index];
                         $updateProductQty->save();
 
                         $updateWarehouseProductQty = ProductWarehouse::where('warehouse_id', $request->warehouse_id)
                             ->where('product_id', $product_id)->first();
-                        $updateWarehouseProductQty->product_quantity -= $quantities[$index];
+                        $updateWarehouseProductQty->product_quantity = $updateWarehouseProductQty->product_quantity - $quantities[$index];
                         $updateWarehouseProductQty->save();
 
                         if ($variant_ids[$index] != 'noid') {
                             $updateProductVariant = ProductVariant::where('id', $variant_ids[$index])
                                 ->where('product_id', $product_id)->first();
-                            $updateProductVariant->variant_quantity -= $quantities[$index];
-                            $updateProductVariant->number_of_sale += $quantities[$index];
+                            $updateProductVariant->variant_quantity = $updateProductVariant->variant_quantity - $quantities[$index];
+                            $updateProductVariant->number_of_sale = $updateProductVariant->number_of_sale + $quantities[$index];
                             $updateProductVariant->save();
 
                             $updateProductWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $updateWarehouseProductQty->id)
                                 ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                            $updateProductWarehouseVariant->variant_quantity -= $quantities[$index];
+                            $updateProductWarehouseVariant->variant_quantity = $updateProductWarehouseVariant->variant_quantity - $quantities[$index];
                             $updateProductWarehouseVariant->save();
                         }
                     }
                 } else {
                     $updateProductQty = Product::where('id', $product_id)->first();
                     if ($updateProductQty->type == 1) {
-                        $updateProductQty->quantity -= $quantities[$index];
-                        $updateProductQty->number_of_sale += $quantities[$index];
+                        $updateProductQty->quantity = $updateProductQty->quantity - $quantities[$index];
+                        $updateProductQty->number_of_sale = $updateProductQty->number_of_sale - $quantities[$index];
                         $updateProductQty->save();
 
                         $updateBranchProductQty = ProductBranch::where('branch_id', $request->branch_id)
                             ->where('product_id', $product_id)->first();
-                        $updateBranchProductQty->product_quantity -= $quantities[$index];
+                        $updateBranchProductQty->product_quantity = $updateBranchProductQty->product_quantity - $quantities[$index];
                         $updateBranchProductQty->save();
 
                         if ($variant_ids[$index] != 'noid') {
                             $updateProductVariant = ProductVariant::where('id', $variant_ids[$index])
                                 ->where('product_id', $product_id)->first();
-                            $updateProductVariant->variant_quantity -= $quantities[$index];
-                            $updateProductVariant->number_of_sale += $quantities[$index];
+                            $updateProductVariant->variant_quantity = $updateProductVariant->variant_quantity - $quantities[$index];
+                            $updateProductVariant->number_of_sale = $updateProductVariant->number_of_sale + $quantities[$index];
                             $updateProductVariant->save();
 
                             $updateProductBranchVariant = ProductBranchVariant::where('product_branch_id', $updateBranchProductQty->id)
                                 ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                            $updateProductBranchVariant->variant_quantity -= $quantities[$index];
+                            $updateProductBranchVariant->variant_quantity = $updateProductBranchVariant->variant_quantity - $quantities[$index];
                             $updateProductBranchVariant->save();
                         }
                     }
@@ -824,8 +823,8 @@ class SaleController extends Controller
                         if ($request->account_id) {
                             // update account
                             $account = Account::where('id', $request->account_id)->first();
-                            $account->credit += $request->total_invoice_payable;
-                            $account->balance += $request->total_invoice_payable;
+                            $account->credit = $account->credit + $request->total_invoice_payable;
+                            $account->balance = $account->balance + $request->total_invoice_payable;
                             $account->save();
 
                             // Add cash flow
@@ -862,15 +861,15 @@ class SaleController extends Controller
                                 $index = 0;
                                 foreach ($dueInvoices as $dueInvoice) {
                                     if ($dueInvoice->due > $dueAmounts) {
-                                        $dueInvoice->paid += $dueAmounts;
-                                        $dueInvoice->due -= $dueAmounts;
+                                        $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
+                                        $dueInvoice->due = $dueInvoice->due - $dueAmounts;
                                         $dueInvoice->save();
                                         $addSalePayment = new SalePayment();
                                         $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
                                         $addSalePayment->sale_id = $dueInvoice->id;
                                         $addSalePayment->customer_id = $request->customer_id;
                                         $addSalePayment->account_id = $request->account_id;
-                                        $addSalePayment->paid_amount = $request->amount;
+                                        $addSalePayment->paid_amount = $dueAmounts;
                                         $addSalePayment->date = date('d-m-Y', strtotime($request->date));
                                         $addSalePayment->time = date('h:i:s a');
                                         $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
@@ -908,8 +907,8 @@ class SaleController extends Controller
                                         if ($request->account_id) {
                                             // update account
                                             $account = Account::where('id', $request->account_id)->first();
-                                            $account->credit += $dueAmounts;
-                                            $account->balance += $dueAmounts;
+                                            $account->credit = $account->credit + $dueAmounts;
+                                            $account->balance = $account->balance + $dueAmounts;
                                             $account->save();
 
                                             // Add cash flow
@@ -917,7 +916,7 @@ class SaleController extends Controller
                                             $addCashFlow->account_id = $request->account_id;
                                             $addCashFlow->credit = $dueAmounts;
                                             $addCashFlow->balance = $account->balance;
-                                            $addCashFlow->purchase_payment_id = $addSalePayment->id;
+                                            $addCashFlow->sale_payment_id = $addSalePayment->id;
                                             $addCashFlow->transaction_type = 2;
                                             $addCashFlow->cash_type = 2;
                                             $addCashFlow->date = date('d-m-Y', strtotime($request->date));
@@ -941,8 +940,8 @@ class SaleController extends Controller
                                             break;
                                         }
                                     } elseif ($dueInvoice->due == $dueAmounts) {
-                                        $dueInvoice->paid += $request->amount;
-                                        $dueInvoice->due -= $request->amount;
+                                        $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
+                                        $dueInvoice->due = $dueInvoice->due - $dueAmounts;
                                         $dueInvoice->save();
                                         $addSalePayment = new SalePayment();
                                         $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
@@ -987,8 +986,8 @@ class SaleController extends Controller
                                         if ($request->account_id) {
                                             // update account
                                             $account = Account::where('id', $request->account_id)->first();
-                                            $account->credit += $dueAmounts;
-                                            $account->balance += $dueAmounts;
+                                            $account->credit = $account->credit + $dueAmounts;
+                                            $account->balance = $account->balance + $dueAmounts;
                                             $account->save();
 
                                             // Add cash flow
@@ -996,7 +995,7 @@ class SaleController extends Controller
                                             $addCashFlow->account_id = $request->account_id;
                                             $addCashFlow->credit = $dueAmounts;
                                             $addCashFlow->balance = $account->balance;
-                                            $addCashFlow->purchase_payment_id = $addSalePayment->id;
+                                            $addCashFlow->sale_payment_id = $addSalePayment->id;
                                             $addCashFlow->transaction_type = 2;
                                             $addCashFlow->cash_type = 2;
                                             $addCashFlow->date = date('d-m-Y', strtotime($request->date));
@@ -1062,8 +1061,8 @@ class SaleController extends Controller
                                         if ($request->account_id) {
                                             // update account
                                             $account = Account::where('id', $request->account_id)->first();
-                                            $account->credit += $dueInvoice->due;
-                                            $account->balance -= $dueInvoice->due;
+                                            $account->credit = $account->credit + $dueInvoice->due;
+                                            $account->balance = $account->balance + $dueInvoice->due;
                                             $account->save();
 
                                             // Add cash flow
@@ -1090,9 +1089,9 @@ class SaleController extends Controller
                                             $addCustomerLedger->save();
                                         }
 
-                                        $dueAmounts -= $dueInvoice->due;
-                                        $dueInvoice->paid += $dueInvoice->due;
-                                        $dueInvoice->due -= $dueInvoice->due;
+                                        $dueAmounts = $dueAmounts - $dueInvoice->due;
+                                        $dueInvoice->paid = $dueInvoice->paid + $dueInvoice->due;
+                                        $dueInvoice->due = $dueInvoice->due - $dueInvoice->due;
                                         $dueInvoice->save();
                                     }
                                     $index++;
@@ -1143,8 +1142,8 @@ class SaleController extends Controller
                         if ($request->account_id) {
                             // update account
                             $account = Account::where('id', $request->account_id)->first();
-                            $account->credit += $paidAmount;
-                            $account->balance -= $paidAmount;
+                            $account->credit = $account->credit + $paidAmount;
+                            $account->balance =$account->balance - $paidAmount;
                             $account->save();
 
                             // Add cash flow
@@ -1178,7 +1177,7 @@ class SaleController extends Controller
                     $addSalePayment->customer_id = $request->customer_id ? $request->customer_id : NULL;
                     $addSalePayment->account_id = $request->account_id;
                     $addSalePayment->pay_mode = $request->payment_method;
-                    $addSalePayment->paid_amount = $request->paying_amount;
+                    $addSalePayment->paid_amount = $paidAmount;
                     $addSalePayment->date = $request->date;
                     $addSalePayment->time = date('h:i:s a');
                     $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
@@ -1207,14 +1206,14 @@ class SaleController extends Controller
                     if ($request->account_id) {
                         // update account
                         $account = Account::where('id', $request->account_id)->first();
-                        $account->credit += $request->paying_amount;
-                        $account->balance += $request->paying_amount;
+                        $account->credit = $account->credit + $paidAmount;
+                        $account->balance = $account->balance + $paidAmount;
                         $account->save();
 
                         // Add cash flow
                         $addCashFlow = new CashFlow();
                         $addCashFlow->account_id = $request->account_id;
-                        $addCashFlow->credit = $request->paying_amount;
+                        $addCashFlow->credit = $paidAmount;
                         $addCashFlow->balance = $account->balance;
                         $addCashFlow->sale_payment_id = $addSalePayment->id;
                         $addCashFlow->transaction_type = 2;
@@ -1381,9 +1380,9 @@ class SaleController extends Controller
                 $presentDue = $request->total_payable_amount - $updateSale->paid - $updateSale->sale_return_amount;
                 $previouseDue = $updateSale->due;
                 $customerDue = $presentDue - $previouseDue;
-                $customer->total_sale_due += $customerDue;
-                $customer->total_sale -= $updateSale->total_payable_amount;
-                $customer->total_sale += $request->total_payable_amount;
+                $customer->total_sale_due = $customer->total_sale_due + $customerDue;
+                $customer->total_sale = $customer->total_sale - $updateSale->total_payable_amount;
+                $customer->total_sale =  $customer->total_sale + $request->total_payable_amount;
                 $customer->save();
             }
         }
@@ -1394,12 +1393,12 @@ class SaleController extends Controller
             $sale_product->save();
             if ($updateSale->status == 1) {
                 if ($sale_product->product->type == 1) {
-                    $sale_product->product->quantity += $sale_product->quantity;
-                    $sale_product->product->number_of_sale -= $sale_product->quantity;
+                    $sale_product->product->quantity = $sale_product->product->quantity + $sale_product->quantity;
+                    $sale_product->product->number_of_sale = $sale_product->product->number_of_sale - $sale_product->quantity;
                     $sale_product->product->save();
                     if ($sale_product->product_variant_id) {
-                        $sale_product->variant->variant_quantity += $sale_product->quantity;
-                        $sale_product->variant->number_of_sale -= $sale_product->quantity;
+                        $sale_product->variant->variant_quantity = $sale_product->variant->variant_quantity + $sale_product->quantity;
+                        $sale_product->variant->number_of_sale = $sale_product->variant->number_of_sale - $sale_product->quantity;
                         $sale_product->variant->save();
                     }
 
@@ -1407,29 +1406,29 @@ class SaleController extends Controller
                         $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
                             ->where('product_id', $sale_product->product_id)
                             ->first();
-                        $productBranch->product_quantity += $sale_product->quantity;
+                        $productBranch->product_quantity = $productBranch->product_quantity + $sale_product->quantity;
                         $productBranch->save();
                         if ($sale_product->product_variant_id) {
                             $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
                                 ->where('product_id', $sale_product->product_id)
                                 ->where('product_variant_id', $sale_product->product_variant_id)
                                 ->first();
-                            $productBranchVariant->variant_quantity += $sale_product->quantity;
+                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $sale_product->quantity;
                             $productBranchVariant->save();
                         }
                     } else {
                         $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSale->warehouse_id)
                             ->where('product_id', $sale_product->product_id)
                             ->first();
-                        $productWarehouse->product_quantity += $sale_product->quantity;
+                        $productWarehouse->product_quantity = $productWarehouse->product_quantity + $sale_product->quantity;
                         $productWarehouse->save();
                         if ($sale_product->product_variant_id) {
-                            $productWarehuseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
+                            $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
                                 ->where('product_id', $sale_product->product_id)
                                 ->where('product_variant_id', $sale_product->product_variant_id)
                                 ->first();
-                            $productWarehuseVariant->variant_quantity += $sale_product->quantity;
-                            $productWarehuseVariant->save();
+                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $sale_product->quantity;
+                            $productWarehouseVariant->save();
                         }
                     }
                 }
@@ -1487,47 +1486,47 @@ class SaleController extends Controller
             if ($request->status == 1) {
                 $product = Product::where('id', $product_id)->first();
                 if ($product->type == 1) {
-                    $product->quantity -= $quantities[$index];
-                    $product->number_of_sale += $quantities[$index];
+                    $product->quantity = $product->quantity - $quantities[$index];
+                    $product->number_of_sale = $product->number_of_sale + $quantities[$index];
                     $product->save();
 
                     if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                         $productWarehouse = ProductWarehouse::where('warehouse_id', $request->warehouse_id)
                             ->where('product_id', $product_id)->first();
 
-                        $productWarehouse->product_quantity -= $quantities[$index];
+                        $productWarehouse->product_quantity = $productWarehouse->product_quantity - $quantities[$index];
                         $productWarehouse->save();
 
                         if ($variant_ids[$index] != 'noid') {
                             $productVariant = ProductVariant::where('id', $variant_ids[$index])
                                 ->where('product_id', $product_id)->first();
-                            $productVariant->variant_quantity -= $quantities[$index];
-                            $productVariant->number_of_sale += $quantities[$index];
+                            $productVariant->variant_quantity = $productVariant->variant_quantity - $quantities[$index];
+                            $productVariant->number_of_sale = $productVariant->number_of_sale + $quantities[$index];
                             $productVariant->save();
 
                             $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
                                 ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
 
-                            $productWarehouseVariant->variant_quantity -= $quantities[$index];
+                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity - $quantities[$index];
                             $productWarehouseVariant->save();
                         }
                     } else {
                         $productBranch = ProductBranch::where('branch_id', $request->branch_id)
                             ->where('product_id', $product_id)->first();
-                        $productBranch->product_quantity -= $quantities[$index];
+                        $productBranch->product_quantity = $productBranch->product_quantity - $quantities[$index];
                         $productBranch->save();
 
                         if ($variant_ids[$index] != 'noid') {
                             $productVariant = ProductVariant::where('id', $variant_ids[$index])
                                 ->where('product_id', $product_id)->first();
-                            $productVariant->variant_quantity -= $quantities[$index];
-                            $productVariant->number_of_sale += $quantities[$index];
+                            $productVariant->variant_quantity = $productVariant->variant_quantity - $quantities[$index];
+                            $productVariant->number_of_sale = $productVariant->number_of_sale + $quantities[$index];
                             $productVariant->save();
 
                             $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
                                 ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
 
-                            $productBranchVariant->variant_quantity -= $quantities[$index];
+                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity - $quantities[$index];
                             $productBranchVariant->save();
                         }
                     }
@@ -1603,10 +1602,9 @@ class SaleController extends Controller
 
         if ($deleteSale->status == 1) {
             $customer = Customer::where('id', $deleteSale->customer_id)->first();
-
             if ($customer) {
-                $customer->total_sale_due -= $deleteSale->due > 0 ? $deleteSale->due : 0;
-                $customer->total_sale_return_due -= $deleteSale->sale_return_due;
+                $customer->total_sale_due = $customer->total_sale_due - ($deleteSale->due > 0 ? $deleteSale->due : 0);
+                $customer->total_sale_return_due = $customer->total_sale_return_due - $deleteSale->sale_return_due;
                 $customer->save();
             }
         }
@@ -1615,12 +1613,12 @@ class SaleController extends Controller
         if ($deleteSale->status == 1) {
             foreach ($deleteSale->sale_products as $sale_product) {
                 if ($sale_product->product->type == 1) {
-                    $sale_product->product->quantity += $sale_product->quantity;
-                    $sale_product->product->number_of_sale -= $sale_product->quantity;
+                    $sale_product->product->quantity = $sale_product->product->quantity + $sale_product->quantity;
+                    $sale_product->product->number_of_sale = $sale_product->product->number_of_sale - $sale_product->quantity;
                     $sale_product->product->save();
                     if ($sale_product->product_variant_id) {
-                        $sale_product->variant->variant_quantity += $sale_product->quantity;
-                        $sale_product->variant->number_of_sale -= $sale_product->quantity;
+                        $sale_product->variant->variant_quantity = $sale_product->variant->variant_quantity + $sale_product->quantity;
+                        $sale_product->variant->number_of_sale = $sale_product->variant->number_of_sale - $sale_product->quantity;
                         $sale_product->variant->save();
                     }
 
@@ -1628,28 +1626,29 @@ class SaleController extends Controller
                         $productBranch = ProductBranch::where('branch_id', $deleteSale->branch_id)
                             ->where('product_id', $sale_product->product_id)
                             ->first();
-                        $productBranch->product_quantity += $sale_product->quantity;
+                        $productBranch->product_quantity = $productBranch->product_quantity + $sale_product->quantity;
                         $productBranch->save();
                         if ($sale_product->product_variant_id) {
                             $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
                                 ->where('product_id', $sale_product->product_id)
                                 ->where('product_variant_id', $sale_product->product_variant_id)
                                 ->first();
-                            $productBranchVariant->variant_quantity += $sale_product->quantity;
+    
+                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $sale_product->quantity;
                             $productBranchVariant->save();
                         }
                     } else {
                         $productWarehouse = ProductWarehouse::where('warehouse_id', $deleteSale->warehouse_id)
                             ->where('product_id', $sale_product->product_id)
                             ->first();
-                        $productWarehouse->product_quantity += $sale_product->quantity;
+                        $productWarehouse->product_quantity = $productWarehouse->product_quantity + $sale_product->quantity;
                         $productWarehouse->save();
                         if ($sale_product->product_variant_id) {
                             $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
                                 ->where('product_id', $sale_product->product_id)
                                 ->where('product_variant_id', $sale_product->product_variant_id)
                                 ->first();
-                            $productWarehouseVariant->variant_quantity += $sale_product->quantity;
+                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $sale_product->quantity;
                             $productWarehouseVariant->save();
                         }
                     }
@@ -2159,14 +2158,14 @@ class SaleController extends Controller
         //Update Supplier due 
         $customer = Customer::where('id', $sale->customer_id)->first();
         if ($customer) {
-            $customer->total_paid += $request->amount;
-            $customer->total_sale_due -= $request->amount;
+            $customer->total_paid = $customer->total_paid + $request->amount;
+            $customer->total_sale_due = $customer->total_sale_due - $request->amount;
             $customer->save();
         }
 
         // Update sale
-        $sale->paid += $request->amount;
-        $sale->due -= $request->amount;
+        $sale->paid = $sale->paid + $request->amount;
+        $sale->due = $sale->due - $request->amount;
         $sale->save();
 
         // generate invoice ID
@@ -2221,8 +2220,8 @@ class SaleController extends Controller
         if ($request->account_id) {
             // update account
             $account = Account::where('id', $request->account_id)->first();
-            $account->credit += $request->amount;
-            $account->balance += $request->amount;
+            $account->credit = $account->credit + $request->amount;
+            $account->balance = $account->balance + $request->amount;
             $account->save();
 
             // Add cash flow
@@ -2272,24 +2271,24 @@ class SaleController extends Controller
 
         //Update Supplier due 
         if ($updateSalePayment->customer) {
-            $updateSalePayment->customer->total_paid -= $updateSalePayment->paid_amount;
-            $updateSalePayment->customer->total_paid += $request->amount;
-            $updateSalePayment->customer->total_sale_due += $updateSalePayment->paid_amount;
-            $updateSalePayment->customer->total_sale_due -= $request->amount;
+            $updateSalePayment->customer->total_paid = $updateSalePayment->customer->total_paid - $updateSalePayment->paid_amount;
+            $updateSalePayment->customer->total_paid = $updateSalePayment->customer->total_paid + $request->amount;
+            $updateSalePayment->customer->total_sale_due = $updateSalePayment->customer->total_sale_due + $updateSalePayment->paid_amount;
+            $updateSalePayment->customer->total_sale_due = $updateSalePayment->customer->total_sale_due - $request->amount;
             $updateSalePayment->customer->save();
         }
 
         // Update sale 
-        $updateSalePayment->sale->paid -= $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->due += $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->paid += $request->amount;
-        $updateSalePayment->sale->due -= $request->amount;
+        $updateSalePayment->sale->paid = $updateSalePayment->sale->paid - $updateSalePayment->paid_amount;
+        $updateSalePayment->sale->due = $updateSalePayment->sale->due + $updateSalePayment->paid_amount;
+        $updateSalePayment->sale->paid = $updateSalePayment->sale->paid + $request->amount;
+        $updateSalePayment->sale->due = $updateSalePayment->sale->due - $request->amount;
         $updateSalePayment->sale->save();
 
         // Update previoues account and delete previous cashflow.
         if ($updateSalePayment->account) {
-            $updateSalePayment->account->credit -= $updateSalePayment->paid_amount;
-            $updateSalePayment->account->balance -= $updateSalePayment->paid_amount;
+            $updateSalePayment->account->credit = $updateSalePayment->account->credit - $updateSalePayment->paid_amount;
+            $updateSalePayment->account->balance = $updateSalePayment->account->balance - $updateSalePayment->paid_amount;
             $updateSalePayment->account->save();
             //$updateSalePayment->cashFlow->delete();
         }
@@ -2336,8 +2335,8 @@ class SaleController extends Controller
         if ($request->account_id) {
             // update account
             $account = Account::where('id', $request->account_id)->first();
-            $account->credit += $request->amount;
-            $account->balance += $request->amount;
+            $account->credit = $account->credit + $request->amount;
+            $account->balance = $account->balance + $request->amount;
             $account->save();
 
             // Add or update cash flow
@@ -2387,17 +2386,17 @@ class SaleController extends Controller
         //Update Supplier due 
         $customer = Customer::where('id', $sale->customer_id)->first();
         if ($customer) {
-            $customer->total_sale_return_due -= $request->amount;
+            $customer->total_sale_return_due = $customer->total_sale_return_due - $request->amount;
             $customer->save();
         }
 
         // Update sale
-        $sale->sale_return_due -= $request->amount;
+        $sale->sale_return_due = $sale->sale_return_due - $request->amount;
         $sale->save();
 
         // update sale return
-        $sale->sale_return->total_return_due_pay += $request->amount;
-        $sale->sale_return->total_return_due -= $request->amount;
+        $sale->sale_return->total_return_due_pay = $sale->sale_return->total_return_due_pay + $request->amount;
+        $sale->sale_return->total_return_due = $sale->sale_return->total_return_due - $request->amount;
         $sale->sale_return->save();
 
         // generate invoice ID
@@ -2452,8 +2451,8 @@ class SaleController extends Controller
         if ($request->account_id) {
             // update account
             $account = Account::where('id', $request->account_id)->first();
-            $account->debit += $request->amount;
-            $account->balance -= $request->amount;
+            $account->debit = $account->debit + $request->amount;
+            $account->balance = $account->balance - $request->amount;
             $account->save();
 
             // Add cash flow
@@ -2501,27 +2500,27 @@ class SaleController extends Controller
         )->where('id', $paymentId)->first();
         //Update Customer due 
         if ($updateSalePayment->customer) {
-            $updateSalePayment->customer->total_sale_return_due += $updateSalePayment->paid_amount;
-            $updateSalePayment->customer->total_sale_return_due -= $request->amount;
+            $updateSalePayment->customer->total_sale_return_due = $updateSalePayment->customer->total_sale_return_due + $updateSalePayment->paid_amount;
+            $updateSalePayment->customer->total_sale_return_due = $updateSalePayment->customer->total_sale_return_due - $request->amount;
             $updateSalePayment->customer->save();
         }
 
         // Update sale 
-        $updateSalePayment->sale->sale_return_due += $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->sale_return_due -= $request->amount;
+        $updateSalePayment->sale->sale_return_due = $updateSalePayment->sale->sale_return_due - $updateSalePayment->paid_amount;
+        $updateSalePayment->sale->sale_return_due = $updateSalePayment->sale->sale_return_due - $request->amount;
         $updateSalePayment->sale->save();
 
         // Update sale return
-        $updateSalePayment->sale->sale_return->total_return_due += $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->sale_return->total_return_due -= $request->amount;
-        $updateSalePayment->sale->sale_return->total_return_due_pay += $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->sale_return->total_return_due_pay -= $request->amount;
+        $updateSalePayment->sale->sale_return->total_return_due = $updateSalePayment->sale->sale_return->total_return_due + $updateSalePayment->paid_amount;
+        $updateSalePayment->sale->sale_return->total_return_due = $updateSalePayment->sale->sale_return->total_return_due - $request->amount;
+        $updateSalePayment->sale->sale_return->total_return_due_pay = $updateSalePayment->sale->sale_return->total_return_due_pay + $updateSalePayment->paid_amount;
+        $updateSalePayment->sale->sale_return->total_return_due_pay = $updateSalePayment->sale->sale_return->total_return_due_pay - $request->amount;
         $updateSalePayment->sale->sale_return->save();
 
         // Update previoues account and delete previous cashflow.
         if ($updateSalePayment->account) {
-            $updateSalePayment->account->debit -= $updateSalePayment->paid_amount;
-            $updateSalePayment->account->balance += $updateSalePayment->paid_amount;
+            $updateSalePayment->account->debit = $updateSalePayment->account->debit - $updateSalePayment->paid_amount;
+            $updateSalePayment->account->balance = $updateSalePayment->account->balance + $updateSalePayment->paid_amount;
             $updateSalePayment->account->save();
             //$updateSalePayment->cashFlow->delete();
         }
@@ -2569,8 +2568,8 @@ class SaleController extends Controller
         if ($request->account_id) {
             // update account
             $account = Account::where('id', $request->account_id)->first();
-            $account->debit += $request->amount;
-            $account->balance -= $request->amount;
+            $account->debit = $account->debit + $request->amount;
+            $account->balance = $account->balance - $request->amount;
             $account->save();
 
             // Add or update cash flow
@@ -2626,19 +2625,19 @@ class SaleController extends Controller
             //Update customer due 
             if ($deleteSalePayment->payment_type == 1) {
                 if ($deleteSalePayment->customer) {
-                    $deleteSalePayment->customer->total_sale_due += $deleteSalePayment->paid_amount;
+                    $deleteSalePayment->customer->total_sale_due = $deleteSalePayment->customer->total_sale_due + $deleteSalePayment->paid_amount;
                     $deleteSalePayment->customer->save();
                 }
 
                 // Update sale 
-                $deleteSalePayment->sale->paid -= $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->due += $deleteSalePayment->paid_amount;
+                $deleteSalePayment->sale->paid = $deleteSalePayment->sale->paid - $deleteSalePayment->paid_amount;
+                $deleteSalePayment->sale->due = $deleteSalePayment->sale->due + $deleteSalePayment->paid_amount;
                 $deleteSalePayment->sale->save();
 
-                // Update previoues account and delete previous cashflow.
+                // Update previous account and delete previous cashflow.
                 if ($deleteSalePayment->account) {
-                    $deleteSalePayment->account->credit -= $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->balance -= $deleteSalePayment->paid_amount;
+                    $deleteSalePayment->account->credit = $deleteSalePayment->account->credit - $deleteSalePayment->paid_amount;
+                    $deleteSalePayment->account->balance = $deleteSalePayment->account->balance - $deleteSalePayment->paid_amount;
                     $deleteSalePayment->account->save();
                     $deleteSalePayment->cashFlow->delete();
                 }
@@ -2652,23 +2651,23 @@ class SaleController extends Controller
                 $deleteSalePayment->delete();
             } elseif ($deleteSalePayment->payment_type == 2) {
                 if ($deleteSalePayment->customer) {
-                    $deleteSalePayment->customer->total_sale_return_due += $deleteSalePayment->paid_amount;
+                    $deleteSalePayment->customer->total_sale_return_due = $deleteSalePayment->customer->total_sale_return_due + $deleteSalePayment->paid_amount;
                     $deleteSalePayment->customer->save();
                 }
 
                 // Update sale 
-                $deleteSalePayment->sale->sale_return_due += $deleteSalePayment->paid_amount;
+                $deleteSalePayment->sale->sale_return_due = $deleteSalePayment->sale->sale_return_due + $deleteSalePayment->paid_amount;
                 $deleteSalePayment->sale->save();
 
                 // Update sale return
-                $deleteSalePayment->sale->sale_return->total_return_due += $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->sale_return->total_return_due_pay -= $deleteSalePayment->paid_amount;
+                $deleteSalePayment->sale->sale_return->total_return_due = $deleteSalePayment->sale->sale_return->total_return_due + $deleteSalePayment->paid_amount;
+                $deleteSalePayment->sale->sale_return->total_return_due_pay = $deleteSalePayment->sale->sale_return->total_return_due_pay - $deleteSalePayment->paid_amount;
                 $deleteSalePayment->sale->sale_return->save();
 
-                // Update previoues account and delete previous cashflow.
+                // Update previous account and delete previous cashflow.
                 if ($deleteSalePayment->account) {
-                    $deleteSalePayment->account->debit -= $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->balance += $deleteSalePayment->paid_amount;
+                    $deleteSalePayment->account->debit = $deleteSalePayment->account->debit - $deleteSalePayment->paid_amount;
+                    $deleteSalePayment->account->balance = $deleteSalePayment->account->balance + $deleteSalePayment->paid_amount;
                     $deleteSalePayment->account->save();
                     $deleteSalePayment->cashFlow->delete();
                 }

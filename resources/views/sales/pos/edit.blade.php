@@ -325,6 +325,9 @@
 
     $(document).on('input', '#quantity', function(){
         var qty = $(this).val() ? $(this).val() : 0;
+        if (qty < 0) {
+            $(this).val(0);
+        }
         if (parseFloat(qty) >= 0) {
             var tr = $(this).closest('tr');
             var qty_limit = tr.find('#qty_limit').val();

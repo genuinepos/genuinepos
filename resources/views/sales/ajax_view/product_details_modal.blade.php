@@ -112,9 +112,9 @@
                             </li>
                         </ul>
                     </div>
-                </div><br><br>
+                </div>
 
-                <div class="row">
+                <div class="row mt-2">
                     <div class="table-responsive">
                         <table id="" class="table modal-table table-sm table-striped">
                             <thead>

@@ -154,7 +154,9 @@ class AccountingRelatedSectionController extends Controller
                 'expanse_payment',
                 'expanse_payment.expense',
                 'money_receipt',
-                'money_receipt.customer'
+                'money_receipt.customer',
+                'payroll',
+                'payroll_payment',
             ]
         )
             ->orderBy('id', 'desc')
@@ -180,12 +182,14 @@ class AccountingRelatedSectionController extends Controller
                 'expanse_payment.expense',
                 'money_receipt',
                 'money_receipt.customer',
+                'payroll',
+                'payroll_payment',
             ]
         );
 
         if ($request->date_range) {
             $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
+            $form_date = date('Y-m-d', strtotime($date_range[0]));
             $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
             //date_sub($date,date_interval_create_from_date_string("2 days"));
             $query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final

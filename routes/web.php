@@ -766,8 +766,6 @@ Route::get('/test', function () {
     //         'product_variants.variant_price',
     //     )->where('branch_id', 24)
     //     ->get();
-
-   
 });
 
 Auth::routes();

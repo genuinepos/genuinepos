@@ -261,23 +261,47 @@
             });
 
             // Show sweet alert for delete
-            $(document).on('click', '#delete', function(e) {
+            // $(document).on('click', '#delete', function(e) {
+            //     e.preventDefault();
+            //     var url = $(this).attr('href');
+            //     $('#deleted_form').attr('action', url);
+            //     swal({
+            //             title: "@lang('brand.delete_alert')",
+            //             icon: "warning",
+            //             buttons: true,
+            //             dangerMode: true,
+            //         })
+            //         .then((willDelete) => {
+            //             if (willDelete) {
+            //                 $('#deleted_form').submit();
+            //             } else {
+            //                 swal("@lang('brand.delete_cancel')");
+            //             }
+            //         });
+            // });
+
+            $(document).on('click', '#delete',function(e){
                 e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);
-                swal({
-                        title: "@lang('brand.delete_alert')",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            $('#deleted_form').submit();
-                        } else {
-                            swal("@lang('brand.delete_cancel')");
+                $('#deleted_form').attr('action', url);           
+                $.confirm({
+                    'title': '@lang("brand.delete_alert")',
+                    'content': 'Are you sure?',
+                    'buttons': {
+                        'Yes': {
+                            'class': 'yes btn-modal-primary',
+                            'action': function() {
+                                $('#deleted_form').submit();
+                            }
+                        },
+                        'No': {
+                            'class': 'no btn-danger',
+                            'action': function() {
+                                // alert('Deleted canceled.')
+                            } 
                         }
-                    });
+                    }
+                });
             });
 
             //data delete by ajax
@@ -292,7 +316,7 @@
                     data: request,
                     success: function(data) {
                         $('.data_tbl').DataTable().ajax.reload();
-                        toastr.success(data);
+                        toastr.error(data);
                     }
                 });
             });

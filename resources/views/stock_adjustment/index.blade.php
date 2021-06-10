@@ -211,17 +211,40 @@
         });
         
         // Show sweet alert for delete
+        // $(document).on('click', '#delete',function(e){
+        //     e.preventDefault();
+        //     var url = $(this).attr('href');
+        //     $('#deleted_form').attr('action', url);
+        //     swal({
+        //         title: "Are you sure to delete ?",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) { 
+        //             $('#deleted_form').submit();
+        //         }
+        //     });
+        // });
         $(document).on('click', '#delete',function(e){
-            e.preventDefault();
+            e.preventDefault(); 
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure to delete ?",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) { 
-                    $('#deleted_form').submit();
+            $('#deleted_form').attr('action', url);       
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-danger',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-modal-primary',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });

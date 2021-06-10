@@ -1315,3 +1315,39 @@ div#sidebar_t {
     height: 100vh;
 }
 
+/* Modal CSS */
+.jconfirm .jconfirm-box {
+    padding: 0!important;
+}
+.jconfirm .jconfirm-box div.jconfirm-content-pane {
+    height: unset!important;
+}
+.jconfirm .jconfirm-box div.jconfirm-title-c {
+    padding-bottom: 15px;
+    background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
+    color: #fff!important;
+    padding-top: 9px;
+    text-align: center;
+}
+.jconfirm-content {
+    text-align: center;
+    margin-top: 9px;
+}
+.jconfirm .jconfirm-box .jconfirm-buttons {
+    margin-right: 126px;
+}
+.jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
+    background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
+    background: linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
+}
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default {
+    color: #fff!important;
+}
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover {
+    background: -webkit-linear-gradient(top, #07a7d9 0%,#0853a1 50%,#034ba6 51%,#001741 100%);
+}
+button.btn.btn-modal-primary {
+    background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%)!important;
+    background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%)!important;
+    color: #fff;
+}

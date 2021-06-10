@@ -312,21 +312,45 @@
             });
 
             // Show sweet alert for delete
-            $(document).on('click', '#delete', function(e) {
-                e.preventDefault();
+            // $(document).on('click', '#delete', function(e) {
+            //     e.preventDefault();
+            //     var url = $(this).attr('href');
+            //     $('#deleted_form').attr('action', url);
+            //     swal({
+            //             title: "Are you sure to delete ?",
+            //             icon: "warning",
+            //             buttons: true,
+            //             dangerMode: true,
+            //         })
+            //         .then((willDelete) => {
+            //             if (willDelete) {
+            //                 $('#deleted_form').submit();
+            //             }
+            //         });
+            // });
+
+            $(document).on('click', '#delete',function(e){
+                e.preventDefault(); 
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);
-                swal({
-                        title: "Are you sure to delete ?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            $('#deleted_form').submit();
+                $('#deleted_form').attr('action', url);       
+                $.confirm({
+                    'title': 'Delete Confirmation',
+                    'content': 'Are you sure, you want to delete?',
+                    'buttons': {
+                        'Yes': {
+                            'class': 'yes btn-modal-primary',
+                            'action': function() {
+                                $('#deleted_form').submit();
+                            }
+                        },
+                        'No': {
+                            'class': 'no btn-danger',
+                            'action': function() {
+                                // alert('Deleted canceled.')
+                            } 
                         }
-                    });
+                    }
+                });
             });
 
             //data delete by ajax
@@ -340,7 +364,7 @@
                     data: request,
                     success: function(data) {
                         product_table.ajax.reload();
-                        toastr.success(data);
+                        toastr.error(data);
                     }
                 });
             });
@@ -361,36 +385,82 @@
             });
 
             // Show sweet alert for multiple delete
-            $(document).on('click', '.multipla_delete_btn', function(e) {
-                e.preventDefault();
-                $('#action').val('multiple_delete');
-                swal({
-                        title: "Are you sure to delete selected?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    }).then((willDelete) => {
-                        if (willDelete) {
-                            $('#multiple_action_form').submit();
+            // $(document).on('click', '.multipla_delete_btn', function(e) {
+            //     e.preventDefault();
+            //     $('#action').val('multiple_delete');
+            //     swal({
+            //             title: "Are you sure to delete selected?",
+            //             icon: "warning",
+            //             buttons: true,
+            //             dangerMode: true,
+            //         }).then((willDelete) => {
+            //             if (willDelete) {
+            //                 $('#multiple_action_form').submit();
+            //             }
+            //         });
+            // });
+
+            $(document).on('click', '.multipla_delete_btn',function(e){
+                e.preventDefault(); 
+                $('#action').val('multiple_delete');    
+                $.confirm({
+                    'title': 'Delete Confirmation',
+                    'content': 'Are you sure, you want to delete?',
+                    'buttons': {
+                        'Yes': {
+                            'class': 'yes btn-modal-primary',
+                            'action': function() {
+                                $('#multiple_action_form').submit();
+                            }
+                        },
+                        'No': {
+                            'class': 'no btn-danger',
+                            'action': function() {
+                                // alert('Deleted canceled.')
+                            } 
                         }
-                    });
+                    }
+                });
             });
 
             // Show sweet alert for multiple deactive
-            $(document).on('click', '.multipla_deactive_btn', function(e) {
-                e.preventDefault();
-                $('#action').val('multipla_deactive');
-                swal({
-                        title: "Are you sure to deactive selected all?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            $('#multiple_action_form').submit();
-                        } 
-                    });
+            // $(document).on('click', '.multipla_deactive_btn', function(e) {
+            //     e.preventDefault();
+            //     $('#action').val('multipla_deactive');
+            //     swal({
+            //             title: "Are you sure to deactive selected all?",
+            //             icon: "warning",
+            //             buttons: true,
+            //             dangerMode: true,
+            //         })
+            //         .then((willDelete) => {
+            //             if (willDelete) {
+            //                 $('#multiple_action_form').submit();
+            //             } 
+            //         });
+            // });
+
+            $(document).on('click', '.multipla_deactive_btn',function(e){
+                e.preventDefault(); 
+                $('#action').val('multipla_deactive');      
+                $.confirm({
+                    'title': 'Deactive Confirmation',
+                    'content': 'Are you sure to deactive selected all?',
+                    'buttons': {
+                        'Yes': {
+                            'class': 'yes btn-danger',
+                            'action': function() {
+                                $('#multiple_action_form').submit();
+                            }
+                        },
+                        'No': {
+                            'class': 'no btn-modal-primary',
+                            'action': function() {
+                                // alert('Deleted canceled.')
+                            } 
+                        }
+                    }
+                });
             });
 
             //data delete by ajax

@@ -56,7 +56,7 @@
                         <span class="mt-1"><b>Expense Invoice :</b> {!! '<span class="text-primary">'.$cashFlow->expanse_payment->expense->invoice_id.'</span>'  !!}</span>  <br>
                         <span class="mt-1">{!! '<b>Pay Invoice : </b>'.'<span class="text-primary">'. $cashFlow->expanse_payment->invoice_id.'</span>' !!}</span>  
                     @elseif($cashFlow->transaction_type == 9)  
-                        <b>Advance From Money Receipt</b><br>
+                        <b>Received Amount By Receipt</b><br>
                         <b>Customer : </b> {{ $cashFlow->money_receipt->customer->name }}<br>
                         <span class="mt-1"><b>Voucher No :</b> {!! '<span class="text-primary">'.$cashFlow->money_receipt->invoice_id.'</span>'  !!}</span>   
                     @elseif($cashFlow->transaction_type == 8)  

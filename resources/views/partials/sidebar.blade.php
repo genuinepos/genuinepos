@@ -1002,7 +1002,7 @@
                                 <p class="text-muted float-start mt-1"><strong>All Report</strong></p>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                <button type="button" class="btn-close close-model"></button>
                             </div>
                         </div>
                     </div>
@@ -1075,8 +1075,7 @@
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.stock.index') }}" class="bar-link">
-                                            <span><img
-                                                    src="{{ asset('public/backend/asset/img/stock-market.png') }}"></span>
+                                            <span><img src="{{ asset('public/backend/asset/img/stock-market.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.stock_report')</p>

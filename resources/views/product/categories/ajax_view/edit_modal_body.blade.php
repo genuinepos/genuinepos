@@ -8,7 +8,7 @@
     </div>
    
     <div class="form-group mt-1">
-        <b>Photo :</b> 
+        <b>Photo :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b> </small>
         <input type="file" name="photo" class="form-control form-control-sm" accept=".jpg, .jpeg, .png, .gif">
         <span class="error error_e_photo"></span>
     </div>

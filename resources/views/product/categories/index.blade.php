@@ -84,7 +84,7 @@
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <label><b>Name :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control form-control-sm" id="name"
+                                <input type="text" name="name" class="form-control" id="name"
                                     placeholder="Category name" />
                                 <span class="error error_name"></span>
                             </div>
@@ -92,15 +92,13 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <label for=""><b>Photo :</b></label>
-                                <input type="file" name="photo" class="form-control form-control-sm" id="photo">
+                                <label for=""><b>Photo :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b></small></label>
+                                <input type="file" name="photo" class="form-control" id="photo">
                                 <span class="error error_photo"></span>
                             </div>
                         </div>
 
-                        <br>
-
-                        <div class="form-group row">
+                        <div class="form-group row mt-2">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i
                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -176,8 +174,6 @@
                     },
                     error: function(err) {
                         $('.loading_button').hide();
-                        toastr.error('Please check again all form fields.',
-                            'Some thing want wrong.');
                         $('.error').html('');
                         $.each(err.responseJSON.errors, function(key, error) {
                             //console.log(key);
@@ -221,8 +217,6 @@
                     },
                     error: function(err) {
                         $('.loading_button').hide();
-                        toastr.error('Please check again all form fields.',
-                            'Some thing want wrong.');
                         $('.error').html('');
                         $.each(err.responseJSON.errors, function(key, error) {
                             //console.log(key);

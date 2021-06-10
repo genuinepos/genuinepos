@@ -70,7 +70,7 @@ class SaleReturnController extends Controller
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
                     'customers.name as cus_name',
-                )->where('purchase_returns.branch_id', auth()->user()->branch_id)
+                )->where('sale_returns.branch_id', auth()->user()->branch_id)
                     ->orderBy('id', 'desc')
                     ->get();
             }

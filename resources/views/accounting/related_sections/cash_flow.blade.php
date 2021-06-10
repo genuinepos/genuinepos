@@ -26,7 +26,7 @@
                                             <div class="form-group row">
                                                 <div class="col-md-4">
                                                     <label><strong>Transaction Type :</strong></label>
-                                                    <select name="transaction_type" class="form-control form-control-sm submit_able" id="transaction_type" autofocus>
+                                                    <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
                                                         <option value=""><strong>All</strong></option> 
                                                         <option value="1"><strong>Debit</strong></option>  
                                                         <option value="2">Credit</option>
@@ -37,9 +37,9 @@
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                                                         </div>
-                                                        <input type="text" name="date_range" class="form-control form-control-sm daterange submit_able_input" autocomplete="off">
+                                                        <input type="text" name="date_range" class="form-control daterange submit_able_input" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>

@@ -109,13 +109,12 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
      //Attendance  routes group
      Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/', 'DashboardController@index')->name('hrm.dashboard.index');
-      
+        Route::get('user/count/table', 'DashboardController@userCountTable')->name('hrm.dashboard.user.count.table');
     });
 });
 
 
 // HRM Dashboard, Need Help,  and Profile View Page Routes
-
 Route::group(['prefix' => 'pages'], function () {
     Route::get('dashboard', fn () => view('dashboard.hrm_dashboard'));
 });

@@ -72,11 +72,25 @@
                 </h1>
             </div>
 
+            <div class="card-title mt-2 ps-4">
+                <select name="branch_id" id="branch_id" class="form-control w-25 submit_able">
+                    <option value="">All Branch</option>
+                    @foreach ($branches as $branch)
+                        <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             <div class="card-body">
                 <div class="row">
-                    <div class="col">
-                        <div class="form_element">
+                    <div class="col-md-6">
+                        <div class="preloader_area" style="position: relative;">
+                            <div class="data_preloader mt-4">
+                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            </div>
+                        </div>
+                        
+                        <div class="form_element users_data">
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
                                 <h6>
                                     <span class="fas fa-users"></span>
@@ -90,8 +104,8 @@
                             </div>
                             <div class="widget_content">
                                 <div class="mtr-table">
-                                    <div class="table-responsive">
-                                        <table id="attendance_table"
+                                    <div class="table-responsive" id="user_data">
+                                        <table id="users_table"
                                             class="display data__table data_tble stock_table compact" width="100%">
                                             <thead>
                                                 <tr>
@@ -104,46 +118,6 @@
                                                     <td>Branch Manger</td>
                                                     <td>125</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>HRM</td>
-                                                    <td>23</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>CRM</td>
-                                                    <td>15</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>HRM</td>
-                                                    <td>23</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>CRM</td>
-                                                    <td>15</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -152,14 +126,13 @@
                         </div>
                     </div>
 
-                    <div class="col">
-                        <div class="form_element">
+                    <div class="col-md-6">
+                        <div class="form_element today_attendance_table">
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
                                 <h6>
                                     <span class="fas fa-user-check"></span>
                                     Today's Attendance
                                 </h6>
-                                {{-- <h6 class="">4324</h6> --}}
                             </div>
                             <div class="widget_content">
                                 <div class="mtr-table">
@@ -393,10 +366,23 @@
 @endsection
 @push('scripts')
     <script>
-        const usersTable = $('#users_table').DataTable({
-            dom: "Bfrtip",
-            buttons: ["excel", "pdf", "print"],
-            pageLength: 5,
+        function getUserTable(){
+            $('.data_preloader').show();
+            var branch_id = $('#branch_id').val();
+            $.ajax({
+                url:"{{ route('hrm.dashboard.user.count.table') }}",
+                type:'get',
+                data: { branch_id },
+                success:function(data){
+                    $('.users_data').html(data);
+                    $('.data_preloader').hide();
+                }
+            });
+        }
+        getUserTable();
+
+        $(document).on('change', '.submit_able', function () {
+            getUserTable();
         });
 
         const attendanceTable = $('#attendance_table').DataTable({
@@ -404,6 +390,7 @@
             buttons: ["excel", "pdf", "print"],
             pageLength: 5,
         });
+
         const leaveApplicationTable = $('#leave_application_table').DataTable({
             dom: "Bfrtip",
             pageLength: 6,
@@ -411,6 +398,7 @@
             info: false,
             // searching: false,
         });
+
         // const holidaysTable = $('#holidays_table').DataTable({
         //     dom: "Bfrtip",
         //     pageLength: 5,

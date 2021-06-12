@@ -17,7 +17,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
-                                <h5>Payroll Report</h5>
+                                <h5>Payroll Payment Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
@@ -45,19 +45,6 @@
                                                         </select>
                                                     </div>
                                                 @endif
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Department :</strong></label>
-                                                    <select name="department_id"
-                                                        class="form-control submit_able" id="department_id" autofocus>
-                                                        <option value="">All</option>
-                                                        @foreach ($departments as $department)
-                                                            <option value="{{ $department->id }}">
-                                                                {{ $department->department_name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
 
                                                 <div class="col-md-3">
                                                     <label><strong>Date Range :</strong></label>
@@ -88,15 +75,12 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
+                                                    <th>Date</th>
                                                     <th>Employee</th>
-                                                    <th>Department</th>
-                                                    <th>Month/Year</th>
-                                                    <th>Referance No</th>
-                                                    <th>Total Amount</th>
+                                                    <th>Payment Voucher No</th>
                                                     <th>Paid</th>
-                                                    <th>Due</th>
-                                                    <th>Payment Status</th>
-                                                    <th>Created By</th>
+                                                    <th>Pay For(Payroll)</th>
+                                                    <th>Paid By</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -104,16 +88,14 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="4" class="text-end text-white">Total :</th>
-                                                    <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="gross_amount"></span></th>
+                                                    <th colspan="3" class="text-end text-white">Total :</th>
                                                     <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid"></span></th>
-                                                    <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="due"></span></th>
                                                     <th class="text-white">--</th>
                                                     <th class="text-white">--</th>
                                                 </tr>
                                             </tfoot>
                                         </table>
-                                        <a href="{{ route('reports.payroll.print') }}" class="btn btn-sm btn-primary float-end mt-2" id="print_report">Print</a>
+                                        <a href="{{ route('reports.payroll.payment.print') }}" class="btn btn-sm btn-primary float-end mt-2" id="print_report">Print</a>
                                     </div>
                                 </div>
 
@@ -140,34 +122,26 @@
         "serverSide": true,
         "searching" : true,
         aaSorting: [
-            [1, 'asc']
+            [0, 'asc']
         ],
         "ajax": {
-            "url": "{{ route('reports.payroll') }}",
+            "url": "{{ route('reports.payroll.payment') }}",
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
-                d.department_id = $('#department_id').val();
                 d.date_range = $('#date_range').val();
             }
         },
         columns: [
+            {data: 'date', name: 'date'},
             {data: 'employee', name: 'employee'},
-            {data: 'department_name', name: 'department_name'},
-            {data: 'month_year', name: 'month_year'},
-            {data: 'reference_no', name: 'reference_no'},
-            {data: 'gross_amount', name: 'gross_amount'},
+            {data: 'voucher_no', name: 'voucher_no'},
             {data: 'paid', name: 'paid'},
-            {data: 'due', name: 'due'},
-            {data: 'payment_status', name: 'payment_status'},
-            {data: 'created_by', name: 'created_by'},
+            {data: 'reference_no', name: 'reference_no'},
+            {data: 'paid_by', name: 'paid_by'},
         ],
         fnDrawCallback: function() {
-            var gross_amount = sum_table_col($('.data_tbl'), 'gross_amount');
-            $('#gross_amount').text(parseFloat(gross_amount).toFixed(2));
             var paid = sum_table_col($('.data_tbl'), 'paid');
             $('#paid').text(parseFloat(paid).toFixed(2));
-            var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(parseFloat(due).toFixed(2));
         },
     });
 

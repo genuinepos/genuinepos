@@ -703,12 +703,12 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'payrolls'], function () {
         Route::get('/', 'PayrollReportController@payrollReport')->name('reports.payroll');
-        Route::get('print', 'PayrollReportController@payrollReportPrint')->name('reports.payroll.report');
+        Route::get('print', 'PayrollReportController@payrollReportPrint')->name('reports.payroll.print');
     });
 
     Route::group(['prefix' => 'payroll/payments'], function () {
-        Route::get('/', 'PayrollReportController@payrollPaymentReport')->name('reports.payroll.payment');
-        Route::get('print', 'PayrollReportController@payrollPaymentReportPrint')->name('reports.payroll.payment.report');
+        Route::get('/', 'PayrollPaymentReportController@payrollPaymentReport')->name('reports.payroll.payment');
+        Route::get('print', 'PayrollPaymentReportController@payrollPaymentReportPrint')->name('reports.payroll.payment.print');
     });
 });
 

@@ -11,9 +11,12 @@
 
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
     <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
+
 
     <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
@@ -39,8 +42,10 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script src="{{asset('public')}}/assets/plugins/custom/Shortcuts-master/shortcuts.js"></script>
     <!--Sweet alert js link-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/sweet-alert/sweet-alert.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
+
     <!--Sweet alert js link end-->
     <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
 </head>
@@ -668,22 +673,49 @@
         });
 
         // Show sweet alert for delete
+        // var tableRowIndex = 0;
+        // $(document).on('click', '#delete',function(e){
+        //     e.preventDefault();
+        //     var parentTableRow = $(this).closest('tr');
+        //     tableRowIndex = parentTableRow.index();
+        //     var url = $(this).attr('href');
+        //     $('#deleted_form').attr('action', url);
+        //     swal({
+        //         title: "Are you sure to delete ?",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) {
+        //             $('#deleted_form').submit();
+        //             $('#recent_trans_preloader').show();
+        //         } 
+        //     });
+        // });
         var tableRowIndex = 0;
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var parentTableRow = $(this).closest('tr');
             tableRowIndex = parentTableRow.index();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure to delete ?",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $('#deleted_form').submit();
-                    $('#recent_trans_preloader').show();
-                } 
+            $('#deleted_form').attr('action', url);           
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                            $('#recent_trans_preloader').show();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
+                }
             });
         });
 
@@ -697,7 +729,7 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    toastr.success(data);
+                    toastr.error(data);
                     var productTableRow = $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
                     $('#recent_trans_preloader').hide();
                     $('#suspendedSalesModal').modal('hide');
@@ -731,19 +763,43 @@
         });
 
         // Show sweet alert for delete
+        // $(document).on('click', '#pos_exit_button',function(e){
+        //     e.preventDefault();
+        //     var url = $(this).attr('href');
+        //     $('#payment_deleted_form').attr('action', url);
+        //     swal({
+        //         title: "Are you sure to exit ?",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) {
+        //             window.location = "{{ route('dashboard.dashboard') }}";
+        //         } else {
+        //             swal("OK, Continue the selling.");
+        //         }
+        //     });
+        // });
+
         $(document).on('click', '#pos_exit_button',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure to exit ?",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    window.location = "{{ route('dashboard.dashboard') }}";
-                } else {
-                    swal("OK, Continue the selling.");
+            $('#payment_deleted_form').attr('action', url);           
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure, you want to exit?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            window.location = "{{ route('dashboard.dashboard') }}";
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
+                    }
                 }
             });
         });

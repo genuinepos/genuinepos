@@ -112,7 +112,7 @@
                 @endif
 
                 <li class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
-                    <a href="{{ route('hrm.leave.type') }}">
+                    <a href="{{ route('hrm.dashboard.index') }}">
                         <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
                         <p class="title">@lang('menu.hrm')</p>
                     </a>
@@ -133,7 +133,6 @@
                         </a>
                     </li>
                 @endif
-
             </ul>
         </div>
     </div>

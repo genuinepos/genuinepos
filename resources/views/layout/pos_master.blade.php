@@ -526,8 +526,16 @@
                     <div class="form-area">
                         <form id="search_inv_form" action="{{ route('sales.pos.serc.ex.inv') }}" method="GET">
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <input required type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Search invoice">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <input required type="text" name="customer_id" id="customer_id" class="form-control" placeholder="Search By customer">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <input required type="text" name="customer_phone" id="customer_phone" class="form-control" placeholder="Search By phone number">
                                 </div>
 
                                 <div class="col-md-2">

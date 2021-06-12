@@ -73,8 +73,9 @@
             </div>
 
             <div class="card-title mt-2 ps-4">
-                <select name="branch_id" id="branch_id" class="form-control w-25 submit_able">
+                <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
                     <option value="">All Branch</option>
+                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                     @foreach ($branches as $branch)
                         <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
                     @endforeach
@@ -92,14 +93,9 @@
                         
                         <div class="form_element users_data">
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
-                                <h6>
-                                    <span class="fas fa-users"></span>
-                                    Users
-                                </h6>
+                                <h6><span class="fas fa-users"></span>Users</h6>
                                 <span class="badge bg-secondary text-white">
-                                    <div id="small-badge">
-                                        Total: 4324
-                                    </div>
+                                    <div id="small-badge">Total: 4324</div>
                                 </span>
                             </div>
                             <div class="widget_content">
@@ -127,6 +123,12 @@
                     </div>
 
                     <div class="col-md-6">
+                        <div class="preloader_area" style="position: relative;">
+                            <div class="data_preloader mt-4">
+                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            </div>
+                        </div>
+
                         <div class="form_element today_attendance_table">
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
                                 <h6>
@@ -134,10 +136,11 @@
                                     Today's Attendance
                                 </h6>
                             </div>
+
                             <div class="widget_content">
                                 <div class="mtr-table">
-                                    <div class="table-responsive">
-                                        <table id="users_table" class="display data__table data_tble stock_table compact"
+                                    <div class="table-responsive" id="today_attendance_table">
+                                        <table class="display data__table data_tble stock_table compact"
                                             width="100%">
                                             <thead>
                                                 <tr>
@@ -152,71 +155,6 @@
                                                     <td>10:00am</td>
                                                     <td>04:00pm</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John Doe</td>
-                                                    <td>10:00am</td>
-                                                    <td>04:00pm</td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -225,8 +163,14 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-6">
+                        <div class="preloader_area" style="position: relative;">
+                            <div class="data_preloader mt-4">
+                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            </div>
+                        </div>
                         <div class="form_element">
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
                                 <h6>
@@ -238,85 +182,9 @@
                                 <div class="mtr-table">
                                     <div class="table-responsive leave_application">
                                         <table id="leave_application_table"
-                                            class="display data__table data_tble stock_table compact " width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        {{-- Application Links --}}
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="mx-2 mt-5">
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            John Doe Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            John Doe Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            John Doe Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            James Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            John Doe Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            John Doe Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            John Doe Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            John Doe Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            John Doe Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#">
-                                                            John Doe Leave Application Link Goes here
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                            class="display data__table data_tble stock_table compact mt-2" width="100%">
+                                            <tbody class="mx-2 mt-5" id="leaves">
+                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -324,7 +192,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md-6">
                         <div class="form_element">
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
                                 <h6>
@@ -357,10 +225,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </section>
 @endsection
@@ -381,23 +247,55 @@
         }
         getUserTable();
 
+        function getTodayAttTable(){
+            $('.data_preloader').show();
+            var branch_id = $('#branch_id').val();
+            $.ajax({
+                url:"{{ route('hrm.dashboard.today.attr.table') }}",
+                type:'get',
+                data: { branch_id },
+                success:function(data){
+                    $('#today_attendance_table').html(data);
+                    $('.data_preloader').hide();
+                }
+            });
+        }
+        getTodayAttTable();
+
+        function getLeaveTable(){
+            $('.data_preloader').show();
+            var branch_id = $('#branch_id').val();
+            $.ajax({
+                url:"{{ route('hrm.dashboard.leave.table') }}",
+                type:'get',
+                data: { branch_id },
+                success:function(data){
+                    $('#leaves').html(data);
+                    $('.data_preloader').hide();
+                }
+            });
+        }
+        getLeaveTable();
+
         $(document).on('change', '.submit_able', function () {
             getUserTable();
+            getTodayAttTable();
+            getLeaveTable();
         });
 
-        const attendanceTable = $('#attendance_table').DataTable({
-            dom: "Bfrtip",
-            buttons: ["excel", "pdf", "print"],
-            pageLength: 5,
-        });
+        // const attendanceTable = $('#attendance_table').DataTable({
+        //     dom: "Bfrtip",
+        //     buttons: ["excel", "pdf", "print"],
+        //     pageLength: 5,
+        // });
 
-        const leaveApplicationTable = $('#leave_application_table').DataTable({
-            dom: "Bfrtip",
-            pageLength: 6,
-            ordering: false,
-            info: false,
-            // searching: false,
-        });
+        // const leaveApplicationTable = $('#leave_application_table').DataTable({
+        //     dom: "Bfrtip",
+        //     pageLength: 6,
+        //     ordering: false,
+        //     info: false,
+        //     // searching: false,
+        // });
 
         // const holidaysTable = $('#holidays_table').DataTable({
         //     dom: "Bfrtip",

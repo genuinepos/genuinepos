@@ -12,7 +12,7 @@
 <div class="widget_content">
     <div class="mtr-table">
         <div class="table-responsive">
-            <table id="users_table" class="display data__table data_tble stock_table compact" width="100%">
+            <table id="user_table" class="display data__table data_tble stock_table compact" width="100%">
                 <thead>
                     <tr>
                         <th>Department</th>
@@ -33,7 +33,7 @@
 </div>
 
 <script>
-    $('#users_table').DataTable({
+    $('#user_table').DataTable({
         dom: "Bfrtip",
         buttons: ["excel", "pdf", "print"],
         pageLength: 10,

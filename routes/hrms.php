@@ -106,10 +106,12 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
         Route::get('all/designations', 'PayrollController@getAllDesignation')->name('hrm.payroll.get.designations');
     });
 
-     //Attendance  routes group
+     //Attendance  
      Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/', 'DashboardController@index')->name('hrm.dashboard.index');
         Route::get('user/count/table', 'DashboardController@userCountTable')->name('hrm.dashboard.user.count.table');
+        Route::get('today/attr/table', 'DashboardController@todayAttTable')->name('hrm.dashboard.today.attr.table');
+        Route::get('leave/table', 'DashboardController@leaveTable')->name('hrm.dashboard.leave.table');
     });
 });
 

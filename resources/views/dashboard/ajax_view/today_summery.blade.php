@@ -39,20 +39,46 @@
                     </tr>
 
                     <tr>
+                        <th class="text-start">Total Sale Discount :</th>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-start">Transfer Shiping Charge :</th>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-start">Purchanse Shiping Charge :</th>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-start">Total Customer Reward :</th>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                    </tr>
+
+                    <tr>
                         <th class="text-start">Total Sale Return :</th>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSalesReturn, 0,2) }}</td>
                     </tr>
 
-                    {{-- <tr>
+                    <tr>
                         <th class="text-start">Total Payroll :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSalesReturn, 0,2) }}</td>
-                    </tr> --}}
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
         <div class="col-md-6">
             <table class="table modal-table table-sm">
                 <tbody>
+                    <tr>
+                        <th class="text-start">Current Stock :</th>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                    </tr>
+
                     <tr>
                         <th class="text-start">Total sale :</th>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSales, 0,2) }}</td>
@@ -65,7 +91,17 @@
 
                     <tr>
                         <th class="text-start">Total Purchase Return :</th>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalPurchaseReturn, 0,2) }}</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-start">Total Sale Shipping Charge :</th>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-start">Total Round Off :</th>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
                     </tr>
                 </tbody>
             </table>

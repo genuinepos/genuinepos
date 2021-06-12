@@ -101,8 +101,7 @@
                             <div class="widget_content">
                                 <div class="mtr-table">
                                     <div class="table-responsive" id="user_data">
-                                        <table id="users_table"
-                                            class="display data__table data_tble stock_table compact" width="100%">
+                                        <table id="users_table" class="display data__table data_tble stock_table compact" width="100%">
                                             <thead>
                                                 <tr>
                                                     <th>Department</th>

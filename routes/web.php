@@ -700,6 +700,16 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
         Route::get('/', 'TaxReportController@index')->name('reports.taxes.index');
         Route::get('get', 'TaxReportController@getTaxReport')->name('reports.taxes.get');
     });
+
+    Route::group(['prefix' => 'payrolls'], function () {
+        Route::get('/', 'PayrollReportController@payrollReport')->name('reports.payroll');
+        Route::get('print', 'PayrollReportController@payrollReportPrint')->name('reports.payroll.report');
+    });
+
+    Route::group(['prefix' => 'payroll/payments'], function () {
+        Route::get('/', 'PayrollReportController@payrollPaymentReport')->name('reports.payroll.payment');
+        Route::get('print', 'PayrollReportController@payrollPaymentReportPrint')->name('reports.payroll.payment.report');
+    });
 });
 
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
@@ -765,7 +775,6 @@ Route::get('/test', function () {
     //         'product_variants.variant_price',
     //     )->where('branch_id', 24)
     //     ->get();
-    
 });
 
 Auth::routes();

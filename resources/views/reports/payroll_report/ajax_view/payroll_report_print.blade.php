@@ -11,7 +11,7 @@
                         <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b> </h5>
                     @endif
                     <h6><b>Payroll Report</b></h6>
-                    <h6>Payroll Of {{ $s_date .' - '. $e_date }}</h6>
+                    <h6>Payroll Of {{ $s_date .' To '. $e_date }}</h6>
                 </div>
             </div>
         </div>

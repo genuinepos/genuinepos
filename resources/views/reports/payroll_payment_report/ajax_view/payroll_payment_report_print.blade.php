@@ -11,7 +11,7 @@
                         <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b> </h5>
                     @endif
                     <h6><b>Payroll Report</b></h6>
-                    <h6>Payroll Payment Of {{ $s_date .' - '. $e_date }}</h6>
+                    <h6>Payroll Payment Of <b>{{ $s_date .' To '. $e_date }}</b></h6>
                 </div>
             </div>
         </div>
@@ -32,41 +32,31 @@
             @php
                 $total_paid = 0;
             @endphp
-            @foreach ($payrolls as $row)
+            @foreach ($payrollPayments as $row)
                 @php
                     $total_paid += $row->paid;
                 @endphp
                 <tr>
-                    <td>{{ date('d/m/Y', strtotime($row->date)) }}</td>
-                    <td>{{ $row->emp_prefix.' '.$row->emp_name.' '.$row->emp_last_name }}-{{ $row->emp_id }}</h6></td>
-                    <td>{{ $row->department_name }}</td>
-                    <td>{{ $row->month }}/{{ $row->year }}</td>
-                    <td>{{ $row->reference_no }}</td>
-                    <td>{{ $row->gross_amount }}</td>
-                    <td>{{ $row->paid }}</td>
-                    <td>{{ $row->due }}</td>
-                    <td>
-                        @if ($row->due <= 0) 
-    	                    Paid
-    	                @elseif($row->due > 0 && $row->due < $row->gross_amount) 
-    	                    Partial
-    	                @elseif($row->gross_amount == $row->due) 
-    	                    Due
-    	                @endif
-                    </td>
+                    <td class="text-start">{{ date('d/m/Y', strtotime($row->date)) }}</td>
+                    <td class="text-start">{{ $row->prefix.' '.$row->name.' '.$row->last_name }}-{{ $row->emp_id }}</h6></td>
+                    <td class="text-start">{{ $row->voucher_no }}</td>
+                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $row->paid }}</td>
+                    <td class="text-start">{{ $row->reference_no }}</td>
+                    <td class="text-start">{{ $row->pb_prefix.' '.$row->pb_name.' '.$row->pb_last_name }}-{{ $row->emp_id }}</h6></td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="4"></th>
-                <th>Total : </th>
-                <th>{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($total_paid, 0, 2) }}</th>
+                <th colspan="2" class="text-start"></th>
+                <th class="text-end">Total : </th>
+                <th class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($total_paid, 0, 2) }}</th>
+                <th>--</th>
                 <th>--</th>
             </tr>
         </tfoot>
     </table>
-    <br>
+
     <div class="footer_area text-center">
         <small>Developed by <b>SpeedDigit Pvt. Ltd.</b></small>
     </div>

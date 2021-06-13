@@ -174,7 +174,7 @@ class AttendanceController extends Controller
                 $data->save();
             }
         }
-        return response()->json('Successfully Attendance is Added!');
+        return response()->json('Attendance Added Successfully!');
     }
 
     // Edit modal with data
@@ -220,7 +220,7 @@ class AttendanceController extends Controller
             $updateAttendance->save();
         }
 
-        return response()->json('Successfully Attendances is updated!');
+        return response()->json('Attendances updated successfully!');
     }
 
     // Delete attendance 
@@ -230,7 +230,7 @@ class AttendanceController extends Controller
         if (!is_null($deleteAttendance)) {
             $deleteAttendance->delete();  
         }
-        return response()->json('Successfully attendance is deleted');
+        return response()->json('Attendance deleted successfully');
     }
 
     // Get Employee/User attendance row **requested by ajax**

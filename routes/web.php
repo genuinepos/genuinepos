@@ -710,6 +710,11 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
         Route::get('/', 'PayrollPaymentReportController@payrollPaymentReport')->name('reports.payroll.payment');
         Route::get('print', 'PayrollPaymentReportController@payrollPaymentReportPrint')->name('reports.payroll.payment.print');
     });
+
+    Route::group(['prefix' => 'attendances'], function () {
+        Route::get('/', 'AttendanceReportController@attendanceReport')->name('reports.attendance');
+        Route::get('print', 'AttendanceReportController@attendanceReportPrint')->name('reports.attendance.print');
+    });
 });
 
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');

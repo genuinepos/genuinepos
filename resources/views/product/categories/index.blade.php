@@ -102,7 +102,7 @@
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i
                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
                                 <button type="reset" data-bs-dismiss="modal"
                                     class="c-btn btn_orange float-end">Close</button>
                             </div>
@@ -133,6 +133,12 @@
 @push('scripts')
     <script>
         var table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [ 
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            ],
             processing: true,
             serverSide: true,
             searchable: true,
@@ -158,6 +164,7 @@
                 e.preventDefault();
                 $('.loading_button').show();
                 var url = $(this).attr('action');
+                $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -171,6 +178,7 @@
                         $('.loading_button').hide();
                         $('.data_tbl').DataTable().ajax.reload();
                         $('#addModal').modal('hide');
+                        $('.submit_button').prop('type', 'submit');
                     },
                     error: function(err) {
                         $('.loading_button').hide();
@@ -179,6 +187,7 @@
                             //console.log(key);
                             $('.error_' + key + '').html(error[0]);
                         });
+                        $('.submit_button').prop('type', 'submit');
                     }
                 });
             });

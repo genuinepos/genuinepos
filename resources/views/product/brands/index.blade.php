@@ -95,7 +95,7 @@
                         <div class="form-group mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue float-end">Save</button>
+                                <button type="submit" class="c-btn btn_blue float-end submit_button">Save</button>
                                 <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                             </div>
                         </div>
@@ -125,26 +125,20 @@
     <script>
         // Get all brands by ajax
         var table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [ 
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            ],
             processing: true,
             serverSide: true,
             searchable: true,
             ajax: "{{ route('product.brands.index') }}",
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                },
-                {
-                    data: 'photo',
-                    name: 'category.photo'
-                },
-                {
-                    data: 'name',
-                    name: 'category.name'
-                },
-                {
-                    data: 'action',
-                    name: 'action'
-                },
+            columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
+                {data: 'photo',name: 'category.photo'},
+                {data: 'name',name: 'category.name'},
+                {data: 'action',name: 'action'},
             ]
         });
 
@@ -161,7 +155,6 @@
             $('#add_brand_form').on('submit', function(e) {
                 e.preventDefault();
                 $('.loading_button').removeClass('d-none');
-                $('.submit_button').hide();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
                 var inputs = $('.add_input');
@@ -184,10 +177,9 @@
 
                 if (countErrorField > 0) {
                     $('.loading_button').hide();
-                    $('.submit_button').show();
                     return;
                 }
-
+                $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -199,7 +191,7 @@
                         toastr.success(data);
                         $('#add_brand_form')[0].reset();
                         $('.loading_button').hide();
-                        $('.submit_button').show();
+                        $('.submit_button').prop('type', 'submit');
                         $('.data_tbl').DataTable().ajax.reload();
                         $('#addModal').modal('hide');
                     }

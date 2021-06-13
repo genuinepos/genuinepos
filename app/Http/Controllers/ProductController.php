@@ -148,9 +148,9 @@ class ProductController extends Controller
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 1) {
-                        return '<i class="far fa-thumbs-up mr-1 text-success"></i>';
+                        return '<span class="text-success">Active</span>';
                     } else {
-                        return '<i class="far fa-thumbs-down mr-1 text-danger"></i>';
+                        return '<span class="text-danger">Inactive</span>';
                     }
                 })
                 ->editColumn('brand_name', function ($row) {

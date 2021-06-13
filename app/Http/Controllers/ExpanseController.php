@@ -105,7 +105,7 @@ class ExpanseController extends Controller
                 })
                 ->editColumn('from',  function ($row) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BRANCH</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
                         return '(<b>Head Office</b>)';
                     }

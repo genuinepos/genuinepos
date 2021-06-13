@@ -29,20 +29,23 @@
     {{-- DataTable Global CSS --}}
     <style>
         .dt-buttons {
-            padding-top: 2px !important;
-            padding-bottom: 2px !important;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
             float: right;
             margin-right: 5px;
         }
 
         .dt-buttons button {
             padding: 0px 8px !important;
-            margin-top: 3px;
+            margin-top: 9px;
             margin-bottom: 3px;
             border: 0px solid transparent;
             background-color: #6083b1;
             color: white;
             border-radius: 4px;
+            font-size: 10px;
+            height: 20px;
+            line-height: 20px;
         }
 
         .mtr-table {

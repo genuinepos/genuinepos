@@ -105,9 +105,8 @@
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i
                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                                <button type="submit" class="c-btn btn_blue float-end submit_button">Save</button>
+                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                             </div>
                         </div>
                     </form>
@@ -226,11 +225,9 @@
             $('#add_variant_form').on('submit', function(e) {
                 e.preventDefault();
                 $('.loading_button').show();
-                $('.submit_button').hide();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
                 var inputs = $('.add_input');
-                inputs.removeClass('is-invalid');
                 $('.error').html('');
                 var countErrorField = 0;
                 $.each(inputs, function(key, val) {
@@ -240,7 +237,6 @@
                     if (inputId !== 'parent_category' && inputId !== 'photo') {
                         if (idValue == '') {
                             countErrorField += 1;
-                            $('#' + inputId).addClass('is-invalid');
                             var fieldName = $('#' + inputId).data('name');
                             $('.error_' + inputId).html(fieldName + ' is required.');
                         }
@@ -249,9 +245,9 @@
 
                 if (countErrorField > 0) {
                     $('.loading_button').hide();
-                    $('.submit_button').show();
                     return;
                 }
+                $('.submit_button').prop('type', 'button');
 
                 $.ajax({
                     url: url,
@@ -261,10 +257,10 @@
                         toastr.success(data);
                         $('#add_variant_form')[0].reset();
                         $('.loading_button').hide();
-                        $('.submit_button').show();
                         getAllVariant();
                         $('#addModal').modal('hide');
                         $('.more_variant_childs_area').empty();
+                        $('.submit_button').prop('type', 'submit');
                     }
                 });
             });

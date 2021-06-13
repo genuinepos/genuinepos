@@ -135,7 +135,7 @@ class PayrollPaymentReportController extends Controller
                     'paid_by.prefix as pb_prefix',
                     'paid_by.name as pb_name',
                     'paid_by.last_name as pb_last_name',
-                )->orderBy('hrm_payroll_payments.id', 'desc')->get();
+                )->orderBy('hrm_payroll_payments.id', 'desc')->orderBy('hrm_payroll_payments.id', 'desc')->get();
             } else {
                 $payrollPayments = $payrollPaymentQ->select(
                     'hrm_payroll_payments.date',

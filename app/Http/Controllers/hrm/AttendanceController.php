@@ -94,36 +94,30 @@ class AttendanceController extends Controller
 					return date('d/m/Y', strtotime($row->at_date));
 				})
 				->editColumn('clock_in_out', function ($row) {
-					$clockOut = $row->clock_out_ts ? ' - ' . date('d/m/Y h:i a', strtotime($row->clock_out_ts)) : '';
-					return date('d/m/Y h:i a', strtotime($row->clock_in_ts)) . $clockOut;
+                    $clockOut = $row->clock_out_ts ? ' - ' . date('h:i a', strtotime($row->clock_out)) : '';
+                    return ' <b>'.date('h:i a', strtotime($row->clock_in)) .$clockOut.' </b>';
 				})
 				->editColumn('work_duration', function ($row) {
-					if ($row->clock_out_ts) {
-						if ($row->clock_out_ts) {
-							$startTime = Carbon::parse($row->clock_in);
-							$endTime = Carbon::parse($row->clock_out);
-							$totalDuration = $startTime->diffForHumans($endTime);
-							return str_replace("before", " ", $totalDuration);
-						} else {
-							$startTime = Carbon::parse($row->clock_in_ts);
-							$totalDuration = $startTime->diffForHumans();
-							return str_replace("before", " ", $totalDuration);
-						}
-					}else {
-						return '<span class="badge bg-primary">Duraiton Is Running</span>';
-					}
+					if ($row->clock_out_ts){
+                        $startTime = Carbon::parse($row->clock_in);
+                        $endTime = Carbon::parse($row->clock_out);
+                        // $totalDuration = $startTime->diffForHumans($endTime);
+                        $totalDuration = $endTime->diff($startTime)->format("%H:%I:%S");
+                        return $totalDuration;
+                    }else{
+                        return 'Clock-Out-does-not-exists';
+                    }
 				})
 				->rawColumns(['action', 'date', 'clock_in_out', 'work_duration'])
 				->make(true);
 		}
+        
         $departments = DB::table('hrm_department')->get(['id', 'department_name']);
         $employee = DB::table('admin_and_users')
         ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('hrm.attendance.index', compact('employee', 'departments', 'branches'));
     }
-
-   
 
     //attendance store method
     public function storeAttendance(Request $request)

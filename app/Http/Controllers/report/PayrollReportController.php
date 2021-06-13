@@ -52,7 +52,7 @@ class PayrollReportController extends Controller
                     'created_by.prefix as user_prefix',
                     'created_by.name as user_name',
                     'created_by.last_name as user_last_name',
-                )->get();
+                )->orderBy('hrm_payrolls.id', 'desc')->get();
             } else {
                 $payrolls = $query->select(
                     'hrm_payrolls.*',
@@ -64,7 +64,7 @@ class PayrollReportController extends Controller
                     'created_by.prefix as user_prefix',
                     'created_by.name as user_name',
                     'created_by.last_name as user_last_name',
-                )->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                )->where('admin_and_users.branch_id', auth()->user()->branch_id)->orderBy('hrm_payrolls.id', 'desc')->get();
             }
 
             return DataTables::of($payrolls)
@@ -135,12 +135,9 @@ class PayrollReportController extends Controller
             $date_range = explode('-', $request->date_range);
             $form_date = date('Y-m-d', strtotime($date_range[0]));
             $s_date = date('d-F-Y', strtotime($date_range[0]));
-            //$form_date = date('Y-m-d', strtotime($date_range[0]. '-1 days'));
             $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
             $e_date = date('d-F-Y', strtotime($date_range[1]));
-            //$to_date = date('Y-m-d', strtotime($date_range[1]));
             $query->whereBetween('hrm_payrolls.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-            //$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
@@ -155,7 +152,7 @@ class PayrollReportController extends Controller
                 'created_by.prefix as user_prefix',
                 'created_by.name as user_name',
                 'created_by.last_name as user_last_name',
-            )->get();
+            )->orderBy('hrm_payrolls.id', 'desc')->get();
         } else {
             $payrolls = $query->select(
                 'hrm_payrolls.*',
@@ -168,7 +165,7 @@ class PayrollReportController extends Controller
                 'created_by.prefix as user_prefix',
                 'created_by.name as user_name',
                 'created_by.last_name as user_last_name',
-            )->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            )->where('admin_and_users.branch_id', auth()->user()->branch_id)->orderBy('hrm_payrolls.id', 'desc')->get();
         }
 
         return view('reports.payroll_report.ajax_view.payroll_report_print', compact('payrolls', 's_date', 'e_date', 'branch_id'));

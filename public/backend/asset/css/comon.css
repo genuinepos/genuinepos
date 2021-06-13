@@ -441,3 +441,7 @@ label{font-size: 12px;}
 .t {padding-bottom: 41px!important;}
 
 select {height: 26px;}
+
+.widget_content .table-responsive {
+    margin-top: -11px;
+}

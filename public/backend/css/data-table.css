@@ -1084,3 +1084,8 @@ div#DataTables_Table_0_wrapper .table_top {
 .dataTables_wrapper {
     margin-top: 20px;
 }
+
+div#DataTables_Table_0_length select {
+    height: 25px;
+    border: 1px solid #d8d8d8;
+}

@@ -9,6 +9,8 @@
                             $branch = DB::table('branches')->where('id', $branch_id)->first(['id', 'name', 'branch_code']);
                         @endphp
                         <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b> </h5>
+                    @else
+                        <h5><b>All Branch</b></h5> 
                     @endif
                     <h6><b>Payroll Report</b></h6>
                     <h6>Payroll Of {{ $s_date .' To '. $e_date }}</h6>
@@ -20,15 +22,15 @@
     <table class="table modal-table table-sm table-bordered">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Employee</th>
-                <th>Department</th>
-                <th>Month/Year</th>
-                <th>Reference No</th>
-                <th>Gross Amount</th>
-                <th>Paid</th>
-                <th>Due</th>
-                <th>Payment Status</th>
+                <th class="text-start">Date</th>
+                <th class="text-start">Employee</th>
+                <th class="text-start">Department</th>
+                <th class="text-start">Month/Year</th>
+                <th class="text-start">Reference No</th>
+                <th class="text-start">Gross Amount</th>
+                <th class="text-start">Paid</th>
+                <th class="text-start">Due</th>
+                <th class="text-start">Payment Status</th>
             </tr>
         </thead>
         <tbody>
@@ -44,15 +46,15 @@
                     $total_due += $row->due;
                 @endphp
                 <tr>
-                    <td>{{ date('d/m/Y', strtotime($row->date)) }}</td>
-                    <td>{{ $row->emp_prefix.' '.$row->emp_name.' '.$row->emp_last_name }}-{{ $row->emp_id }}</h6></td>
-                    <td>{{ $row->department_name }}</td>
-                    <td>{{ $row->month }}/{{ $row->year }}</td>
-                    <td>{{ $row->reference_no }}</td>
-                    <td>{{ $row->gross_amount }}</td>
-                    <td>{{ $row->paid }}</td>
-                    <td>{{ $row->due }}</td>
-                    <td>
+                    <td class="text-start">{{ date('d/m/Y', strtotime($row->date)) }}</td>
+                    <td class="text-start">{{ $row->emp_prefix.' '.$row->emp_name.' '.$row->emp_last_name }}-{{ $row->emp_id }}</h6></td>
+                    <td class="text-start">{{ $row->department_name }}</td>
+                    <td class="text-start">{{ $row->month }}/{{ $row->year }}</td>
+                    <td class="text-start">{{ $row->reference_no }}</td>
+                    <td class="text-start">{{ $row->gross_amount }}</td>
+                    <td class="text-start">{{ $row->paid }}</td>
+                    <td class="text-start">{{ $row->due }}</td>
+                    <td class="text-start">
                         @if ($row->due <= 0) 
     	                    Paid
     	                @elseif($row->due > 0 && $row->due < $row->gross_amount) 

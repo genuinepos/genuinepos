@@ -133,6 +133,27 @@
     
     <script>
         adjustment_table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [ 
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {columns: 'th:not(:first-child)'}
+                },
+                {
+                    extend: 'pdf',
+                    text: 'Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {columns: 'th:not(:first-child)'}
+                },
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {columns: 'th:not(:first-child)'}
+                },
+            ],
             "processing": true,
             "serverSide": true,
             aaSorting: [[3, 'asc']],

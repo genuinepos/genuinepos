@@ -204,6 +204,12 @@
             });
 
             product_table = $('.data_tbl').DataTable({
+                dom: "lBfrtip",
+                buttons: [ 
+                    {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                    {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                    {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                ],
                 "processing": true,
                 "serverSide": true,
                 aaSorting: [

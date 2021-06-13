@@ -9,6 +9,8 @@
                             $branch = DB::table('branches')->where('id', $branch_id)->first(['id', 'name', 'branch_code']);
                         @endphp
                         <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b> </h5>
+                    @elseif($branch_id == '')
+                        <h5><b>All Branch</b></h5> 
                     @endif
                     <h6><b>Payroll Report</b></h6>
                     <h6>Payroll Payment Of <b>{{ $s_date .' To '. $e_date }}</b></h6>
@@ -20,12 +22,12 @@
     <table class="table modal-table table-sm table-bordered">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Employee</th>
-                <th>Payment Voucher No</th>
-                <th>Paid</th>
-                <th>Pay For(Payroll)</th>
-                <th>Paid By</th>
+                <th class="text-start">Date</th>
+                <th class="text-start">Employee</th>
+                <th class="text-start">Payment Voucher No</th>
+                <th class="text-start">Paid</th>
+                <th class="text-start">Pay For(Payroll)</th>
+                <th class="text-start">Paid By</th>
             </tr>
         </thead>
         <tbody>

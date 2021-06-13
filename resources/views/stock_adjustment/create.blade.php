@@ -388,7 +388,6 @@
                                      calculateTotalAmount(); 
                                  }
                              }else{
-                                 console.log(product); 
                                  var li = "";
                                  var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                                  $.each(product.product_variants, function(key, variant){
@@ -410,7 +409,6 @@
                              var variant_ids = document.querySelectorAll('#variant_id');
                              var sameVariant = 0;
                              variant_ids.forEach(function(input){
-                                 console.log(input.value);
                                  if(input.value != 'noid'){
                                      if(input.value == variant_product.id){
                                          sameVariant += 1;
@@ -835,7 +833,8 @@
                  toastr.error('Please check again all form fields.','Some thing want wrong.'); 
                  return;
              }
- 
+             
+             $('.submit_button').prop('type', 'button');
              $.ajax({
                  url:url,
                  type:'post',

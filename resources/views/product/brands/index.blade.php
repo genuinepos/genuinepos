@@ -1,6 +1,6 @@
 @extends('layout.master')
-@push('stylesheets')
-@endpush
+@push('stylesheets')@endpush
+@section('title', 'All Brand - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -64,8 +64,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- Add Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">

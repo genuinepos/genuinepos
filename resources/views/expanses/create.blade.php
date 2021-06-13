@@ -372,6 +372,7 @@
 
 @endsection
 @push('scripts')
+    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script>
         // Set accounts in payment and payment edit form
         var ex_categories = '';
@@ -400,17 +401,9 @@
                 dataType: 'json',
                 success:function(admins){
                     $.each(admins, function (key, admin) {
-                        var role = '';
-                        if (admin.role_type == 1) {
-                            role = 'Super-Admin';
-                        }else if (admin.role_type == 2) {
-                            role = 'Admin';
-                        }else if (admin.role_type == 3) {
-                            role = admin.role.name;
-                        }
                         var prefix = admin.prefix != null ? admin.prefix : '';
                         var last_name = admin.last_name != null ? admin.last_name : '';
-                        $('#admin_id').append('<option value="'+admin.id+'">'+prefix+' '+admin.name+' '+last_name+' ('+role+')'+'</option>');
+                        $('#admin_id').append('<option value="'+admin.id+'">'+prefix+' '+admin.name+' '+last_name+'</option>');
                     });
                 }
             });
@@ -501,7 +494,6 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var inputs = $('.add_input');
-                inputs.removeClass('is-invalid');
                 $('.error').html('');  
                 var countErrorField = 0;  
             $.each(inputs, function(key, val){
@@ -528,16 +520,26 @@
                 cache: false,
                 processData: false,
                 success:function(data){
-                    console.log(data);
+                    $('.loading_button').hide();
                     if(!$.isEmptyObject(data.errorMsg)){
                         toastr.error(data.errorMsg,'ERROR'); 
-                        $('.loading_button').hide();
                     }
 
-                    if(!$.isEmptyObject(data.successMsg)){
-                        $('.loading_button').hide();
-                        toastr.success(data.successMsg); 
-                        window.location = "{{route('expanses.index')}}";
+                    if(!$.isEmptyObject(data)){
+                        toastr.success('Expense created successfully.'); 
+                        $('.extra_category').remove();
+                        $('#add_expanse_form')[0].reset();
+                        calculateAmount();
+                        $(data).printThis({
+                            debug: false,                   
+                            importCSS: true,                
+                            importStyle: true,          
+                            loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
+                            removeInline: false, 
+                            printDelay: 500, 
+                            header: null,  
+                            footer: null,
+                        });
                     }
                 }
             });
@@ -548,7 +550,7 @@
            e.preventDefault();
 
            var html = '';
-           html += '<tr>';
+           html += '<tr class="extra_category">';
             html += '<td>';
             html += '<b><span class="serial">'+(index + 1)+'</span></b>';
             html += '<input class="index-'+(index + 1)+'" type="hidden" id="index">';

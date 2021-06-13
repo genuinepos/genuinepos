@@ -1,7 +1,6 @@
 @extends('layout.master')
-@push('stylesheets')
-    
-@endpush
+@push('stylesheets') @endpush
+@section('title', 'User List - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">

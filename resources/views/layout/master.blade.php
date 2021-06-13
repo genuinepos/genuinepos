@@ -10,9 +10,7 @@
 
     <!-- Icon -->
     <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     @include('layout._stylesheet')
     @stack('stylesheets')
 

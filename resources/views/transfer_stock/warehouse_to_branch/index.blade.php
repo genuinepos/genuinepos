@@ -1,10 +1,6 @@
 @extends('layout.master')
-@push('stylesheets')
-
-
-<style>
-</style>
-@endpush
+@push('stylesheets')@endpush
+@section('title', 'All Transfer(Warehouse To Branch) - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">

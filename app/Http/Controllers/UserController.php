@@ -129,8 +129,15 @@ class UserController extends Controller
         $this->validate($request, [
             'first_name' => 'required',
             'email' => 'required|unique:admin_and_users,email',
+            'department_id' => 'required',
+            'shift_id' => 'required',
+            'emp_id' => 'required',
             'salary' => 'required',
             'pay_type' => 'required',
+        ],[
+            'department_id.required' => 'Department field is required.',
+            'shift_id.required' => 'Shift field is required.',
+            'emp_id.required' => 'Employee ID field is required.',
         ]);
 
         if (isset($request->allow_login)) {
@@ -239,8 +246,15 @@ class UserController extends Controller
         $this->validate($request, [
             'first_name' => 'required',
             'email' => 'required|unique:admin_and_users,email,'.$userId,
+            'department_id' => 'required',
+            'shift_id' => 'required',
+            'emp_id' => 'required',
             'salary' => 'required',
             'pay_type' => 'required',
+        ],[
+            'department_id.required' => 'Department field is required.',
+            'shift_id.required' => 'Shift field is required.',
+            'emp_id.required' => 'Employee ID field is required.',
         ]);
 
         $updateUser = AdminAndUser::where('id', $userId)->first();

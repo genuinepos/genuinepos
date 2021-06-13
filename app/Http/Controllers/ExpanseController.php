@@ -270,7 +270,9 @@ class ExpanseController extends Controller
             }
         }
 
-        return response()->json(['successMsg' => 'Successfully expanse is added']);
+        $expense = Expanse::with(['expense_descriptions', 'expense_descriptions.category', 'admin'])
+        ->where('id', $addExpanse->id)->first();
+        return view('expanses.ajax_view.expense_print', compact('expense'));
     }
 
     //Delete Expanse

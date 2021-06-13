@@ -452,6 +452,7 @@
                                                     <label for="inputEmail3" class="col-4"><b>Employee ID :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" class="form-control" name="emp_id" placeholder="Employee ID">
+                                                        <span class="error error_emp_id"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -465,6 +466,7 @@
                                                                 <option value="{{ $shift->id }}">{{ $shift->shift_name }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="error error_shift_id"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -481,6 +483,7 @@
                                                                 <option value="{{ $department->id }}">{{ $department->department_name }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="error error_department_id"></span>
                                                     </div>
                                                 </div>
                                             </div>

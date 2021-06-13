@@ -3,6 +3,7 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css" />
 @endpush
+@section('title', 'Expense List - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -195,24 +196,9 @@
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [ 
-                {
-                    extend: 'excel',
-                    text: 'Excel',
-                    className: 'btn btn-primary',
-                    exportOptions: {columns: 'th:not(:first-child)'}
-                },
-                {
-                    extend: 'pdf',
-                    text: 'Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {columns: 'th:not(:first-child)'}
-                },
-                {
-                    extend: 'print',
-                    text: 'Print',
-                    className: 'btn btn-primary',
-                    exportOptions: {columns: 'th:not(:first-child)'}
-                },
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
             ],
             "processing": true,
             "serverSide": true,
@@ -421,27 +407,6 @@
         }
         setAdmin();
 
-        // // Show sweet alert for delete
-        // $(document).on('click', '#delete_payment',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     var button = $(this);
-        //     $('#payment_deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure to delete ?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     }).then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#payment_deleted_form').submit();
-        //             button.closest('tr').remove();
-        //         } else {
-        //             swal("Your imaginary file is safe!");
-        //         }
-        //     });
-        // });
-
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
@@ -501,23 +466,6 @@
                 footer: footer
             });
         });
-
-        
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete', function(e) {
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //             title: "Are you sure to datele?",
-        //             buttons: true,
-        //             dangerMode: true,
-        //     }).then((willDelete) => {
-        //         if (willDelete) {
-        //             $('#deleted_form').submit();
-        //         }
-        //     });
-        // });
 
         $(document).on('click', '#delete',function(e){
             e.preventDefault();

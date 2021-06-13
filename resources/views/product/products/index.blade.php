@@ -1,6 +1,6 @@
 @extends('layout.master')
-@push('stylesheets')
-@endpush
+@push('stylesheets')@endpush
+@section('title', 'Product List - ')
 @section('content')
     <div class="content body-woaper">
         <div class="container-fluid">

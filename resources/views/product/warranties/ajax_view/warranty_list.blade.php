@@ -32,6 +32,13 @@
     </tbody>
 </table>
 
-<!--Data table js active link-->
-<script src="{{ asset('public') }}/assets/plugins/custom/data-table/datatable.active.js"></script>
-<!--Data table js active link end-->
+<script>
+    $('.data_tbl').DataTable({
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+        ],
+    });
+</script>

@@ -1,8 +1,7 @@
 @extends('layout.master')
-@push('stylesheets')
-@endpush
+@push('stylesheets') @endpush
+@section('title', 'Supplier List - ')
 @section('content')
-
 <div class="body-woaper">
     <div class="container-fluid">
         <div class="row">

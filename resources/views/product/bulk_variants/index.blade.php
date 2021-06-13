@@ -1,8 +1,7 @@
 @extends('layout.master')
-@push('stylesheets')
-@endpush
+@push('stylesheets')@endpush
+@section('title', 'Variants - ')
 @section('content')
-    
     <div class="body-woaper" style="margin-top: 64px;">
         <div class="container-fluid">
             <div class="container">

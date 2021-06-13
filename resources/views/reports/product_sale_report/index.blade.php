@@ -19,6 +19,7 @@
         /* Search Product area style end */
     </style>
 @endpush
+@section('title', 'Product Sale Report - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">

@@ -10,6 +10,7 @@
         .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
     </style>
 @endpush
+@section('title', 'Stock Adjustment Reports - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -187,6 +188,12 @@
     getAdjustmentAmounts();
 
     adjustment_table = $('.data_tbl').DataTable({
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
+            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
+            {extend: 'print',text: 'Print',className: 'btn btn-primary'},
+        ],
         "processing": true,
         "serverSide": true,
         aaSorting: [[3, 'asc']],

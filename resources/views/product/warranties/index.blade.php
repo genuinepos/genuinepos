@@ -1,6 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
 @endpush
+@section('title', 'Warrantites - ')
 @section('content')
 <br><br><br>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">

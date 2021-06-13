@@ -7,6 +7,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
 @endpush
+@section('title', 'Attendance Report - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">

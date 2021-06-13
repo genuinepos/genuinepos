@@ -10,6 +10,7 @@
         .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
     </style>
 @endpush
+@section('title', 'Expense Report - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">

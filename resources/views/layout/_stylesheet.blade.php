@@ -24,15 +24,13 @@
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/style.css') }}">
     <link href="{{ asset('public') }}/assets/plugins/custom/summernote/summernote.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-
-
     {{-- DataTable Global CSS --}}
     <style>
         .dt-buttons {
             padding-top: 0px !important;
             padding-bottom: 0px !important;
             float: right;
-            margin-right: 5px;
+            margin-right: 16px;
         }
 
         .dt-buttons button {

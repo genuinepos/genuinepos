@@ -140,6 +140,12 @@
     setCustomers();
 
     var table = $('.data_tbl').DataTable({
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
+            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
+            {extend: 'print',text: 'Print',className: 'btn btn-primary'},
+        ],
         "processing": true,
         "serverSide": true,
         aaSorting: [[2, 'desc']],

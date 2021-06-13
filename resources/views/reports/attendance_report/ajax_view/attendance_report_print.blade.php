@@ -9,7 +9,7 @@
                         @php
                             $branch = DB::table('branches')->where('id', $branch_id)->first(['id', 'name', 'branch_code']);
                         @endphp
-                        <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b> </h5>
+                        <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b>(BR) </h5>
                     @elseif($branch_id == '')
                         <h5><b>All Branch</b></h5> 
                     @endif
@@ -54,12 +54,11 @@
                             Clock-Out-does-not-exists
                         @endif
                     </td>
-                    <td class="text-start">{{ $row->shift_name }}</td>
+                    <td class="text-start">{{ $row->shift_name ? $row->shift_name : 'N/A' }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-    <br>
     <div class="footer_area text-center">
         <small>Developed by <b>SpeedDigit Pvt. Ltd.</b></small>
     </div>

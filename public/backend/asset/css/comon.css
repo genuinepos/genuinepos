@@ -445,3 +445,7 @@ select {height: 26px;}
 .widget_content .table-responsive {
     margin-top: -11px;
 }
+
+a#print_report {
+    margin-top: 1em;
+}

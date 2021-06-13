@@ -8,8 +8,8 @@
                         @php
                             $branch = DB::table('branches')->where('id', $branch_id)->first(['id', 'name', 'branch_code']);
                         @endphp
-                        <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b> </h5>
-                    @else
+                        <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b>(BR) </h5>
+                    @elseif($branch_id == '')
                         <h5><b>All Branch</b></h5> 
                     @endif
                     <h6><b>Payroll Report</b></h6>
@@ -77,7 +77,6 @@
             </tr>
         </tfoot>
     </table>
-    <br>
     <div class="footer_area text-center">
         <small>Developed by <b>SpeedDigit Pvt. Ltd.</b></small>
     </div>

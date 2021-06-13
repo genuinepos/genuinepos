@@ -236,24 +236,9 @@
             "serverSide": true,
             dom: "lBfrtip",
             buttons: [ 
-                {
-                    extend: 'excel',
-                    text: 'Excel',
-                    className: 'btn btn-primary',
-                    exportOptions: {columns: 'th:not(:first-child)'}
-                },
-                {
-                    extend: 'pdf',
-                    text: 'Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {columns: 'th:not(:first-child)'}
-                },
-                {
-                    extend: 'print',
-                    text: 'Print',
-                    className: 'btn btn-primary',
-                    exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}
-                },
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
             aaSorting: [[0, 'desc']],
             "ajax": {

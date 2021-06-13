@@ -95,7 +95,7 @@
                                                 </tr>
                                             </tfoot>
                                         </table>
-                                        <a href="{{ route('reports.payroll.payment.print') }}" class="btn btn-sm btn-primary float-end mt-2" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                        <a href="{{ route('reports.payroll.payment.print') }}" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                                     </div>
                                 </div>
 

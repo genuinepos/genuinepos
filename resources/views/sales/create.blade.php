@@ -200,7 +200,7 @@
                                 <div class="item-details-sec mt-2 payment_body">
                                     <div class="content-inner">
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class=" col-4"><b>Ship Details :</b></label>
                                                     <div class="col-8">
@@ -209,16 +209,16 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Shipment Address :</b></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Ship Address :</b></label>
                                                     <div class="col-8">
                                                         <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address"> 
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class=" col-4"><b>Ship Status :</b></label>
                                                     <div class="col-8">
@@ -233,12 +233,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <div class="col-md-3">
+                                        <div class="row mt-1">
+                                            <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Account :</b></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Delivered To :</b></label>
                                                     <div class="col-8">
-                                                       
+                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="Delivered To"> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -357,8 +359,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-2">
-                                            <div class="col-md-7">
+                                        <div class="row mt-1">
+                                            <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class=" col-3"><b>Payment Note :</b></label>
                                                     <div class="col-9">
@@ -367,11 +369,11 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-5">
+                                            <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-3"><b>Total Due :</b></label>
+                                                    <label for="inputEmail3" class=" col-3"><b>Sale Note :</b></label>
                                                     <div class="col-9">
-                                                        <input readonly type="number" step="any" class="form-control" name="total_due" id="total_due" value="0.00">
+                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note"> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -473,9 +475,8 @@
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Delevered To :</label>
+                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Pay Account :</label>
                                             <div class="col-sm-7">
-                                                <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="Delivered To"> 
                                                 <select name="account_id" class="form-control" id="account_id">
                                                     <option value="">None</option>
                                                     @foreach ($accounts as $account)
@@ -486,9 +487,9 @@
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Sale Note :</label>
+                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Due :</label>
                                             <div class="col-sm-7">
-                                                <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note"> 
+                                                <input readonly type="number" step="any" class="form-control" name="total_due" id="total_due" value="0.00">
                                             </div>
                                         </div>
 

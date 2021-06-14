@@ -20,7 +20,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
+                                <span class="fas fa-money-bill"></span>
                                 <h5>Expense Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">

@@ -10,7 +10,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
+                                <span class="fas fa-file-invoice"></span>
                                 <h5>Invoice Layouts</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -86,84 +86,64 @@
             }
         });
 
-        // call jquery method 
-        // $(document).ready(function(){
-        //     // Show sweet alert for delete
-        //     $(document).on('click', '#delete',function(e){
-        //         e.preventDefault();
-        //         var url = $(this).attr('href');
-        //         $('#deleted_form').attr('action', url);
-        //         swal({
-        //             title: "Are you sure ?",
-        //             icon: "warning",
-        //             buttons: true,
-        //             dangerMode: true,
-        //         })
-        //         .then((willDelete) => {
-        //             if (willDelete) { 
-        //                 $('#deleted_form').submit();
-        //             } else {
-        //                 swal("Your imaginary file is safe!");
-        //             }
-        //         });
-        //     });
-            $(document).on('click', '#delete',function(e){
-                e.preventDefault(); 
-                var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);       
-                $.confirm({
-                    'title': 'Delete Confirmation',
-                    'content': 'Are you sure?',
-                    'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-modal-primary',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-danger',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
+       
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault(); 
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);       
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
                         }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
                     }
-                });
-            });
-
-            //data delete by ajax
-            $(document).on('submit', '#deleted_form',function(e){
-                e.preventDefault();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                $.ajax({
-                    url:url,
-                    type:'post',
-                    async:false,
-                    data:request,
-                    success:function(data){
-                        toastr.error(data);
-                        table.ajax.reload();
-                        $('#deleted_form')[0].reset();
-                    }
-                });
-            });
-
-            // pass editable data to edit modal fields
-            $(document).on('click', '#set_default_btn', function(e){
-                e.preventDefault();
-                $('.data_preloader').show();
-                var url = $(this).attr('href');
-                $.ajax({
-                    url:url,
-                    type:'get',
-                    success:function(data){
-                        table.ajax.reload();
-                        toastr.success(data);
-                        $('.data_preloader').hide();
-                    }
-                });
+                }
             });
         });
+
+        //data delete by ajax
+        $(document).on('submit', '#deleted_form',function(e){
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url:url,
+                type:'post',
+                async:false,
+                data:request,
+                success:function(data){
+                    toastr.error(data);
+                    table.ajax.reload();
+                    $('#deleted_form')[0].reset();
+                }
+            });
+        });
+
+        // pass editable data to edit modal fields
+        $(document).on('click', '#set_default_btn', function(e){
+            e.preventDefault();
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $.ajax({
+                url:url,
+                type:'get',
+                success:function(data){
+                    table.ajax.reload();
+                    toastr.success(data);
+                    $('.data_preloader').hide();
+                }
+            });
+        });
+        
     </script>
 @endpush

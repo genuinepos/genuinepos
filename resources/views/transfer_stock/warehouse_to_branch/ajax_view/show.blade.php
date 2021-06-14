@@ -49,8 +49,8 @@
                         </li>
                     </ul>
                 </div>
-                
-            </div><br><br>
+            </div><br>
+            
             <div class="row">
                 <div class="table-responsive">
                     <table id="" class="table modal-table table-striped table-sm">
@@ -160,7 +160,7 @@
                         <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                         <small class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</small><br>
                         <small class="company_address">Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</small>
-                        <h6 class="bill_name">Transfer Stock Invoice (To Branch)</h6>
+                        <h6 class="bill_name">Transfer Stock (To Branch)</h6>
                     </div>
                 </div>
             </div>

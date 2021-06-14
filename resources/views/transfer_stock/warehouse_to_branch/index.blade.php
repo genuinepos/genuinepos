@@ -10,8 +10,8 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
-                                <h5>Transfer Stocks</h5>
+                                <span class="fas fa-exchange-alt"></span>
+                                 <h5>Transfer Stocks</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>

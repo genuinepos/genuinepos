@@ -355,9 +355,9 @@ class SaleController extends Controller
                 })
                 ->editColumn('from',  function ($row) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BRANCH</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WAREHOUSE</b>)';
+                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -465,7 +465,7 @@ class SaleController extends Controller
                             Action
                         </button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('sales.quotations.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i>View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="' . route('sales.quotations.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
                     if (auth()->user()->branch_id == $row->branch_id) {
                         if ($row->created_by == 1) {
@@ -473,7 +473,7 @@ class SaleController extends Controller
                         }else {
                             $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                         }
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
                     }
 
                     $html .= '</div>';
@@ -485,9 +485,9 @@ class SaleController extends Controller
                 })
                 ->editColumn('from',  function ($row) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BRANCH</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WAREHOUSE</b>)';
+                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -1763,9 +1763,9 @@ class SaleController extends Controller
                 })
                 ->editColumn('from',  function ($row) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BRANCH</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WAREHOUSE</b>)';
+                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {

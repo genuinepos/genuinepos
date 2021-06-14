@@ -114,7 +114,7 @@ class PurchaseReturnController extends Controller
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) {
-                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BRANCH)</b>' : ($row->warehouse_name . '/' . $row->warehouse_code) . '<b>(WAREHOUSE)</b>';
+                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BR)</b>' : ($row->warehouse_name . '/' . $row->warehouse_code) . '<b>(WH)</b>';
                 })
                 ->editColumn('total_return_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_return_amount . '</b>';

@@ -20,7 +20,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
+                                <span class="far fa-money-bill-alt"></span>
                                 <h5>Sale Payment Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
@@ -89,9 +89,9 @@
     
                                             </tbody>
                                             <tfoot>
-                                                <tr>
-                                                    <th colspan="2" class="text-end">Total :</th>
-                                                    <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid_amount"></span></th>
+                                                <tr class="bg-secondary">
+                                                    <th colspan="2" class="text-end text-white">Total :</th>
+                                                    <th class="text-start text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid_amount"></span></th>
                                                     <th colspan="3"></th>
                                                 </tr>
                                             </tfoot>

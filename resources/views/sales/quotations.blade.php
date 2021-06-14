@@ -3,6 +3,7 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css" />
 @endpush
+@section('title', 'Sale Quotations - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -12,7 +13,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
+                                <span class="fas fa-quote-right"></span>
                                 <h5>Quotations</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
@@ -29,7 +30,7 @@
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-md-3">
                                                         <label><strong>Branch :</strong></label>
-                                                        <select name="branch_id" class="form-control form-control-sm submit_able" id="branch_id">
+                                                        <select name="branch_id" class="form-control submit_able" id="branch_id">
                                                             
                                                         </select>
                                                     </div>
@@ -38,7 +39,7 @@
                                                 <div class="col-md-3">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id"
-                                                        class="form-control form-control-sm selectpicker submit_able"
+                                                        class="form-control selectpicker submit_able"
                                                         id="customer_id">
                                                     </select>
                                                 </div>
@@ -48,10 +49,10 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week text-navy-blue"></i></span>
+                                                                    class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
                                                         <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control form-control-sm daterange submit_able_input"
+                                                            class="form-control  daterange submit_able_input"
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
@@ -120,8 +121,6 @@
     <div id="quotation_details">
         
     </div>
-
-
 @endsection
 @push('scripts')
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
@@ -141,6 +140,12 @@
         });
 
         qutotation_table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [ 
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            ],
             "processing": true,
             "serverSide": true,
             aaSorting: [[3, 'asc']],

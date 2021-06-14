@@ -10,7 +10,7 @@
                     <!-- =====================================================================BODY CONTENT================== -->
                     <div class="sec-name">
                         <div class="name-head">
-                            <span class="fas fa-desktop"></span>
+                            <span class="fas fa-users"></span>
                             <h5>Suppliers</h5>
                         </div>
 

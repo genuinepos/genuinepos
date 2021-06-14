@@ -3,6 +3,7 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css" />
 @endpush
+@section('title', 'Shipments - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -12,7 +13,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
+                                <span class="fas fa-shipping-fast"></span>
                                 <h5>Shipments</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
@@ -148,6 +149,12 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script>
         var table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [ 
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            ],
             "processing": true,
             "serverSide": true,
             aaSorting: [[3, 'asc']],

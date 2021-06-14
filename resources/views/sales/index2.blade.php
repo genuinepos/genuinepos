@@ -12,7 +12,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
+                                <span class="fas fa-shopping-cart"></span>
                                 <h5>Sales</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
@@ -237,9 +237,9 @@
             "serverSide": true,
             dom: "lBfrtip",
             buttons: [ 
-                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
             aaSorting: [[0, 'desc']],
             "ajax": {
@@ -559,48 +559,29 @@
             }); 
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure to delete ?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     }).then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         } else {
-        //             swal("Your imaginary file is safe!");
-        //         }
-        //     });
-        // });
-
-            $(document).on('click', '#delete',function(e){
-                e.preventDefault(); 
-                var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);       
-                $.confirm({
-                    'title': 'Delete Confirmation',
-                    'content': 'Are you sure?',
-                    'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-modal-primary',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-danger',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault(); 
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);       
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
                         }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
                     }
-                });
+                }
             });
+        });
             
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){

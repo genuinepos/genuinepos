@@ -17,7 +17,7 @@
                             <li><strong>Invoice ID : </strong> {{ $saleReturn->invoice_id }}</li>
                             <li><strong>Return Date : </strong> {{ $saleReturn->date }}</li>
                             <li><strong>Customer Name : </strong> {{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
-                            <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : $saleReturn->warehouse->warehouse_name.'/'.$saleReturn->warehouse->warehouse_code }} </li>
+                            <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code.'(BR)' : $saleReturn->warehouse->warehouse_name.'/'.$saleReturn->warehouse->warehouse_code.'(WH)' }} </li>
                         </ul>
                     </div>
                     <div class="col-md-4 text-left">
@@ -27,13 +27,12 @@
                     </div>
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li><strong>Parent Sale Details : </li>
+                            <li><strong>Parent Sale Details  </strong></li>
                             <li><strong>Invoice No : </strong> {{ $saleReturn->sale->invoice_id  }}</li>
                             <li><strong>Date : </strong> {{ $saleReturn->sale->date }}</li>
                         </ul>
                     </div>
-                </div><br><br>
-
+                </div><br>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">

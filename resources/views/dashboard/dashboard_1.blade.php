@@ -156,7 +156,7 @@
                         </div>
                         <div class="switch_bar">
                             <a href="{{ route('stock.adjustments.create') }}" class="bar-link">
-                                <span><i class="fas fa-file-invoice"></i></span>
+                                <span><i class="fas fa-sliders-h"></i></span>
                                 <p>Add Adjustment</p>
                             </a>
                         </div>

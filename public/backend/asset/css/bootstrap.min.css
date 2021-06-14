@@ -11,49 +11,52 @@
 
   .four-col-modal{
     max-width: 70%!important;
+    margin: 3.8rem auto;
   }
 
   .five-col-modal{
     max-width: 90%!important;
+    margin: 3.8rem auto;
   }
 
   .col-80-modal{
     max-width: 80%!important;
+    margin: 3.8rem auto;
   }
 
   .double-col-modal{
     max-width: 35%!important;
-    margin: 1.75rem auto;
+    margin: 3.8rem auto;
   }  
 
   .col-40-modal{
     max-width: 40%!important;
-    margin: 1.75rem auto;
+    margin: 3.8rem auto;
   }  
 
   .col-45-modal{
     max-width: 45%!important;
-    margin: 1.75rem auto;
+    margin: 3.8rem auto;
   }
   
   .col-50-modal{
     max-width: 50%!important;
-    margin: 1.75rem auto;
+    margin: 3.8rem auto;
   }
 
   .col-55-modal{
     max-width: 55%!important;
-    margin: 1.75rem auto;
+    margin: 3.8rem auto;
   }
   
   .col-60-modal{
     max-width: 60%!important;
-    margin: 1.75rem auto;
+    margin: 3.8rem auto;
   }
 
   .col-65-modal{
     max-width: 65%!important;
-    margin: 1.75rem auto;
+    margin: 3.8rem auto;
   }
 }
 

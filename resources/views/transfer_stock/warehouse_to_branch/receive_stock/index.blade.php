@@ -1,6 +1,6 @@
 @extends('layout.master')
-@push('stylesheets')
-@endpush
+@push('stylesheets') @endpush
+@section('title', 'Receive Stocks(From Branch) - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -10,7 +10,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
+                                <span class="fas fa-check-double"></span>
                                 <h5>Receive Stocks</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
@@ -73,15 +73,17 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script>
         var table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [ 
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            ],
             "processing": true,
             "serverSide": true,
             aaSorting: [[0, 'asc']],
             ajax: "{{ route('transfer.stocks.to.branch.receive.stock.index') }}",
-            // columnDefs: [{
-            //     "targets": [0],
-            //     "orderable": false,
-            //     "searchable": false
-            // }],
+       
             columns: [
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id',name: 'invoice_id'},

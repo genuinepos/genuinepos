@@ -155,21 +155,19 @@
                     <div class="container-fluid">
                         <div class="row">
                             @if (auth()->user()->permission->category['category_all'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.categories.index') }}" class="bar-link">
-                                            <span><img
-                                                    src="{{ asset('public/backend/asset/img/categories.png') }}"></span>
+                                            <span><img src="{{ asset('public/backend/asset/img/categories.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.categories')</p>
                                 </div>
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 text-center ms-4">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.subcategories.index') }}" class="bar-link">
-                                            <span><img
-                                                    src="{{ asset('public/backend/asset/img/convert.png') }}"></span>
+                                            <span><img src="{{ asset('public/backend/asset/img/convert.png') }}"></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.sub_categories')</p>

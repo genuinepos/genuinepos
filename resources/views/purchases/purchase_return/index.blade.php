@@ -3,6 +3,7 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css" />
 @endpush
+@section('title', 'Purchase Return List - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -12,7 +13,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
+                                <span class="fas fa-undo-alt"></span>
                                 <h5>Purchase Returns</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
@@ -142,10 +143,16 @@
         @endif
 
         var table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [ 
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            ],
             "processing": true,
             "serverSide": true,
             aaSorting: [
-                [3, 'asc']
+                [0, 'asc']
             ],
             "ajax": {
                 "url": "{{ route('purchases.returns.index') }}",

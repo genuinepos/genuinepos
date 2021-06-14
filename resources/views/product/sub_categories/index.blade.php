@@ -10,7 +10,7 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
+                                <span class="fas fa-cubes"></span>
                                 <h5>SubCategories</h5>
                             </div>
                         </div>

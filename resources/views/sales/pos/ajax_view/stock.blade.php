@@ -1,4 +1,4 @@
-<link href="{{asset('public/backend/css/data-table.css')}}" rel="stylesheet" type="text/css">
+<link href="{{asset('public/backend/css/data-table.min.css')}}" rel="stylesheet" type="text/css">
 <p><b>Stock Location : {!! $branch ? $branch->name.'/'.$branch->branch_code.' (BRANCH)' : $warehouse->warehouse_name.'/'.$warehouse->warehouse_code.' (WAREHOUSE)' !!}</b></p>
 <table class="table modal-table table-sm table-striped" id="data_table">
     <thead>
@@ -47,7 +47,7 @@
     div#data_table_filter input {height: 23px!important;padding: 1px!important;width: 68%!important;}
     .dataTables_info{display: none!important;}
 </style>
-<script src="{{asset('public/backend/js/data-table.jquery.js')}}"></script> 
+<script src="{{asset('public/backend/js/data-table.jquery.min.js')}}"></script> 
 <script>
     $('#data_table').DataTable();
 </script>

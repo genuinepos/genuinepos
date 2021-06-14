@@ -1840,7 +1840,7 @@ class SaleController extends Controller
     public function customerInfo($customerId)
     {
         $customer = DB::table('customers')->where('id', $customerId)
-        ->select('pay_term', 'pay_term_number', 'total_sale_due')->first();
+        ->select('pay_term', 'pay_term_number', 'total_sale_due', 'point')->first();
         return response()->json($customer);
     }
 
@@ -2285,7 +2285,7 @@ class SaleController extends Controller
         $updateSalePayment->sale->due = $updateSalePayment->sale->due - $request->amount;
         $updateSalePayment->sale->save();
 
-        // Update previoues account and delete previous cashflow.
+        // Update previous account and delete previous cashflow.
         if ($updateSalePayment->account) {
             $updateSalePayment->account->credit = $updateSalePayment->account->credit - $updateSalePayment->paid_amount;
             $updateSalePayment->account->balance = $updateSalePayment->account->balance - $updateSalePayment->paid_amount;

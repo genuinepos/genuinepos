@@ -110,13 +110,13 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">Point</span>
                                     </div>
-                                    <input type="text" class="form-control">
+                                    <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
                                     <!-- =============================== -->
 
                                     <div class="input-group-prepend ms-1">
                                         <span class="input-group-text valus">USD</span>
                                     </div>
-                                    <input type="text" class="form-control">
+                                    <input readonly type="text" class="form-control">
                                 </div>
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend">
@@ -192,9 +192,11 @@
     $('#customer_id').on('change', function () {
         var customerId = $(this).val();
         $('#previous_due').val(parseFloat(0).toFixed(2));
+        $('#earned_point').val('');
         var url = "{{ url('sales/customer_info') }}"+'/'+customerId;
         $.get(url, function(data) {
             $('#previous_due').val(data.total_sale_due);
+            $('#earned_point').val(data.point);
             calculateTotalAmount();
         });
         calculateTotalAmount();

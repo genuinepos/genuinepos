@@ -239,7 +239,7 @@ class GeneralSettingController extends Controller
             'min_redeem_point' => $request->min_redeem_point ? $request->min_redeem_point : '',
             'max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : '',
         ];
-
+        
         $updateRewardPointgSettings->reward_poing_settings = json_encode($RewardPointgSettings);
         $updateRewardPointgSettings->save();
         return response()->json('Reward point settings updated Successfully');

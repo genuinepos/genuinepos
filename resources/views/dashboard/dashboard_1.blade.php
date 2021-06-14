@@ -127,76 +127,89 @@
                     <div class="row mx-3 mt-3 switch_bar_cards">
 
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-chart-line"></i></span>
-                                <p></p>
+                            <a href="{{ route('sales.create') }}" class="bar-link">
+                                <span>
+                                    <i class="fas fa-shopping-cart"></i>
+                                </span>
+                                <p>Add Sale</p>
+                            </a>
+                            
+                        </div>
+                        <div class="switch_bar">
+                            <a href="{{ route('purchases.create') }}" class="bar-link">
+                                <span><i class="fas fa-shopping-basket"></i></span>
+                                <p>Add Purchase</p>
                             </a>
                         </div>
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-group"></i></span>
-                                <p></p>
+                            <a href="{{ route('products.add.view') }}" class="bar-link">
+                                <span><i class="fas fa-plus-square"></i></span>
+                                <p>Add Product</p>
                             </a>
+                            
                         </div>
                         <div class="switch_bar">
                             <a href="#" class="bar-link">
-                                <span><i class="fas fa-receipt"></i></span>
-                                <p></p>
+                                <span><i class="fas fa-money-bill"></i></span>
+                                <p>Add Expense</p>
                             </a>
                         </div>
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-home"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
+                            <a href="{{ route('stock.adjustments.create') }}" class="bar-link">
                                 <span><i class="fas fa-file-invoice"></i></span>
-                                <p></p>
+                                <p>Add Adjustment</p>
                             </a>
                         </div>
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-chart-pie"></i></span>
-                                <p></p>
+                            <a href="{{ route('users.create') }}" class="bar-link">
+                                <span><i class="fas fa-user-plus"></i></span>
+                                <p>Add User</p>
                             </a>
                         </div>
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-chart-line"></i></span>
-                                <p></p>
+                            <a href="{{ route('settings.general.index') }}" class="bar-link">
+                                <span><i class="fas fa-cogs"></i></span>
+                                <p>G.Settings</p>
                             </a>
                         </div>
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-group"></i></span>
-                                <p></p>
+                            <a href="{{ route('product.categories.index') }}" class="bar-link">
+                                <span><i class="fas fa-cubes"></i></span>
+                                <p>Categories</p>
                             </a>
                         </div>
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-receipt"></i></span>
-                                <p></p>
+                            <a href="{{ route('product.brands.index') }}" class="bar-link">
+                                <span><i class="fas fa-band-aid"></i></span>
+                                <p>Brands</p>
                             </a>
                         </div>
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-home"></i></span>
-                                <p></p>
+                            <a href="{{ route('contacts.supplier.index') }}" class="bar-link">
+                                <span><i class="fas fa-users"></i></span>
+                                <p>Suppliers</p>
                             </a>
                         </div>
+
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-file-invoice"></i></span>
-                                <p></p>
+                            <a href="{{ route('contacts.customer.index') }}" class="bar-link">
+                                <span><i class="fas fa-people-arrows"></i></span>
+                                <p>Customers</p>
                             </a>
                         </div>
+
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-chart-pie"></i></span>
-                                <p></p>
-                            </a>
+                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                <a href="{{ route('transfer.stock.to.branch.create') }}" class="bar-link">
+                                    <span><i class="fas fa-exchange-alt"></i></span>
+                                    <p>Add Transfer</p>
+                                </a>
+                            @else 
+                                <a href="{{ route('transfer.stock.to.warehouse.create') }}" class="bar-link">
+                                    <span><i class="fas fa-exchange-alt"></i></span>
+                                    <p>Add Transfer</p>
+                                </a>
+                            @endif
                         </div>
 
                     </div>

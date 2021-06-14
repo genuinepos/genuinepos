@@ -74,7 +74,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control">
+                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Purchase Invoice ID">
                                                 </div>
                                             </div>
 
@@ -207,102 +207,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            {{-- <div class="col-md-3">
-                            <div class="item-details-sec">
-                                <div class="content-inner">
-                                    <div class="row">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Total Sales</label>
-                                        <div class="col-sm-6">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Prev Balance</label>
-                                        <div class="col-sm-3">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Sales Return</label>
-                                        <div class="col-sm-3">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Discount</label>
-                                        <div class="col-sm-3">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Sub Total</label>
-                                        <div class="col-sm-6">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Paid</label>
-                                        <div class="col-sm-6">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Cash/Ex. Retnd</label>
-                                        <div class="col-sm-6">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">New Balance</label>
-                                        <div class="col-sm-6">
-                                            <input type="number" class="form-control" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">New Balance</label>
-                                        <div class="col-sm-6">
-                                            <textarea name="" class="form-control" id="" cols="3" rows="2"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-1">
-                                        <label for="inputEmail3" class="col-sm-5 col-form-label">New Balance</label>
-                                        <div class="col-sm-6">
-                                            <textarea name="" class="form-control" id="" cols="3" rows="2"></textarea>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="submitBtn">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="btn-bg">
-                                                    <a href="" class="bg-parpal function-card">
-                                                        <small>Save & Print</small>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="btn-bg">
-                                                    <a href="" class="bg-parpal function-card">
-                                                        <small>Save</small>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                         </div>
                     </div>
                 </section>

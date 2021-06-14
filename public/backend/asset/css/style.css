@@ -1351,3 +1351,5 @@ button.btn.btn-modal-primary {
     background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%)!important;
     color: #fff;
 }
+
+a.bar-link p {font-size: 7px; font-weight: 600; margin-top: -7px;}

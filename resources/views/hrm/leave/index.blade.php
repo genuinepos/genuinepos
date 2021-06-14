@@ -5,6 +5,7 @@
         .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
     </style>
 @endpush
+@section('title', 'HRM Leaves - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">

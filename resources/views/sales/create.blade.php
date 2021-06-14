@@ -90,7 +90,7 @@
                                                 <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id"
-                                                        class="form-control">
+                                                        class="form-control" placeholder="Invoice ID">
                                                 </div>
                                             </div>
 

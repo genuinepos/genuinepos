@@ -7,6 +7,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
 @endpush
+@section('title', 'HRM Payrolls - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -306,6 +307,12 @@
     @endif
 
     var table = $('.data_tbl').DataTable({
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+        ],
         "processing": true,
         "serverSide": true,
         "searching" : true,

@@ -497,46 +497,30 @@
         });
     });
 
-    // Show sweet alert for delete
-    // $(document).on('click', '#delete',function(e){
-    //     e.preventDefault();
-    //     var url = $(this).attr('href');
-    //     $('#deleted_form').attr('action', url);
-    //     swal({
-    //         title: "Are you sure to delete ?",
-    //         buttons: true,
-    //         dangerMode: true,
-    //     }).then((willDelete) => {
-    //         if (willDelete) { 
-    //             $('#deleted_form').submit();
-    //         } else {
-    //             swal("Your imaginary file is safe!");
-    //         }
-    //     });
-    // });
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'message': 'Are you sure?',
-                'buttons': {
-                    'Yes': {
-                        'class': 'yes bg-primary',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no bg-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
+
+    $(document).on('click', '#delete',function(e){
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $('#deleted_form').attr('action', url);           
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'message': 'Are you sure?',
+            'buttons': {
+                'Yes': {
+                    'class': 'yes bg-primary',
+                    'action': function() {
+                        $('#deleted_form').submit();
                     }
+                },
+                'No': {
+                    'class': 'no bg-danger',
+                    'action': function() {
+                        // alert('Deleted canceled.')
+                    } 
                 }
-            });
+            }
         });
+    });
 
     // Show add payment modal with date 
     $(document).on('click', '#view_payroll', function (e) {
@@ -570,46 +554,30 @@
         });
     });
 
-     // Show sweet alert for delete
-    //  $(document).on('click', '#delete_payment',function(e){
-    //     e.preventDefault();
-    //     var url = $(this).attr('href');
-    //     $('#payment_deleted_form').attr('action', url);
-    //     swal({
-    //         title: "Are you sure to delete ?",
-    //         buttons: true,
-    //         dangerMode: true,
-    //     }).then((willDelete) => {
-    //         if (willDelete) { 
-    //             $('#payment_deleted_form').submit();
-    //         } else {
-    //             swal("Your imaginary file is safe!");
-    //         }
-    //     });
-    // });
-        $(document).on('click', '#delete_payment',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);           
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'message': 'Are you sure?',
-                'buttons': {
-                    'Yes': {
-                        'class': 'yes bg-primary',
-                        'action': function() {
-                            $('#payment_deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no bg-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
+
+    $(document).on('click', '#delete_payment',function(e){
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $('#payment_deleted_form').attr('action', url);           
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'message': 'Are you sure?',
+            'buttons': {
+                'Yes': {
+                    'class': 'yes bg-primary',
+                    'action': function() {
+                        $('#payment_deleted_form').submit();
                     }
+                },
+                'No': {
+                    'class': 'no bg-danger',
+                    'action': function() {
+                        // alert('Deleted canceled.')
+                    } 
                 }
-            });
+            }
         });
+    });
         
     //data delete by ajax
     $(document).on('submit', '#payment_deleted_form',function(e){
@@ -651,7 +619,7 @@
     });
 
     $(document).on('click', '#payment_details_print',function (e) {
-       e.preventDefault(); 
+        e.preventDefault(); 
         var body = $('.payroll_payment_print_area').html();
         var footer = $('.signature_area').html();
         $(body).printThis({

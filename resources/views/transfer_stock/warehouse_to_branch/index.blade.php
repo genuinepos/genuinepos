@@ -87,11 +87,6 @@
                 [0, 'asc']
             ],
             ajax: "{{ route('transfer.stock.to.branch.index') }}",
-            // columnDefs: [{
-            //     "targets": [0],
-            //     "orderable": false,
-            //     "searchable": false
-            // }],
             columns: [
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id',name: 'invoice_id'},
@@ -151,22 +146,6 @@
             });
         });
 
-            // swal({
-            //     title: "Are you sure to delete ?",
-            //     icon: "warning",
-            //     buttons: true,
-            //     showCloseButton: true,
-            //     dangerMode: true,
-            // }).then((willDelete) => {
-            //     if (willDelete) { 
-            //         $('#deleted_form').submit();
-            //     } else {
-            //         swal("Your imaginary file is safe!");
-            //     }
-            // });
-
-       
-            
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();

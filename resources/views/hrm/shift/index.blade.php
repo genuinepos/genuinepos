@@ -213,7 +213,7 @@
 @push('scripts')
 
 <script>
-    // Get all category by ajax
+    // Get all Shift by ajax
     function getAllShift(){
         $('.data_preloader').show();
         $.ajax({
@@ -295,24 +295,6 @@
             });
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure?",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     })
-        //     .then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         } else {
-        //             swal("Your imaginary file is safe!");
-        //         }
-        //     });
-        // });
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');

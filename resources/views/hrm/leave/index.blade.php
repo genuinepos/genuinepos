@@ -388,25 +388,6 @@
             });
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure?",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     })
-        //     .then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         } else {
-        //             swal("Your imaginary file is safe!");
-        //         }
-        //     });
-        // });
-
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();

@@ -570,25 +570,6 @@
             });
         });
 
-        // Show sweet alert for delete
-        $(document).on('click', '#delete_payment', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure to delete ?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $('#payment_deleted_form').submit();
-                } else {
-                    swal("Your imaginary file is safe!");
-                }
-            });
-        });
-
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault(); 
             var url = $(this).attr('href');

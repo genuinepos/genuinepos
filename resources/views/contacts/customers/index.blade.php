@@ -946,49 +946,31 @@
                 });
             });
 
-            // Show sweet alert for delete
-            // $(document).on('click', '#delete_receipt', function(e) {
-            //     e.preventDefault();
-            //     var url = $(this).attr('href');
-            //     var tr = $(this).closest('tr');
-            //     $('#receipt_deleted_form').attr('action', url);
-            //     swal({
-            //         title: "Are you sure?",
-            //         icon: "warning",
-            //         buttons: true,
-            //         dangerMode: true,
-            //     }).then((willDelete) => {
-            //         if (willDelete) {
-            //             $('#receipt_deleted_form').submit();
-            //             tr.remove();
-            //         }
-            //     });
-            // });
             $(document).on('click', '#delete_receipt',function(e){
-            e.preventDefault(); 
-            var url = $(this).attr('href');
-                var tr = $(this).closest('tr');
-                $('#receipt_deleted_form').attr('action', url);     
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure?',
-                'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#receipt_deleted_form').submit();
-                            tr.remove();
+                e.preventDefault(); 
+                var url = $(this).attr('href');
+                    var tr = $(this).closest('tr');
+                    $('#receipt_deleted_form').attr('action', url);     
+                $.confirm({
+                    'title': 'Delete Confirmation',
+                    'content': 'Are you sure?',
+                    'buttons': {
+                        'Yes': {
+                            'class': 'yes btn-danger',
+                            'action': function() {
+                                $('#receipt_deleted_form').submit();
+                                tr.remove();
+                            }
+                        },
+                        'No': {
+                            'class': 'no btn-modal-primary',
+                            'action': function() {
+                                // alert('Deleted canceled.')
+                            } 
                         }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
                     }
-                }
+                });
             });
-        });
 
             //data delete by ajax
             $(document).on('submit', '#receipt_deleted_form', function(e) {

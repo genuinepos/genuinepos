@@ -187,8 +187,6 @@
                     },
                     error: function(err) {
                         $('.loading_button').hide();
-                        toastr.error('Please check again all form fields.',
-                            'Some thing want wrong.');
                         $('.error').html('');
                         $.each(err.responseJSON.errors, function(key, error) {
                             //console.log(key);
@@ -230,8 +228,6 @@
                     },
                     error: function(err) {
                         $('.loading_button').hide();
-                        toastr.error('Please check again all form fields.',
-                            'Some thing want wrong.');
                         $('.error').html('');
                         $('.form-control').removeClass('is-invalid');
                         $.each(err.responseJSON.errors, function(key, error) {
@@ -240,23 +236,6 @@
                     }
                 });
             });
-
-            // Show sweet alert for delete
-            // $(document).on('click', '#delete', function(e) {
-            //     e.preventDefault();
-            //     var url = $(this).attr('href');
-            //     $('#deleted_form').attr('action', url);
-            //     swal({
-            //             title: "Are you sure ?",
-            //             buttons: true,
-            //             dangerMode: true,
-            //         })
-            //         .then((willDelete) => {
-            //             if (willDelete) {
-            //                 $('#deleted_form').submit();
-            //             } 
-            //         });
-            // });
 
             $(document).on('click', '#delete',function(e){
                 e.preventDefault(); 

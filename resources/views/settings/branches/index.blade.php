@@ -203,7 +203,7 @@
                             <button type="button" class="btn loading_button d-none"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                             <button type="submit" class="me-0 c-btn btn_blue float-end">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end submit_button">Close</button>
                         </div>
                     </form>
                 </div>
@@ -458,7 +458,7 @@
                  $('.loading_button').hide();
                 return;
             }
-
+            $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
                 type:'post',
@@ -470,9 +470,9 @@
                     toastr.success(data);
                     $('#add_branch_form')[0].reset();
                     $('.loading_button').hide();
-                    $('.submit_button').show();
                     getAllBranch();
                     $('#addModal').modal('hide');
+                    $('.submit_button').prop('type', 'sumbit');
                 }
             });
         });
@@ -484,7 +484,6 @@
             $('.form-control').removeClass('is-invalid');
             $('.error').html('');
             var branchInfo = $(this).closest('tr').data('info');
-            console.log(branchInfo);
             $('#id').val(branchInfo.id);
             $('#e_name').val(branchInfo.name);
             $('#e_code').val(branchInfo.branch_code);
@@ -548,53 +547,31 @@
             });
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     var id = $(this).data('id');
-        //     $('#deleted_form').attr('action', url);
-        //     $('#deleteId').val(id);
-        //     swal({
-        //         title: "Are you sure?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     })
-        //     .then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         } else {
-        //             swal("Your imaginary file is safe!");
-        //         }
-        //     });
-        // });
-
-            $(document).on('click', '#delete',function(e){
-                e.preventDefault(); 
-                var url = $(this).attr('href');
-                var id = $(this).data('id');
-                $('#deleted_form').attr('action', url);
-                $('#deleteId').val(id);    
-                $.confirm({
-                    'title': 'Delete Confirmation',
-                    'content': 'Are you sure?',
-                    'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-modal-primary',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-danger',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault(); 
+            var url = $(this).attr('href');
+            var id = $(this).data('id');
+            $('#deleted_form').attr('action', url);
+            $('#deleteId').val(id);    
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
                         }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
+                        } 
                     }
-                });
+                }
             });
+        });
 
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){

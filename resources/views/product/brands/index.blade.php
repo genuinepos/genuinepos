@@ -210,11 +210,9 @@
             $(document).on('submit', '#edit_brand_form', function(e){
                 e.preventDefault();
                 $('.loading_button').show();
-                $('.submit_button').hide();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
                 var inputs = $('.edit_input');
-                    inputs.removeClass('is-invalid');
                     $('.error').html('');  
                     var countErrorField = 0;  
                 $.each(inputs, function(key, val){
@@ -222,14 +220,12 @@
                     var idValue = $('#'+inputId).val()
                     if(idValue == ''){
                         countErrorField += 1;
-                        $('#'+inputId).addClass('is-invalid');
                         var fieldName = $('#'+inputId).data('name');
                         $('.error_'+inputId).html(fieldName+' is required.');
                     } 
                 });
                 if(countErrorField > 0){
                     $('.loading_button').hide();
-                    $('.submit_button').show();
                     return;
                 }
                 $.ajax({

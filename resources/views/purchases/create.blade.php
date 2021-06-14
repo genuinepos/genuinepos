@@ -1579,7 +1579,7 @@
                 toastr.error('Please check again all form fields.','Some thing want wrong.'); 
                 return;
             }
-
+            $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
                 type:'post',
@@ -1588,6 +1588,7 @@
                 cache: false,
                 processData: false,
                 success:function(data){
+                    $('.submit_button').prop('type', 'sumbit');
                     if(!$.isEmptyObject(data.errorMsg)){
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();

@@ -239,7 +239,7 @@
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i
                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
                                 <button type="reset" data-bs-dismiss="modal"
                                     class="c-btn btn_orange float-end">Close</button>
                             </div>
@@ -547,7 +547,7 @@
                     $('.loading_button').hide();
                     return;
                 }
-
+                $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -558,6 +558,7 @@
                         getAllCustomer();
                         $('.loading_button').hide();
                         $('#addModal').modal('hide');
+                        $('.submit_button').prop('type', 'submit');
                     }
                 });
             });

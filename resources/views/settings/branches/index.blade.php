@@ -1,6 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
 @endpush
+@section('title', 'Branch List - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">

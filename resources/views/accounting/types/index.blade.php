@@ -94,7 +94,7 @@
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i
                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="me-0 c-btn btn_blue float-end">Save</button>
+                                <button type="submit" class="me-0 c-btn btn_blue float-end submit_button">Save</button>
                                 <button type="reset" data-bs-dismiss="modal"
                                     class="c-btn btn_orange float-end">Close</button>
                             </div>
@@ -184,12 +184,12 @@
                         $('.error_'+inputId).html(fieldName+' is required.');
                     }
                 });
-                console.log(countErrorField);
+
                 if(countErrorField > 0){
                     $('.loading_button').hide();
                     return;
                 }
-
+                $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url:url,
                     type:'post',
@@ -200,6 +200,7 @@
                         $('.loading_button').hide();
                         getAllType();
                         $('#addModal').modal('hide');
+                        $('.submit_button').prop('type', 'submit');
                     }
                 });
             });
@@ -207,10 +208,8 @@
             // pass editable data to edit modal fields
             $(document).on('click', '#edit', function(e){
                 e.preventDefault();
-                $('.form-control').removeClass('is-invalid');
                 $('.error').html('');
                 var type = $(this).closest('tr').data('info');
-                console.log(type);
                 $('#id').val(type.id);
                 $('#e_name').val(type.name);
                 $('#e_remark').val(type.remark);
@@ -245,7 +244,6 @@
                     type:'post',
                     data: request,
                     success:function(data){
-                        console.log(data);
                         toastr.success(data);
                         $('.loading_button').hide();
                         getAllType();
@@ -254,24 +252,6 @@
                 });
             });
 
-            // Show sweet alert for delete
-            // $(document).on('click', '#delete',function(e){
-            //     e.preventDefault();
-            //     var url = $(this).attr('href');
-            //     $('#deleted_form').attr('action', url);
-            //     swal({
-            //         title: "Are you sure?",
-            //         icon: "warning",
-            //         buttons: true,
-            //         dangerMode: true,
-            //     }).then((willDelete) => {
-            //         if (willDelete) { 
-            //             $('#deleted_form').submit();
-            //         } else {
-            //             swal("Your imaginary file is safe!");
-            //         }
-            //     });
-            // });
             $(document).on('click', '#delete',function(e){
                 e.preventDefault();
                 var url = $(this).attr('href');

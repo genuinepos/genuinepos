@@ -511,7 +511,7 @@
                 toastr.error('Please check again all form fields.'); 
                 return;
             }
-
+            $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
                 type:'post',
@@ -521,6 +521,7 @@
                 processData: false,
                 success:function(data){
                     $('.loading_button').hide();
+                    $('.submit_button').prop('type', 'submit');
                     if(!$.isEmptyObject(data.errorMsg)){
                         toastr.error(data.errorMsg,'ERROR'); 
                     }

@@ -95,7 +95,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Attachment :</b></label>
+                                                <label for="inputEmail3" class=" col-4"><b>Attachment : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc." class="fas fa-info-circle tp"></i></b></label>
                                                 <div class="col-8">
                                                     <input type="file" name="attachment" class="form-control">
                                                 </div>
@@ -163,7 +163,6 @@
                                                 </div>
 
                                                 <div class="select_area">
-                                                    {{-- <div class="remove_select_area_btn">X</div> --}}
                                                     <ul id="list" class="variant_list_area">
                                                        
                                                     </ul>
@@ -203,34 +202,33 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Paying :</b></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Ship Details :</b></label>
                                                     <div class="col-8">
-                                                        <input name="paying_amount" class="form-control" id="paying_amount" value="0.00">
+                                                        <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Change :</b></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Shipment Address :</b></label>
                                                     <div class="col-8">
-                                                        <input name="change_amount" class="form-control" id="change_amount" value="0.00">
+                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address"> 
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Paid By :</b></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Ship Status :</b></label>
                                                     <div class="col-8">
-                                                        <select name="payment_method" class="form-control" id="payment_method">
-                                                            <option value="Cash">Cash</option>
-                                                            <option value="Advanced">Advanced</option>
-                                                            <option value="Cheque">Cheque</option>
-                                                            <option value="Card">Card</option>
-                                                            <option value="Bank-Transfer">Bank-Transter</option>
-                                                            <option value="Other">Other</option>
-                                                            <option value="Custom">Custom Field</option>
+                                                        <select name="shipment_status" class="form-control" id="shipment_status">
+                                                            <option value="">Shipment Status</option>
+                                                            <option value="1">Ordered</option>
+                                                            <option value="2">Packed</option>
+                                                            <option value="3">Shipped</option>
+                                                            <option value="4">Delivered</option>
+                                                            <option value="5">Cancelled</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -240,12 +238,7 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class=" col-4"><b>Account :</b></label>
                                                     <div class="col-8">
-                                                        <select name="account_id" class="form-control" id="account_id">
-                                                            <option value="">None</option>
-                                                            @foreach ($accounts as $account)
-                                                                <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
-                                                            @endforeach
-                                                        </select>
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
@@ -441,7 +434,7 @@
                                                 <input readonly class="form-control" type="number" step="any" name="previous_due" id="previous_due" value="0.00">
                                             </div>
                                         </div>
-
+                                        
                                         <div class="row">
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Total Payable:</label>
                                             <div class="col-sm-7">
@@ -451,29 +444,31 @@
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Ship Details :</label>
+                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive:</label>
                                             <div class="col-sm-7">
-                                                <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
+                                                <input name="paying_amount" class="form-control" id="paying_amount" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Ship Address :</label>
+                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Change :</label>
                                             <div class="col-sm-7">
-                                                <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address"> 
+                                              
+                                                <input name="change_amount" class="form-control" id="change_amount" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Ship Status :</label>
+                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Paid By :</label>
                                             <div class="col-sm-7">
-                                                <select name="shipment_status" class="form-control" id="shipment_status">
-                                                    <option value="">Shipment Status</option>
-                                                    <option value="1">Ordered</option>
-                                                    <option value="2">Packed</option>
-                                                    <option value="3">Shipped</option>
-                                                    <option value="4">Delivered</option>
-                                                    <option value="5">Cancelled</option>
+                                                <select name="payment_method" class="form-control" id="payment_method">
+                                                    <option value="Cash">Cash</option>
+                                                    <option value="Advanced">Advanced</option>
+                                                    <option value="Cheque">Cheque</option>
+                                                    <option value="Card">Card</option>
+                                                    <option value="Bank-Transfer">Bank-Transter</option>
+                                                    <option value="Other">Other</option>
+                                                    <option value="Custom">Custom Field</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -482,6 +477,12 @@
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Delevered To :</label>
                                             <div class="col-sm-7">
                                                 <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="Delivered To"> 
+                                                <select name="account_id" class="form-control" id="account_id">
+                                                    <option value="">None</option>
+                                                    @foreach ($accounts as $account)
+                                                        <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 

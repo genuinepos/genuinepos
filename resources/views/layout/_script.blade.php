@@ -13,7 +13,7 @@
     {{-- <script src="{{ asset('public/backend/asset/js/canvas-main.js') }}"></script> --}}
     
     <!--Sweet alert js link-->
-    <script src="{{ asset('public') }}/assets/plugins/custom/sweet-alert/sweet-alert.min.js"></script>
+    {{-- <script src="{{ asset('public') }}/assets/plugins/custom/sweet-alert/sweet-alert.min.js"></script> --}}
     <!--Sweet alert js link end-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <!--Toaster.js js link-->

@@ -39,6 +39,7 @@ class CreateCustomersTable extends Migration
             $table->decimal('total_paid', 22, 2)->default(0.00);
             $table->decimal('total_sale_due', 22, 2)->default(0.00);
             $table->decimal('total_sale_return_due', 22, 2)->default(0.00);
+            $table->decimal('point', 22, 2)->default(0.00);
             $table->boolean('status')->default(1);
             $table->boolean('is_walk_in_customer')->default(0);
             $table->timestamps();

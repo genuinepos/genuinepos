@@ -233,11 +233,11 @@ class GeneralSettingController extends Controller
             'point_display_name' => $request->point_display_name ? $request->point_display_name : 0,
             'amount_for_unit_rp' => $request->amount_for_unit_rp ? $request->amount_for_unit_rp : 0,
             'min_order_total_for_rp' => $request->min_order_total_for_rp ? $request->min_order_total_for_rp : 0,
-            'max_rp_per_order' => $request->max_rp_per_order ? $request->max_rp_per_order : 0,
+            'max_rp_per_order' => $request->max_rp_per_order ? $request->max_rp_per_order : '',
             'redeem_amount_per_unit_rp' => $request->redeem_amount_per_unit_rp ? $request->redeem_amount_per_unit_rp : 0,
-            'min_order_total_for_redeem' => $request->min_order_total_for_redeem ? $request->min_order_total_for_redeem : 0,
-            'min_redeem_point' => $request->min_redeem_point ? $request->min_redeem_point : 0,
-            'max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : 0,
+            'min_order_total_for_redeem' => $request->min_order_total_for_redeem ? $request->min_order_total_for_redeem : '',
+            'min_redeem_point' => $request->min_redeem_point ? $request->min_redeem_point : '',
+            'max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : '',
         ];
 
         $updateRewardPointgSettings->reward_poing_settings = json_encode($RewardPointgSettings);

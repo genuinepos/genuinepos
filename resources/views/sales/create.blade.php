@@ -453,7 +453,6 @@
                                         <div class="row">
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Change :</label>
                                             <div class="col-sm-7">
-                                              
                                                 <input name="change_amount" class="form-control" id="change_amount" value="0.00">
                                             </div>
                                         </div>

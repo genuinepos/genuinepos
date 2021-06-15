@@ -563,7 +563,7 @@
     $(document).on('click', '#delete_asset',function(e){
         e.preventDefault(); 
         var url = $(this).attr('href');
-        $('#deleted_asset_type_form').attr('action', url);       
+        $('#deleted_asset_form').attr('action', url);       
         $.confirm({
             'title': 'Delete Confirmation',
             'content': 'Are you sure?',
@@ -571,7 +571,7 @@
                 'Yes': {
                     'class': 'yes btn-danger',
                     'action': function() {
-                        $('#deleted_asset_type_form').submit();
+                        $('#deleted_asset_form').submit();
                     }
                 },
                 'No': {

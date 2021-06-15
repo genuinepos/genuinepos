@@ -59,6 +59,7 @@ return [
     'bank' => 'ব্যাংক',
     'account_types' => 'অ্যাকাউন্টের ধরণ',
     'accounts' => 'ব্যাংক হিসাব',
+    'assets' => 'সম্পত্তি',
     'balance_sheet' => 'ব্যালেন্স শীট',
     'trial_balance' => 'পরীক্ষার ভারসাম্য',
     'cash_flow' => 'নগদ প্রবাহ',

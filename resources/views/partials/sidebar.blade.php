@@ -748,8 +748,7 @@
                             </div>
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.banks.index') }}" class="bar-link">
                                                 <span><img src="{{ asset('public/backend/asset/img/bank.png') }}"></span>
@@ -758,8 +757,7 @@
                                         <p class="switch_text">@lang('menu.bank')</p>
                                     </div>
 
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.types.index') }}" class="bar-link">
                                                 <span><img src="{{ asset('public/backend/asset/img/folder.png') }}"></span>
@@ -768,19 +766,25 @@
                                         <p class="switch_text">@lang('menu.account_types')</p>
                                     </div>
 
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.accounts.index') }}" class="bar-link">
-                                                <span><img
-                                                        src="{{ asset('public/backend/asset/img/financial.png') }}"></span>
+                                                <span><img src="{{ asset('public/backend/asset/img/financial.png') }}"></span>
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.accounts')</p>
                                     </div>
 
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('accounting.assets.index') }}" class="bar-link">
+                                                <span><img src="{{ asset('public/backend/asset/img/financial.png') }}"></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.assets')</p>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.balance.sheet') }}" class="bar-link">
                                                 <span><img src="{{ asset('public/backend/asset/img/balance.png') }}"></span>
@@ -789,8 +793,7 @@
                                         <p class="switch_text">@lang('menu.balance_sheet')</p>
                                     </div>
 
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.trial.balance') }}" class="bar-link">
                                                 <span><img src="{{ asset('public/backend/asset/img/balance (1).png') }}"></span>
@@ -799,8 +802,7 @@
                                         <p class="switch_text">@lang('menu.trial_balance')</p>
                                     </div>
 
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.cash.flow') }}" class="bar-link">
                                                 <span><img src="{{ asset('public/backend/asset/img/cash-flow.png') }}"></span>

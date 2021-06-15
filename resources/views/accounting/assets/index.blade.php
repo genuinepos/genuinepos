@@ -1,0 +1,644 @@
+@extends('layout.master')
+@push('stylesheets')
+<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+@endpush
+@section('title', 'Assets - ')
+@section('content')
+    <div class="body-woaper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="border-class">
+                    <div class="main__content">
+                        <!-- =====================================================================BODY CONTENT================== -->
+                        <div class="sec-name">
+                            <div class="name-head">
+                                <span class="fas fa-glass-whiskey"></span>
+                                <h5>Assets</h5>
+                            </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            </a>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="sec-name">
+                                    <div class="col-md-12">
+                                        <form id="filter_tax_report_form" action="" method="get">
+                                            @csrf
+                                            <div class="form-group row">
+                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    <div class="col-md-3">
+                                                        <label><strong>Branch :</strong></label>
+                                                        <select name="branch_id"
+                                                            class="form-control submit_able" id="branch_id" autofocus>
+                                                            <option value="">All</option>
+                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                            @foreach ($branches as $br)
+                                                                <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @else 
+                                                    <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                                @endif
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <div class="tab_list_area">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <a id="tab_btn" data-show="asset_type" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Asset Type</a>
+                                            </li>
+
+                                            <li>
+                                                <a id="tab_btn" data-show="assets" class="tab_btn" href="#">
+                                                <i class="fas fa-scroll"></i> Assets</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="tab_contant asset_type">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="btn_30_blue float-end">
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addAssetTypeModal"><i
+                                                            class="fas fa-plus-square"></i> Add Type</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="table-responsive" >
+                                                    <table class="display data_tbl data__table asset_type_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S/L</th>
+                                                                <th>Type</th>
+                                                                <th>Type Code</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                    <form id="deleted_asset_type_form" action="" method="post">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab_contant assets d-none">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="btn_30_blue float-end">
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addAssetModal"><i
+                                                            class="fas fa-plus-square"></i> Add Asset</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="table-responsive">
+                                                    <table class="display data_tbl data__table asset_table w-100">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S/L</th>
+                                                                <th>Asset</th>
+                                                                <th>Type</th>
+                                                                <th>Available Loaction</th>
+                                                                <th>Quantity</th>
+                                                                <th>Per Value Unit</th>
+                                                                <th>Total Value</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                    <form id="deleted_asset_form" action="" method="post">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Asset Type Modal -->
+    <div class="modal fade" id="addAssetTypeModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Add Asset Type</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <!--begin::Form-->
+                    <form id="add_assset_type_form" action="{{ route('accounting.assets.asset.type.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label><b>Type Name :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="asset_type_name" class="form-control" id="asset_type_name"
+                                    placeholder="Asset Type name" />
+                                <span class="error error_asset_type_name"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-12">
+                                <label><b>Type Code :</b> </label>
+                                <input type="text" name="asset_type_code" class="form-control" placeholder="Asset Type Code"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-12">
+                                <button type="button" class="btn loading_button d-none"><i
+                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
+                                <button type="reset" data-bs-dismiss="modal"
+                                    class="c-btn btn_orange float-end">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Asset Type Modal -->
+
+    <!-- Edit Asset Type Modal -->
+    <div class="modal fade" id="editAssetTypeModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Asset Type</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="edit_asset_type_modal_body">
+                    <!--begin::Form-->
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Asset Type Modal -->
+
+     <!-- Add Asset Modal -->
+    <div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Add Asset</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <!--begin::Form-->
+                    <form id="add_assset_form" action="{{ route('accounting.assets.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label><b>Asset Name :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="asset_name" class="form-control" id="asset_name"
+                                    placeholder="Asset Type name" autofocus/>
+                                <span class="error error_asset_name"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-12">
+                                <label><b>Asset Type :</b> <span class="text-danger">*</span></label>
+                                <select name="type_id" class="form-control" id="type_id" >
+                                <option value="">Select Asset Type</option>
+                                </select>
+                            <span class="error error_type_id"></span>
+                            </div>
+                        </div>
+
+                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                            <div class="form-group row mt-1">
+                                <div class="col-md-12">
+                                    <label><b>Branch :</b> <span class="text-danger">*</span></label>
+                                    <select name="branch_id" class="form-control" id="branch_id">
+                                        <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                        @foreach ($branches as $br)
+                                            <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_branch_id"></span>
+                                </div>
+                            </div>
+                        @else
+                            <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}">
+                        @endif
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-12">
+                                <label><b>Quantity :</b> <span class="text-danger">*</span></label>
+                                <input type="number" step="any" name="quantity" class="form-control" id="quantity"
+                                    placeholder="Asset Quantity"/>
+                                <span class="error error_quantity"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-12">
+                                <label><b>Per Unit Value :</b> <span class="text-danger">*</span></label>
+                                <input type="number" step="any" name="per_unit_value" class="form-control" id="per_unit_value"
+                                    placeholder="Per Unit Value"/>
+                                <span class="error error_per_unit_value"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-12">
+                                <label><b>Total Value :</b> <span class="text-danger">*</span></label>
+                                <input type="number" step="any" name="total_value" class="form-control" id="total_value"
+                                    placeholder="Total Asset Value" />
+                                <span class="error error_total_value"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-12">
+                                <button type="button" class="btn loading_button d-none"><i
+                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
+                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Add Asset Modal -->
+
+    <!-- Add Asset Modal -->
+    <div class="modal fade" id="editAssetModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Asset</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="edit_asset_modal_body">
+                    <!--begin::Form-->
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Add Asset Modal -->
+@endsection
+@push('scripts')
+<script>
+    var asset_type_table = $('.asset_type_table').DataTable({
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+        ],
+        processing: true,
+        serverSide: true,
+        searchable: true,
+        ajax: "{{ route('accounting.assets.index') }}",
+        columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
+            {data: 'asset_type_name',name: 'asset_type_name'},
+            {data: 'asset_type_code',name: 'asset_type_code'},
+            {data: 'action',name: 'action'},
+        ],
+    });
+
+    $(document).on('submit', '#add_assset_type_form', function(e) {
+        e.preventDefault();
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $('.submit_button').prop('type', 'button');
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+                toastr.success(data);
+                $('#add_assset_type_form')[0].reset();
+                $('.loading_button').hide();
+                $('#addAssetTypeModal').modal('hide');
+                $('.submit_button').prop('type', 'submit');
+                $('.error').html('');
+                asset_type_table.ajax.reload();
+                getFormAssetTypes();
+            },
+            error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_' + key + '').html(error[0]);
+                });
+                $('.submit_button').prop('type', 'submit');
+            }
+        });
+    });
+
+    // pass editable data to edit modal fields
+    $(document).on('click', '#edit', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+                $('#edit_asset_type_modal_body').html(data);
+                $('#editAssetTypeModal').modal('show');
+            }
+        });
+    });
+
+    $(document).on('submit', '#edit_assset_type_form', function(e) {
+        e.preventDefault();
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+                toastr.success(data);
+                $('.loading_button').hide();
+                $('#editAssetTypeModal').modal('hide');
+                $('.error').html('');
+                asset_type_table.ajax.reload();
+                getFormAssetTypes();
+            },
+            error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_e_' + key + '').html(error[0]);
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '#delete_type',function(e){
+        e.preventDefault(); 
+        var url = $(this).attr('href');
+        $('#deleted_asset_type_form').attr('action', url);       
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'content': 'Are you sure?',
+            'buttons': {
+                'Yes': {
+                    'class': 'yes btn-danger',
+                    'action': function() {
+                        $('#deleted_asset_type_form').submit();
+                    }
+                },
+                'No': {
+                    'class': 'no btn-modal-primary',
+                    'action': function() {
+                        // alert('Deleted canceled.')
+                    } 
+                }
+            }
+        });
+    });
+
+    //data delete by ajax
+    $(document).on('submit', '#deleted_asset_type_form', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url: url,
+            type: 'post',
+            async: false,
+            data: request,
+            success: function(data) {
+                toastr.error(data);
+                asset_type_table.ajax.reload();
+                getFormAssetTypes();
+                $('#deleted_asset_type_form')[0].reset();
+            }
+        });
+    });
+
+    function getFormAssetTypes(){
+        $.ajax({
+            url:"{{route('accounting.assets.form.asset.type')}}",
+            success:function(types){
+                $('#type_id').empty();
+                $('#type_id').append('<option value="">Select Asset Type</option>');
+                $.each(types, function(key, val){
+                    $('#type_id').append('<option value="'+val.id+'">'+val.asset_type_name+'</option>');
+                });
+            }
+        });
+    }
+    getFormAssetTypes();
+</script>
+
+<script>
+    var asset_table = $('.asset_table').DataTable({
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+        ],
+        processing: true,
+        serverSide: true,
+        searchable: true,
+        ajax: "{{ route('accounting.assets.all') }}",
+        columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
+            {data: 'asset_name',name: 'asset_name'},
+            {data: 'asset_type',name: 'asset_type'},
+            {data: 'branch',name: 'branch'},
+            {data: 'quantity',name: 'quantity'},
+            {data: 'per_unit_value',name: 'per_unit_value'},
+            {data: 'total_value',name: 'total_value'},
+            {data: 'action',name: 'action'},
+        ],
+    });
+
+    $(document).on('submit', '#add_assset_form', function(e) {
+        e.preventDefault();
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $('.submit_button').prop('type', 'button');
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+                toastr.success(data);
+                $('#add_assset_form')[0].reset();
+                $('.loading_button').hide();
+                $('#addAssetModal').modal('hide');
+                $('.submit_button').prop('type', 'submit');
+                $('.error').html('');
+                asset_table.ajax.reload();
+            },
+            error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_' + key + '').html(error[0]);
+                });
+                $('.submit_button').prop('type', 'submit');
+            }
+        });
+    });
+
+    // pass editable data to edit modal fields
+    $(document).on('click', '#edit_asset', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+                $('#edit_asset_modal_body').html(data);
+                $('#editAssetModal').modal('show');
+            }
+        });
+    });
+
+    $(document).on('submit', '#edit_assset_form', function(e) {
+        e.preventDefault();
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+                toastr.success(data);
+                $('.loading_button').hide();
+                $('#editAssetModal').modal('hide');
+                $('.error').html('');
+                asset_table.ajax.reload();
+            },
+            error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_e_' + key + '').html(error[0]);
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '#delete_asset',function(e){
+        e.preventDefault(); 
+        var url = $(this).attr('href');
+        $('#deleted_asset_type_form').attr('action', url);       
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'content': 'Are you sure?',
+            'buttons': {
+                'Yes': {
+                    'class': 'yes btn-danger',
+                    'action': function() {
+                        $('#deleted_asset_type_form').submit();
+                    }
+                },
+                'No': {
+                    'class': 'no btn-modal-primary',
+                    'action': function() {
+                        // alert('Deleted canceled.')
+                    } 
+                }
+            }
+        });
+    });
+
+    //data delete by ajax
+    $(document).on('submit', '#deleted_asset_form', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url: url,
+            type: 'post',
+            async: false,
+            data: request,
+            success: function(data) {
+                toastr.error(data);
+                asset_table.ajax.reload();
+                $('#deleted_asset_form')[0].reset();
+            }
+        });
+    });
+
+    function calculateAddAssetValue() {
+        var asset_qty = $('#quantity').val() ? $('#quantity').val() : 0;
+        var per_unit_value = $('#per_unit_value').val() ? $('#per_unit_value').val() : 0;
+        var total_value = parseFloat(asset_qty) * parseFloat(per_unit_value); 
+        $('#total_value').val(parseFloat(total_value).toFixed(2))
+    }
+
+    $('#quantity').on('input', function () {
+        calculateAddAssetValue();
+    });
+
+    $('#per_unit_value').on('input', function () {
+        calculateAddAssetValue();
+    });
+
+    function calculateEditAssetValue() {
+        var asset_qty = $('#e_quantity').val() ? $('#e_quantity').val() : 0;
+        var per_unit_value = $('#e_per_unit_value').val() ? $('#e_per_unit_value').val() : 0;
+        var total_value = parseFloat(asset_qty) * parseFloat(per_unit_value); 
+        $('#e_total_value').val(parseFloat(total_value).toFixed(2))
+    }
+
+    $(document).on('input', '#e_quantity', function () {
+        calculateEditAssetValue();
+    });
+
+    $(document).on('input', '#e_per_unit_value', function () {
+        calculateEditAssetValue();
+    });
+
+    $(document).on('click', '#tab_btn', function(e) {
+        e.preventDefault();
+        $('.tab_btn').removeClass('tab_active');
+        $('.tab_contant').hide();
+        var show_content = $(this).data('show');
+        $('.' + show_content).show();
+        $(this).addClass('tab_active');
+    });
+</script>
+@endpush

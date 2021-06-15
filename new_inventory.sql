@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2021 at 01:09 PM
+-- Generation Time: Jun 15, 2021 at 02:34 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.1
 
@@ -50,7 +50,7 @@ CREATE TABLE `accounts` (
 
 INSERT INTO `accounts` (`id`, `name`, `account_number`, `bank_id`, `account_type_id`, `opening_balance`, `debit`, `credit`, `balance`, `remark`, `status`, `admin_id`, `created_at`, `updated_at`) VALUES
 (15, 'Payment Account', '84564574', 2, 2, '0.00', '23506.00', '60489.50', '36983.50', NULL, 1, 1, NULL, '2021-06-10 11:10:04'),
-(16, 'Gregory Rowland', '501578787444', 6, 2, '67.00', '135475.50', '25580.76', '79530.26', 'Tempore earum elige', 1, 1, NULL, '2021-06-10 08:42:26');
+(16, 'Gregory Rowland', '501578787444', 6, 2, '67.00', '135475.50', '25712.01', '79661.51', 'Tempore earum elige', 1, 1, NULL, '2021-06-15 06:18:20');
 
 -- --------------------------------------------------------
 
@@ -142,7 +142,7 @@ INSERT INTO `admin_and_users` (`id`, `prefix`, `name`, `last_name`, `emp_id`, `u
 (4, 'Mr', 'single', 'shop', NULL, 'singleshop', 'ss@gmail.com', NULL, 2, NULL, 8, 1, NULL, 1, '$2y$10$XRuRIDrLRD64WE67ShGyiuK7Yq7/.Wn1c4uKUqRKJwDy22aQQ4yai', '0.00', '0.00', NULL, '18-04-2021', NULL, NULL, NULL, 'default.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'FF', 'FF', 'FF', 'FF', 'FF', 'FF', NULL, 2, 1, '0.00', NULL, '2021-04-18 11:16:36', '2021-04-18 11:16:36'),
 (5, 'Mr', 'Employee', 'Man', NULL, 'employee', 'me@gmail.com', NULL, 3, 10, 7, 1, 25, 1, '$2y$10$fanNVJ/9DiCisq4wbwagTuVRDqRPu1J5ktGoM4BY4KKKfDAP1hcs.', '0.00', '0.00', NULL, '18-04-2021', NULL, NULL, NULL, 'default.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '0.00', NULL, '2021-04-18 11:21:23', '2021-04-19 11:04:40'),
 (6, 'Mr', 'Employee', 'Em', NULL, NULL, 'em@gmail.com', NULL, NULL, NULL, NULL, 0, NULL, 0, '$2y$10$vTRxd0/Q7SiexdFud9jB6.7EiJVciEVlf1GdkLFerfwjKsRr3xbjS', '20.00', '25.00', '0158997744', NULL, NULL, 'Married', NULL, 'default.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'FF', 'FF', 'FF', 'FF', 'FF', 'FF', NULL, 2, 1, '15000.00', 'Monthly', '2021-04-19 10:25:19', '2021-05-02 04:50:18'),
-(7, 'MD.', 'Faisal', NULL, NULL, 'faisal', 'faisal@gmail.com', NULL, 3, 10, 7, 1, 24, 1, '$2y$10$6LP5AtoUXHbQ8E14cBUmX.Ruzv65H.0TL8nT.7nRaf1yrOFU0NHc.', '0.00', '0.00', NULL, NULL, 'Male', 'Unmarried', NULL, 'default.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'en', 2, 1, '0.00', NULL, '2021-04-28 08:27:33', '2021-05-11 07:14:20'),
+(7, 'MD.', 'Faisal', NULL, '107', 'faisal', 'faisal@gmail.com', 2, 3, 10, 7, 1, 24, 0, '$2y$10$6LP5AtoUXHbQ8E14cBUmX.Ruzv65H.0TL8nT.7nRaf1yrOFU0NHc.', '0.00', '0.00', NULL, NULL, 'Male', 'Unmarried', NULL, 'default.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'en', 2, 1, '0.00', 'Monthly', '2021-04-28 08:27:33', '2021-06-13 12:13:09'),
 (9, 'Mr', 'Employee', '2', NULL, NULL, 'me2@gmail.com', NULL, NULL, NULL, NULL, 0, 24, 0, NULL, '20.00', '5.00', NULL, NULL, NULL, 'Unmarried', NULL, 'default.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MR', '935787454', 'JANUNA', '6878787', 'Motijheel', '5687874554', NULL, 2, 1, '15000.00', 'Yearly', '2021-05-02 03:46:07', '2021-05-02 04:46:11'),
 (10, 'Mr', 'Hamish', 'Khan', 'EP-125578', 'hamish', 'h@gmail.com', 2, 3, 16, 12, 1, 24, 0, '$2y$10$.PvlXGZwh4CyGBp6iqGIKuAa7Gu2Y7wFt2t.zfgkMahfUc1ZVh2Fi', '0.00', '0.00', NULL, NULL, NULL, NULL, NULL, 'default.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 1, '15000.00', 'Monthly', '2021-06-09 10:31:59', '2021-06-09 10:31:59');
 
@@ -160,6 +160,45 @@ CREATE TABLE `allowance_employees` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assets`
+--
+
+CREATE TABLE `assets` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `asset_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `branch_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `quantity` decimal(22,2) NOT NULL DEFAULT 0.00,
+  `per_unit_value` decimal(22,2) NOT NULL DEFAULT 0.00,
+  `total_value` decimal(22,2) NOT NULL DEFAULT 0.00,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `asset_types`
+--
+
+CREATE TABLE `asset_types` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `asset_type_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `asset_type_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `asset_types`
+--
+
+INSERT INTO `asset_types` (`id`, `asset_type_name`, `asset_type_code`, `created_at`, `updated_at`) VALUES
+(1, 'Furniture', 'F12', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -497,7 +536,8 @@ INSERT INTO `cash_flows` (`id`, `account_id`, `sender_account_id`, `receiver_acc
 (139, 16, NULL, NULL, NULL, 213, NULL, NULL, NULL, NULL, NULL, '162.50', '100020.26', 2, 2, '09-06-2021', 'June', '2021', '2021-06-08 18:00:00', 2, NULL, '2021-06-09 09:27:00', '2021-06-09 09:27:00'),
 (148, 15, NULL, NULL, NULL, NULL, NULL, NULL, 13, 15, '20490.00', NULL, '36843.50', 8, 1, '2021-06-10', 'June', '2021', '2021-06-09 18:00:00', 2, NULL, '2021-06-10 07:55:24', '2021-06-10 07:55:24'),
 (149, 16, NULL, NULL, NULL, NULL, NULL, NULL, 14, 16, '20490.00', NULL, '79530.26', 8, 1, '2021-06-10', 'June', '2021', '2021-06-09 18:00:00', 2, NULL, '2021-06-10 08:42:26', '2021-06-10 08:42:26'),
-(150, 15, NULL, NULL, NULL, 240, NULL, NULL, NULL, NULL, NULL, '140.00', '36983.50', 2, 2, '10-06-2021', 'June', '2021', '2021-06-09 18:00:00', 2, NULL, '2021-06-10 11:10:04', '2021-06-10 11:10:04');
+(150, 15, NULL, NULL, NULL, 240, NULL, NULL, NULL, NULL, NULL, '140.00', '36983.50', 2, 2, '10-06-2021', 'June', '2021', '2021-06-09 18:00:00', 2, NULL, '2021-06-10 11:10:04', '2021-06-10 11:10:04'),
+(151, 16, NULL, NULL, NULL, 245, NULL, NULL, NULL, NULL, NULL, '131.25', '79661.51', 2, 2, '15-06-2021', 'June', '2021', '2021-06-14 18:00:00', 2, NULL, '2021-06-15 06:18:20', '2021-06-15 06:18:20');
 
 -- --------------------------------------------------------
 
@@ -880,6 +920,7 @@ CREATE TABLE `customers` (
   `total_paid` decimal(22,2) NOT NULL DEFAULT 0.00,
   `total_sale_due` decimal(22,2) NOT NULL DEFAULT 0.00,
   `total_sale_return_due` decimal(22,2) NOT NULL DEFAULT 0.00,
+  `point` decimal(22,2) NOT NULL DEFAULT 0.00,
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `is_walk_in_customer` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -890,28 +931,28 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `type`, `contact_id`, `customer_group_id`, `name`, `business_name`, `phone`, `alternative_phone`, `landline`, `email`, `date_of_birth`, `tax_number`, `opening_balance`, `pay_term`, `pay_term_number`, `address`, `shipping_address`, `city`, `state`, `country`, `zip_code`, `total_sale`, `total_paid`, `total_sale_due`, `total_sale_return_due`, `status`, `is_walk_in_customer`, `created_at`, `updated_at`) VALUES
-(39, 2, 'CT788', 4, 'John Miller', 'X Enterprice', '015879966655', '015879966655', '015879966655', NULL, '2021-04-04', '4455887', '0.00', 1, NULL, 'Dhaka, Bangladesh', 'Dhaka,Bangladesh', NULL, NULL, NULL, NULL, '151427.50', '-108080.25', '-38706.75', '0.00', 1, 0, '2021-04-04 07:21:07', '2021-06-03 05:13:59'),
-(40, NULL, NULL, NULL, 'Trip', NULL, '01856742357', '01856742357', '01856742357', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2057.50', '1042.50', '0.00', '0.00', 1, 0, '2021-04-17 03:33:36', '2021-06-09 09:24:42'),
-(41, 2, 'CO75555', 4, 'Mr. Bill', 'X Company', '01853247521', '01853247521', '01853247521', NULL, NULL, NULL, '200.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '5013.00', '6273.62', '-742.50', '221.25', 1, 0, '2021-04-17 04:05:36', '2021-06-10 06:37:39'),
-(42, NULL, NULL, NULL, 'Jarif', NULL, '0158745212365', '0158745212365', '0158745212365', NULL, NULL, NULL, '500.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1972.50', '2472.50', '0.00', '0.00', 1, 0, '2021-04-17 04:08:20', '2021-06-03 12:14:38'),
-(43, 2, 'CO75558', NULL, 'Jefferson', NULL, '01856324756', '01856324756', '01856324756', NULL, NULL, NULL, '700.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '8846.25', '7866.25', '1680.00', '0.00', 1, 0, '2021-04-17 04:10:35', '2021-06-03 12:33:28'),
-(44, NULL, NULL, NULL, 'Nikson', NULL, '01255785544', '01255785544', '01255785544', NULL, NULL, NULL, '100.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2947.50', '3153.75', '-6.25', '0.00', 1, 0, '2021-04-17 04:12:25', '2021-06-03 12:49:39'),
-(45, 2, NULL, 4, 'Miller', NULL, '7555885232', '7555885232', '7555885232', NULL, NULL, NULL, '100.00', 1, NULL, NULL, 'Dhaka,Bangladesh', NULL, NULL, NULL, NULL, '190448.75', '7242.50', '-325.00', '1765.00', 1, 0, '2021-04-17 04:13:32', '2021-06-10 06:37:50'),
-(46, NULL, NULL, NULL, 'Test', NULL, '122345', '122345', '122345', NULL, NULL, NULL, '550.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1056.00', '1987.00', '-331.00', '0.00', 1, 0, '2021-04-19 05:24:35', '2021-06-09 09:25:11'),
-(47, NULL, NULL, NULL, 'Danial D.Flaung', 'X COMPANY', '01254788665', '01254788665', '01254788665', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1781.85', '1781.85', '0.00', '0.00', 1, 0, '2021-04-26 09:19:23', '2021-04-27 06:11:40'),
-(48, 2, NULL, NULL, 'ASBRM', NULL, '01312644409', '01312644409', '01312644409', NULL, NULL, NULL, '0.00', 1, NULL, 'Barpa, Rupshi, Rupganj, Naraynganj, Bangladesh-1460', NULL, NULL, NULL, NULL, NULL, '94250.00', '94250.00', '0.00', '0.00', 1, 0, '2021-04-28 08:43:03', '2021-06-09 09:25:35'),
-(49, NULL, NULL, NULL, 'RT', NULL, '122588', '122588', '122588', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '425.00', '425.00', '0.00', '0.00', 1, 0, '2021-04-28 12:26:07', '2021-06-09 09:27:00'),
-(50, NULL, NULL, NULL, 'MT', NULL, '12558577', '12558577', '12558577', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', '0.00', '0.00', '0.00', 1, 0, '2021-04-28 12:27:36', '2021-04-28 12:27:36'),
-(51, 2, NULL, NULL, 'hm', NULL, '147474', '147474', '147474', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2817.50', '2817.50', '0.00', '0.00', 1, 0, '2021-04-28 12:28:32', '2021-06-10 06:37:28'),
-(52, NULL, NULL, NULL, 'MT', NULL, '6574578878', '6574578878', '6574578878', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1023.75', '1023.75', '0.00', '0.00', 1, 0, '2021-04-28 12:30:47', '2021-05-19 10:08:09'),
-(53, NULL, NULL, NULL, 'Kayhel', NULL, '75558888', '75558888', '75558888', NULL, NULL, NULL, '2000.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '387.50', '2387.50', '0.00', '0.00', 1, 0, '2021-04-28 12:31:11', '2021-05-06 09:56:56'),
-(54, NULL, NULL, NULL, 'ou', NULL, '1000', '1000', '1000', NULL, NULL, NULL, '1000.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '8311.39', '16173.89', '0.00', '0.00', 1, 0, '2021-05-02 10:27:50', '2021-06-09 08:56:54'),
-(55, 2, NULL, NULL, 'Mr.Billarin', 'X Business', '01745865214', '01745865214', '01745865214', NULL, NULL, NULL, '2000.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2316.56', '0.00', '0.00', '0.00', 1, 0, '2021-05-09 04:02:53', '2021-06-07 09:41:46'),
-(56, 3, 'A temporibus quod ei', 5, 'Janna Huber', 'Kylan Alvarado', '+1 (942) 854-1783', '+1 (942) 854-1783', '+1 (942) 854-1783', 'xygava@mailinator.com', '09-Jul-1976', '920', '86.00', 3, 675, 'Quo fuga Eu soluta', 'Aliqua Quam aut vel', 'Aut lorem tempore a', 'Sunt proident exer', 'Consequatur Mollit', '64557', '2887.50', '4400.00', '0.00', '0.00', 1, 0, '2021-06-03 12:21:39', '2021-06-08 11:46:24'),
-(57, 2, 'Sit laborum Est vol', 4, 'Joel Mcguire', 'Hilel Chan', '+1 (531) 725-2663', '+1 (531) 725-2663', '+1 (531) 725-2663', 'vyqalepaj@mailinator.com', '11-Nov-1990', '398', '88.00', 2, 259, 'Obcaecati dolore eli', 'Atque nulla id labo', 'Cupiditate iure ipsu', 'Officiis et fugit v', 'Incidunt sit volupt', '17477', '0.00', '0.00', '88.00', '0.00', 1, 0, '2021-06-05 05:04:04', '2021-06-05 05:04:04'),
-(58, 3, 'In sint minima est', 5, 'Lawrence Atkinson', 'Steven Carney', '+1 (869) 203-1139', '+1 (869) 203-1139', '+1 (869) 203-1139', 'lydohaju@mailinator.com', '30-Oct-1986', '904', '21.00', 3, 960, 'Veniam voluptas rep', 'Vero explicabo In e', 'Architecto voluptate', 'Quos ipsum excepturi', 'Sit duis dolor quam', '36148', '0.00', '21.00', '0.00', '0.00', 1, 0, '2021-06-05 12:33:24', '2021-06-09 09:27:15'),
-(61, NULL, NULL, NULL, 'Due customer', NULL, '12255447', '12255447', '12255447', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '262.50', '262.50', '0.00', '0.00', 1, 0, '2021-06-10 06:02:01', '2021-06-10 06:09:43');
+INSERT INTO `customers` (`id`, `type`, `contact_id`, `customer_group_id`, `name`, `business_name`, `phone`, `alternative_phone`, `landline`, `email`, `date_of_birth`, `tax_number`, `opening_balance`, `pay_term`, `pay_term_number`, `address`, `shipping_address`, `city`, `state`, `country`, `zip_code`, `total_sale`, `total_paid`, `total_sale_due`, `total_sale_return_due`, `point`, `status`, `is_walk_in_customer`, `created_at`, `updated_at`) VALUES
+(39, 2, 'CT788', 4, 'John Miller', 'X Enterprice', '015879966655', '015879966655', '015879966655', NULL, '2021-04-04', '4455887', '0.00', 1, NULL, 'Dhaka, Bangladesh', 'Dhaka,Bangladesh', NULL, NULL, NULL, NULL, '151427.50', '-108080.25', '-38706.75', '0.00', '0.00', 1, 0, '2021-04-04 07:21:07', '2021-06-03 05:13:59'),
+(40, NULL, NULL, NULL, 'Trip', NULL, '01856742357', '01856742357', '01856742357', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2057.50', '1042.50', '0.00', '0.00', '0.00', 1, 0, '2021-04-17 03:33:36', '2021-06-09 09:24:42'),
+(41, 2, 'CO75555', 4, 'Mr. Bill', 'X Company', '01853247521', '01853247521', '01853247521', NULL, NULL, NULL, '200.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '5013.00', '6273.62', '-742.50', '221.25', '0.00', 1, 0, '2021-04-17 04:05:36', '2021-06-10 06:37:39'),
+(42, NULL, NULL, NULL, 'Jarif', NULL, '0158745212365', '0158745212365', '0158745212365', NULL, NULL, NULL, '500.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1972.50', '2472.50', '0.00', '0.00', '0.00', 1, 0, '2021-04-17 04:08:20', '2021-06-03 12:14:38'),
+(43, 2, 'CO75558', NULL, 'Jefferson', NULL, '01856324756', '01856324756', '01856324756', NULL, NULL, NULL, '700.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '8846.25', '7866.25', '1680.00', '0.00', '0.00', 1, 0, '2021-04-17 04:10:35', '2021-06-03 12:33:28'),
+(44, NULL, NULL, NULL, 'Nikson', NULL, '01255785544', '01255785544', '01255785544', NULL, NULL, NULL, '100.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2947.50', '3153.75', '-6.25', '0.00', '0.00', 1, 0, '2021-04-17 04:12:25', '2021-06-03 12:49:39'),
+(45, 2, NULL, 4, 'Miller', NULL, '7555885232', '7555885232', '7555885232', NULL, NULL, NULL, '100.00', 1, NULL, NULL, 'Dhaka,Bangladesh', NULL, NULL, NULL, NULL, '190448.75', '7242.50', '-325.00', '1765.00', '0.00', 1, 0, '2021-04-17 04:13:32', '2021-06-10 06:37:50'),
+(46, NULL, NULL, NULL, 'Test', NULL, '122345', '122345', '122345', NULL, NULL, NULL, '550.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1056.00', '1987.00', '-331.00', '0.00', '0.00', 1, 0, '2021-04-19 05:24:35', '2021-06-09 09:25:11'),
+(47, NULL, NULL, NULL, 'Danial D.Flaung', 'X COMPANY', '01254788665', '01254788665', '01254788665', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1781.85', '1781.85', '0.00', '0.00', '0.00', 1, 0, '2021-04-26 09:19:23', '2021-04-27 06:11:40'),
+(48, 2, NULL, NULL, 'ASBRM', NULL, '01312644409', '01312644409', '01312644409', NULL, NULL, NULL, '0.00', 1, NULL, 'Barpa, Rupshi, Rupganj, Naraynganj, Bangladesh-1460', NULL, NULL, NULL, NULL, NULL, '94250.00', '94250.00', '0.00', '0.00', '0.00', 1, 0, '2021-04-28 08:43:03', '2021-06-09 09:25:35'),
+(49, NULL, NULL, NULL, 'RT', NULL, '122588', '122588', '122588', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '425.00', '425.00', '0.00', '0.00', '0.00', 1, 0, '2021-04-28 12:26:07', '2021-06-09 09:27:00'),
+(50, NULL, NULL, NULL, 'MT', NULL, '12558577', '12558577', '12558577', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', '0.00', '0.00', '0.00', '0.00', 1, 0, '2021-04-28 12:27:36', '2021-04-28 12:27:36'),
+(51, 2, NULL, NULL, 'hm', NULL, '147474', '147474', '147474', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2817.50', '2817.50', '0.00', '0.00', '0.00', 1, 0, '2021-04-28 12:28:32', '2021-06-10 06:37:28'),
+(52, NULL, NULL, NULL, 'MT', NULL, '6574578878', '6574578878', '6574578878', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1023.75', '1023.75', '0.00', '0.00', '0.00', 1, 0, '2021-04-28 12:30:47', '2021-05-19 10:08:09'),
+(53, NULL, NULL, NULL, 'Kayhel', NULL, '75558888', '75558888', '75558888', NULL, NULL, NULL, '2000.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '387.50', '2387.50', '0.00', '0.00', '0.00', 1, 0, '2021-04-28 12:31:11', '2021-05-06 09:56:56'),
+(54, NULL, NULL, NULL, 'ou', NULL, '1000', '1000', '1000', NULL, NULL, NULL, '1000.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '8311.39', '16173.89', '0.00', '0.00', '0.00', 1, 0, '2021-05-02 10:27:50', '2021-06-09 08:56:54'),
+(55, 2, NULL, NULL, 'Mr.Billarin', 'X Business', '01745865214', '01745865214', '01745865214', NULL, NULL, NULL, '2000.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2316.56', '0.00', '0.00', '0.00', '0.00', 1, 0, '2021-05-09 04:02:53', '2021-06-07 09:41:46'),
+(56, 3, 'A temporibus quod ei', 5, 'Janna Huber', 'Kylan Alvarado', '+1 (942) 854-1783', '+1 (942) 854-1783', '+1 (942) 854-1783', 'xygava@mailinator.com', '09-Jul-1976', '920', '86.00', 3, 675, 'Quo fuga Eu soluta', 'Aliqua Quam aut vel', 'Aut lorem tempore a', 'Sunt proident exer', 'Consequatur Mollit', '64557', '2887.50', '4400.00', '0.00', '0.00', '0.00', 1, 0, '2021-06-03 12:21:39', '2021-06-08 11:46:24'),
+(57, 2, 'Sit laborum Est vol', 4, 'Joel Mcguire', 'Hilel Chan', '+1 (531) 725-2663', '+1 (531) 725-2663', '+1 (531) 725-2663', 'vyqalepaj@mailinator.com', '11-Nov-1990', '398', '88.00', 2, 259, 'Obcaecati dolore eli', 'Atque nulla id labo', 'Cupiditate iure ipsu', 'Officiis et fugit v', 'Incidunt sit volupt', '17477', '0.00', '0.00', '88.00', '0.00', '0.00', 1, 0, '2021-06-05 05:04:04', '2021-06-05 05:04:04'),
+(58, 3, 'In sint minima est', 5, 'Lawrence Atkinson', 'Steven Carney', '+1 (869) 203-1139', '+1 (869) 203-1139', '+1 (869) 203-1139', 'lydohaju@mailinator.com', '30-Oct-1986', '904', '21.00', 3, 960, 'Veniam voluptas rep', 'Vero explicabo In e', 'Architecto voluptate', 'Quos ipsum excepturi', 'Sit duis dolor quam', '36148', '0.00', '21.00', '0.00', '0.00', '0.00', 1, 0, '2021-06-05 12:33:24', '2021-06-09 09:27:15'),
+(61, NULL, NULL, NULL, 'Due customer', NULL, '12255447', '12255447', '12255447', NULL, NULL, NULL, '0.00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '262.50', '262.50', '0.00', '0.00', '0.00', 1, 0, '2021-06-10 06:02:01', '2021-06-10 06:09:43');
 
 -- --------------------------------------------------------
 
@@ -1240,7 +1281,16 @@ INSERT INTO `expanses` (`id`, `invoice_id`, `branch_id`, `attachment`, `note`, `
 (5, 'EXI210523117473', NULL, NULL, NULL, '5.00', '0.00', '300.00', '315.00', '100.00', '215.00', '2021-05-23', 'May', '2021', 2, '2021-05-22 18:00:00', '2021-05-23 11:27:15', '2021-05-25 07:54:12'),
 (6, 'EXI210524244484', 24, NULL, NULL, '0.00', '0.00', '57.00', '57.00', '57.00', '0.00', '2021-05-24', 'May', '2021', 9, '2021-05-23 18:00:00', '2021-05-24 04:49:47', '2021-05-24 04:50:10'),
 (7, 'EXI210524274735', 24, NULL, NULL, '0.00', '0.00', '61.00', '61.00', '61.00', '0.00', '2021-05-24', 'May', '2021', 7, '2021-05-23 18:00:00', '2021-05-24 05:06:51', '2021-05-25 06:25:04'),
-(8, 'EXI210609978496', NULL, NULL, NULL, '0.00', '0.00', '600.00', '600.00', '600.00', '0.00', '2021-06-09', 'June', '2021', NULL, '2021-06-08 18:00:00', '2021-06-09 08:46:09', '2021-06-09 08:46:09');
+(8, 'EXI210609978496', NULL, NULL, NULL, '0.00', '0.00', '600.00', '600.00', '600.00', '0.00', '2021-06-09', 'June', '2021', NULL, '2021-06-08 18:00:00', '2021-06-09 08:46:09', '2021-06-09 08:46:09'),
+(9, 'EXI210613941147', NULL, NULL, NULL, '0.00', '0.00', '100.00', '100.00', '0.00', '100.00', '2021-06-13', 'June', '2021', 2, '2021-06-12 18:00:00', '2021-06-13 11:35:53', '2021-06-13 11:35:53'),
+(10, 'EXI210613377896', NULL, NULL, NULL, '0.00', '0.00', '100.00', '100.00', '0.00', '100.00', '2021-06-13', 'June', '2021', 2, '2021-06-12 18:00:00', '2021-06-13 11:36:24', '2021-06-13 11:36:24'),
+(11, 'Ex-14552', NULL, NULL, NULL, '5.00', '0.00', '1000.00', '1050.00', '1000.00', '50.00', '2021-06-13', 'June', '2021', 7, '2021-06-12 18:00:00', '2021-06-13 11:38:01', '2021-06-13 11:38:01'),
+(12, 'Ex-45522', NULL, NULL, NULL, '5.00', '0.00', '800.00', '840.00', '840.00', '0.00', '2021-06-13', 'June', '2021', 7, '2021-06-12 18:00:00', '2021-06-13 11:38:57', '2021-06-13 11:38:57'),
+(13, 'EXI210613776419', NULL, NULL, NULL, '0.00', '0.00', '100.00', '100.00', '0.00', '100.00', '2021-06-13', 'June', '2021', 2, '2021-06-12 18:00:00', '2021-06-13 11:39:42', '2021-06-13 11:39:42'),
+(14, 'EXI210613927436', NULL, NULL, NULL, '0.00', '0.00', '100.00', '100.00', '0.00', '100.00', '2021-06-13', 'June', '2021', NULL, '2021-06-12 18:00:00', '2021-06-13 11:40:59', '2021-06-13 11:40:59'),
+(15, 'EXI210613734998', NULL, NULL, NULL, '0.00', '0.00', '100.00', '100.00', '100.00', '0.00', '2021-06-13', 'June', '2021', 5, '2021-06-12 18:00:00', '2021-06-13 11:54:41', '2021-06-13 11:54:41'),
+(16, 'EXI210613835418', NULL, NULL, NULL, '0.00', '0.00', '100.00', '100.00', '100.00', '0.00', '2021-06-13', 'June', '2021', 4, '2021-06-13 12:00:55', '2021-06-13 11:55:28', '2021-06-13 12:00:55'),
+(17, 'EXI210614561229', NULL, NULL, NULL, '0.00', '0.00', '120.00', '120.00', '100.00', '20.00', '2021-06-14', 'June', '2021', 2, '2021-06-13 18:00:00', '2021-06-14 05:06:15', '2021-06-14 05:06:15');
 
 -- --------------------------------------------------------
 
@@ -1263,7 +1313,10 @@ CREATE TABLE `expanse_categories` (
 INSERT INTO `expanse_categories` (`id`, `name`, `code`, `created_at`, `updated_at`) VALUES
 (12, 'Net Bill', 'NB1', NULL, NULL),
 (13, 'Others', 'OT2', NULL, NULL),
-(14, 'Clener', 'C3', NULL, NULL);
+(14, 'Clener', 'C3', NULL, NULL),
+(15, 'Help', 'H123', NULL, NULL),
+(16, 'Bus Fare', 'BF-56', NULL, NULL),
+(17, 'Snacks', 'S-122', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1309,7 +1362,12 @@ INSERT INTO `expanse_payments` (`id`, `invoice_id`, `expanse_id`, `account_id`, 
 (32, 'EXPI210524244484', 6, 16, 'Advanced', '57.00', NULL, '2021-05-24', 'May', '2021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, NULL, '2021-05-23 18:00:00', '2021-05-24 04:49:47', '2021-05-24 04:49:47'),
 (33, 'EXPI21052499189', 7, 15, 'Card', '15.00', NULL, '2021-05-24', 'May', '2021', 'FF', 'FF', 'Credit-Card', 'FF', 'FF', 'FF', 'FF', NULL, NULL, NULL, NULL, 7, NULL, '2021-05-23 18:00:00', '2021-05-24 05:07:13', '2021-05-24 05:07:25'),
 (34, 'EXPI21052418122', 7, 15, 'Bank-Transfer', '46.00', NULL, '2021-05-24', 'May', '2021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, NULL, '2021-05-23 18:00:00', '2021-05-24 05:07:37', '2021-05-24 05:07:37'),
-(35, 'EXPI210609978496', 8, NULL, 'Cash', '600.00', NULL, '2021-06-09', 'June', '2021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2021-06-08 18:00:00', '2021-06-09 08:46:09', '2021-06-09 08:46:09');
+(35, 'EXPI210609978496', 8, NULL, 'Cash', '600.00', NULL, '2021-06-09', 'June', '2021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2021-06-08 18:00:00', '2021-06-09 08:46:09', '2021-06-09 08:46:09'),
+(36, 'EXPI210613543778', 11, NULL, 'Cash', '1000.00', NULL, '2021-06-13', 'June', '2021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2021-06-12 18:00:00', '2021-06-13 11:38:01', '2021-06-13 11:38:01'),
+(37, 'EXPI210613232681', 12, NULL, 'Cash', '840.00', NULL, '2021-06-13', 'June', '2021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2021-06-12 18:00:00', '2021-06-13 11:38:57', '2021-06-13 11:38:57'),
+(38, 'EXPI210613734998', 15, NULL, 'Cash', '100.00', NULL, '2021-06-13', 'June', '2021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2021-06-12 18:00:00', '2021-06-13 11:54:41', '2021-06-13 11:54:41'),
+(39, 'EXPI210613835418', 16, NULL, 'Cash', '100.00', NULL, '2021-06-13', 'June', '2021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2021-06-12 18:00:00', '2021-06-13 11:55:28', '2021-06-13 12:00:55'),
+(40, 'EXPI210614561229', 17, NULL, 'Cash', '100.00', NULL, '2021-06-14', 'June', '2021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2021-06-13 18:00:00', '2021-06-14 05:06:15', '2021-06-14 05:06:15');
 
 -- --------------------------------------------------------
 
@@ -1342,7 +1400,18 @@ INSERT INTO `expense_descriptions` (`id`, `expense_id`, `expense_category_id`, `
 (16, 7, 14, '12.00', 0, '2021-05-24 05:06:51', '2021-05-25 06:25:04'),
 (17, 7, 14, '15.00', 0, '2021-05-24 05:06:51', '2021-05-25 06:25:04'),
 (18, 8, 14, '100.00', 0, '2021-06-09 08:46:09', '2021-06-09 08:46:09'),
-(19, 8, 13, '500.00', 0, '2021-06-09 08:46:09', '2021-06-09 08:46:09');
+(19, 8, 13, '500.00', 0, '2021-06-09 08:46:09', '2021-06-09 08:46:09'),
+(20, 9, 14, '100.00', 0, '2021-06-13 11:35:53', '2021-06-13 11:35:53'),
+(21, 10, 14, '100.00', 0, '2021-06-13 11:36:24', '2021-06-13 11:36:24'),
+(22, 11, 14, '1000.00', 0, '2021-06-13 11:38:01', '2021-06-13 11:38:01'),
+(23, 12, 14, '100.00', 0, '2021-06-13 11:38:57', '2021-06-13 11:38:57'),
+(24, 12, 13, '200.00', 0, '2021-06-13 11:38:57', '2021-06-13 11:38:57'),
+(25, 12, 12, '500.00', 0, '2021-06-13 11:38:57', '2021-06-13 11:38:57'),
+(26, 13, 13, '100.00', 0, '2021-06-13 11:39:42', '2021-06-13 11:39:42'),
+(27, 14, 14, '100.00', 0, '2021-06-13 11:40:59', '2021-06-13 11:40:59'),
+(28, 15, 14, '100.00', 0, '2021-06-13 11:54:41', '2021-06-13 11:54:41'),
+(29, 16, 14, '100.00', 0, '2021-06-13 11:55:28', '2021-06-13 11:55:28'),
+(30, 17, 17, '120.00', 0, '2021-06-14 05:06:15', '2021-06-14 05:06:15');
 
 -- --------------------------------------------------------
 
@@ -1397,7 +1466,7 @@ CREATE TABLE `general_settings` (
 --
 
 INSERT INTO `general_settings` (`id`, `business`, `tax`, `product`, `sale`, `pos`, `purchase`, `dashboard`, `system`, `prefix`, `email_setting`, `sms_setting`, `modules`, `reward_poing_settings`, `multi_branches`, `hrm`, `services`, `menufacturing`, `projects`, `essentials`, `e_commerce`, `created_at`, `updated_at`) VALUES
-(1, '{\"shop_name\":\"SpeedDigit Pvt. Ltd.\",\"address\":\"Dhaka, Bangladesh\",\"phone\":\"015577886545\",\"email\":\"tg@gmail.com\",\"start_date\":\"07-04-2021\",\"default_profit\":0,\"currency\":\"\\u09f3\",\"currency_placement\":null,\"date_format\":\"dd-mm-yyyy\",\"financial_year_start\":\"Januaray\",\"time_format\":\"12\",\"business_logo\":\"60a9049c6c777-.png\",\"timezone\":\"Asia\\/Kalkata\"}', '{\"tax_1_name\":\"Tax\",\"tax_1_no\":\"1\",\"tax_2_name\":\"GST\",\"tax_2_no\":\"2\",\"is_tax_en_purchase_sale\":1}', '{\"product_code_prefix\":null,\"default_unit_id\":\"null\",\"is_enable_brands\":1,\"is_enable_categories\":1,\"is_enable_sub_categories\":1,\"is_enable_price_tax\":1,\"is_enable_warranty\":1}', '{\"default_sale_discount\":\"0.00\",\"default_tax_id\":\"null\",\"sales_cmsn_agnt\":\"select_form_cmsn_list\"}', '{\"is_disable_draft\":0,\"is_disable_quotation\":0,\"is_disable_challan\":0,\"is_disable_hold_invoice\":0,\"is_disable_multiple_pay\":1,\"is_show_recent_transactions\":0,\"is_disable_discount\":0,\"is_disable_order_tax\":0,\"is_show_credit_sale_button\":1,\"is_show_partial_sale_button\":1}', '{\"is_edit_pro_price\":0,\"is_enable_status\":1,\"is_enable_lot_no\":1}', '{\"view_stock_expiry_alert_for\":\"31\"}', '[]', '{\"purchase_invoice\":\"PI\",\"sale_invoice\":\"SI\",\"purchase_return\":\"PRI\",\"stock_transfer\":\"STI\",\"stock_djustment\":\"SA\",\"sale_return\":\"SRI\",\"expenses\":\"EXI\",\"contacts\":\"CO\",\"purchase_payment\":\"PPI\",\"sale_payment\":\"SPI\",\"expanse_payment\":\"EXPI\"}', '[]', '[]', '{\"purchases\":1,\"add_sale\":1,\"pos\":1,\"transfer_stock\":1,\"stock_adjustment\":1,\"expenses\":1,\"accounting\":1,\"contacts\":1,\"hrms\":1,\"damage_product\":1}', '{\"enable_cus_point\":1,\"point_display_name\":\"10\",\"amount_for_unit_rp\":\"10\",\"min_order_total_for_rp\":\"10\",\"max_rp_per_order\":\"10\",\"redeem_amount_per_unit_rp\":\"10\",\"min_order_total_for_redeem\":\"10\",\"min_redeem_point\":\"10\",\"max_redeem_point\":\"10\"}', 0, 0, 0, 0, 0, 0, 0, NULL, '2021-06-03 11:04:35');
+(1, '{\"shop_name\":\"SpeedDigit Pvt. Ltd.\",\"address\":\"Dhaka, Bangladesh\",\"phone\":\"015577886545\",\"email\":\"tg@gmail.com\",\"start_date\":\"07-04-2021\",\"default_profit\":0,\"currency\":\"\\u09f3\",\"currency_placement\":null,\"date_format\":\"dd-mm-yyyy\",\"financial_year_start\":\"Januaray\",\"time_format\":\"12\",\"business_logo\":\"60a9049c6c777-.png\",\"timezone\":\"Asia\\/Kalkata\"}', '{\"tax_1_name\":\"Tax\",\"tax_1_no\":\"1\",\"tax_2_name\":\"GST\",\"tax_2_no\":\"2\",\"is_tax_en_purchase_sale\":1}', '{\"product_code_prefix\":null,\"default_unit_id\":\"null\",\"is_enable_brands\":1,\"is_enable_categories\":1,\"is_enable_sub_categories\":1,\"is_enable_price_tax\":1,\"is_enable_warranty\":1}', '{\"default_sale_discount\":\"0.00\",\"default_tax_id\":\"null\",\"sales_cmsn_agnt\":\"select_form_cmsn_list\"}', '{\"is_disable_draft\":0,\"is_disable_quotation\":0,\"is_disable_challan\":0,\"is_disable_hold_invoice\":0,\"is_disable_multiple_pay\":1,\"is_show_recent_transactions\":0,\"is_disable_discount\":0,\"is_disable_order_tax\":0,\"is_show_credit_sale_button\":1,\"is_show_partial_sale_button\":1}', '{\"is_edit_pro_price\":0,\"is_enable_status\":1,\"is_enable_lot_no\":1}', '{\"view_stock_expiry_alert_for\":\"31\"}', '[]', '{\"purchase_invoice\":\"PI\",\"sale_invoice\":\"SI\",\"purchase_return\":\"PRI\",\"stock_transfer\":\"STI\",\"stock_djustment\":\"SA\",\"sale_return\":\"SRI\",\"expenses\":\"EXI\",\"contacts\":\"CO\",\"purchase_payment\":\"PPI\",\"sale_payment\":\"SPI\",\"expanse_payment\":\"EXPI\"}', '[]', '[]', '{\"purchases\":1,\"add_sale\":1,\"pos\":1,\"transfer_stock\":1,\"stock_adjustment\":1,\"expenses\":1,\"accounting\":1,\"contacts\":1,\"hrms\":1,\"damage_product\":1}', '{\"enable_cus_point\":1,\"point_display_name\":\"Reward Point\",\"amount_for_unit_rp\":\"10\",\"min_order_total_for_rp\":\"10\",\"max_rp_per_order\":\"\",\"redeem_amount_per_unit_rp\":\"10\",\"min_order_total_for_redeem\":\"\",\"min_redeem_point\":\"\",\"max_redeem_point\":\"\"}', 0, 0, 0, 0, 0, 0, 0, NULL, '2021-06-14 05:25:07');
 
 -- --------------------------------------------------------
 
@@ -1948,7 +2017,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (158, '2020_12_12_064712_create_transfer_stock_to_branches_table', 76),
 (159, '2020_12_12_065407_create_transfer_stock_to_branch_products_table', 76),
 (160, '2020_12_13_060916_create_transfer_stock_to_warehouses_table', 76),
-(161, '2020_12_13_060924_create_transfer_stock_to_warehouse_products_table', 76);
+(161, '2020_12_13_060924_create_transfer_stock_to_warehouse_products_table', 76),
+(162, '2021_06_15_144538_create_asset_types_table', 77),
+(163, '2021_06_15_162732_create_assets_table', 78);
 
 -- --------------------------------------------------------
 
@@ -2119,8 +2190,8 @@ INSERT INTO `products` (`id`, `type`, `name`, `product_code`, `category_id`, `pa
 (92, 1, 'Test', '1093156', 31, NULL, NULL, 3, NULL, NULL, '100.00', '100.00', '25.00', '125.00', '0.00', '95.00', '0.00', 0, 0, 0, 0, 0, 0, 1, NULL, '609776e6edadd.jpg', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '105.00', '0.00', '0.00', NULL, NULL, NULL, '2021-03-07 12:33:30', '2021-06-06 11:22:47'),
 (93, 1, 'Imported Product', '121255', 34, NULL, 5, 4, 5, NULL, '100.00', '150.00', '10.00', '165.00', '0.00', '385.00', '0.00', 10, 0, 0, 0, 1, 1, 1, NULL, '609776955a46d.jpg', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '15.00', '0.00', '0.00', NULL, NULL, NULL, '2021-03-08 11:05:39', '2021-06-09 10:53:57'),
 (94, 1, 'Imported Product', '121255', 34, NULL, 5, 4, 5, NULL, '200.00', '300.00', '10.00', '165.00', '0.00', '197.00', '0.00', 10, 0, 0, 0, 0, 0, 1, NULL, '609776a66a342.png', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '3.00', '0.00', '0.00', NULL, NULL, NULL, '2021-03-08 11:11:18', '2021-05-09 05:44:06'),
-(95, 1, 'Samsung Galaxy A30', 'PO76699939', 34, NULL, 6, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '552.00', '0.00', 620, 0, 0, 1, 0, 0, 1, NULL, '6097762fc053a.jpg', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '264.00', '0.00', '25.00', NULL, NULL, NULL, '2021-03-09 04:35:35', '2021-06-09 11:07:10'),
-(96, 1, 'Ales', 'PO65696188', 35, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '329.00', '0.00', 0, 0, 0, 0, 0, 1, 1, NULL, '60928152875ef.jpg', NULL, NULL, '1', 'CODE128', '50KG', 'New', 1, '112.00', '0.00', '1.00', NULL, NULL, NULL, '2021-03-24 04:43:06', '2021-06-13 08:03:31'),
+(95, 1, 'Samsung Galaxy A30', 'PO76699939', 34, NULL, 6, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '551.00', '0.00', 620, 0, 0, 1, 0, 0, 1, NULL, '6097762fc053a.jpg', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '265.00', '0.00', '25.00', NULL, NULL, NULL, '2021-03-09 04:35:35', '2021-06-15 06:22:46'),
+(96, 1, 'Ales', 'PO65696188', 35, NULL, 5, 3, 1, 2, '100.00', '105.00', '25.00', '125.00', '0.00', '329.00', '0.00', 0, 0, 0, 0, 0, 1, 1, NULL, '60928152875ef.jpg', NULL, NULL, '1', 'CODE128', '50KG', 'New', 1, '112.00', '0.00', '1.00', NULL, NULL, NULL, '2021-03-24 04:43:06', '2021-06-15 06:22:46'),
 (97, 1, 'Test_product_1', 'PO39446545', 35, NULL, 5, 3, NULL, NULL, '100.00', '115.00', '25.00', '125.00', '0.00', '300.00', '0.00', 0, 0, 0, 0, 0, 0, 1, NULL, 'default.png', NULL, NULL, '1', 'CODE128', NULL, 'Used', 1, '0.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-01 09:43:26', '2021-04-03 07:57:46'),
 (98, 1, 'Purchase-1', '75555', 35, NULL, 5, 3, NULL, 2, '100.00', '100.00', '25.00', '125.00', '0.00', '0.00', '0.00', 0, 0, 0, 0, 0, 0, 1, NULL, 'default.png', NULL, NULL, '1', 'CODE128', NULL, NULL, 1, '1.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-01 11:15:21', '2021-05-09 13:00:03'),
 (99, 1, 'Variant Products', 'PO73361812', 35, NULL, 5, 3, NULL, NULL, '100.00', '100.00', '25.00', '125.00', '0.00', '0.00', '0.00', 0, 0, 0, 1, 1, 1, 0, NULL, 'default.png', NULL, NULL, '0', 'CODE128', NULL, 'New', 1, '0.00', '0.00', '0.00', NULL, NULL, NULL, '2021-04-01 11:53:45', '2021-04-27 07:49:07'),
@@ -2456,7 +2527,7 @@ CREATE TABLE `product_variants` (
 
 INSERT INTO `product_variants` (`id`, `product_id`, `variant_name`, `variant_code`, `variant_quantity`, `number_of_sale`, `total_transfered`, `total_adjusted`, `variant_cost`, `variant_cost_with_tax`, `variant_profit`, `variant_price`, `variant_image`, `is_purchased`, `delete_in_update`, `created_at`, `updated_at`) VALUES
 (40, 95, '6GB 128GB', '6gb128gb-PO76699939', '1543.00', '155.00', '0.00', '23.00', '200.00', '210.00', '25.00', '125.00', '609775fe64b8c.jpg', 1, 0, '2021-03-09 04:35:35', '2021-06-09 11:07:10'),
-(41, 95, '4GB 128GB', '4gb128gb-PO76699939', '298.00', '109.00', '0.00', '2.00', '100.00', '105.00', '25.00', '125.00', '609775fe5c6b6.jpg', 1, 0, '2021-03-09 04:35:35', '2021-06-09 11:07:10'),
+(41, 95, '4GB 128GB', '4gb128gb-PO76699939', '297.00', '110.00', '0.00', '2.00', '100.00', '105.00', '25.00', '125.00', '609775fe5c6b6.jpg', 1, 0, '2021-03-09 04:35:35', '2021-06-15 06:22:46'),
 (42, 99, 'Red,L', 'red,l-PO73361812', '1.00', '0.00', '0.00', '0.00', '100.00', '100.00', '25.00', '125.00', NULL, 1, 0, '2021-04-01 11:53:45', '2021-04-27 07:49:07');
 
 -- --------------------------------------------------------
@@ -2479,8 +2550,8 @@ CREATE TABLE `product_warehouses` (
 --
 
 INSERT INTO `product_warehouses` (`id`, `warehouse_id`, `product_id`, `product_quantity`, `created_at`, `updated_at`) VALUES
-(31, 7, 95, '208.00', '2021-03-09 08:49:11', '2021-06-09 08:50:14'),
-(32, 7, 96, '82.00', '2021-03-28 11:24:08', '2021-06-13 08:03:31'),
+(31, 7, 95, '207.00', '2021-03-09 08:49:11', '2021-06-15 06:22:46'),
+(32, 7, 96, '82.00', '2021-03-28 11:24:08', '2021-06-15 06:22:46'),
 (33, 7, 94, '0.00', '2021-03-29 05:17:53', '2021-04-06 10:19:36'),
 (34, 7, 103, '120.00', '2021-04-05 05:56:17', '2021-05-09 13:00:03'),
 (35, 7, 104, '20.00', '2021-04-05 05:58:38', '2021-06-03 05:22:08'),
@@ -2538,7 +2609,7 @@ CREATE TABLE `product_warehouse_variants` (
 
 INSERT INTO `product_warehouse_variants` (`id`, `product_warehouse_id`, `product_id`, `product_variant_id`, `variant_quantity`, `created_at`, `updated_at`) VALUES
 (16, 31, 95, 40, '0.00', '2021-03-09 08:49:11', '2021-06-09 07:22:00'),
-(17, 31, 95, 41, '24.00', '2021-04-01 10:47:38', '2021-06-09 08:50:14'),
+(17, 31, 95, 41, '23.00', '2021-04-01 10:47:38', '2021-06-15 06:22:46'),
 (18, 58, 99, 42, '1.00', '2021-04-24 07:27:48', '2021-04-27 07:49:07');
 
 -- --------------------------------------------------------
@@ -3193,7 +3264,7 @@ INSERT INTO `sales` (`id`, `invoice_id`, `branch_id`, `warehouse_id`, `customer_
 (257, 'SDC011210610225392', 24, NULL, NULL, NULL, NULL, 1, '131.25', 1, '0.00', '0.00', NULL, NULL, '0.00', NULL, NULL, NULL, '0.00', '0.00', '131.25', '131.25', '8.75', '0.00', 0, 0, '0.00', '0.00', NULL, 7, 1, 1, '10-06-2021', '05:10:59 pm', '2021-06-09 23:10:59', 'June', '2021', NULL, 2, '2021-06-10 11:10:59', '2021-06-10 11:10:59'),
 (258, 'SDC0112106109453', 24, NULL, NULL, NULL, NULL, 1, '131.25', 1, '0.00', '0.00', NULL, NULL, '0.00', NULL, NULL, NULL, '0.00', '0.00', '131.25', '131.25', '0.00', '0.00', 0, 0, '0.00', '0.00', NULL, 7, 1, 1, '2021-06-10', '05:12:10 pm', '2021-06-09 18:00:00', 'June', '2021', NULL, 1, '2021-06-10 11:12:10', '2021-06-10 11:12:10'),
 (259, 'TEST782106138424', NULL, 7, NULL, NULL, NULL, 1, '131.25', 1, '0.00', '0.00', NULL, NULL, '0.00', NULL, NULL, NULL, '0.00', '0.00', '131.25', '131.25', '0.00', '0.00', 0, 0, '0.00', '0.00', NULL, 2, 1, 1, '2021-06-13', '01:59:14 pm', '2021-06-12 18:00:00', 'June', '2021', NULL, 1, '2021-06-13 07:59:14', '2021-06-13 07:59:14'),
-(260, 'TEST782106134186', NULL, 7, NULL, NULL, NULL, 1, '131.25', 1, '0.00', '0.00', NULL, NULL, '0.00', NULL, NULL, NULL, '0.00', '0.00', '131.25', '131.25', '0.00', '0.00', 0, 0, '0.00', '0.00', NULL, 2, 1, 1, '2021-06-13', '02:03:31 pm', '2021-06-12 18:00:00', 'June', '2021', NULL, 1, '2021-06-13 08:03:31', '2021-06-13 08:03:31');
+(260, 'TEST782106134188', NULL, 7, NULL, NULL, NULL, 2, '262.50', 1, '0.00', '0.00', 'Shipment Details', NULL, '0.00', NULL, NULL, NULL, '0.00', '0.00', '262.50', '262.50', '0.00', '0.00', 0, 0, '0.00', '0.00', NULL, 2, 1, 1, '2021-06-13', '02:03:31 pm', '2021-06-12 18:00:00', 'June', '2021', NULL, 1, '2021-06-13 08:03:31', '2021-06-15 06:22:46');
 
 -- --------------------------------------------------------
 
@@ -3432,7 +3503,8 @@ INSERT INTO `sale_payments` (`id`, `invoice_id`, `sale_id`, `customer_id`, `acco
 (242, 'SPI2106109453', 258, NULL, NULL, 'Cash', '131.25', 1, 1, NULL, '2021-06-10', '05:12:10 pm', 'June', '2021', '2021-06-09 18:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, '2021-06-10 11:12:10', '2021-06-10 11:12:10'),
 (243, 'SPI2106138424', 259, NULL, NULL, 'Cash', '131.25', 1, 1, NULL, '2021-06-13', '01:59:14 pm', 'June', '2021', '2021-06-12 18:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2021-06-13 07:59:14', '2021-06-13 07:59:14');
 INSERT INTO `sale_payments` (`id`, `invoice_id`, `sale_id`, `customer_id`, `account_id`, `pay_mode`, `paid_amount`, `payment_on`, `payment_type`, `payment_status`, `date`, `time`, `month`, `year`, `report_date`, `card_no`, `card_holder`, `card_type`, `card_transaction_no`, `card_month`, `card_year`, `card_secure_code`, `account_no`, `cheque_no`, `transaction_no`, `attachment`, `note`, `admin_id`, `created_at`, `updated_at`) VALUES
-(244, 'SPI2106134186', 260, NULL, NULL, 'Cash', '131.25', 1, 1, NULL, '2021-06-13', '02:03:31 pm', 'June', '2021', '2021-06-12 18:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2021-06-13 08:03:31', '2021-06-13 08:03:31');
+(244, 'SPI2106134186', 260, NULL, NULL, 'Cash', '131.25', 1, 1, NULL, '2021-06-13', '02:03:31 pm', 'June', '2021', '2021-06-12 18:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2021-06-13 08:03:31', '2021-06-13 08:03:31'),
+(245, 'SPI21061524611', 260, NULL, 16, 'Cash', '131.25', 1, 1, NULL, '15-06-2021', '12:18:20 pm', 'June', '2021', '2021-06-14 18:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2021-06-15 06:18:20', '2021-06-15 06:18:20');
 
 -- --------------------------------------------------------
 
@@ -3914,7 +3986,8 @@ INSERT INTO `sale_products` (`id`, `sale_id`, `product_id`, `product_variant_id`
 (536, 257, 96, NULL, '1.00', 'Piece', 1, '0.00', '0.00', '5.00', '6.25', '105.00', '125.00', '131.25', '131.25', NULL, '0.00', 0, 0, '2021-06-10 11:10:59', '2021-06-10 11:10:59'),
 (537, 258, 96, NULL, '1.00', 'Piece', 1, '0.00', '0.00', '5.00', '6.25', '105.00', '125.00', '131.25', '131.25', NULL, '0.00', 0, 0, '2021-06-10 11:12:10', '2021-06-10 11:12:10'),
 (538, 259, 96, NULL, '1.00', 'Piece', 1, '0.00', '0.00', '5.00', '6.25', '105.00', '125.00', '131.25', '131.25', NULL, '0.00', 0, 0, '2021-06-13 07:59:14', '2021-06-13 07:59:14'),
-(539, 260, 96, NULL, '1.00', 'Piece', 1, '0.00', '0.00', '5.00', '6.25', '105.00', '125.00', '131.25', '131.25', NULL, '0.00', 0, 0, '2021-06-13 08:03:31', '2021-06-13 08:03:31');
+(539, 260, 96, NULL, '1.00', 'Piece', 1, '0.00', '0.00', '5.00', '6.25', '105.00', '125.00', '131.25', '131.25', NULL, '0.00', 0, 0, '2021-06-13 08:03:31', '2021-06-15 06:22:46'),
+(540, 260, 95, 41, '1.00', 'Piece', 1, '0.00', '0.00', '5.00', '6.25', '105.00', '125.00', '131.25', '131.25', NULL, '0.00', 0, 0, '2021-06-15 06:18:07', '2021-06-15 06:22:46');
 
 -- --------------------------------------------------------
 
@@ -4647,6 +4720,20 @@ ALTER TABLE `allowance_employees`
   ADD KEY `allowance_employees_allowance_id_foreign` (`allowance_id`);
 
 --
+-- Indexes for table `assets`
+--
+ALTER TABLE `assets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `assets_type_id_foreign` (`type_id`),
+  ADD KEY `assets_branch_id_foreign` (`branch_id`);
+
+--
+-- Indexes for table `asset_types`
+--
+ALTER TABLE `asset_types`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `banks`
 --
 ALTER TABLE `banks`
@@ -5297,6 +5384,18 @@ ALTER TABLE `allowance_employees`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
+-- AUTO_INCREMENT for table `assets`
+--
+ALTER TABLE `assets`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `asset_types`
+--
+ALTER TABLE `asset_types`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `banks`
 --
 ALTER TABLE `banks`
@@ -5336,7 +5435,7 @@ ALTER TABLE `bulk_variant_children`
 -- AUTO_INCREMENT for table `cash_flows`
 --
 ALTER TABLE `cash_flows`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT for table `cash_registers`
@@ -5390,25 +5489,25 @@ ALTER TABLE `customer_ledgers`
 -- AUTO_INCREMENT for table `expanses`
 --
 ALTER TABLE `expanses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `expanse_categories`
 --
 ALTER TABLE `expanse_categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `expanse_payments`
 --
 ALTER TABLE `expanse_payments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `expense_descriptions`
 --
 ALTER TABLE `expense_descriptions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -5510,7 +5609,7 @@ ALTER TABLE `invoice_schemas`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
 
 --
 -- AUTO_INCREMENT for table `money_receipts`
@@ -5630,13 +5729,13 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `sale_payments`
 --
 ALTER TABLE `sale_payments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=245;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=246;
 
 --
 -- AUTO_INCREMENT for table `sale_products`
 --
 ALTER TABLE `sale_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=540;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=541;
 
 --
 -- AUTO_INCREMENT for table `sale_returns`
@@ -5804,6 +5903,13 @@ ALTER TABLE `admin_and_users`
 ALTER TABLE `allowance_employees`
   ADD CONSTRAINT `allowance_employees_allowance_id_foreign` FOREIGN KEY (`allowance_id`) REFERENCES `hrm_allowance` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `allowance_employees_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `assets`
+--
+ALTER TABLE `assets`
+  ADD CONSTRAINT `assets_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assets_type_id_foreign` FOREIGN KEY (`type_id`) REFERENCES `asset_types` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `branch_payment_methods`

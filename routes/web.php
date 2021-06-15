@@ -519,6 +519,22 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::get('all/cash/flow', 'AccountingRelatedSectionController@allCashflows')->name('accounting.all.cash.flow');
         Route::get('filter/cash/flow', 'AccountingRelatedSectionController@filterCashflows')->name('accounting.filter.cash.flow');
     });
+
+    Route::group(['prefix' => 'assets'], function () {
+        Route::get('/', 'AssetController@index')->name('accounting.assets.index');
+        Route::post('asset/type/store', 'AssetController@assetTypeStore')->name('accounting.assets.asset.type.store');
+        Route::get('asset/type/edit/{typeId}', 'AssetController@assetTypeEdit')->name('accounting.assets.asset.type.edit');
+        Route::post('asset/type/update/{typeId}', 'AssetController@assetTypeUpdate')->name('accounting.assets.asset.type.update');
+
+        Route::delete('asset/type/delete/{typeId}', 'AssetController@assetTypeDelete')->name('accounting.assets.asset.type.delete');
+        Route::get('form/asset/types', 'AssetController@formAssetTypes')->name('accounting.assets.form.asset.type');
+
+        Route::get('all/asset', 'AssetController@allAsset')->name('accounting.assets.all');
+        Route::post('asset/store', 'AssetController@assetStore')->name('accounting.assets.store');
+        Route::get('asset/edit/{assetId}', 'AssetController@assetEdit')->name('accounting.assets.edit');
+        Route::post('asset/update/{assetId}', 'AssetController@assetUpdate')->name('accounting.assets.update');
+        Route::delete('asset/delete/{assetId}', 'AssetController@assetDelete')->name('accounting.assets.delete');
+    });
 });
 
 Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], function () {

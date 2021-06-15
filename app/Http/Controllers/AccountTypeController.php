@@ -41,7 +41,7 @@ class AccountTypeController extends Controller
             'remark' => $request->remark,
         ]);
         
-        return response()->json('Successfully account type is added');
+        return response()->json('Account type created successfully');
     }
 
     // Update Account type
@@ -57,7 +57,7 @@ class AccountTypeController extends Controller
             'remark' => $request->remark,
         ]);
         
-        return response()->json('Successfully account type is updated');
+        return response()->json('Account type updated successfully');
     }
 
     public function delete(Request $request, $typeId)
@@ -66,7 +66,7 @@ class AccountTypeController extends Controller
         if (!is_null($deleteAccountType)) {
             $deleteAccountType->delete();  
         }
-        return response()->json('Successfully account type is deleted');
+        return response()->json('Account type deleted successfully');
     }
 
     public function changeStatus($typeId)
@@ -75,11 +75,11 @@ class AccountTypeController extends Controller
         if ($statusChange->status == 1) {
             $statusChange->status = 0;
             $statusChange->save();
-            return response()->json('Successfully account type is deactivated');
+            return response()->json('Account type deactivated successfully');
         } else {
             $statusChange->status = 1;
             $statusChange->save();
-            return response()->json('Successfully account type is activated');
+            return response()->json('Account type activated successfully');
         }
     }
 }

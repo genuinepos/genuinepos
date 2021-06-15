@@ -152,9 +152,9 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i
-                                                class="fas fa-calendar-week text-navy-blue"></i></span>
+                                                class="fas fa-calendar-week input_i"></i></span>
                                     </div>
-                                    <input type="text" name="date_of_birth" class="form-control"
+                                    <input type="date" name="date_of_birth" class="form-control"
                                         autocomplete="off">
                                 </div>
                             </div>
@@ -166,7 +166,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Opening Balance :</strong> </label>
+                                <label><strong>Opening Balance :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
                                 <input type="number" step="any" name="opening_balance" class="form-control"
                                     placeholder="Opening balance" value="0.00" />
                             </div>
@@ -328,9 +328,9 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i
-                                                class="fas fa-calendar-week text-navy-blue"></i></span>
+                                                class="fas fa-calendar-week input_i"></i></span>
                                     </div>
-                                    <input type="text" name="date_of_birth" class="form-control"
+                                    <input type="date" name="date_of_birth" class="form-control"
                                         autocomplete="off" id="e_date_of_birth">
                                 </div>
                             </div>
@@ -629,24 +629,6 @@
                     }
                 });
             });
-
-            // Show sweet alert for delete
-            // $(document).on('click', '#delete', function(e) {
-            //     e.preventDefault();
-            //     var url = $(this).attr('href');
-            //     $('#deleted_form').attr('action', url);
-            //     swal({
-            //             title: "Are you sure?",
-            //             icon: "warning",
-            //             buttons: true,
-            //             dangerMode: true,
-            //         })
-            //         .then((willDelete) => {
-            //             if (willDelete) {
-            //                 $('#deleted_form').submit();
-            //             }
-            //         });
-            // });
 
             $(document).on('click', '#delete',function(e){
                 e.preventDefault();

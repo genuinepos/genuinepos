@@ -87,7 +87,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b></label>
+                                                <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id"
                                                         class="form-control" placeholder="Invoice ID">
@@ -244,136 +244,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="payment_method d-none" id="Card">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Card No :</b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" class="form-control" name="card_no" id="card_no" placeholder="Card number">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class="col-4"><b>Holder :</b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" class="form-control" name="card_holder_name" id="card_holder_name" placeholder="Card holder name">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3 " class="col-4"><b>Trans No :</b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" class="form-control" name="card_transaction_no" id="card_transaction_no" placeholder="Card transaction no">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Type :</b></label>
-                                                        <div class="col-8">
-                                                            <select name="card_type" class="form-control"  id="p_card_type">
-                                                                <option value="Credit-Card">Credit Card</option>  
-                                                                <option value="Debit-Card">Debit Card</option> 
-                                                                <option value="Visa">Visa Card</option> 
-                                                                <option value="Master-Card">Master Card</option> 
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3 mt-1" class=" col-4"><b>Month :</b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" class="form-control " name="month" id="month" placeholder="Month">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class="col-4"><b>Year :</b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" class="form-control" name="year" id="year" placeholder="Year">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class="col-4"><b>SecureID :</b> </label>
-                                                        <div class="col-8">
-                                                            <input type="text" class="form-control" name="secure_code" id="secure_code" placeholder="Secure code">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="payment_method d-none" id="Cheque">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-2"><b>Cheque Number :</b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" class="form-control" name="cheque_no" id="cheque_no" placeholder="Cheque number">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="payment_method d-none" id="Bank-Transfer">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-2"><b>Account No :</b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" class="form-control" name="account_no" id="account_no" placeholder="Account number">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="payment_method d-none" id="Custom">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-2"><b>Transaction No :</b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" class="form-control " name="transaction_no" id="transaction_no" placeholder="Transaction number">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-3"><b>Payment Note :</b></label>
-                                                    <div class="col-9">
+                                                    <label for="inputEmail3" class=" col-4"><b>Sale Note:</b></label>
+                                                    <div class="col-8">
+                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Payment Note :</b></label>
+                                                    <div class="col-8">
                                                         <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-3"><b>Sale Note :</b></label>
-                                                    <div class="col-9">
-                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note"> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -448,14 +333,14 @@
                                         <div class="row">
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive:</label>
                                             <div class="col-sm-7">
-                                                <input name="paying_amount" class="form-control" id="paying_amount" value="0.00">
+                                                <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Change :</label>
                                             <div class="col-sm-7">
-                                                <input name="change_amount" class="form-control" id="change_amount" value="0.00">
+                                                <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00">
                                             </div>
                                         </div>
 
@@ -471,6 +356,89 @@
                                                     <option value="Other">Other</option>
                                                     <option value="Custom">Custom Field</option>
                                                 </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="payment_method d-none" id="Card">
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Card No :</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="card_no" id="card_no" placeholder="Card number">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Card Holder :</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="card_holder_name" id="card_holder_name" placeholder="Card holder name">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">TrX Number :</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="card_transaction_no" id="card_transaction_no" placeholder="Card transaction no">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Card Type :</label>
+                                                <div class="col-sm-7">
+                                                    <select name="card_type" class="form-control"  id="p_card_type">
+                                                        <option value="Credit-Card">Credit Card</option>  
+                                                        <option value="Debit-Card">Debit Card</option> 
+                                                        <option value="Visa">Visa Card</option> 
+                                                        <option value="Master-Card">Master Card</option> 
+                                                    </select>
+                                                </div>
+                                            </div> 
+
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Month :</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control " name="month" id="month" placeholder="Month">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Year :</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="year" id="year" placeholder="Year">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Secure ID :</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="secure_code" id="secure_code" placeholder="Secure code">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="payment_method d-none" id="Cheque">
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Cheque No :</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="cheque_no" id="cheque_no" placeholder="Cheque number">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="payment_method d-none" id="Bank-Transfer">
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Account No :</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="account_no" id="account_no" placeholder="Account number">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="payment_method d-none" id="Custom">
+                                            <div class="row">
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">TrX No :</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control " name="transaction_no" id="transaction_no" placeholder="Transaction number">
+                                                </div>
                                             </div>
                                         </div>
 

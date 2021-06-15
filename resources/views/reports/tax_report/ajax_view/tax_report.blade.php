@@ -2,7 +2,7 @@
     <div class="card-body card-custom">
 
         <div class="heading mb-1">
-            <h6 class="text-navy-blue">Overall (Output - Input - Expense)</h6>
+            <h6 class="text-navy-blue">Overall (Output - Input - Expense) </h6>
         </div>
 
         <div class="row">

@@ -449,3 +449,7 @@ select {height: 26px;}
 a#print_report {
     margin-top: 1em;
 }
+
+.tp {
+    color: #3cb7dd;
+}

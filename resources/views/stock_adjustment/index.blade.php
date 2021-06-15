@@ -75,7 +75,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-10">
-                                        <h6>All Adjustment <small>Note: Initially current year's data is available here, if need another year's data go to the data filter.</small></h6>
+                                        <h6>All Adjustment <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
                                     </div>
     
                                     <div class="col-md-2">

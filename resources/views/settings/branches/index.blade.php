@@ -95,7 +95,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Branch Code :</strong>  <span class="text-danger">*</span></label>
+                                <label><strong>Branch Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
                                 <input type="text" name="code" class="form-control form-control-sm add_input" data-name="Branch code" id="code" placeholder="Branch code"/>
                                 <span class="error error_code"></span>
                             </div>
@@ -233,7 +233,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Branch Code :</strong>  <span class="text-danger">*</span></label>
+                                <label><strong>Branch Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
                                 <input type="text" name="code" class="form-control form-control-sm edit_input" data-name="Branch code" id="e_code" placeholder="Branch code"/>
                                 <span class="error error_e_code"></span>
                             </div>

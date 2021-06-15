@@ -107,7 +107,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Attachment :</b> </label>
+                                                <label for="inputEmail3" class=" col-4"><b>Attachment :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Purchase related any file.Ex: Scanned cheque, payment prove file etc. Max File Size 2MB." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="file" class="form-control" name="attachment">
                                                 </div>
@@ -158,7 +158,6 @@
                                                         </div>
                                                     </div>
                                                     <div class="select_area">
-                                                        {{-- <div class="remove_select_area_btn">X</div> --}}
                                                         <ul id="list" class="variant_list_area">
                                                            
                                                         </ul>

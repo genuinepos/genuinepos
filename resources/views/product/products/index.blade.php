@@ -16,9 +16,9 @@
                             <form id="product_filter_form" action="" method="get">
                                 <div class="form-group row">
                                     <div class="col-md-3">
-                                        <strong>Type</strong>
+                                        <strong>Type :</strong>
                                         <select name="product_type" id="product_type"
-                                            class="form-control form-control-sm submit_able" autofocus>
+                                            class="form-control submit_able" autofocus>
                                             <option value="">All</option>
                                             <option value="1">Single</option>
                                             <option value="2">Variant</option>
@@ -27,9 +27,9 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <strong>Category</strong>
+                                        <strong>Category :</strong>
                                         <select id="category_id" name="category_id"
-                                            class="form-control form-control-sm submit_able">
+                                            class="form-control submit_able">
                                             <option value="">All</option>
                                             @foreach ($categories as $cate)
                                                 <option value="{{ $cate->id }}">{{ $cate->name }}</option>
@@ -38,9 +38,9 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <strong>Unit</strong>
+                                        <strong>Unit :</strong>
                                         <select id="unit_id" name="unit_id"
-                                            class="form-control form-control-sm submit_able">
+                                            class="form-control submit_able">
                                             <option value="">All</option>
                                             @foreach ($units as $unit)
                                                 <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
@@ -49,8 +49,8 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <strong>Tax</strong>
-                                        <select id="tax_id" name="tax_id" class="form-control form-control-sm submit_able">
+                                        <strong>Tax :</strong>
+                                        <select id="tax_id" name="tax_id" class="form-control submit_able">
                                             <option value="">All</option>
                                             @foreach ($taxes as $tax)
                                                 <option value="{{ $tax->id }}">{{ $tax->tax_name.' ('.$unit->code_name.')' }}</option>
@@ -61,9 +61,9 @@
 
                                 <div class="form-group row">
                                     <div class="col-md-3">
-                                        <strong>Brand</strong>
+                                        <strong>Brand :</strong>
                                         <select id="brand_id" name="brand_id"
-                                            class="form-control form-control-sm submit_able">
+                                            class="form-control submit_able">
                                             <option value="">All</option>
                                             @foreach ($brands as $brand)
                                                 <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -72,8 +72,8 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <strong>Status</strong>
-                                        <select name="status" id="status" class="form-control form-control-sm submit_able">
+                                        <strong>Status :</strong>
+                                        <select name="status" id="status" class="form-control submit_able">
                                             <option value="">All</option>
                                             <option value="1">Active</option>
                                             <option value="0">In-Active</option>
@@ -206,9 +206,9 @@
             product_table = $('.data_tbl').DataTable({
                 dom: "lBfrtip",
                 buttons: [ 
-                    {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-                    {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-                    {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                    {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                    {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                    {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 ],
                 "processing": true,
                 "serverSide": true,

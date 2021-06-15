@@ -138,12 +138,12 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <b>Date Of Date :</b>
+                                <b>Date Of Birth :</b>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week"></i></span>
                                     </div>
-                                    <input type="text" name="date_of_birth" class="form-control form-control-sm date-picker" autocomplete="off">
+                                    <input type="date" name="date_of_birth" class="form-control form-control-sm date-picker" autocomplete="off">
                                 </div>
                             </div>
 
@@ -153,7 +153,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <b>Opening Balance :</b>
+                                <b>Opening Balance :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this supplier due." class="fas fa-info-circle tp"></i>
                                 <input type="number" name="opening_balance" class="form-control form-control-sm" placeholder="Opening balance"/>
                             </div>
 
@@ -292,12 +292,12 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <b>Date Of Date :</b> 
+                                <b>Date Of Birth :</b> 
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week"></i></span>
                                     </div>
-                                    <input type="text" name="date_of_birth" class="form-control form-control-sm date-picker" autocomplete="off" id="e_date_of_birth">
+                                    <input type="date" name="date_of_birth" class="form-control form-control-sm date-picker" autocomplete="off" id="e_date_of_birth">
                                 </div>
                             </div>
 
@@ -612,7 +612,6 @@
 
             var url = $(this).attr('action');
             var inputs = $('.p_input');
-                inputs.removeClass('is-invalid');
                 $('.error').html('');  
                 var countErrorField = 0;  
             $.each(inputs, function(key, val){
@@ -627,7 +626,6 @@
 
             if(countErrorField > 0){
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
                 return;
             }
 

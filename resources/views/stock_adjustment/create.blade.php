@@ -65,10 +65,10 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Reference ID :</b> </label>
+                                                <label for="inputEmail3" class=" col-4"><b>Ref. ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id"
-                                                        class="form-control">
+                                                        class="form-control" placeholder="Reference ID">
                                                 </div>
                                             </div>
                                         </div>
@@ -86,7 +86,7 @@
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><span
-                                                    class="text-danger">*</span> <b>Type :</b> </label>
+                                                    class="text-danger">*</span> <b>Type :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <select name="type" data-name="Adjustment type"
                                                         class="form-control add_input" title="Select branch" id="type">

@@ -89,7 +89,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Warehouse Code :</b>  <span class="text-danger">*</span></label>
+                            <label><b>Warehouse Code :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
                             <input type="text" name="code" class="form-control form-control-sm add_input" data-name="Warehouse code" id="code" placeholder="Warehouse code"/>
                             <span class="error error_code"></span>
                         </div>
@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Warehouse Code :</b>  <span class="text-danger">*</span></label>
+                            <label><b>Warehouse Code :</b>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
                             <input type="text" name="code" class="form-control form-control-sm edit_input" data-name="Warehouse code" id="e_code" placeholder="Warehouse code"/>
                             <span class="error error_e_code"></span>
                         </div>

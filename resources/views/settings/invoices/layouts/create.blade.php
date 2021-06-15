@@ -105,7 +105,7 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="is_header_less" id="is_header_less"> &nbsp;<b>Is Headerless ?</b> 
+                                                    <input type="checkbox" name="is_header_less" id="is_header_less"> &nbsp;<b>Is Headerless ?</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you check this option then print header info will not come in the print preview. Use case, When the print page is pre-generated Like Pad.Where header info previously exists." class="fas fa-info-circle tp"></i>
                                                 </p>
                                             </div>
 

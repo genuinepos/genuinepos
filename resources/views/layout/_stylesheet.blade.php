@@ -40,7 +40,7 @@
             border: 0px solid transparent;
             background-color: #4e9ff3;
             color: white;
-            border-radius: 4px;
+            border-radius: 3px;
             font-size: 10px;
             height: 20px;
             line-height: 20px;

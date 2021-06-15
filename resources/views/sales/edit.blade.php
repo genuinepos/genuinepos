@@ -84,7 +84,8 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Attachment :</b></label>
+                                                <label for="inputEmail3" class=" col-4"><b>Attachment :</b>
+                                                    <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="file" name="attachment" class="form-control">
                                                 </div>
@@ -182,6 +183,66 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="item-details-sec mt-2 payment_body">
+                                    <div class="content-inner">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Ship Details :</b></label>
+                                                    <div class="col-8">
+                                                        <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Ship Address :</b></label>
+                                                    <div class="col-8">
+                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address"> 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Ship Status :</b></label>
+                                                    <div class="col-8">
+                                                        <select name="shipment_status" class="form-control" id="shipment_status">
+                                                            <option value="">Shipment Status</option>
+                                                            <option value="1">Ordered</option>
+                                                            <option value="2">Packed</option>
+                                                            <option value="3">Shipped</option>
+                                                            <option value="4">Delivered</option>
+                                                            <option value="5">Cancelled</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-1">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Delivered To :</b></label>
+                                                    <div class="col-8">
+                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="Delivered To"> 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Sale Note:</b></label>
+                                                    <div class="col-8">
+                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-3">
@@ -243,48 +304,6 @@
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Total Payable:</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00">
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Ship Details :</label>
-                                            <div class="col-sm-7">
-                                                <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Ship Address :</label>
-                                            <div class="col-sm-7">
-                                                <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address"> 
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Ship Status :</label>
-                                            <div class="col-sm-7">
-                                                <select name="shipment_status" class="form-control" id="shipment_status">
-                                                    <option value="">Shipment Status</option>
-                                                    <option value="1">Ordered</option>
-                                                    <option value="2">Packed</option>
-                                                    <option value="3">Shipped</option>
-                                                    <option value="4">Delivered</option>
-                                                    <option value="5">Cancelled</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Delevered To :</label>
-                                            <div class="col-sm-7">
-                                                <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="Delivered To"> 
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Sale Note :</label>
-                                            <div class="col-sm-7">
-                                                <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note"> 
                                             </div>
                                         </div>
 

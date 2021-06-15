@@ -20,7 +20,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-money-bill-wave-alt"></span>
-                                <h5>Tax Report</h5>
+                                <h5>Tax Report <i data-bs-toggle="tooltip" data-bs-placement="right" title="Output: Purchase Order Tax, Input: Sale Order Tax, Expense: Tax On Expense" class="fas fa-info-circle tp"></i></h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
@@ -74,7 +74,7 @@
                                         <div class="card-body card-custom"> 
                                            
                                             <div class="heading">
-                                                <h4 class="text-navy-blue">Overall (Output - Input - Expense)</h4>
+                                                <h4>Overall (Output - Input - Expense) </h4>
                                             </div>
                                                
                                             <div class="row">

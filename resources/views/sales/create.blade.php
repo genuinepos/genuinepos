@@ -21,7 +21,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
-                                <div class="py-2 px-2">
+                                <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
                                             <h5>Add Sale</h5>
@@ -93,7 +93,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Attachment : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc." class="fas fa-info-circle tp"></i></b></label>
+                                                <label for="inputEmail3" class=" col-4"><b>Attachment : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
                                                 <div class="col-8">
                                                     <input type="file" name="attachment" class="form-control">
                                                 </div>
@@ -114,10 +114,6 @@
                                                     </select>
                                                     <span class="error error_status"></span>
                                                 </div>
-                                            </div>
-
-                                            <div class="input-group">
-                                                <small class="text-danger">Max Attachment Size 2MB.</small>
                                             </div>
                                         </div>
 
@@ -1512,12 +1508,6 @@
         //Add purchase request by ajax
         $('#add_sale_form').on('submit', function(e){
             e.preventDefault();
-            var totalItem = $('#total_item').val();
-            if (parseFloat(totalItem) == 0) {
-                toastr.error('Product table is empty.','Some thing want wrong.'); 
-                return;
-            }
-
             $('.loading_button').show();
             var url = $(this).attr('action');
             var inputs = $('.add_input');
@@ -1537,6 +1527,13 @@
             if(countErrorField > 0){
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.','Some thing want wrong.'); 
+                return;
+            }
+
+            var totalItem = $('#total_item').val();
+            if (parseFloat(totalItem) == 0) {
+                $('.loading_button').hide();
+                toastr.error('Product table is empty.'); 
                 return;
             }
 

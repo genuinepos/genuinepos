@@ -76,7 +76,7 @@ class AssetController extends Controller
 
     public function formAssetTypes()
     {
-        $types = DB::table('asset_types')->get();
+        $types = DB::table('asset_types')->orderBy('id', 'desc')->get();
         return response()->json($types);
     }
 
@@ -106,27 +106,54 @@ class AssetController extends Controller
     {
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
-            $assets = DB::table('assets')
+            $assets = '';
+            $assetsQ = DB::table('assets')
             ->leftJoin('asset_types', 'assets.type_id', 'asset_types.id')
-            ->leftJoin('branches', 'assets.branch_id', 'branches.id')
-            ->select(
-                'assets.*',
-                'asset_types.asset_type_name',
-                'asset_types.asset_type_code',
-                'branches.name as branch_name',
-                'branches.branch_code',
-            )
-            ->orderBy('assets.id', 'desc')->get();
+            ->leftJoin('branches', 'assets.branch_id', 'branches.id');
+
+            if ($request->type_id) {
+                $assetsQ->where('assets.type_id', $request->type_id);
+            }
+
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $assetsQ->where('assets.branch_id', NULL);
+                } else {
+                    $assetsQ->where('assets.branch_id', $request->branch_id);
+                }
+            }
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                $assets = $assetsQ->select(
+                    'assets.*',
+                    'asset_types.asset_type_name',
+                    'asset_types.asset_type_code',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                )
+                ->orderBy('assets.id', 'desc')->get();
+            }else {
+                $assets = $assetsQ->select(
+                    'assets.*',
+                    'asset_types.asset_type_name',
+                    'asset_types.asset_type_code',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                )
+                ->where('assets.branch_id', auth()->user()->branch_id)->orderBy('assets.id', 'desc')->get();
+            }
+            
+
             return DataTables::of($assets)
             ->addIndexColumn()
             ->addColumn('action', function($row) {
                 $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('accounting.assets.edit', [$row->id]) . '" class="action-btn c-edit" id="edit_asset" title="Edit Asset"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('accounting.assets.delete', [$row->id]) . '" class="action-btn c-delete" id="delete_asset" title="Delete Asset"><span class="fas fa-trash"></span></a>';
+                $html .= '<a href="' . route('accounting.assets.edit', [$row->id]) . '" class="action-btn c-edit" id="edit_asset" title="Edit Asset"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="' . route('accounting.assets.delete', [$row->id]) . '" class="action-btn c-delete" id="delete_asset" title="Delete Asset"><span class="fas fa-trash"></span></a>';
                 $html .= '</div>';
                 return $html;
             })
-            ->editColumn('asset_type', function($row) use ($generalSettings){
+            ->editColumn('asset_type', function($row) {
                 return $row->asset_type_name . '/' . $row->asset_type_code;
             })
             ->editColumn('branch', function($row) use ($generalSettings){

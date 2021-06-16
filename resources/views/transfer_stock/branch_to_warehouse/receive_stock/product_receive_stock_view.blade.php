@@ -15,21 +15,18 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <h5>Process To Receive Stock</h5>
-                                            </div>
+                                <div class="py-2 px-2 form-header">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h5>Process To Receive Stock</h5>
+                                        </div>
 
-                                            <div class="col-md-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                            </div>
+                                        <div class="col-6">
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div class="element-body">
                                     <p class="m-0"><strong>Transfer Stock Details </strong></p>
                                     <hr class="m-1">

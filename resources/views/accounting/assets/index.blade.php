@@ -30,8 +30,7 @@
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-md-3">
                                                         <label><strong>Branch :</strong></label>
-                                                        <select name="branch_id"
-                                                            class="form-control submit_able" id="branch_id" autofocus>
+                                                        <select name="branch_id" class="form-control submit_able" id="filter_branch_id" autofocus>
                                                             <option value="">All</option>
                                                             <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                             @foreach ($branches as $br)
@@ -42,6 +41,13 @@
                                                 @else 
                                                     <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                 @endif
+
+                                                <div class="col-md-3">
+                                                    <label><strong>Asset Type :</strong></label>
+                                                    <select name="type_id" class="form-control submit_able" id="filter_type_id" autofocus>
+                                               
+                                                    </select>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -57,7 +63,7 @@
                                     <div class="tab_list_area">
                                         <ul class="list-unstyled">
                                             <li>
-                                                <a id="tab_btn" data-show="asset_type" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Asset Type</a>
+                                                <a id="tab_btn" data-show="asset_type" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Asset Types</a>
                                             </li>
 
                                             <li>
@@ -116,7 +122,7 @@
                                                                 <th>Type</th>
                                                                 <th>Available Loaction</th>
                                                                 <th>Quantity</th>
-                                                                <th>Per Value Unit</th>
+                                                                <th>Per Unit Value</th>
                                                                 <th>Total Value</th>
                                                                 <th>Action</th>
                                                             </tr>
@@ -322,9 +328,9 @@
     var asset_type_table = $('.asset_type_table').DataTable({
         dom: "lBfrtip",
         buttons: [ 
-            {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'excel',text: 'Excel', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: 'Pdf', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',text: 'Print', messageTop: '<b>Asset types</b>', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         processing: true,
         serverSide: true,
@@ -457,9 +463,12 @@
             url:"{{route('accounting.assets.form.asset.type')}}",
             success:function(types){
                 $('#type_id').empty();
+                $('#filter_type_id').empty();
                 $('#type_id').append('<option value="">Select Asset Type</option>');
+                $('#filter_type_id').append('<option value="">All</option>');
                 $.each(types, function(key, val){
                     $('#type_id').append('<option value="'+val.id+'">'+val.asset_type_name+'</option>');
+                    $('#filter_type_id').append('<option value="'+val.id+'">'+val.asset_type_name+'</option>');
                 });
             }
         });
@@ -478,7 +487,13 @@
         processing: true,
         serverSide: true,
         searchable: true,
-        ajax: "{{ route('accounting.assets.all') }}",
+        "ajax": {
+            "url": "{{ route('accounting.assets.all') }}",
+            "data": function(d) {
+                d.branch_id = $('#filter_branch_id').val();
+                d.type_id = $('#filter_type_id').val();
+            }
+        },
         columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
             {data: 'asset_name',name: 'asset_name'},
             {data: 'asset_type',name: 'asset_type'},
@@ -488,6 +503,11 @@
             {data: 'total_value',name: 'total_value'},
             {data: 'action',name: 'action'},
         ],
+    });
+
+    //Submit filter form by select input changing
+    $(document).on('change', '.submit_able', function () {
+        asset_table.ajax.reload();
     });
 
     $(document).on('submit', '#add_assset_form', function(e) {

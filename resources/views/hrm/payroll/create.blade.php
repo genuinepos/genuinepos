@@ -25,21 +25,16 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-4">
-                                    <div class="section-header">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h5>Generate Payroll Of {{ $month.'/'.$year }}</h5>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <a href="{{ url()->previous() }}"
-                                                        class="btn text-white btn-sm btn-info float-end"><i
-                                                            class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                                </div>
+                                    <div class="py-2 px-2 form-header">
+                                        <div class="row">
+                                            <div class="col-8"><h5>Generate Payroll Of {{ $month.'/'.$year }}</h5></div>
+    
+                                            <div class="col-4">
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-3">

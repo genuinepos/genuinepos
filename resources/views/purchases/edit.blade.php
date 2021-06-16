@@ -21,17 +21,14 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <h5>Edit Purchase</h5>
-                                            </div>
+                                <div class="py-2 px-2 form-header">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h5>Edit Purchase</h5>
+                                        </div>
 
-                                            <div class="col-md-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                            </div>
+                                        <div class="col-6">
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -293,7 +290,7 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area py-3">
+                <div class="submit_button_area pt-1">
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i

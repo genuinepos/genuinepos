@@ -149,7 +149,7 @@
                             
                         </div>
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
+                            <a href="{{ route('expanses.create') }}" class="bar-link">
                                 <span><i class="fas fa-money-bill"></i></span>
                                 <p>Add Expense</p>
                             </a>

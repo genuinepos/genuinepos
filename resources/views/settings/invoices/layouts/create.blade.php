@@ -52,7 +52,7 @@
                                         </div>
 
                                         <div class="row mt-2">
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <div class="input-group">
                                                     <div class="col-12">
                                                         <div class="row">
@@ -63,7 +63,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <div class="input-group">
                                                     <div class="col-12">
                                                         <div class="row">
@@ -73,8 +73,10 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <div class="col-md-4">
+                                        <div class="row mt-2">
+                                            <div class="col-md-6">
                                                 <div class="input-group">
                                                     <div class="col-12">
                                                         <div class="row">

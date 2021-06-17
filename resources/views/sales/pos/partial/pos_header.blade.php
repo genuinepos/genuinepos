@@ -173,7 +173,7 @@
                                 </div>
                             </div>
                             @if (auth()->user()->permission->register['register_view'] == '1')
-                                <a href="#" class="pos-btn text-info" id="cash_register_details" title="Register Details"><i class="fas fa-briefcase"></i></a>
+                                <a href="#" class="pos-btn text-info" id="cash_register_details" title="Register Details"><i class="fas fa-cash-register"></i></a>
                             @endif
 
                             @if (auth()->user()->permission->register['register_close'] == '1')

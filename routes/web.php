@@ -8,6 +8,7 @@ use App\Models\General_setting;
 use Illuminate\Queue\Jobs\JobName;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
+use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -586,6 +587,14 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('module/settings', 'GeneralSettingController@moduleSettings')->name('settings.module.settings');
         Route::post('email/settings', 'GeneralSettingController@emailSettings')->name('settings.email.settings');
         Route::post('rp/settings', 'GeneralSettingController@rewardPoingSettings')->name('settings.reward.point.settings');
+    });
+
+    Route::group(['prefix' => 'payment_settings'], function () {
+        Route::get('/', 'CardTypeController@index')->name('settings.payment.card.types.index');
+        Route::post('store', 'CardTypeController@store')->name('settings.payment.card.types.store');
+        Route::get('edit/{cardTypeId}', 'CardTypeController@edit')->name('settings.payment.card.types.edit');
+        Route::post('update/{cardTypeId}', 'CardTypeController@update')->name('settings.payment.card.types.update');
+        Route::delete('delete/{cardTypeId}', 'CardTypeController@delete')->name('settings.payment.card.types.delete');
     });
 
     Route::group(['prefix' => 'invoices'], function () {

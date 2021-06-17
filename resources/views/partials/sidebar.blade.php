@@ -964,6 +964,15 @@
                                     </div>
                                 @endif
 
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.payment.card.types.index') }}" class="bar-link">
+                                            <span><img src="{{ asset('public/backend/asset/img/debit-card.png') }}"></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.payment_settings')</p>
+                                </div>
+                            
                                 <div
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">

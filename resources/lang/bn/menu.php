@@ -71,6 +71,7 @@ return [
     'general_settings' => 'সাধারণ সেটিংস',
     'invoice_schema' => 'চালানের স্কিমা',
     'invoice_layout' => 'চালানের বিন্যাস',
+    'payment_settings' => 'প্রদান সেটিংস',
     // Menu childs of Users module  
     'add_user' => 'ব্যবহারকারী যুক্ত করুন',
     'user_list' => 'ব্যবহারকারীর তালিকা',

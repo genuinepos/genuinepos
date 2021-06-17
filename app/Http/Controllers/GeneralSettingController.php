@@ -107,6 +107,14 @@ class GeneralSettingController extends Controller
         return response()->json('Product settings updated successfully');
     }
 
+    public function contactSettings(Request $request)
+    {
+        $updateContactDefaultCrLimitSettings = General_setting::first();
+        $updateContactDefaultCrLimitSettings->contact_default_cr_limit = $request->contact_default_cr_limit;
+        $updateContactDefaultCrLimitSettings->save();
+        return response()->json('Contact setting updated successfully');
+    }
+
 
     // Add tax settings
     public function saleSettings(Request $request)
@@ -126,16 +134,6 @@ class GeneralSettingController extends Controller
     // Add tax settings
     public function posSettings(Request $request)
     {
-        // 's_express_checkout' => $request->express_checkout,
-        // 's_edit_discount' => $request->edit_discount,
-        // 's_pay_checkout' => $request->pay_checkout,
-        // 's_edit_order_tax' => $request->edit_order_tax,
-        // 's_draft' => $request->draft,
-        // 's_cancel' => $request->cancel,
-        // 's_go_to_pro_qty' => $request->go_to_pro_qty,
-        // 's_add_new_pro' => $request->add_new_pro,
-        // 's_add_payment_row' => $request->add_payment_row,
-        // 's_finalize_payment' => $request->finalize_payment,
         $updatePosSettings = General_setting::first();
         $posSettings = [
             'is_disable_draft' => isset($request->is_disable_draft) ? 1 : 0,
@@ -246,9 +244,7 @@ class GeneralSettingController extends Controller
     }
 
     public function emailSettings(Request $request)
-    { 
-        //return request()->all();
-        //$_ENV['MAIL_MAILER'] = $request->MAIL_MAILER;
+    {
         Artisan::call("env:set MAIL_MAILER='".$request->get('MAIL_MAILER')."'");
         Artisan::call("env:set MAIL_HOST='".$request->get('MAIL_HOST')."'");
         Artisan::call("env:set MAIL_PORT='".$request->get('MAIL_PORT')."'");

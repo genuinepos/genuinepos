@@ -1564,9 +1564,9 @@
                 cache: false,
                 processData: false,
                 success:function(data){
-                    console.log(data);
+                    $('.submit_button').prop('type', 'sumbit');
                     if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg); 
                         $('.loading_button').hide();
                         return;
                     }
@@ -1880,7 +1880,6 @@
             $('#sale_list').empty();
             productTable();
             document.getElementById('search_product').focus();
-            $('.submit_button').prop('type', 'submit');
         }
 
         $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});

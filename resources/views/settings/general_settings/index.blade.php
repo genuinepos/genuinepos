@@ -49,6 +49,10 @@
                                         </li>
 
                                         <li class="menu_list">
+                                            <a class="menu_btn" data-form="contact_settings_form" href="#">Contact Settings</a>
+                                        </li>
+
+                                        <li class="menu_list">
                                             <a class="menu_btn" data-form="sale_settings_form" href="#">Add Sale Settings</a>
                                         </li>
 
@@ -390,6 +394,31 @@
                                         </div>
                                     </div>
                                 </form>
+
+                                <form id="contact_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.contact.settings') }}" method="post">
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Contact Settings</h6>
+                                        </div>
+                                    </div>
+                                    @csrf
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Default Credit Limit <i data-bs-toggle="tooltip" data-bs-placement="top" title="Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i> :</strong></label>
+                                            <input type="text" name="contact_default_cr_limit" class="form-control" autocomplete="off" value="{{ $generalSettings->contact_default_cr_limit }}" placeholder="Default Credit Limit">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
 
                                 <form id="sale_settings_form" class="setting_form d-none"
                                     action="{{ route('settings.sale.settings') }}" method="post">
@@ -1186,6 +1215,22 @@
             });
         });
 
+        $('#contact_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success(data);
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
         $('#sale_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
@@ -1367,6 +1412,8 @@
                 }
             });
         });
+
+        
 
     </script>
 @endpush

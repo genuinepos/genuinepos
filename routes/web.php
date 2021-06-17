@@ -577,6 +577,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('business/settings', 'GeneralSettingController@businessSettings')->name('settings.business.settings');
         Route::post('tax/settings', 'GeneralSettingController@taxSettings')->name('settings.tax.settings');
         Route::post('product/settings', 'GeneralSettingController@productSettings')->name('settings.product.settings');
+        Route::post('contact/settings', 'GeneralSettingController@contactSettings')->name('settings.contact.settings');
         Route::post('sale/settings', 'GeneralSettingController@saleSettings')->name('settings.sale.settings');
         Route::post('pos/settings', 'GeneralSettingController@posSettings')->name('settings.pos.settings');
         Route::post('purchase/settings', 'GeneralSettingController@purchaseSettings')->name('settings.purchase.settings');

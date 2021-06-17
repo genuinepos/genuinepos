@@ -552,7 +552,9 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         //return $request->all();
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $prefixSettings = DB::table('general_settings')
+        ->select(['id', 'prefix', 'contact_default_cr_limit'])
+        ->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
         $branchInvoiceSchema = DB::table('branches')
@@ -583,6 +585,10 @@ class SaleController extends Controller
             return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
         }
 
+        if ($request->total_due > $prefixSettings->contact_default_cr_limit) {
+            return response()->json(['errorMsg' => 'Due amount exceeds to default credit limit.']);
+        }
+      
         // generate invoice ID
         $i = 4;
         $a = 0;

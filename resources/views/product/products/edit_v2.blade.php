@@ -419,7 +419,7 @@
                                                 <div class="row mt-2">                  
                                                     <div class="col-md-6">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Thumbnail Photo :</b> </label>
+                                                            <label for="inputEmail3" class="col-4"><b>Thumbnail Photo <i data-bs-toggle="tooltip" data-bs-placement="top" title="Previous thumbnail photo (if exists) will be replaced." class="fas fa-info-circle tp"></i> :</b> </label>
                                                             <div class="col-8">
                                                                 <input type="file" name="photo" class="form-control" id="photo">
                                                                 <span class="error error_photo"></span>
@@ -508,9 +508,82 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @else 
-                                                
                                                 @endif
+                                            @else
+                                                <div class="row mt-2">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-8 offset-2">
+                                                                <div class="add_combo_product_input">
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                                                                        </div>
+                                                                        <input type="text" name="search_product" class="form-control form-control-sm"
+                                                                            autocomplete="off" id="search_product"
+                                                                            placeholder="Product search/scan by product code">
+                                                                    </div>
+                                            
+                                                                    <div class="select_area">
+                                                                        <ul class="variant_list_area">
+                                            
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                            
+                                                            <div class="col-md-10 offset-1 mt-1">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form_table_heading">
+                                                                            <p class="m-0 pb-1"><strong>Create combo product</strong></p>
+                                                                        </div>
+                                                                        <div class="table-responsive">
+                                                                            <table class="table modal-table table-sm">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Product</th>
+                                                                                        <th>Quantity</th>
+                                                                                        <th>Unit price</th>
+                                                                                        <th>SubTotal</th>
+                                                                                        <th><i class="fas fa-trash-alt"></i></th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody id="combo_products">
+                                            
+                                                                                </tbody>
+                                                                                <tfoot>
+                                                                                    <tr>
+                                                                                        <th colspan="3" class="text-center">Net Total Amount :</th>
+                                                                                        <th>
+                                                                                            {{ json_decode($generalSettings->business, true)['currency']}} <span class="span_total_combo_price">0.00</span>
+                                            
+                                                                                            <input type="hidden" name="total_combo_price"
+                                                                                                id="total_combo_price"/>
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </tfoot>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="row">
+                                                    <div class="col-md-3 offset-3">
+                                                        <label><b>x Margin :</b></label>
+                                                        <input type="text" name="profit" class="form-control form-control-sm" id="profit"
+                                                            value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
+                                                    </div>
+                                            
+                                                    <div class="col-md-3">
+                                                        <label><b>Default Price Exc.Tax :</b></label>
+                                                        <input type="text" name="combo_price" class="form-control form-control-sm" id="combo_price">
+                                                    </div>
+                                                </div>  
                                             @endif
                                         </div>
                                     </div>
@@ -756,7 +829,6 @@
         if (tax) {
             var split = tax.split('-');
             tax_percent = split[1];
-            console.log(split);
         }else{
             tax_percent = 0;
         }
@@ -799,7 +871,6 @@
             type: 'get',
             dataType: 'json',
             success: function(variants) {
-                console.log(variants);
                 variantsWithChild = variants;
                 $('#variants').append('<option value="">Create Combination</option>');
                 $.each(variants, function(key, val) {
@@ -814,23 +885,20 @@
     var variant_row_index = 0;
     $(document).on('change', '#variants', function() {
         var id = $(this).val();
-        console.log(variantsWithChild);
         var parentTableRow = $(this).closest('tr');
         variant_row_index = parentTableRow.index();
-        //console.log(id);
         $('.modal_variant_child').empty();
         var html = '';
         var variant = variantsWithChild.filter(function(variant) {
             return variant.id == id;
         });
-        console.log(variant);
         $.each(variant[0].bulk_variant_childs, function(key, child) {
             html += '<li class="modal_variant_child_list">';
             html += '<a class="select_variant_child" data-child="' + child.child_name + '" href="#">' +
                 child.child_name + '</a>';
             html += '</li>';
         });
-        //console.log(html);
+
         $('.modal_variant_child').html(html);
         $('#VairantChildModal').modal('show');
         $(this).val('');
@@ -839,7 +907,6 @@
     $(document).on('click', '.select_variant_child', function(e) {
         e.preventDefault();
         var child = $(this).data('child');
-        console.log(child);
         var parent_tr = $('.dynamic_variant_body tr:nth-child(' + (variant_row_index + 1) + ')');
         var child_value = parent_tr.find('#variant_combination').val();
         var filter = child_value == '' ? '' : '-';
@@ -926,7 +993,6 @@
         $('.dynamic_variant_body').prepend(html);
     });
     // Variant all functionality end
-
 
     // call jquery method 
     $(document).ready(function() {
@@ -1061,13 +1127,11 @@
                             $('.select_area').hide();
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
-                            console.log(variant_product); 
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
                             var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * tax_percent : 0); 
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
-                                console.log(input.value);
                                 if(input.value != 'noid'){
                                     if(input.value == variant_product.id){
                                         sameVariant += 1;
@@ -1146,7 +1210,6 @@
             var variant_ids = document.querySelectorAll('#variant_id');
             var sameVariant = 0;
             variant_ids.forEach(function(input){
-                console.log(input.value);
                 if(input.value != 'noid'){
                     if(input.value == variant_id){
                         sameVariant += 1;
@@ -1214,7 +1277,6 @@
                     $('.dynamic_variant_body').empty();
                     $.each(comboProducts, function(key, comboProduct) {
                         var tax_percent = comboProduct.parent_product.tax_id != null ? comboProduct.parent_product.tax.tax_percent : 0;
-                        console.log(tax_percent);
                         var tr = '';
                         tr += '<tr class="text-center">';
                         tr += '<td>';
@@ -1311,20 +1373,17 @@
             }
         });
 
-        // set child category in category form field
+        // set sub category in form field
         $('#category_id').on('change', function() {
             var category_id = $(this).val();
-            var catesInput = $('#categories').data('categories');
-            var childCategories = catesInput.filter(function(category) {
-                return category.parent_category_id == category_id;
+            $.get("{{ url('product/all/sub/category/') }}"+"/"+category_id, function(subCategories) {
+                $('#child_category_id').empty();
+                $('#child_category_id').append('<option value="">Select Sub-Category</option>');
+                $.each(subCategories, function(key, val) {
+                    $('#child_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
+                });
             });
-            $('#child_category_id').empty();
-            $('#child_category_id').append('<option value="">Select child category</option>');
-            $.each(childCategories, function(key, val) {
-                $('#child_category_id').append('<option value="' + val.id + '">' + val.name +
-                    '</option>');
-            });
-        })
+        });
 
         // Add product by ajax
         $('#add_product_form').on('submit', function(e) {
@@ -1354,13 +1413,11 @@
                         'Some thing want wrong.');
                     $('.error').html('');
                     $.each(err.responseJSON.errors, function(key, error) {
-                        //console.log(key);
                         $('.error_' + key + '').html(error[0]);
                     });
                 }
             });
         });
-
 
         // Automatic remove searching product not found signal 
         setInterval(function() {

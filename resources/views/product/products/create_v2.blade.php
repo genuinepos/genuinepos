@@ -1339,7 +1339,7 @@
                     $('#child_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 });
             });
-        })
+        });
 
         // Add product by ajax
         $('#add_product_form').on('submit', function(e) {

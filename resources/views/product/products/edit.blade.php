@@ -425,7 +425,7 @@
                                                             </div>
                                 
                                                             <div class="select_area">
-                                                                <div class="remove_select_area_btn">X</div>
+                                                                
                                                                 <ul class="variant_list_area">
                                 
                                                                 </ul>

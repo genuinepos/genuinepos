@@ -28,6 +28,7 @@ class CreateGeneralSettingsTable extends Migration
             $table->longText('reward_poing_settings')->nullable();
             $table->longText('sms_setting')->nullable();
             $table->longText('modules')->nullable();
+            $table->decimal('contact_default_cr_limit', 22, 2)->nullable();
             $table->timestamps();
         });
     }

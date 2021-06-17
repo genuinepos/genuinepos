@@ -11,10 +11,7 @@
     {{-- <script src="{{ asset('public/backend/asset/js/selectize.js') }}"></script> --}}
     {{-- <script src="{{ asset('public/backend/asset/js/apexcharts.js') }}"></script> --}}
     {{-- <script src="{{ asset('public/backend/asset/js/canvas-main.js') }}"></script> --}}
-    
-    <!--Sweet alert js link-->
-    {{-- <script src="{{ asset('public') }}/assets/plugins/custom/sweet-alert/sweet-alert.min.js"></script> --}}
-    <!--Sweet alert js link end-->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>
@@ -33,15 +30,11 @@
     <!-- following theme script is needed to use the Font Awesome 5.x theme (`fas`) -->
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/themes/fas/theme.min.js"></script> --}}
  
-
-
-
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.17.0/math.min.js"></script> --}}
 
     <!-- DataTable Cdn -->
     <script type="text/javascript"  src="{{asset('public/backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script> 
     <!-- DataTable Cdn End-->
-
 
     {{-- <script src="{{asset('public/backend/js/jquery-ui-1.8.18.custom.min.js')}}"></script>
     <script src="{{asset('public/backend/js/jquery.ui.touch-punch.js')}}"></script> --}}
@@ -54,14 +47,12 @@
     {{-- <script src="{{asset('public/backend/js/fg.menu.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/jquery.tagsinput.js')}}"></script> --}}
 
-    <script src="{{asset('public/backend/asset/js/jquery.cleditor.js')}}"></script>
-
-    <script src="{{asset('public/backend/js/jquery.tipsy.js')}}"></script>
-    <script src="{{asset('public/backend/js/jquery.peity.js')}}"></script>
-    <script src="{{asset('public/backend/js/jquery.simplemodal.js')}}"></script>
-    <script src="{{asset('public/backend/js/jquery.jBreadCrumb.1.1.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/jquery.tipsy.js')}}"></script>
+    <script src="{{asset('public/backend/js/jquery.peity.js')}}"></script> --}}
+    {{-- <script src="{{asset('public/backend/js/jquery.simplemodal.js')}}"></script> --}}
+    {{-- <script src="{{asset('public/backend/js/jquery.jBreadCrumb.1.1.js')}}"></script>
     <script src="{{asset('public/backend/js/jquery.colorbox-min.js')}}"></script>
-    <script src="{{asset('public/backend/js/bootstrap-colorpicker.js')}}"></script>
+    <script src="{{asset('public/backend/js/bootstrap-colorpicker.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/jquery.idTabs.min.js')}}"></script>
     <script src="{{asset('public/backend/js/jquery.multiFieldExtender.min.js')}}"></script>
     {{-- <script src="{{asset('public/backend/js/jquery.confirm.js')}}"></script> --}}
@@ -115,25 +106,8 @@
         "positionClass": "toast-top-center",
       }
 
-      // $(document).ready(function() {
-      //     $('#logout_option').on('click', function(e) {
-      //         e.preventDefault();
-      //         swal({
-      //             title: "Are you sure to logout ?",
-      //             buttons: true,
-      //             dangerMode: true,
-      //         })
-      //         .then((willDelete) => {
-      //             if (willDelete) {
-      //               $('#logout_form').submit();
-      //             }
-      //         });
-      //     });
-      // });
       $(document).on('click', '#logout_option',function(e){
-            e.preventDefault();
-            // var url = $(this).attr('href');
-            // $('#logout_form').attr('action', url);           
+            e.preventDefault();      
             $.confirm({
                 'title': 'Logout Confirmation',
                 'content': 'Are you sure, you want to logout?',
@@ -154,10 +128,10 @@
             });
         });
     </script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    
-        <script type="text/javascript"
-            src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.js">
-        </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.js">
+    </script>

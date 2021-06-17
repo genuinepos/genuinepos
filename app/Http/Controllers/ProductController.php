@@ -15,7 +15,6 @@ use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\ProductVariant;
-use App\Models\General_setting;
 use App\Models\SupplierProduct;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
@@ -192,7 +191,12 @@ class ProductController extends Controller
         if (auth()->user()->permission->product['product_add'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        return view('product.products.create');
+        $units = DB::table('units')->get(['id', 'name', 'code_name']);
+        $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'desc')->get(['id', 'name']);
+        $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
+        $warranties = DB::table('warranties')->orderBy('id', 'desc')->get(['id', 'name']);
+        $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
+        return view('product.products.create_v2', compact('units', 'categories', 'brands', 'warranties', 'taxes'));
     }
 
     public function store(Request $request)
@@ -628,9 +632,8 @@ class ProductController extends Controller
         $units = DB::table('units')->get();
         $brands = DB::table('brands')->get();
         $taxes = DB::table('taxes')->get();
-
         $warrantities = DB::table('warranties')->get();
-        return view('product.products.edit', compact('product', 'categories', 'units', 'brands', 'taxes', 'warrantities'));
+        return view('product.products.edit_v2', compact('product', 'categories', 'units', 'brands', 'taxes', 'warrantities'));
     }
 
     // Get product variants 
@@ -1014,41 +1017,6 @@ class ProductController extends Controller
         return response()->json($variants);
     }
 
-    // Get all form brand by ajax
-    public function allFromBrand()
-    {
-        $allFromBrand = Brand::all();
-        return response()->json($allFromBrand);
-    }
-
-    // Get all form Categories by ajax request
-    public function getAllFormCategories()
-    {
-        $categories = Category::orderBy('id', 'DESC')->get();
-        return response()->json($categories);
-    }
-
-    // Get all form Units by ajax request
-    public function getAllFormUnits()
-    {
-        $units =  Unit::select(['id', 'name', 'code_name'])->get();
-        return response()->json($units);
-    }
-
-    // Get all form warranties by ajax request
-    public function getAllFormWarrties()
-    {
-        $warranties = Warranty::select(['id', 'name', 'type'])->get();
-        return response()->json($warranties);
-    }
-
-    // Get all form taxes by ajax request
-    public function getAllFormTaxes()
-    {
-        $taxes = Tax::select(['id', 'tax_name', 'tax_percent'])->get();
-        return response()->json($taxes);
-    }
-
     public function searchProduct($productCode)
     {
         $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $productCode)->first();
@@ -1163,5 +1131,10 @@ class ProductController extends Controller
         $type = $type;
         $variants = BulkVariant::with(['bulk_variant_childs'])->get();
         return view('product.products.ajax_view.form_part', compact('type', 'variants'));
+    }
+
+    public function allFromSubCategory($categoryId)
+    {
+        return $subCategories = DB::table('categories')->where('parent_category_id', $categoryId)->get(['id', 'name']);
     }
 }

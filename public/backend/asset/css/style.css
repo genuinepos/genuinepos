@@ -1239,7 +1239,7 @@ span.menu-title-t {
 
 .sale-item-sec {
     height: 200px;
-    overflow-y: scroll;
+    overflow-y: auto;overflow-x: auto;scrollbar-color: transparent transparent;
 }
 
 div.sale-item-sec::-webkit-scrollbar {
@@ -1358,3 +1358,6 @@ a.bar-link p {font-size: 7px; font-weight: 600; margin-top: -7px;}
 .form-header {
     background: linear-gradient(#fff, #f1f1f1);
 }
+
+.modal_variant_list_area ul li {display: inline-block;margin-left: 10px;border: 1px solid #3cb7dd;border-radius: 3px;}
+.modal_variant_list_area ul li a {display: block;padding: 3px 5px;color: black;}

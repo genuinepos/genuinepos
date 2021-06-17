@@ -115,6 +115,16 @@
                                                     <span class="error error_status"></span>
                                                 </div>
                                             </div>
+
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class=" col-4"><b>Inv. Schema :</b></label>
+                                                <div class="col-8">
+                                                    <select name="invoice_schema_id" class="form-control"
+                                                        id="invoice_schema_id">
+                                                        <option value="">Select Invoice Schema</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="col-md-3">
@@ -123,6 +133,14 @@
                                                 <div class="col-8">
                                                     <input type="date" name="date" class="form-control"
                                                         value="{{ date('Y-m-d') }}">
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class=" col-4"><b>Previous Due :</b></label>
+                                                <div class="col-8">
+                                                    <input type="number" step="any" class="form-control" id="display_pre_due"
+                                                        value="0.00">
                                                 </div>
                                             </div>
                                         </div>

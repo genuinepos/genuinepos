@@ -171,8 +171,6 @@ $(document).ready(function () {
     $("#textEditor").cleditor();
 });
 
-
-
 // ===============================================search and select================
 $(function () {
     // $("#searchSelect").customselect();

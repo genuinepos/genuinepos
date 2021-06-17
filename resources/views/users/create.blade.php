@@ -111,12 +111,11 @@
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label for="inputEmail3" class="col-4"> <span
-                                                                class="text-danger">*</span> <b>Role :</b>  </label>
+                                                                class="text-danger">*</span> <b>Role :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all branch." class="fas fa-info-circle tp"></i> </label>
                                                         <div class="col-8">
                                                             <select name="role_id" id="role_id" class="form-control">
                                                                 <option value="">Admin</option>
                                                             </select>
-                                                            <small class="text-danger"><b>Admin has access to all branch.</b></small>
                                                         </div>
                                                     </div>
                                                 </div>

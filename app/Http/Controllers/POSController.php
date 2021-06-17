@@ -79,6 +79,12 @@ class POSController extends Controller
             return response()->json(['errorMsg' => 'product table is empty']);
         }
 
+        if ($request->action == 2 || $request->action == 4) {
+            if (!$request->customer_id) {
+                return response()->json(['errorMsg' => 'Listed customer is required for draft or quotation.']);
+            }
+        }
+
         if ($request->action == 1) {
             if ($request->paying_amount < $request->total_payable_amount && !$request->customer_id) {
                 return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);

@@ -452,6 +452,10 @@ div#left_bar_toggle {
     .user_info {
         width: unset;
     }
+
+    .breadCrumb ul li {
+        margin: 6px 6px 0px 0;
+    }
 }
 @media(max-width: 568px) {
     li.dp__top {

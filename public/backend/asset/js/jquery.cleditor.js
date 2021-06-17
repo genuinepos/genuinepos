@@ -287,7 +287,6 @@
                       button.popupContent, button.popupHover);
 
             }
-
         });
 
         // Add the main div to the DOM and append the textarea
@@ -311,7 +310,6 @@
 
         // Create the iframe and resize the controls
         refresh(editor);
-
     };
 
     //===============
@@ -417,7 +415,6 @@
                 editor.$area.show();
                 buttonDiv.title = "Show Rich Text";
             }
-
         }
 
         // Check for rich text mode
@@ -451,9 +448,7 @@
                             $text.val("http://");
                             hidePopups();
                             focus(editor);
-
                         });
-
                 }
 
                 // Paste as Text
@@ -474,9 +469,7 @@
                             $textarea.val("");
                             hidePopups();
                             focus(editor);
-
                         });
-
                 }
 
                 // Show the popup if not already showing for this button
@@ -484,10 +477,8 @@
                     showPopup(editor, popup, buttonDiv);
                     return false; // stop propagination to document click
                 }
-
                 // propaginate to document click
                 return;
-
             }
 
             // Print
@@ -497,7 +488,6 @@
             // All other buttons
             else if (!execCommand(editor, data.command, data.value, data.useCSS, buttonDiv))
                 return false;
-
         }
 
         // Focus the editor
@@ -617,7 +607,6 @@
         // Custom popup
         if (popupContent)
             $popup.html(popupContent);
-
         // Color
         else if (popupName === "color") {
             var colors = options.colors.split(" ");
@@ -683,7 +672,6 @@
         // Add the popup to the array and return it
         popups[popupName] = $popup[0];
         return $popup[0];
-
     }
 
     // disable - enables or disables the editor
@@ -712,7 +700,6 @@
 
         // Enable or disable the toolbar buttons
         refreshButtons(editor);
-
     }
 
     // execCommand - executes a designMode command
@@ -868,7 +855,6 @@
 
         // Bind the ie specific iframe event handlers
         if (ie || iege11) {
-
             // Save the current user selection. This code is needed since IE will
             // reset the selection just after the beforedeactivate event and just
             // before the beforeactivate event.
@@ -877,14 +863,12 @@
                 // Flag the editor as inactive
                 if (e.type === "beforedeactivate")
                     editor.inactive = true;
-
                 // Get rid of the bogus selection and flag the editor as active
                 else if (e.type === "beforeactivate") {
                     if (!editor.inactive && editor.range && editor.range.length > 1)
                         editor.range.shift();
                     delete editor.inactive;
                 }
-
                 // Save the selection when the editor is active
                 else if (!editor.inactive) {
                     if (!editor.range)
@@ -895,7 +879,6 @@
                     while (editor.range.length > 2)
                         editor.range.pop();
                 }
-
             });
 
             // Restore the text range and trigger focused event when the iframe gains focus
@@ -908,7 +891,6 @@
             $frame.blur(function () {
                 $(editor).triggerHandler(BLURRED);
             });
-
         }
 
         // Trigger focused and blurred events for all other browsers
@@ -940,7 +922,6 @@
 
         // Wait for the layout to finish - shortcut for $(document).ready()
         $(function () {
-
             var $toolbar = editor.$toolbar,
                 $group = $toolbar.children("div:last"),
                 wid = $main.width();
@@ -962,9 +943,7 @@
 
             // Enable or disable the toolbar buttons
             refreshButtons(editor);
-
         });
-
     }
 
     // refreshButtons - enables or disables buttons based on availability
@@ -976,7 +955,6 @@
             window.focus();
             editor.focused = true;
         }
-
         // Get the object used for checking queryCommandEnabled
         var queryObj = editor.doc;
         if (ie) queryObj = getRange(editor);
@@ -1029,7 +1007,6 @@
                 $elem.addClass(DISABLED_CLASS);
                 $elem.attr(DISABLED, DISABLED);
             }
-
         });
     }
 

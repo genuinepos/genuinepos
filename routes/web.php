@@ -73,6 +73,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('view/{productId}', 'ProductController@view')->name('products.view');
         Route::get('get/all/product', 'ProductController@getAllProduct')->name('products.get.all.product');
         Route::get('add', 'ProductController@create')->name('products.add.view');
+        Route::get('create', 'ProductController@create2')->name('products.create');
         Route::get('get/form/part/{type}', 'ProductController@getFormPart');
         Route::post('store', 'ProductController@store')->name('products.add.store');
         Route::get('edit/{productId}', 'ProductController@edit')->name('products.edit');
@@ -83,11 +84,9 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
         Route::delete('delete/{productId}', 'ProductController@delete')->name('products.delete');
         Route::delete('multiple/delete', 'ProductController@multipleDelete')->name('products.multiple.delete');
-        Route::get('all/form/brand', 'ProductController@allFromBrand')->name('products.add.get.all.form.brand');
-        Route::get('all/form/category', 'ProductController@getAllFormCategories')->name('products.add.get.all.form.categories');
-        Route::get('all/form/vat', 'ProductController@getAllFormTaxes')->name('products.add.get.all.form.taxes');
-        Route::get('all/form/units', 'ProductController@getAllFormUnits')->name('products.add.get.all.form.units');
-        Route::get('all/form/warranties', 'ProductController@getAllFormWarrties')->name('products.add.get.all.form.warranties');
+        Route::get('all/sub/category/{categoryId}', 'ProductController@allFromSubCategory');
+      
+    
         Route::get('all/form/variant', 'ProductController@getAllFormVariants')->name('products.add.get.all.from.variant');
         Route::get('search/product/{productCode}', 'ProductController@searchProduct');
         Route::get('get/product/stock/{productId}', 'ProductController@getProductStock');

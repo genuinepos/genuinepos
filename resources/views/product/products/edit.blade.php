@@ -658,8 +658,6 @@
     <!-- Add Brand Modal End -->
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/assets/plugins/custom/dropify/js/dropify.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/dropify/js/dropify.active.js"></script>
     <script>
         // Set parent category in parent category form field
         $('.combo_price').hide();
@@ -678,7 +676,6 @@
         });
 
         function costCalculate() {
-            console.log(tax_percent);
             var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
             var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
             var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
@@ -808,36 +805,36 @@
             html += '<tr id="more_new_variant">';
             html += '<td>';
             html += '<input type="hidden" name="variant_ids[]" id="variant_id" value="noid">';
-            html += '<select class="form-control form-control form-control-sm" name="" id="variants">';
+            html += '<select class="form-control" name="" id="variants">';
             html += '<option value="">Create Combination</option>';
             $.each(variantsWithChild, function(key, val) {
                 html += '<option value="' + val.id + '">' + val.bulk_variant_name + '</option>';
             });
             html += '</select>';
-            html += '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control form-control-sm" placeholder="Variant Combination">';
+            html += '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control" placeholder="Variant Combination">';
             html += '</td>';
-            html += '<td><input type="text" name="variant_codes[]" id="variant_code" class="form-control form-control form-control-sm mt-3" placeholder="Variant Code">';
+            html += '<td><input type="text" name="variant_codes[]" id="variant_code" class="form-control" placeholder="Variant Code">';
             html += '</td>';
             html += '<td>';
-            html += '<input type="number" step="any" name="variant_costings[]" class="form-control form-control form-control-sm mt-3" placeholder="Cost" id="variant_costing" value="' +
+            html += '<input type="number" step="any" name="variant_costings[]" class="form-control" placeholder="Cost" id="variant_costing" value="' +
                 parseFloat(product_cost).toFixed(2) + '">';
             html += '</td>';
             html += '<td>';
-            html += '<input type="number" step="any" name="variant_costings_with_tax[]" class="form-control form-control form-control-sm mt-3" placeholder="Cost inc.tax" id="variant_costing_with_tax" value="' +
+            html += '<input type="number" step="any" name="variant_costings_with_tax[]" class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax" value="' +
                 parseFloat(product_cost_with_tax).toFixed(2) + '">';
             html += '</td>';
             html += '<td>';
-            html += '<input type="number" step="any" name="variant_profits[]" class="form-control form-control form-control-sm mt-3" placeholder="Profit" value="' +
+            html += '<input type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="' +
                 parseFloat(profit).toFixed(2) + '" id="variant_profit">';
             html += '</td>';
             html += '<td>';
-            html += '<input type="text" step="any" name="variant_prices_exc_tax[]" class="form-control form-control form-control-sm mt-3" placeholder="Price inc.tax" id="variant_price_exc_tax" value="' +
+            html += '<input type="text" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax" value="' +
                 parseFloat(product_price).toFixed(2) + '">';
             html += '</td>';
             html += '<td>';
-            html += '<input type="file" name="variant_image[]" class="form-control form-control form-control-sm mt-3 " id="variant_image">';
+            html += '<input type="file" name="variant_image[]" class="form-control form-control" id="variant_image">';
             html += '</td>';
-            html += '<td><a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger mt-3">X</a></td>';
+            html += '<td><a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a></td>';
             html += '</tr>';
             $('.dynamic_variant_body').prepend(html);
         });
@@ -931,16 +928,16 @@
                                         tr += '</td>';
 
                                         tr += '<td>';
-                                        tr += '<input value="1" required name="combo_quantities[]" type="number" class="form-control form-control-sm" id="combo_quantity">';
+                                        tr += '<input value="1" required name="combo_quantities[]" type="number" class="form-control" id="combo_quantity">';
                                         tr += '</td>';
 
                                         var unitPriceIncTax = product.product_price + tax_amount;
                                         tr += '<td>';
-                                        tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="unit_prices_inc_tax[]" type="text" class="form-control form-control-sm" id="unit_price_inc_tax">';
+                                        tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="unit_prices_inc_tax[]" type="text" class="form-control" id="unit_price_inc_tax">';
                                         tr += '</td>';
 
                                         tr += '<td>';
-                                        tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="subtotals[]" type="text" class="form-control form-control-sm" id="subtotal">';
+                                        tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
                                         tr += '</td>';
 
                                         tr += '<td class="text-right">';
@@ -952,7 +949,6 @@
                                         calculateTotalAmount(); 
                                     }
                                 }else{
-                                    console.log(product); 
                                     var li = "";
                                     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
                                     $.each(product.product_variants, function(key, variant){
@@ -1022,20 +1018,20 @@
                                     tr += '</td>';
 
                                     tr += '<td>';
-                                    tr += '<input value="1.00" required name="combo_quantities[]" type="text" class="form-control form-control-sm" id="combo_quantity">';
+                                    tr += '<input value="1.00" required name="combo_quantities[]" type="text" class="form-control" id="combo_quantity">';
                                     tr += '</td>';
 
                                     var unitPriceIncTax = variant_product.variant_price + tax_amount;
                                     tr += '<td>';
-                                    tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="unit_prices_inc_tax[]" type="text" class="form-control form-control-sm" id="unit_price_inc_tax">';
+                                    tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="unit_prices_inc_tax[]" type="text" class="form-control" id="unit_price_inc_tax">';
                                     tr += '</td>';
 
                                     tr += '<td>';
-                                    tr += '<input readonly value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" type="text" name="subtotal[]" id="subtotal" class="form-control form-control-sm">';
+                                    tr += '<input readonly value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" type="text" name="subtotal[]" id="subtotal" class="form-control">';
                                     tr += '</td>';
 
                                     tr += '<td class="text-right">';
-                                    tr += '<a href="" id="remove_combo_product_btn" class="btn btn-sm btn-danger mt-1">-</a>';
+                                    tr += '<a href="" id="remove_combo_product_btn" class="btn btn-sm btn-danger">-</a>';
                                     tr += '</td>';
 
                                     tr += '</tr>';
@@ -1099,19 +1095,19 @@
                     tr += '</td>';
 
                     tr += '<td>';
-                    tr += '<input value="1.00" required name="combo_quantities[]" type="number" class="form-control form-control-sm" id="combo_quantity">';
+                    tr += '<input value="1.00" required name="combo_quantities[]" type="number" class="form-control" id="combo_quantity">';
                     tr += '</td>';
 
                     tr += '<td>';
-                    tr += '<input readonly value="'+variant_price_inc_tax+'" required name="unit_prices_inc_tax[]" type="number" class="form-control form-control-sm" id="unit_price_inc_tax">';
+                    tr += '<input readonly value="'+variant_price_inc_tax+'" required name="unit_prices_inc_tax[]" type="number" class="form-control" id="unit_price_inc_tax">';
                     tr += '</td>';
                   
                     tr += '<td>';
-                    tr += '<input readonly value="'+variant_price_inc_tax+'" required name="subtotals[]" type="number" class="form-control form-control-sm" id="subtotal">';
+                    tr += '<input readonly value="'+variant_price_inc_tax+'" required name="subtotals[]" type="number" class="form-control" id="subtotal">';
                     tr += '</td>';
 
                     tr += '<td class="text-right">';
-                    tr += '<a href="" id="remove_combo_product_btn" class="btn btn-sm btn-danger mt-1">-</a>';
+                    tr += '<a href="" id="remove_combo_product_btn" class="btn btn-sm btn-danger">-</a>';
                     tr += '</td>';
 
                     tr += '</tr>';
@@ -1147,7 +1143,7 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<input value="'+comboProduct.quantity+'" required name="combo_quantities[]" type="text" class="form-control form-control-sm" id="combo_quantity">';
+                            tr += '<input value="'+comboProduct.quantity+'" required name="combo_quantities[]" type="text" class="form-control" id="combo_quantity">';
                             tr += '</td>';
 
                             var unitPriceIncTax = 0;
@@ -1158,16 +1154,16 @@
                             }
 
                             tr += '<td>';
-                            tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="unit_prices_inc_tax[]" type="text" class="form-control form-control-sm" id="unit_price_inc_tax">';
+                            tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="unit_prices_inc_tax[]" type="text" class="form-control" id="unit_price_inc_tax">';
                             tr += '</td>';
 
                             var subTotal = parseFloat(unitPriceIncTax) * comboProduct.quantity;
                             tr += '<td>';
-                            tr += '<input readonly value="'+parseFloat(subTotal).toFixed(2)+'" type="text" name="subtotal[]" id="subtotal" class="form-control form-control-sm">';
+                            tr += '<input readonly value="'+parseFloat(subTotal).toFixed(2)+'" type="text" name="subtotal[]" id="subtotal" class="form-control">';
                             tr += '</td>';
 
                             tr += '<td class="text-right">';
-                            tr += '<a href="" id="remove_combo_product_btn" class="btn btn-sm btn-danger mt-1">-</a>';
+                            tr += '<a href="" id="remove_combo_product_btn" class="btn btn-sm btn-danger">-</a>';
                             tr += '</td>';
 
                             tr += '</tr>';
@@ -1179,7 +1175,6 @@
             }
             getComboProducts();
         @endif
-
             function calculateTotalAmount() {
                 var subtotals = document.querySelectorAll('#subtotal');
                 var netTotalAmount = 0;
@@ -1264,7 +1259,6 @@
                         } else {
                             toastr.error(data.errorMsg);
                             $('.error').html('');
-                            $('.form-control').removeClass('is-invalid');
                         }
                     },
                     error: function(err) {
@@ -1272,21 +1266,12 @@
                         toastr.error('Please check again all form fields.',
                             'Some thing want wrong.');
                         $('.error').html('');
-                        $('.form-control').removeClass('is-invalid');
                         $.each(err.responseJSON.errors, function(key, error) {
                             //console.log(key);
                             $('.error_' + key + '').html(error[0]);
-                            $('#' + key).addClass('is-invalid');
                         });
                     }
                 });
-            });
-
-            // Acivate date picker
-            $('.date-picker').datepicker({
-                format: 'dd-mm-yyyy',
-                todayHighlight: true,
-                autoclose: true,
             });
 
             // Automatic remove searching product not found signal 

@@ -70,6 +70,7 @@ return [
   'taxes' => 'Taxes',
   'general_settings' => 'General Settings',
   'payment_settings' => 'Payment Settings',
+  'barcode_settings' => 'Barcode Settings',
   'invoice_schema' => 'Invoice Schemas',
   'invoice_layout' => 'Invoice Layouts',
   // Menu childs of Users module  

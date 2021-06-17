@@ -72,7 +72,7 @@ class UserController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="' . route('users.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" id="edit" href="' . route('users.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit </a>';
+                    $html .= '<a class="dropdown-item" id="edit" href="' . route('users.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit </a>';
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('users.delete', [$row->id]) . '"><i class="fas fa-trash-alt text-primary"></i> Delete </a>';
                     $html .= '</div>';
                     $html .= '</div>';

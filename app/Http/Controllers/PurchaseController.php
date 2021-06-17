@@ -116,39 +116,39 @@ class PurchaseController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i>View</a>';
+                            <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
-                    $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode mr-1 text-primary"></i>Barcode</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
                     if (auth()->user()->branch_id == $row->branch_id) {
                         if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
                             if ($row->due > 0) {
-                                $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i>Add Payment</a>';
+                                $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                             }
 
                             if ($row->purchase_return_due > 0) {
-                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i>Receive Return Amount</a>';
+                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
                             }
 
-                            $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i>View Payment</a>';
+                            $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                         }
 
                         if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
-                            $html .= '<a class="dropdown-item" href="' . route('purchases.edit', $row->id) . ' "><i class="far fa-edit mr-1 text-primary"></i>Edit</a>';
+                            $html .= '<a class="dropdown-item" href="' . route('purchases.edit', $row->id) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                         }
     
                         if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
-                            $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
+                            $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                         }
 
                         if (auth()->user()->permission->purchase['purchase_return'] == '1') {
-                            $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt mr-1 text-primary"></i>Purchase Return</a>';
+                            $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
                         }
 
-                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('purchases.change.status.modal', $row->id) . '"><i class="far fa-edit mr-1 text-primary"></i>Update Status</a>';
+                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('purchases.change.status.modal', $row->id) . '"><i class="far fa-edit text-primary"></i> Update Status</a>';
                     }
 
-                    $html .= '<a class="dropdown-item" id="items_notification" href=""><i class="fas fa-envelope mr-1 text-primary"></i>Items Received Notification</a>';
+                    $html .= '<a class="dropdown-item" id="items_notification" href=""><i class="fas fa-envelope text-primary"></i> Items Received Notification</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;

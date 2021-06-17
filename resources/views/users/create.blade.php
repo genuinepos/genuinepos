@@ -29,8 +29,8 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-3"><b>Prefix :</b> </label>
-                                                    <div class="col-9">
+                                                    <label for="inputEmail3" class="col-4"><b>Prefix :</b> </label>
+                                                    <div class="col-8">
                                                         <input type="text" name="prefix" class="form-control"
                                                             placeholder="Mr / Mrs / Miss" autofocus>
                                                     </div>

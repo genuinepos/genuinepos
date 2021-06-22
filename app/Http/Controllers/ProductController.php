@@ -108,25 +108,27 @@ class ProductController extends Controller
 
                     $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode mr-1 text-primary"></i> Barcode</a>';
 
-                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye text-primary"></i> View</a>';
 
                     if (auth()->user()->permission->product['product_edit']  == '1') {
-                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
 
                     if (auth()->user()->permission->product['product_delete']  == '1') {
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     }
 
                     if ($row->status == 1) {
-                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up mr-1 text-success"></i> Change Status</a>';
+                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
                     } else {
-                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down mr-1 text-danger"></i> Change Status</a>';
+                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
                     }
 
                     if (auth()->user()->permission->product['openingStock_add']  == '1') {
-                        $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '"><i class="fas fa-database mr-1 text-primary"></i> Add or edit opening stock</a>';
+                        $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '"><i class="fas fa-database text-primary"></i> Add or edit opening stock</a>';
                     }
+
+                    $html .= '<a class="dropdown-item" id="price_group" href="#"><i class="far fa-money-bill-alt text-primary"></i> Add or edit price group</a>';
                     $html .= ' </div>';
                     $html .= '</div>';
                     return $html;

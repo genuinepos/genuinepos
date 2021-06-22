@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePriceGroupsTable extends Migration
+class CreateProductPriceGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePriceGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('price_groups', function (Blueprint $table) {
+        Schema::create('product_price_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('status')->default('Active');
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('variant_id')->nullable();
+            $table->unsignedBigInteger('price_group_id')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreatePriceGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('price_groups');
+        Schema::dropIfExists('product_price_groups');
     }
 }

@@ -150,7 +150,7 @@ class BarcodeSettingController extends Controller
             $delete->delete();
         }
 
-        return response()->json('Barcode sticker setting updated Successfully.');
+        return response()->json('Barcode sticker setting delete Successfully.');
     }
 
     public function setDefault($id)

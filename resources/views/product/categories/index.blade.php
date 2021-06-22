@@ -92,7 +92,7 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <label for=""><b>Photo :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b></small></label>
+                                <label><b>Photo :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b></small></label>
                                 <input type="file" name="photo" class="form-control" id="photo">
                                 <span class="error error_photo"></span>
                             </div>
@@ -100,8 +100,7 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                 <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
                                 <button type="reset" data-bs-dismiss="modal"
                                     class="c-btn btn_orange float-end">Close</button>
@@ -228,7 +227,6 @@
                         $('.loading_button').hide();
                         $('.error').html('');
                         $.each(err.responseJSON.errors, function(key, error) {
-                            //console.log(key);
                             $('.error_e_' + key + '').html(error[0]);
                         });
                     }
@@ -267,11 +265,10 @@
                 $.ajax({
                     url: url,
                     type: 'post',
-                    async: false,
                     data: request,
                     success: function(data) {
                         toastr.error(data);
-                        $('.data_tbl').DataTable().ajax.reload();
+                        table.ajax.reload();
                         $('#deleted_form')[0].reset();
                     }
                 });

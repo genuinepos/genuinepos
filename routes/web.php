@@ -97,6 +97,11 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
     // Selling price group route group 
     Route::group(['prefix' => 'selling/price/groups'], function () {
         Route::get('/', 'PriceGroupController@index')->name('product.selling.price.groups.index');
+        Route::post('store', 'PriceGroupController@store')->name('product.selling.price.groups.store');
+        Route::get('edit/{id}', 'PriceGroupController@edit')->name('product.selling.price.groups.edit');
+        Route::post('update/{id}', 'PriceGroupController@update')->name('product.selling.price.groups.update');
+        Route::delete('delete/{id}', 'PriceGroupController@delete')->name('product.selling.price.groups.delete');
+        Route::get('change/status/{id}', 'PriceGroupController@changeStatus')->name('product.selling.price.groups.change.status');
     });
 
     // Variants route group

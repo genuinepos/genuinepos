@@ -20,6 +20,7 @@ return [
   'product_list' => 'Product List',
   'add_product' => 'Add Product',
   'variants' => 'Variants',
+  'selling_price_group' => 'Selling Price Group',
   'import_products' => 'Import Products',
   'generate_barcode' => 'Generate Barcode',
   'warranties' => 'warranties',

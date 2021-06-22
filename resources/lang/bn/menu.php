@@ -13,7 +13,7 @@ return [
     'users' => 'ব্যবহারকারী',
     'hrm' => 'মানব সম্পদ',
     'reports' => 'রিপোর্ট',
-    // Menu childs of Products module
+    // Menu child of Products module
     'categories' => 'বিভাগ',
     'sub_categories' => 'উপবিভাগ',
     'brand' => 'ব্র্যান্ড',
@@ -21,10 +21,11 @@ return [
     'add_product' => 'পণ্য যুক্ত করুন',
     'variants' => 'বৈকল্পিক',
     'import_products' => 'পণ্য আমদানি',
+    'selling_price_group' => 'বিক্রয় দাম গ্রুপ',
     'generate_barcode' => 'বারকোড উত্পন্ন',
     'warranties' => 'ওয়ারেন্টি',
     'import_products' => 'পণ্য আমদানি',
-    // Menu childs of Contacts module
+    // Menu child of Contacts module
     'suppliers' => 'সরবরাহকারী',
     'import_suppliers' => 'আমদানি সরবরাহকারী',
     'customers' => 'গ্রাহক',
@@ -34,7 +35,7 @@ return [
     'add_purchase' => 'ক্রয় যুক্ত করুন',
     'purchase_list' => 'ক্রয় তালিকা',
     'purchase_return_list' => 'ক্রয়ের রিটার্ন তালিকা',
-    // Menu childs of sales module
+    // Menu child of sales module
     'add_sale' => 'বিক্রয় যোগ করুন',
     'sale_list' => 'বিক্রয় পরিচালনা',
     'pos' => 'পিওএস',
@@ -44,20 +45,20 @@ return [
     'challan_list' => 'চালান তালিকা',
     'sale_return_list' => 'বিক্রয় রিটার্ন তালিকা',
     'shipments' => 'চালান',
-    // Menu childs of Transfer module 
+    // Menu child of Transfer module 
     'add_transfer' => 'পণ্য স্থানান্তর করুন',
     'transfer_list' => 'স্থানান্তর তালিকা',
     'receive_stocks' => 'স্টক গ্রহণ',
     'to_branch' => 'শাখায়',
     'to_warehouse' => 'গুদাম অফিসে',
-    // Menu childs of Adjustment module 
+    // Menu child of Adjustment module 
     'add_stock_adjustment' => 'স্টক সমন্বয় যোগ করুন',
     'stock_adjustment_list' => 'স্টক সমন্বয় তালিকা',
-    // Menu childs of Expense module 
+    // Menu child of Expense module 
     'expense_list' => 'ব্যয়ের তালিকা',
     'add_expense' => 'ব্যয় যোগ করুন',
     'expense_categories' => 'ব্যয় বিভাগ',
-    // Menu childs of Accounting module  
+    // Menu child of Accounting module  
     'bank' => 'ব্যাংক',
     'account_types' => 'অ্যাকাউন্টের ধরণ',
     'accounts' => 'ব্যাংক হিসাব',
@@ -65,7 +66,7 @@ return [
     'balance_sheet' => 'ব্যালেন্স শীট',
     'trial_balance' => 'পরীক্ষার ভারসাম্য',
     'cash_flow' => 'নগদ প্রবাহ',
-    // Menu childs of Setup module  
+    // Menu child of Setup module  
     'branches' => 'শাখা',
     'warehouses' => 'গুদাম',
     'units' => 'ইউনিট',
@@ -76,12 +77,12 @@ return [
     'payment_settings' => 'প্রদান সেটিংস',
     'barcode_settings' => 'বারকোড সেটিংস',
     'cash_counter' => 'টাকা প্রদান কেন্দ্র',
-    // Menu childs of Users module  
+    // Menu child of Users module  
     'add_user' => 'ব্যবহারকারী যুক্ত করুন',
     'user_list' => 'ব্যবহারকারীর তালিকা',
     'add_role' => 'ভূমিকা যোগ করুন',
     'role_list' => 'ভূমিকা তালিকা',
-    // Menu childs of HRM module  
+    // Menu child of HRM module  
     'hrm_dashboard' => 'এইচআরএম ড্যাশবোর্ড',
     'leave_type' => 'ছুটির ধরণ',
     'leave' => 'ছুটি',
@@ -93,7 +94,7 @@ return [
     'department' => 'বিভাগ',
     'designation' => 'উপাধি',
     'hrm_settings' => 'এইচআরএম সেটিংস',
-    // Menu childs of Report module  
+    // Menu child of Report module  
     'profit_loss' => 'লাভ ক্ষতি',
     'purchase_sale' => 'ক্রয় বিক্রয়',
     'tax_report' => 'ট্যাক্স রিপোর্ট',

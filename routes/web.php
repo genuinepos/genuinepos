@@ -50,7 +50,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('edit/{id}', 'SubCategoryController@edit');
     });
 
-    // Branch route group
+    // Brand route group
     Route::group(['prefix' => 'brands'], function () {
         Route::get('/', 'BrandController@index')->name('product.brands.index');
         Route::get('all', 'BrandController@getAllBrand')->name('product.brands.all.brand');
@@ -92,6 +92,11 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::post('add/brand', 'ProductController@addBrand')->name('products.add.brand');
         Route::post('add/unit', 'ProductController@addUnit')->name('products.add.unit');
         Route::post('add/warranty', 'ProductController@addWarranty')->name('products.add.warranty');
+    });
+
+    // Selling price group route group 
+    Route::group(['prefix' => 'selling/price/groups'], function () {
+        Route::get('/', 'PriceGroupController@index')->name('product.selling.price.groups.index');
     });
 
     // Variants route group

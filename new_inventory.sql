@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2021 at 03:13 PM
+-- Generation Time: Jun 22, 2021 at 02:19 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.1
 
@@ -244,6 +244,39 @@ INSERT INTO `banks` (`id`, `name`, `branch_name`, `address`, `created_at`, `upda
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `barcode_settings`
+--
+
+CREATE TABLE `barcode_settings` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_continuous` tinyint(1) NOT NULL DEFAULT 0,
+  `top_margin` bigint(20) NOT NULL DEFAULT 0,
+  `left_margin` bigint(20) NOT NULL DEFAULT 0,
+  `sticker_width` bigint(20) NOT NULL DEFAULT 0,
+  `sticker_height` bigint(20) NOT NULL DEFAULT 0,
+  `paper_width` bigint(20) NOT NULL DEFAULT 0,
+  `paper_height` bigint(20) NOT NULL DEFAULT 0,
+  `row_distance` bigint(20) NOT NULL DEFAULT 0,
+  `column_distance` bigint(20) NOT NULL DEFAULT 0,
+  `stickers_in_a_row` bigint(20) NOT NULL DEFAULT 0,
+  `stickers_in_one_sheet` bigint(20) NOT NULL DEFAULT 0,
+  `is_default` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `barcode_settings`
+--
+
+INSERT INTO `barcode_settings` (`id`, `name`, `description`, `is_continuous`, `top_margin`, `left_margin`, `sticker_width`, `sticker_height`, `paper_width`, `paper_height`, `row_distance`, `column_distance`, `stickers_in_a_row`, `stickers_in_one_sheet`, `is_default`, `created_at`, `updated_at`) VALUES
+(1, 'Pearl Glover', 'Magnam fugiat aute', 0, 57, 98, 58, 68, 68, 98, 43, 61, 84, 99, 1, NULL, '2021-06-22 06:32:33');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `branches`
 --
 
@@ -438,6 +471,28 @@ INSERT INTO `card_types` (`id`, `card_type_name`, `account_id`, `created_at`, `u
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cash_counters`
+--
+
+CREATE TABLE `cash_counters` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `counter_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `short_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cash_counters`
+--
+
+INSERT INTO `cash_counters` (`id`, `counter_name`, `short_name`, `created_at`, `updated_at`) VALUES
+(2, 'Cash Counter No 1', 'CCNO-1', NULL, NULL),
+(3, 'Cash Counter No 2', 'CCNO-2', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cash_flows`
 --
 
@@ -605,28 +660,33 @@ CREATE TABLE `cash_registers` (
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1=open;0=closed;',
   `closing_note` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `cash_counter_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `cash_registers`
 --
 
-INSERT INTO `cash_registers` (`id`, `branch_id`, `warehouse_id`, `account_id`, `admin_id`, `closed_at`, `closed_amount`, `total_card_slips`, `total_cheques`, `status`, `closing_note`, `created_at`, `updated_at`) VALUES
-(1, NULL, 7, 15, 2, '2021-05-10 13:33:00', '100.00', 1, 0, 0, NULL, '2021-05-10 11:36:56', '2021-05-10 13:33:33'),
-(2, NULL, 7, 15, 2, '2021-05-10 13:48:00', '0.00', 0, 0, 0, NULL, '2021-05-10 13:33:55', '2021-05-10 13:48:07'),
-(3, NULL, 7, 16, 2, '2021-05-10 13:49:00', '200.00', 0, 0, 0, NULL, '2021-05-10 13:48:33', '2021-05-10 13:49:20'),
-(4, NULL, 7, NULL, 2, '2021-05-10 13:58:00', '100.00', 0, 0, 0, NULL, '2021-05-10 13:53:19', '2021-05-10 13:58:43'),
-(5, NULL, 7, 15, 2, '2021-05-17 11:52:00', '100.00', 0, 0, 0, NULL, '2021-05-11 03:21:08', '2021-05-17 11:52:01'),
-(6, 24, NULL, NULL, 7, '2021-05-18 08:12:00', '92100.00', 1, 0, 0, NULL, '2021-05-11 03:42:03', '2021-05-18 08:12:58'),
-(7, NULL, 7, 15, 2, '2021-06-05 05:35:00', '12455.00', 1, 0, 0, NULL, '2021-05-17 11:52:31', '2021-06-05 05:35:38'),
-(8, 24, NULL, NULL, 7, '2021-05-24 04:52:00', '1000.00', 0, 0, 0, NULL, '2021-05-18 08:13:09', '2021-05-24 04:52:54'),
-(9, 24, NULL, NULL, 7, '2021-06-07 11:43:00', '610.00', 0, 0, 0, NULL, '2021-05-24 04:53:01', '2021-06-07 11:43:28'),
-(10, NULL, 7, 16, 2, '2021-06-05 07:45:00', '362.50', 0, 0, 0, NULL, '2021-06-05 05:35:52', '2021-06-05 07:45:44'),
-(11, NULL, 7, 15, 2, NULL, '0.00', NULL, NULL, 1, NULL, '2021-06-05 12:36:54', '2021-06-05 12:36:54'),
-(12, 24, NULL, NULL, 7, NULL, '0.00', NULL, NULL, 1, NULL, '2021-06-07 11:43:34', '2021-06-07 11:43:34'),
-(13, 24, NULL, NULL, 10, '2021-06-09 10:34:00', '1000.00', 0, 0, 0, NULL, '2021-06-09 10:32:29', '2021-06-09 10:34:55'),
-(14, 24, NULL, NULL, 10, NULL, '0.00', NULL, NULL, 1, NULL, '2021-06-09 10:35:09', '2021-06-09 10:35:09');
+INSERT INTO `cash_registers` (`id`, `branch_id`, `warehouse_id`, `account_id`, `admin_id`, `closed_at`, `closed_amount`, `total_card_slips`, `total_cheques`, `status`, `closing_note`, `created_at`, `updated_at`, `cash_counter_id`) VALUES
+(1, NULL, 7, 15, 2, '2021-05-10 13:33:00', '100.00', 1, 0, 0, NULL, '2021-05-10 11:36:56', '2021-05-10 13:33:33', NULL),
+(2, NULL, 7, 15, 2, '2021-05-10 13:48:00', '0.00', 0, 0, 0, NULL, '2021-05-10 13:33:55', '2021-05-10 13:48:07', NULL),
+(3, NULL, 7, 16, 2, '2021-05-10 13:49:00', '200.00', 0, 0, 0, NULL, '2021-05-10 13:48:33', '2021-05-10 13:49:20', NULL),
+(4, NULL, 7, NULL, 2, '2021-05-10 13:58:00', '100.00', 0, 0, 0, NULL, '2021-05-10 13:53:19', '2021-05-10 13:58:43', NULL),
+(5, NULL, 7, 15, 2, '2021-05-17 11:52:00', '100.00', 0, 0, 0, NULL, '2021-05-11 03:21:08', '2021-05-17 11:52:01', NULL),
+(6, 24, NULL, NULL, 7, '2021-05-18 08:12:00', '92100.00', 1, 0, 0, NULL, '2021-05-11 03:42:03', '2021-05-18 08:12:58', NULL),
+(7, NULL, 7, 15, 2, '2021-06-05 05:35:00', '12455.00', 1, 0, 0, NULL, '2021-05-17 11:52:31', '2021-06-05 05:35:38', NULL),
+(8, 24, NULL, NULL, 7, '2021-05-24 04:52:00', '1000.00', 0, 0, 0, NULL, '2021-05-18 08:13:09', '2021-05-24 04:52:54', NULL),
+(9, 24, NULL, NULL, 7, '2021-06-07 11:43:00', '610.00', 0, 0, 0, NULL, '2021-05-24 04:53:01', '2021-06-07 11:43:28', NULL),
+(10, NULL, 7, 16, 2, '2021-06-05 07:45:00', '362.50', 0, 0, 0, NULL, '2021-06-05 05:35:52', '2021-06-05 07:45:44', NULL),
+(11, NULL, 7, 15, 2, '2021-06-22 05:57:00', '7075.50', 0, 0, 0, NULL, '2021-06-05 12:36:54', '2021-06-22 05:57:57', NULL),
+(12, 24, NULL, NULL, 7, NULL, '0.00', NULL, NULL, 1, NULL, '2021-06-07 11:43:34', '2021-06-07 11:43:34', NULL),
+(13, 24, NULL, NULL, 10, '2021-06-09 10:34:00', '1000.00', 0, 0, 0, NULL, '2021-06-09 10:32:29', '2021-06-09 10:34:55', NULL),
+(14, 24, NULL, NULL, 10, NULL, '0.00', NULL, NULL, 1, NULL, '2021-06-09 10:35:09', '2021-06-09 10:35:09', NULL),
+(15, NULL, 7, NULL, 2, '2021-06-22 06:19:00', '100.00', 0, 0, 0, NULL, '2021-06-22 06:17:32', '2021-06-22 06:19:04', NULL),
+(16, NULL, 7, 15, 2, '2021-06-22 06:26:00', '0.00', 0, 0, 0, NULL, '2021-06-22 06:25:55', '2021-06-22 06:26:51', NULL),
+(17, NULL, 7, 15, 2, '2021-06-22 06:26:00', '100.00', 0, 0, 0, NULL, '2021-06-22 06:26:43', '2021-06-22 06:26:56', 2),
+(18, NULL, 7, NULL, 2, '2021-06-22 06:54:00', '0.00', 0, 0, 0, NULL, '2021-06-22 06:27:04', '2021-06-22 06:54:07', 2);
 
 -- --------------------------------------------------------
 
@@ -721,7 +781,10 @@ INSERT INTO `cash_register_transactions` (`id`, `cash_register_id`, `sale_id`, `
 (85, 14, 245, 2, 2, NULL, '2021-06-09 11:07:10', '2021-06-09 11:07:10'),
 (86, 11, 256, 2, 2, NULL, '2021-06-10 11:10:04', '2021-06-10 11:10:04'),
 (87, 12, 257, 2, 2, NULL, '2021-06-10 11:10:59', '2021-06-10 11:10:59'),
-(88, 11, 266, 2, 2, NULL, '2021-06-17 10:44:49', '2021-06-17 10:44:49');
+(88, 11, 266, 2, 2, NULL, '2021-06-17 10:44:49', '2021-06-17 10:44:49'),
+(89, 15, NULL, 2, 1, '100.00', '2021-06-22 06:17:32', '2021-06-22 06:17:32'),
+(90, 17, NULL, 2, 1, '100.00', '2021-06-22 06:26:43', '2021-06-22 06:26:43'),
+(91, 18, NULL, 2, 1, '0.00', '2021-06-22 06:27:04', '2021-06-22 06:27:04');
 
 -- --------------------------------------------------------
 
@@ -1525,7 +1588,7 @@ CREATE TABLE `general_settings` (
 --
 
 INSERT INTO `general_settings` (`id`, `business`, `tax`, `product`, `sale`, `pos`, `purchase`, `dashboard`, `system`, `prefix`, `email_setting`, `sms_setting`, `modules`, `reward_poing_settings`, `multi_branches`, `hrm`, `services`, `menufacturing`, `projects`, `essentials`, `e_commerce`, `contact_default_cr_limit`, `created_at`, `updated_at`) VALUES
-(1, '{\"shop_name\":\"SpeedDigit Pvt. Ltd.\",\"address\":\"Dhaka, Bangladesh\",\"phone\":\"015577886545\",\"email\":\"tg@gmail.com\",\"start_date\":\"07-04-2021\",\"default_profit\":0,\"currency\":\"\\u09f3\",\"currency_placement\":null,\"date_format\":\"dd-mm-yyyy\",\"financial_year_start\":\"Januaray\",\"time_format\":\"12\",\"business_logo\":\"60a9049c6c777-.png\",\"timezone\":\"Asia\\/Kalkata\"}', '{\"tax_1_name\":\"Tax\",\"tax_1_no\":\"1\",\"tax_2_name\":\"GST\",\"tax_2_no\":\"2\",\"is_tax_en_purchase_sale\":1}', '{\"product_code_prefix\":null,\"default_unit_id\":\"null\",\"is_enable_brands\":1,\"is_enable_categories\":1,\"is_enable_sub_categories\":1,\"is_enable_price_tax\":1,\"is_enable_warranty\":1}', '{\"default_sale_discount\":\"0.00\",\"default_tax_id\":\"null\",\"sales_cmsn_agnt\":\"select_form_cmsn_list\"}', '{\"is_disable_draft\":0,\"is_disable_quotation\":0,\"is_disable_challan\":0,\"is_disable_hold_invoice\":0,\"is_disable_multiple_pay\":1,\"is_show_recent_transactions\":0,\"is_disable_discount\":0,\"is_disable_order_tax\":0,\"is_show_credit_sale_button\":1,\"is_show_partial_sale_button\":1}', '{\"is_edit_pro_price\":0,\"is_enable_status\":1,\"is_enable_lot_no\":1}', '{\"view_stock_expiry_alert_for\":\"31\"}', '[]', '{\"purchase_invoice\":\"PI\",\"sale_invoice\":\"SI\",\"purchase_return\":\"PRI\",\"stock_transfer\":\"STI\",\"stock_djustment\":\"SA\",\"sale_return\":\"SRI\",\"expenses\":\"EXI\",\"contacts\":\"CO\",\"purchase_payment\":\"PPI\",\"sale_payment\":\"SPI\",\"expanse_payment\":\"EXPI\"}', '[]', '[]', '{\"purchases\":1,\"add_sale\":1,\"pos\":1,\"transfer_stock\":1,\"stock_adjustment\":1,\"expenses\":1,\"accounting\":1,\"contacts\":1,\"hrms\":1,\"damage_product\":1}', '{\"enable_cus_point\":1,\"point_display_name\":\"Reward Point\",\"amount_for_unit_rp\":\"10\",\"min_order_total_for_rp\":\"10\",\"max_rp_per_order\":\"\",\"redeem_amount_per_unit_rp\":\"10\",\"min_order_total_for_redeem\":\"\",\"min_redeem_point\":\"\",\"max_redeem_point\":\"\"}', 0, 0, 0, 0, 0, 0, 0, '50000.00', NULL, '2021-06-17 10:41:28');
+(1, '{\"shop_name\":\"SpeedDigit Pvt. Ltd.\",\"address\":\"Dhaka, Bangladesh\",\"phone\":\"015577886545\",\"email\":\"tg@gmail.com\",\"start_date\":\"07-04-2021\",\"default_profit\":0,\"currency\":\"\\u09f3\",\"currency_placement\":null,\"date_format\":\"dd-mm-yyyy\",\"financial_year_start\":\"Januaray\",\"time_format\":\"12\",\"business_logo\":\"60a9049c6c777-.png\",\"timezone\":\"Asia\\/Kalkata\"}', '{\"tax_1_name\":\"Tax\",\"tax_1_no\":\"1\",\"tax_2_name\":\"GST\",\"tax_2_no\":\"2\",\"is_tax_en_purchase_sale\":1}', '{\"product_code_prefix\":null,\"default_unit_id\":\"null\",\"is_enable_brands\":1,\"is_enable_categories\":1,\"is_enable_sub_categories\":1,\"is_enable_price_tax\":1,\"is_enable_warranty\":1}', '{\"default_sale_discount\":\"0.00\",\"default_tax_id\":\"null\",\"sales_cmsn_agnt\":\"select_form_cmsn_list\"}', '{\"is_disable_draft\":0,\"is_disable_quotation\":0,\"is_disable_challan\":0,\"is_disable_hold_invoice\":0,\"is_disable_multiple_pay\":1,\"is_show_recent_transactions\":0,\"is_disable_discount\":0,\"is_disable_order_tax\":0,\"is_show_credit_sale_button\":1,\"is_show_partial_sale_button\":1}', '{\"is_edit_pro_price\":0,\"is_enable_status\":1,\"is_enable_lot_no\":1}', '{\"view_stock_expiry_alert_for\":\"31\"}', '[]', '{\"purchase_invoice\":\"PI\",\"sale_invoice\":\"SI\",\"purchase_return\":\"PRI\",\"stock_transfer\":\"STI\",\"stock_djustment\":\"SA\",\"sale_return\":\"SRI\",\"expenses\":\"EXI\",\"supplier_id\":\"SID\",\"customer_id\":null,\"purchase_payment\":\"PPI\",\"sale_payment\":\"SPI\",\"expanse_payment\":\"EXPI\"}', '[]', '[]', '{\"purchases\":1,\"add_sale\":1,\"pos\":1,\"transfer_stock\":1,\"stock_adjustment\":1,\"expenses\":1,\"accounting\":1,\"contacts\":1,\"hrms\":1,\"damage_product\":1}', '{\"enable_cus_point\":1,\"point_display_name\":\"Reward Point\",\"amount_for_unit_rp\":\"10\",\"min_order_total_for_rp\":\"10\",\"max_rp_per_order\":\"\",\"redeem_amount_per_unit_rp\":\"10\",\"min_order_total_for_redeem\":\"\",\"min_redeem_point\":\"\",\"max_redeem_point\":\"\"}', 0, 0, 0, 0, 0, 0, 0, '50000.00', NULL, '2021-06-22 07:56:17');
 
 -- --------------------------------------------------------
 
@@ -2080,7 +2143,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (162, '2021_06_15_144538_create_asset_types_table', 77),
 (163, '2021_06_15_162732_create_assets_table', 78),
 (164, '2021_06_17_171914_create_card_types_table', 79),
-(165, '2021_06_17_180811_add_column_card_type_id_from_sale_payments_table', 80);
+(165, '2021_06_17_180811_add_column_card_type_id_from_sale_payments_table', 80),
+(166, '2021_06_19_011217_create_barcode_settings_table', 81),
+(167, '2021_06_19_212930_create_cash_counters_table', 81),
+(168, '2021_06_19_213532_add_column_cash_counter_id_from_cash_registers_table', 82),
+(169, '2021_06_22_150310_create_price_groups_table', 83);
 
 -- --------------------------------------------------------
 
@@ -2192,6 +2259,28 @@ CREATE TABLE `payment_methods` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `price_groups`
+--
+
+CREATE TABLE `price_groups` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Active',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `price_groups`
+--
+
+INSERT INTO `price_groups` (`id`, `name`, `description`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Whole sale Price', 'Whole sale Price description.', 'Active', '2021-06-22 11:12:08', '2021-06-22 11:36:46');
 
 -- --------------------------------------------------------
 
@@ -4288,11 +4377,12 @@ CREATE TABLE `suppliers` (
 
 INSERT INTO `suppliers` (`id`, `type`, `contact_id`, `name`, `business_name`, `phone`, `alternative_phone`, `alternate_phone`, `landline`, `email`, `date_of_birth`, `tax_number`, `opening_balance`, `pay_term`, `pay_term_number`, `address`, `shipping_address`, `city`, `state`, `country`, `zip_code`, `total_purchase`, `total_paid`, `total_purchase_due`, `total_purchase_return_due`, `status`, `prefix`, `created_at`, `updated_at`) VALUES
 (26, NULL, NULL, 'dd', NULL, 'ddd', 'ddd', NULL, 'ddd', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2082780.50', '810420.00', '3365.00', '3263.75', 1, 'd932432', '2021-03-09 06:46:55', '2021-06-17 09:15:13'),
-(27, 2, 'CO45555', 'Emi Coleman', 'Chester Byrd', '+1 (456) 444-9615', '+1 (456) 444-9615', NULL, '+1 (456) 444-9615', 'lufejawy@mailinator.com', '06-Jun-2017', '201', '94.00', 1, 884, 'Quae sint nulla offi', 'Animi asperiores qu', 'Lorem ipsum repudian', 'Incidunt non eius v', 'Explicabo Qui id po', '50575', '17225.00', '16595.00', '5355.00', '1050.00', 1, 'Eos consectetur ull', '2021-03-16 10:15:28', '2021-04-28 09:18:38'),
+(27, 2, 'CO45555', 'Coleman', 'Chester Byrd', '+1 (456) 444-9615', '+1 (456) 444-9615', NULL, '+1 (456) 444-9615', 'lufejawy@mailinator.com', NULL, '201', '94.00', 1, 884, 'Quae sint nulla offi', 'Animi asperiores qu', 'Lorem ipsum repudian', 'Incidunt non eius v', 'Explicabo Qui id po', '50575', '17225.00', '16595.00', '5355.00', '1050.00', 1, 'E8545', '2021-03-16 10:15:28', '2021-06-22 08:28:03'),
 (28, NULL, NULL, 'a', NULL, '411', '411', NULL, '411', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', '0.00', '0.00', '0.00', 1, 'a34', '2021-03-24 04:39:27', '2021-04-21 05:49:10'),
 (29, 1, NULL, 'M.Flug', NULL, '12255877', '12255877', NULL, '12255877', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4200000.00', '4200000.00', '0.00', '0.00', 1, NULL, '2021-04-24 07:07:46', '2021-06-17 09:16:01'),
 (30, 1, 'CO123', 'General supplier', NULL, '123456789', '123456789', NULL, '123456789', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '3377430.00', '3377430.00', '0.00', '0.00', 1, 'G476747', '2021-04-28 08:31:05', '2021-06-05 12:32:11'),
-(31, NULL, NULL, 'Supplier-1', NULL, '100022454', '100022454', NULL, '100022454', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '315.00', '210.00', '105.00', '105.00', 1, 'S228324', '2021-06-10 06:47:14', '2021-06-10 06:49:00');
+(31, NULL, '15455', 'Supplier-1', NULL, '100022454', '100022454', NULL, '100022454', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '315.00', '210.00', '105.00', '105.00', 1, 'S228324', '2021-06-10 06:47:14', '2021-06-22 06:09:39'),
+(32, NULL, 'SID37159', 'Ali', NULL, '858555444', '858555444', NULL, '858555444', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', '0.00', '0.00', '0.00', 1, 'A37159', '2021-06-22 08:04:35', '2021-06-22 08:06:11');
 
 -- --------------------------------------------------------
 
@@ -4868,6 +4958,12 @@ ALTER TABLE `banks`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `barcode_settings`
+--
+ALTER TABLE `barcode_settings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `branches`
 --
 ALTER TABLE `branches`
@@ -4908,6 +5004,12 @@ ALTER TABLE `card_types`
   ADD KEY `card_types_account_id_foreign` (`account_id`);
 
 --
+-- Indexes for table `cash_counters`
+--
+ALTER TABLE `cash_counters`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `cash_flows`
 --
 ALTER TABLE `cash_flows`
@@ -4930,7 +5032,8 @@ ALTER TABLE `cash_registers`
   ADD KEY `cash_registers_branch_id_foreign` (`branch_id`),
   ADD KEY `cash_registers_warehouse_id_foreign` (`warehouse_id`),
   ADD KEY `cash_registers_account_id_foreign` (`account_id`),
-  ADD KEY `cash_registers_admin_id_foreign` (`admin_id`);
+  ADD KEY `cash_registers_admin_id_foreign` (`admin_id`),
+  ADD KEY `cash_registers_cash_counter_id_foreign` (`cash_counter_id`);
 
 --
 -- Indexes for table `cash_register_transactions`
@@ -5153,6 +5256,12 @@ ALTER TABLE `password_resets`
 -- Indexes for table `payment_methods`
 --
 ALTER TABLE `payment_methods`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `price_groups`
+--
+ALTER TABLE `price_groups`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -5538,6 +5647,12 @@ ALTER TABLE `banks`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `barcode_settings`
+--
+ALTER TABLE `barcode_settings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `branches`
 --
 ALTER TABLE `branches`
@@ -5574,6 +5689,12 @@ ALTER TABLE `card_types`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `cash_counters`
+--
+ALTER TABLE `cash_counters`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `cash_flows`
 --
 ALTER TABLE `cash_flows`
@@ -5583,13 +5704,13 @@ ALTER TABLE `cash_flows`
 -- AUTO_INCREMENT for table `cash_registers`
 --
 ALTER TABLE `cash_registers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `cash_register_transactions`
 --
 ALTER TABLE `cash_register_transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -5613,7 +5734,7 @@ ALTER TABLE `currencies`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `customer_groups`
@@ -5625,7 +5746,7 @@ ALTER TABLE `customer_groups`
 -- AUTO_INCREMENT for table `customer_ledgers`
 --
 ALTER TABLE `customer_ledgers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=299;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=304;
 
 --
 -- AUTO_INCREMENT for table `expanses`
@@ -5751,7 +5872,7 @@ ALTER TABLE `invoice_schemas`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
 
 --
 -- AUTO_INCREMENT for table `money_receipts`
@@ -5770,6 +5891,12 @@ ALTER TABLE `months`
 --
 ALTER TABLE `payment_methods`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `price_groups`
+--
+ALTER TABLE `price_groups`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -5907,13 +6034,13 @@ ALTER TABLE `stock_adjustment_products`
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `supplier_ledgers`
 --
 ALTER TABLE `supplier_ledgers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `supplier_products`
@@ -6093,6 +6220,7 @@ ALTER TABLE `cash_registers`
   ADD CONSTRAINT `cash_registers_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `cash_registers_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `cash_registers_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cash_registers_cash_counter_id_foreign` FOREIGN KEY (`cash_counter_id`) REFERENCES `cash_counters` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `cash_registers_warehouse_id_foreign` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE;
 
 --

@@ -104,9 +104,9 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Customer ID :</strong></label>
+                                <label><strong>Customer ID :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
                                 <input type="text" name="contact_id" class="form-control"
-                                    placeholder="Contact ID" />
+                                    placeholder="Customer ID"/>
                             </div>
 
                             <div class="col-md-3">
@@ -259,7 +259,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Category</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Customer</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -281,8 +281,8 @@
 
                             <div class="col-md-3">
                                 <label><b>Customer ID</b> : </label>
-                                <input type="text" name="contact_id" class="form-control"
-                                    placeholder="Contact ID" id="e_contact_id" />
+                                <input readonly type="text" name="contact_id" class="form-control"
+                                    placeholder="Customer ID" id="e_contact_id" />
                             </div>
 
                             <div class="col-md-3">

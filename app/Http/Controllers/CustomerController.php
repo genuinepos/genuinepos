@@ -48,9 +48,19 @@ class CustomerController extends Controller
             'phone' => 'required',
         ]);
 
+        // generate prefix dode ID
+        $i = 5;
+        $a = 0;
+        $id = '';
+        while ($a < $i) {
+            $id .= rand(1, 9);
+            $a++;
+        }
+        $generalSettings = DB::table('general_settings')->first('prefix');
+        $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
         $addCustomer = Customer::create([
             'type' => $request->contact_type,
-            'contact_id' => $request->contact_id,
+            'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . $id,
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,
@@ -68,7 +78,7 @@ class CustomerController extends Controller
             'country' => $request->country,
             'state' => $request->state,
             'shipping_address' => $request->shipping_address,
-            'opening_balance' => $request->opening_balance,
+            'opening_balance' => $request->opening_balance ? $request->opening_balance : 0.00,
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);
 
@@ -98,7 +108,6 @@ class CustomerController extends Controller
 
         Customer::where('id', $request->id)->update([
             'type' => $request->contact_type,
-            'contact_id' => $request->contact_id,
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,

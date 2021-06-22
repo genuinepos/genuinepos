@@ -101,13 +101,13 @@
                             </div>
 
                             <div class="col-md-3">
-                              <b>Supplier ID :</b> 
-                                <input type="text" name="contact_id" class="form-control "  placeholder="Contact ID"/>
+                              <b>Supplier ID <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</b> 
+                                <input type="text" name="contact_id" class="form-control" placeholder="Contact ID"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Business Name :</b>
-                                <input type="text" name="business_name" class="form-control " placeholder="Business name"/>
+                                <input type="text" name="business_name" class="form-control" placeholder="Business name"/>
                             </div>
 
                             <div class="col-md-3">
@@ -182,9 +182,8 @@
                                 <input type="text" name="address" class="form-control "  placeholder="Address">
                             </div>
                             <div class="col-md-3">
-                               <b>Prefix :</b> 
+                               <b>Prefix <i data-bs-toggle="tooltip" data-bs-placement="right" title="This prefix for barcode." class="fas fa-info-circle tp"></i> :</b> 
                                 <input type="text" name="prefix" class="form-control " placeholder="prefix"/>
-                                <small style="font-size: 10px; color: red;">Note: This prefix for barcode.</small>
                             </div>
                         </div>
 
@@ -256,17 +255,17 @@
 
                             <div class="col-md-3">
                                 <b>Supplier ID :</b>
-                                <input type="text" name="contact_id" class="form-control "  placeholder="Contact ID" id="e_contact_id"/>
+                                <input readonly type="text" name="contact_id" class="form-control"  placeholder="Contact ID" id="e_contact_id"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Business Name :</b>
-                                <input type="text" name="business_name" class="form-control " placeholder="Business name" id="e_business_name"/>
+                                <input type="text" name="business_name" class="form-control" placeholder="Business name" id="e_business_name"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Name :</b>  <span class="text-danger">*</span>
-                                <input type="text" name="name" class="form-control  edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier name" />
+                                <input type="text" name="name" class="form-control edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier name" />
                                 <span class="error error_e_name"></span>
                             </div>
                         </div>
@@ -332,9 +331,8 @@
                             </div>
 
                             <div class="col-md-3">
-                               <b>Prefix :</b> 
+                               <b>Prefix <i data-bs-toggle="tooltip" data-bs-placement="right" title="This prefix for barcode." class="fas fa-info-circle tp"></i> :</b> 
                                 <input type="text" name="prefix" id="e_prefix" class="form-control " placeholder="prefix"/>
-                                <small style="font-size: 10px; color: black;">Note: This prefix for barcode.</small>
                             </div>
                         </div>
 
@@ -428,23 +426,7 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-            var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                return;
-            }
+            addValidation();
             $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
@@ -498,22 +480,7 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-            var inputs = $('.edit_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                } 
-            });
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                return;
-            }
+            editValidation();
             $.ajax({
                 url:url,
                 type:'post',
@@ -674,6 +641,54 @@
             var value = $(this).val();
             $('.payment_method').hide();
             $('#'+value).show();
+        });
+
+        function addValidation() {
+            var inputs = $('.add_input');
+                $('.error').html('');  
+                var countErrorField = 0;  
+            $.each(inputs, function(key, val){
+                var inputId = $(val).attr('id');
+                var idValue = $('#'+inputId).val();
+                if(idValue == ''){
+                    countErrorField += 1;
+                    var fieldName = $('#'+inputId).data('name');
+                    $('.error_'+inputId).html(fieldName+' is required.');
+                }
+            });
+
+            if(countErrorField > 0){
+                $('.loading_button').hide();
+                return;
+            }
+        }
+
+        $(document).on('input', '.add_input', function () {
+            addValidation();
+        });
+
+        function editValidation() {
+            var inputs = $('.edit_input');
+                $('.error').html('');  
+                var countErrorField = 0;  
+            $.each(inputs, function(key, val){
+                var inputId = $(val).attr('id');
+                var idValue = $('#'+inputId).val();
+                if(idValue == ''){
+                    countErrorField += 1;
+                    var fieldName = $('#'+inputId).data('name');
+                    $('.error_'+inputId).html(fieldName+' is required.');
+                } 
+            });
+
+            if(countErrorField > 0){
+                $('.loading_button').hide();
+                return;
+            }
+        }
+
+        $(document).on('input', '.edit_input', function () {
+            editValidation();
         });
     });
 </script>

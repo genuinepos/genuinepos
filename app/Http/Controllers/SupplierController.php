@@ -40,24 +40,25 @@ class SupplierController extends Controller
             'phone' => 'required',
         ]);
 
-        // generate prefix dode ID
-        $i = 6;
+        // generate ID
+        $i = 5;
         $a = 0;
-        $code = '';
+        $id = '';
         while ($a < $i) {
-            $code .= rand(1, 9);
+            $id .= rand(1, 9);
             $a++;
         }
-
+        $generalSettings = DB::table('general_settings')->first('prefix');
         $firstLetterOfSupplier = str_split($request->name)[0];
+        $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
         $addSupplier = Supplier::create([
             'type' => $request->contact_type,
-            'contact_id' => $request->contact_id,
+            'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix . $id,
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'alternative_phone' => $request->alternative_phone,
+            'alternative_phone' => $request->phone,
             'landline' => $request->phone,
             'date_of_birth' => $request->date_of_birth,
             'tax_number' => $request->tax_number,
@@ -69,7 +70,7 @@ class SupplierController extends Controller
             'country' => $request->country,
             'state' => $request->state,
             'shipping_address' => $request->shipping_address,
-            'prefix' => $request->prefix ? $request->prefix : $firstLetterOfSupplier . $code,
+            'prefix' => $request->prefix ? $request->prefix : $firstLetterOfSupplier . $id,
             'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
             'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
@@ -113,7 +114,7 @@ class SupplierController extends Controller
             'business_name' => $request->business_name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'alternative_phone' => $request->alternative_phone,
+            'alternative_phone' => $request->phone,
             'landline' => $request->phone,
             'date_of_birth' => $request->date_of_birth,
             'tax_number' => $request->tax_number,
@@ -155,7 +156,7 @@ class SupplierController extends Controller
     }
 
     // Supplier view method
-    public function view(Request $request,$supplierId)
+    public function view(Request $request, $supplierId)
     {
         $supplierId = $supplierId;
         if ($request->ajax()) {
@@ -167,20 +168,20 @@ class SupplierController extends Controller
                 ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
                 ->leftJoin('admin_and_users as created_by', 'purchases.admin_id', 'created_by.id');
 
-           
-                $purchases = $query->select(
-                    'purchases.*',
-                    'branches.id as branch_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'suppliers.name as supplier_name',
-                    'created_by.prefix as created_prefix',
-                    'created_by.name as created_name',
-                    'created_by.last_name as created_last_name',
-                )->where('purchases.branch_id', auth()->user()->branch_id)->where('supplier_id', $supplierId)->get();
-            
+
+            $purchases = $query->select(
+                'purchases.*',
+                'branches.id as branch_id',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'suppliers.name as supplier_name',
+                'created_by.prefix as created_prefix',
+                'created_by.name as created_name',
+                'created_by.last_name as created_last_name',
+            )->where('purchases.branch_id', auth()->user()->branch_id)->where('supplier_id', $supplierId)->get();
+
 
             return DataTables::of($purchases)
                 ->addColumn('action', function ($row) {
@@ -207,7 +208,7 @@ class SupplierController extends Controller
 
                             if ($row->purchase_return_due > 0) {
                                 $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
-                            }        
+                            }
                         }
                     }
 
@@ -234,7 +235,7 @@ class SupplierController extends Controller
                     return $html;
                 })
                 ->editColumn('from',  function ($row) {
-                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code).'<b>(BRANCH)</b>' : ($row->warehouse_name . '/' . $row->warehouse_code).'<b>(WAREHOUSE)</b>';
+                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BRANCH)</b>' : ($row->warehouse_name . '/' . $row->warehouse_code) . '<b>(WAREHOUSE)</b>';
                 })
                 ->editColumn('total_purchase_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_purchase_amount . '</b>';
@@ -300,8 +301,8 @@ class SupplierController extends Controller
     public function paymentList($supplierId)
     {
         $ledgers = SupplierLedger::with(['purchase', 'purchase_payment', 'purchase_payment.purchase'])
-        ->where('supplier_id', $supplierId)
-        ->whereYear('created_at', date('Y'))->get();;
+            ->where('supplier_id', $supplierId)
+            ->whereYear('created_at', date('Y'))->get();;
         return view('contacts.suppliers.ajax_view.ledger_list', compact('ledgers'));
     }
 
@@ -700,7 +701,7 @@ class SupplierController extends Controller
                     if ($index == 1) {
                         break;
                     }
-                }elseif ($dueReturnInvoice->purchase_return_due == $request->amount) {
+                } elseif ($dueReturnInvoice->purchase_return_due == $request->amount) {
                     // Update purchase
                     $dueReturnInvoice->purchase_return_due -= $request->amount;
                     $dueReturnInvoice->save();
@@ -792,7 +793,7 @@ class SupplierController extends Controller
                     if ($index == 1) {
                         break;
                     }
-                }elseif ($dueReturnInvoice->purchase_return_due < $request->amount) {
+                } elseif ($dueReturnInvoice->purchase_return_due < $request->amount) {
                     // Update purchase
                     $dueReturnInvoice->purchase_return_due -= $dueReturnInvoice->purchase_return_due;
                     $dueReturnInvoice->save();

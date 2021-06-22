@@ -779,21 +779,13 @@
                                             <label><strong>Supplier ID:</strong></label>
                                             <input type="text" name="supplier_id" class="form-control"
                                                 autocomplete="off"
-                                                value="SID">
+                                                value="{{ json_decode($generalSettings->prefix, true)['supplier_id'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>Customer ID :</strong></label>
                                             <input type="text" name="customer_id" class="form-control" autocomplete="off"
-                                                value="CID">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <div class="col-md-4">
-                                            <label><strong>Contacts :</strong></label>
-                                            <input type="text" name="contacts" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['contacts'] }}">
+                                                value="{{ json_decode($generalSettings->prefix, true)['customer_id'] }}">
                                         </div>
                                     </div>
 

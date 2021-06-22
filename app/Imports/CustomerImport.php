@@ -5,23 +5,35 @@ namespace App\Imports;
 use App\Models\Customer;
 use App\Models\CustomerLedger;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class CustomerImport implements ToCollection
 {
     /**
-    * @param Collection $collection
-    */
+     * @param Collection $collection
+     */
     public function collection(Collection $collection)
     {
         //dd($collection);
         $index = 0;
+        $generalSettings = DB::table('general_settings')->first('prefix');
+        $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
         foreach ($collection as $c) {
             if ($index != 0) {
                 if ($c[2]) {
+                    // generate prefix dode ID
+                    $i = 5;
+                    $a = 0;
+                    $id = '';
+                    while ($a < $i) {
+                        $id .= rand(1, 9);
+                        $a++;
+                    }
+
                     $addCustomer = Customer::create([
                         'type' => 1,
-                        'contact_id' => $c[0],
+                        'contact_id' => $c[0] ? $c[0] : $cusIdPrefix . $id,
                         'business_name' => $c[1],
                         'name' => $c[2],
                         'phone' => $c[3],
@@ -42,7 +54,7 @@ class CustomerImport implements ToCollection
                         'total_sale_due' => (float)$c[9] ? (float)$c[9] : 0,
                     ]);
 
-                    if ((float)$c[9] && (float)$c[9]>= 0) {
+                    if ((float)$c[9] && (float)$c[9] >= 0) {
                         $addCustomerLedger = new CustomerLedger();
                         $addCustomerLedger->customer_id = $addCustomer->id;
                         $addCustomerLedger->row_type = 3;

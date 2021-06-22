@@ -1,18 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Models\Sale;
-use Milon\Barcode\DNS1D;
 use App\Models\AdminAndUser;
-use App\Models\General_setting;
-use Illuminate\Queue\Jobs\JobName;
-use Illuminate\Support\Facades\DB;
-use App\Models\ProductOpeningStock;
-use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 
 
@@ -168,6 +160,11 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 
         Route::get('return/payment/{supplierId}', 'SupplierController@returnPayment')->name('suppliers.return.payment');
         Route::post('return/payment/{supplierId}', 'SupplierController@returnPaymentAdd')->name('suppliers.return.payment.add');
+
+        Route::group(['prefix' => 'import'], function () {
+            Route::get('/', 'SupplierImportController@create')->name('contacts.suppliers.import.create');
+            Route::post('store', 'SupplierImportController@store')->name('contacts.suppliers.import.store');
+        });
     });
 
     // Customers route group
@@ -210,6 +207,11 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
             Route::post('store', 'CustomerGroupController@store')->name('contacts.customers.groups.store');
             Route::post('update', 'CustomerGroupController@update')->name('contacts.customers.groups.update');
             Route::delete('delete/{groupId}', 'CustomerGroupController@delete')->name('customers.groups.delete');
+        });
+
+        Route::group(['prefix' => 'import'], function () {
+            Route::get('/', 'CustomerImportController@create')->name('contacts.customers.import.create');
+            Route::post('store', 'CustomerImportController@store')->name('contacts.customers.import.store');
         });
     });
 });
@@ -597,6 +599,16 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('delete/{cardTypeId}', 'CardTypeController@delete')->name('settings.payment.card.types.delete');
     });
 
+    Route::group(['prefix' => 'barcode_settings'], function () {
+        Route::get('/', 'BarcodeSettingController@index')->name('settings.barcode.index');
+        Route::get('create', 'BarcodeSettingController@create')->name('settings.barcode.create');
+        Route::post('store', 'BarcodeSettingController@store')->name('settings.barcode.store');
+        Route::get('edit/{id}', 'BarcodeSettingController@edit')->name('settings.barcode.edit');
+        Route::post('update/{id}', 'BarcodeSettingController@update')->name('settings.barcode.update');
+        Route::delete('delete/{id}', 'BarcodeSettingController@delete')->name('settings.barcode.delete');
+        Route::get('set/default/{id}', 'BarcodeSettingController@setDefault')->name('settings.barcode.set.default');
+    });
+
     Route::group(['prefix' => 'invoices'], function () {
         Route::group(['prefix' => 'schemas'], function () {
             Route::get('/', 'InvoiceSchemaController@index')->name('invoices.schemas.index');
@@ -616,6 +628,14 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
             Route::delete('delete/{layoutId}', 'InvoiceLayoutController@delete')->name('invoices.layouts.delete');
             Route::get('set/default/{schemaId}', 'InvoiceLayoutController@setDefault')->name('invoices.layouts.set.default');
         });
+    });
+
+    Route::group(['prefix' => 'cash_counter'], function () {
+        Route::get('/', 'CashCounterController@index')->name('settings.cash.counter.index');
+        Route::post('store', 'CashCounterController@store')->name('settings.payment.cash.counter.store');
+        Route::get('edit/{id}', 'CashCounterController@edit')->name('settings.cash.counter.edit');
+        Route::post('update/{id}', 'CashCounterController@update')->name('settings.cash.counter.update');
+        Route::delete('delete/{id}', 'CashCounterController@delete')->name('settings.cash.counter.delete');
     });
 });
 
@@ -744,16 +764,16 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
 
-Route::get('add-admin', function () {
+Route::get('add-user', function () {
     $addAdmin = new AdminAndUser();
     $addAdmin->prefix = 'Mr.';
-    $addAdmin->name = 'Branch Manager';
-    $addAdmin->email = 'branchmanager@gmail.com';
-    $addAdmin->username = 'branchmanager';
+    $addAdmin->name = 'Super';
+    $addAdmin->last_name = 'Admin';
+    $addAdmin->email = 'superadmin@gmail.com';
+    $addAdmin->username = 'superadmin';
     $addAdmin->password = Hash::make('12345');
     $addAdmin->role_type = 3;
-    $addAdmin->role_id = 10;
-    $addAdmin->role_permission_id = 7;
+    $addAdmin->role_permission_id = 1;
     $addAdmin->allow_login = 1;
     $addAdmin->save();
     //1=super_admin;2=admin;3=Other;

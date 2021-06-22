@@ -291,13 +291,26 @@
                                         </div>
                                     @endif
 
+                                    @if (auth()->user()->permission->supplier['supplier_all'] == '1')
+                                        <div
+                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('contacts.suppliers.import.create') }}" class="bar-link">
+                                                    <span><img src="{{ asset('public/backend/asset/img/importsc.png') }}"></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.import_suppliers')</p>
+                                        </div>
+                                    @endif
+
                                     @if (auth()->user()->permission->customers['customer_all'] == '1')
                                         <div
                                             class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                             <div class="switch_bar">
                                                 <a href="{{ route('contacts.customer.index') }}" class="bar-link">
-                                                    <span><img
-                                                            src="{{ asset('public/backend/asset/img/user.png') }}"></span>
+                                                    <span>
+                                                        <img src="{{ asset('public/backend/asset/img/user.png') }}">
+                                                    </span>
                                                 </a>
                                             </div>
                                             <p class="switch_text">@lang('menu.customers') </p>
@@ -306,15 +319,30 @@
                                         <div
                                             class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                             <div class="switch_bar">
+                                                <a href="{{ route('contacts.customers.import.create') }}"
+                                                    class="bar-link">
+                                                    <span>
+                                                        <img src="{{ asset('public/backend/asset/img/importc.png') }}">
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.import_customers')</p>
+                                        </div>
+
+                                        <div
+                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
                                                 <a href="{{ route('contacts.customers.groups.index') }}"
                                                     class="bar-link">
-                                                    <span><img
-                                                            src="{{ asset('public/backend/asset/img/group.png') }}"></span>
+                                                    <span>
+                                                        <img src="{{ asset('public/backend/asset/img/group.png') }}">
+                                                    </span>
                                                 </a>
                                             </div>
                                             <p class="switch_text">@lang('menu.customer_groups')</p>
                                         </div>
                                     @endif
+
                                 </div>
                             </div>
                         </div>
@@ -364,8 +392,9 @@
                                         <div class="switch_bar">
                                             <span class="notify-grin">30</span>
                                             <a href="{{ route('purchases.returns.index') }}" class="bar-link">
-                                                <span><img
-                                                        src="{{ asset('public/backend/asset/img/back-arrow.png') }}"></span>
+                                                <span>
+                                                    <img src="{{ asset('public/backend/asset/img/back-arrow.png') }}">
+                                                </span>
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.purchase_return_list')</p>
@@ -421,8 +450,7 @@
                                                         <span class="notify-grin">30</span>
                                                         <a href="{{ route('purchases.returns.index') }}"
                                                             class="bar-link">
-                                                            <span><img src="{{ asset('public/backend/asset/img/back-arrow.png') }}"
-                                                                    alt=""></span>
+                                                            <span><img src="{{ asset('public/backend/asset/img/back-arrow.png') }}"></span>
                                                         </a>
                                                     </div>
                                                     <p class="switch_text"> @lang('menu.purchase_return_list')</p>
@@ -437,9 +465,7 @@
                 @endif
             @endif
             <!-- ===========================================CANTACT SIDEBAR=================== -->
-
             <!-- ===========================================FOLDER SIDEBAR=================== -->
-
             <div class="sub-menu_t" id="sales">
                 <div class="sub-menu-width">
                     <div class="model__close bg-secondary-2">
@@ -492,6 +518,7 @@
                                     </div>
                                 @endif
                             @endif
+
                             @if (auth()->user()->permission->sale['sale_draft'] == '1')
                                 <div
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -997,11 +1024,20 @@
 
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
-                                        <a href="" class="bar-link">
+                                        <a href="{{ route('settings.barcode.index') }}" class="bar-link">
                                             <span><img src="{{ asset('public/backend/asset/img/barcode_settings.png') }}"></span>
                                         </a>
                                     </div>
-                                    <p class="switch_text">@lang('menu.barcode_settings') <small>(Comming soon)</small></p>
+                                    <p class="switch_text">@lang('menu.barcode_settings')</p>
+                                </div>
+
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.cash.counter.index') }}" class="bar-link">
+                                            <span><img src="{{ asset('public/backend/asset/img/programming.png') }}"></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.cash_counter')</p>
                                 </div>
                             </div>
                         </div>

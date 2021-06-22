@@ -26,7 +26,9 @@ return [
   'import_products' => 'Import Products',
   // Menu childs of Contacts module
   'suppliers' => 'Suppliers',
+  'import_suppliers' => 'Import Suppliers',
   'customers' => 'Customers',
+  'import_customers' => 'Import Customers',
   'customer_groups' => 'Customer Groups',
   // Menu childs of Purchases module
   'add_purchase' => 'Add Purchase',
@@ -73,6 +75,7 @@ return [
   'barcode_settings' => 'Barcode Settings',
   'invoice_schema' => 'Invoice Schemas',
   'invoice_layout' => 'Invoice Layouts',
+  'cash_counter' => 'Cash Counter',
   // Menu childs of Users module  
   'add_user' => 'Add User',
   'user_list' => 'User List',

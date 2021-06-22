@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>Actions</th>
-            <th>Contact ID</th>
+            <th>Customer ID</th>
             <th>Name</th>
             <th>Business Name</th>
             <th>Phone</th>
@@ -60,8 +60,8 @@
                 <td>{{ $customer->business_name ? $customer->business_name : 'N/A' }}</td> 
                 <td>{{ $customer->phone }}</td>
                 <td>{{ $customer->email }}</td>
-                <td>{{ $customer->customer_group ? $customer->customer_group->group_name : '' }}</td>
                 <td>{{ $customer->tax_number ? $customer->tax_number : 'N/A' }}</td> 
+                <td>{{ $customer->customer_group ? $customer->customer_group->group_name : '' }}</td>
                 <td>{{ $customer->opening_balance }}</td>
                 <td><span class="{{ $customer->total_sale_due < 0 ? 'text-danger' : '' }}">{{ $customer->total_sale_due }}</span></td>
                 <td>{{ $customer->total_sale_return_due }}</td>

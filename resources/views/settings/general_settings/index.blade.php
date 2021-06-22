@@ -73,6 +73,10 @@
                                         </li>
 
                                         <li class="menu_list">
+                                            <a class="menu_btn" data-form="system_settings_form" href="#">System Settings</a>
+                                        </li>
+
+                                        <li class="menu_list">
                                             <a class="menu_btn" data-form="point_settings_form" href="#">Reward Point Settings</a>
                                         </li>
 
@@ -245,7 +249,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
@@ -300,7 +304,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
@@ -390,7 +394,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
@@ -414,11 +418,10 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
-
 
                                 <form id="sale_settings_form" class="setting_form d-none"
                                     action="{{ route('settings.sale.settings') }}" method="post">
@@ -479,7 +482,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
@@ -517,9 +520,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-3">
-                                                    <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_disable_quotation'] == '1' ? 'CHECKED' : '' }}
-                                                        name="is_disable_quotation"> &nbsp; <b>Disable Quotation</b> 
+                                                    <input type="checkbox" {{ json_decode($generalSettings->pos, true)['is_disable_quotation'] == '1' ? 'CHECKED' : '' }} name="is_disable_quotation"> &nbsp; <b>Disable Quotation</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -539,9 +540,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-3">
-                                                    <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_disable_discount'] == '1' ? 'CHECKED' : '' }}
-                                                        name="is_disable_discount"> &nbsp; <b>Disable Discount</b> 
+                                                    <input type="checkbox" {{ json_decode($generalSettings->pos, true)['is_disable_discount'] == '1' ? 'CHECKED' : '' }} name="is_disable_discount"> &nbsp; <b>Disable Discount</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -550,8 +549,7 @@
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-3">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_disable_order_tax'] == '1' ? 'CHECKED' : '' }}
-                                                        name="is_disable_order_tax"> &nbsp; <b>Disable order tax</b> 
+                                                        {{ json_decode($generalSettings->pos, true)['is_disable_order_tax'] == '1' ? 'CHECKED' : '' }} name="is_disable_order_tax"> &nbsp; <b>Disable order tax</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -562,9 +560,7 @@
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap mt-3">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1' ? 'CHECKED' : '' }}
-                                                        name="is_show_recent_transactions" autocomplete="off"> &nbsp; <b>Don't
-                                                            show recent transactions</b> 
+                                                        {{ json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1' ? 'CHECKED' : '' }} name="is_show_recent_transactions" autocomplete="off"> &nbsp; <b>Don't show recent transactions</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -607,7 +603,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
@@ -659,7 +655,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
@@ -694,7 +690,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
@@ -758,11 +754,12 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Contacts :</strong></label>
-                                            <input type="text" name="contacts" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['contacts'] }}">
+                                            <label><strong>Expense Payment :</strong></label>
+                                            <input type="text" name="expanse_payment" class="form-control"
+                                                autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['expanse_payment'] }}">
                                         </div>
-
+                                      
                                         <div class="col-md-4">
                                             <label><strong>Purchase Payment :</strong></label>
                                             <input type="text" name="purchase_payment" class="form-control"
@@ -779,10 +776,24 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Expense Payment :</strong></label>
-                                            <input type="text" name="expanse_payment" class="form-control"
+                                            <label><strong>Supplier ID:</strong></label>
+                                            <input type="text" name="supplier_id" class="form-control"
                                                 autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['expanse_payment'] }}">
+                                                value="SID">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Customer ID :</strong></label>
+                                            <input type="text" name="customer_id" class="form-control" autocomplete="off"
+                                                value="CID">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Contacts :</strong></label>
+                                            <input type="text" name="contacts" class="form-control" autocomplete="off"
+                                                value="{{ json_decode($generalSettings->prefix, true)['contacts'] }}">
                                         </div>
                                     </div>
 
@@ -790,10 +801,46 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
+
+                                <form id="system_settings_form" class="setting_form d-none"
+                                action="" method="post">
+                                <div class="form-group">
+                                    <div class="setting_form_heading">
+                                        <h6 class="text-primary">Prefix Settings</h6>
+                                    </div>
+                                </div>
+                                @csrf
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <label><strong>Theme Color :</strong></label>
+                                        <select name="theme_color" class="form-control" id="theme_color">
+                                            <option value="null">Select Theme Color</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label><strong>Default datatable page entries :</strong></label>
+                                        <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-12 text-end">
+                                        <button type="button" class="btn loading_button d-none"><i
+                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                        <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
+                                    </div>
+                                </div>
+                            </form>
 
                                 <form id="point_settings_form" class="setting_form d-none"
                                     action="{{ route('settings.reward.point.settings') }}" method="post">
@@ -871,7 +918,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
@@ -998,7 +1045,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1074,7 +1121,7 @@
                                         <div class="col-md-12 text-end">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
                                         </div>
                                     </div>
                                 </form>

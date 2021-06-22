@@ -31,6 +31,10 @@
                                     <div class="btn_30_blue float-end">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
+
+                                    <div class="btn_30_blue float-end">
+                                        <a href="{{ route('contacts.suppliers.import.create') }}"><i class="fas fa-plus-square"></i> Import Suppliers</a>
+                                    </div>
                                 </div>
                             </div>
 
@@ -41,7 +45,7 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
-                                                    <th>Contact ID</th>
+                                                    <th>Supplier ID</th>
                                                     <th>Name</th>
                                                     <th>Business Name</th>
                                                     <th>Phone</th>
@@ -88,7 +92,7 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
                                 <b>Contact Type :</b>
-                                <select name="contact_type" class="form-control form-control-sm">
+                                <select name="contact_type" class="form-control ">
                                     <option value="">Select contact type</option>
                                     <option value="1">Supplier</option>
                                     <option value="2">Customer</option>
@@ -97,18 +101,18 @@
                             </div>
 
                             <div class="col-md-3">
-                              <b>Contact ID :</b> 
-                                <input type="text" name="contact_id" class="form-control form-control-sm"  placeholder="Contact ID"/>
+                              <b>Supplier ID :</b> 
+                                <input type="text" name="contact_id" class="form-control "  placeholder="Contact ID"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Business Name :</b>
-                                <input type="text" name="business_name" class="form-control form-control-sm" placeholder="Business name"/>
+                                <input type="text" name="business_name" class="form-control " placeholder="Business name"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Name :</b>  <span class="text-danger">*</span>
-                                <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Supplier name" id="name" placeholder="Supplier name"/>
+                                <input type="text" name="name" class="form-control  add_input" data-name="Supplier name" id="name" placeholder="Supplier name"/>
                                 <span class="error error_name" style="color: red;"></span>
                             </div>
                         </div>
@@ -116,23 +120,23 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
                                 <b>Phone :</b> <span class="text-danger">*</span>
-                                <input type="text" name="phone" class="form-control form-control-sm add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
+                                <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
                                 <span class="error error_phone"></span>
                             </div>
 
                             <div class="col-md-3">
                                <b>Alternative Number :</b> 
-                                <input type="text" name="alternative_phone" class="form-control form-control-sm" placeholder="Alternative phone number"/>
+                                <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number"/>
                             </div>
 
                             <div class="col-md-3">
                                <b>Landline :</b>
-                                <input type="text" name="landline" class="form-control form-control-sm" placeholder="landline number"/>
+                                <input type="text" name="landline" class="form-control " placeholder="landline number"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Email :</b>
-                                <input type="text" name="email" class="form-control form-control-sm" placeholder="Email address"/>
+                                <input type="text" name="email" class="form-control " placeholder="Email address"/>
                             </div>
                         </div>
 
@@ -141,28 +145,28 @@
                                 <b>Date Of Birth :</b>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week"></i></span>
+                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                     </div>
-                                    <input type="date" name="date_of_birth" class="form-control form-control-sm date-picker" autocomplete="off">
+                                    <input type="date" name="date_of_birth" class="form-control " autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Tax Number :</b>
-                                <input type="text" name="tax_number" class="form-control form-control-sm" placeholder="Tax number"/>
+                                <input type="text" name="tax_number" class="form-control " placeholder="Tax number"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Opening Balance :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this supplier due." class="fas fa-info-circle tp"></i>
-                                <input type="number" name="opening_balance" class="form-control form-control-sm" placeholder="Opening balance"/>
+                                <input type="number" name="opening_balance" class="form-control " placeholder="Opening balance"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Pay Term :</b>
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <input type="text" name="pay_term_number" class="form-control form-control-sm w-50"/>
-                                        <select name="pay_term" class="form-control form-control-sm w-50">
+                                        <input type="text" name="pay_term_number" class="form-control  w-50"/>
+                                        <select name="pay_term" class="form-control  w-50">
                                             <option value="">Select term</option>
                                             <option value="1">Days </option>
                                             <option value="2">Months</option>
@@ -175,11 +179,11 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-9">
                                 <b>Address :</b>
-                                <input type="text" name="address" class="form-control form-control-sm"  placeholder="Address">
+                                <input type="text" name="address" class="form-control "  placeholder="Address">
                             </div>
                             <div class="col-md-3">
                                <b>Prefix :</b> 
-                                <input type="text" name="prefix" class="form-control form-control-sm" placeholder="prefix"/>
+                                <input type="text" name="prefix" class="form-control " placeholder="prefix"/>
                                 <small style="font-size: 10px; color: red;">Note: This prefix for barcode.</small>
                             </div>
                         </div>
@@ -187,29 +191,29 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
                                 <b>City :</b>
-                                <input type="text" name="city" class="form-control form-control-sm" placeholder="City"/>
+                                <input type="text" name="city" class="form-control " placeholder="City"/>
                             </div>
 
                             <div class="col-md-3">
                                <b>State :</b>
-                                <input type="text" name="state" class="form-control form-control-sm" placeholder="State"/>
+                                <input type="text" name="state" class="form-control " placeholder="State"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Country :</b>
-                                <input type="text" name="country" class="form-control form-control-sm" placeholder="Country"/>
+                                <input type="text" name="country" class="form-control " placeholder="Country"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Zip-Code :</b>
-                                <input type="text" name="zip_code" class="form-control form-control-sm" placeholder="zip_code"/>
+                                <input type="text" name="zip_code" class="form-control " placeholder="zip_code"/>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-5">
                                <b>Shipping Address :</b>
-                                <input type="text" name="shipping_address" class="form-control form-control-sm" placeholder="Shipping address"/>
+                                <input type="text" name="shipping_address" class="form-control " placeholder="Shipping address"/>
                             </div>
                         </div>
 
@@ -242,7 +246,7 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
                                 <b>Contact Type :</b>
-                                <select name="contact_type" class="form-control form-control-sm" id="e_contact_type">
+                                <select name="contact_type" class="form-control " id="e_contact_type">
                                     <option value="">Select contact type</option>
                                     <option value="1">Supplier</option>
                                     <option value="2">Customer</option>
@@ -251,18 +255,18 @@
                             </div>
 
                             <div class="col-md-3">
-                                <b>Contact ID :</b>
-                                <input type="text" name="contact_id" class="form-control form-control-sm"  placeholder="Contact ID" id="e_contact_id"/>
+                                <b>Supplier ID :</b>
+                                <input type="text" name="contact_id" class="form-control "  placeholder="Contact ID" id="e_contact_id"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Business Name :</b>
-                                <input type="text" name="business_name" class="form-control form-control-sm" placeholder="Business name" id="e_business_name"/>
+                                <input type="text" name="business_name" class="form-control " placeholder="Business name" id="e_business_name"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Name :</b>  <span class="text-danger">*</span>
-                                <input type="text" name="name" class="form-control form-control-sm edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier name" />
+                                <input type="text" name="name" class="form-control  edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier name" />
                                 <span class="error error_e_name"></span>
                             </div>
                         </div>
@@ -270,23 +274,23 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
                                 <b>Phone :</b><span class="text-danger">*</span>
-                                <input type="text" name="phone" class="form-control form-control-sm edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number"/>
+                                <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number"/>
                                 <span class="error error_e_phone"></span>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Alternative Number :</b>
-                                <input type="text" name="alternative_phone" class="form-control form-control-sm" placeholder="Alternative phone number" id="e_alternative_phone"/>
+                                <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number" id="e_alternative_phone"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Landline :</b>
-                                <input type="text" name="landline" class="form-control form-control-sm" placeholder="landline number" id="e_landline"/>
+                                <input type="text" name="landline" class="form-control " placeholder="landline number" id="e_landline"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Email :</b>
-                                <input type="text" name="email" class="form-control form-control-sm" placeholder="Email address" id="e_email"/>
+                                <input type="text" name="email" class="form-control " placeholder="Email address" id="e_email"/>
                             </div>
                         </div>
 
@@ -295,23 +299,23 @@
                                 <b>Date Of Birth :</b> 
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week"></i></span>
+                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                     </div>
-                                    <input type="date" name="date_of_birth" class="form-control form-control-sm date-picker" autocomplete="off" id="e_date_of_birth">
+                                    <input type="date" name="date_of_birth" class="form-control" autocomplete="off" id="e_date_of_birth">
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Tax Number :</b>
-                                <input type="text" name="tax_number" class="form-control form-control-sm" placeholder="Tax number" id="e_tax_number"/>
+                                <input type="text" name="tax_number" class="form-control " placeholder="Tax number" id="e_tax_number"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Pay Term :</b>
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <input type="text" name="pay_term_number" class="form-control form-control-sm w-50" id="e_pay_term_number"/>
-                                        <select name="pay_term" class="form-control form-control-sm w-50" id="e_pay_term">
+                                        <input type="text" name="pay_term_number" class="form-control  w-50" id="e_pay_term_number"/>
+                                        <select name="pay_term" class="form-control  w-50" id="e_pay_term">
                                             <option value="">Select term</option>
                                             <option value="1">Days </option>
                                             <option value="2">Months</option>
@@ -324,12 +328,12 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-9">
                                 <b>Address :</b>
-                                <input type="text" name="address" class="form-control form-control-sm"  placeholder="Address" id="e_address">
+                                <input type="text" name="address" class="form-control "  placeholder="Address" id="e_address">
                             </div>
 
                             <div class="col-md-3">
                                <b>Prefix :</b> 
-                                <input type="text" name="prefix" id="e_prefix" class="form-control form-control-sm" placeholder="prefix"/>
+                                <input type="text" name="prefix" id="e_prefix" class="form-control " placeholder="prefix"/>
                                 <small style="font-size: 10px; color: black;">Note: This prefix for barcode.</small>
                             </div>
                         </div>
@@ -337,29 +341,29 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
                                <b>City :</b>  
-                                <input type="text" name="city" class="form-control form-control-sm" placeholder="City" id="e_city"/>
+                                <input type="text" name="city" class="form-control " placeholder="City" id="e_city"/>
                             </div>
 
                             <div class="col-md-3">
                                <b>State :</b>
-                                <input type="text" name="state" class="form-control form-control-sm" placeholder="State" id="e_state"/>
+                                <input type="text" name="state" class="form-control " placeholder="State" id="e_state"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Country :</b> 
-                                <input type="text" name="country" class="form-control form-control-sm" placeholder="Country" id="e_country"/>
+                                <input type="text" name="country" class="form-control " placeholder="Country" id="e_country"/>
                             </div>
 
                             <div class="col-md-3">
                                 <b>Zip-Code :</b> 
-                                <input type="text" name="zip_code" class="form-control form-control-sm" placeholder="zip_code" id="e_zip_code"/>
+                                <input type="text" name="zip_code" class="form-control " placeholder="zip_code" id="e_zip_code"/>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-5">
                                 <b>Shipping Address :</b> 
-                                <input type="text" name="shipping_address" class="form-control form-control-sm" placeholder="Shipping address" id="e_shipping_address"/>
+                                <input type="text" name="shipping_address" class="form-control " placeholder="Shipping address" id="e_shipping_address"/>
                             </div>
                         </div>
 

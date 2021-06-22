@@ -61,6 +61,7 @@
                             @endif
                         @endif
                     </span>
+                    <span> <span class="text-highlight">Cash Counter : </span> {{ $openedCashRegister->cash_counter ? $openedCashRegister->cash_counter->counter_name : 'N/A' }}.</span>
                 </small>
             </div>  
         </div>
@@ -106,7 +107,7 @@
                             </div>
 
                             <div class="col-lg-5 input-value-sec">
-                                <div class="input-group  mb-1">
+                                <div class="input-group mb-1">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">Point</span>
                                     </div>
@@ -119,10 +120,18 @@
                                     <input readonly type="text" class="form-control">
                                 </div>
                                 <div class="input-group col-6">
+                                    
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">SQ</span>
                                     </div>
                                     <input type="text" class="form-control" id="stock_quantity">
+
+                                    <div class="input-group-prepend ms-1">
+                                        <select name="sell_price_group_id" class="form-control" id="sell_price_group_id">
+                                            <option value="">Default Price Group</option>
+                                        </select>
+                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>

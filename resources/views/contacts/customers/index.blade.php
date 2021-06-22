@@ -31,6 +31,10 @@
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
                                                     class="fas fa-plus-square"></i> Add</a>
                                         </div>
+
+                                        <div class="btn_30_blue float-end">
+                                            <a href="{{ route('contacts.customers.import.create') }}"><i class="fas fa-plus-square"></i> Import Customers</a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -43,7 +47,7 @@
                                             <thead>
                                                 <tr class="text-center">
                                                     <th>Actions</th>
-                                                    <th>Contact ID</th>
+                                                    <th>Customer ID</th>
                                                     <th>Name</th>
                                                     <th>Business Name</th>
                                                     <th>Phone</th>
@@ -100,7 +104,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Contact ID :</strong></label>
+                                <label><strong>Customer ID :</strong></label>
                                 <input type="text" name="contact_id" class="form-control"
                                     placeholder="Contact ID" />
                             </div>
@@ -276,7 +280,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label><b>Contact ID</b> : </label>
+                                <label><b>Customer ID</b> : </label>
                                 <input type="text" name="contact_id" class="form-control"
                                     placeholder="Contact ID" id="e_contact_id" />
                             </div>
@@ -972,6 +976,4 @@
             });
         });
     </script>
-
-
 @endpush

@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>Actions</th>
-            <th>Contact ID</th>
+            <th>Supplier ID</th>
             <th>Prefix</th>
             <th>Name</th>
             <th>Business Name</th>

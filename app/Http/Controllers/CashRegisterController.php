@@ -20,6 +20,7 @@ class CashRegisterController extends Controller
     {   
         $warehouses = '';
         $accounts = '';
+        $cashCounters = DB::table('cash_counters')->get(['id', 'counter_name', 'short_name']);
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $warehouses = DB::table('warehouses')->get(['id', 'warehouse_name', 'warehouse_code']);
             $accounts = DB::table('accounts')->get(['id', 'name', 'account_number', 'balance']);
@@ -27,8 +28,9 @@ class CashRegisterController extends Controller
         $openedCashRegister = CashRegister::with('branch', 'admin', 'admin.role')
         ->where('admin_id', auth()->user()->id)->where('status', 1)
         ->first();
+
         if (!$openedCashRegister) {
-            return view('sales.cash_register.create', compact('warehouses', 'accounts'));
+            return view('sales.cash_register.create', compact('warehouses', 'accounts', 'cashCounters'));
         } else {
             return redirect()->route('sales.pos.create');
         }
@@ -50,6 +52,7 @@ class CashRegisterController extends Controller
         }
         //$addCashRegister->amount = $request->cash_in_hand;
         $addCashRegister->admin_id = auth()->user()->id;
+        $addCashRegister->cash_counter_id = $request->counter_id;
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $addCashRegister->warehouse_id = $request->warehouse_id;
             $addCashRegister->account_id = $request->account_id;

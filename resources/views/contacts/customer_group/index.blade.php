@@ -84,7 +84,7 @@
                         <div class="form-group mt-2">
                             <label><strong>Name :</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control form-control-sm add_input"
-                                data-name="Bank name" id="name" placeholder="Group name" />
+                                data-name="Group name" id="name" placeholder="Group name" />
                             <span class="error error_name"></span>
                         </div>
 

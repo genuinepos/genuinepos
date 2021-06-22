@@ -16,7 +16,7 @@
             <label><b>Format :</b> <span class="text-danger">*</span></label>
             <select name="format" class="form-control form-control-sm" id="e_format">
                 <option {{ $schema->format == 1 ? 'SELECTED' : ''  }} value="1">FORMAT-XXXX</option>
-                <option {{ $schema->format == 2 ? 'SELECTED' : ''  }} value="2">FORMAT-{{ date('Y') }}-XXXX</option>
+                <option {{ $schema->format == 2 ? 'SELECTED' : ''  }} value="2">FORMAT-{{ date('Y') }}/XXXX</option>
             </select>
             <span class="error error_e_format"></span>
         </div>

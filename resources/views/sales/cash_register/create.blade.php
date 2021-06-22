@@ -41,6 +41,20 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>Cash Counter :</b> </label>
+                                                    <div class="col-8">
+                                                        <select name="counter_id" class="form-control">
+                                                            <option value="">Select Cash Counter</option>
+                                                            @foreach ($cashCounters as $cc)
+                                                                <option value="{{ $cc->id }}">{{ $cc->counter_name.' ('.$cc->short_name.')' }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)

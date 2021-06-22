@@ -37,10 +37,13 @@ class InvoiceSchemaController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
+                ->editColumn('prefix', function ($row) {
+                    return $row->format == 2 ? date('Y') : $row->prefix;
+                })
                 ->editColumn('name', function ($row) {
                     return $row->name . ' ' . ($row->is_default == 1 ? '<span class="badge bg-primary">Default</span>' : '');
                 })
-                ->rawColumns(['action', 'name'])
+                ->rawColumns(['action', 'prefix', 'name'])
                 ->make(true);
         }
 

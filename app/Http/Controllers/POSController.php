@@ -34,7 +34,7 @@ class POSController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $openedCashRegister = CashRegister::where('admin_id', auth()->user()->id)
+        $openedCashRegister = CashRegister::with('admin', 'admin.role','cash_counter')->where('admin_id', auth()->user()->id)
             ->where('status', 1)
             ->first();
         if ($openedCashRegister) {

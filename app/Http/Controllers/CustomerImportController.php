@@ -3,24 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Imports\ProductImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CustomerImport;
 
-
-class ProductImportController extends Controller
+class CustomerImportController extends Controller
 {
     public function create()
     {
-        return view('product.import.create_v2');
+        return view('contacts.import_customer.create');
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'import_file' => 'required'
+            'import_file' => 'required|mimes:csv,xlx,xlsx,xls',
         ]);
 
-        Excel::import(new ProductImport, $request->import_file);
+        Excel::import(new CustomerImport, $request->import_file);
         return redirect()->back();
     }
 }

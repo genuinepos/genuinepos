@@ -26,7 +26,9 @@ return [
     'import_products' => 'পণ্য আমদানি',
     // Menu childs of Contacts module
     'suppliers' => 'সরবরাহকারী',
+    'import_suppliers' => 'আমদানি সরবরাহকারী',
     'customers' => 'গ্রাহক',
+    'import_customers' => 'আমদানি গ্রাহক',
     'customer_groups' => 'গ্রাহক গ্রুপ',
     // Menu childs of Purchases module
     'add_purchase' => 'ক্রয় যুক্ত করুন',
@@ -73,6 +75,7 @@ return [
     'invoice_layout' => 'চালানের বিন্যাস',
     'payment_settings' => 'প্রদান সেটিংস',
     'barcode_settings' => 'বারকোড সেটিংস',
+    'cash_counter' => 'টাকা প্রদান কেন্দ্র',
     // Menu childs of Users module  
     'add_user' => 'ব্যবহারকারী যুক্ত করুন',
     'user_list' => 'ব্যবহারকারীর তালিকা',

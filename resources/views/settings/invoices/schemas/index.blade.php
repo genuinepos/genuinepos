@@ -100,7 +100,7 @@
                                 <label><b>Format :</b> <span class="text-danger">*</span></label>
                                 <select name="format" class="form-control form-control-sm" id="format">
                                     <option value="1">FORMAT-XXXX</option>
-                                    <option value="2">FORMAT-{{ date('Y') }}-XXXX</option>
+                                    <option value="2">FORMAT-{{ date('Y') }}/XXXX</option>
                                 </select>
                                 <span class="error error_format"></span>
                             </div>
@@ -156,8 +156,8 @@
             ajax: "{{ route('invoices.schemas.index') }}",
             columns: [
                 {data: 'name', name: 'name'},
-                {data: 'prefix', name: 'schemas.prefix'},
-                {data: 'start_from', name: 'schemas.start_from'},
+                {data: 'prefix', name: 'prefix'},
+                {data: 'start_from', name: 'start_from'},
                 {data: 'action', name: 'action'},
             ]
         });
@@ -165,7 +165,7 @@
         $(document).on('change', '#format', function () {
             var val = $(this).val();
             if (val == 2) {
-                $('#prefix').val("{{ date('Y') }}"+'-');
+                $('#prefix').val("{{ date('Y') }}"+'/');
                 $('#prefix').prop('readonly', true);
             }else{
                 $('#prefix').val("");
@@ -177,7 +177,7 @@
         $(document).on('change', '#e_format', function () {
             var val = $(this).val();
             if (val == 2) {
-                $('#e_prefix').val("{{ date('Y') }}"+'-');
+                $('#e_prefix').val("{{ date('Y') }}"+'/');
                 $('#e_prefix').prop('readonly', true);
             }else{
                 $('#e_prefix').val("");

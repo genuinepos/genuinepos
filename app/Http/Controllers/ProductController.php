@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tax;
 use App\Models\Unit;
 use App\Models\Brand;
 use App\Models\Branch;
@@ -11,6 +10,7 @@ use App\Models\Category;
 use App\Models\Warranty;
 use App\Models\BulkVariant;
 use App\Models\ComboProduct;
+use App\Models\PriceGroupProduct;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
@@ -40,6 +40,7 @@ class ProductController extends Controller
 
         //return $request->status;
         if ($request->ajax()) {
+            $priceGroups = DB::table('price_groups')->where('status', 'Active')->get();
             $img_url = asset('public/uploads/product/thumbnail');
             $products = '';
             $query = DB::table('products')->join('units', 'products.unit_id', 'units.id')
@@ -48,7 +49,6 @@ class ProductController extends Controller
                 ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
                 ->leftJoin('brands', 'products.brand_id', 'brands.id');
             //return $request->all();
-
 
             if ($request->product_type == 1) {
                 $query->where('products.type', 1)->where('products.is_variant', 0);
@@ -100,7 +100,7 @@ class ProductController extends Controller
                 ->editColumn('photo', function ($row) use ($img_url) {
                     return '<img loading="lazy" class="rounded" width="40" height="40" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
                 })
-                ->addColumn('action', function ($row) {
+                ->addColumn('action', function ($row) use ($priceGroups) {
                     // return $action_btn;
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
@@ -128,7 +128,10 @@ class ProductController extends Controller
                         $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '"><i class="fas fa-database text-primary"></i> Add or edit opening stock</a>';
                     }
 
-                    $html .= '<a class="dropdown-item" id="price_group" href="#"><i class="far fa-money-bill-alt text-primary"></i> Add or edit price group</a>';
+                    if (count($priceGroups) > 0) {
+                        $html .= '<a class="dropdown-item" href="' . route('products.add.price.groups', [$row->id, $row->is_variant]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add or edit price group</a>';
+                    }
+                    
                     $html .= ' </div>';
                     $html .= '</div>';
                     return $html;
@@ -413,9 +416,9 @@ class ProductController extends Controller
             'product_branches.branch',
             'product_branches.product_branch_variants',
             'product_branches.product_branch_variants.product_variant',
-        ])
-            ->where('id', $productId)->first();
-        return view('product.products.ajax_view.product_details_view', compact('product'));
+        ])->where('id', $productId)->first();
+        $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+        return view('product.products.ajax_view.product_details_view', compact('product', 'price_groups'));
     }
 
     //update opening stock
@@ -624,6 +627,61 @@ class ProductController extends Controller
         $warehouses = DB::table('warehouses')->get();
         $productId = $productId;
         return view('product.products.ajax_view.opening_stock_modal_view', compact('warehouses', 'productId'));
+    }
+
+    public function addPriceGroup($productId, $type)
+    {
+        $priceGroups = DB::table('price_groups')->where('status', 'Active')->get();
+        $product_name = DB::table('products')->where('id', $productId)->first(['name', 'product_code']);
+        $products = DB::table('products')
+            ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+            ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+            ->where('products.id', $productId)
+            ->select(
+                'products.id as p_id',
+                'products.is_variant',
+                'products.name',
+                'products.product_price',
+                'product_variants.variant_name',
+                'product_variants.variant_price',
+                'product_variants.id as v_id',
+                'taxes.tax_percent'
+            )->get();
+        return view('product.products.add_price_group', compact('products', 'type', 'priceGroups', 'product_name'));
+    }
+
+    public function savePriceGroup(Request $request)
+    {
+        //return $request->all();
+        $variant_ids = $request->variant_ids;
+        $index = 0;
+        foreach ($request->product_ids as $product_id) {
+            foreach ($request->group_prices as $key => $group_price) {
+                // echo '<pre>';
+                // echo 'group_id='.$key.', product='.$group_price[$product_id][$variant_ids[$index]];
+                $__group_price = $group_price[$product_id][$variant_ids[$index]];
+                $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $updatePriceGroup = PriceGroupProduct::where('price_group_id', $key)->where('product_id', $product_id)->where('variant_id', $__variant_id)->first();
+                if ($updatePriceGroup) {
+                    $updatePriceGroup->price = $__group_price;
+                    $updatePriceGroup->save();
+                } else {
+                    $addPriceGroup = new PriceGroupProduct();
+                    $addPriceGroup->price_group_id = $key;
+                    $addPriceGroup->product_id = $product_id;
+                    $addPriceGroup->variant_id = $__variant_id;
+                    $addPriceGroup->price = $__group_price;
+                    $addPriceGroup->save();
+                }
+            }
+            $index++;
+        }
+
+        if ($request->action_type == 'save') {
+            return response()->json(['saveMessage' =>  'Product price group updated Successfully']);
+        }else {
+            return response()->json(['saveAndAnotherMsg' =>  'Product price group updated Successfully']);
+        }
     }
 
     // edit view of product
@@ -1011,7 +1069,6 @@ class ProductController extends Controller
         }
     }
 
-
     //Get all form variant by ajax request
     public function getAllFormVariants()
     {
@@ -1118,13 +1175,13 @@ class ProductController extends Controller
             'duration' => 'required',
         ]);
 
-       $add = new Warranty();
-       $add->name = $request->name;
-       $add->type = $request->type;
-       $add->duration = $request->duration;
-       $add->duration_type = $request->duration_type;
-       $add->description = $request->description;
-       $add->save();
+        $add = new Warranty();
+        $add->name = $request->name;
+        $add->type = $request->type;
+        $add->duration = $request->duration;
+        $add->duration_type = $request->duration_type;
+        $add->description = $request->description;
+        $add->save();
         return response()->json($add);
     }
 

@@ -34,14 +34,21 @@ class POSController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $openedCashRegister = CashRegister::with('admin', 'admin.role','cash_counter')->where('admin_id', auth()->user()->id)
+        $openedCashRegister = CashRegister::with('admin', 'admin.role', 'cash_counter')->where('admin_id', auth()->user()->id)
             ->where('status', 1)
             ->first();
         if ($openedCashRegister) {
             $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
             $brands = DB::table('brands')->get(['id', 'name']);
             $customers = DB::table('customers')->where('status', 1)->get(['id', 'name', 'phone']);
-            return view('sales.pos.create', compact('openedCashRegister', 'categories', 'brands', 'customers'));
+            $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+            return view('sales.pos.create', compact(
+                'openedCashRegister',
+                'categories',
+                'brands',
+                'customers',
+                'price_groups'
+            ));
         } else {
             return redirect()->route('sales.cash.register.create');
         }
@@ -1511,11 +1518,11 @@ class POSController extends Controller
             $updateSale->customer->save();
         }
 
-        $change = $request->change_amount > 0 ? $request->change_amount : 0; 
+        $change = $request->change_amount > 0 ? $request->change_amount : 0;
         $updateSale->net_total_amount = $updateSale->net_total_amount + $request->net_total_amount;
         $updateSale->total_payable_amount = $updateSale->total_payable_amount + $request->total_payable_amount;
         $updateSale->paid = $updateSale->paid + $request->paying_amount - $change;
-        $updateSale->due = $updateSale->due + $request->total_due ;
+        $updateSale->due = $updateSale->due + $request->total_due;
         $updateSale->change_amount = $updateSale->change_amount + $change;
         $updateSale->ex_status = 1;
         $updateSale->save();
@@ -1569,7 +1576,7 @@ class POSController extends Controller
                     $productWarehouseVariant->save();
                 }
             }
-           
+
             if ($saleProduct) {
                 if ($saleProduct->ex_status == 1) {
                     $saleProduct->quantity += $quantities[$index];
@@ -1578,7 +1585,7 @@ class POSController extends Controller
                     $saleProduct->subtotal += $subtotals[$index];
                     $saleProduct->ex_status = 2;
                     $saleProduct->save();
-                }else {
+                } else {
                     $saleProduct->sale_id = $request->ex_sale_id;
                     $saleProduct->product_id = $product_ids[$index];
                     $saleProduct->product_variant_id = $variant_id;

@@ -450,6 +450,5 @@ a#print_report {
     margin-top: 1em;
 }
 
-.tp {
-    color: #3cb7dd;
-}
+.tp {color: #3cb7dd;}
+.modal-table td {color: black;}

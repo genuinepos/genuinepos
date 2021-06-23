@@ -9,6 +9,7 @@
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        #display_pre_due{font-weight: 800;}
     </style>
 @endpush
 @section('content')
@@ -56,8 +57,8 @@
 
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><span
-                                                        class="text-danger">*</span> <b>Warehosue :</b> </label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Warehosue :</b> <span
+                                                        class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <select name="warehouse_id" data-name="Warehouse"
                                                             class="form-control add_input" id="warehouse_id" autofocus>
@@ -100,10 +101,10 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><span
-                                                    class="text-danger">*</span> <b>Status :</b></label>
+                                                <label for="inputEmail3" class="col-4"> <b>Status : <span
+                                                    class="text-danger">*</span></b></label>
                                                 <div class="col-8">
                                                     <select name="status" class="form-control add_input" data-name="Status"
                                                         id="status">
@@ -117,30 +118,45 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Inv. Schema :</b></label>
-                                                <div class="col-8">
-                                                    <select name="invoice_schema_id" class="form-control"
-                                                        id="invoice_schema_id">
-                                                        <option value="">Select Invoice Schema</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Sale Date :</b></label>
+                                                <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
                                                 <div class="col-8">
                                                     <input type="date" name="date" class="form-control"
                                                         value="{{ date('Y-m-d') }}">
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class="col-6"><b>Inv. Schema :</b></label>
+                                                <div class="col-6">
+                                                    <select name="invoice_schema_id" class="form-control"
+                                                        id="invoice_schema_id">
+                                                        <option value="">Default</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Previous Due :</b></label>
-                                                <div class="col-8">
-                                                    <input type="number" step="any" class="form-control" id="display_pre_due"
+                                                <label for="inputEmail3" class="col-6 text-danger"><b>Previous Due :</b></label>
+                                                <div class="col-6">
+                                                    <input readonly type="number" step="any" class="form-control" id="display_pre_due"
                                                         value="0.00">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-2">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class="col-5"><b>Price Group :</b></label>
+                                                <div class="col-7">
+                                                    <select name="price_group_id" class="form-control"
+                                                        id="price_group_id">
+                                                        <option value="">Default Selling Price</option>
+                                                        @foreach ($price_groups as $pg)
+                                                            <option value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -1158,39 +1174,32 @@
             });
         }
 
-        // Set supplier in form field
-        var customersArray = '';
-        function setCustomers(){
-            $.ajax({
-                url:"{{route('sales.get.all.customer')}}",
-                success:function(customers){
-                    customersArray = customers;
-                }
-            });
-        }
-        setCustomers();
-
         $('#customer_id').on('change', function () {
-            $('#previous_due').val(parseFloat(0).toFixed(0));
+            $('#previous_due').val(parseFloat(0).toFixed(2));
+            $('#display_pre_due').val(parseFloat(0).toFixed(2));
             var id = $(this).val(); 
-            var customer = customersArray.filter(function (customer) {
-                return customer.id == id;
-            });
-            
-            if (customer.length > 0) {
-                $('#previous_due').val(customer[0].total_sale_due);
-                if (customer[0].pay_term != null && customer[0].pay_term_number != null) {
-                    $('#pay_term').val(customer[0].pay_term);
-                    $('#pay_term_number').val(customer[0].pay_term_number);
-                }else{
-                    $('#pay_term').val('');
-                    $('#pay_term_number').val('');
-                }
+            var url = "{{ url('sales/customer_info') }}"+'/'+id;
+            if(id != 0){
+                $.get(url, function(customer) {
+                    if (customer) {
+                        $('#display_pre_due').val(customer.total_sale_due);
+                        $('#previous_due').val(customer.total_sale_due);
+                        if (customer.pay_term != null && customer.pay_term_number != null) {
+                            $('#pay_term').val(customer.pay_term);
+                            $('#pay_term_number').val(customer.pay_term_number);
+                        }else{
+                            $('#pay_term').val('');
+                            $('#pay_term_number').val('');
+                        }
+                    }else{
+                        $('#pay_term').val('');
+                        $('#pay_term_number').val('');
+                    }
+                    calculateTotalAmount();
+                });
             }else{
-                $('#pay_term').val('');
-                $('#pay_term_number').val('');
+                calculateTotalAmount();
             }
-            calculateTotalAmount();
         });
 
         // Get all unite for form field

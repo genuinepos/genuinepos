@@ -34,8 +34,7 @@
                 <div class="col-md-3">
                     <ul class="list-unstyled">
                         <li><strong>Category : </strong> {{ $product->category->name }}</li>
-                        <li><strong>Sub-Category : </strong>
-                            {{ $product->child_category ? $product->child_category->name : 'N/A' }}</li>
+                        <li><strong>Sub-Category : </strong> {{ $product->child_category ? $product->child_category->name : 'N/A' }}</li>
                         <li><strong>Is For Sale : </strong>{{ $product->is_for_sale == 1 ? 'Yes' : 'No' }}</li>
                         <li><strong>Alert Quantity : </strong>{{ $product->alert_quantity }}</li>
                         <li><strong>Warranty : </strong>
@@ -45,12 +44,9 @@
                 </div>
                 <div class="col-md-3">
                     <ul class="list-unstyled">
-                        <li><strong>Expire Date : </strong> <span
-                                class="expire_date">{{ $product->expire_date }}</span></li>
-                        <li><strong>Tax : </strong> <span
-                                class="tax">{{ $product->tax ? $product->tax->tax_name : 'N/A' }}</span></li>
-                        <li><strong>Product Condition : </strong> <span
-                                class="product_condition">{{ $product->product_condition }}</span>
+                        <li><strong>Expire Date : </strong> {{ $product->expire_date }}</li>
+                        <li><strong>Tax : </strong>{{ $product->tax ? $product->tax->tax_name : 'N/A' }}</li>
+                        <li><strong>Product Condition : </strong> >{{ $product->product_condition }}
                         </li>
                         <li>
                             <strong>Product Type : </strong>
@@ -68,92 +64,24 @@
                         </li>
                     </ul>
                 </div>
-            </div><br><br>
+            </div><br>
             @php $tax = $product->tax ? $product->tax->tax_percent : 0  @endphp
             @if ($product->is_variant == 0)
                 <div class="row">
                     <div class="table-responsive">
-                        <table id="single_product_pricing_table" class="table modal-table table-sm custom-table">
-                            <thead>
-                                <tr class="bg-primary">
-                                    <th class="text-white" scope="col">Prodcut cost (Exc.Tax)</th>
-                                    <th class="text-white" scope="col">Prodcut cost (Inc.Tax)</th>
-                                    <th class="text-white" scope="col">Profit Margin(%)</th>
-                                    <th class="text-white" scope="col">Default Selling Price (Exc.Tax)</th>
-                                    <th class="text-white" scope="col">Default Selling Price (Inc.Tax)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="single_product_pricing_table_body">
-                                <tr>
-                                    <td class="product_cost">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                        {{ $product->product_cost }}
-                                    </td>
-                                    <td class="product_cost_inc_tax">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                        {{ $product->product_cost_with_tax }}
-                                    </td>
-                                    <td class="profit_margin">{{ $product->profit }}</td>
-                                    <td class="selling_price">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                        {{ $product->product_price }}
-                                    </td>
-                                    <td class="selling_price_wtih_tax">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                        {{ ($product->product_price / 100) * $tax + $product->product_price }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <!--single_product_pricing_table-->
+                        @include('product.products.ajax_view.partials.single_product_pricing_table')
+                        <!--single_product_pricing_table End-->
                     </div>
-                </div><br>
+                </div>
             @elseif($product->is_variant == 1)
                 <div class="row">
                     <div class="table-responsive">
-                        <table id="variant_product_pricing_table" class="table modal-table table-sm custom-table">
-                            <thead>
-                                <tr class="bg-primary">
-                                    <th class="text-white" scope="col">Variations</th>
-                                    <th class="text-white" scope="col">Variant Code (SKU)</th>
-                                    <th class="text-white" scope="col">Default Purchase Price (Exc. tax)</th>
-                                    <th class="text-white" scope="col">Default Purchase Price (Inc. tax)</th>
-                                    <th class="text-white" scope="col">x Margin(%)</th>
-                                    <th class="text-white" scope="col">Default Selling Price (Exc. tax)</th>
-                                    <th class="text-white" scope="col">Default Selling Price (Inc. tax)</th>
-                                    <th class="text-white" scope="col">Variation Images</th>
-                                </tr>
-                            </thead>
-                            <tbody class="variant_product_pricing_table_body">
-                                @foreach ($product->product_variants as $variant)
-                                    <tr>
-                                        <td class="variant_name">{{ $variant->variant_name }}</td>
-                                        <td class="variant_Code">{{ $variant->variant_code }}</td>
-                                        <td class="variant_cost">
-                                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                                            {{ $variant->variant_cost }}</td>
-                                        <td class="variant_cost_with_tax">
-                                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                                            {{ $variant->variant_cost_with_tax }}</td>
-                                        <td class="variant_profit"> {{ $variant->variant_profit }}</td>
-                                        <td class="variant_price">
-                                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                                            {{ $variant->variant_price }}
-                                        </td>
-                                        <td class="variant_price_with_tax">
-                                            {{ ($variant->variant_price / 100 * $tax) + $variant->variant_price }}
-                                        </td>
-                                        <td class="variant_image">
-                                            @if ($variant->variant_image)
-                                                <img src="{{ asset('public/uploads/product/variant_image/'. $variant->variant_image) }}">
-                                            @endif
-                                            
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <!--variant_product_pricing_table-->
+                        @include('product.products.ajax_view.partials.variant_product_pricing_table')
+                        <!--variant_product_pricing_table End-->
                     </div>
-                </div><br />
+                </div>
             @endif
 
             <div class="row">
@@ -162,15 +90,15 @@
                 </div>
                 <div class="table-responsive" id="warehouse_stock_details">
                     @if ($product->is_variant == 0)
-                        <table id="single_product_warehouse_stock_table" class="table modal-table table-sm custom-table">
+                        <table id="single_product_warehouse_stock_table" class="table modal-table table-sm">
                             <thead>
                                 <tr class="bg-primary">
-                                    <th class="text-white" scope="col">Product Code(SKU)</th>
-                                    <th class="text-white" scope="col">Product</th>
-                                    <th class="text-white" scope="col">Warehouse</th>
-                                    <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
-                                    <th class="text-white" scope="col">Current Stock</th>
-                                    <th class="text-white" scope="col">Stock Value</th>
+                                    <th class="text-white text-start">Product Code(SKU)</th>
+                                    <th class="text-white text-start">Product</th>
+                                    <th class="text-white text-start">Warehouse</th>
+                                    <th class="text-white text-start">Unit Price (Inc.Tax)</th>
+                                    <th class="text-white text-start">Current Stock</th>
+                                    <th class="text-white text-start">Stock Value</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -181,22 +109,22 @@
                                                 $tax = $product->tax ? $product->tax->tax_percent : 0;
                                                 $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
                                             @endphp
-                                            <td>{{ $product->product_code }}</td>
-                                            <td>{{ $product->name }}</td>
-                                            <td>{{ $product_warehouse->warehouse->warehouse_name . ' - ' . $product_warehouse->warehouse->warehouse_code }}
+                                            <td class="text-start">{{ $product->product_code }}</td>
+                                            <td class="text-start">{{ $product->name }}</td>
+                                            <td class="text-start">{{ $product_warehouse->warehouse->warehouse_name . ' - ' . $product_warehouse->warehouse->warehouse_code }}
                                             </td>
-                                            <td>
+                                            <td class="text-start">
                                                 {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($product_price_inc_tax, 2) }}
+                                                {{ bcadd($product_price_inc_tax, 0, 2) }}
                                             </td>
-                                            <td>{{ $product_warehouse->product_quantity . ' (' . $product->unit->code_name . ')' }}
+                                            <td class="text-start">{{ $product_warehouse->product_quantity . ' (' . $product->unit->code_name . ')' }}
                                             </td>
                                             @php
                                                 $stockValue = $product_warehouse->product_quantity * $product_price_inc_tax;
                                             @endphp
-                                            <td>
+                                            <td class="text-start">
                                                 {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($stockValue, 2) }}
+                                                {{ bcadd($stockValue, 0, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -209,15 +137,15 @@
                             </tbody>
                         </table>
                     @else
-                        <table id="variant_product_warehouse_stock_table" class="table modal-table table-sm custom-table">
+                        <table id="variant_product_warehouse_stock_table" class="table modal-table table-sm">
                             <thead>
                                 <tr class="bg-primary">
-                                    <th class="text-white" scope="col">Product Code(SKU)</th>
-                                    <th class="text-white" scope="col">Product</th>
-                                    <th class="text-white" scope="col">Warehouse</th>
-                                    <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
-                                    <th class="text-white" scope="col">Current Stock</th>
-                                    <th class="text-white" scope="col">Stock Value</th>
+                                    <th class="text-white text-start">Product Code(SKU)</th>
+                                    <th class="text-white text-start">Product</th>
+                                    <th class="text-white text-start">Warehouse</th>
+                                    <th class="text-white text-start">Unit Price (Inc.Tax)</th>
+                                    <th class="text-white text-start">Current Stock</th>
+                                    <th class="text-white text-start">Stock Value</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -229,24 +157,24 @@
                                                 $variant_price_inc_tax = ($product_warehouse_variant->product_variant->variant_price / 100) * $tax + $product_warehouse_variant->product_variant->variant_price;
                                             @endphp
                                             <tr>
-                                                <td>{{ $product_warehouse_variant->product_variant->variant_code }}
+                                                <td class="text-start">{{ $product_warehouse_variant->product_variant->variant_code }}
                                                 </td>
-                                                <td>{{ $product->name . ' - ' . $product_warehouse_variant->product_variant->variant_name }}
+                                                <td class="text-start">{{ $product->name . ' - ' . $product_warehouse_variant->product_variant->variant_name }}
                                                 </td>
-                                                <td>
+                                                <td class="text-start">
                                                     {{ $product_warehouse->warehouse->warehouse_name . ' - ' . $product_warehouse->warehouse->warehouse_code }}
                                                 </td>
-                                                <td>
+                                                <td class="text-start">
                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                    {{ number_format($variant_price_inc_tax, 2) }}
+                                                    {{ bcadd($variant_price_inc_tax, 0, 2) }}
                                                 </td>
-                                                <td>{{ $product_warehouse_variant->variant_quantity . ' (' . $product->unit->code_name . ')' }}
+                                                <td class="text-start">{{ $product_warehouse_variant->variant_quantity . ' (' . $product->unit->code_name . ')' }}
                                                 </td>
                                                 @php
                                                     $stockValue = $product_warehouse_variant->variant_quantity * $variant_price_inc_tax;
                                                 @endphp
-                                                <td>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                                    {{ number_format($stockValue, 2) }}</td>
+                                                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }}
+                                                    {{ bcadd($stockValue, 0, 2) }}</td>
                                             </tr>
                                         @endforeach
                                     @endforeach
@@ -268,16 +196,16 @@
                 </div>
                 <div class="table-responsive" id="branch_stock_details">
                     @if ($product->is_variant == 0)
-                        <table id="single_product_branch_stock_table" class="table modal-table table-sm custom-table">
+                        <table id="single_product_branch_stock_table" class="table modal-table table-sm">
                             <thead>
                                 <tr class="bg-primary">
-                                    <th class="text-white" scope="col">Product Code(SKU)</th>
-                                    <th class="text-white" scope="col">Product</th>
-                                    <th class="text-white" scope="col">Branch</th>
-                                    <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
-                                    <th class="text-white" scope="col">Current Stock</th>
-                                    <th class="text-white" scope="col">Stock Value</th>
-                                    <th class="text-white" scope="col">Total Unit Adjusted</th>
+                                    <th class="text-white text-start">Product Code(SKU)</th>
+                                    <th class="text-white text-start">Product</th>
+                                    <th class="text-white text-start">Branch</th>
+                                    <th class="text-white text-start">Unit Price (Inc.Tax)</th>
+                                    <th class="text-white text-start">Current Stock</th>
+                                    <th class="text-white text-start">Stock Value</th>
+                                    <th class="text-white text-start">Total Unit Adjusted</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -303,20 +231,20 @@
                                                 $tax = $product->tax ? $product->tax->tax_percent : 0;
                                                 $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
                                             @endphp
-                                            <td>{{ $product->product_code }}</td>
-                                            <td>{{ $product->name }}</td>
-                                            <td>{{ $product_branch->branch->name . ' - ' . $product_branch->branch->branch_code }}
+                                            <td class="text-white text-start">{{ $product->product_code }}</td>
+                                            <td class="text-white text-start">{{ $product->name }}</td>
+                                            <td class="text-white text-start">{{ $product_branch->branch->name . ' - ' . $product_branch->branch->branch_code }}
                                             </td>
-                                            <td> {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($product_price_inc_tax, 2) }}</td>
-                                            <td>{{ $product_branch->product_quantity . ' (' . $product->unit->code_name . ')' }}
+                                            <td class="text-white text-start"> {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                {{ bcadd($product_price_inc_tax, 0, 2) }}</td>
+                                            <td class="text-white text-start">{{ $product_branch->product_quantity . ' (' . $product->unit->code_name . ')' }}
                                             </td>
                                             @php
                                                 $stockValue = $product_branch->product_quantity * $product_price_inc_tax;
                                             @endphp
-                                            <td>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($stockValue, 2) }}</td>
-                                            <td>{{ number_format($totalAdjustedQty, 2) . ' (' . $product->unit->code_name . ')' }}
+                                            <td class="text-white text-start">{{ json_decode($generalSettings->business, true)['currency'] }}
+                                                {{ bcadd($stockValue, 0, 2) }}</td>
+                                            <td class="text-white text-start">{{ bcadd($totalAdjustedQty, 0, 2) . ' (' . $product->unit->code_name . ')' }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -329,16 +257,16 @@
                             </tbody>
                         </table>
                     @else
-                        <table id="variant_product_branch_stock_table" class="table modal-table table-sm custom-table">
+                        <table id="variant_product_branch_stock_table" class="table modal-table table-sm">
                             <thead>
                                 <tr class="bg-primary">
-                                    <th class="text-white" scope="col">Product Code(SKU)</th>
-                                    <th class="text-white" scope="col">Product</th>
-                                    <th class="text-white" scope="col">Branch</th>
-                                    <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
-                                    <th class="text-white" scope="col">Current Stock</th>
-                                    <th class="text-white" scope="col">Stock Value</th>
-                                    <th class="text-white" scope="col">Total Unit Adjusted</th>
+                                    <th class="text-white text-start">Product Code(SKU)</th>
+                                    <th class="text-white text-start">Product</th>
+                                    <th class="text-white text-start">Branch</th>
+                                    <th class="text-white text-start">Unit Price (Inc.Tax)</th>
+                                    <th class="text-white text-start">Current Stock</th>
+                                    <th class="text-white text-start">Stock Value</th>
+                                    <th class="text-white text-start">Total Unit Adjusted</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -367,31 +295,33 @@
                                                 }
                                             @endphp
                                             <tr>
-                                                <td>{{ $product_branch_variant->product_variant->variant_code }}</td>
-                                                <td>
+                                                <td class="text-start">
+                                                    {{ $product_branch_variant->product_variant->variant_code }}
+                                                </td>
+                                                <td class="text-start">
                                                     {{ $product->name . ' - ' . $product_branch_variant->product_variant->variant_name }}
                                                 </td>
 
-                                                <td>
+                                                <td class="text-start">
                                                     {{ $product_branch->branch->name . ' - ' . $product_branch->branch->branch_code }}
                                                 </td>
 
-                                                <td>
+                                                <td class="text-start">
                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                    {{ number_format($variant_price_inc_tax, 2) }}
+                                                    {{ bcadd($variant_price_inc_tax, 0, 2) }}
                                                 </td>
 
-                                                <td>
+                                                <td class="text-start">
                                                     {{ $product_branch_variant->variant_quantity . ' (' . $product->unit->code_name . ')' }}
                                                 </td>
                                                 @php
                                                     $stockValue = $product_branch_variant->variant_quantity * $variant_price_inc_tax;
                                                 @endphp
-                                                <td>
+                                                <td class="text-start">
                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                    {{ number_format($stockValue, 2) }}</td>
-                                                <td>
-                                                    {{ number_format($totalAdjustedQty, 2) . ' (' . $product->unit->code_name . ')' }}
+                                                    {{ bcadd($stockValue, 0, 2) }}</td>
+                                                <td class="text-start">
+                                                    {{ bcadd($totalAdjustedQty, 0, 2) . ' (' . $product->unit->code_name . ')' }}
                                                 </td>
                                             </tr>
                                         @endforeach

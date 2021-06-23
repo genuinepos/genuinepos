@@ -79,7 +79,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::delete('multiple/delete', 'ProductController@multipleDelete')->name('products.multiple.delete');
         Route::get('all/sub/category/{categoryId}', 'ProductController@allFromSubCategory');
       
-    
         Route::get('all/form/variant', 'ProductController@getAllFormVariants')->name('products.add.get.all.from.variant');
         Route::get('search/product/{productCode}', 'ProductController@searchProduct');
         Route::get('get/product/stock/{productId}', 'ProductController@getProductStock');
@@ -87,6 +86,10 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('check/purchase/generate/barcode/{productId}', 'ProductController@chackPurchaseAndGenerateBarcode')->name('products.check.purchase.and.generate.barcode');
 
         Route::get('get/opening/stock/{productId}', 'ProductController@openingStock')->name('products.opening.stock');
+
+        Route::get('add/price/groups/{productId}/{type}', 'ProductController@addPriceGroup')->name('products.add.price.groups');
+        Route::post('save/price/groups', 'ProductController@savePriceGroup')->name('products.save.price.groups');
+
         Route::post('opening/stock/update/{productId}', 'ProductController@openingStockUpdate')->name('products.opening.stock.update');
         Route::post('add/category', 'ProductController@addCategory')->name('products.add.category');
         Route::post('add/brand', 'ProductController@addBrand')->name('products.add.brand');

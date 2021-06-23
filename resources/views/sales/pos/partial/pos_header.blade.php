@@ -128,10 +128,12 @@
 
                                     <div class="input-group-prepend ms-1">
                                         <select name="sell_price_group_id" class="form-control" id="sell_price_group_id">
-                                            <option value="">Default Price Group</option>
+                                            <option value="">Default Selling Price</option>
+                                            @foreach ($price_groups as $pg)
+                                                <option value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
-                                   
                                 </div>
                             </div>
                         </div>

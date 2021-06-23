@@ -1323,11 +1323,7 @@
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
         // set sub category in form field
         $('#category_id').on('change', function() {
@@ -1364,7 +1360,6 @@
                             $('#add_product_form')[0].reset();
                             get_form_part(1);
                             $('#profit').val(parseFloat(defaultProfit).toFixed(2));
-                           
                         }
                     } else {
                         toastr.error(data.errorMsg);

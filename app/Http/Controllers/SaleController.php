@@ -2882,4 +2882,10 @@ class SaleController extends Controller
             return view('sales.save_and_print_template.quotation_print', compact('sale'));
         }
     }
+
+    // Get product price group
+    public function getProductPriceGroup()
+    {
+        return $price_groups = DB::table('price_group_products')->get(['id', 'price_group_id', 'product_id', 'variant_id', 'price']);
+    }
 }

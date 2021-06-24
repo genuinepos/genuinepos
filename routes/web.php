@@ -343,6 +343,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('get/all/sub/category/{categoryId}', 'SaleController@getAllSubCategory');
     Route::post('add/product', 'SaleController@addProduct')->name('sales.add.product');
     Route::get('get/recent/product/{branch_id}/{warehouse_id}/{product_id}', 'SaleController@getRecentProduct');
+    Route::get('get/product/price/group', 'SaleController@getProductPriceGroup')->name('sales.product.price.groups');
 
     // Sale return route
     Route::group(['prefix' => 'returns'], function () {

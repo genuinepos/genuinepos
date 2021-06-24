@@ -613,6 +613,18 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script>
+        // Get all price group
+        var price_groups = '';
+        function getPriceGroupProducts(){
+            $.ajax({
+                url:"{{route('sales.product.price.groups')}}",
+                success:function(data){
+                    price_groups = data;
+                }
+            });
+        }
+        getPriceGroupProducts();
+
         $('#payment_method').on('change', function () {
             var value = $(this).val();
             $('.payment_method').hide();
@@ -636,13 +648,14 @@
             var role = $('#role').val();
             if(warehouse_id == ""){
                 $('#search_product').val("");
-                alert('Warehouse field must not be empty.');
+                toastr.error('Warehouse field must not be empty.');
                 return;
             }
             delay(function() { searchProduct(product_code, branch_id, warehouse_id); }, 200); //sendAjaxical is the name of remote-command
         });
 
         function searchProduct(product_code, branch_id, warehouse_id) {
+            var price_group_id = $('#price_group_id').val();
             $.ajax({
                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
                     url:"{{ url('sales/search/product/in/warehouse') }}"+"/"+product_code+"/"+warehouse_id,
@@ -676,7 +689,7 @@
                                         var presentQty = closestTr.find('#quantity').val();
                                         var qty_limit = closestTr.find('#qty_limit').val();
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
-                                            alert('Quantity Limit is - '+qty_limit+' '+product.unit.name);
+                                            toastr.error('Quantity Limit is - '+qty_limit+' '+product.unit.name);
                                             return;
                                         }
                                         var updateQty = parseFloat(presentQty) + 1;
@@ -731,10 +744,21 @@
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
                                     tr += '<td>';
-                                    
-                                    tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+product.product_price+'">';
 
-                                    var unitPriceIncTax = parseFloat(product.product_price) / 100 * parseFloat(tax_percent) + parseFloat(product.product_price);
+                                    var price = 0;
+                                    var __price = price_groups.filter(function (value) {
+                                        return value.price_group_id == price_group_id && value.product_id == product.id;
+                                    });
+
+                                    if (__price.length != 0) {
+                                        price = __price[0].price;
+                                    } else {
+                                        price = product.product_price;
+                                    }
+                                    
+                                    tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
+
+                                    var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
 
                                     tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                                     tr += '</td>';
@@ -783,7 +807,7 @@
                                         var presentQty = closestTr.find('#quantity').val();
                                         var qty_limit = closestTr.find('#qty_limit').val();
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
-                                            alert('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name);
+                                            toastr.error('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name);
                                             return;
                                         }
                                         var updateQty = parseFloat(presentQty) + 1;
@@ -830,8 +854,7 @@
                                 tr += '</div>';
                                 tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
                                 tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                tr += '<a href="#" class="input-group-text  increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
+                                tr += '<a href="#" class="input-group-text increase_qty_btn input-group-text-sale"><i class="fas fa-plus text-success "></i></a>';
                                 tr += '</div>';
                                 tr += '</div>';
                                 tr += '</td>';
@@ -839,11 +862,21 @@
                                 tr += '<b><span class="span_unit">'+variant_product.product.unit.name+'</span></b>'; 
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
-
                                 tr += '<td>';
-                                
-                                tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+variant_product.variant_price+'" id="unit_price_exc_tax">';
-                                var unitPriceIncTax = parseFloat(variant_product.variant_price) / 100 * parseFloat(tax_percent) + parseFloat(variant_product. variant_price);
+
+                                var price = 0;
+                                var __price = price_groups.filter(function (value) {
+                                    return value.price_group_id == price_group_id && value.product_id == variant_product.product.id && value.variant_id == variant_product.id;
+                                });
+
+                                if (__price.length != 0) {
+                                    price = __price[0].price;
+                                } else {
+                                    price = variant_product.variant_price;
+                                }
+
+                                tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+'" id="unit_price_exc_tax">';
+                                var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
                                 tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'">';
                                 tr += '</td>';
                                 
@@ -919,7 +952,7 @@
 
             if(warehouse_id == ""){
                 $('#search_product').val("");
-                alert('warehouse field must not be empty.');
+                toastr.error('warehouse field must not be empty.');
                 return;
             }
 
@@ -944,7 +977,7 @@
                                 var presentQty = closestTr.find('#quantity').val();
                                 var qty_limit = closestTr.find('#qty_limit').val();
                                 if(parseFloat(qty_limit) === parseFloat(presentQty)){
-                                    alert('Quantity Limit is - '+qty_limit+' '+product_unit);
+                                    toastr.error('Quantity Limit is - '+qty_limit+' '+product_unit);
                                     return;
                                 }
                                 var updateQty = parseFloat(presentQty) + 1;
@@ -1059,7 +1092,7 @@
 
             if(warehouse_id == ""){
                 $('#search_product').val("");
-                alert('warehouse field must not be empty.');
+                toastr.error('warehouse field must not be empty.');
                 return;
             }
 
@@ -1085,7 +1118,7 @@
                                     var presentQty = closestTr.find('#quantity').val();
                                     var qty_limit = closestTr.find('#qty_limit').val();
                                     if(parseFloat(qty_limit)  === parseFloat(presentQty)){
-                                        alert('Quantity Limit is - '+qty_limit+' '+product_unit);
+                                        toastr.error('Quantity Limit is - '+qty_limit+' '+product_unit);
                                         return;
                                     }
                                     var updateQty = parseFloat(presentQty) + 1;
@@ -1297,7 +1330,7 @@
                 var qty_limit = tr.find('#qty_limit').val();
                 var unit = tr.find('#unit').val();
                 if(parseInt(qty) > parseInt(qty_limit)){
-                    alert('Quantity Limit Is - '+qty_limit+' '+unit);
+                    toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
                     $(this).val(qty_limit);
                     var unitPrice = tr.find('#unit_price').val();
                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
@@ -1323,7 +1356,7 @@
                 var qty_limit = tr.find('#qty_limit').val();
                 var unit = tr.find('#unit').val();
                 if(parseInt(qty) > parseInt(qty_limit)){
-                    alert('Quantity Limit Is - '+qty_limit+' '+unit);
+                    toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
                     $(this).val(qty_limit);
                     var unitPrice = tr.find('#unit_price').val();
                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
@@ -1892,5 +1925,9 @@
         }
 
         $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
+
+        $('#price_group_id').on('change', function () {
+            console.log(price_groups);
+        });
     </script>
 @endpush

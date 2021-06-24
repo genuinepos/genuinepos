@@ -281,24 +281,6 @@
     });
 
     function cancel() {
-        // swal({
-        //     title: "Are you sure to cancel ?",
-        //     buttons: true,
-        //     dangerMode: true,
-        // }).then((willDelete) => {
-        //     if (willDelete) {
-        //         $('#product_list').empty();
-        //         $('.payment_method').hide();
-        //         $('#pos_submit_form')[0].reset();
-        //         calculateTotalAmount();
-        //         $('#account_id').val(defaultAccount);
-        //         toastr.error('Sale has been cancelled.');
-        //         document.getElementById('search_product').focus();
-        //         var store_url = $('#store_url').val();
-        //         $('#pos_submit_form').attr('action', store_url);
-        //     } 
-        // });
-      
         $.confirm({
             'title': 'Cancel Confirmation',
             'content': 'Are you sure to cancel ?',

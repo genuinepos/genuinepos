@@ -154,7 +154,7 @@
                                                         id="price_group_id">
                                                         <option value="">Default Selling Price</option>
                                                         @foreach ($price_groups as $pg)
-                                                            <option value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                            <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -751,15 +751,13 @@
                                     });
 
                                     if (__price.length != 0) {
-                                        price = __price[0].price;
+                                        price = __price[0].price ? __price[0].price : product.product_price;
                                     } else {
                                         price = product.product_price;
                                     }
                                     
                                     tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
-
                                     var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
-
                                     tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                                     tr += '</td>';
                                     tr += '<td class="text text-center">';
@@ -870,7 +868,7 @@
                                 });
 
                                 if (__price.length != 0) {
-                                    price = __price[0].price;
+                                    price = __price[0].price ? __price[0].price : variant_product.variant_price;
                                 } else {
                                     price = variant_product.variant_price;
                                 }
@@ -931,6 +929,7 @@
         // select single product and add stock adjustment table
         var keyName = 1;
         function singleProduct(e){
+            var price_group_id = $('#price_group_id').val();
             $('.select_area').hide();
             $('#search_product').val('');
             if (keyName == 13 || keyName == 1) {
@@ -982,11 +981,9 @@
                                 }
                                 var updateQty = parseFloat(presentQty) + 1;
                                 closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                
                                 //Update Subtotal
                                 var unitPrice = closestTr.find('#unit_price').val();
                                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
-
                                 closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                 closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                                 calculateTotalAmount();
@@ -1037,11 +1034,21 @@
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
                             tr += '<td>';
-                            
-                            tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+product_price_exc_tax+'">';
 
-                            var unitPriceIncTax = parseFloat(product_price_exc_tax) / 100 * parseFloat(p_tax_percent) + parseFloat(product_price_exc_tax);
+                            var price = 0;
+                            var __price = price_groups.filter(function (value) {
+                                return value.price_group_id == price_group_id && value.product_id == product_id;
+                            });
+
+                            if (__price.length != 0) {
+                                price = __price[0].price ? __price[0].price : product_price_exc_tax;
+                            } else {
+                                price = product_price_exc_tax;
+                            }
                             
+                            tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
+
+                            var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(p_tax_percent) + parseFloat(price);
                             tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                             tr += '</td>';
                             tr += '<td class="text text-center">';
@@ -1069,6 +1076,7 @@
 
         // select variant product and add purchase table
         function salectVariant(e){
+            var price_group_id = $('#price_group_id').val();
             if (keyName == 13 || keyName == 1) {
                 document.getElementById('search_product').focus();
             }
@@ -1123,7 +1131,6 @@
                                     }
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                    
                                     //Update Subtotal
                                     var unitPrice = closestTr.find('#unit_price').val();
                                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -1177,10 +1184,21 @@
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
                             tr += '<td>';
-                            
-                            tr += '<input name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+variant_price+'">';
 
-                            var unitPriceIncTax = parseFloat(variant_price) / 100 * parseFloat(tax_percent) + parseFloat(variant_price);
+                            var price = 0;
+                            var __price = price_groups.filter(function (value) {
+                                return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
+                            });
+
+                            if (__price.length != 0) {
+                                price = __price[0].price ? __price[0].price : variant_price;
+                            } else {
+                                price = variant_price;
+                            }
+                            
+                            tr += '<input name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
+
+                            var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
 
                             tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                             tr += '</td>';

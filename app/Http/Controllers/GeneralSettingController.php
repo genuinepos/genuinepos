@@ -17,7 +17,7 @@ class GeneralSettingController extends Controller
     {
         $this->middleware('auth:admin_and_user');
     }
-    
+
     public function index()
     {
         $bussinessSettings = General_setting::first();
@@ -26,7 +26,16 @@ class GeneralSettingController extends Controller
         $units = Unit::all();
         $taxes = Tax::all();
         $timezones = DB::table('timezones')->get();
-        return view('settings.general_settings.index', compact('bussinessSettings', 'months', 'currencies', 'units', 'taxes', 'timezones'));
+        $price_groups = DB::table('price_groups')->where('status', 'Active')->get();
+        return view('settings.general_settings.index', compact(
+            'bussinessSettings',
+            'months',
+            'currencies',
+            'units',
+            'taxes',
+            'timezones',
+            'price_groups'
+        ));
     }
 
     // Add business settings
@@ -45,8 +54,8 @@ class GeneralSettingController extends Controller
             $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
-        }else{
-            $business_logo = json_decode($updateBussinessSettings->business, true)['business_logo'] != null ? json_decode($updateBussinessSettings->business, true)['business_logo'] : null; 
+        } else {
+            $business_logo = json_decode($updateBussinessSettings->business, true)['business_logo'] != null ? json_decode($updateBussinessSettings->business, true)['business_logo'] : null;
         }
 
         $businessSettings = [
@@ -115,7 +124,6 @@ class GeneralSettingController extends Controller
         return response()->json('Contact setting updated successfully');
     }
 
-
     // Add tax settings
     public function saleSettings(Request $request)
     {
@@ -124,6 +132,7 @@ class GeneralSettingController extends Controller
             'default_sale_discount' => $request->default_sale_discount,
             'default_tax_id' => $request->default_tax_id,
             'sales_cmsn_agnt' => $request->sales_cmsn_agnt,
+            'default_price_group_id' => $request->default_price_group_id,
         ];
 
         $updateSaleSettings->sale = json_encode($saleSettings);
@@ -166,7 +175,7 @@ class GeneralSettingController extends Controller
         $updatePurchaseSettings->purchase = json_encode($purchaseSettings);
         $updatePurchaseSettings->save();
         return response()->json('Purchase settings updated successfully.');
-    } 
+    }
 
     public function dashboardSettings(Request $request)
     {
@@ -238,7 +247,7 @@ class GeneralSettingController extends Controller
             'min_redeem_point' => $request->min_redeem_point ? $request->min_redeem_point : '',
             'max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : '',
         ];
-        
+
         $updateRewardPointgSettings->reward_poing_settings = json_encode($RewardPointgSettings);
         $updateRewardPointgSettings->save();
         return response()->json('Reward point settings updated Successfully');
@@ -246,14 +255,14 @@ class GeneralSettingController extends Controller
 
     public function emailSettings(Request $request)
     {
-        Artisan::call("env:set MAIL_MAILER='".$request->get('MAIL_MAILER')."'");
-        Artisan::call("env:set MAIL_HOST='".$request->get('MAIL_HOST')."'");
-        Artisan::call("env:set MAIL_PORT='".$request->get('MAIL_PORT')."'");
-        Artisan::call("env:set MAIL_USERNAME='".$request->get('MAIL_USERNAME')."'");
-        Artisan::call("env:set MAIL_PASSWORD='".$request->get('MAIL_PASSWORD')."'");
-        Artisan::call("env:set MAIL_ENCRYPTION='".$request->get('MAIL_ENCRYPTION')."'");
-        Artisan::call("env:set MAIL_FROM_ADDRESS='".$request->get('MAIL_FROM_ADDRESS')."'");
-        Artisan::call("env:set MAIL_FROM_NAME='".$request->get('MAIL_FROM_NAME')."'");
+        Artisan::call("env:set MAIL_MAILER='" . $request->get('MAIL_MAILER') . "'");
+        Artisan::call("env:set MAIL_HOST='" . $request->get('MAIL_HOST') . "'");
+        Artisan::call("env:set MAIL_PORT='" . $request->get('MAIL_PORT') . "'");
+        Artisan::call("env:set MAIL_USERNAME='" . $request->get('MAIL_USERNAME') . "'");
+        Artisan::call("env:set MAIL_PASSWORD='" . $request->get('MAIL_PASSWORD') . "'");
+        Artisan::call("env:set MAIL_ENCRYPTION='" . $request->get('MAIL_ENCRYPTION') . "'");
+        Artisan::call("env:set MAIL_FROM_ADDRESS='" . $request->get('MAIL_FROM_ADDRESS') . "'");
+        Artisan::call("env:set MAIL_FROM_NAME='" . $request->get('MAIL_FROM_NAME') . "'");
         return response()->json('Email settings updated successfully');
     }
 }

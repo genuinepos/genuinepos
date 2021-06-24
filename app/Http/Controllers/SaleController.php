@@ -1299,10 +1299,9 @@ class SaleController extends Controller
         }
         $saleId = $saleId;
         $sale = Sale::where('id', $saleId)->select(['id', 'date', 'branch_id', 'warehouse_id'])->first();
-
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->orderBy('id', 'DESC')->get();
-
-        return view('sales.edit', compact('saleId', 'sale', 'warehouses'));
+        $price_groups = DB::table('price_groups')->where('status', 'Active')->get();
+        return view('sales.edit', compact('saleId', 'sale', 'warehouses', 'price_groups'));
     }
 
     // Get editable sale

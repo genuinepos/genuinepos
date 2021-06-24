@@ -362,7 +362,8 @@ class POSController extends Controller
         $sale = Sale::with('branch', 'sale_products', 'customer', 'admin', 'admin.role')->where('id', $saleId)->first();
         $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
-        return view('sales.pos.edit', compact('sale', 'categories', 'brands'));
+        $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+        return view('sales.pos.edit', compact('sale', 'categories', 'brands', 'price_groups'));
     }
 
     // Get invoice products **requested by ajax**

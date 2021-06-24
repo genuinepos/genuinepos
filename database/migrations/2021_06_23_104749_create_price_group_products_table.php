@@ -18,7 +18,7 @@ class CreatePriceGroupProductsTable extends Migration
             $table->unsignedBigInteger('price_group_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('variant_id')->nullable();
-            $table->decimal('price', 22, 2)->default(0);
+            $table->decimal('price', 22, 2)->nullable();
             $table->timestamps();
             $table->foreign('price_group_id')->references('id')->on('price_groups')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

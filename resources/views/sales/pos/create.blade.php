@@ -54,6 +54,7 @@
     // select single product and add stock adjustment table
     var keyName = 1;
     function singleProduct(e) {
+        var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val("");
         var warehouse_id = $('#warehouse_id').val();
@@ -70,7 +71,7 @@
         $('#search_product').val('');
         if (branch_id == "") {
             $('#search_product').val("");
-            alert('Branch field must not be empty.');
+            toastr.error('Branch field must not be empty.');
             return;
         }
 
@@ -99,7 +100,7 @@
                             var limit = closestTr.find('#qty_limit').val()
                             var qty_limit = parseFloat(previousQty) + parseFloat(limit);
                             if (parseFloat(qty_limit) == parseFloat(presentQty)) {
-                                alert('Quantity Limit is - ' + qty_limit + ' ' + product_unit);
+                                toastr.error('Quantity Limit is - ' + qty_limit + ' ' + product_unit);
                                 return;
                             }
                             var updateQty = parseFloat(presentQty) + 1;
@@ -152,22 +153,27 @@
                             product_unit + '">';
                         tr += '</td>';
 
+                        var price = 0;
+                        var __price = price_groups.filter(function (value) {
+                            return value.price_group_id == price_group_id && value.product_id == product_id;
+                        });
+
+                        if (__price.length != 0) {
+                            price = __price[0].price ? __price[0].price : product_price_exc_tax;
+                        } else {
+                            price = product_price_exc_tax;
+                        }
+                                
                         tr += '<td>';
-                        tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="' +
-                            product_price_exc_tax + '" id="unit_price_exc_tax">';
-                        var unitPriceIncTax = parseFloat(product_price_exc_tax) / 100 *
-                            parseFloat(p_tax_percent) + parseFloat(product_price_exc_tax);
-                        tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="' +
-                            parseFloat(unitPriceIncTax).toFixed(2) + '">';
-                        tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(
-                            unitPriceIncTax).toFixed(2) + '</span> </b>';
+                        tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+ '" id="unit_price_exc_tax">';
+                        var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(p_tax_percent) + parseFloat(price);
+                        tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
+                        tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(unitPriceIncTax).toFixed(2)+'</span> </b>';
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<input value="' + parseFloat(unitPriceIncTax).toFixed(2) +
-                            '" name="subtotals[]" type="hidden" id="subtotal">';
-                        tr += '<b><span class="span_subtotal">' + parseFloat(unitPriceIncTax)
-                            .toFixed(2) + '</span></b>';
+                        tr += '<input value="'+ parseFloat(unitPriceIncTax).toFixed(2) +'" name="subtotals[]" type="hidden" id="subtotal">';
+                        tr += '<b><span class="span_subtotal">'+ parseFloat(unitPriceIncTax).toFixed(2) +'</span></b>';
                         tr += '</td>';
                         
                         tr +='<td><a href="#" class="action-btn c-delete" id="remove_product_btn"><span class="fas fa-trash "></span></a></td>';
@@ -189,6 +195,7 @@
 
     // select variant product and add purchase table
     function salectVariant(e){  
+        var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val("");
         var branch_id = $('#branch_id').val();
@@ -237,20 +244,15 @@
                                 var limit = closestTr.find('#qty_limit').val()
                                 var qty_limit = parseFloat(previousQty) + parseFloat(limit);
                                 if (parseFloat(qty_limit) === parseFloat(presentQty)) {
-                                    alert('Quantity Limit is - ' + qty_limit + ' ' +
-                                        product_unit);
+                                    toastr.error('Quantity Limit is - ' + qty_limit + ' ' + product_unit);
                                     return;
                                 }
                                 var updateQty = parseFloat(presentQty) + 1;
-                                closestTr.find('#quantity').val(parseFloat(updateQty)
-                                    .toFixed(2));
-
+                                closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                 //Update Subtotal
                                 var unitPrice = closestTr.find('#unit_price_inc_tax').val();
-                                var calcSubtotal = parseFloat(unitPrice) * parseFloat(
-                                    updateQty);
-                                closestTr.find('#subtotal').val(parseFloat(calcSubtotal)
-                                    .toFixed(2));
+                                var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
+                                closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                 closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                                 calculateTotalAmount();
                                 if (keyName == 9) {
@@ -297,14 +299,21 @@
                             product_unit + '">';
                         tr += '</td>';
 
+                        var price = 0;
+                        var __price = price_groups.filter(function (value) {
+                            return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
+                        });
+
+                        if (__price.length != 0) {
+                            price = __price[0].price ? __price[0].price : variant_price;
+                        } else {
+                            price = variant_price;
+                        }
+
                         tr += '<td>';
-                        tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="' +
-                            variant_price + '" id="unit_price_exc_tax">';
-                        var unitPriceIncTax = parseFloat(variant_price) / 100 *
-                            parseFloat(tax_percent) + parseFloat(variant_price);
-
+                        tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+ parseFloat(price).toFixed(2) + '" id="unit_price_exc_tax">';
+                        var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
                         tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="' +parseFloat(unitPriceIncTax).toFixed(2) + '">';
-
                         tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(unitPriceIncTax).toFixed(2) + '</span> </b>';
                         tr += '</td>';
                         tr += '<td>';
@@ -340,7 +349,7 @@
             var qty_limit = tr.find('#qty_limit').val();
             var unit = tr.find('#unit').val();
             if(parseInt(qty) > parseInt(qty_limit)){
-                alert('Quantity Limit Is - '+qty_limit+' '+unit);
+                toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
                 $(this).val(qty_limit);
                 var unitPrice = tr.find('#unit_price_inc_tax').val();
                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);

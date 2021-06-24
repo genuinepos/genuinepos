@@ -659,18 +659,18 @@ class ProductController extends Controller
             foreach ($request->group_prices as $key => $group_price) {
                 // echo '<pre>';
                 // echo 'group_id='.$key.', product='.$group_price[$product_id][$variant_ids[$index]];
-                $__group_price = $group_price[$product_id][$variant_ids[$index]];
+                (float)$__group_price = $group_price[$product_id][$variant_ids[$index]];
                 $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
                 $updatePriceGroup = PriceGroupProduct::where('price_group_id', $key)->where('product_id', $product_id)->where('variant_id', $__variant_id)->first();
                 if ($updatePriceGroup) {
-                    $updatePriceGroup->price = $__group_price;
+                    $updatePriceGroup->price = $__group_price != null ? $__group_price : NULL;
                     $updatePriceGroup->save();
                 } else {
                     $addPriceGroup = new PriceGroupProduct();
                     $addPriceGroup->price_group_id = $key;
                     $addPriceGroup->product_id = $product_id;
                     $addPriceGroup->variant_id = $__variant_id;
-                    $addPriceGroup->price = $__group_price;
+                    $addPriceGroup->price = $__group_price != null ? $__group_price : NULL;
                     $addPriceGroup->save();
                 }
             }

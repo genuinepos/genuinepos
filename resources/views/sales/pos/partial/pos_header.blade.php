@@ -127,7 +127,7 @@
                                     <input type="text" class="form-control" id="stock_quantity">
 
                                     <div class="input-group-prepend ms-1">
-                                        <select name="sell_price_group_id" class="form-control" id="sell_price_group_id">
+                                        <select name="price_group_id" class="form-control" id="price_group_id">
                                             <option value="">Default Selling Price</option>
                                             @foreach ($price_groups as $pg)
                                                 <option value="{{ $pg->id }}">{{ $pg->name }}</option>
@@ -200,6 +200,18 @@
     </nav>
 </div>
 <script>
+    // Get all price group
+    var price_groups = '';
+    function getPriceGroupProducts(){
+        $.ajax({
+            url:"{{ route('sales.product.price.groups') }}",
+            success:function(data){
+                price_groups = data;
+            }
+        });
+    }
+    getPriceGroupProducts();
+ 
     $('#customer_id').on('change', function () {
         var customerId = $(this).val();
         $('#previous_due').val(parseFloat(0).toFixed(2));

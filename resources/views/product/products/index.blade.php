@@ -171,7 +171,6 @@
 
         <!-- Details Modal -->
         <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-
         </div>
         <!-- Details Modal End-->
 

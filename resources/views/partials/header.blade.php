@@ -1,3 +1,4 @@
+{{-- <div id="google_translate_element"></div> --}}
 <header>
     <div class="navigation red_linear_bg">
         <div class="panel__nav">
@@ -5,6 +6,7 @@
                 <div class="logo__sec">
                     <a href="" class="logo">
                         <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                        
                     </a>
                 </div>
                 <div class="notify-menu">
@@ -133,4 +135,11 @@
         </div>
     </div>
 </header>
+{{-- <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+</script>
+    
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> --}}
 

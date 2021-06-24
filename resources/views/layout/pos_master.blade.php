@@ -17,13 +17,11 @@
     <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
 
-
     <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
 
     <!-- Calculator -->
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
-
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">
@@ -41,12 +39,9 @@
     <script src="{{asset('public')}}/backend/asset/js/bootstrap.bundle.min.js "></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script src="{{asset('public')}}/assets/plugins/custom/Shortcuts-master/shortcuts.js"></script>
-    <!--Sweet alert js link-->
+    <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/sweet-alert/sweet-alert.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
-
-    <!--Sweet alert js link end-->
     <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
 </head>
 
@@ -672,25 +667,6 @@
             $('#'+value).show();
         });
 
-        // Show sweet alert for delete
-        // var tableRowIndex = 0;
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var parentTableRow = $(this).closest('tr');
-        //     tableRowIndex = parentTableRow.index();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure to delete ?",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     }).then((willDelete) => {
-        //         if (willDelete) {
-        //             $('#deleted_form').submit();
-        //             $('#recent_trans_preloader').show();
-        //         } 
-        //     });
-        // });
         var tableRowIndex = 0;
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
@@ -762,24 +738,6 @@
             });
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#pos_exit_button',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#payment_deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure to exit ?",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     }).then((willDelete) => {
-        //         if (willDelete) {
-        //             window.location = "{{ route('dashboard.dashboard') }}";
-        //         } else {
-        //             swal("OK, Continue the selling.");
-        //         }
-        //     });
-        // });
-
         $(document).on('click', '#pos_exit_button',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
@@ -834,14 +792,14 @@
         $('#exchange_btn').on('click', function (e) {
             e.preventDefault();
             $('#invoice_description').empty();$('#invoice_id').val('');
-        })
+        });
 
         $('.calculator-bg__main button').prop('type','button');
 
         $('#reedem_point_button').on('click', function (e) {
             e.preventDefault();
             $('#pointReedemModal').modal('show');
-        })
+        });
     </script>
     @stack('js')
 </body>

@@ -100,6 +100,15 @@
                                         <span class="input-group-text valus">SQ</span>
                                     </div>
                                     <input type="text" class="form-control" id="stock_quantity">
+
+                                    <div class="input-group-prepend ms-1">
+                                        <select name="price_group_id" class="form-control" id="price_group_id">
+                                            <option value="">Default Selling Price</option>
+                                            @foreach ($price_groups as $pg)
+                                                <option value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -125,6 +134,18 @@
     </nav>
 </div>
 <script>
+    // Get all price group
+    var price_groups = '';
+    function getPriceGroupProducts(){
+        $.ajax({
+            url:"{{ route('sales.product.price.groups') }}",
+            success:function(data){
+                price_groups = data;
+            }
+        });
+    }
+    getPriceGroupProducts();
+
     $('#add_product').on('click', function () {
         $.ajax({
             url:"{{route('sales.add.product.modal.view')}}",
@@ -160,7 +181,6 @@
     }
 
     $(document).on('input', '#sale_product_cost',function() {
-        console.log($(this).val());
         $('.os_unit_costs_exc_tax').val(parseFloat($(this).val()).toFixed(2));
         costCalculate();
     });

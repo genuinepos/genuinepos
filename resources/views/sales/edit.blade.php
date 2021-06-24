@@ -62,7 +62,7 @@
                                                 </div>
                                             @else
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><span
+                                                <label for="inputEmail3" class="col-4"><span
                                                     class="text-danger">*</span> <b>Branch :</b> </label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control" value="{{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}">
@@ -74,7 +74,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b> </label>
+                                                <label for="inputEmail3" class="col-4"><b>Invoice ID :</b> </label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id"
                                                         class="form-control">
@@ -82,7 +82,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Attachment :</b>
+                                                <label for="inputEmail3" class="col-4"><b>Attachment :</b>
                                                     <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="file" name="attachment" class="form-control">
@@ -92,7 +92,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Status : <span
+                                                <label for="inputEmail3" class="col-4">Status : <span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <select name="status" class="form-control add_input" data-name="Status"
@@ -103,6 +103,19 @@
                                                         <option value="4">Quatation</option>
                                                     </select>
                                                     <span class="error error_status"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class="col-4"><b>Price Group :</b></label>
+                                                <div class="col-8">
+                                                    <select name="price_group_id" class="form-control"
+                                                        id="price_group_id">
+                                                        <option value="">Default Selling Price</option>
+                                                        @foreach ($price_groups as $pg)
+                                                            <option value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -409,6 +422,18 @@
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script>
+        // Get all price group
+        var price_groups = '';
+        function getPriceGroupProducts(){
+            $.ajax({
+                url:"{{route('sales.product.price.groups')}}",
+                success:function(data){
+                    price_groups = data;
+                }
+            });
+        }
+        getPriceGroupProducts();
+
         // Get all unite for form field
         var unites = [];
         function getUnites(){
@@ -498,6 +523,7 @@
 
         // add Sale product by searching product code
         function searchProduct(product_code, branch_id){
+            var price_group_id = $('#price_group_id').val();
             $('.variant_list_area').empty();
             $('.select_area').hide();
             var warehouse_id = $('#warehouse_id').val();
@@ -597,11 +623,20 @@
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
                                     tr += '<td>';
+
+                                    var price = 0;
+                                    var __price = price_groups.filter(function (value) {
+                                        return value.price_group_id == price_group_id && value.product_id == product.id;
+                                    });
+
+                                    if (__price.length != 0) {
+                                        price = __price[0].price ? __price[0].price : product.product_price;
+                                    } else {
+                                        price = product.product_price;
+                                    }
                                     
-                                    tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+product.product_price+'">';
-
-                                    var unitPriceIncTax = parseFloat(product.product_price) / 100 * parseFloat(tax_percent) + parseFloat(product.product_price);
-
+                                    tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
+                                    var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
                                     tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                                     tr += '</td>';
                                     tr += '<td class="text text-center">';
@@ -708,9 +743,20 @@
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
                                 tr += '<td>';
+
+                                var price = 0;
+                                var __price = price_groups.filter(function (value) {
+                                    return value.price_group_id == price_group_id && value.product_id == variant_product.product.id && value.variant_id == variant_product.id;
+                                });
+
+                                if (__price.length != 0) {
+                                    price = __price[0].price ? __price[0].price : variant_product.variant_price;
+                                } else {
+                                    price = variant_product.variant_price;
+                                }
                                 
-                                tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+variant_product.variant_price+'" id="unit_price_exc_tax">';
-                                var unitPriceIncTax = parseFloat(variant_product.variant_price) / 100 * parseFloat(tax_percent) + parseFloat(variant_product.variant_price);
+                                tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+'" id="unit_price_exc_tax">';
+                                var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
                                 tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'">';
                                 tr += '</td>';
                                 tr += '<td class="text text-center">';
@@ -765,6 +811,7 @@
         // select single product and add stock adjustment table
         var keyName = '';
         function singleProduct(e){
+            var price_group_id = $('#price_group_id').val();
             $('.select_area').hide();
             $('#search_product').val('');
             if (keyName == 13 || keyName == 1) {
@@ -870,11 +917,21 @@
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
                             tr += '<td>';
-                            
-                            tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+product_price_exc_tax+'">';
 
-                            var unitPriceIncTax = parseFloat(product_price_exc_tax) / 100 * parseFloat(p_tax_percent) + parseFloat(product_price_exc_tax);
+                            var price = 0;
+                            var __price = price_groups.filter(function (value) {
+                                return value.price_group_id == price_group_id && value.product_id == product_id;
+                            });
+
+                            if (__price.length != 0) {
+                                price = __price[0].price ? __price[0].price : product_price_exc_tax;
+                            } else {
+                                price = product_price_exc_tax;
+                            }
                             
+                            tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
+
+                            var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(p_tax_percent) + parseFloat(price);
                             tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                             tr += '</td>';
                             tr += '<td class="text text-center">';
@@ -902,6 +959,7 @@
 
         // select variant product and add purchase table
         function salectVariant(e){
+            var price_group_id = $('#price_group_id').val();
             if (keyName == 13 || keyName == 1) {
                 document.getElementById('search_product').focus();
             }
@@ -1017,11 +1075,20 @@
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
                             tr += '<td>';
+
+                            var price = 0;
+                            var __price = price_groups.filter(function (value) {
+                                return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
+                            });
+
+                            if (__price.length != 0) {
+                                price = __price[0].price ? __price[0].price : variant_price;
+                            } else {
+                                price = variant_price;
+                            }
                             
-                            tr += '<input name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+variant_price+'">';
-
-                            var unitPriceIncTax = parseFloat(variant_price) / 100 * parseFloat(tax_percent) + parseFloat(variant_price);
-
+                            tr += '<input name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
+                            var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
                             tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                             tr += '</td>';
                             tr += '<td class="text text-center">';

@@ -436,8 +436,7 @@
                                             <label><strong>Default Sale Discount :</strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                            class="fas fa-percent text-dark"></i></span>
+                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-percent text-dark input_i"></i></span>
                                                 </div>
                                                 <input type="text" name="default_sale_discount" class="form-control"
                                                     autocomplete="off"
@@ -474,6 +473,18 @@
                                                     {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'select_form_cmsn_list' ? 'SELECTED' : '' }}
                                                     value="select_form_cmsn_list">Select from commission agent&#039;s list
                                                 </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-1">
+                                        <div class="col-md-4">
+                                            <label><strong>Default Selling Price Group :</strong></label>
+                                            <select name="default_price_group_id" class="form-control">
+                                                <option value="null">None</option>
+                                                @foreach ($price_groups as $pg)
+                                                    <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -778,8 +789,7 @@
                                         <div class="col-md-4">
                                             <label><strong>Supplier ID:</strong></label>
                                             <input type="text" name="supplier_id" class="form-control"
-                                                autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['supplier_id'] }}">
+                                                autocomplete="off" value="{{ json_decode($generalSettings->prefix, true)['supplier_id'] }}">
                                         </div>
 
                                         <div class="col-md-4">

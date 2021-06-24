@@ -159,10 +159,10 @@ class SaleController extends Controller
 
                         if ($row->created_by == 1) {
                             $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                        }else {
+                        } else {
                             $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                         }
-                        
+
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
                     }
 
@@ -340,7 +340,7 @@ class SaleController extends Controller
                     if (auth()->user()->branch_id == $row->branch_id) {
                         if ($row->created_by == 1) {
                             $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                        }else {
+                        } else {
                             $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                         }
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
@@ -470,7 +470,7 @@ class SaleController extends Controller
                     if (auth()->user()->branch_id == $row->branch_id) {
                         if ($row->created_by == 1) {
                             $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                        }else {
+                        } else {
                             $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                         }
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
@@ -536,13 +536,13 @@ class SaleController extends Controller
             abort(403, 'Access Forbidden.');
         }
         $warehouses = DB::table('warehouses')
-        ->select('id', 'warehouse_name', 'warehouse_code')
-        ->orderBy('id', 'desc')
-        ->get();
-        
+            ->select('id', 'warehouse_name', 'warehouse_code')
+            ->orderBy('id', 'desc')
+            ->get();
+
         $customers = DB::table('customers')
-        ->where('status', 1)->select('id', 'name', 'phone')
-        ->orderBy('id', 'desc')->get();
+            ->where('status', 1)->select('id', 'name', 'phone')
+            ->orderBy('id', 'desc')->get();
 
         $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
@@ -554,8 +554,8 @@ class SaleController extends Controller
     {
         //return $request->all();
         $prefixSettings = DB::table('general_settings')
-        ->select(['id', 'prefix', 'contact_default_cr_limit'])
-        ->first();
+            ->select(['id', 'prefix', 'contact_default_cr_limit'])
+            ->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
         $branchInvoiceSchema = DB::table('branches')
@@ -565,16 +565,17 @@ class SaleController extends Controller
                 'branches.*',
                 'invoice_schemas.id as schema_id',
                 'invoice_schemas.prefix',
+                'invoice_schemas.format',
                 'invoice_schemas.start_from',
             )
             ->first();
 
         $invoicePrefix = '';
         if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
-            $invoicePrefix = $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from;
+            $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . '/' . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from . date('ymd');
         } else {
             $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-            $invoicePrefix = $defaultSchemas->prefix . $defaultSchemas->start_from;
+            $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . '/' . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from . date('ymd');
         }
 
         //return $request->all();
@@ -589,7 +590,7 @@ class SaleController extends Controller
         if ($request->total_due > $prefixSettings->contact_default_cr_limit) {
             return response()->json(['errorMsg' => 'Due amount exceeds to default credit limit.']);
         }
-      
+
         // generate invoice ID
         $i = 4;
         $a = 0;
@@ -606,7 +607,7 @@ class SaleController extends Controller
         }
 
         $addSale = new Sale();
-        $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . date('ymd') . $invoiceId;
+        $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $invoiceId;
         $addSale->admin_id = auth()->user()->id;
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -618,7 +619,7 @@ class SaleController extends Controller
         // $addSale->customer_id = $request->customer_id;
         $addSale->customer_id = $request->customer_id != 0 ? $request->customer_id : NULL;
         $addSale->status = $request->status;
-        
+
         if ($request->status == 1) {
             $addSale->is_fixed_challen = 1;
         }
@@ -1150,7 +1151,7 @@ class SaleController extends Controller
                             // update account
                             $account = Account::where('id', $request->account_id)->first();
                             $account->credit = $account->credit + $paidAmount;
-                            $account->balance =$account->balance - $paidAmount;
+                            $account->balance = $account->balance - $paidAmount;
                             $account->save();
 
                             // Add cash flow
@@ -1276,7 +1277,7 @@ class SaleController extends Controller
                 return view('sales.save_and_print_template.draft_print', compact('sale'));
             } elseif ($request->status == 4) {
                 return view('sales.save_and_print_template.quotation_print', compact('sale'));
-            } 
+            }
         } else {
             if ($request->status == 1) {
                 session()->flash('successMsg', 'Sale created successfully');
@@ -1290,6 +1291,7 @@ class SaleController extends Controller
             }
         }
     }
+
 
     // Sale edit view
     public function edit($saleId)
@@ -1639,7 +1641,7 @@ class SaleController extends Controller
                                 ->where('product_id', $sale_product->product_id)
                                 ->where('product_variant_id', $sale_product->product_variant_id)
                                 ->first();
-    
+
                             $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $sale_product->quantity;
                             $productBranchVariant->save();
                         }
@@ -1836,9 +1838,9 @@ class SaleController extends Controller
     public function getAllCustomer()
     {
         $customers = Customer::select('id', 'name',  'pay_term', 'pay_term_number', 'phone', 'total_sale_due')
-                ->where('is_walk_in_customer', 0)
-                ->orderBy('id', 'desc')
-                ->get();
+            ->where('is_walk_in_customer', 0)
+            ->orderBy('id', 'desc')
+            ->get();
         return response()->json($customers);
     }
 
@@ -1846,7 +1848,7 @@ class SaleController extends Controller
     public function customerInfo($customerId)
     {
         $customer = DB::table('customers')->where('id', $customerId)
-        ->select('pay_term', 'pay_term_number', 'total_sale_due', 'point')->first();
+            ->select('pay_term', 'pay_term_number', 'total_sale_due', 'point')->first();
         return response()->json($customer);
     }
 
@@ -1953,7 +1955,7 @@ class SaleController extends Controller
 
         $namedProducts = '';
         $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE',  $product_code.'%')
+            ->where('name', 'LIKE',  $product_code . '%')
             ->where('status', 1)
             ->get();
 

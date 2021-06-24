@@ -52,7 +52,7 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div class="col-12">
-                                                <a href="{{ asset('public/import_template/product_import_template.csv') }}" class="btn btn-sm btn-success" download>Export Selling Price Group Prices</a>
+                                                <a href="{{ route('products.export.price.group.products') }}" class="btn btn-sm btn-success">Export Selling Price Group Prices</a>
                                             </div>
                                         </div>
                                     </div>

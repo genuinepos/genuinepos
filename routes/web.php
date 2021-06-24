@@ -95,6 +95,11 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::post('add/brand', 'ProductController@addBrand')->name('products.add.brand');
         Route::post('add/unit', 'ProductController@addUnit')->name('products.add.unit');
         Route::post('add/warranty', 'ProductController@addWarranty')->name('products.add.warranty');
+
+        Route::group(['prefix' => 'import/price/group/products'], function ()
+        {
+            Route::get('export', 'ImportPriceGroupProductController@export')->name('products.export.price.group.products');
+        });
     });
 
     // Selling price group route group 
@@ -839,6 +844,42 @@ Route::get('/test', function () {
     //         'product_variants.variant_price',
     //     )->where('branch_id', 24)
     //     ->get();
+    // $export_date = [];
+    // $temp = [];
+
+    // for ($i=0; $i < 6; $i++) { 
+    //     $temp['product'] = 'Kola'.$i;
+    //     $temp['code'] = "K45".$i;
+    //     $temp['price'] = '180'.$i;
+    //     for($x=0; $x < 6; $x++){
+    //         $temp['price_group'.$x] = 10;
+    //     }
+    //     $export_date[] = $temp;
+    // }
+    
+    // //return $export_date;
+    // if (ob_get_contents()) ob_end_clean();ob_start();
+    // return collect($export_date)->downloadExcel(
+    //     'product_price_groups.xlsx',
+    //     null,
+    //     true
+    // );
+
+    //  $export_date = [
+    //      [
+    //          'product' => 'a',
+    //          'code' => 80,
+    //          'price' => 40,
+    //          'price' => 40,
+    //      ],
+    //      [
+    //         'product' => 'b',
+    //         'code' => 90,
+    //         'price' => 50,
+    //     ]
+    //  ];
+
+    //  return $export_date;
 });
 
 Auth::routes();

@@ -44,6 +44,7 @@
                                                     <th class="text-black">Serial</th>
                                                     <th class="text-black">Counter Name</th>
                                                     <th class="text-black">Short Name</th>
+                                                    <th class="text-black">Branch</th>
                                                     <th class="text-black">Actions</th>
                                                 </tr>
                                             </thead>
@@ -144,6 +145,7 @@
             columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
                 {data: 'counter_name',name: 'counter_name'},
                 {data: 'short_name',name: 'short_name'},
+                {data: 'branch',name: 'branch'},
                 {data: 'action',name: 'action'},
             ],
         });

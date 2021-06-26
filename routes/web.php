@@ -720,12 +720,6 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
         Route::get('all/adjustments', 'StockAdjustmentReportController@allAdjustments')->name('reports.stock.adjustments.all');
     });
 
-    Route::group(['prefix' => 'trending/products'], function () {
-        Route::get('/', 'TrendingProductReportController@index')->name('reports.trending.products.index');
-        Route::get('tranding/product/list', 'TrendingProductReportController@trandingProductList')->name('reports.trending.product.list');
-        Route::get('tranding/product/filter', 'TrendingProductReportController@trandingProductFilter')->name('reports.trending.product.filter');
-    });
-
     Route::group(['prefix' => 'product/purchases'], function () {
         Route::get('/', 'ProductPurchaseReportController@index')->name('reports.product.purchases.index');
         Route::get('search/product/{product_name}', 'ProductPurchaseReportController@searchProduct');

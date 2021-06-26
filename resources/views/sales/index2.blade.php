@@ -83,56 +83,54 @@
                     </div>
 
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Sale  <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></label></h6>
-                                    </div>
-                                    @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                        <div class="col-md-2">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="{{ route('sales.create') }}"><i
-                                                        class="fas fa-plus-square"></i> Add</a>
-                                            </div>
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Sale <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></label></h6>
+                                </div>
+                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                    <div class="col-md-2">
+                                        <div class="btn_30_blue float-end">
+                                            <a href="{{ route('sales.create') }}"><i
+                                                    class="fas fa-plus-square"></i> Add</a>
                                         </div>
-                                    @endif
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                     </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Actions</th>
-                                                    <th>Date</th>
-                                                    <th>Invoice ID</th>
-                                                    <th>Stock Location</th>
-                                                    <th>Customer</th>
-                                                    <th>Total Amount</th>
-                                                    <th>Total Paid</th>
-                                                    <th>Sell Due</th>
-                                                    <th>Payment Status</th>
-                                                    <th>Return Amount</th>
-                                                    <th>Return Due</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
+                                @endif
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Actions</th>
+                                                <th>Date</th>
+                                                <th>Invoice ID</th>
+                                                <th>Stock Location</th>
+                                                <th>Customer</th>
+                                                <th>Total Amount</th>
+                                                <th>Total Paid</th>
+                                                <th>Sell Due</th>
+                                                <th>Payment Status</th>
+                                                <th>Return Amount</th>
+                                                <th>Return Due</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -69,19 +69,18 @@ class POSController extends Controller
                 'branches.*',
                 'invoice_schemas.id as schema_id',
                 'invoice_schemas.prefix',
+                'invoice_schemas.format',
                 'invoice_schemas.start_from',
-            )
-            ->first();
+            )->first();
 
         $invoicePrefix = '';
         if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
-            $invoicePrefix = $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from;
+            $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . '/' . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from . date('ymd');
         } else {
             $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-            $invoicePrefix = $defaultSchemas->prefix . $defaultSchemas->start_from;
+            $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . '/' . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from . date('ymd');
         }
 
-        //return $request->all();
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
         }
@@ -107,7 +106,7 @@ class POSController extends Controller
         }
 
         // generate invoice ID
-        $i = 6;
+        $i = 4;
         $a = 0;
         $invoiceId = '';
         while ($a < $i) {
@@ -116,7 +115,7 @@ class POSController extends Controller
         }
 
         $addSale = new Sale();
-        $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . date('ymd') . $invoiceId;
+        $addSale->invoice_id = $invoicePrefix . $invoiceId;
         $addSale->admin_id = auth()->user()->id;
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

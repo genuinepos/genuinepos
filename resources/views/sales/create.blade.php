@@ -623,6 +623,72 @@
         </div>
     </div> 
     <!--Add Product Modal End-->
+
+    <!-- Recent transection list modal-->
+    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-40-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Recent Transections</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                        class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <!--begin::Form-->
+                    <div class="tab_list_area">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a id="tab_btn" class="tab_btn tab_active text-white" href="{{url('sales/pos/recent/sales')}}"><i class="fas fa-info-circle"></i> Final</a>
+                            </li>
+
+                            <li>
+                                <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/quotations')}}"><i class="fas fa-scroll"></i>Quotation</a>
+                            </li>
+
+                            <li>
+                                <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/drafts')}}"><i class="fas fa-shopping-bag"></i> Draft</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tab_contant">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table_area">
+                                    <div class="data_preloader" id="recent_trans_preloader">
+                                        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table modal-table table-sm table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-start">SL</th>
+                                                    <th class="text-start">InvoiceId</th>
+                                                    <th class="text-start">Customer</th>
+                                                    <th class="text-start">Total</th>
+                                                    <th class="text-start">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="data-list" id="transection_list">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Recent transection list modal end-->
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>

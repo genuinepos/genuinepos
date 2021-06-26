@@ -37,7 +37,8 @@ return [
     'purchase_return_list' => 'ক্রয়ের রিটার্ন তালিকা',
     // Menu child of sales module
     'add_sale' => 'বিক্রয় যোগ করুন',
-    'sale_list' => 'বিক্রয় পরিচালনা',
+    'add_sale_list' => 'বিক্রয় পরিচালনা',
+    'pos_sale_list' => 'পিওএস বিক্রয় পরিচালনা',
     'pos' => 'পিওএস',
     'pos_list' => 'পিওএস তালিকা',
     'draft_list' => 'খসড়া তালিকা',

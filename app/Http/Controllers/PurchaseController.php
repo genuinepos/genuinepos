@@ -329,8 +329,8 @@ class PurchaseController extends Controller
                     $updateProductQty->profit = $profits[$productIndex];
                     $updateProductQty->product_price = $selling_prices[$productIndex];
                 }
-                $updateProductQty->save();
             }
+            $updateProductQty->save();
 
             if ($variant_ids[$productIndex] != 'noid') {
                 $updateVariantQty = ProductVariant::where('id', $variant_ids[$productIndex])->where('product_id', $productId)->first();
@@ -340,7 +340,7 @@ class PurchaseController extends Controller
 
                 if ($isEditProductPrice == '1') {
                     $updateVariantQty->variant_profit = $profits[$productIndex];
-                    $updateProductQty->variant_price = $selling_prices[$productIndex];
+                    $updateVariantQty->variant_price = $selling_prices[$productIndex];
                 }
 
                 $updateVariantQty->is_purchased = 1;

@@ -1,5 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
+    <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
     <style>
         .input-group-text {font-size: 12px !important;}
         .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 88.3%;z-index: 9999999;padding: 0;left: 6%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
@@ -303,7 +304,7 @@
                                             <ul class="list-unstyled add_sale_ex_btn">
                                                 <li><button value="save_and_print" class="btn btn-sm btn-info text-white submit_button" data-status="4">Quotation</button></li>
                                                 <li><button value="save_and_print" class="btn btn-sm btn-warning text-white submit_button" data-status="2">Draft</button></li>
-                                                <li><button type="button" class="btn btn-sm btn-secondary text-white submit_button">Recent Transection</button></li>
+                                                <li><button type="button"  class="btn btn-sm btn-secondary text-white submit_button resent-tn">Recent Transection</button></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -663,7 +664,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="text-start">SL</th>
-                                                    <th class="text-start">InvoiceId</th>
+                                                    <th class="text-start">Invoice ID</th>
                                                     <th class="text-start">Customer</th>
                                                     <th class="text-start">Total</th>
                                                     <th class="text-start">Actions</th>
@@ -2029,5 +2030,29 @@
         $('#price_group_id').on('change', function () {
             console.log(price_groups);
         });
+
+        $(document).on('click', '.resent-tn',function (e) {
+            e.preventDefault();
+            showRecentTransectionModal();
+        });
+
+        function showRecentTransectionModal() {
+            recentSales();
+            $('#recentTransModal').modal('show');
+            $('.tab_btn').removeClass('tab_active');
+            $('#tab_btn').addClass('tab_active');
+        }
+
+        function recentSales() {
+            $('#recent_trans_preloader').show();
+            $.ajax({
+                url:"{{url('sales/recent/sales')}}",
+                type:'get',
+                success:function(data){
+                    $('#transection_list').html(data);
+                    $('#recent_trans_preloader').hide();
+                }
+            });
+        }
     </script>
 @endpush

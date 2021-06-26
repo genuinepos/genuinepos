@@ -292,7 +292,7 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     });
 });
 
-// Sale route group
+// Sale route group sales/recent/sales
 Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('v2', 'SaleController@index2')->name('sales.index2');
     Route::get('pos/list', 'SaleController@posList')->name('sales.pos.list');
@@ -329,6 +329,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('check/warehouse/variant/qty/{product_id}/{variant_id}/{branch_id}', 'SaleController@checkBranchProductVariantInWarehouse');
     Route::get('check/single/product/stock/in/warehouse/{product_id}/{branch_id}', 'SaleController@checkBranchSingleProductStockInWarehouse');
     Route::get('shipments', 'SaleController@shipments')->name('sales.shipments');
+    Route::get('recent/sales', 'SaleController@recentSale');
 
     // Sale payment route
     Route::get('payment/{saleId}', 'SaleController@paymentModal')->name('sales.payment.modal');

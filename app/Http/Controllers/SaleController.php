@@ -3091,4 +3091,18 @@ class SaleController extends Controller
     {
         return $price_groups = DB::table('price_group_products')->get(['id', 'price_group_id', 'product_id', 'variant_id', 'price']);
     }
+
+    // Recent Add sale
+    public function recentSale()
+    {
+        $sales = Sale::with('customer')->where('branch_id', auth()->user()->branch_id)
+            ->where('admin_id', auth()->user()->id)
+            ->where('status', 1)
+            ->where('created_by', 1)
+            ->where('is_return_available', 0)
+            ->orderBy('id', 'desc')
+            ->limit(10)
+            ->get();
+        return view('sales.ajax_view.recent_sale_list', compact('sales'));
+    }
 }

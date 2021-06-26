@@ -1958,7 +1958,7 @@ class SaleController extends Controller
         $namedProducts = '';
         $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
             ->where('name', 'LIKE',  $product_code . '%')
-            ->where('status', 1)
+            ->where('status', 1)->orderBy('id', 'desc')
             ->get();
 
         if (count($nameSearch) > 0) {
@@ -2054,7 +2054,7 @@ class SaleController extends Controller
         $namedProducts = '';
         $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
             ->where('name', 'LIKE', $product_code . '%')
-            ->where('status', 1)
+            ->where('status', 1)->orderBy('id', 'desc')
             ->get();
 
         if (count($nameSearch) > 0) {

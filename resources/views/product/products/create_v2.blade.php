@@ -781,14 +781,14 @@
     function costCalculate() {
         var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
         var tax_type = $('#tax_type').val();
-        var calc_product_cost_tax = 0;
-        if (tax_type == 1) {
-            calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
-        }else{
-            var __tax_percent = 100 + parseFloat(tax_percent);
-            var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
-            var calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
-        }
+        calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
+        // if (tax_type == 1) {
+        //     calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
+        // }else{
+        //     var __tax_percent = 100 + parseFloat(tax_percent);
+        //     var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
+        //     var calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
+        // }
         
         var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
         $('#product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));

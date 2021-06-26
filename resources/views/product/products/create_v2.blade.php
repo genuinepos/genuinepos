@@ -336,6 +336,20 @@
                                 <div class="form_element m-0 mt-2">
                                     <div class="element-body">
                                         <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
+                                                    <div class="col-8">
+                                                        <select name="type" class="form-control" id="type">
+                                                            <option value="1">General</option>
+                                                            <option value="2">Combo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-2">
                                             @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
@@ -354,16 +368,17 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
+                                                    <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
                                                     <div class="col-8">
-                                                        <select name="type" class="form-control" id="type">
-                                                            <option value="1">General</option>
-                                                            <option value="2">Combo</option>
+                                                        <select name="tax_type" class="form-control" id="tax_type">
+                                                            <option value="1">Exclusive</option>
+                                                            <option value="2">Inclusive</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="form_part">
                                             <div class="row mt-2">
                                                 <div class="col-md-6">
@@ -765,7 +780,16 @@
 
     function costCalculate() {
         var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
-        var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
+        var tax_type = $('#tax_type').val();
+        var calc_product_cost_tax = 0;
+        if (tax_type == 1) {
+            calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
+        }else{
+            var __tax_percent = 100 + parseFloat(tax_percent);
+            var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
+            var calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
+        }
+        
         var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
         $('#product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
         var profit = $('#profit').val() ? $('#profit').val() : 0;
@@ -792,6 +816,10 @@
     });
 
     $('#tax_id').on('change', function() {
+        costCalculate();
+    });
+
+    $('#tax_type').on('change', function() {
         costCalculate();
     });
 

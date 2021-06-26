@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedBigInteger('tax_id')->nullable();
+            $table->unsignedBigInteger('tax_type')->nullable();
             $table->unsignedBigInteger('warranty_id')->nullable();
             $table->decimal('product_cost', 10,2)->default(0);
             $table->decimal('product_cost_with_tax', 10,2)->default(0);

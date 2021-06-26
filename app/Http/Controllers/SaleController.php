@@ -6,7 +6,6 @@ use App\Models\Tax;
 use App\Models\Sale;
 use App\Models\Unit;
 use App\Models\Brand;
-use App\Models\Branch;
 use App\Models\Account;
 use App\Models\Product;
 use App\Models\CashFlow;
@@ -543,10 +542,10 @@ class SaleController extends Controller
         $customers = DB::table('customers')
             ->where('status', 1)->select('id', 'name', 'phone')
             ->orderBy('id', 'desc')->get();
-
+        $invoice_schemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);
         $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-        return view('sales.create', compact('warehouses', 'customers', 'accounts', 'price_groups'));
+        return view('sales.create', compact('warehouses', 'customers', 'accounts', 'price_groups', 'invoice_schemas'));
     }
 
     // Add Sale method
@@ -571,14 +570,17 @@ class SaleController extends Controller
             ->first();
 
         $invoicePrefix = '';
-        if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
-            $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . '/' . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from . date('ymd');
-        } else {
-            $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-            $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . '/' . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from . date('ymd');
+        if($request->invoice_schema){
+            $invoicePrefix = $request->invoice_schema;
+        }else {
+            if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
+                $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . '/' . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from . date('ymd');
+            } else {
+                $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
+                $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . '/' . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from . date('ymd');
+            }
         }
-
-        //return $request->all();
+       
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
         }

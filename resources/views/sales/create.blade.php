@@ -48,8 +48,7 @@
                                                             @endforeach
                                                         </select>
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text add_button" id="addCustomer"><i
-                                                                    class="fas fa-plus-square text-dark"></i></span>
+                                                            <span class="input-group-text add_button" id="addCustomer"><i class="fas fa-plus-square text-dark"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -88,8 +87,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id"
-                                                        class="form-control" placeholder="Invoice ID">
+                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID">
                                                 </div>
                                             </div>
 
@@ -130,9 +128,14 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-6"><b>Inv. Schema :</b></label>
                                                 <div class="col-6">
-                                                    <select name="invoice_schema_id" class="form-control"
-                                                        id="invoice_schema_id">
-                                                        <option value="">Default</option>
+                                                    <select name="invoice_schema" class="form-control"
+                                                        id="invoice_schema">
+                                                        <option value="">None</option>
+                                                        @foreach ($invoice_schemas as $inv_schema)
+                                                            <option value="{{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}">
+                                                                {{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -225,7 +228,7 @@
                                     </div>
                                 </div>
 
-                                <div class="item-details-sec mt-2 payment_body">
+                                <div class="item-details-sec mt-2">
                                     <div class="content-inner">
                                         <div class="row">
                                             <div class="col-md-4">
@@ -293,6 +296,18 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="item-details-sec mt-3">
+                                    <div class="content-inner">
+                                        <div class="row no-gutters">
+                                            <ul class="list-unstyled add_sale_ex_btn">
+                                                <li><button value="save_and_print" class="btn btn-sm btn-info text-white submit_button" data-status="4">Quotation</button></li>
+                                                <li><button value="save_and_print" class="btn btn-sm btn-warning text-white submit_button" data-status="2">Draft</button></li>
+                                                <li><button type="button" class="btn btn-sm btn-secondary text-white submit_button">Recent Transection</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-3">
@@ -357,144 +372,144 @@
                                                 <input class="d-none" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00">
                                             </div>
                                         </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive:</label>
-                                            <div class="col-sm-7">
-                                                <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00">
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Change :</label>
-                                            <div class="col-sm-7">
-                                                <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00">
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Paid By :</label>
-                                            <div class="col-sm-7">
-                                                <select name="payment_method" class="form-control" id="payment_method">
-                                                    <option value="Cash">Cash</option>
-                                                    <option value="Advanced">Advanced</option>
-                                                    <option value="Cheque">Cheque</option>
-                                                    <option value="Card">Card</option>
-                                                    <option value="Bank-Transfer">Bank-Transter</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Custom">Custom Field</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="payment_method d-none" id="Card">
+                                        <div class="payment_body">
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Card No :</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive:</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" class="form-control" name="card_no" id="card_no" placeholder="Card number">
+                                                    <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00">
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Card Holder :</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Change :</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" class="form-control" name="card_holder_name" id="card_holder_name" placeholder="Card holder name">
+                                                    <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00">
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">TrX Number :</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Paid By :</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" class="form-control" name="card_transaction_no" id="card_transaction_no" placeholder="Card transaction no">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Card Type :</label>
-                                                <div class="col-sm-7">
-                                                    <select name="card_type" class="form-control"  id="p_card_type">
-                                                        <option value="Credit-Card">Credit Card</option>  
-                                                        <option value="Debit-Card">Debit Card</option> 
-                                                        <option value="Visa">Visa Card</option> 
-                                                        <option value="Master-Card">Master Card</option> 
+                                                    <select name="payment_method" class="form-control" id="payment_method">
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Advanced">Advanced</option>
+                                                        <option value="Cheque">Cheque</option>
+                                                        <option value="Card">Card</option>
+                                                        <option value="Bank-Transfer">Bank-Transter</option>
+                                                        <option value="Other">Other</option>
+                                                        <option value="Custom">Custom Field</option>
                                                     </select>
                                                 </div>
-                                            </div> 
+                                            </div>
 
-                                            <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Month :</label>
-                                                <div class="col-sm-7">
-                                                    <input type="text" class="form-control " name="month" id="month" placeholder="Month">
+                                            <div class="payment_method d-none" id="Card">
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Card No :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="card_no" id="card_no" placeholder="Card number">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Card Holder :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="card_holder_name" id="card_holder_name" placeholder="Card holder name">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">TrX Number :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="card_transaction_no" id="card_transaction_no" placeholder="Card transaction no">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Card Type :</label>
+                                                    <div class="col-sm-7">
+                                                        <select name="card_type" class="form-control"  id="p_card_type">
+                                                            <option value="Credit-Card">Credit Card</option>  
+                                                            <option value="Debit-Card">Debit Card</option> 
+                                                            <option value="Visa">Visa Card</option> 
+                                                            <option value="Master-Card">Master Card</option> 
+                                                        </select>
+                                                    </div>
+                                                </div> 
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Month :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control " name="month" id="month" placeholder="Month">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Year :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="year" id="year" placeholder="Year">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Secure ID :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="secure_code" id="secure_code" placeholder="Secure code">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="payment_method d-none" id="Cheque">
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Cheque No :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="cheque_no" id="cheque_no" placeholder="Cheque number">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="payment_method d-none" id="Bank-Transfer">
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Account No :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="account_no" id="account_no" placeholder="Account number">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="payment_method d-none" id="Custom">
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">TrX No :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control " name="transaction_no" id="transaction_no" placeholder="Transaction number">
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Year :</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Pay Account :</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" class="form-control" name="year" id="year" placeholder="Year">
+                                                    <select name="account_id" class="form-control" id="account_id">
+                                                        <option value="">None</option>
+                                                        @foreach ($accounts as $account)
+                                                            <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Secure ID :</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Due :</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" class="form-control" name="secure_code" id="secure_code" placeholder="Secure code">
+                                                    <input readonly type="number" step="any" class="form-control" name="total_due" id="total_due" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="payment_method d-none" id="Cheque">
-                                            <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Cheque No :</label>
-                                                <div class="col-sm-7">
-                                                    <input type="text" class="form-control" name="cheque_no" id="cheque_no" placeholder="Cheque number">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="payment_method d-none" id="Bank-Transfer">
-                                            <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Account No :</label>
-                                                <div class="col-sm-7">
-                                                    <input type="text" class="form-control" name="account_no" id="account_no" placeholder="Account number">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="payment_method d-none" id="Custom">
-                                            <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">TrX No :</label>
-                                                <div class="col-sm-7">
-                                                    <input type="text" class="form-control " name="transaction_no" id="transaction_no" placeholder="Transaction number">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Pay Account :</label>
-                                            <div class="col-sm-7">
-                                                <select name="account_id" class="form-control" id="account_id">
-                                                    <option value="">None</option>
-                                                    @foreach ($accounts as $account)
-                                                        <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Due :</label>
-                                            <div class="col-sm-7">
-                                                <input readonly type="number" step="any" class="form-control" name="total_due" id="total_due" value="0.00">
-                                            </div>
-                                        </div>
-
                                         <div class="submitBtn">
                                             <div class="row justify-content-center">
                                                 <div class="col-12 text-end">
                                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                                                    <button type="submit" value="save_and_print" class="btn btn-sm btn-primary submit_button">Save & Print </button>
-                                                    <button type="submit" value="save" class="btn btn-sm btn-primary submit_button">Save </button>
+                                                    <button type="submit" value="save_and_print" data-status="1" class="btn btn-sm btn-primary submit_button">Final & Print </button>
+                                                    <button type="submit" value="save" data-status="1" class="btn btn-sm btn-primary submit_button">Final</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1589,7 +1604,6 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var inputs = $('.add_input');
-                inputs.removeClass('is-invalid');
                 $('.error').html('');  
                 var countErrorField = 0;  
             $.each(inputs, function(key, val){
@@ -1703,6 +1717,8 @@
 
         $('.submit_button').on('click', function () {
             var value = $(this).val();
+            var data_status = $(this).data('status');
+            var status = $('#status').val(data_status);
             $('#action').val(value); 
         });
         

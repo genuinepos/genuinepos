@@ -165,7 +165,11 @@
             </li>
 
             <li>
-                <b>Branch : </b> {!!$activeCashRegister->branch ? $activeCashRegister->branch->name.' - '.$activeCashRegister->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (<b>Head Office</b>)' !!}
+                <b>Branch : </b> {!! $activeCashRegister->branch ? $activeCashRegister->branch->name.' - '.$activeCashRegister->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (<b>Head Office</b>)' !!}
+            </li>
+
+            <li>
+                <b>Cash Counter : </b> {!! $activeCashRegister->cash_counter ? $activeCashRegister->cash_counter->counter_name.' (<b>'.$activeCashRegister->cash_counter->short_name.'</b>)' : 'N/A' !!}
             </li>
         </ul>
     </div>

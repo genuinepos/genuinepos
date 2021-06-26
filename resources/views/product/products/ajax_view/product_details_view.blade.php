@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="carousel-item active product_image">
-                        <img  class="rounded" style="height:200px;width:250px;"
+                        <img  class="rounded" style="height:170px;width:190px;"
                             src="{{ asset('public/uploads/product/thumbnail/' . $product->thumbnail_photo) }}" class="d-block w-100">
                     </div>
                 </div>

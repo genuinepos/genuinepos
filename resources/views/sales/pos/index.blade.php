@@ -2,7 +2,7 @@
 @push('stylesheets')
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
 @endpush
-@section('title', 'All Sale - ')
+@section('title', 'All POS Sale - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -13,7 +13,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Sales</h5>
+                                <h5>POS Sales</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -87,7 +87,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Sale <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></label></h6>
+                                    <h6>All POS Sale <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></label></h6>
                                 </div>
                                 @if (auth()->user()->permission->purchase['purchase_add'] == '1')
                                     <div class="col-md-2">
@@ -240,7 +240,7 @@
             ],
             aaSorting: [[0, 'desc']],
             "ajax": {
-                "url": "{{ route('sales.index2') }}",
+                "url": "{{ route('sales.pos.list') }}",
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
                     d.customer_id = $('#customer_id').val();

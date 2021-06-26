@@ -292,10 +292,12 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     });
 });
 
-// Sale route group
+// Sale route group sales/recent/sales
 Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('v2', 'SaleController@index2')->name('sales.index2');
+    Route::get('pos/list', 'SaleController@posList')->name('sales.pos.list');
     Route::get('show/{saleId}', 'SaleController@show')->name('sales.show');
+    Route::get('pos/show/{saleId}', 'SaleController@posShow')->name('sales.pos.show');
     Route::get('print/{saleId}', 'SaleController@print')->name('sales.print');
     Route::get('packing/Slip/{saleId}', 'SaleController@packingSlip')->name('sales.packing.slip');
     Route::get('drafts', 'SaleController@drafts')->name('sales.drafts');
@@ -327,6 +329,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('check/warehouse/variant/qty/{product_id}/{variant_id}/{branch_id}', 'SaleController@checkBranchProductVariantInWarehouse');
     Route::get('check/single/product/stock/in/warehouse/{product_id}/{branch_id}', 'SaleController@checkBranchSingleProductStockInWarehouse');
     Route::get('shipments', 'SaleController@shipments')->name('sales.shipments');
+    Route::get('recent/sales', 'SaleController@recentSale');
 
     // Sale payment route
     Route::get('payment/{saleId}', 'SaleController@paymentModal')->name('sales.payment.modal');
@@ -718,12 +721,6 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     Route::group(['prefix' => 'stock/adjustments'], function () {
         Route::get('/', 'StockAdjustmentReportController@index')->name('reports.stock.adjustments.index');
         Route::get('all/adjustments', 'StockAdjustmentReportController@allAdjustments')->name('reports.stock.adjustments.all');
-    });
-
-    Route::group(['prefix' => 'trending/products'], function () {
-        Route::get('/', 'TrendingProductReportController@index')->name('reports.trending.products.index');
-        Route::get('tranding/product/list', 'TrendingProductReportController@trandingProductList')->name('reports.trending.product.list');
-        Route::get('tranding/product/filter', 'TrendingProductReportController@trandingProductFilter')->name('reports.trending.product.filter');
     });
 
     Route::group(['prefix' => 'product/purchases'], function () {

@@ -20,7 +20,10 @@ class CashRegisterController extends Controller
     {   
         $warehouses = '';
         $accounts = '';
-        $cashCounters = DB::table('cash_counters')->get(['id', 'counter_name', 'short_name']);
+        $cashCounters = DB::table('cash_counters')
+        ->where('branch_id', auth()->user()->branch_id)
+        ->get(['id', 'counter_name', 'short_name']);
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $warehouses = DB::table('warehouses')->get(['id', 'warehouse_name', 'warehouse_code']);
             $accounts = DB::table('accounts')->get(['id', 'name', 'account_number', 'balance']);
@@ -84,7 +87,8 @@ class CashRegisterController extends Controller
             'cash_register_transactions',
             'cash_register_transactions.sale',
             'cash_register_transactions.sale.sale_products',
-            'cash_register_transactions.sale.sale_payments'
+            'cash_register_transactions.sale.sale_payments',
+            'cash_counter'
         ])->where('admin_id', auth()->user()->id)->where('status', 1)->first();
         return view('sales.cash_register.ajax_view.cash_register_details', compact('activeCashRegister'));
     }

@@ -1361,3 +1361,4 @@ a.bar-link p {font-size: 7px; font-weight: 600; margin-top: -7px;}
 
 .modal_variant_list_area ul li {display: inline-block;margin-left: 10px;border: 1px solid #3cb7dd;border-radius: 3px;}
 .modal_variant_list_area ul li a {display: block;padding: 3px 5px;color: black;}
+ul.add_sale_ex_btn li {display: inline-block; float: right; margin-left: 5px;}

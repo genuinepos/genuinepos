@@ -98,7 +98,7 @@ class ProductController extends Controller
                     return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
                 })
                 ->editColumn('photo', function ($row) use ($img_url) {
-                    return '<img loading="lazy" class="rounded" width="40" height="40" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
+                    return '<img loading="lazy" class="rounded" style="height:40px; width:40px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
                 })
                 ->addColumn('action', function ($row) use ($priceGroups) {
                     // return $action_btn;
@@ -187,7 +187,7 @@ class ProductController extends Controller
         $brands = DB::table('brands')->get(['id', 'name']);
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
         $taxes = DB::table('taxes')->get(['id', 'tax_name']);
-        return view('product.products.index', compact('categories', 'brands', 'units', 'taxes'));
+        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes'));
     }
 
     // Add product view

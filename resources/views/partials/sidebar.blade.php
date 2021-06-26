@@ -501,15 +501,14 @@
                                         <p class="switch_text"> @lang('menu.add_sale')</p>
                                     </div>
 
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.index2') }}" class="bar-link">
                                                 <span><img
                                                         src="{{ asset('public/backend/asset/img/wishlist.png') }}"></span>
                                             </a>
                                         </div>
-                                        <p class="switch_text">@lang('menu.sale_list')</p>
+                                        <p class="switch_text">@lang('menu.add_sale_list')</p>
                                     </div>
                                 @endif
                             @endif
@@ -524,6 +523,15 @@
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.pos')</p>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('sales.pos.list') }}" class="bar-link">
+                                                <span><img src="{{ asset('public/backend/asset/img/wishlist.png') }}"></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.pos_sale_list')</p>
                                     </div>
                                 @endif
                             @endif

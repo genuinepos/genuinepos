@@ -37,7 +37,8 @@ return [
   'purchase_return_list' => 'Purchase Return List',
   // Menu childs of sales module
   'add_sale' => 'Add Sale',
-  'sale_list' => 'Manage Sale',
+  'add_sale_list' => 'Manage Add Sale',
+  'pos_sale_list' => 'Manage POS Sale',
   'pos' => 'POS',
   'pos_list' => 'POS List',
   'draft_list' => 'Draft List',

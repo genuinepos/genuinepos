@@ -340,7 +340,7 @@ class PurchaseController extends Controller
 
                 if ($isEditProductPrice == '1') {
                     $updateVariantQty->variant_profit = $profits[$productIndex];
-                    $updateProductQty->variant_price = $selling_prices[$productIndex];
+                    $updateVariantQty->variant_price = $selling_prices[$productIndex];
                 }
 
                 $updateVariantQty->is_purchased = 1;

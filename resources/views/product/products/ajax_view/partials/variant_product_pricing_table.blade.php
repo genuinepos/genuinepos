@@ -16,6 +16,15 @@
     </thead>
     <tbody class="variant_product_pricing_table_body">
         @foreach ($product->product_variants as $variant)
+            @php
+                $priceIncTax = ($variant->variant_price / 100 * $tax) + $variant->variant_price;
+                if ($product->tax_type == 2) {
+                    $inclusiveTax = 100 + $tax;
+                    $calc = ($variant->variant_price / $inclusiveTax) * 100;
+                    $__tax_amount = $variant->variant_price - $calc;
+                    $priceIncTax = $variant->variant_price + $__tax_amount;
+                }
+            @endphp
             <tr>
                 <td class="text-start">{{ $variant->variant_name }}</td>
                 <td class="text-start">{{ $variant->variant_code }}</td>
@@ -28,10 +37,10 @@
                 <td class="text-start"> {{ $variant->variant_profit }}</td>
                 <td class="text-start">
                     {{ json_decode($generalSettings->business, true)['currency'] }}
-                    {{ $variant->variant_price }}
+                    {{ bcadd($priceIncTax, 0, 2) }}
                 </td>
                 <td class="text-start">
-                    {{ ($variant->variant_price / 100 * $tax) + $variant->variant_price }}
+                    
                 </td>
                 
                 @if (count($price_groups) > 0)

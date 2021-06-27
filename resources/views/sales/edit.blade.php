@@ -350,21 +350,21 @@
                     <form id="update_selling_product" action="">
                         <div class="form-group">
                             <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" readonly class="form-control form-control-sm edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
+                            <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
                             <span class="error error_e_quantity"></span>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mt-1">
                             <label> <strong>Unit Price Exc.Tax</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" {{ auth()->user()->permission->sale['edit_price_sale_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price"/>
+                            <input type="number" step="any" {{ auth()->user()->permission->sale['edit_price_sale_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price"/>
                             <span class="error error_e_unit_price"></span>
                         </div>
 
                         @if (auth()->user()->permission->sale['edit_discount_sale_screen'] == '1')
-                            <div class="form-group row">
+                            <div class="form-group row mt-1">
                                 <div class="col-md-6">
                                     <label><strong>Discount Type</strong>  :</label>
-                                    <select class="form-control form-control-sm" id="e_unit_discount_type">
+                                    <select class="form-control " id="e_unit_discount_type">
                                         <option value="2">Percentage</option>
                                         <option value="1">Fixed</option>
                                     </select>
@@ -372,28 +372,38 @@
 
                                 <div class="col-md-6">
                                     <label><strong>Discount</strong>  :</label>
-                                    <input type="number" class="form-control form-control-sm" id="e_unit_discount" value="0.00"/>
+                                    <input type="number" step="any" class="form-control " id="e_unit_discount" value="0.00"/>
                                     <input type="hidden" id="e_discount_amount"/>
                                 </div>
                             </div>
                         @endif
 
-                        <div class="form-group">
-                            <label><strong>Tax</strong> :</label>
-                            <select class="form-control form-control-sm" id="e_unit_tax">
-                                
-                            </select>
+                        <div class="form-group row mt-1">
+                            <div class="col-md-6">
+                                <label><strong>Tax</strong> :</label>
+                                <select class="form-control" id="e_unit_tax">
+                                    
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><strong>Tax Type</strong>  :</label>
+                                <select class="form-control" id="e_tax_type">
+                                    <option value="1">Exclusive</option>
+                                    <option value="2">Inclusive</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mt-1">
                             <label><strong>Sale Unit</strong> :</label>
-                            <select class="form-control form-control-sm" id="e_unit">
+                            <select class="form-control" id="e_unit">
 
                             </select>
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn btn_blue float-end">Update</button>
+                            <button type="submit" class="c-btn btn_blue float-end me-0">Update</button>
                         </div>
                     </form>
                 </div>
@@ -586,7 +596,22 @@
 
                                 if(sameProduct == 0){
                                     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
-                                    var tax_amount = parseFloat(product.tax != null ? product.product_price/100 * product.tax.tax_percent : 0);
+                                    var price = 0;
+                                    var __price = price_groups.filter(function (value) {
+                                        return value.price_group_id == price_group_id && value.product_id == product.id;
+                                    });
+
+                                    if (__price.length != 0) {
+                                        price = __price[0].price ? __price[0].price : product.product_price;
+                                    } else {
+                                        price = product.product_price;
+                                    }
+                                    var tax_amount = parseFloat(price / 100 * tax_percent);
+                                    if (product.tax_type == 2) {
+                                        var inclusiveTax = 100 + parseFloat(tax_percent)
+                                        var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
+                                        tax_amount = parseFloat(price) - parseFloat(calcAmount);
+                                    }
                                     var tr = '';
                                     tr += '<tr>';
                                     tr += '<td colspan="2" class="text-start">';
@@ -597,6 +622,7 @@
                                     tr += '</a><br/><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                                    tr += '<input value="'+product.tax_type+'" type="hidden" id="tax_type">';
                                     tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
                                     tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(tax_amount).toFixed(2)+'">';
                                     tr += '<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
@@ -623,20 +649,14 @@
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
                                     tr += '<td>';
-
-                                    var price = 0;
-                                    var __price = price_groups.filter(function (value) {
-                                        return value.price_group_id == price_group_id && value.product_id == product.id;
-                                    });
-
-                                    if (__price.length != 0) {
-                                        price = __price[0].price ? __price[0].price : product.product_price;
-                                    } else {
-                                        price = product.product_price;
-                                    }
-                                    
                                     tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
                                     var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
+                                    if (product.tax_type == 2) {
+                                        var inclusiveTax = 100 + parseFloat(tax_percent)
+                                        var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
+                                        var taxAmount = parseFloat(price) - parseFloat(calcAmount);
+                                        unitPriceIncTax = parseFloat(price) + parseFloat(taxAmount);
+                                    }
                                     tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                                     tr += '</td>';
                                     tr += '<td class="text text-center">';
@@ -656,10 +676,17 @@
                                 var imgUrl = "{{ asset('public/uploads/product/thumbnail') }}";
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
                                 $.each(product.product_variants, function(key, variant){
-                                    var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
+                                    var tax_amount = parseFloat(variant.variant_price/100 * tax_percent);
                                     var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price);
+                                    if (product.tax_type == 2) {
+                                       var inclusiveTax = 100 + parseFloat(tax_percent);
+                                       var calcTax = parseFloat(variant.variant_price) / parseFloat(inclusiveTax) * 100;
+                                       var __tax_amount = parseFloat(variant.variant_price) - parseFloat(calcTax);
+                                        unitPriceIncTax = parseFloat(variant.variant_price) + parseFloat(__tax_amount);
+                                        tax_amount = __tax_amount;
+                                    }
                                     li += '<li class="mt-1">';
-                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li += '</li>';
                                 });
                                 $('.variant_list_area').append(li);
@@ -671,7 +698,6 @@
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
-                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
@@ -705,8 +731,22 @@
                             });
                            
                             if(sameVariant == 0){
-                                var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
-                                var tax_amount = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * variant_product.product.tax.tax_percent : 0);
+                                var price = 0;
+                                var __price = price_groups.filter(function (value) {
+                                    return value.price_group_id == price_group_id && value.product_id == variant_product.product.id && value.variant_id == variant_product.id;
+                                });
+
+                                if (__price.length != 0) {
+                                    price = __price[0].price ? __price[0].price : variant_product.variant_price;
+                                } else {
+                                    price = variant_product.variant_price;
+                                }
+                                var tax_amount = parseFloat(price / 100 * tax_percent);
+                                if (product.tax_type == 2) {
+                                    var inclusiveTax = 100 + parseFloat(tax_percent)
+                                    var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
+                                    tax_amount = parseFloat(price) - parseFloat(calcAmount);
+                                }
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td colspan="2" class="text-start">';
@@ -717,6 +757,7 @@
                                 tr += '</a><br/><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
+                                tr += '<input value="'+variant_product.product.tax_type+'" type="hidden" id="tax_type">';
                                 tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
                                 tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(tax_amount).toFixed(2)+'">';
                                 tr += '<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
@@ -743,20 +784,14 @@
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
                                 tr += '<td>';
-
-                                var price = 0;
-                                var __price = price_groups.filter(function (value) {
-                                    return value.price_group_id == price_group_id && value.product_id == variant_product.product.id && value.variant_id == variant_product.id;
-                                });
-
-                                if (__price.length != 0) {
-                                    price = __price[0].price ? __price[0].price : variant_product.variant_price;
-                                } else {
-                                    price = variant_product.variant_price;
-                                }
-                                
                                 tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+'" id="unit_price_exc_tax">';
                                 var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
+                                if (product.tax_type == 2) {
+                                    var inclusiveTax = 100 + parseFloat(tax_percent)
+                                    var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
+                                    var taxAmount = parseFloat(price) - parseFloat(calcAmount);
+                                    unitPriceIncTax = parseFloat(price) + parseFloat(taxAmount);
+                                }
                                 tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'">';
                                 tr += '</td>';
                                 tr += '<td class="text text-center">';
@@ -780,17 +815,32 @@
                                     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                     if (product.product_variants.length > 0) {
                                         $.each(product.product_variants, function(key, variant){
-                                            var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
+                                            var tax_amount = parseFloat(variant.variant_price/100 * tax_percent);
                                             var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price);
+                                            if (product.tax_type == 2) {
+                                                var inclusiveTax = 100 + parseFloat(tax_percent);
+                                                var calcTax = parseFloat(variant.variant_price) / parseFloat(inclusiveTax) * 100;
+                                                var __tax_amount = parseFloat(variant.variant_price) - parseFloat(calcTax);
+                                                unitPriceIncTax = parseFloat(variant.variant_price) + parseFloat(__tax_amount);
+                                                tax_amount = __tax_amount;
+                                            }
                                             li += '<li>';
-                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-description="'+product.is_show_emi_on_pos+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-description="'+product.is_show_emi_on_pos+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                             li +='</li>';
                                         });
                                     }else{
-                                        var tax_amount = parseFloat(product.tax != null ? product.product_price/100 * product.tax.tax_percent : 0);
+                                        var tax_amount = parseFloat(product.product_price/100 * tax_percent);
                                         var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
+                                        if (product.tax_type == 2) {
+                                            var inclusiveTax = 100 + parseFloat(tax_percent);
+                                            var calcTax = parseFloat(product.product_price) / parseFloat(inclusiveTax) * 100;
+                                            var __tax_amount = parseFloat(product.product_price) - parseFloat(calcTax);
+                                            unitPriceIncTax = parseFloat(product.product_price) + parseFloat(__tax_amount);
+                                            tax_amount = __tax_amount;
+                                        }
+
                                         li += '<li>';
-                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_percent="'+tax_percent+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'"  data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
                                     }
                                 });
@@ -828,6 +878,7 @@
             var product_price_exc_tax = e.getAttribute('data-p_price_exc_tax');
             var p_tax_percent = e.getAttribute('data-p_tax_percent');
             var p_tax_amount = e.getAttribute('data-p_tax_amount');
+            var p_tax_type = e.getAttribute('data-tax_type');
             var description = e.getAttribute('data-description');
             if(warehouse_id == ""){
                 $('#search_product').val("");
@@ -880,6 +931,17 @@
                         });
 
                         if(sameProduct == 0){
+                            var price = 0;
+                            var __price = price_groups.filter(function (value) {
+                                return value.price_group_id == price_group_id && value.product_id == product_id;
+                            });
+
+                            if (__price.length != 0) {
+                                price = __price[0].price ? __price[0].price : product_price_exc_tax;
+                            } else {
+                                price = product_price_exc_tax;
+                            }
+
                             var tr = '';
                             tr += '<tr>';
                             tr += '<td colspan="2" class="text-start">';
@@ -890,6 +952,7 @@
                             tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                            tr += '<input value="'+p_tax_type+'" type="hidden" id="tax_type">';
                             tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+p_tax_percent+'">';
                             tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(p_tax_amount).toFixed(2)+'">';
                             tr += '<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
@@ -918,20 +981,16 @@
                             tr += '</td>';
                             tr += '<td>';
 
-                            var price = 0;
-                            var __price = price_groups.filter(function (value) {
-                                return value.price_group_id == price_group_id && value.product_id == product_id;
-                            });
-
-                            if (__price.length != 0) {
-                                price = __price[0].price ? __price[0].price : product_price_exc_tax;
-                            } else {
-                                price = product_price_exc_tax;
-                            }
-                            
                             tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
 
                             var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(p_tax_percent) + parseFloat(price);
+                            if (p_tax_type == 2) {
+                                var inclusiveTax = 100 + parseFloat(p_tax_percent);
+                                var calcTax = parseFloat(price) / parseFloat(inclusiveTax) * 100;
+                                var __tax_amount = parseFloat(price) - parseFloat(calcTax);
+                                unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
+                            }
+
                             tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                             tr += '</td>';
                             tr += '<td class="text text-center">';
@@ -974,6 +1033,7 @@
             var tax_percent = e.getAttribute('data-tax_percent');
             var product_unit = e.getAttribute('data-unit');
             var tax_id = e.getAttribute('data-p_tax_id');
+            var tax_type = e.getAttribute('data-tax_type');
             var tax_amount = e.getAttribute('data-tax_amount');
             var variant_id = e.getAttribute('data-v_id');
             var variant_name = e.getAttribute('data-v_name');
@@ -1039,6 +1099,16 @@
                         });
 
                         if(sameVariant == 0){
+                            var price = 0;
+                            var __price = price_groups.filter(function (value) {
+                                return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
+                            });
+
+                            if (__price.length != 0) {
+                                price = __price[0].price ? __price[0].price : variant_price;
+                            } else {
+                                price = variant_price;
+                            }
                             var tr = '';
                             tr += '<tr>';
                             tr += '<td colspan="2" class="text-start">';
@@ -1049,6 +1119,7 @@
                             tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
+                            tr += '<input value="'+tax_type+'" type="hidden" id="tax_type">';
                             tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
                             tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(tax_amount).toFixed(2)+'">';
                             tr += '<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
@@ -1076,19 +1147,14 @@
                             tr += '</td>';
                             tr += '<td>';
 
-                            var price = 0;
-                            var __price = price_groups.filter(function (value) {
-                                return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
-                            });
-
-                            if (__price.length != 0) {
-                                price = __price[0].price ? __price[0].price : variant_price;
-                            } else {
-                                price = variant_price;
-                            }
-                            
                             tr += '<input name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
                             var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
+                            if (tax_type == 2) {
+                                var inclusiveTax = 100 + parseFloat(tax_percent);
+                                var calcTax = parseFloat(price) / parseFloat(inclusiveTax) * 100;
+                                var __tax_amount = parseFloat(price) - parseFloat(calcTax);
+                                unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
+                            }
                             tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                             tr += '</td>';
                             tr += '<td class="text text-center">';
@@ -1231,6 +1297,7 @@
             var unit_price_exc_tax = parentTableRow.find('#unit_price_exc_tax').val();
             var unit_tax_percent = parentTableRow.find('#unit_tax_percent').val();
             var unit_tax_amount = parentTableRow.find('#unit_tax_amount').val();
+            var unit_tax_type = parentTableRow.find('#tax_type').val();
             var unit_discount_type = parentTableRow.find('#unit_discount_type').val();
             var unit_discount = parentTableRow.find('#unit_discount').val();
             var unit_discount_amount = parentTableRow.find('#unit_discount_amount').val();
@@ -1238,22 +1305,22 @@
             // Set modal heading
             var heading = product_name + (product_variant ? product_variant : '') + product_code;
             $('#product_info').html(heading);
-    
+            
             $('#e_quantity').val(parseFloat(quantity).toFixed(2));
             $('#e_unit_price').val(parseFloat(unit_price_exc_tax).toFixed(2));
             $('#e_unit_discount_type').val(unit_discount_type);
             $('#e_unit_discount').val(unit_discount);
             $('#e_discount_amount').val(unit_discount_amount);
             $('#e_unit_tax').empty();
+            $('#e_unit_tax').append('<option value="0.00">No Tax</option>');
             taxArray.forEach(function (tax) {
-                $('#e_unit_tax').append('<option value="0.00">No Tax</option>');
                 if (tax.tax_percent == unit_tax_percent) {
                     $('#e_unit_tax').append('<option SELECTED value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
                 }else{
                     $('#e_unit_tax').append('<option value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
                 }
             });
-
+            $('#e_tax_type').val(unit_tax_type);
             $('#e_unit').empty();
             unites.forEach(function (unit) {
                 if (unit == product_unit) {
@@ -1317,39 +1384,11 @@
             var e_unit_discount = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
             var e_unit_discount_amount = $('#e_discount_amount').val() ? $('#e_discount_amount').val() : 0.00;
             var e_unit_tax_percent = $('#e_unit_tax').val() ? $('#e_unit_tax').val() : 0.00;
+            var e_unit_tax_type = $('#e_tax_type').val();
             var e_unit = $('#e_unit').val();
 
             var productTableRow = $('#sale_list tr:nth-child(' + (tableRowIndex + 1) + ')');
             // calculate unit tax 
-            var previous_quantity = productTableRow.find('#previous_quantity').val();
-            var limit = productTableRow.find('#qty_limit').val();
-            var qty_limit = parseFloat(previous_quantity) + parseFloat(limit);
-            if (parseFloat(e_quantity) > parseFloat(qty_limit)) {
-                alert('Quantity exceeds stock quantity!');
-                productTableRow.find('.span_unit').html(e_unit);
-                productTableRow.find('#unit').val(e_unit);
-                productTableRow.find('#unit').val(e_unit);
-                productTableRow.find('#quantity').val(parseFloat(qty_limit).toFixed(2));
-                productTableRow.find('#unit_price_exc_tax').val(parseFloat(e_unit_price).toFixed(2));
-                productTableRow.find('#unit_discount_type').val(e_unit_discount_type);
-                productTableRow.find('#unit_discount').val(parseFloat(e_unit_discount).toFixed(2));
-                productTableRow.find('#unit_discount_amount').val(parseFloat(e_unit_discount_amount).toFixed(2));
-                
-                var calsUninTaxAmount = (parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount)) / 100 * parseFloat(e_unit_tax_percent);
-                productTableRow.find('#unit_tax_percent').val(parseFloat(e_unit_tax_percent).toFixed(2));
-                productTableRow.find('#unit_tax_amount').val(parseFloat(calsUninTaxAmount).toFixed(2));
-                var calcUnitPriceWithDiscount = parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount);
-                var calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent) + parseFloat(calcUnitPriceWithDiscount);
-
-                productTableRow.find('#unit_price').val(parseFloat(calcUnitPriceIncTax).toFixed(2));
-
-                var calcSubtotal = parseFloat(calcUnitPriceIncTax) * parseFloat(qty_limit);
-                productTableRow.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-                productTableRow.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                $('#editProductModal').modal('hide');
-                calculateTotalAmount();
-                return;
-            }
             productTableRow.find('.span_unit').html(e_unit);
             productTableRow.find('#unit').val(e_unit);
             productTableRow.find('#unit').val(e_unit);
@@ -1360,10 +1399,23 @@
             productTableRow.find('#unit_discount_amount').val(parseFloat(e_unit_discount_amount).toFixed(2));
             
             var calsUninTaxAmount = (parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount)) / 100 * parseFloat(e_unit_tax_percent);
+            if (e_unit_tax_type == 2) {
+                var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
+                var calc = parseFloat(e_unit_price) / parseFloat(inclusiveTax) * 100;
+                calsUninTaxAmount = parseFloat(e_unit_price) - parseFloat(calc);
+            }
             productTableRow.find('#unit_tax_percent').val(parseFloat(e_unit_tax_percent).toFixed(2));
+            productTableRow.find('#tax_type').val(e_unit_tax_type);
             productTableRow.find('#unit_tax_amount').val(parseFloat(calsUninTaxAmount).toFixed(2));
+
             var calcUnitPriceWithDiscount = parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount);
             var calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent) + parseFloat(calcUnitPriceWithDiscount);
+            if (e_unit_tax_type == 2) {
+                var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
+                var calc = parseFloat(calcUnitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
+                var __tax_amount = parseFloat(calcUnitPriceWithDiscount) - parseFloat(calc);
+                calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) + parseFloat(__tax_amount);
+            }
 
             productTableRow.find('#unit_price').val(parseFloat(calcUnitPriceIncTax).toFixed(2));
 
@@ -1539,6 +1591,8 @@
                         }else{
                             tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
                         }   
+
+                        tr += '<input type="hidden" id="tax_type" value="'+product.product.tax_type+'">';
 
                         tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+product.unit_tax_percent+'">';
                         tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+product.unit_tax_amount+'">';

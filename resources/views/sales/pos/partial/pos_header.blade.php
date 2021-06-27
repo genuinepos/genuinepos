@@ -120,7 +120,6 @@
                                     <input readonly type="text" class="form-control">
                                 </div>
                                 <div class="input-group col-6">
-                                    
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">SQ</span>
                                     </div>

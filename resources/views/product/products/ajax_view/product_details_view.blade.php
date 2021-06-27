@@ -46,8 +46,10 @@
                     <ul class="list-unstyled">
                         <li><strong>Expire Date : </strong> {{ $product->expire_date }}</li>
                         <li><strong>Tax : </strong>{{ $product->tax ? $product->tax->tax_name : 'N/A' }}</li>
-                        <li><strong>Product Condition : </strong> >{{ $product->product_condition }}
-                        </li>
+                        @if ($product->tax)
+                            <li><strong>Tax Type: </strong>{{ $product->tax_type == 1 ? 'Exclusive' : 'Inclusive' }}</li>
+                        @endif
+                        <li><strong>Product Condition : </strong> {{ $product->product_condition }}</li>
                         <li>
                             <strong>Product Type : </strong>
                             @php  $product_type = ''; @endphp
@@ -108,6 +110,12 @@
                                             @php
                                                 $tax = $product->tax ? $product->tax->tax_percent : 0;
                                                 $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
+                                                if ($product->tax_type == 2) {
+                                                    $inclusiveTax = 100 + $tax;
+                                                    $calc = ($product->product_price / $inclusiveTax) * 100;
+                                                    $__tax_amount = $product->product_price - $calc;
+                                                    $product_price_inc_tax = $product->product_price + $__tax_amount;
+                                                }
                                             @endphp
                                             <td class="text-start">{{ $product->product_code }}</td>
                                             <td class="text-start">{{ $product->name }}</td>
@@ -155,6 +163,12 @@
                                             @php
                                                 $tax = $product->tax ? $product->tax->tax_percent : 0;
                                                 $variant_price_inc_tax = ($product_warehouse_variant->product_variant->variant_price / 100) * $tax + $product_warehouse_variant->product_variant->variant_price;
+                                                if ($product->tax_type == 2) {
+                                                    $inclusiveTax = 100 + $tax;
+                                                    $calc = ($product_warehouse_variant->product_variant->variant_price / $inclusiveTax) * 100;
+                                                    $__tax_amount = $product_warehouse_variant->product_variant->variant_price - $calc;
+                                                    $variant_price_inc_tax = $product_warehouse_variant->product_variant->variant_price + $__tax_amount;
+                                                }
                                             @endphp
                                             <tr>
                                                 <td class="text-start">{{ $product_warehouse_variant->product_variant->variant_code }}
@@ -225,12 +239,17 @@
                                                     }
                                                 }
                                             }
+
+                                            $tax = $product->tax ? $product->tax->tax_percent : 0;
+                                            $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
+                                            if ($product->tax_type == 2) {
+                                                $inclusiveTax = 100 + $tax;
+                                                $calc = ($product->product_price / $inclusiveTax) * 100;
+                                                $__tax_amount = $product->product_price - $calc;
+                                                $product_price_inc_tax = $product->product_price + $__tax_amount;
+                                            }
                                         @endphp
                                         <tr>
-                                            @php
-                                                $tax = $product->tax ? $product->tax->tax_percent : 0;
-                                                $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
-                                            @endphp
                                             <td class="text-white text-start">{{ $product->product_code }}</td>
                                             <td class="text-white text-start">{{ $product->name }}</td>
                                             <td class="text-white text-start">{{ $product_branch->branch->name . ' - ' . $product_branch->branch->branch_code }}
@@ -276,9 +295,7 @@
                                             @php
                                                 $tax = $product->tax ? $product->tax->tax_percent : 0;
                                                 $variant_price_inc_tax = ($product_branch_variant->product_variant->variant_price / 100) * $tax + $product_branch_variant->product_variant->variant_price;
-                                                
                                                 $totalAdjustedQty = 0;
-                                                
                                                 $adjustmentProducts = DB::table('stock_adjustment_products')
                                                     ->join('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
                                                     ->select('stock_adjustment_products.*', 'stock_adjustments.branch_id')
@@ -292,6 +309,13 @@
                                                             $totalAdjustedQty += $adjustmentProduct->quantity;
                                                         }
                                                     }
+                                                }
+
+                                                if ($product->tax_type == 2) {
+                                                    $inclusiveTax = 100 + $tax;
+                                                    $calc = ($product_branch_variant->product_variant->variant_price / $inclusiveTax) * 100;
+                                                    $__tax_amount = $product_branch_variant->product_variant->variant_price - $calc;
+                                                    $variant_price_inc_tax = $product_branch_variant->product_variant->variant_price + $__tax_amount;
                                                 }
                                             @endphp
                                             <tr>

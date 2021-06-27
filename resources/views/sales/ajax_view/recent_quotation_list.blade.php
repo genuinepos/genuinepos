@@ -6,7 +6,6 @@
         <td class="text-start">{{ $quotation->total_payable_amount }}</td>
         <td class="text-start">
             <a id="editInvoice" href="{{ route('sales.pos.edit', $quotation->id) }}" title="Edit" class=""> <i class="far fa-edit text-info"></i></a>
-            <a id="delete" href="{{ route('sales.delete', $quotation->id) }}" title="Delete" class=""> <i class="far fa-trash-alt text-danger"></i></a>
             <a href="{{ route('sales.print', $quotation->id) }}" title="Print" id="only_print"> <i class="fas fa-print text-secondary"></i></a>
         </td>
     </tr>  

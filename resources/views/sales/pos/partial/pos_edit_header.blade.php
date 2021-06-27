@@ -14,7 +14,7 @@
     <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ $sale->warehouse_id }}">
     <input type="hidden" name="action" id="action" value="">
     <nav class="pos-navigation">
-        <div class="col-lg-5 col-sm-12 col-12 nav-left-sec">
+        <div class="col-lg-4 col-sm-12 col-12 nav-left-sec">
             <div class="col-lg-4 col-sm-12 col-12 logo-sec">
                 <div class="pos-logo">
                     <img src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}" alt="">
@@ -52,14 +52,13 @@
                     </span>
                 </small>
             </div>  
-           
         </div>
-        <div class="col-lg-7 col-sm-12 col-12 input-buttob-sec">
+        <div class="col-lg-8 col-sm-12 col-12 input-buttob-sec">
             <div class="input-section">
                 <div class="row">
-                    <div class="input-sec col-lg-8">
+                    <div class="input-sec col-sm-8 col-12">
                         <div class="row">
-                            <div class="col-lg-7">
+                            <div class="col-lg-7 col-12 sm-input-sec-w">
                                 <div class="input-group mb-1">
                                     <input readonly type="text" class="form-control form-select" value="{{ $sale->customer ? $sale->customer->name.' ('.$sale->customer->phone.')' : 'Walk-In-Customer' }}">
                                 </div>
@@ -82,18 +81,19 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-lg-5 input-value-sec">
-                                <div class="input-group  mb-1">
+                                <div class="input-group mb-1">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">Point</span>
                                     </div>
-                                    <input type="text" class="form-control">
+                                    <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
                                     <!-- =============================== -->
 
                                     <div class="input-group-prepend ms-1">
                                         <span class="input-group-text valus">USD</span>
                                     </div>
-                                    <input type="text" class="form-control">
+                                    <input readonly type="text" class="form-control">
                                 </div>
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend">

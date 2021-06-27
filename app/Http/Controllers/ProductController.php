@@ -237,6 +237,7 @@ class ProductController extends Controller
         $addProduct->unit_id = $request->unit_id;
         $addProduct->alert_quantity = $request->alert_quantity;
         $addProduct->tax_id = $tax_id;
+        $addProduct->tax_type = $request->tax_type;
         $addProduct->expire_date = $request->expired_date;
         $addProduct->product_condition = $request->product_condition;
         $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
@@ -687,7 +688,10 @@ class ProductController extends Controller
     // edit view of product
     public function edit($productId)
     {
-        $product = DB::table('products')->where('id', $productId)->first();
+        $product = DB::table('products')->where('products.id', $productId)
+        ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+        ->select('products.*', 'taxes.tax_percent')
+        ->first();
         $categories = DB::table('categories')->get();
         $units = DB::table('units')->get();
         $brands = DB::table('brands')->get();
@@ -741,6 +745,7 @@ class ProductController extends Controller
         $updateProduct->unit_id = $request->unit_id;
         $updateProduct->alert_quantity = $request->alert_quantity;
         $updateProduct->tax_id = $tax_id;
+        $updateProduct->tax_type = $request->tax_type;
         $updateProduct->expire_date = $request->expired_date;
         $updateProduct->product_condition = $request->product_condition;
         $updateProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;

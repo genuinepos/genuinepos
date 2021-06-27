@@ -94,8 +94,12 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-4">
-
+                    <div class="col-md-4 col-sm-4 col-lg-4">
+                        @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
+                            <div class="middle_header_text text-center">
+                                <h5>{{ $sale->branch->add_sale_invoice_layout->draft_heading }}</h5>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
@@ -317,7 +321,6 @@
                 </div>
             @endif
             
-             
             @if ($defaultLayout->is_header_less == 1)
                 @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
                     </br>
@@ -347,7 +350,11 @@
                         </ul>
                     </div>
                     <div class="col-lg-4">
-
+                        @if ($defaultLayout->is_header_less == 1)
+                            <div class="middle_header_text text-center">
+                                <h5>{{ $defaultLayout->draft_heading }}</h5>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">

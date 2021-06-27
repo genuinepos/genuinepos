@@ -67,6 +67,7 @@
         var product_price_exc_tax = e.getAttribute('data-p_price_exc_tax');
         var p_tax_percent = e.getAttribute('data-p_tax_percent');
         var p_tax_amount = e.getAttribute('data-p_tax_amount');
+        var p_tax_type = e.getAttribute('data-tax_type');
         var description = e.getAttribute('data-description');
         $('#search_product').val('');
         if (branch_id == "") {
@@ -122,6 +123,17 @@
                     });
 
                     if (sameProduct == 0) {
+                        var price = 0;
+                        var __price = price_groups.filter(function (value) {
+                            return value.price_group_id == price_group_id && value.product_id == product_id;
+                        });
+
+                        if (__price.length != 0) {
+                            price = __price[0].price ? __price[0].price : product_price_exc_tax;
+                        } else {
+                            price = product_price_exc_tax;
+                        }
+                            
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
@@ -149,24 +161,17 @@
 
                         tr += '<td>';
                         tr += '<b><span class="span_unit">' + product_unit + '</span></b>';
-                        tr += '<input name="units[]" type="hidden" id="unit" value="' +
-                            product_unit + '">';
+                        tr += '<input name="units[]" type="hidden" id="unit" value="'+ product_unit +'">';
                         tr += '</td>';
-
-                        var price = 0;
-                        var __price = price_groups.filter(function (value) {
-                            return value.price_group_id == price_group_id && value.product_id == product_id;
-                        });
-
-                        if (__price.length != 0) {
-                            price = __price[0].price ? __price[0].price : product_price_exc_tax;
-                        } else {
-                            price = product_price_exc_tax;
-                        }
-                                
                         tr += '<td>';
                         tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+ '" id="unit_price_exc_tax">';
                         var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(p_tax_percent) + parseFloat(price);
+                        if (p_tax_type == 2) {
+                            var inclusiveTax = 100 + parseFloat(p_tax_percent);
+                            var calcTax = parseFloat(price) / parseFloat(inclusiveTax) * 100;
+                            var __tax_amount = parseFloat(price) - parseFloat(calcTax);
+                            unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
+                        }
                         tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                         tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(unitPriceIncTax).toFixed(2)+'</span> </b>';
                         tr += '</td>';
@@ -205,6 +210,7 @@
         var tax_percent = e.getAttribute('data-tax_percent');
         var product_unit = e.getAttribute('data-unit');
         var tax_id = e.getAttribute('data-p_tax_id');
+        var tax_type = e.getAttribute('data-tax_type');
         var tax_amount = e.getAttribute('data-tax_amount');
         var variant_id = e.getAttribute('data-v_id');
         var variant_name = e.getAttribute('data-v_name');
@@ -266,6 +272,17 @@
                     });
 
                     if (sameVariant == 0) {
+                        var price = 0;
+                        var __price = price_groups.filter(function (value) {
+                            return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
+                        });
+
+                        if (__price.length != 0) {
+                            price = __price[0].price ? __price[0].price : variant_price;
+                        } else {
+                            price = variant_price;
+                        }
+
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
@@ -299,20 +316,15 @@
                             product_unit + '">';
                         tr += '</td>';
 
-                        var price = 0;
-                        var __price = price_groups.filter(function (value) {
-                            return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
-                        });
-
-                        if (__price.length != 0) {
-                            price = __price[0].price ? __price[0].price : variant_price;
-                        } else {
-                            price = variant_price;
-                        }
-
                         tr += '<td>';
                         tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+ parseFloat(price).toFixed(2) + '" id="unit_price_exc_tax">';
                         var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
+                        if (tax_type == 2) {
+                            var inclusiveTax = 100 + parseFloat(tax_percent);
+                            var calcTax = parseFloat(price) / parseFloat(inclusiveTax) * 100;
+                            var __tax_amount = parseFloat(price) - parseFloat(calcTax);
+                            unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
+                        }
                         tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="' +parseFloat(unitPriceIncTax).toFixed(2) + '">';
                         tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(unitPriceIncTax).toFixed(2) + '</span> </b>';
                         tr += '</td>';

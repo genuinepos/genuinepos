@@ -2089,7 +2089,7 @@ class SaleController extends Controller
     {
         $product_code = (string)$product_code;
         $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $product_code)
-            ->select(['id', 'name', 'product_code', 'product_price', 'profit', 'product_cost_with_tax', 'thumbnail_photo', 'unit_id', 'tax_id', 'is_show_emi_on_pos'])
+            ->select(['id', 'name', 'product_code', 'product_price', 'profit', 'product_cost_with_tax', 'thumbnail_photo', 'unit_id', 'tax_id', 'tax_type', 'is_show_emi_on_pos'])
             ->first();
         if ($product) {
             $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product->id)->first();
@@ -2137,7 +2137,10 @@ class SaleController extends Controller
                     return response()->json(['errorMsg' => 'This product is not available in this shop']);
                 }
 
-                $productBranchVariant = DB::table('product_branch_variants')->where('product_branch_id', $productBranch->id)->where('product_id', $variant_product->product_id)->where('product_variant_id', $variant_product->id)->first();
+                $productBranchVariant = DB::table('product_branch_variants')
+                ->where('product_branch_id', $productBranch->id)
+                ->where('product_id', $variant_product->product_id)
+                ->where('product_variant_id', $variant_product->id)->first();
 
                 if (is_null($productBranchVariant)) {
                     return response()->json(['errorMsg' => 'This variant is not available in this shop']);
@@ -2185,7 +2188,7 @@ class SaleController extends Controller
     {
         $product_code = (string)$product_code;
         $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $product_code)
-            ->select(['id', 'name', 'product_code', 'product_price', 'profit', 'product_cost_with_tax', 'thumbnail_photo', 'unit_id', 'tax_id', 'is_show_emi_on_pos'])
+            ->select(['id', 'name', 'product_code', 'product_price', 'profit', 'product_cost_with_tax', 'thumbnail_photo', 'unit_id', 'tax_id', 'tax_type','is_show_emi_on_pos'])
             ->first();
         if ($product) {
             $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouse_id)->where('product_id', $product->id)->first();
@@ -2280,23 +2283,29 @@ class SaleController extends Controller
     // Check Branch product variant Stock 
     public function checkBranchProductVariant($product_id, $variant_id, $branch_id)
     {
-        $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $product_id)->first();
-        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
-        if ($productBranch && $productBranchVariant) {
-            if ($productBranchVariant->variant_quantity > 0) {
-                return response()->json($productBranchVariant->variant_quantity);
+        $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
+        if ($productBranch) {
+            $productBranchVariant = DB::table('product_branch_variants')->where('product_branch_id', $productBranch->id)
+            ->where('product_id', $product_id)
+            ->where('product_variant_id', $variant_id)->first();
+            if ($productBranchVariant) {
+                if ($productBranchVariant->variant_quantity > 0) {
+                    return response()->json($productBranchVariant->variant_quantity);
+                } else {
+                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop']);
+                }
             } else {
-                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop']);
+                return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
             }
-        } else {
-            return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
+        }else {
+            return response()->json(['errorMsg' => 'This product is not available in this shop.']);
         }
     }
 
     // Check Branch Single product Stock
     public function checkBranchSingleProductStock($product_id, $branch_id)
     {
-        $productBranch = ProductBranch::where('product_id', $product_id)->where('branch_id', $branch_id)->first();
+        $productBranch = DB::table('product_branches')->where('product_id', $product_id)->where('branch_id', $branch_id)->first();
         if ($productBranch) {
             if ($productBranch->product_quantity > 0) {
                 return response()->json($productBranch->product_quantity);
@@ -2309,23 +2318,28 @@ class SaleController extends Controller
     }
 
     // Check Warehouse product variant Stock 
-    public function checkBranchProductVariantInWarehouse($product_id, $variant_id, $warehouse_id)
+    public function checkProductVariantInWarehouse($product_id, $variant_id, $warehouse_id)
     {
         $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouse_id)->where('product_id', $product_id)->first();
-        $productWarehouseVariant = DB::table('product_warehouse_variants')->where('product_warehouse_id', $productWarehouse->id)->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
-        if ($productWarehouse && $productWarehouseVariant) {
-            if ($productWarehouseVariant->variant_quantity > 0) {
-                return response()->json($productWarehouseVariant->variant_quantity);
+        if ($productWarehouse) {
+            $productWarehouseVariant = DB::table('product_warehouse_variants')->where('product_warehouse_id', $productWarehouse->id)->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
+            if ($productWarehouseVariant) {
+                if ($productWarehouseVariant->variant_quantity > 0) {
+                    return response()->json($productWarehouseVariant->variant_quantity);
+                } else {
+                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) from this warehouse']);
+                }
             } else {
-                return response()->json(['errorMsg' => 'Stock is out of this product(variant) from this warehouse']);
+                return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
             }
-        } else {
+        }else {
             return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
         }
+        
     }
 
     // Check Warehouse Single product Stock
-    public function checkBranchSingleProductStockInWarehouse($product_id, $warehouse_id)
+    public function checkSingleProductStockInWarehouse($product_id, $warehouse_id)
     {
         $productWarehouse = DB::table('product_warehouses')->where('product_id', $product_id)->where('warehouse_id', $warehouse_id)->first();
         if ($productWarehouse) {
@@ -3046,6 +3060,7 @@ class SaleController extends Controller
             'customer',
             'branch',
             'branch.add_sale_invoice_layout',
+            'branch.pos_sale_invoice_layout',
             'sale_products',
             'sale_products.product',
             'sale_products.product.warranty',
@@ -3104,5 +3119,32 @@ class SaleController extends Controller
             ->limit(10)
             ->get();
         return view('sales.ajax_view.recent_sale_list', compact('sales'));
+    }
+
+    
+    // Get all recent quotations ** requested by ajax **
+    public function recentQuotations()
+    {
+        $quotations = Sale::where('branch_id', auth()->user()->branch_id)
+            ->where('admin_id', auth()->user()->id)
+            ->where('status', 4)
+            ->where('created_by', 1)
+            ->orderBy('id', 'desc')
+            ->limit(10)
+            ->get();
+        return view('sales.ajax_view.recent_quotation_list', compact('quotations'));
+    }
+
+    // Get all recent drafts ** requested by ajax **
+    public function recentDrafts()
+    {
+        $drafts = Sale::with('customer')->where('branch_id', auth()->user()->branch_id)
+            ->where('admin_id', auth()->user()->id)
+            ->where('status', 2)
+            ->where('created_by', 1)
+            ->orderBy('id', 'desc')
+            ->limit(10)
+            ->get();
+        return view('sales.ajax_view.recent_draft_list', compact('drafts'));
     }
 }

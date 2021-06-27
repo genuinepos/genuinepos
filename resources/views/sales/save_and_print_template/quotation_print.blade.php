@@ -94,7 +94,11 @@
                         </ul>
                     </div>
                     <div class="col-lg-4">
-
+                        @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
+                            <div class="middle_header_text text-center">
+                                <h5>{{ $sale->branch->add_sale_invoice_layout->quotation_heading }}</h5>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
@@ -349,7 +353,11 @@
                         </ul>
                     </div>
                     <div class="col-lg-4">
-
+                        @if ($defaultLayout->is_header_less == 1)
+                            <div class="middle_header_text text-center">
+                                <h5>{{ $defaultLayout->quotation_heading }}</h5>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">

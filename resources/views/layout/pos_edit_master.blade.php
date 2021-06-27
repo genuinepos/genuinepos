@@ -435,8 +435,8 @@
     <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
-                <div class="data_preloader" id="stock_preloader">
-                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                <div class="data_preloader mt-5" id="stock_preloader">
+                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">Item Stocks</h6>

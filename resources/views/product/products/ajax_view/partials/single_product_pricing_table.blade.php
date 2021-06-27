@@ -9,6 +9,15 @@
             @if (count($price_groups) > 0)
                 <th class="text-white text-start">Price Group</th>
             @endif
+            @php
+                $priceIncTax = ($product->product_price / 100) * $tax + $product->product_price;
+                if ($product->tax_type == 2) {
+                    $inclusiveTax = 100 + $tax;
+                    $calc = ($product->product_price / $inclusiveTax) * 100;
+                    $__tax_amount = $product->product_price - $calc;
+                    $priceIncTax = $product->product_price + $__tax_amount;
+                }
+            @endphp
         </tr>
     </thead>
     <tbody class="single_product_pricing_table_body">
@@ -28,7 +37,7 @@
             </td>
             <td class="text-start">
                 {{ json_decode($generalSettings->business, true)['currency'] }}
-                {{ ($product->product_price / 100) * $tax + $product->product_price }}
+                {{ bcadd($priceIncTax, 0, 2) }}
             </td>
             @if (count($price_groups) > 0)
                 <td class="text-start">

@@ -19,7 +19,6 @@
 
     {{-- <script src="{{ asset('public') }}/assets/plugins/custom/calculator/calc.min.js"></script> --}}
 
-    {{-- <script src="{{ asset('public') }}/assets/plugins/custom/summernote/summernote.min.js"></script> --}}
       {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/plugins/piexif.min.js"
         type="text/javascript"></script> --}}
    
@@ -76,7 +75,7 @@
     <script src="{{asset('public/backend/js/raty.jquery.js')}}"></script>
     <script src="{{asset('public/backend/js/smart-wizard.jquery.js')}}"></script>
     <script src="{{asset('public/backend/js/stepy.jquery.js')}}"></script>
-    <script src="{{asset('public/backend/js/treeview.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/treeview.jquery.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/ui-accordion.jquery.js')}}"></script>
     {{-- <script src="{{asset('public/backend/js/vaidation.jquery.js')}}"></script>
     <script src="{{asset('public/backend/js/mosaic.1.0.1.min.js')}}"></script> --}}

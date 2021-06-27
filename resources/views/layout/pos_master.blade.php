@@ -360,23 +360,23 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product">
-                        <div class="form-group">
+                        <div class="form-group mt-1">
                             <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" readonly class="form-control form-control-sm edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" value=""/>
+                            <input type="number" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" value=""/>
                             <span class="error error_e_quantity"></span>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mt-1">
                             <label> <strong>Unit Price Exc.Tax</strong>  : <span class="text-danger">*</span></label>
                             <input type="number" {{ auth()->user()->permission->sale['edit_price_pos_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" value=""/>
                             <span class="error error_e_unit_price"></span>
                         </div>
 
                         @if (auth()->user()->permission->sale['edit_discount_pos_screen'] == '1')
-                            <div class="form-group row">
+                            <div class="form-group row mt-1">
                                 <div class="col-md-6">
                                     <label><strong>Discount Type</strong>  :</label>
-                                    <select class="form-control form-control-sm" id="e_unit_discount_type">
+                                    <select class="form-control" id="e_unit_discount_type">
                                         <option value="2">Percentage</option>
                                         <option value="1">Fixed</option>
                                     </select>
@@ -384,22 +384,32 @@
 
                                 <div class="col-md-6">
                                     <label><strong>Discount</strong>  :</label>
-                                    <input type="number" class="form-control form-control-sm" id="e_unit_discount" value="0.00"/>
+                                    <input type="number" class="form-control" id="e_unit_discount" value="0.00"/>
                                     <input type="hidden" id="e_discount_amount"/>
                                 </div>
                             </div>
                         @endif
 
-                        <div class="form-group">
-                            <label><strong>Tax</strong> :</label>
-                            <select class="form-control form-control-sm" id="e_unit_tax">
-
-                            </select>
+                        <div class="form-group row mt-1">
+                            <div class="col-md-6">
+                                <label><strong>Tax</strong> :</label>
+                                <select class="form-control" id="e_unit_tax">
+    
+                                </select>
+                            </div>
+                          
+                            <div class="col-md-6">
+                                <label><strong>Tax Type</strong> :</label>
+                                <select class="form-control" id="e_tax_type">
+                                    <option value="1">Exclusive</option>
+                                    <option value="2">Inclusive</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mt-1">
                             <label><strong>Sale Unit</strong> :</label>
-                            <select class="form-control form-control-sm" id="e_unit">
+                            <select class="form-control" id="e_unit">
 
                             </select>
                         </div>
@@ -418,12 +428,12 @@
     </div>
     <!-- Edit selling product modal end-->
 
-    <!-- Edit selling product modal-->
+    <!-- Show stock modal-->
     <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-40-modal" role="document">
+        <div class="modal-dialog col-50-modal" role="document">
             <div class="modal-content">
-                <div class="data_preloader" id="stock_preloader">
-                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                <div class="data_preloader mt-5" id="stock_preloader">
+                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">Item Stocks</h6>
@@ -436,7 +446,7 @@
             </div>
         </div>
     </div>
-    <!-- Edit selling product modal end-->
+    <!-- Show stock modal end-->
 
     <!-- Close Register modal -->
     <div class="modal fade" id="closeRegisterModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">

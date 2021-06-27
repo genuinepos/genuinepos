@@ -326,10 +326,12 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('check/branch/variant/qty/{product_id}/{variant_id}/{branch_id}', 'SaleController@checkBranchProductVariant');
     Route::get('check/single/product/stock/{product_id}/{branch_id}', 'SaleController@checkBranchSingleProductStock');
 
-    Route::get('check/warehouse/variant/qty/{product_id}/{variant_id}/{branch_id}', 'SaleController@checkBranchProductVariantInWarehouse');
-    Route::get('check/single/product/stock/in/warehouse/{product_id}/{branch_id}', 'SaleController@checkBranchSingleProductStockInWarehouse');
+    Route::get('check/warehouse/variant/qty/{product_id}/{variant_id}/{branch_id}', 'SaleController@checkProductVariantInWarehouse');
+    Route::get('check/single/product/stock/in/warehouse/{product_id}/{branch_id}', 'SaleController@checkSingleProductStockInWarehouse');
     Route::get('shipments', 'SaleController@shipments')->name('sales.shipments');
-    Route::get('recent/sales', 'SaleController@recentSale');
+    Route::get('recent/sales', 'SaleController@recentSale')->name('sales.recent.sales');
+    Route::get('recent/quotations', 'SaleController@recentQuotations')->name('sales.recent.quotations');
+    Route::get('recent/drafts', 'SaleController@recentDrafts')->name('sales.recent.drafts');
 
     // Sale payment route
     Route::get('payment/{saleId}', 'SaleController@paymentModal')->name('sales.payment.modal');

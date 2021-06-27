@@ -35,7 +35,8 @@
                                             <div class="row mt-2">      
                                                 <div class="col-md-12">
                                                     <div class="heading_area">
-                                                        <p><strong>Product : {{ $product_name->name.' ('.$product_name->product_code.')' }}</strong></p>
+                                                        <p><strong>Product : {{ $product_name->name.' ('.$product_name->product_code.')' }}</strong> </p> 
+                                                        <small class="text-danger">Tax (If Exists) will be added to all price group.</small>
                                                     </div>
                                                     <div class="table-responsive mt-1">
                                                         <table class="table modal-table table-sm">
@@ -45,7 +46,7 @@
                                                                         <th class="text-white text-start" scope="col">Variant</th>
                                                                     @endif
                                                                     <th class="text-white text-center" scope="col">
-                                                                        Default Selling Price Inc.Tax 
+                                                                        Default Selling Price Exc.Tax 
                                                                     </th>
                                                                     @foreach ($priceGroups as $pg)
                                                                         <th class="text-white text-start" scope="col">
@@ -64,11 +65,8 @@
                                                                                 {{ $item->variant_name }}
                                                                             </td>
                                                                             <td class="text-center">
-                                                                                @php
-                                                                                    $texPercent = $item->tax_percent ? $item->tax_percent : 0;
-                                                                                    $defatulPriceIncTax = ($item->variant_price/100*$texPercent) + $item->variant_price;
-                                                                                @endphp
-                                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($defatulPriceIncTax, 0, 2) }}</b>
+                                                                            
+                                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $item->variant_price}}</b>
                                                                             </td>
                                                                             @foreach ($priceGroups as $pg)
                                                                                 <td class="text-start">
@@ -91,11 +89,7 @@
                                                                             <td class="text-center">
                                                                                 <input type="hidden" name="product_ids[]" value="{{ $item->p_id }}">
                                                                                 <input type="hidden" name="variant_ids[]" value="noid">
-                                                                                @php
-                                                                                    $texPercent = $item->tax_percent ? $item->tax_percent : 0;
-                                                                                    $defatulPriceIncTax = ($item->product_price/100*$texPercent) + $item->product_price;
-                                                                                @endphp
-                                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($defatulPriceIncTax, 0, 2) }}</b>
+                                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $item->product_price }}</b>
                                                                             </td>
                                                                             @foreach ($priceGroups as $pg)
                                                                                 <td>

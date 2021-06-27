@@ -343,6 +343,17 @@
                                 <div class="form_element m-0 mt-2">
                                     <div class="element-body">
                                         <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
+                                                    <div class="col-8">
+                                                        <input type="text" readonly class="form-control" value="{{$product->type == 1 ?'General'  : 'Combo'}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-2">
                                             @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
@@ -363,9 +374,12 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
+                                                    <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" readonly class="form-control" value="{{$product->type == 1 ?'General'  : 'Combo'}}">
+                                                        <select name="tax_type" class="form-control" id="tax_type">
+                                                            <option {{ $product->tax_type == 1 ? 'SELECTED' : '' }} value="1">Exclusive</option>
+                                                            <option {{ $product->tax_type == 2 ? 'SELECTED' : '' }} value="2">Inclusive</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -823,7 +837,7 @@
     $('.combo_price').hide();
     $('.combo_pro_table_field').hide();
 
-    var tax_percent = 0;
+    var tax_percent = "{{ $product->tax_percent ? $product->tax_percent : 0 }}";
     $('#tax_id').on('change', function() {
         var tax = $(this).val();
         if (tax) {
@@ -836,7 +850,14 @@
 
     function costCalculate() {
         var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
+        var tax_type = $('#tax_type').val();
         var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
+        if (tax_type == 2){
+            var __tax_percent = 100 + parseFloat(tax_percent);
+            var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
+            var calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
+        }
+        
         var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
         $('#product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
         var profit = $('#profit').val() ? $('#profit').val() : 0;
@@ -854,7 +875,19 @@
         costCalculate();
     });
 
+    $(document).on('input', '#product_price',function() {
+        var selling_price = $(this).val();
+        var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
+        var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(product_cost) * 100;
+        $('#profit').val(parseFloat(calcProfit).toFixed(2));
+    });
+
     $('#tax_id').on('change', function() {
+        costCalculate();
+    });
+
+    $('#tax_type').on('change', function() {
         costCalculate();
     });
 

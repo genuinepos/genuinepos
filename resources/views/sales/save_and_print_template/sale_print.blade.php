@@ -397,12 +397,8 @@
                             <p class="borderTop"><b>Signature Of Authority</b></p>
                         </div>
                     </div>
-                </div><br/>
-                {{-- <div class="row">
-                <div class="barcode text-center">
-                        <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($sale->invoice_id, $generatorPNG::TYPE_CODE_128)) }}">
-                    </div> 
-                </div><br>  --}}
+                </div>
+               
                 <div class="row">
                     <div class="col-md-12">
                         <div class="invoice_notice">
@@ -455,8 +451,12 @@
                         <div class="col-md-6 text-center">
                             <small>Print Date : {{ date('d/m/Y') }}</small>
                         </div>
+
                         <div class="col-md-6 text-center">
                             <small>Print Time : {{ date('h:i:s') }}</small>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <img style="width: 170px; height:10px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                         </div>
                     </div>
         
@@ -1152,12 +1152,8 @@
                             <p class="borderTop"><b>Signature Of Authority</b></p>
                         </div>
                     </div>
-                </div><br>
-                {{-- <div class="row">
-                    <div class="barcode text-center">
-                        <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($sale->invoice_id, $generatorPNG::TYPE_CODE_128)) }}">
-                    </div> 
-                </div><br> --}}
+                </div>
+        
                 <div class="row">
                     <div class="col-md-12">
                         <div class="invoice_notice">
@@ -1183,7 +1179,7 @@
                         </div>
 
                         <div class="col-md-3">
-                            <div class="image_area text-center">
+                            <div class="image_area text-start">
                                 <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
                             </div>
                         </div>
@@ -1200,7 +1196,7 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="image_area text-center">
+                            <div class="image_area text-end">
                                 <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                             </div>
                         </div>
@@ -1210,12 +1206,17 @@
                         <div class="col-md-6 text-center">
                             <small>Print Date : {{ date('d/m/Y') }}</small>
                         </div>
+
                         <div class="col-md-6 text-center">
                             <small>Print Time : {{ date('h:i:s') }}</small>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <img style="width: 170px; height:15px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                         </div>
                     </div>
         
                     <div class="row">
+                        
                         <div class="col-md-12 text-center">
                             <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
                         </div>

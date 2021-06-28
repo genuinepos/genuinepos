@@ -204,13 +204,6 @@
 </div>
 <script>
     // Get all price group
-    var rp_settings = {
-        enable_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] }}",
-        redeem_amount_per_unit_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}",
-        min_order_total_for_redeem : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_redeem'] }}",
-        min_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_redeem_point'] }}",
-        max_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['max_redeem_point'] }}",
-    }
     var price_groups = '';
     function getPriceGroupProducts(){
         $.ajax({
@@ -222,9 +215,15 @@
     }
     getPriceGroupProducts();
  
+    var rp_settings = {
+        enable_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] }}",
+        redeem_amount_per_unit_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}",
+        min_order_total_for_redeem : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_redeem'] }}",
+        min_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_redeem_point'] }}",
+        max_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['max_redeem_point'] }}",
+    }
     $('#customer_id').on('change', function () {
         var customerId = $(this).val();
-        console.log(rp_settings);
         $('#previous_due').val(parseFloat(0).toFixed(2));
         $('#earned_point').val('');
         var url = "{{ url('sales/customer_info') }}"+'/'+customerId;
@@ -243,11 +242,16 @@
 
     $(document).on('click', '#reedem_point_button', function (e) {
         e.preventDefault();
-        var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
-        $('#available_point').val(parseFloat(earned_point));
-        $('#redeem_amount').val('');
-        $('#total_redeem_point').val('')
-        $('#pointReedemModal').modal('show');
+        if ($('#customer_id').val()) {
+            var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
+            $('#available_point').val(parseFloat(earned_point));
+            $('#redeem_amount').val('');
+            $('#total_redeem_point').val('')
+            $('#pointReedemModal').modal('show');
+        }else{
+            toastr.error('Select customer first.');
+            return;
+        }
     });
 
     $(document).on('input', '#total_redeem_point', function () {
@@ -266,7 +270,7 @@
             return;
         }
 
-        var total_invoice_payable = $('#total_invoice_payable').val()
+        var total_invoice_payable = $('#total_invoice_payable').val();
         if (rp_settings.min_order_total_for_redeem && total_invoice_payable < parseFloat(rp_settings.min_order_total_for_redeem)) {
             toastr.error('Minimum order amount is '+rp_settings.min_order_total_for_redeem+' to redeem the points.'); 
             return;
@@ -282,6 +286,21 @@
             return;
         }
 
+        var order_discount = $('#order_discount').val() ? $('#order_discount').val() : 0;
+        var order_discount_amount = $('#order_discount_amount').val() ? $('#order_discount_amount').val() : 0;
+        var calcDiscount = parseFloat(order_discount_amount) + parseFloat(redeem_amount);
+        $('#order_discount').val(parseFloat(calcDiscount).toFixed(2));
+        $('#order_discount_amount').val(parseFloat(calcDiscount).toFixed(2));
+        var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
+        var calcLastPoint = parseFloat(earned_point) - parseFloat(total_redeem_point);
+        $('#earned_point').val(parseFloat(calcLastPoint));
+        var calcLastAmount = parseFloat(calcLastPoint) * parseFloat(parseFloat(rp_settings.redeem_amount_per_unit_rp));
+        $('#trial_point_amount').val(parseFloat(calcLastAmount).toFixed(2));
+        var pre_redeemed = $('#pre_redeemed').val() ? $('#pre_redeemed').val() : 0;
+        var calcPreRedeemPoint = parseFloat(pre_redeemed) + parseFloat(total_redeem_point);
+        $('#pre_redeemed').val(parseFloat(calcPreRedeemPoint));
+        calculateTotalAmount();
+        $('#pointReedemModal').modal('hide');
     });
 
     $('#addCustomer').on('click', function () {

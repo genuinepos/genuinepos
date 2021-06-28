@@ -837,11 +837,6 @@
         });
 
         $('.calculator-bg__main button').prop('type','button');
-
-        $('#reedem_point_button').on('click', function (e) {
-            e.preventDefault();
-            $('#pointReedemModal').modal('show');
-        });
     </script>
     @stack('js')
 </body>

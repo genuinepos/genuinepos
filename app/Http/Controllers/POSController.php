@@ -58,7 +58,7 @@ class POSController extends Controller
     public function store(Request $request)
     {
         //return $request->all();
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'contact_default_cr_limit'])->first();
+        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'contact_default_cr_limit', 'reward_poing_settings'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
@@ -182,8 +182,10 @@ class POSController extends Controller
             $addSale->save();
             $customer = Customer::where('id', $request->customer_id)->first();
             if ($customer) {
-                $customer->total_sale += $request->total_payable_amount - $request->previous_due;
-                $customer->total_paid += $request->paying_amount ? $request->paying_amount : 0;
+                $customer->point = $customer->point - $request->pre_redeemed;
+                $customer->point = $customer->point + $this->calculateCustomerPoint($prefixSettings, $request->total_invoice_payable);
+                $customer->total_sale = $customer->total_sale + $request->total_payable_amount - $request->previous_due;
+                $customer->total_paid = $customer->total_paid + ($request->paying_amount ? $request->paying_amount : 0);
                 if ($request->paying_amount <= 0) {
                     $customer->total_sale_due = $request->total_payable_amount;
                 } else {
@@ -1719,4 +1721,31 @@ class POSController extends Controller
             'change_amount'
         ));
     }
+
+    private function calculateCustomerPoint($point_settings, $total_amount)
+    {
+        $enable_cus_point = json_decode($point_settings->reward_poing_settings, true)['enable_cus_point'];
+        (int)$amount_for_unit_rp = json_decode($point_settings->reward_poing_settings, true)['amount_for_unit_rp'];
+        (int)$min_order_total_for_rp = json_decode($point_settings->reward_poing_settings, true)['min_order_total_for_rp'];
+        (int)$max_rp_per_order = json_decode($point_settings->reward_poing_settings, true)['max_rp_per_order'];
+        if ($enable_cus_point == '1') {
+            if ($min_order_total_for_rp && $total_amount >= $min_order_total_for_rp) {
+                if ($amount_for_unit_rp != 0) {
+                    $calc_point = $total_amount / $amount_for_unit_rp;
+                    $__net_point = (int)$calc_point;
+                    if ($max_rp_per_order && $__net_point > $max_rp_per_order) {
+                        return $max_rp_per_order;
+                    }else {
+                        return $__net_point;
+                    }
+                }else {
+                    return 0;
+                }
+            }else {
+                return 0;
+            }
+        }else {
+            return 0;
+        }
+    } 
 }

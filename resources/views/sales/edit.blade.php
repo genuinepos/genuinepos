@@ -1397,26 +1397,20 @@
             productTableRow.find('#unit_discount_type').val(e_unit_discount_type);
             productTableRow.find('#unit_discount').val(parseFloat(e_unit_discount).toFixed(2));
             productTableRow.find('#unit_discount_amount').val(parseFloat(e_unit_discount_amount).toFixed(2));
-            
-            var calsUninTaxAmount = (parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount)) / 100 * parseFloat(e_unit_tax_percent);
+
+            var calcUnitPriceWithDiscount = parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount);
+            var calsUninTaxAmount = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent);
             if (e_unit_tax_type == 2) {
                 var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
-                var calc = parseFloat(e_unit_price) / parseFloat(inclusiveTax) * 100;
-                calsUninTaxAmount = parseFloat(e_unit_price) - parseFloat(calc);
+                var calc = parseFloat(calcUnitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
+                calsUninTaxAmount = parseFloat(calcUnitPriceWithDiscount) - parseFloat(calc);
             }
             productTableRow.find('#unit_tax_percent').val(parseFloat(e_unit_tax_percent).toFixed(2));
             productTableRow.find('#tax_type').val(e_unit_tax_type);
             productTableRow.find('#unit_tax_amount').val(parseFloat(calsUninTaxAmount).toFixed(2));
 
-            var calcUnitPriceWithDiscount = parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount);
-            var calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent) + parseFloat(calcUnitPriceWithDiscount);
-            if (e_unit_tax_type == 2) {
-                var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
-                var calc = parseFloat(calcUnitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
-                var __tax_amount = parseFloat(calcUnitPriceWithDiscount) - parseFloat(calc);
-                calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) + parseFloat(__tax_amount);
-            }
-
+            var calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) + parseFloat(calsUninTaxAmount);
+        
             productTableRow.find('#unit_price').val(parseFloat(calcUnitPriceIncTax).toFixed(2));
 
             var calcSubtotal = parseFloat(calcUnitPriceIncTax) * parseFloat(e_quantity);

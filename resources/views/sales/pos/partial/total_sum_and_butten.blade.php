@@ -173,7 +173,7 @@
                             </div>
                         @endif
 
-                        @if (json_decode($generalSettings->pos, true)['is_show_partial_sale_button'] == '1')
+                        @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1')
                             <div class="btn-bg">
                                 <a href="#" class="bg-parpal btn-pos" id="reedem_point_button">Reedem Point</a>
                             </div>

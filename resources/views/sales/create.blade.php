@@ -845,8 +845,7 @@
                                     tr += '<a href="#" class="text-success" id="edit_product">';
                                     tr += '<span class="product_name">'+product.name+'</span>';
                                     tr += '<span class="product_variant"></span>'; 
-                                    tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
-                                    tr += '</a><br/><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
+                                    tr += '</a><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="'+product.tax_type+'" type="hidden" id="tax_type">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -988,9 +987,8 @@
                                 tr += '<td colspan="2" class="text-start">';
                                 tr += '<a href="#" class="text-success" id="edit_product">';
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
-                                tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
-                                tr += '</a><br/><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable" placeholder="IMEI, Serial number or other info.">';
+                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'</span>'; 
+                                tr += '</a><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable" placeholder="IMEI, Serial number or other info.">';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
                                 tr += '<input value="'+variant_product.product.tax_type+'" type="hidden" id="tax_type">';
@@ -1202,9 +1200,8 @@
                             tr += '<td colspan="2" class="text-start">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant"></span>'; 
-                            tr += '<span class="product_code">'+' ('+product_code+')'+'</span>';
-                            tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info">';
+                            tr += '<span class="product_variant"></span>';
+                            tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info">';
                         
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -1362,9 +1359,8 @@
                             tr += '<td colspan="2" class="text-start">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
-                            tr += '<span class="product_code">'+'('+variant_code+')'+'</span>';
-                            tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
+                            tr += '<span class="product_variant">'+' -'+variant_name+'</span>'; 
+                            tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
                             tr += '<input value="'+tax_type+'" type="hidden" id="tax_type">';
@@ -1760,28 +1756,21 @@
             productTableRow.find('#unit_discount_type').val(e_unit_discount_type);
             productTableRow.find('#unit_discount').val(parseFloat(e_unit_discount).toFixed(2));
             productTableRow.find('#unit_discount_amount').val(parseFloat(e_unit_discount_amount).toFixed(2));
-            
-            var calsUninTaxAmount = (parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount)) / 100 * parseFloat(e_unit_tax_percent);
+
+            var calcUnitPriceWithDiscount = parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount);
+            var calsUninTaxAmount = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent);
             if (e_unit_tax_type == 2) {
                 var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
-                var calc = parseFloat(e_unit_price) / parseFloat(inclusiveTax) * 100;
-                calsUninTaxAmount = parseFloat(e_unit_price) - parseFloat(calc);
+                var calc = parseFloat(calcUnitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
+                calsUninTaxAmount = parseFloat(calcUnitPriceWithDiscount) - parseFloat(calc);
             }
             productTableRow.find('#unit_tax_percent').val(parseFloat(e_unit_tax_percent).toFixed(2));
             productTableRow.find('#tax_type').val(e_unit_tax_type);
             productTableRow.find('#unit_tax_amount').val(parseFloat(calsUninTaxAmount).toFixed(2));
 
-            var calcUnitPriceWithDiscount = parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount);
-            var calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent) + parseFloat(calcUnitPriceWithDiscount);
-            if (e_unit_tax_type == 2) {
-                var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
-                var calc = parseFloat(calcUnitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
-                var __tax_amount = parseFloat(calcUnitPriceWithDiscount) - parseFloat(calc);
-                calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) + parseFloat(__tax_amount);
-            }
-
+            var calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) + parseFloat(calsUninTaxAmount);
+           
             productTableRow.find('#unit_price').val(parseFloat(calcUnitPriceIncTax).toFixed(2));
-
             var calcSubtotal = parseFloat(calcUnitPriceIncTax) * parseFloat(e_quantity);
             productTableRow.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
             productTableRow.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));

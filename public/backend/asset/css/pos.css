@@ -1023,3 +1023,13 @@ a.resent-tn:hover {
 
 small.login-user-name span {line-height: 13px;}
 select {height: 28px;}
+
+.checkout-input-sec input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+.checkout-input-sec input { 
+    text-align: right; 
+}

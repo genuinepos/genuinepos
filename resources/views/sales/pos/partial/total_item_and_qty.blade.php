@@ -6,7 +6,7 @@
                     <div class="col-6">
                         <div class="row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label text-white">Total Qty:</label>
-                            <div class="col-sm-8 ">
+                            <div class="col-sm-8">
                                 <input readonly type="number" step="any" name="total_qty" id="total_qty" value="0.00" class="form-control">
                             </div>
                         </div>

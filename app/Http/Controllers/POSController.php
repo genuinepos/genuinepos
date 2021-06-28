@@ -909,6 +909,7 @@ class POSController extends Controller
             'products.profit',
             'products.product_price',
             'products.is_show_emi_on_pos',
+            'products.tax_type',
             'units.name as unit_name',
             'taxes.id as tax_id',
             'taxes.tax_percent',

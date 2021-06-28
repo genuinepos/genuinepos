@@ -83,18 +83,20 @@
                             </div>
 
                             <div class="col-lg-5 input-value-sec">
-                                <div class="input-group mb-1">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text valus">Point</span>
-                                    </div>
-                                    <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
-                                    <!-- =============================== -->
+                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1')
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text valus">Point</span>
+                                        </div>
+                                        <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
+                                        <!-- =============================== -->
 
-                                    <div class="input-group-prepend ms-1">
-                                        <span class="input-group-text valus">USD</span>
+                                        <div class="input-group-prepend ms-1">
+                                            <span class="input-group-text valus"> = {{ json_decode($generalSettings->business, true)['currency'] }}</span>
+                                        </div>
+                                        <input readonly type="text" class="form-control" id="trial_point_amount">
                                     </div>
-                                    <input readonly type="text" class="form-control">
-                                </div>
+                                @endif
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">SQ</span>

@@ -107,18 +107,22 @@
                             </div>
 
                             <div class="col-lg-5 input-value-sec">
-                                <div class="input-group mb-1">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text valus">Point</span>
-                                    </div>
-                                    <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
-                                    <!-- =============================== -->
+                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1')
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text valus">Point</span>
+                                        </div>
+                                        <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
+                                        <!-- =============================== -->
 
-                                    <div class="input-group-prepend ms-1">
-                                        <span class="input-group-text valus">USD</span>
+                                        <div class="input-group-prepend ms-1">
+                                            <span class="input-group-text valus"> = {{ json_decode($generalSettings->business, true)['currency'] }}</span>
+                                        </div>
+                                        <input readonly type="text" class="form-control" id="trial_point_amount">
                                     </div>
-                                    <input readonly type="text" class="form-control">
-                                </div>
+                                @endif
+                                
+
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">SQ</span>
@@ -200,6 +204,13 @@
 </div>
 <script>
     // Get all price group
+    var rp_settings = {
+        enable_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] }}",
+        redeem_amount_per_unit_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}",
+        min_order_total_for_redeem : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_redeem'] }}",
+        min_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_redeem_point'] }}",
+        max_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['max_redeem_point'] }}",
+    }
     var price_groups = '';
     function getPriceGroupProducts(){
         $.ajax({
@@ -213,16 +224,64 @@
  
     $('#customer_id').on('change', function () {
         var customerId = $(this).val();
+        console.log(rp_settings);
         $('#previous_due').val(parseFloat(0).toFixed(2));
         $('#earned_point').val('');
         var url = "{{ url('sales/customer_info') }}"+'/'+customerId;
         $.get(url, function(data) {
             $('#previous_due').val(data.total_sale_due);
             $('#earned_point').val(data.point);
+            if (rp_settings.enable_rp == '1') {
+                var __point_amount = parseFloat(data.point) * parseFloat(rp_settings.redeem_amount_per_unit_rp);
+                $('#trial_point_amount').val(parseFloat(__point_amount).toFixed(2));
+            }
             calculateTotalAmount();
         });
         calculateTotalAmount();
         document.getElementById('search_product').focus();
+    });
+
+    $(document).on('click', '#reedem_point_button', function (e) {
+        e.preventDefault();
+        var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
+        $('#available_point').val(parseFloat(earned_point));
+        $('#redeem_amount').val('');
+        $('#total_redeem_point').val('')
+        $('#pointReedemModal').modal('show');
+    });
+
+    $(document).on('input', '#total_redeem_point', function () {
+        var redeeming_point = $(this).val();
+        var __point_amount = parseFloat(redeeming_point) * parseFloat(rp_settings.redeem_amount_per_unit_rp);
+        $('#redeem_amount').val(parseFloat(__point_amount));
+    });
+
+    $(document).on('click', '#redeem_btn',function(e) {
+        e.preventDefault();
+        var available_point = $('#available_point').val() ? $('#available_point').val() : 0;
+        var total_redeem_point = $('#total_redeem_point').val() ? $('#total_redeem_point').val() : 0;
+        var redeem_amount = $('#redeem_amount').val() ? $('#redeem_amount').val() : 0;
+        if (parseFloat(total_redeem_point) > parseFloat(available_point)) {
+            toastr.error('Only '+available_point+' points is available.');
+            return;
+        }
+
+        var total_invoice_payable = $('#total_invoice_payable').val()
+        if (rp_settings.min_order_total_for_redeem && total_invoice_payable < parseFloat(rp_settings.min_order_total_for_redeem)) {
+            toastr.error('Minimum order amount is '+rp_settings.min_order_total_for_redeem+' to redeem the points.'); 
+            return;
+        }
+
+        if (rp_settings.min_redeem_point && parseFloat(total_redeem_point) < parseFloat(rp_settings.min_redeem_point)) {
+            toastr.error('Minimum redeem points is '+rp_settings.min_redeem_point);
+            return; 
+        }
+        
+        if (rp_settings.max_redeem_point && parseFloat(total_redeem_point) > parseFloat(rp_settings.max_redeem_point)) {
+            toastr.error('Maximum redeem points is '+rp_settings.max_redeem_point); 
+            return;
+        }
+
     });
 
     $('#addCustomer').on('click', function () {
@@ -274,7 +333,7 @@
         });
     });
 
-    $('#add_product').on('click', function () {
+    $('#add_product').on('click', function() {
         $.ajax({
             url:"{{route('sales.add.product.modal.view')}}",
             type:'get',

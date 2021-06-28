@@ -191,6 +191,49 @@
                 </div>
             </div>
         </div>
+        <!--Add Payment modal End-->
+
+        @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1')
+        <!--Redeem Point modal-->
+            <div class="modal fade" id="pointReedemModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
+                <div class="modal-dialog col-40-modal" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="exampleModalLabel">Reedem Point</h6>
+                            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label><b>Available Point :</b> </label>
+                                <input type="number" step="any" name="available_point" id="available_point" class="form-control" value="0" readonly>
+                            </div>
+        
+                            <div class="form-group row mt-1">
+                                <div class="col-md-6">
+                                    <label><b>Redeemed :</b> </label>
+                                    <input type="number" step="any" name="total_redeem_point" id="total_redeem_point" class="form-control">
+                                    <input type="number" step="any" name="pre_redeemed" id="pre_redeemed" class="d-none" value="0">
+                                </div>
+        
+                                <div class="col-md-6">
+                                    <label><b>Redeem Amount :</b> </label>
+                                    <input type="number" step="any" name="redeem_amount" id="redeem_amount" class="form-control">
+                                </div>
+                            </div>
+        
+                            <div class="form-group row mt-3">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                    <a href="#" class="c-btn btn_blue ms-1 float-end" id="redeem_btn">Redeem</a>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        <!--Redeem Point modal-->
     </form>
 
      <!-- Recent transection list modal-->
@@ -572,22 +615,6 @@
     </div>
     <!-- Exchange modal End-->
 
-    <div class="modal fade" id="pointReedemModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-40-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Reedem Point</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <div class="heading p-5 text-center">
-                        <h4>Comming Soon...</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!--Data delete form-->
     <form id="deleted_form" action="" method="post">
         @method('DELETE')
@@ -609,11 +636,16 @@
             var subtotals = document.querySelectorAll('#subtotal');
             // Update Total Item
             var total_item = 0;
+            var total_qty = 0;
             quantities.forEach(function(qty){
                 total_item += 1;
+                total_qty += parseFloat(qty.value)
             });
 
             $('#total_item').val(parseFloat(total_item));
+            $('.mb_total_item').val(parseFloat(total_item));
+            $('#total_qty').val(parseFloat(total_qty).toFixed(2));
+            $('.mb_total_qty').val(parseFloat(total_qty).toFixed(2));
 
             // Update Net total Amount
             var netTotalAmount = 0;

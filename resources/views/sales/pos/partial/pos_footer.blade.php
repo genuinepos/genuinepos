@@ -17,7 +17,7 @@
                         <div class="row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label text-white">Total Qty:</label>
                             <div class="col-sm-8 ">
-                                <input type="text" name="" value="3" class="form-control " disabled>
+                                <input type="text" value="0.00" class="form-control mb_total_qty" disabled>
                             </div>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                         <div class="row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label text-white">Total Item:</label>
                             <div class="col-sm-8 ">
-                                <input type="text" name="" value="10" class="form-control" disabled>
+                                <input type="text" value="0.00" class="form-control mb_total_item" disabled>
                             </div>
                         </div>
                     </div>

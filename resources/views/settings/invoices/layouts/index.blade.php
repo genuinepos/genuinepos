@@ -38,10 +38,10 @@
                                             <table class="display data_tbl data__table">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-white">Serial</th>
-                                                        <th class="text-white">Layout Name</th>
-                                                        <th class="text-white">Is Header Less</th>
-                                                        <th class="text-white">Actions</th>
+                                                        <th>Serial</th>
+                                                        <th>Layout Name</th>
+                                                        <th>Is Header Less</th>
+                                                        <th>Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

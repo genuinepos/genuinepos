@@ -1003,34 +1003,18 @@ a.resent-tn:hover {
 }
 
 @media (max-width: 350px) {
-    .btn-pos {
-        height: 23px;
-    }
-    .function-card {
-        padding: 20% 0;
-    }
+    .btn-pos {height: 23px;}
+    .function-card {padding: 20% 0;}
 }
 
-.big_field {
-    font-size: 28px!important;
-    font-weight: 500!important;
-}
-
-.big_label {
-    font-size: 15px;
-    padding-left: 5px;
-}
-
+.big_field {font-size: 28px!important;font-weight: 500!important;}
+.big_label {font-size: 15px;padding-left: 5px;}
 small.login-user-name span {line-height: 13px;}
 select {height: 28px;}
-
 .checkout-input-sec input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
-}
+input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;margin: 0;}
 
-.checkout-input-sec input {text-align: right;}
-#order_tax{direction: rtl; text-align: right;}
+.checkout-input-sec input {text-align: right; font-weight: 800;}
+#order_tax{direction: rtl; text-align: right; font-weight: 800;}
  /* Specilly used for Firefox */
- input[type=number] {-moz-appearance: textfield;}
+ input[type=number]{-moz-appearance: textfield;}

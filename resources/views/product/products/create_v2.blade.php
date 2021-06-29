@@ -488,21 +488,19 @@
                                                                             </td>
             
                                                                             <td class="text-start">
-                                                                                <input type="number" name="variant_costings[]"
-                                                                                    class="form-control" placeholder="Cost" id="variant_costing">
+                                                                                <input type="number" name="variant_costings[]" step="any" class="form-control" placeholder="Cost" id="variant_costing">
                                                                             </td>
             
                                                                             <td class="text-start">
-                                                                                <input type="number" name="variant_costings_with_tax[]"class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax">
+                                                                                <input type="number" step="any" name="variant_costings_with_tax[]"class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax">
                                                                             </td>
             
                                                                             <td class="text-start">
-                                                                                <input type="number" name="variant_profits[]" class="form-control" placeholder="Profit" value="0.00" id="variant_profit">
+                                                                                <input type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="0.00" id="variant_profit">
                                                                             </td>
                         
                                                                             <td class="text-start">
-                                                                                <input type="text" name="variant_prices_exc_tax[]"
-                                                                                    class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax">
+                                                                                <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax">
                                                                             </td>
                         
                                                                             <td class="text-start">
@@ -510,8 +508,7 @@
                                                                             </td>
             
                                                                             <td class="text-start">
-                                                                                <a href="#" id="variant_remove_btn"
-                                                                                    class="btn btn-xs btn-sm btn-danger">X</a>
+                                                                                <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -720,7 +717,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
-                                            <input type="number" name="duration" class="form-control w-50 add_warranty_input" data-name="Warranty duration" id="add_warranty_duration" placeholder="Warranty duration">
+                                            <input type="number" step="any" name="duration" class="form-control w-50 add_warranty_input" data-name="Warranty duration" id="add_warranty_duration" placeholder="Warranty duration">
                                             <select name="duration_type" class="form-control w-50" id="duration_type">
                                                 <option value="Months">Months</option>
                                                 <option value="Days">Days</option>
@@ -932,22 +929,22 @@
         html += '</td>';
         html += '<td>';
         html +=
-            '<input type="number" name="variant_costings[]" class="form-control" placeholder="Cost" id="variant_costing" value="' +
+            '<input type="number" step="any" name="variant_costings[]" class="form-control" placeholder="Cost" id="variant_costing" value="' +
             parseFloat(product_cost).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
         html +=
-            '<input type="number" name="variant_costings_with_tax[]" class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax" value="' +
+            '<input type="number" step="any" name="variant_costings_with_tax[]" class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax" value="' +
             parseFloat(product_cost_with_tax).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
         html +=
-            '<input type="number" name="variant_profits[]" class="form-control" placeholder="Profit" value="' +
+            '<input type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="' +
             parseFloat(profit).toFixed(2) + '" id="variant_profit">';
         html += '</td>';
         html += '<td>';
         html +=
-            '<input type="text" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax" value="' +
+            '<input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax" value="' +
             parseFloat(product_price).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
@@ -1121,7 +1118,7 @@
                                     tr += '</td>';
 
                                     tr += '<td>';
-                                    tr += '<input value="1" required name="combo_quantities[]" type="number" class="form-control form-control-sm" id="combo_quantity">';
+                                    tr += '<input type="number" step="any" value="1" required name="combo_quantities[]" class="form-control form-control-sm" id="combo_quantity">';
                                     tr += '</td>';
 
                                     var unitPriceIncTax = product.product_price + tax_amount;
@@ -1284,15 +1281,15 @@
                 tr += '</td>';
 
                 tr += '<td>';
-                tr += '<input value="1.00" required name="combo_quantities[]" type="number" class="form-control form-control-sm" id="combo_quantity">';
+                tr += '<input type="number" step="any" value="1.00" required name="combo_quantities[]" class="form-control form-control-sm" id="combo_quantity">';
                 tr += '</td>';
 
                 tr += '<td>';
-                tr += '<input readonly value="'+variant_price_inc_tax+'" required name="unit_prices_inc_tax[]" type="number" class="form-control form-control-sm" id="unit_price_inc_tax">';
+                tr += '<input readonly value="'+variant_price_inc_tax+'" required name="unit_prices_inc_tax[]" type="number" step="any" class="form-control form-control-sm" id="unit_price_inc_tax">';
                 tr += '</td>';
               
                 tr += '<td>';
-                tr += '<input readonly value="'+variant_price_inc_tax+'" required name="subtotals[]" type="number" class="form-control form-control-sm" id="subtotal">';
+                tr += '<input readonly type="number" step="any" value="'+variant_price_inc_tax+'" required name="subtotals[]" class="form-control form-control-sm" id="subtotal">';
                 tr += '</td>';
 
                 tr += '<td class="text-right">';

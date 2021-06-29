@@ -1,6 +1,4 @@
-@php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-@endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
 <!-- Sale print templete-->
 @if ($sale->branch && $sale->branch->pos_sale_invoice_layout)
     @if ($sale->branch->pos_sale_invoice_layout->layout_design == 1)
@@ -90,7 +88,13 @@
                                 @endif
 
                                 @if ($sale->branch->pos_sale_invoice_layout->customer_phone)
-                                    <li><strong>Phone : </strong> >{{ $sale->customer ? $sale->customer->phone : '' }}
+                                    <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                    </li>
+                                @endif
+
+                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                                    <li>
+                                        <strong>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} : </strong> {{ $sale->customer ? $sale->customer->point : 0 }}
                                     </li>
                                 @endif
                             </ul>
@@ -528,6 +532,15 @@
                                         <b>Customer:</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> 
                                     </th>
                                 </tr>
+
+                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                                    <tr>
+                                        <th class="text-center">
+                                            <b>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} :</b>  
+                                            <span>{{ $sale->customer ? $sale->customer->point : 0 }}</span> 
+                                        </th>
+                                    </tr>
+                                @endif
                             </thead>
                         </table>
                     </div>
@@ -846,6 +859,12 @@
 
                                 @if ($defaultLayout->customer_phone)
                                     <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}</li>
+                                @endif
+
+                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                                    <li><strong>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} : </strong>  
+                                        {{ $sale->customer ? $sale->customer->point : 0 }}
+                                    </li>
                                 @endif
                             </ul>
                         </div>
@@ -1309,6 +1328,15 @@
                                         <b>Customer:</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> 
                                     </th>
                                 </tr>
+
+                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                                    <tr>
+                                        <th class="text-center">
+                                            <b>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} : </b>  
+                                            <span>{{ $sale->customer ? $sale->customer->point : 0 }}</span> 
+                                        </th>
+                                    </tr>
+                                @endif
                             </thead>
                         </table>
                     </div>

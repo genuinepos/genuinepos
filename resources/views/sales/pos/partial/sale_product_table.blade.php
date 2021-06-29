@@ -175,8 +175,7 @@
                             var li = "";
                             // <img style="width:30px; height:30px;" src="' +imgUrl + '/' + product.thumbnail_photo + '"> 
                             var imgUrl = "{{ asset('public/uploads/product/thumbnail') }}";
-                            var tax_percent = product.tax_id != null ? product.tax.tax_percent :
-                                0.00;
+                            var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
                             $.each(product.product_variants, function(key, variant) {
                                 var price = 0;
                                 var __price = price_groups.filter(function (value) {
@@ -189,8 +188,8 @@
                                     price = variant.variant_price;
                                 }
 
-                                var tax_amount = parseFloat(price / 100 * tax_percent);
-                                var unitPriceIncTax = (parseFloat(price) / 100 * tax_percent) + parseFloat(price);
+                                var tax_amount = parseFloat(price) / 100 * parseFloat(tax_percent);
+                                var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                 if (product.tax_type == 2) {
                                     var inclusiveTax = 100 + parseFloat(tax_percent);
                                     var calcTax = parseFloat(price) / parseFloat(inclusiveTax) * 100;
@@ -212,7 +211,7 @@
                         $('#search_product').val('');
                         $('.select_area').hide();
                         var variant_product = product.variant_product;
-                        var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
+                        var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                         var variant_ids = document.querySelectorAll('#variant_id');
                         var sameVariant = 0;
                         variant_ids.forEach(function(input) {
@@ -255,9 +254,11 @@
                             } else {
                                 price = variant_product.variant_price;
                             }
-                            var tax_amount = parseFloat(price / 100 * tax_percent);
+                            
+                            var tax_amount = parseFloat(price) / 100 * parseFloat(tax_percent);
                             var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
-                            if (product.tax_type == 2) {
+
+                            if (variant_product.product.tax_type == 2) {
                                 var inclusiveTax = 100 + parseFloat(tax_percent)
                                 var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
                                 tax_amount = parseFloat(price) - parseFloat(calcAmount);

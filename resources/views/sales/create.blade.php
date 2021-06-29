@@ -934,7 +934,7 @@
                             $('.select_area').hide();
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
-                            var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
+                            var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
@@ -977,7 +977,7 @@
                                     price = variant_product.variant_price;
                                 }
                                 var tax_amount = parseFloat(price / 100 * tax_percent);
-                                if (product.tax_type == 2) {
+                                if (variant_product.product.tax_type == 2) {
                                     var inclusiveTax = 100 + parseFloat(tax_percent)
                                     var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
                                     tax_amount = parseFloat(price) - parseFloat(calcAmount);

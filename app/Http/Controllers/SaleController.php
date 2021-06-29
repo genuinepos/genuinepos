@@ -1494,7 +1494,6 @@ class SaleController extends Controller
         }
     }
 
-
     // Sale edit view
     public function edit($saleId)
     {
@@ -2129,7 +2128,9 @@ class SaleController extends Controller
                 return response()->json(['errorMsg' => 'This product is not available in this branch.']);
             }
         } else {
-            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $product_code)->first();
+            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+            ->where('variant_code', $product_code)->select('id', 'product_id', 'variant_price', 'variant_cost_with_tax')
+            ->first();
             if ($variant_product) {
                 $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $variant_product->product_id)->first();
 

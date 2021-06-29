@@ -14,21 +14,18 @@
         <div class="mt-5"></div>
         <div class="container-fluid">
             <div class="form_element mt-3">
-                <div class="section-header">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>General Settings</h5>
-                            </div>
-    
-                            <div class="col-md-6">
-                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                            </div>
+                <div class="py-2 px-2 form-header">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>Add Sale</h5>
+                        </div>
+
+                        <div class="col-6">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
                 </div>
-
+               
                 <div class="element-body">
                     <div class="settings_form_area">
                         <div class="row">
@@ -125,11 +122,12 @@
                                             <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number"
                                                 value="{{ json_decode($generalSettings->business, true)['phone'] }}">
                                         </div>
+                                    </div>
 
+                                    <div class="form-group row mt-1">
                                         <div class="col-md-4">
                                             <label><strong>Email :</strong></label>
-                                            <input type="text" name="email" class="form-control bs_input"
-                                                placeholder="Business email address"
+                                            <input type="text" name="email" class="form-control bs_input" placeholder="Business email address"
                                                 value="{{ json_decode($generalSettings->business, true)['email'] }}">
                                         </div>
 
@@ -137,11 +135,9 @@
                                             <label><strong>Start Date :</strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                            class="fas fa-calendar-week"></i></span>
+                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                 </div>
-                                                <input type="text" name="start_date" class="form-control date-picker"
-                                                    autocomplete="off"
+                                                <input type="text" name="start_date" class="form-control" autocomplete="off"
                                                     value="{{ json_decode($generalSettings->business, true)['start_date'] }}">
                                             </div>
                                         </div>
@@ -155,8 +151,7 @@
                                             <span class="error error_default_profit"></span>
                                         </div>
                                     </div>
-
-                                    <div class="form-group row">
+                                    <div class="form-group row mt-1">
                                         <div class="col-md-4">
                                             <label><strong>Business Logo :</strong><span
                                                     class="text-danger">*</span></label>
@@ -195,7 +190,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
+                                    <div class="form-group row mt-1">
                                         <div class="col-md-4">
                                             <label><strong>Date Format:</strong><span class="text-danger">*</span></label>
                                             <select name="date_format" class="form-control bs_input" data-name="Date format"

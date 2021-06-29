@@ -230,43 +230,42 @@ class POSController extends Controller
             if ($request->action == 1) {
                 $updateProductQty = Product::where('id', $product_id)->first();
                 if ($updateProductQty->type == 1) {
-                    $updateProductQty->quantity -= $quantities[$index];
-                    $updateProductQty->number_of_sale += $quantities[$index];
+                    $updateProductQty->quantity = $updateProductQty->quantity - $quantities[$index];
+                    $updateProductQty->number_of_sale = $updateProductQty->number_of_sale + $quantities[$index];
                     $updateProductQty->save();
 
                     if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
                         $updateWarehouseProductQty = ProductWarehouse::where('warehouse_id', $request->warehouse_id)
                             ->where('product_id', $product_id)
                             ->first();
-                        $updateWarehouseProductQty->product_quantity -= $quantities[$index];
+                        $updateWarehouseProductQty->product_quantity = $updateWarehouseProductQty->product_quantity - $quantities[$index];
                         $updateWarehouseProductQty->save();
 
                         if ($variant_ids[$index] != 'noid') {
                             $updateProductVariant = ProductVariant::where('id', $variant_ids[$index])
                                 ->where('product_id', $product_id)
                                 ->first();
-                            $updateProductVariant->variant_quantity -= $quantities[$index];
-                            $updateProductVariant->number_of_sale += $quantities[$index];
+                            $updateProductVariant->variant_quantity = $updateProductVariant->variant_quantity - $quantities[$index];
+                            $updateProductVariant->number_of_sale = $updateProductVariant->number_of_sale + $quantities[$index];
                             $updateProductVariant->save();
 
                             $updateProductWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $updateWarehouseProductQty->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                            $updateProductWarehouseVariant->variant_quantity -= $quantities[$index];
+                            $updateProductWarehouseVariant->variant_quantity = $updateProductWarehouseVariant->variant_quantity - $quantities[$index];
                             $updateProductWarehouseVariant->save();
                         }
                     } else {
                         $updateBranchProductQty = ProductBranch::where('branch_id', $request->branch_id)->where('product_id', $product_id)->first();
-                        $updateBranchProductQty->product_quantity -= $quantities[$index];
+                        $updateBranchProductQty->product_quantity = $updateBranchProductQty->product_quantity - $quantities[$index];
                         $updateBranchProductQty->save();
 
                         if ($variant_ids[$index] != 'noid') {
                             $updateProductVariant = ProductVariant::where('id', $variant_ids[$index])->where('product_id', $product_id)->first();
-                            $updateProductVariant->variant_quantity -= $quantities[$index];
-                            $updateProductVariant->number_of_sale += $quantities[$index];
+                            $updateProductVariant->variant_quantity = $updateProductVariant->variant_quantity - $quantities[$index];
+                            $updateProductVariant->number_of_sale = $updateProductVariant->number_of_sale + $quantities[$index];
                             $updateProductVariant->save();
 
                             $updateProductBranchVariant = ProductBranchVariant::where('product_branch_id', $updateBranchProductQty->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                            $updateProductBranchVariant->variant_quantity -= $quantities[$index];
+                            $updateProductBranchVariant->variant_quantity = $updateProductBranchVariant->variant_quantity - $quantities[$index];
                             $updateProductBranchVariant->save();
                         }
                     }
@@ -503,12 +502,12 @@ class POSController extends Controller
             $sale_product->save();
             if ($updateSale->status == 1) {
                 if ($sale_product->product->type == 1) {
-                    $sale_product->product->quantity += $sale_product->quantity;
-                    $sale_product->product->number_of_sale -= $sale_product->quantity;
+                    $sale_product->product->quantity = $sale_product->product->quantity + $sale_product->quantity;
+                    $sale_product->product->number_of_sale = $sale_product->product->number_of_sale - $sale_product->quantity;
                     $sale_product->product->save();
                     if ($sale_product->product_variant_id) {
-                        $sale_product->variant->variant_quantity += $sale_product->quantity;
-                        $sale_product->variant->number_of_sale -= $sale_product->quantity;
+                        $sale_product->variant->variant_quantity = $sale_product->variant->variant_quantity + $sale_product->quantity;
+                        $sale_product->variant->number_of_sale = $sale_product->variant->number_of_sale - $sale_product->quantity;
                         $sale_product->variant->save();
                     }
 
@@ -516,28 +515,28 @@ class POSController extends Controller
                         $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
                             ->where('product_id', $sale_product->product_id)
                             ->first();
-                        $productBranch->product_quantity += $sale_product->quantity;
+                        $productBranch->product_quantity = $productBranch->product_quantity + $sale_product->quantity;
                         $productBranch->save();
                         if ($sale_product->product_variant_id) {
                             $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
                                 ->where('product_id', $sale_product->product_id)
                                 ->where('product_variant_id', $sale_product->product_variant_id)
                                 ->first();
-                            $productBranchVariant->variant_quantity += $sale_product->quantity;
+                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $sale_product->quantity;
                             $productBranchVariant->save();
                         }
                     } else {
                         $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSale->warehouse_id)
                             ->where('product_id', $sale_product->product_id)
                             ->first();
-                        $productWarehouse->product_quantity += $sale_product->quantity;
+                        $productWarehouse->product_quantity = $productWarehouse->product_quantity + $sale_product->quantity;
                         $productWarehouse->save();
                         if ($sale_product->product_variant_id) {
                             $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
                                 ->where('product_id', $sale_product->product_id)
                                 ->where('product_variant_id', $sale_product->product_variant_id)
                                 ->first();
-                            $productWarehouseVariant->variant_quantity += $sale_product->quantity;
+                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $sale_product->quantity;
                             $productWarehouseVariant->save();
                         }
                     }
@@ -566,27 +565,27 @@ class POSController extends Controller
             if ($request->action == 1) {
                 $product = Product::where('id', $product_id)->first();
                 if ($product->type == 1) {
-                    $product->quantity -= $quantities[$index];
-                    $product->number_of_sale += $quantities[$index];
+                    $product->quantity = $product->quantity - $quantities[$index];
+                    $product->number_of_sale = $product->number_of_sale + $quantities[$index];
                     $product->save();
 
                     if ($updateSale->branch_id) {
                         $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
                             ->where('product_id', $product_id)->first();
-                        $productBranch->product_quantity -= $quantities[$index];
+                        $productBranch->product_quantity = $productBranch->product_quantity - $quantities[$index];
                         $productBranch->save();
                     } else {
                         $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSale->warehouse_id)
                             ->where('product_id', $product_id)->first();
-                        $productWarehouse->product_quantity -= $quantities[$index];
+                        $productWarehouse->product_quantity = $productWarehouse->product_quantity - $quantities[$index];
                         $productWarehouse->save();
                     }
 
                     if ($variant_ids[$index] != 'noid') {
                         $productVariant = ProductVariant::where('id', $variant_ids[$index])
                             ->where('product_id', $product_id)->first();
-                        $productVariant->variant_quantity -= $quantities[$index];
-                        $productVariant->number_of_sale += $quantities[$index];
+                        $productVariant->variant_quantity = $productVariant->variant_quantity - $quantities[$index];
+                        $productVariant->number_of_sale = $productVariant->number_of_sale + $quantities[$index];
                         $productVariant->save();
 
                         if ($updateSale->branch_id) {
@@ -594,14 +593,14 @@ class POSController extends Controller
                                 ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])
                                 ->first();
 
-                            $productBranchVariant->variant_quantity -= $quantities[$index];
+                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity - $quantities[$index];
                             $productBranchVariant->save();
                         } else {
                             $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
                                 ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])
                                 ->first();
 
-                            $productWarehouseVariant->variant_quantity -= $quantities[$index];
+                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity - $quantities[$index];
                             $productWarehouseVariant->save();
                         }
                     }
@@ -690,8 +689,8 @@ class POSController extends Controller
             if ($request->account_id) {
                 // update account
                 $account = Account::where('id', $request->account_id)->first();
-                $account->credit += $request->paying_amount;
-                $account->balance += $request->paying_amount;
+                $account->credit = $account->credit + $request->paying_amount;
+                $account->balance = $account->balance + $request->paying_amount;
                 $account->save();
 
                 // Add cash flow
@@ -898,7 +897,7 @@ class POSController extends Controller
         }
 
         if (!$request->category_id  && !$request->brand_id) {
-            $query->orderBy('number_of_sale', 'DESC')->limit(90);
+            $query->orderBy('products.id', 'DESC')->limit(90);
         }
 
         $products = $query->select(

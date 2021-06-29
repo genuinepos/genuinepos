@@ -242,15 +242,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Sale Note:</b></label>
-                                                    <div class="col-8">
-                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note">
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -318,11 +309,18 @@
                                             </div>
                                         </div>
 
+                                        <div class="row">
+                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Sale Note:</label>
+                                            <div class="col-sm-7">
+                                                <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note">
+                                            </div>
+                                        </div>
+
                                         <div class="submitBtn">
                                             <div class="row justify-content-center">
                                                 <div class="col-12 text-end">
                                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                                                    <button type="submit" class="btn btn-sm btn-primary submit_button">Update </button>
+                                                    <button type="submit" class="btn btn-sm btn-primary submit_button">Save Change </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -607,30 +605,32 @@
                                         price = product.product_price;
                                     }
                                     var tax_amount = parseFloat(price / 100 * tax_percent);
+                                    var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                     if (product.tax_type == 2) {
                                         var inclusiveTax = 100 + parseFloat(tax_percent)
                                         var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
                                         tax_amount = parseFloat(price) - parseFloat(calcAmount);
+                                        var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                     }
                                     var tr = '';
                                     tr += '<tr>';
                                     tr += '<td colspan="2" class="text-start">';
                                     tr += '<a href="#" class="text-success" id="edit_product">';
-                                    tr += '<span class="product_name">'+product.name+'</span>';
+                                    tr += '<span class="product_name">'+ product.name +'</span>';
                                     tr += '<span class="product_variant"></span>'; 
-                                    tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
-                                    tr += '</a><br/><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
-                                    tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
+                                    tr += '<span class="product_code">'+ ' ('+product.product_code+')' +'</span>';
+                                    tr += '</a><br/><input type="'+ (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
+                                    tr += '<input value="'+ product.id +'" type="hidden" class="productId-'+ product.id +'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
-                                    tr += '<input value="'+product.tax_type+'" type="hidden" id="tax_type">';
-                                    tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
-                                    tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(tax_amount).toFixed(2)+'">';
+                                    tr += '<input value="'+ product.tax_type +'" type="hidden" id="tax_type">';
+                                    tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+ tax_percent +'">';
+                                    tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+ parseFloat(tax_amount).toFixed(2) +'">';
                                     tr += '<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
                                     tr += '<input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">';
                                     tr += '<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                                    tr += '<input value="'+product.product_cost_with_tax+'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
+                                    tr += '<input value="'+ product.product_cost_with_tax +'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                                     tr += '<input type="hidden" id="previous_quantity" value="0">';
-                                    tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
+                                    tr += '<input type="hidden" id="qty_limit" value="'+ qty_limit +'">';
                                     tr += '</td>';
 
                                     tr += '<td>';
@@ -645,23 +645,18 @@
                                     tr += '</div>';
                                     tr += '</td>';
                                     tr += '<td class="text">';
-                                    tr += '<span class="span_unit">'+product.unit.name+'</span>'; 
-                                    tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
+                                    tr += '<span class="span_unit">'+ product.unit.name +'</span>'; 
+                                    tr += '<input  name="units[]" type="hidden" id="unit" value="'+ product.unit.name +'">';
                                     tr += '</td>';
+
                                     tr += '<td>';
-                                    tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
-                                    var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
-                                    if (product.tax_type == 2) {
-                                        var inclusiveTax = 100 + parseFloat(tax_percent)
-                                        var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
-                                        var taxAmount = parseFloat(price) - parseFloat(calcAmount);
-                                        unitPriceIncTax = parseFloat(price) + parseFloat(taxAmount);
-                                    }
-                                    tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
+                                    tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+ parseFloat(price).toFixed(2) +'">';
+                                    tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+ parseFloat(unitPriceIncTax).toFixed(2) +'">';
                                     tr += '</td>';
+
                                     tr += '<td class="text text-center">';
-                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
-                                    tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden"  id="subtotal">';
+                                    tr += '<strong><span class="span_subtotal">'+ parseFloat(unitPriceIncTax).toFixed(2) +' </span></strong>'; 
+                                    tr += '<input value="'+ parseFloat(unitPriceIncTax).toFixed(2) +'" readonly name="subtotals[]" type="hidden"  id="subtotal">';
                                     tr += '</td>';
                                     tr += '<td class="text-center">';
                                     tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
@@ -742,10 +737,12 @@
                                     price = variant_product.variant_price;
                                 }
                                 var tax_amount = parseFloat(price / 100 * tax_percent);
+                                var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                 if (product.tax_type == 2) {
                                     var inclusiveTax = 100 + parseFloat(tax_percent)
                                     var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
                                     tax_amount = parseFloat(price) - parseFloat(calcAmount);
+                                    var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                 }
                                 var tr = '';
                                 tr += '<tr>';
@@ -783,21 +780,17 @@
                                 tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
+
                                 tr += '<td>';
                                 tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+'" id="unit_price_exc_tax">';
-                                var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
-                                if (product.tax_type == 2) {
-                                    var inclusiveTax = 100 + parseFloat(tax_percent)
-                                    var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
-                                    var taxAmount = parseFloat(price) - parseFloat(calcAmount);
-                                    unitPriceIncTax = parseFloat(price) + parseFloat(taxAmount);
-                                }
                                 tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'">';
                                 tr += '</td>';
+
                                 tr += '<td class="text text-center">';
                                 tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
                                 tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                                 tr += '</td>';
+
                                 tr += '<td class="text-center">';
                                 tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                                 tr += '</td>';

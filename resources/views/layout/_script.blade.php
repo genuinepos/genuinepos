@@ -57,14 +57,14 @@
     {{-- <script src="{{asset('public/backend/js/jquery.confirm.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/accordion.jquery.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/autogrow.jquery.js')}}"></script>
-    <script src="{{asset('public/backend/js/check-all.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/check-all.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/data-table.jquery.js')}}"></script>  --}}
  
     {{-- <script src="{{asset('public/backend/js/ZeroClipboard.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/TableTools.min.js')}}"></script>
     <script src="{{asset('public/backend/js/jeditable.jquery.js')}}"></script>
     {{-- <script src="{{asset('public/backend/js/accordion.jquery.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/duallist.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/duallist.jquery.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/easing.jquery.js')}}"></script>
     {{-- <script src="{{asset('public/backend/js/full-calendar.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/input-limiter.jquery.js')}}"></script> --}}

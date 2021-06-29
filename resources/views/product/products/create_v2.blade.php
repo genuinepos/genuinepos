@@ -46,7 +46,7 @@
                                                     <div class="col-8">
                                                         <div class="input-group">
                                                             <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" value="" placeholder="Product Code">
-                                                            <div class="input-group-prepend">
+                                                            <div class="input-group-prepend add_button">
                                                                 <span class="input-group-text code_generate_btn input_i"><i class="fas fa-sync-alt"></i></span>
                                                             </div>
                                                         </div>
@@ -526,16 +526,15 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-3">
-                                <div class="col-md-8 text-end">
-                                    <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner"></i><strong>Loading</strong> </button>
-                                    <button type="submit" name="action" value="save_and_new"
-                                        class="btn btn-primary submit_button btn-sm">Save And Add Another</button>
-                                    <button type="submit" name="action" value="save"
-                                        class="btn btn-primary submit_button btn-sm">Save</button>
-                                </div>
+                            <div class="col-md-8 text-end mt-1">
+                                <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
+                                <button type="submit" name="action" value="save_and_new"
+                                    class="btn btn-primary submit_button btn-sm">Save And Add Another</button>
+                                <button type="submit" name="action" value="save"
+                                    class="btn btn-primary submit_button btn-sm">Save</button>
                             </div>
                         </div>
+                    </div>
                 </section>
             </form>
         </div>

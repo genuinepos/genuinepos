@@ -604,11 +604,10 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-3">
-                                <div class="col-md-8 text-end">
-                                    <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner"></i><strong>Loading</strong> </button>
-                                    <button type="submit" class="btn btn-primary submit_button btn-sm">Update</button>
-                                </div>
+                            
+                            <div class="col-md-8 text-end mt-1">
+                                <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
+                                <button type="submit" class="btn btn-primary submit_button btn-sm">Save Changes</button>
                             </div>
                         </div>
                 </section>

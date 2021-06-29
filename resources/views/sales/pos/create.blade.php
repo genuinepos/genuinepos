@@ -302,23 +302,20 @@
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
                         tr += '<td class="text-start">';
-                        tr += '<a class="product-name text-info" title="'+'SKU-'+variant_code+'" id="edit_product" href="#">' + product_name +' - ' + variant_name + '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info">';
-                        tr += '<input value="' + product_id + '" type="hidden" class="productId-' +
-                            product_id + '" id = "product_id" name="product_ids[]">';
-                        tr += '<input value="' + variant_id +'" type="hidden" class="variantId-'+ variant_id +'" id="variant_id" name="variant_ids[]">';
+                        tr += '<a class="product-name text-info" title="'+'SKU-'+ variant_code +'" id="edit_product" href="#">' + product_name +' - ' + variant_name + '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info">';
+                        tr += '<input value="'+ product_id +'" type="hidden" class="productId-'+ product_id +'" id = "product_id" name="product_ids[]">';
+                        tr += '<input value="'+ variant_id +'" type="hidden" class="variantId-'+ variant_id +'" id="variant_id" name="variant_ids[]">';
                         tr +='<input type="hidden" id="tax_type" value="'+ tax_type +'">';
-                        tr +='<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="' +
-                            tax_percent + '">';
-                        tr +='<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="' +parseFloat(tax_amount).toFixed(2) + '">';
+                        tr +='<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
+                        tr +='<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+ parseFloat(tax_amount).toFixed(2) + '">';
                         tr +='<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
                         tr +='<input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">';
                         tr +='<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                        tr += '<input value="' + variant_cost_inc_tax +
-                            '" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
+                        tr += '<input value="'+ variant_cost_inc_tax +'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                         tr += '<input type="hidden" id="previous_qty" value="0.00">';
                         tr += '<input type="hidden" id="qty_limit" value="' + branchVariantQty +
                             '">';
-                        tr += '<input class="index-' + unique_index + '" type="hidden" id="index">';
+                        tr += '<input class="index-'+ unique_index +'" type="hidden" id="index">';
                         tr += '</td>';
 
                         tr += '<td>';
@@ -326,23 +323,21 @@
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<b><span class="span_unit">' + product_unit + '</span></b>';
-                        tr += '<input name="units[]" type="hidden" id="unit" value="' +
-                            product_unit + '">';
+                        tr += '<b><span class="span_unit">'+ product_unit +'</span></b>';
+                        tr += '<input name="units[]" type="hidden" id="unit" value="'+ product_unit +'">';
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+ parseFloat(price).toFixed(2) + '" id="unit_price_exc_tax">';
-                        
+                        tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+ parseFloat(price).toFixed(2) +'" id="unit_price_exc_tax">';
                         tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="' +parseFloat(unitPriceIncTax).toFixed(2) + '">';
                         tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(unitPriceIncTax).toFixed(2) + '</span> </b>';
                         tr += '</td>';
+
                         tr += '<td>';
-                        tr += '<input value="' + parseFloat(unitPriceIncTax).toFixed(2) +
-                            '" name="subtotals[]" type="hidden" id="subtotal">';
-                        tr += '<b><span class="span_subtotal">' + parseFloat(unitPriceIncTax)
-                            .toFixed(2) + '</span></b>';
+                        tr += '<input value="'+ parseFloat(unitPriceIncTax).toFixed(2) +'" name="subtotals[]" type="hidden" id="subtotal">';
+                        tr += '<b><span class="span_subtotal">'+ parseFloat(unitPriceIncTax).toFixed(2) +'</span></b>';
                         tr += '</td>';
+
                         tr +='<td><a href="#" class="action-btn c-delete" id="remove_product_btn"><span class="fas fa-trash"></span></a></td>';
                         tr += '</tr>';
                         $('#product_list').prepend(tr);

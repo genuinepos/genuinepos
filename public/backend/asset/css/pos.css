@@ -1031,6 +1031,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .checkout-input-sec input {text-align: right;}
-#order_tax{text-align: right;}
+#order_tax{direction: rtl; text-align: right;}
  /* Specilly used for Firefox */
  input[type=number] {-moz-appearance: textfield;}

@@ -879,9 +879,9 @@ Route::get('/test', function () {
     //  ];
 
     //  return $export_date;
-    $num = 100.50;
-    $r = (int)$num;
-    return $r;
+    // $num = 100.50;
+    // $r = (int)$num;
+    // return $r;
 });
 
 Auth::routes();

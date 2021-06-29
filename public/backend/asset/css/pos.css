@@ -1030,6 +1030,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0; 
 }
 
-.checkout-input-sec input { 
-    text-align: right; 
-}
+.checkout-input-sec input {text-align: right;}
+#order_tax{text-align: right;}
+ /* Specilly used for Firefox */
+ input[type=number] {-moz-appearance: textfield;}

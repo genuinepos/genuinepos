@@ -213,6 +213,7 @@
                                     <label><b>Redeemed :</b> </label>
                                     <input type="number" step="any" name="total_redeem_point" id="total_redeem_point" class="form-control">
                                     <input type="number" step="any" name="pre_redeemed" id="pre_redeemed" class="d-none" value="0">
+                                    <input type="number" step="any" name="pre_redeemed_amount" id="pre_redeemed_amount" class="d-none" value="0">
                                 </div>
         
                                 <div class="col-md-6">

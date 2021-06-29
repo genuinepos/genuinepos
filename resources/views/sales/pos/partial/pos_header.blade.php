@@ -225,7 +225,15 @@
     $('#customer_id').on('change', function () {
         var customerId = $(this).val();
         $('#previous_due').val(parseFloat(0).toFixed(2));
-        $('#earned_point').val('');
+        $('#earned_point').val(0);
+        $('#pre_redeemed').val(0);
+
+        var pre_redeemed_amount = $('#pre_redeemed_amount').val() ? $('#pre_redeemed_amount').val() : 0;
+        var order_discount = $('#order_discount').val() ? $('#order_discount').val() : 0;
+        var calcDiscount = parseFloat(order_discount) - parseFloat(pre_redeemed_amount);
+        $('#order_discount').val(parseFloat(calcDiscount).toFixed(2));
+        $('#order_discount_amount').val(parseFloat(calcDiscount).toFixed(2));
+        $('#pre_redeemed_amount').val(0);
         var url = "{{ url('sales/customer_info') }}"+'/'+customerId;
         $.get(url, function(data) {
             $('#previous_due').val(data.total_sale_due);
@@ -299,6 +307,9 @@
         var pre_redeemed = $('#pre_redeemed').val() ? $('#pre_redeemed').val() : 0;
         var calcPreRedeemPoint = parseFloat(pre_redeemed) + parseFloat(total_redeem_point);
         $('#pre_redeemed').val(parseFloat(calcPreRedeemPoint));
+        var pre_redeemed_amount = $('#pre_redeemed_amount').val() ? $('#pre_redeemed_amount').val() : 0;
+        var calcPreRedeemAmount = parseFloat(pre_redeemed_amount) + parseFloat(redeem_amount);
+        $('#pre_redeemed_amount').val(parseFloat(calcPreRedeemAmount).toFixed(2));
         calculateTotalAmount();
         $('#pointReedemModal').modal('hide');
     });

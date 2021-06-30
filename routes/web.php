@@ -124,9 +124,10 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
     // Barcode route group
     Route::group(['prefix' => 'barcode'], function () {
         Route::get('/', 'BarcodeController@index')->name('barcode.index');
+        Route::get('preview', 'BarcodeController@preview')->name('barcode.preview');
         Route::get('supplier/products', 'BarcodeController@supplierProduct')->name('barcode.supplier.get.products');
-        Route::get('genereate/completed', 'BarcodeController@genereateCompleted')->name('barcode.genereate.completed');
-        Route::post('multiple/genereate/completed', 'BarcodeController@multipleGenereateCompleted')->name('barcode.multiple.genereate.completed');
+        Route::get('generate/completed', 'BarcodeController@genereateCompleted')->name('barcode.genereate.completed');
+        Route::post('multiple/generate/completed', 'BarcodeController@multipleGenereateCompleted')->name('barcode.multiple.genereate.completed');
         Route::get('search/product/{searchKeyword}', 'BarcodeController@searchProduct');
         Route::get('get/selected/product/{productId}', 'BarcodeController@getSelectedProduct');
         Route::get('get/selected/product/variant/{productId}/{variantId}', 'BarcodeController@getSelectedProductVariant');

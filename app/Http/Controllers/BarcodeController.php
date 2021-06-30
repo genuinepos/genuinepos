@@ -15,16 +15,22 @@ class BarcodeController extends Controller
         $this->middleware('auth:admin_and_user');
     }
 
-    // Generete barcode index view 
+    // Generate barcode index view 
     public function index()
     {
-        return view('product.barcode.index');
+        return view('product.barcode.index_v2');
+    }
+
+    public function preview()
+    {
+        return view('product.barcode.preview');
     }
 
     // Get all supplier products
     public function supplierProduct()
     {
-       return Supplier::with(['supplier_products', 'supplier_products.product', 'supplier_products.product.tax', 'supplier_products.variant'])->get();
+       return Supplier::with(['supplier_products', 'supplier_products.product', 'supplier_products.product.tax', 'supplier_products.variant'])
+       ->get();
     }
 
     // Get all supplier products
@@ -57,15 +63,16 @@ class BarcodeController extends Controller
     public function searchProduct($searchKeyword)
     {
         $products = Product::with(['product_purchased_variants'])
-        ->where('name', 'LIKE' ,"%$searchKeyword%")
-        ->where('is_purchased', 1)
+        ->where('name', 'like' ,"%$searchKeyword%")
+        //->where('is_purchased', 1)
         ->get();
         if ($products->count() > 0) {
             return response()->json($products);
         }else {
             $products = Product::with(['product_purchased_variants'])
             ->where('product_code', 'LIKE' ,"%$searchKeyword%")
-            ->where('is_purchased', 1)->get();
+            //->where('is_purchased', 1)
+            ->get();
             return response()->json($products);
         }
     }
@@ -74,7 +81,11 @@ class BarcodeController extends Controller
     public function getSelectedProduct($productId)
     {
         $supplierProducts = SupplierProduct::with('supplier', 'product', 'product.tax', 'variant')->where('product_id', $productId)->get();
-        return response()->json($supplierProducts);
+        if ($supplierProducts->count() > 0) {
+            return response()->json($supplierProducts);
+        }else {
+            return Product::with('product_variants', 'tax')->where('id', $productId)->get();
+        }
     }
 
     // Get selected product variant 

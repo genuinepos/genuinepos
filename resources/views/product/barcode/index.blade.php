@@ -21,7 +21,7 @@
                     </div>
                 </div>
 
-                <div class="card card-custom">
+                <div class="card ">
                     <form id="multiple_completed_form" action="{{ route('barcode.multiple.genereate.completed') }}" method="post">
                         @csrf
                     </form>
@@ -90,7 +90,6 @@
                                         &nbsp;&nbsp;&nbsp;&nbsp; <h6 class="checkbox_input_wrap"> <input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax" value="0"> &nbsp; Product Tax &nbsp; </h6>
                                     </div>
                                     <div class="col-2">
-
                                         &nbsp;&nbsp;&nbsp;&nbsp; <h6 class="checkbox_input_wrap"> <input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name" value="0"> &nbsp; Business Name &nbsp; </h6>
                                     </div>
                                     <div class="col-2">
@@ -105,6 +104,7 @@
                                 <div class="col-md-12 text-right">
                                     <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner"></i> <strong>Loading</strong> </button>
                                     <button type="submit" class="btn btn-success submit_button btn-sm">Generate</button>
+                                    <a href="{{ route('barcode.preview') }}" target="_blank" class="btn btn-sm btn-primary">Preview</a>
                                 </div>
                             </div>
                         </div>

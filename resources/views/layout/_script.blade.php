@@ -41,7 +41,7 @@
     {{-- <script src="{{asset('public/backend/js/uniform.jquery.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/bootstrap-dropdown.js')}}"></script>
     <script src="{{asset('public/backend/js/sticky.full.js')}}"></script>
-    <script src="{{asset('public/backend/js/jquery.noty.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/jquery.noty.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/selectToUISlider.jQuery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/fg.menu.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/jquery.tagsinput.js')}}"></script> --}}
@@ -52,11 +52,11 @@
     {{-- <script src="{{asset('public/backend/js/jquery.jBreadCrumb.1.1.js')}}"></script>
     <script src="{{asset('public/backend/js/jquery.colorbox-min.js')}}"></script>
     <script src="{{asset('public/backend/js/bootstrap-colorpicker.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/jquery.idTabs.min.js')}}"></script>
-    <script src="{{asset('public/backend/js/jquery.multiFieldExtender.min.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/jquery.idTabs.min.js')}}"></script> --}}
+    {{-- <script src="{{asset('public/backend/js/jquery.multiFieldExtender.min.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/jquery.confirm.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/accordion.jquery.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/autogrow.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/autogrow.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/check-all.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/data-table.jquery.js')}}"></script>  --}}
  
@@ -68,15 +68,15 @@
     <script src="{{asset('public/backend/js/easing.jquery.js')}}"></script>
     {{-- <script src="{{asset('public/backend/js/full-calendar.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/input-limiter.jquery.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/inputmask.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/inputmask.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/iphone-style-checkbox.jquery.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/meta-data.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/meta-data.jquery.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/quicksand.jquery.js')}}"></script>
     <script src="{{asset('public/backend/js/raty.jquery.js')}}"></script>
     <script src="{{asset('public/backend/js/smart-wizard.jquery.js')}}"></script>
     <script src="{{asset('public/backend/js/stepy.jquery.js')}}"></script>
     {{-- <script src="{{asset('public/backend/js/treeview.jquery.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/ui-accordion.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/ui-accordion.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/vaidation.jquery.js')}}"></script>
     <script src="{{asset('public/backend/js/mosaic.1.0.1.min.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/jquery.collapse.js')}}"></script> --}}

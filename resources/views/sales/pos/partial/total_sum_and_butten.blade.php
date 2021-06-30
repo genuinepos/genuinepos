@@ -145,7 +145,7 @@
                 <div class="row">
                     <label for="inputEmail3" class="col-sm-6 col-form-label text-white">Cash Receive:</label>
                     <div class="col-sm-6 ">
-                        <input type="text" name="paying_amount" id="paying_amount" value="0.00" class="form-control">
+                        <input type="text" name="paying_amount" id="paying_amount" value="0" class="form-control">
                     </div>
                 </div>
 

@@ -23,7 +23,7 @@ return [
   'selling_price_group' => 'Selling Price Group',
   'import_products' => 'Import Products',
   'generate_barcode' => 'Generate Barcode',
-  'warranties' => 'warranties',
+  'warranties' => 'Warranties',
   'import_products' => 'Import Products',
   // Menu childs of Contacts module
   'suppliers' => 'Suppliers',

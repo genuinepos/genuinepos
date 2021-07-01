@@ -158,7 +158,10 @@
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.categories.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/categories.png') }}"></span>
+                                            <span>
+                                                {{-- <img src="{{ asset('public/backend/asset/img/categories.png') }}"> --}}
+                                                <i class="fas fa-th-large"></i>
+                                            </span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.categories')</p>
@@ -167,7 +170,10 @@
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.subcategories.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/convert.png') }}"></span>
+                                            <span>
+                                                {{-- <img src="{{ asset('public/backend/asset/img/convert.png') }}"> --}}
+                                                <i class="fas fa-code-branch"></i>
+                                            </span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.sub_categories')</p>
@@ -179,7 +185,10 @@
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.brands.index') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/brand.png') }}"></span>
+                                            <span>
+                                                {{-- <img src="{{ asset('public/backend/asset/img/brand.png') }}"> --}}
+                                                <i class="fas fa-band-aid"></i>
+                                            </span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.brand')</p>
@@ -191,8 +200,10 @@
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('products.all.product') }}" class="bar-link">
-                                            <span><img
-                                                    src="{{ asset('public/backend/asset/img/clipboard.png') }}"></span>
+                                            <span>
+                                                {{-- <img src="{{ asset('public/backend/asset/img/clipboard.png') }}"> --}}
+                                                <i class="fas fa-sitemap"></i>
+                                            </span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.product_list')</p>
@@ -204,7 +215,10 @@
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('products.add.view') }}" class="bar-link">
-                                            <span><img src="{{ asset('public/backend/asset/img/add.png') }}"></span>
+                                            <span>
+                                                {{-- <img src="{{ asset('public/backend/asset/img/add.png') }}"> --}}
+                                                <i class="fas fa-plus-circle"></i>
+                                            </span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.add_product')</p>
@@ -215,8 +229,10 @@
                                 class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('product.variants.index') }}" class="bar-link">
-                                        <span><img
-                                                src="{{ asset('public/backend/asset/img/line-chart.png') }}"></span>
+                                        <span>
+                                            {{-- <img src="{{ asset('public/backend/asset/img/line-chart.png') }}"> --}}
+                                            <i class="fas fa-align-center"></i>
+                                        </span>
                                     </a>
                                 </div>
                                 <p class="switch_text">@lang('menu.variants')</p>
@@ -227,8 +243,10 @@
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.import.create') }}" class="bar-link">
-                                            <span><img
-                                                    src="{{ asset('public/backend/asset/img/import.png') }}"></span>
+                                            <span>
+                                                {{-- <img src="{{ asset('public/backend/asset/img/import.png') }}"> --}}
+                                                <i class="fas fa-file-import"></i>
+                                            </span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.import_products')</p>
@@ -238,7 +256,10 @@
                             <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('product.selling.price.groups.index') }}" class="bar-link">
-                                        <span><img src="{{ asset('public/backend/asset/img/price-tag.png') }}"></span>
+                                        <span>
+                                            {{-- <img src="{{ asset('public/backend/asset/img/price-tag.png') }}"> --}}
+                                            <i class="fas fa-layer-group"></i>
+                                        </span>
                                     </a>
                                 </div>
                                 <p class="switch_text">@lang('menu.selling_price_group')</p>
@@ -248,7 +269,10 @@
                                 class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('barcode.index') }}" class="bar-link">
-                                        <span><img src="{{ asset('public/backend/asset/img/barcode.png') }}"></span>
+                                        <span>
+                                            {{-- <img src="{{ asset('public/backend/asset/img/barcode.png') }}"> --}}
+                                            <i class="fas fa-barcode"></i>
+                                        </span>
                                     </a>
                                 </div>
                                 <p class="switch_text">@lang('menu.generate_barcode')</p>
@@ -258,7 +282,10 @@
                                 class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('product.warranties.index') }}" class="bar-link">
-                                        <span><img src="{{ asset('public/backend/asset/img/warranty.png') }}"></span>
+                                        <span>
+                                            {{-- <img src="{{ asset('public/backend/asset/img/warranty.png') }}"> --}}
+                                            <i class="fas fa-shield-alt"></i>
+                                        </span>
                                     </a>
                                 </div>
                                 <p class="switch_text">@lang('menu.warranties')</p>

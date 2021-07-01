@@ -20,7 +20,7 @@ class BarcodeController extends Controller
     // Generate barcode index view 
     public function index()
     {
-        $bc_settings = DB::table('barcode_settings')->get(['id', 'name', 'is_default']);
+        $bc_settings = DB::table('barcode_settings')->orderBy('is_continuous', 'desc')->get(['id', 'name', 'is_default']);
         return view('product.barcode.index_v2', compact('bc_settings'));
     }
 

@@ -190,7 +190,7 @@
                                 tr += '<input type="hidden" class="productCode-'+product.variant.variant_code+'" name="product_code[]" id="product_code" value="'+product.variant.variant_code+'">';
                                 var priceIncTax = parseFloat(product.variant.variant_price) /100 * parseFloat(tax) + parseFloat(product.variant.variant_price);
                                 if (product.product.tax_type == 2) {
-                                    var inclusiveTax = 100 + parseFloat(tax_percent)
+                                    var inclusiveTax = 100 + parseFloat(tax)
                                     var calcAmount = parseFloat(product.variant.variant_price) / parseFloat(inclusiveTax) * 100;
                                     tax_amount = parseFloat(product.variant.variant_price) - parseFloat(calcAmount);
                                     priceIncTax = parseFloat(product.variant.variant_price) + parseFloat(tax_amount);
@@ -202,7 +202,7 @@
                                 tr += '<input type="hidden" class="productCode-'+product.product.product_code+'" name="product_code[]" id="product_code" value="'+product.product.product_code+'">';
                                 var priceIncTax = parseFloat(product.product.product_price) /100 * parseFloat(tax) + parseFloat(product.product.product_price);
                                 if (product.product.tax_type == 2) {
-                                    var inclusiveTax = 100 + parseFloat(tax_percent)
+                                    var inclusiveTax = 100 + parseFloat(tax)
                                     var calcAmount = parseFloat(product.product.product_price) / parseFloat(inclusiveTax) * 100;
                                     tax_amount = parseFloat(product.product.product_price) - parseFloat(calcAmount);
                                     priceIncTax = parseFloat(product.product.product_price) + parseFloat(tax_amount);

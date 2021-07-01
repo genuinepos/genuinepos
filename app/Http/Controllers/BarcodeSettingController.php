@@ -50,7 +50,7 @@ class BarcodeSettingController extends Controller
 
     public function store(Request $request)
     {
-        
+
         $this->validate($request, [
             'name' => 'required',
             'top_margin' => 'required',
@@ -72,7 +72,7 @@ class BarcodeSettingController extends Controller
                 $defaultBarcodeSetting->save();
             }
         }
-        
+
         BarcodeSetting::insert([
             'name' => $request->name,
             'description' => $request->description,
@@ -123,7 +123,7 @@ class BarcodeSettingController extends Controller
         ]);
 
         $updateBs = BarcodeSetting::where('id', $id)->first();
-       
+
         $updateBs->update([
             'name' => $request->name,
             'description' => $request->description,

@@ -51,10 +51,10 @@ class BarcodeController extends Controller
 
     public function multipleGenereateCompleted(Request $request)
     {
-        $suppplierProducts = SupplierProduct::where('label_qty', '>', 0)->get();
-        foreach ($suppplierProducts as $suppplierProduct) {
-            $suppplierProduct->label_qty = 0;
-            $suppplierProduct->save();
+        $supplierProducts = SupplierProduct::where('label_qty', '>', 0)->get();
+        foreach ($supplierProducts as $supplierProduct) {
+            $supplierProduct->label_qty = 0;
+            $supplierProduct->save();
         }
         return response()->json(['Successfully barcode genereate Completed all']);
     }
@@ -81,11 +81,7 @@ class BarcodeController extends Controller
     public function getSelectedProduct($productId)
     {
         $supplierProducts = SupplierProduct::with('supplier', 'product', 'product.tax', 'variant')->where('product_id', $productId)->get();
-        if ($supplierProducts->count() > 0) {
-            return response()->json($supplierProducts);
-        }else {
-            return Product::with('product_variants', 'tax')->where('id', $productId)->get();
-        }
+        return response()->json($supplierProducts);
     }
 
     // Get selected product variant 
@@ -95,14 +91,14 @@ class BarcodeController extends Controller
         return response()->json($supplierProducts);
     }
 
-    // Generate spacific product barcode view
+    // Generate specific product barcode view
     public function genrateProductBarcode($productId)
     {
         $productId = $productId;
         return view('product.barcode.spacific_product_barcode', compact('productId'));
     }
 
-    // Get spacific product's supplier product
+    // Get specific product's supplier product
     public function getSpacificSupplierProduct($productId)
     {
         $supplierProducts = SupplierProduct::with('supplier', 'product', 'product.tax', 'variant')->where('product_id', $productId)->get();

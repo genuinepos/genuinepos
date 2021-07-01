@@ -12,27 +12,96 @@
 </head>
 <body>
     <div class="print_area">
-        @for ($i = 0; $i < 200; $i++)
-            <div class="row justify-content-center">
-                <div class="barcode_area text-center" style="width:3in;">
-                    <div class="company_name">
-                        <small class="p-0 m-0"><strong>SpeedDigit Pvt. Ltd.</strong></small>
-                    </div>
-                    <div class="barcode">
-                        <div class="text-center">
-                            <img style="width: 170px; height:35px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode('SDC154789', $generator::TYPE_CODE_128)) }}">
+        
+        @if ($br_setting->is_continuous == 1)
+            @php $index = 0; @endphp
+            <div class="row justify-content-center div">
+            @foreach ($req->product_ids as $product)
+                @php $qty = $req->left_qty[$index] ? (int)$req->left_qty[$index] : 0 @endphp
+                @for ($i = 0; $i < $qty; $i++)
+                    <div class="barcode_area text-center" style="margin-top: {{ $br_setting->top_margin }}in;">
+                        <div class="barcode">
+                            <div class="company_name row">
+                                <small class="p-0 m-0">
+                                    <strong>
+                                        @if (isset($req->is_business_name))
+                                            {{ auth()->user()->branch ? auth()->user()->branch->name : json_decode($generalSettings->business, true)['shop_name'] }}
+                                        @endif
+                                    </strong>
+                                </small>
+                            </div>
+                            <div class="row justify-content-center">
+                                <img style="width: {{ $br_setting->sticker_width }}in; height:{{ $br_setting->sticker_height }}in;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode('SDC154789', $generator::TYPE_CODE_128)) }}">
+                            </div>
+                            <div class="row justify-content-center">
+                                <p class="sku">SDC154789</p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <p class="sku">SDC154789</p>
+                        <div class="product_details_area row">
+                            @if (isset($req->is_product_name))
+                                <p class="pro_details">
+                                    {{  Str::limit($req->product_name[$index].' '.$req->product_variant[$index], 40) }}. 
+                                    {{ isset($req->is_supplier_prefix) ? $req->supplier_prefix[$index] : '' }}
+                                </p>
+                            @endif
+
+                            @if (isset($req->is_price))
+                            <p class="price_details">
+                                Price : {{json_decode($generalSettings->business, true)['currency']}} {{ bcadd($req->product_price[$index], 0, 2) }}  
+                                {{isset($req->is_tax) ? '+ '. bcadd($req->product_tax[$index], 0, 2) .' Tax' : ''}}
+                            </p>
+                            @endif
                         </div>
                     </div>
-                    <div class="product_details_area">
-                        <p class="pro_details">{{Str::limit('Max Green MGO-PX1k 1KVA Standard Backup', 40)}}.  SP1257</p>
-                        <p class="price_details">Price : $ 22000.00 + 5.00% Tax</p>
+                @endfor 
+                @php $index++; @endphp
+            @endforeach
+        </div>
+        @else
+            @php $index = 0; @endphp
+            @foreach ($req->product_ids as $product)
+                @php $qty = $req->left_qty[$index] ? (int)$req->left_qty[$index] : 0 @endphp
+                @for ($i = 0; $i < $qty; $i++)
+                <div class="row justify-content-center">
+                    <div class="barcode_area text-center" style="width:3in;margin-top: {{ $br_setting->top_margin }}in;">
+                        <div class="barcode">
+                            <div class="company_name row">
+                                <small class="p-0 m-0">
+                                    <strong>
+                                        @if (isset($req->is_business_name))
+                                            {{ auth()->user()->branch ? auth()->user()->branch->name : json_decode($generalSettings->business, true)['shop_name'] }}
+                                        @endif
+                                    </strong>
+                                </small>
+                            </div>
+                            <div class="row justify-content-center">
+                                <img style="width: {{ $br_setting->sticker_width }}in; height:{{ $br_setting->sticker_height }}in;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode('SDC154789', $generator::TYPE_CODE_128)) }}">
+                            </div>
+                            <div class="row justify-content-center">
+                                <p class="sku">SDC154789</p>
+                            </div>
+                        </div>
+                        <div class="product_details_area row">
+                            @if (isset($req->is_product_name))
+                                <p class="pro_details">
+                                    {{  Str::limit($req->product_name[$index].' '.$req->product_variant[$index], 40) }}. 
+                                    {{ isset($req->is_supplier_prefix) ? $req->supplier_prefix[$index] : '' }}
+                                </p>
+                            @endif
+
+                            @if (isset($req->is_price))
+                            <p class="price_details">
+                                Price : {{json_decode($generalSettings->business, true)['currency']}} {{ bcadd($req->product_price[$index], 0, 2) }}  
+                                {{isset($req->is_tax) ? '+ '. bcadd($req->product_tax[$index], 0, 2) .' Tax' : ''}}
+                            </p>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endfor
+                @endfor 
+                @php $index++; @endphp
+            @endforeach
+        @endif
     </div>
     <button class="btn btn-success" onclick="window.print()">Print</button>
 </body>
@@ -43,8 +112,16 @@
      
  </script>
  <style>
-    .product_details_area p {font-size: 8px;margin-top: -2px;}
-    .product_details_area .price_details {margin-top: -15px;}
-    p.sku {font-size: 9px;margin: 0px;padding: 0;font-weight: 700;margin-bottom: 1px;}
+     /* .product_details_area {margin-top: 14px;} */
+    /* .product_details_area p {font-size: 8px;margin-top: -17px;} */
+    p{margin: 0px;padding: 0px;font-size: 8px;}
+    p.sku {font-size: 8px;margin: 0px;padding: 0;font-weight: 700;margin-bottom: 1px;}
+    .company_name {margin-bottom: -2px;}
+    .div{page-break-after: always;}
+    @page {
+        size:{{ $br_setting->paper_width }}in {{ $br_setting->paper_height }}in;
+        margin:5px 5px 5px 1px;
+    } 
+	
  </style>
 </html>

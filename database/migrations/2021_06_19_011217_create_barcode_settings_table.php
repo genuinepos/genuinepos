@@ -28,6 +28,7 @@ class CreateBarcodeSettingsTable extends Migration
             $table->bigInteger('column_distance')->default(0);
             $table->bigInteger('stickers_in_a_row')->default(0);
             $table->bigInteger('stickers_in_one_sheet')->default(0);
+            $table->boolean('is_fixed')->default(0);
             $table->boolean('is_default')->default(0);
             $table->timestamps();
         });

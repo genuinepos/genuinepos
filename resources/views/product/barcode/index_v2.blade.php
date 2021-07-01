@@ -17,7 +17,7 @@
                                 <h5>Generate Barcode</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                    class="fas fa-long-arrow-alt-left text-white"></i> Back </a>
                         </div>
                     </div>
 
@@ -30,7 +30,7 @@
                                     @csrf
                                 </form>
                                 <!--begin::Form-->
-                                <form id="generate_barcode_form" action="" method="POST">
+                                <form action="{{ route('barcode.preview') }}" method="get" target="_blank">
                                     @csrf
                                     <div class="card-body">
                                         <input type="hidden" id="business_name"
@@ -89,22 +89,27 @@
                                                 <div class="row">
                                                     <ul class="list-unstyled">
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price" value="1"> &nbsp; Price Price. &nbsp;</p>
+                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price Price. &nbsp;</p>
                                                         </li>
+
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name" value="1"> &nbsp; Product Name &nbsp; </p>
+                                                            <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name &nbsp; </p>
                                                         </li>
+
                                                         <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant" value="0"> &nbsp; Product Variant &nbsp; </p>
+                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Product Variant &nbsp; </p>
                                                         </li>
+
                                                         <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax" value="0"> &nbsp; Product Tax &nbsp; </p>
+                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Product Tax &nbsp; </p>
                                                         </li>
+
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name" value="0"> &nbsp; Business Name &nbsp; </p>
+                                                            <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name &nbsp; </p>
                                                         </li>
+
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_supplier_name" class="checkbox" id="is_supplier_name" value="0"> &nbsp; Supplier Prefix &nbsp; </p>
+                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix &nbsp; </p>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -112,13 +117,21 @@
                                         </div>
 
                                         <div class="row mt-3">
-                                            <div class="col-md-12 text-right">
-                                                <button type="button" class="btn loading_button btn-sm d-none"><i
-                                                        class="fas fa-spinner"></i> <strong>Loading</strong> </button>
-                                                <button type="submit"
-                                                    class="btn btn-success submit_button btn-sm">Generate</button>
-                                                <a href="{{ route('barcode.preview') }}" target="_blank"
-                                                    class="btn btn-sm btn-primary">Preview</a>
+                                            <div class="col-md-4">
+                                                <label><b>Barcode Setting :</b></label>
+                                                <select name="br_setting_id" class="form-control">
+                                                    @foreach ($bc_settings as $bc_setting)
+                                                        <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
+                                                            {{ $bc_setting->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <button type="submit" class="btn btn-sm btn-primary float-end">Preview</button>
                                             </div>
                                         </div>
                                     </div>
@@ -146,7 +159,6 @@
             success:function(suppliers){
                 $('.data_preloader').hide();
                 $.each(suppliers, function (key, supplier) {
-                    console.log(supplier.supplier_products.length);
                     if (supplier.supplier_products.length > 0) {
                         $('.multiple_completed').show();
                         $.each(supplier.supplier_products, function (key, product) {
@@ -169,36 +181,51 @@
                             
                             var variant_id = product.product_variant_id != null ? product.product_variant_id : null;
                             tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+product.product.id+supplier.id+variant_id+'" id="product_id" value="'+product.product.id+'">';
-                            tr += '<input type="hidden" name="product_name" id="product_name" value="'+product.product.name+'">';
+                            tr += '<input type="hidden" name="product_name[]" id="product_name" value="'+product.product.name+'">';
                             tr += '<input type="hidden" class="'+key+'" id="recents" value="1">';
                             if (product.product_variant_id != null) {
-                                tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+product.variant.id+'">';
-                                tr += '<input type="hidden" name="product_variant" id="product_variant" value="'+product.variant.variant_name+'">';
-                                tr += '<input type="hidden" class="productCode-'+product.variant.variant_code+'" name="product_code" id="product_code" value="'+product.variant.variant_code+'">';
-                                tr += '<input type="hidden" name="product_price" id="product_price" value="'+product.variant.variant_price+'">';
+                                tr += '<input type="hidden" name="product_variant_ids[]" class="variantId-" value="'+product.variant.id+'">';
+                                tr += '<input type="hidden" name="product_variant[]" value="'+product.variant.variant_name+'">';
+                                
+                                tr += '<input type="hidden" class="productCode-'+product.variant.variant_code+'" name="product_code[]" id="product_code" value="'+product.variant.variant_code+'">';
+                                var priceIncTax = parseFloat(product.variant.variant_price) /100 * parseFloat(tax) + parseFloat(product.variant.variant_price);
+                                if (product.product.tax_type == 2) {
+                                    var inclusiveTax = 100 + parseFloat(tax_percent)
+                                    var calcAmount = parseFloat(product.variant.variant_price) / parseFloat(inclusiveTax) * 100;
+                                    tax_amount = parseFloat(product.variant.variant_price) - parseFloat(calcAmount);
+                                    priceIncTax = parseFloat(product.variant.variant_price) + parseFloat(tax_amount);
+                                }
+                                tr += '<input type="hidden" name="product_price[]" id="product_price" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
                             } else {
-                                tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
-                                tr += '<input type="hidden" name="product_variant" id="product_variant" value="">';
-                                tr += '<input type="hidden" class="productCode-'+product.product.product_code+'" name="product_code" id="product_code" value="'+product.product.product_code+'">';
+                                tr += '<input type="hidden" name="product_variant_ids[]" class="variantId-" value="noid">';
+                                tr += '<input type="hidden" name="product_variant[]" value="">';
+                                tr += '<input type="hidden" class="productCode-'+product.product.product_code+'" name="product_code[]" id="product_code" value="'+product.product.product_code+'">';
                                 var priceIncTax = parseFloat(product.product.product_price) /100 * parseFloat(tax) + parseFloat(product.product.product_price);
-                                tr += '<input type="hidden" name="product_price" id="product_price" value="'+priceIncTax+'">'; 
+                                if (product.product.tax_type == 2) {
+                                    var inclusiveTax = 100 + parseFloat(tax_percent)
+                                    var calcAmount = parseFloat(product.product.product_price) / parseFloat(inclusiveTax) * 100;
+                                    tax_amount = parseFloat(product.product.product_price) - parseFloat(calcAmount);
+                                    priceIncTax = parseFloat(product.product.product_price) + parseFloat(tax_amount);
+                                }
+                                tr += '<input type="hidden" name="product_price[]" value="'+priceIncTax+'">'; 
                             }
                             
-                            tr += '<input type="hidden" name="product_tax" id="product_tax" value="'+tax+'">';
+                            tr += '<input type="hidden" name="product_tax[]" value="'+tax+'">';
+                            tr += '<input type="hidden" name="tax_type[]" value="'+product.product.tax_type+'">';
                             tr += '</td>';
 
                             tr += '<td class="text-start">';
                             tr += '<span class="span_supplier_name">'+ supplier.name +'</span>';
-                            tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+supplier.id+'">';
-                            tr += '<input type="hidden" name="supplier_name" id="supplier_name" value="'+supplier.prefix+'">';
+                            tr += '<input type="hidden" name="supplier_ids[]" value="'+supplier.id+'">';
+                            tr += '<input type="hidden" name="supplier_prefix[]" value="'+supplier.prefix+'">';
                             tr += '</td>';
 
                             tr += '<td class="text-start">';
-                            tr += '<input type="number" name="left_qty[]" class="form-control " id="left_qty" value="'+product.label_qty+'">';
-                            tr += '<input type="hidden" name="barcode_type" id="barcode_type" value="'+product.product.barcode_type+'">';
+                            tr += '<input type="number" name="left_qty[]" class="form-control " value="'+product.label_qty+'">';
+                            tr += '<input type="hidden" name="barcode_type[]" value="'+product.product.barcode_type+'">';
                             tr += '</td>';
                             tr += '<td class="text-start">';
-                            tr += '<input type="date" name="packing_date[]" class="form-control" id="packing_date">';
+                            tr += '<input type="date" name="packing_date[]" class="form-control">';
                             tr += '</td>';
                             tr += '<td class="text-start">';
                             tr += '<a href="#" class="btn btn-sm btn-success completed_btn">Generate Completed</a>';
@@ -222,8 +249,6 @@
         var variant_id = tr.find('#product_variant_id').val();
         var supplier_id = tr.find('#supplier_id').val();
         var label_qty = tr.find('#left_qty').val();
-        console.log(product_id);
-
         $.ajax({
             url:"{{route('barcode.genereate.completed')}}",
             type:'get',
@@ -231,7 +256,6 @@
                 product_id,variant_id,supplier_id,label_qty
             },
             success:function(data){
-                console.log(data);
                 if (!$.isEmptyObject(data.successMsg)) {
                     toastr.success(data.successMsg);
                     tr.remove();
@@ -249,10 +273,9 @@
             url:"{{url('product/barcode/search/product')}}"+"/"+searchKeyWord,
             type:'get',
             success:function(products){
-                console.log(products);
                 $('.product_dropdown_list').empty();
-                    if (products.length > 0) {
-                        $.each(products, function(key, product){
+                if (products.length > 0) {
+                    $.each(products, function(key, product){
                         li = '';
                         li += '<li>';
                         li += '<a class="select_product" data-p_id="'+product.id+'" href="#">'+product.name+' - '+product.product_code+'</a>';
@@ -290,6 +313,7 @@
                         productPrefix : 78555858,
                     },
                 ];
+
                 productIds.forEach(function (product_id) {
                     var productId = product_id.value;
                     var className = product_id.getAttribute('class');
@@ -326,34 +350,35 @@
                         }
 
                         var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
-                        tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+sProduct.product.id+sProduct.supplier_id+variant_id+'" id="product_id" value="'+sProduct.product.id+'">';
-                        tr += '<input type="hidden" name="product_name" id="product_name" value="'+sProduct.product.name+'">';
+                        tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+ sProduct.product.id+sProduct.supplier_id+variant_id +'" id="product_id" value="'+ sProduct.product.id +'">';
+                        tr += '<input type="hidden" name="product_name" id="product_name" value="'+ sProduct.product.name+'">';
 
                         if (sProduct.product_variant_id != null) {
-                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+sProduct.variant.id+'">';
-                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="'+sProduct.variant.variant_name+'">';
-                            tr += '<input type="hidden" class="productCode-'+sProduct.variant.variant_code+'" name="product_code" id="product_code" value="'+sProduct.variant.variant_code+'">';
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+sProduct.variant.variant_price+'">';
+                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+ sProduct.variant.id +'">';
+                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="'+ sProduct.variant.variant_name +'">';
+                            tr += '<input type="hidden" class="productCode-'+ sProduct.variant.variant_code +'" name="product_code" id="product_code" value="'+ sProduct.variant.variant_code +'">';
+                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+ sProduct.variant.variant_price +'">';
                         } else {
                             tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
                             tr += '<input type="hidden" name="product_variant" id="product_variant" value="">';
-                            tr += '<input type="hidden" class="productCode-'+sProduct.product.product_code+'" name="product_code" id="product_code" value="'+sProduct.product.product_code+'">';
-                            
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+sProduct.product.product_price+'">'; 
+                            tr += '<input type="hidden" class="productCode-'+ sProduct.product.product_code+'" name="product_code" id="product_code" value="'+ sProduct.product.product_code +'">';
+                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+ sProduct.product.product_price +'">'; 
                         }
+
                         var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
-                        tr += '<input type="hidden" name="product_tax" id="product_tax" value="'+tax+'">';
+                        tr += '<input type="hidden" name="product_tax" id="product_tax" value="'+ tax +'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
                         tr += '<span class="span_supplier_name">'+ sProduct.supplier.name +'</span>';
-                        tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+sProduct.supplier_id+'">';
-                        tr += '<input type="hidden" name="supplier_name" id="supplier_name" value="'+sProduct.supplier.name+'">';
+                        tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+ sProduct.supplier_id +'">';
+                        tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+ sProduct.supplier.prefix+'">';
+                        tr += '<input type="hidden" name="supplier_name" id="supplier_name" value="'+ sProduct.supplier.name +'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
                         tr += '<input type="number" name="left_qty" class="form-control " id="left_qty" value="'+1+'">';
-                        tr += '<input type="hidden" name="barcode_type" id="barcode_type" value="'+sProduct.product.barcode_type+'">';
+                        tr += '<input type="hidden" name="barcode_type" id="barcode_type" value="'+ sProduct.product.barcode_type +'">';
                         tr += '</td>';
                         tr += '<td class="text-start">';
                         tr += '<a href="#" class="btn btn-sm btn-danger remove_btn float-right ml-1">X</a>';
@@ -388,17 +413,14 @@
                     console.log('Class_name-'+className);
                     var tr = $('.'+className).closest('tr');
                     var supplier_id = tr.find('#supplier_id').val();
-                    //console.log('supplier_id-'+supplier_id);
                     var variant_id = tr.find('#product_variant_id').val() != 'noid' ? tr.find('#product_variant_id').val() : null;
-                    console.log('variant_id-'+variant_id);
                     rows.push({
-                        productPrefix : supplier_id+productId+variant_id,
+                        productPrefix : supplier_id + productId + variant_id,
                     });
                 });
 
                 $.each(supplierProducts, function (key, sProduct) {
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
-                    console.log('prefix-'+createPrefix);
                     var sameProduct = rows.filter(function (row) {
                        return row.productPrefix == createPrefix; 
                     });
@@ -506,7 +528,6 @@
     $(document).on('submit', '#multiple_completed_form',function(e){
         e.preventDefault();
         var url = $(this).attr('action');
-        console.log(url);
         var request = $(this).serialize();
         $.ajax({
             url:url,
@@ -516,7 +537,7 @@
                 if(!$.isEmptyObject(data.errorMsg)){
                     toastr.error(data.errorMsg, 'Attention');
                 }else{
-                    toastr.success(data, 'SUCCESS');
+                    toastr.success(data);
                     $('.multiple_completed').remove();
                     var allRecents = document.querySelectorAll('#recents');
                     allRecents.forEach(function (recent) {
@@ -536,6 +557,5 @@
             $('.data_id').prop('checked', false);  
         }
     });
- 
 </script>
 @endpush

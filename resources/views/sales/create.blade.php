@@ -834,10 +834,12 @@
                                         price = product.product_price;
                                     }
                                     var tax_amount = parseFloat(price / 100 * tax_percent);
+                                    var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                     if (product.tax_type == 2) {
                                         var inclusiveTax = 100 + parseFloat(tax_percent)
                                         var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
                                         tax_amount = parseFloat(price) - parseFloat(calcAmount);
+                                        var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                     }
                                     var tr = '';
                                     tr += '<tr>';
@@ -873,22 +875,17 @@
                                     tr += '<b><span class="span_unit">'+product.unit.name+'</span></b>'; 
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
-                                    tr += '<td>';
 
+                                    tr += '<td>';
                                     tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
-                                    var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
-                                    if (product.tax_type == 2) {
-                                        var inclusiveTax = 100 + parseFloat(tax_percent)
-                                        var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
-                                        var taxAmount = parseFloat(price) - parseFloat(calcAmount);
-                                        unitPriceIncTax = parseFloat(price) + parseFloat(taxAmount);
-                                    }
                                     tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                                     tr += '</td>';
+
                                     tr += '<td class="text text-center">';
                                     tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
                                     tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden"  id="subtotal">';
                                     tr += '</td>';
+                                    
                                     tr += '<td class="text-center">';
                                     tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                                     tr += '</td>';
@@ -977,10 +974,12 @@
                                     price = variant_product.variant_price;
                                 }
                                 var tax_amount = parseFloat(price / 100 * tax_percent);
+                                var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                 if (variant_product.product.tax_type == 2) {
                                     var inclusiveTax = 100 + parseFloat(tax_percent)
                                     var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
                                     tax_amount = parseFloat(price) - parseFloat(calcAmount);
+                                    unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                 }
                                 var tr = '';
                                 tr += '<tr>';
@@ -1019,13 +1018,6 @@
                                 tr += '<td>';
 
                                 tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+'" id="unit_price_exc_tax">';
-                                var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);
-                                if (product.tax_type == 2) {
-                                    var inclusiveTax = 100 + parseFloat(tax_percent)
-                                    var calcAmount = parseFloat(price) / parseFloat(inclusiveTax) * 100;
-                                    var taxAmount = parseFloat(price) - parseFloat(calcAmount);
-                                    unitPriceIncTax = parseFloat(price) + parseFloat(taxAmount);
-                                }
                                 tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'">';
                                 tr += '</td>';
                                 

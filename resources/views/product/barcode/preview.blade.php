@@ -110,7 +110,13 @@
  <script src="{{asset('public/backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
  <!--Jquery Cdn End-->
  <script>
-     
+     function auto_print(){
+            window.print();
+    }
+
+    setTimeout(function(){
+            auto_print();
+    },300);
  </script>
  <style>
      /* .product_details_area {margin-top: 14px;} */

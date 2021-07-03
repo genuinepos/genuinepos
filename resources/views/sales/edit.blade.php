@@ -1786,5 +1786,10 @@
             $('#list>li>a').removeClass('selectProduct');
             $(this).addClass('selectProduct');
         });
+
+        $('#search_product').on('blur', function () {
+            $('.select_area').hide();
+            $('.variant_list_area').empty();
+        });
     </script>
 @endpush

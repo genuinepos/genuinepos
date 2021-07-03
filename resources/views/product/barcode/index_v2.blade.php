@@ -1,5 +1,12 @@
 @extends('layout.master')
-@push('stylesheets') @endpush
+@push('stylesheets') 
+<style>
+    .select_area {background: #ffffff;box-sizing: border-box;position: absolute;width: 64.2%;z-index: 9999999;padding: 0;left: 17.9%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
+    .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
+    .select_area ul li a {color: #000000;text-decoration: none;font-size: 13px;padding: 4px 3px;display: block;border: 1px solid lightgray; margin-bottom: 3px}
+    .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
+</style>
+@endpush
 @section('title', 'Generate Barcode - ')
 @section('content')
     <div class="body-woaper">
@@ -43,7 +50,7 @@
                                                         placeholder="Search Product by Product name / Product code(SKU)">
                                                 </div>
                                                 <div class="select_area">
-                                                    <div class="remove_select_area_btn">X</div>
+                                                    {{-- <div class="remove_select_area_btn">X</div> --}}
                                                     <ul class="product_dropdown_list">
 
                                                     </ul>
@@ -226,7 +233,7 @@
                             tr += '</td>';
                             tr += '<td class="text-start">';
                             tr += '<a href="#" class="btn btn-sm btn-success completed_btn">Generate Completed</a>';
-                            tr += '<a href="#" class="btn btn-sm btn-danger remove_btn float-right ml-1">X</a>';
+                            tr += '<a href="#" class="btn btn-sm btn-danger remove_btn float-right ms-1">X</a>';
                             tr += '</td>';
                             tr += '</tr>';
                             $('#barcode_product_list').append(tr);
@@ -378,7 +385,10 @@
                         tr += '<input type="hidden" name="barcode_type" id="barcode_type" value="'+ sProduct.product.barcode_type +'">';
                         tr += '</td>';
                         tr += '<td class="text-start">';
-                        tr += '<a href="#" class="btn btn-sm btn-danger remove_btn float-right ml-1">X</a>';
+                        tr += '<input type="date" name="packing_date[]" class="form-control">';
+                        tr += '</td>';
+                        tr += '<td class="text-start">';
+                        tr += '<a href="#" class="btn btn-sm btn-danger remove_btn float-right ms-1">X</a>';
                         tr += '</td>';
                         tr += '</tr>';
                         $('#barcode_product_list').append(tr);
@@ -393,6 +403,8 @@
         e.preventDefault();
         var product_id = $(this).data('p_id');
         var variant_id = $(this).data('v_id');
+        $('.select_area').hide();
+        $('#search_product').val('');
         $.ajax({
             url:"{{url('product/barcode/get/selected/product/variant')}}"+"/"+product_id+"/"+variant_id,
             type:'get',
@@ -476,7 +488,10 @@
                         tr += '<input type="hidden" name="barcode_type" id="barcode_type" value="'+sProduct.product.barcode_type+'">';
                         tr += '</td>';
                         tr += '<td class="text-start">';
-                        tr += '<a href="#" class="btn btn-sm btn-danger remove_btn ml-1">X</a>';
+                        tr += '<input type="date" name="packing_date[]" class="form-control">';
+                        tr += '</td>';
+                        tr += '<td class="text-start">';
+                        tr += '<a href="#" class="btn btn-sm btn-danger remove_btn ms-1">X</a>';
                         tr += '</td>';
                         tr += '</tr>';
                         $('#barcode_product_list').append(tr);
@@ -553,6 +568,11 @@
         }else{
             $('.data_id').prop('checked', false);  
         }
+    });
+
+    $('#search_product').on('blur', function () {
+        $('.select_area').hide();
+        $('.product_dropdown_list').empty();
     });
 </script>
 @endpush

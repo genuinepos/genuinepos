@@ -1,5 +1,12 @@
 @extends('layout.master')
-@push('stylesheets') @endpush
+@push('stylesheets') 
+    <style>
+         .select_area {background: #ffffff;box-sizing: border-box;position: absolute;width: 64.2%;z-index: 9999999;padding: 0;left: 17.9%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
+        .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
+        .select_area ul li a {color: #000000;text-decoration: none;font-size: 13px;padding: 4px 3px;display: block;border: 1px solid lightgray;}
+        .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
+    </style>
+@endpush
 @section('title', 'Generate Barcode - ')
 @section('content')
     <div class="body-woaper">
@@ -27,7 +34,7 @@
                                     @csrf
                                 </form>
                                 <!--begin::Form-->
-                                <form id="preview" action="{{ route('barcode.preview') }}" method="get" target="_blank">
+                                <form id="preview" action="{{ route('barcode.preview') }}" target="_blank" method="get">
                                     @csrf
                                     <div class="card-body">
                                         <input type="hidden" id="business_name"
@@ -43,7 +50,6 @@
                                                         placeholder="Search Product by Product name / Product code(SKU)">
                                                 </div>
                                                 <div class="select_area">
-                                                    <div class="remove_select_area_btn">X</div>
                                                     <ul class="product_dropdown_list">
 
                                                     </ul>
@@ -146,97 +152,92 @@
 <script>
     $('.multiple_completed').hide();
     // Get all supplier products
-    function getSupplierProduct(){
+    function getPurchaseProducts(){
         $('.data_preloader').show();
         $.ajax({
-            url:"{{route('barcode.supplier.get.products')}}",
+            url:"{{route('barcode.get.purchase.products', $purchaseId)}}",
             async:true,
             type:'get',
             dataType: 'json',
-            success:function(suppliers){
-                $('.data_preloader').hide();
-                $.each(suppliers, function (key, supplier) {
-                    if (supplier.supplier_products.length > 0) {
-                        $('.multiple_completed').show();
-                        $.each(supplier.supplier_products, function (key, product) {
-                            var tax = product.product.tax != null ? product.product.tax.tax_percent : 0.00;
-                            var tr = '';
-                            tr += '<tr>';
-                            tr += '<td class="text-start">';
-                            tr += '<span class="span_product_name">'+product.product.name+'</span>';  
-                            if (product.product_variant_id != null) {
-                                tr += '<span class="span_variant_name">'+' - '+product.variant.variant_name+'</span>';
-                            }else{
-                                tr += '<span class="span_product_code"></span>';
-                            } 
-                              
-                            if (product.product_variant_id != null) {
-                                tr += '<span class="span_product_code">'+' ('+product.variant.variant_code+')'+'</span>';
-                            }else{
-                                tr += '<span class="span_product_code">'+' ('+product.product.product_code+')'+'</span>';
-                            }
-                            
-                            var variant_id = product.product_variant_id != null ? product.product_variant_id : null;
-                            tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+product.product.id+supplier.id+variant_id+'" id="product_id" value="'+product.product.id+'">';
-                            tr += '<input type="hidden" name="product_name[]" id="product_name" value="'+product.product.name+'">';
-                            tr += '<input type="hidden" class="'+key+'" id="recents" value="1">';
-                            if (product.product_variant_id != null) {
-                                tr += '<input type="hidden" name="product_variant_ids[]" class="variantId-" value="'+product.variant.id+'">';
-                                tr += '<input type="hidden" name="product_variant[]" value="'+product.variant.variant_name+'">';
-                                
-                                tr += '<input type="hidden" class="productCode-'+product.variant.variant_code+'" name="product_code[]" id="product_code" value="'+product.variant.variant_code+'">';
-                                var priceIncTax = parseFloat(product.variant.variant_price) /100 * parseFloat(tax) + parseFloat(product.variant.variant_price);
-                                if (product.product.tax_type == 2) {
-                                    var inclusiveTax = 100 + parseFloat(tax)
-                                    var calcAmount = parseFloat(product.variant.variant_price) / parseFloat(inclusiveTax) * 100;
-                                    tax_amount = parseFloat(product.variant.variant_price) - parseFloat(calcAmount);
-                                    priceIncTax = parseFloat(product.variant.variant_price) + parseFloat(tax_amount);
-                                }
-                                tr += '<input type="hidden" name="product_price[]" id="product_price" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
-                            } else {
-                                tr += '<input type="hidden" name="product_variant_ids[]" class="variantId-" value="noid">';
-                                tr += '<input type="hidden" name="product_variant[]" value="">';
-                                tr += '<input type="hidden" class="productCode-'+product.product.product_code+'" name="product_code[]" id="product_code" value="'+product.product.product_code+'">';
-                                var priceIncTax = parseFloat(product.product.product_price) /100 * parseFloat(tax) + parseFloat(product.product.product_price);
-                                if (product.product.tax_type == 2) {
-                                    var inclusiveTax = 100 + parseFloat(tax)
-                                    var calcAmount = parseFloat(product.product.product_price) / parseFloat(inclusiveTax) * 100;
-                                    tax_amount = parseFloat(product.product.product_price) - parseFloat(calcAmount);
-                                    priceIncTax = parseFloat(product.product.product_price) + parseFloat(tax_amount);
-                                }
-                                tr += '<input type="hidden" name="product_price[]" value="'+priceIncTax+'">'; 
-                            }
-                            
-                            tr += '<input type="hidden" name="product_tax[]" value="'+tax+'">';
-                            tr += '<input type="hidden" name="tax_type[]" value="'+product.product.tax_type+'">';
-                            tr += '</td>';
-
-                            tr += '<td class="text-start">';
-                            tr += '<span class="span_supplier_name">'+ supplier.name +'</span>';
-                            tr += '<input type="hidden" name="supplier_ids[]" value="'+supplier.id+'">';
-                            tr += '<input type="hidden" name="supplier_prefix[]" value="'+supplier.prefix+'">';
-                            tr += '</td>';
-
-                            tr += '<td class="text-start">';
-                            tr += '<input type="number" name="left_qty[]" class="form-control " value="'+product.label_qty+'">';
-                            tr += '<input type="hidden" name="barcode_type[]" value="'+product.product.barcode_type+'">';
-                            tr += '</td>';
-                            tr += '<td class="text-start">';
-                            tr += '<input type="date" name="packing_date[]" class="form-control">';
-                            tr += '</td>';
-                            tr += '<td class="text-start">';
-                            tr += '<a href="#" class="btn btn-sm btn-success completed_btn">Generate Completed</a>';
-                            tr += '<a href="#" class="btn btn-sm btn-danger remove_btn float-right ml-1">X</a>';
-                            tr += '</td>';
-                            tr += '</tr>';
-                            $('#barcode_product_list').append(tr);
-                        });
+            success:function(purchaseProducts){
+                $.each(purchaseProducts, function (key, p_product) {
+                    var tax = p_product.product.tax != null ? p_product.product.tax.tax_percent : 0.00;
+                    var tr = '';
+                    tr += '<tr>';
+                    tr += '<td class="text-start">';
+                    tr += '<span class="span_product_name">'+p_product.product.name+'</span>';  
+                    if (p_product.product_variant_id != null) {
+                        tr += '<span class="span_variant_name">'+' - '+p_product.variant.variant_name+'</span>';
+                    }else{
+                        tr += '<span class="span_product_code"></span>';
+                    } 
+                        
+                    if (p_product.product_variant_id != null) {
+                        tr += '<span class="span_product_code">'+' ('+p_product.variant.variant_code+')'+'</span>';
+                    }else{
+                        tr += '<span class="span_product_code">'+' ('+p_product.product.product_code+')'+'</span>';
                     }
+                    
+                    var variant_id = p_product.product_variant_id != null ? p_product.product_variant_id : null;
+                    tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+p_product.product.id+p_product.purchase.supplier_id+variant_id+'" id="product_id" value="'+p_product.product.id+'">';
+                    tr += '<input type="hidden" name="product_name[]" id="product_name" value="'+p_product.product.name+'">';
+
+                    if (p_product.product_variant_id != null) {
+                        tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+p_product.product_variant_id+'">';
+                        tr += '<input type="hidden" name="product_variant[]" value="'+p_product.variant.variant_name+'">';
+                        tr += '<input type="hidden" class="productCode-'+p_product.variant.variant_code+'" name="product_code[]" value="'+p_product.variant.variant_code+'">';
+                        var priceIncTax = parseFloat(p_product.variant.variant_price) /100 * parseFloat(tax) + parseFloat(p_product.variant.variant_price);
+                        if (p_product.product.tax_type == 2) {
+                            var inclusiveTax = 100 + parseFloat(tax)
+                            var calcAmount = parseFloat(p_product.variant.variant_price) / parseFloat(inclusiveTax) * 100;
+                            tax_amount = parseFloat(p_product.variant.variant_price) - parseFloat(calcAmount);
+                            priceIncTax = parseFloat(p_product.variant.variant_price) + parseFloat(tax_amount);
+                        }
+                        tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2) +'">';
+                    } else {
+                        tr += '<input type="hidden" name="product_variant_ids[]" class="variantId-" value="noid">';
+                        tr += '<input type="hidden" name="product_variant[]" value="">';
+                        tr += '<input type="hidden" class="productCode-'+p_product.product.product_code+'" name="product_code[]" value="'+p_product.product.product_code+'">';
+                        var priceIncTax = parseFloat(p_product.product.product_price) /100 * parseFloat(tax) + parseFloat(p_product.product.product_price);
+                        if (p_product.product.tax_type == 2) {
+                            var inclusiveTax = 100 + parseFloat(tax)
+                            var calcAmount = parseFloat(p_product.product.product_price) / parseFloat(inclusiveTax) * 100;
+                            tax_amount = parseFloat(p_product.product.product_price) - parseFloat(calcAmount);
+                            priceIncTax = parseFloat(p_product.product.product_price) + parseFloat(tax_amount);
+                        }
+                        tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">'; 
+                    }
+                    
+                    tr += '<input type="hidden" name="product_tax[]" value="'+p_product.unit_tax_percent+'">';
+                    tr += '<input type="hidden" name="tax_type[]" value="'+p_product.product.tax_type+'">';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<span class="span_supplier_name">'+ p_product.purchase.supplier.name +'</span>';
+                    tr += '<input type="hidden" name="supplier_ids[]" value="'+p_product.purchase.supplier.id+'">';
+                    tr += '<input type="hidden" name="supplier_prefix[]" value="'+p_product.purchase.supplier.prefix+'">';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<input type="number" name="left_qty[]" id="left_qty" class="form-control" value="'+p_product.quantity+'">';
+                    tr += '<input type="hidden" name="barcode_type[]" value="'+p_product.product.barcode_type+'">';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<input type="date" name="packing_date[]" class="form-control">';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<a href="#" class="btn btn-sm btn-danger remove_btn ml-1">X</a>';
+                    tr += '</td>';
+                    tr += '</tr>';
+                    $('#barcode_product_list').append(tr);
                 });
+                $('.data_preloader').hide();
             }
         });
     }
-    getSupplierProduct();
+    getPurchaseProducts();
 
     // Generate confirm request send by ajax
     $(document).on('click', '.completed_btn',function (e) {
@@ -270,7 +271,6 @@
             url:"{{url('product/barcode/search/product')}}"+"/"+searchKeyWord,
             type:'get',
             success:function(products){
-                $('.product_dropdown_list').empty();
                 if (products.length > 0) {
                     $.each(products, function(key, product){
                         li = '';
@@ -324,9 +324,15 @@
 
                 $.each(supplierProducts, function (key, sProduct) {
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
+                    var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
                     var sameProduct = rows.filter(function (row) {
                         return row.productPrefix == createPrefix; 
                     });
+
+                    if (sameProduct.length > 0) {
+                       toastr.error('This product has already been added in barcode table.');
+                       return;
+                    }
 
                     if (sameProduct.length == 0) {
                         var tr = '';
@@ -348,35 +354,41 @@
 
                         var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
                         tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+ sProduct.product.id+sProduct.supplier_id+variant_id +'" id="product_id" value="'+ sProduct.product.id +'">';
-                        tr += '<input type="hidden" name="product_name" id="product_name" value="'+ sProduct.product.name+'">';
+                        tr += '<input type="hidden" name="product_name[]" value="'+ sProduct.product.name+'">';
 
-                        if (sProduct.product_variant_id != null) {
-                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+ sProduct.variant.id +'">';
-                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="'+ sProduct.variant.variant_name +'">';
-                            tr += '<input type="hidden" class="productCode-'+ sProduct.variant.variant_code +'" name="product_code[]" id="product_code" value="'+ sProduct.variant.variant_code +'">';
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+ sProduct.variant.variant_price +'">';
-                        } else {
-                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
-                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="">';
-                            tr += '<input type="hidden" class="productCode-'+ sProduct.product.product_code+'" name="product_code[]" id="product_code" value="'+ sProduct.product.product_code +'">';
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+ sProduct.product.product_price +'">'; 
+                        tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
+                        tr += '<input type="hidden" name="product_variant[]" value="">';
+                        tr += '<input type="hidden" class="productCode-'+ sProduct.product.product_code +'" name="product_code[]" value="'+ sProduct.product.product_code +'">';
+
+                        var priceIncTax = parseFloat(sProduct.product.product_price) /100 * parseFloat(tax) + parseFloat(sProduct.product.product_price);
+                        if (sProduct.product.tax_type == 2) {
+                            var inclusiveTax = 100 + parseFloat(tax)
+                            var calcAmount = parseFloat(sProduct.product.product_price) / parseFloat(inclusiveTax) * 100;
+                            tax_amount = parseFloat(sProduct.product.product_price) - parseFloat(calcAmount);
+                            priceIncTax = parseFloat(sProduct.product.product_price) + parseFloat(tax_amount);
                         }
 
-                        var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
-                        tr += '<input type="hidden" name="product_tax" id="product_tax" value="'+ tax +'">';
+                        tr += '<input type="hidden" name="product_price[]" value="'+ parseFloat(priceIncTax).toFixed(2)+'">'; 
+                        
+                        tr += '<input type="hidden" name="product_tax[]" value="'+ tax +'">';
+                        tr += '<input type="hidden" name="tax_type[]" value="'+sProduct.product.tax_type+'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
                         tr += '<span class="span_supplier_name">'+ sProduct.supplier.name +'</span>';
                         tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+ sProduct.supplier_id +'">';
-                        tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+ sProduct.supplier.prefix+'">';
-                        tr += '<input type="hidden" name="supplier_name" id="supplier_name" value="'+ sProduct.supplier.name +'">';
+                        tr += '<input type="hidden" name="supplier_prefix[]" value="'+ sProduct.supplier.prefix +'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
-                        tr += '<input type="number" name="left_qty" class="form-control " id="left_qty" value="'+1+'">';
-                        tr += '<input type="hidden" name="barcode_type" id="barcode_type" value="'+ sProduct.product.barcode_type +'">';
+                        tr += '<input type="number" name="left_qty[]" id="left_qty" class="form-control" value="'+1+'">';
+                        tr += '<input type="hidden" name="barcode_type[]" value="'+ sProduct.product.barcode_type +'">';
                         tr += '</td>';
+
+                        tr += '<td class="text-start">';
+                        tr += '<input type="date" name="packing_date[]" class="form-control">';
+                        tr += '</td>';
+
                         tr += '<td class="text-start">';
                         tr += '<a href="#" class="btn btn-sm btn-danger remove_btn float-right ml-1">X</a>';
                         tr += '</td>';
@@ -391,13 +403,14 @@
     //Get Seleled product requested by ajax 
     $(document).on('click', '.select_variant_product', function(e) {
         e.preventDefault();
+        $('.select_area').hide();
+        $('#search_product').val('');
         var product_id = $(this).data('p_id');
         var variant_id = $(this).data('v_id');
         $.ajax({
             url:"{{url('product/barcode/get/selected/product/variant')}}"+"/"+product_id+"/"+variant_id,
             type:'get',
             success:function(supplierProducts){
-                console.log(supplierProducts);
                 var productIds = document.querySelectorAll('#product_id');
                 var rows = [
                     {
@@ -407,7 +420,6 @@
                 productIds.forEach(function (product_id) {
                     var productId = product_id.value;
                     var className = product_id.getAttribute('class');
-                    console.log('Class_name-'+className);
                     var tr = $('.'+className).closest('tr');
                     var supplier_id = tr.find('#supplier_id').val();
                     var variant_id = tr.find('#product_variant_id').val() != 'noid' ? tr.find('#product_variant_id').val() : null;
@@ -417,15 +429,17 @@
                 });
 
                 $.each(supplierProducts, function (key, sProduct) {
+                    var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                     var sameProduct = rows.filter(function (row) {
                        return row.productPrefix == createPrefix; 
                     });
 
                     if (sameProduct.length > 0) {
-                       alert('This variant is exists in barcode table.'); 
+                        toastr.error('This variant has already been added in barcode table.');
                        return;
                     }
+
                     if (sameProduct.length == 0) {
                         var tr = '';
                         tr += '<tr>';
@@ -438,43 +452,47 @@
                         } 
 
                         if (sProduct.product_variant_id != null) {
-                                tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
+                            tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
                         }else{
                             tr += '<span class="span_product_code">'+' ('+sProduct.product.product_code+')'+'</span>';
                         }
                         
                         var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
                         tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+sProduct.product.id+sProduct.supplier_id+variant_id+'" id="product_id" value="'+sProduct.product.id+'">';
-                        tr += '<input type="hidden" name="product_name" id="product_name" value="'+sProduct.product.name+'">';
-                        var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
-                        if (sProduct.product_variant_id != null) {
-                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+sProduct.variant.id+'">';
-                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="'+sProduct.variant.variant_name+'">';
-                            tr += '<input type="hidden" class="productCode-'+sProduct.variant.variant_code+'" name="product_code[]" id="product_code" value="'+sProduct.variant.variant_code+'">';
-                            price_inc_tax = parseFloat(sProduct.variant.variant_price) / 100 * parseFloat(tax) + parseFloat(sProduct.variant.variant_price);
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+parseFloat(price_inc_tax).toFixed(2)+'">';
-                        } else {
-                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
-                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="">';
-                            tr += '<input type="hidden" class="productCode-'+sProduct.product.product_code+'" name="product_code[]" id="product_code" value="'+sProduct.product.product_code+'">';
-                            
-                            var price_inc_tax = parseFloat(sProduct.product.product_price) / 100 * parseFloat(tax) + parseFloat(sProduct.product.product_price);
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+parseFloat(price_inc_tax).toFixed(2) +'">'; 
+                        tr += '<input type="hidden" name="product_name[]" value="'+sProduct.product.name+'">';
+                        tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+sProduct.variant.id+'">';
+                        tr += '<input type="hidden" name="product_variant[]" value="'+sProduct.variant.variant_name+'">';
+                        tr += '<input type="hidden" class="productCode-'+sProduct.variant.variant_code+'" name="product_code[]" value="'+sProduct.variant.variant_code+'">';
+
+                        var priceIncTax = parseFloat(sProduct.variant.variant_price) / 100 * parseFloat(tax) + parseFloat(sProduct.variant.variant_price);
+                        if (sProduct.product.tax_type == 2) {
+                            var inclusiveTax = 100 + parseFloat(tax)
+                            var calcAmount = parseFloat(sProduct.variant.variant_price) / parseFloat(inclusiveTax) * 100;
+                            tax_amount = parseFloat(sProduct.variant.variant_price) - parseFloat(calcAmount);
+                            priceIncTax = parseFloat(sProduct.variant.variant_price) + parseFloat(tax_amount);
                         }
+
+                        tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
                         
-                        tr += '<input type="hidden" name="product_tax" id="product_tax" value="'+tax+'">';
+                        tr += '<input type="hidden" name="product_tax[]" value="'+tax+'">';
+                        tr += '<input type="hidden" name="tax_type[]" value="'+sProduct.product.tax_type+'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
                         tr += '<span class="span_supplier_name">'+ sProduct.supplier.name +'</span>';
                         tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+sProduct.supplier_id+'">';
-                        tr += '<input type="hidden" name="supplier_name" id="supplier_name" value="'+sProduct.supplier.name+'">';
+                        tr += '<input type="hidden" name="supplier_prefix[]" value="'+sProduct.supplier.prefix+'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
-                        tr += '<input type="number" name="left_qty" class="form-control " id="left_qty" value="'+1+'">';
-                        tr += '<input type="hidden" name="barcode_type" id="barcode_type" value="'+sProduct.product.barcode_type+'">';
+                        tr += '<input type="number" name="left_qty[]" id="left_qty" class="form-control" value="'+1+'">';
+                        tr += '<input type="hidden" name="barcode_type[]" value="'+sProduct.product.barcode_type+'">';
                         tr += '</td>';
+
+                        tr += '<td class="text-start">';
+                        tr += '<input type="date" name="packing_date[]" class="form-control">';
+                        tr += '</td>';
+
                         tr += '<td class="text-start">';
                         tr += '<a href="#" class="btn btn-sm btn-danger remove_btn ml-1">X</a>';
                         tr += '</td>';
@@ -545,13 +563,18 @@
             }
         });
     });
-    
-    $(document).on('change','.all',function(){
-        console.log('OK');
-        if($(this).is(':CHECKED', true)){
-            $('.data_id').prop('checked', true); 
-        }else{
-            $('.data_id').prop('checked', false);  
+
+    $(document).on('submit', '#preview', function (e) {
+        var quantities = document.querySelectorAll('#left_qty');
+        // Update Total Item
+        var total_qty = 0;
+        quantities.forEach(function(qty){
+            total_qty += parseFloat(qty.value)
+        }); 
+        console.log(total_qty);
+        if (parseFloat(total_qty) == 0) {
+            toastr.error('Total barcode label Quantity is 0');
+            return false;
         }
     });
 </script>

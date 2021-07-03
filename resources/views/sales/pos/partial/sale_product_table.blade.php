@@ -170,10 +170,10 @@
                                 $('#product_list').prepend(tr);
                                 calculateTotalAmount();
                                 unique_index++;
+                                activeSelectedItems();
                             }
                         } else {
                             var li = "";
-                            // <img style="width:30px; height:30px;" src="' +imgUrl + '/' + product.thumbnail_photo + '"> 
                             var imgUrl = "{{ asset('public/uploads/product/thumbnail') }}";
                             var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
                             $.each(product.product_variants, function(key, variant) {
@@ -198,7 +198,7 @@
                                     tax_amount = __tax_amount;
                                 }
                                 li += '<li class="mt-1">';
-                                li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="' +product.id + '" data-v_id="'+ variant.id +'" data-p_name="'+ product.name +'" data-p_tax_id="' +product.tax_id + '" data-unit="'+ product.unit.name + '" data-tax_type="'+product.tax_type+'" data-tax_percent="'+ tax_percent +'" data-tax_amount="'+ tax_amount +'" data-v_code="'+ variant.variant_code +'" data-v_price="'+ variant.variant_price +'" data-v_name="'+ variant.variant_name +'" data-v_cost_inc_tax="'+ variant.variant_cost_with_tax +'" href="#">'+product.name + ' - ' + variant.variant_name +' (' +variant.variant_code +')' + ' - Price: '+parseFloat(unitPriceIncTax).toFixed(2) +'</a>';
+                                li += '<a class="product-name s" id="'+product.id+variant.id+'" onclick="salectVariant(this); return false;" data-p_id="' + product.id + '" data-v_id="'+ variant.id +'" data-p_name="'+ product.name +'" data-p_tax_id="' +product.tax_id + '" data-unit="'+ product.unit.name + '" data-tax_type="'+product.tax_type+'" data-tax_percent="'+ tax_percent +'" data-tax_amount="'+ tax_amount +'" data-v_code="'+ variant.variant_code +'" data-v_price="'+ variant.variant_price +'" data-v_name="'+ variant.variant_name +'" data-v_cost_inc_tax="'+ variant.variant_cost_with_tax +'" href="#">'+product.name + ' - ' + variant.variant_name +' (' +variant.variant_code +')' + ' - Price: '+parseFloat(unitPriceIncTax).toFixed(2) +'</a>';
                                 li += '</li>';
                             });
                             $('.variant_list_area').prepend(li);
@@ -310,6 +310,7 @@
                             $('#product_list').prepend(tr);
                             calculateTotalAmount();
                             unique_index++;
+                            activeSelectedItems();
                         }
                     } else if (!$.isEmptyObject(product.namedProducts)) {
                         $('#current_stock').val('');
@@ -342,7 +343,7 @@
                                             tax_amount = __tax_amount;
                                         }
                                         li += '<li class="mt-1">';
-                                        li +='<a class="select_variant_product s" onclick="salectVariant(this); return false;" data-p_id="'+ product.id +'" data-v_id="'+ variant.id +'" data-p_name="' +product.name +'" data-p_tax_id="'+ product.tax_id +'" data-unit="' +product.unit.name +'" data-tax_percent="'+ tax_percent +'" data-tax_type="'+ product.tax_type +'" data-tax_amount="'+ tax_amount +'" data-v_code="' + variant.variant_code + '" data-v_price="'+ variant.variant_price +'" data-v_name="'+ variant.variant_name +'" data-v_cost_inc_tax="'+ variant.variant_cost_with_tax +'" href="#">'+ product.name + ' - ' + variant.variant_name + ' (' + variant.variant_code + ')' + ' - Price: ' + parseFloat(unitPriceIncTax).toFixed(2) +'</a>';
+                                        li +='<a class="product-name s" id="'+product.id+variant.id+'" onclick="salectVariant(this); return false;" data-p_id="'+ product.id +'" data-v_id="'+ variant.id +'" data-p_name="' +product.name +'" data-p_tax_id="'+ product.tax_id +'" data-unit="' +product.unit.name +'" data-tax_percent="'+ tax_percent +'" data-tax_type="'+ product.tax_type +'" data-tax_amount="'+ tax_amount +'" data-v_code="' + variant.variant_code + '" data-v_price="'+ variant.variant_price +'" data-v_name="'+ variant.variant_name +'" data-v_cost_inc_tax="'+ variant.variant_cost_with_tax +'" href="#">'+ product.name + ' - ' + variant.variant_name + ' (' + variant.variant_code + ')' + ' - Price: ' + parseFloat(unitPriceIncTax).toFixed(2) +'</a>';
                                         li += '</li>';
                                     });
                                 } else {
@@ -367,7 +368,7 @@
                                         tax_amount = __tax_amount;
                                     }
                                     li += '<li class="mt-1">';
-                                    li +='<a class="select_single_product s" onclick="singleProduct(this); return false;" data-p_id="'+ product.id +'" data-p_name="'+ product.name +'" data-unit="'+ product.unit.name + '" data-p_code="'+ product.product_code +'" data-p_price_exc_tax="'+ product.product_price +'" data-p_tax_percent="' + tax_percent +'" data-tax_type="'+ product.tax_type +'" data-p_tax_amount="'+ tax_amount +'" data-p_cost_inc_tax="' +product.product_cost_with_tax +'" data-description="'+ product.is_show_emi_on_pos +'"  href="#">' + product.name + ' (' + product.product_code +')' + ' - Price: ' + parseFloat(unitPriceIncTax).toFixed(2) +'</a>';
+                                    li +='<a class="product-name s" id="'+product.id+'noid'+'" onclick="singleProduct(this); return false;" data-p_id="'+ product.id +'" data-p_name="'+ product.name +'" data-unit="'+ product.unit.name + '" data-p_code="'+ product.product_code +'" data-p_price_exc_tax="'+ product.product_price +'" data-p_tax_percent="' + tax_percent +'" data-tax_type="'+ product.tax_type +'" data-p_tax_amount="'+ tax_amount +'" data-p_cost_inc_tax="' +product.product_cost_with_tax +'" data-description="'+ product.is_show_emi_on_pos +'"  href="#">' + product.name + ' (' + product.product_code +')' + ' - Price: ' + parseFloat(unitPriceIncTax).toFixed(2) +'</a>';
                                     li += '</li>';
                                 }
                             });

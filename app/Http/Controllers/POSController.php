@@ -920,7 +920,7 @@ class POSController extends Controller
             'product_variants.variant_cost_with_tax',
             'product_variants.variant_profit',
             'product_variants.variant_price',
-        )->get();
+        )->orderBy('products.id', 'desc')->get();
 
         return view('sales.pos.ajax_view.select_product_list', compact('products'));
     }

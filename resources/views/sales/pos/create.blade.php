@@ -195,6 +195,7 @@
                             keyName = 1;
                         }
                         unique_index++;
+                        activeSelectedItems();
                     }
                 } else {
                     toastr.error(singleProductQty.errorMsg);
@@ -347,6 +348,7 @@
                             keyName = 1;
                         }
                         unique_index++;
+                        activeSelectedItems();
                     }
                 } else {
                     toastr.error(branchVariantQty.errorMsg);
@@ -549,6 +551,7 @@
         e.preventDefault();
         $(this).closest('tr').remove();
         calculateTotalAmount();
+        activeSelectedItems();
     });
 
     // Cash receive by modal input with change value

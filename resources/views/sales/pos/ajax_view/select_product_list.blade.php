@@ -13,7 +13,7 @@
                         <div class="product-img">
                             <img src="{{ asset('public/uploads/product/thumbnail/'.$product->thumbnail_photo) }}">
                         </div>
-                        <div class="product-name">
+                        <div class="product-name" id="{{ $product->id.$product->variant_id }}">
                             <a href="#">
                                 {{ Str::limit($product->name.' - '.$product->variant_name, 12) }}
                             </a>
@@ -32,7 +32,7 @@
                         <div class="product-img">
                             <img src="{{ asset('public/uploads/product/thumbnail/'.$product->thumbnail_photo) }}">
                         </div>
-                        <div class="product-name">
+                        <div class="product-name" id="{{ $product->id.'noid' }}">
                             <a href="#">
                                 {{ Str::limit($product->name, 12) }}
                             </a>

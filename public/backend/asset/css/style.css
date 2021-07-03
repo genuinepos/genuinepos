@@ -3,7 +3,7 @@ body {
 }
 
 .container-fluid {
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 /* =========================================body search bar==================================== */
 .main__content {

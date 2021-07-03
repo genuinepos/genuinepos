@@ -12,11 +12,14 @@
 </head>
 <body>
     <div class="print_area">
-        
         @if ($br_setting->is_continuous == 1)
             @php $index = 0; @endphp
             @foreach ($req->product_ids as $product)
-                @php $qty = $req->left_qty[$index] ? (int)$req->left_qty[$index] : 0 @endphp
+
+                @php 
+                    $qty = $req->left_qty[$index] ? (int)$req->left_qty[$index] : 0;
+                    $barcodeType = $req->barcode_type[$index];
+                @endphp
                 @for ($i = 0; $i < $qty; $i++)
                 <div class="row justify-content-center div">
                     <div class="barcode_area text-center" style="margin-bottom: {{ $br_setting->top_margin }}in;">
@@ -31,16 +34,19 @@
                                 </small>
                             </div>
                             <div class="row justify-content-center">
-                                <img style="width: {{ $br_setting->sticker_width }}in; height:{{ $br_setting->sticker_height }}in;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode('SDC154789', $generator::TYPE_CODE_128)) }}">
+                                <img style="width: {{ $br_setting->sticker_width }}in; height:{{ $br_setting->sticker_height }}in;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
                             </div>
                             <div class="row justify-content-center">
-                                <p class="sku">SDC154789</p>
+                                <p class="sku">{{ $req->product_code[$index] }}</p>
                             </div>
                         </div>
                         <div class="product_details_area row">
                             @if (isset($req->is_product_name))
                                 <p class="pro_details">
-                                    {{  Str::limit($req->product_name[$index].' '.$req->product_variant[$index], 40) }}. 
+                                    @php
+                                        $variant = isset($req->is_product_variant) ? $req->product_variant[$index] : '';
+                                    @endphp
+                                    {{ Str::limit($req->product_name[$index].' '.$variant, 40) }}
                                     :{{ isset($req->is_supplier_prefix) ? $req->supplier_prefix[$index] : '' }}
                                 </p>
                             @endif
@@ -76,16 +82,19 @@
                                 </small>
                             </div>
                             <div class="row justify-content-center">
-                                <img style="" src="data:image/png;base64,{{ base64_encode($generator->getBarcode('SDC154789', $generator::TYPE_CODE_128)) }}">
+                                <img style="" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
                             </div>
                             <div class="row justify-content-center">
-                                <p class="sku">SDC154789</p>
+                                <p class="sku">{{ $req->product_code[$index] }}</p>
                             </div>
                         </div>
                         <div class="product_details_area row">
                             @if (isset($req->is_product_name))
                                 <p class="pro_details">
-                                    {{  Str::limit($req->product_name[$index].' '.$req->product_variant[$index], 40) }}. 
+                                    @php
+                                        $variant = isset($req->is_product_variant) ? $req->product_variant[$index] : '';
+                                    @endphp
+                                    {{  Str::limit($req->product_name[$index].' '.$variant, 40) }}
                                     :{{ isset($req->is_supplier_prefix) ? $req->supplier_prefix[$index] : '' }}
                                 </p>
                             @endif
@@ -110,23 +119,16 @@
  <script src="{{asset('public/backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
  <!--Jquery Cdn End-->
  <script>
-     function auto_print(){
-            window.print();
-    }
-
-    setTimeout(function(){
-            auto_print();
-    },300);
+    function auto_print(){window.print();}
+    setTimeout(function(){ auto_print();},300 );
  </script>
  <style>
-     /* .product_details_area {margin-top: 14px;} */
-    /* .product_details_area p {font-size: 8px;margin-top: -17px;} */
-    p{margin: 0px;padding: 0px;font-size: 9px;}
-    p.sku {font-size: 9px;margin: 0px;padding: 0;font-weight: 700;margin-bottom: 1px;}
+    p{margin: 0px;padding: 0px;font-size: 7px;}
+    p.sku {font-size: 7px;margin: 0px;padding: 0;font-weight: 700;margin-bottom: 1px;}
     .company_name {margin-bottom: 0px;}
-
     .div{page-break-after: always;}
-
+    .company_name small {font-size: 8px!important;}
+    .barcode {margin-bottom: -2px;}
     @page {
         size:{{ $br_setting->paper_width }}in {{ $br_setting->paper_height }}in;
         margin:4px 4px;

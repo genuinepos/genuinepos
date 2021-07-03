@@ -20,7 +20,7 @@
             <div class="container">
                 <div class="card card-custom">
                     <div class="card-header">
-                        <h3 class="card-title">Generate Barcode Label</h3>
+                        <h3 class="card-title">Generate Barcode Label ee</h3>
                     </div>
                     <!--begin::Form-->
                     <form id="generate_barcode_form" action="" method="POST">
@@ -46,7 +46,7 @@
 
                             <div class="barcode_product_table_area">
                                 <div class="table_heading">
-                                    <p class="p-0 m-0"><strong>Purchased Product List</strong></p>
+                                    <p class="p-0 m-0"><strong>Purchased Product List </strong></p>
                                 </div>
                                 <table class="table table-sm">
                                     <thead>
@@ -111,12 +111,13 @@
         </div> --}}
     </div>
 @endsection
-@push('js')
+@push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/printme/jquery-printme.min.js"></script>
     <script>
-        // Get all supplier products
-        function getSupplierProduct(){
+        // Get all Purchase product products
+        console.log('IN');
+        function getPurchaseProducts(){
             $('.data_preloader').show();
             $.ajax({
                 url:"{{route('barcode.get.purchase.products', $purchaseId)}}",
@@ -182,111 +183,7 @@
                 }
             });
         }
-        getSupplierProduct();
-
-        // Generate barcode 
-        $('#generate_barcode_form').on('submit', function(e){
-            e.preventDefault();
-            var productCodes = document.querySelectorAll('#product_code');
-            var index = 0;
-            $('.barcodes').empty(); 
-            productCodes.forEach(function(productCode){
-                var getClass = productCode.getAttribute('class');
-                //console.log(productCode.value);
-                var closestTr = $('.'+getClass).closest('tr');
-                var barcodeQty = closestTr.find('#left_qty').val();
-                //console.log(barcodeQty);
-                var productPrice = closestTr.find('#product_price').val();
-                //console.log(productPrice);
-                var productName = closestTr.find('#product_name').val();
-                console.log();
-                var productVariant = closestTr.find('#product_variant').val() ? ' - ' + closestTr.find('#product_variant').val() : '';
-                var productSupplier = closestTr.find('#supplier_name').val();
-                var productTax = closestTr.find('#product_tax').val(); 
-                var barcode_type = closestTr.find('#barcode_type').val();
-                //console.log(productName);
-                var barcode = '';
-                    barcode +='<div class="barcode_conatiner">';
-                        barcode += '<div class="product_name">';
-                            barcode +='<h6><b>'+productName+productVariant+'<b><hr class="p-0 m-0"></h6>';
-                        barcode += '</div>';
-                        barcode += '<div class="col-md-12">';
-                            barcode += '<div class="row barcode_row-'+index+'">';
-                            
-                            barcode += '</div>';   
-                        barcode += '</div>';
-                    barcode += '</div>';
-
-                    $('.barcodes').append(barcode);
-
-                    barCodeCol = '';
-                    var codeLength = productCode.value.length;
-                    console.log(codeLength);
-                    var col = codeLength > 11 ? 'col-md-3' : 'col-md-2 px-2';
-                    barCodeCol += '<div class="'+col+' text-center mt-1">';
-                    var is_business_name = $('#is_business_name');
-                    var business_name = $('#business_name').val();
-                    if(is_business_name.is(':CHECKED', true)){
-                        barCodeCol += '<div class="info">';
-                            barCodeCol += '<small class="barcode_business_name m-0 p-0">'+business_name+'</small>';
-                        barCodeCol += '</div>';
-                    }
-
-                    var is_name = $('#is_product_name');
-                    if(is_name.is(':CHECKED', true)){
-                        barCodeCol += '<div class="info">';
-                            barCodeCol += '<small class="barcode_product_name m-0 p-0">'+productName+'</small>';
-                        barCodeCol += '</div>';
-                    }
-
-                    var is_variant = $('#is_product_variant');
-                    if(is_variant.is(':CHECKED', true)){
-                        barCodeCol += '<div class="info">';
-                            barCodeCol += '<small class="barcode_product_variant m-0 p-0">'+productVariant+'</small>';
-                        barCodeCol += '</div>';
-                    }
-                    var is_price = $('#is_price');
-                    if(is_price.is(':CHECKED', true)){
-                        barCodeCol += '<div class="barcode_product_price info">';
-                            barCodeCol += '<small >Price : '+productPrice+'</small>';
-                        barCodeCol += '</div>';
-                    } 
-
-                    var is_tax = $('#is_tax');
-                    if(is_tax.is(':CHECKED', true)){
-                        barCodeCol += '<div class="barcode_product_tax info">';
-                            barCodeCol += '<small >Tax :'+productTax+'%'+'</small>';
-                        barCodeCol += '</div>';
-                    } 
-
-                    var is_supplier_name = $('#is_supplier_name');
-                    if(is_supplier_name.is(':CHECKED', true)){
-                        barCodeCol += '<div class="barcode_product_supplier info">';
-                            barCodeCol += '<small > :'+productSupplier+'</small>';
-                        barCodeCol += '</div>';
-                    }
-                    barCodeCol += '<svg class="main_barcode" id="barcode-'+index+'"></svg>';
-                    barCodeCol += '</div>'; 
-
-                    $('.barcode_row-'+index).html(barCodeCol); 
-
-                    $('#barcode-'+index).JsBarcode(productCode.value,{
-                        format:barcode_type,
-                        width:1,
-                        height:40,
-                        fontSize:10,
-                        textMargin:-1,
-                        margin: 5,
-                    }); 
-
-                    var this_barcode = $('.barcode_row-'+index).html();
-                    for(i = 0; i < barcodeQty - 1; i++){
-                        $('.barcode_row-'+index).append(this_barcode); 
-                    }
-                index++;   
-            });
-            $(".barcodes").printMe({ "path": ["{{asset('public/assets/css/print/barcode.print.css')}}"] });
-        });
+        getPurchaseProducts();
 
         // Searcha product 
         $('#search_product').on('input', function () {

@@ -1018,3 +1018,5 @@ input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;margin: 
 #order_tax{direction: rtl; text-align: right; font-weight: 800;}
  /* Specilly used for Firefox */
  input[type=number]{-moz-appearance: textfield;}
+ .ac_item{background: #50ffce!important}
+ .ac_select_area{border-right: 3px solid #50ffce!important;}

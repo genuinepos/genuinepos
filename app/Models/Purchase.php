@@ -32,7 +32,7 @@ class Purchase extends Model
     
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id')->select(['id','name', 'business_name', 'phone', 'email', 'address']);
+        return $this->belongsTo(Supplier::class, 'supplier_id')->select(['id','name', 'business_name', 'phone', 'email', 'address', 'prefix']);
     }
     
     public function admin()

@@ -65,6 +65,7 @@
                 //console.log(data);
                 $('#select_product_list').html(data);
                 $('.select_product_preloader').hide();
+                activeSelectedItems();
             }
         });
     }

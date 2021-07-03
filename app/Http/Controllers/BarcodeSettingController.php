@@ -13,7 +13,7 @@ class BarcodeSettingController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $barcodeSettings = DB::table('barcode_settings')->where('is_fixed', 0)->orderBy('is', 'DESC')->get(['id', 'name', 'description', 'is_default']);
+            $barcodeSettings = DB::table('barcode_settings')->where('is_fixed', 0)->orderBy('id', 'DESC')->get(['id', 'name', 'description', 'is_default']);
             return DataTables::of($barcodeSettings)
                 ->addIndexColumn()
                 ->editColumn('name', function ($row) {

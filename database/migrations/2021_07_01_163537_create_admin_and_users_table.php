@@ -30,6 +30,7 @@ class CreateAdminAndUsersTable extends Migration {
 			$table->bigInteger('branch_id')->unsigned()->nullable()->index('admin_and_users_branch_id_foreign');
 			$table->boolean('status')->default(1);
 			$table->string('password')->nullable();
+			$table->tinyInteger('pin')->nullable();
 			$table->decimal('sales_commission_percent')->default(0.00);
 			$table->decimal('max_sales_discount_percent')->default(0.00);
 			$table->string('phone')->nullable();

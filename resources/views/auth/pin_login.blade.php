@@ -29,17 +29,12 @@
                                     <div class="form-title">
                                         <p>User Login</p>
                                     </div>
-                                    <form action="{{ route('login') }}" method="POST">
+                                    <form action="" method="POST">
                                         @csrf
                                         <div class="left-inner-addon input-container">
-                                            <i class="fa fa-user"></i>
-                                            <input type="text" name="username" class="form-control form-st"
-                                                value="{{ old('username') }}" placeholder="Username" required />
-                                        </div>
-                                        <div class="left-inner-addon input-container">
                                             <i class="fa fa-key"></i>
-                                            <input name="password" type="Password"
-                                                class="form-control form-st rounded-bottom" placeholder="Password"
+                                            <input name="pin" type="Password"
+                                                class="form-control form-st rounded-bottom" placeholder="Pin Number"
                                                 required />
                                         </div>
                                         @if (Session::has('errorMsg'))
@@ -52,20 +47,16 @@
                                         <button type="submit" class="submit-button">Login</button>
                                     </form>
                                     <div class="login_opt_link">
-                                        @if (Route::has('password.request'))
-                                            <a class="forget-pw" href="{{ route('password.request') }}">
-                                                &nbsp; {{ __('Forgot Your Password?') }}
-                                            </a>
-                                        @endif
+                                        
+                                        <a class="forget-pw" href="">
+                                            &nbsp; {{ __('Forgot Your Pin Number?') }}
+                                        </a>
+                                       
                                         {{-- <div class="form-group cx-box">
                                             <input type="checkbox" id="remembar" class="form-control">
                                             <label for="remembar">Remembar me</label>
                                         </div> --}}
-
-
                                     </div>
-
-
                                 </div>
                             </div>
 
@@ -101,8 +92,6 @@
         </div>
     </div>
 @endsection
-
-
 @push('js')
 
 @endpush

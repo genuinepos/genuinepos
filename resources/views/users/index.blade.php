@@ -122,11 +122,7 @@
                     d.branch_id = $('#branch_id').val();
                 }
             },
-            columnDefs: [{
-                "targets": [0],
-                "orderable": false,
-                "searchable": false
-            }],
+         
             columns: [
                 {data: 'username', name: 'username'},
                 {data: 'name', name: 'name'},

@@ -9,11 +9,29 @@ use Illuminate\Database\Eloquent\Model;
 class ProductVariant extends Model
 {
     protected $guarded = [];
-    protected $hidden = ['created_at', 'updated_at'];
- 
+    protected $hidden = ['created_at', 'updated_at', 'delete_in_update'];
+
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(Product::class, 'product_id', 'id')->select([
+            'id', 
+            'name',
+            'type',
+            'tax_id', 
+            'tax_type', 
+            'unit_id', 
+            'product_code',
+            'product_cost',
+            'product_cost_with_tax', 
+            'profit',
+            'product_price',
+            'offer_price',
+            'quantity',
+            'combo_price',
+            'is_combo',
+            'is_variant',
+            'is_show_emi_on_pos',
+        ]);
     }
 
     public function purchase_variants()

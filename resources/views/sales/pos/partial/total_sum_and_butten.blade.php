@@ -472,5 +472,6 @@
         $('#account_id').val(defaultAccount);
         var store_url = $('#store_url').val();
         $('#pos_submit_form').attr('action', store_url);
+        activeSelectedItems();
     }
 </script>

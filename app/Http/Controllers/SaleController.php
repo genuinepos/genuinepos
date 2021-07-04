@@ -157,7 +157,7 @@ class SaleController extends Controller
                         }
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                       
+
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
                     }
 
@@ -770,9 +770,9 @@ class SaleController extends Controller
             ->first();
 
         $invoicePrefix = '';
-        if($request->invoice_schema){
+        if ($request->invoice_schema) {
             $invoicePrefix = $request->invoice_schema;
-        }else {
+        } else {
             if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
                 $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . '/' . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from . date('ymd');
             } else {
@@ -780,7 +780,7 @@ class SaleController extends Controller
                 $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . '/' . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from . date('ymd');
             }
         }
-       
+
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
         }
@@ -2129,8 +2129,11 @@ class SaleController extends Controller
             }
         } else {
             $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
-            ->where('variant_code', $product_code)->select('id', 'product_id', 'variant_price', 'variant_cost_with_tax')
-            ->first();
+                ->where('variant_code', $product_code)
+                ->select([
+                    'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price'
+                ])
+                ->first();
             if ($variant_product) {
                 $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $variant_product->product_id)->first();
 
@@ -2139,9 +2142,9 @@ class SaleController extends Controller
                 }
 
                 $productBranchVariant = DB::table('product_branch_variants')
-                ->where('product_branch_id', $productBranch->id)
-                ->where('product_id', $variant_product->product_id)
-                ->where('product_variant_id', $variant_product->id)->first();
+                    ->where('product_branch_id', $productBranch->id)
+                    ->where('product_id', $variant_product->product_id)
+                    ->where('product_variant_id', $variant_product->id)->first();
 
                 if (is_null($productBranchVariant)) {
                     return response()->json(['errorMsg' => 'This variant is not available in this shop']);
@@ -2189,13 +2192,14 @@ class SaleController extends Controller
     {
         $product_code = (string)$product_code;
         $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $product_code)
-            ->select(['id', 'name', 'product_code', 'product_price', 'profit', 'product_cost_with_tax', 'thumbnail_photo', 'unit_id', 'tax_id', 'tax_type','is_show_emi_on_pos'])
+            ->select(['id', 'name', 'product_code', 'product_price', 'profit', 'product_cost_with_tax', 'thumbnail_photo', 'unit_id', 'tax_id', 'tax_type', 'is_show_emi_on_pos'])
             ->first();
         if ($product) {
             $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouse_id)->where('product_id', $product->id)->first();
             if ($productWarehouse) {
                 if ($product->type == 2) {
                     $comboTypeProduct = Product::with(['comboProducts', 'ComboProducts.parentProduct', 'ComboProducts.product_variant', 'tax', 'unit'])->where('product_code', $product_code)->first();
+
                     foreach ($comboTypeProduct->comboProducts as $comboProduct) {
                         $productComboWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouse_id)->where('product_id', $comboProduct->combo_product_id)->first();
                         if ($productComboWarehouse) {
@@ -2229,7 +2233,10 @@ class SaleController extends Controller
                 return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
             }
         } else {
-            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $product_code)->first();
+            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+                ->where('variant_code', $product_code)->select([
+                    'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price'
+                ])->first();
             if ($variant_product) {
                 $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouse_id)->where('product_id', $variant_product->product_id)->first();
 
@@ -2287,8 +2294,8 @@ class SaleController extends Controller
         $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
         if ($productBranch) {
             $productBranchVariant = DB::table('product_branch_variants')->where('product_branch_id', $productBranch->id)
-            ->where('product_id', $product_id)
-            ->where('product_variant_id', $variant_id)->first();
+                ->where('product_id', $product_id)
+                ->where('product_variant_id', $variant_id)->first();
             if ($productBranchVariant) {
                 if ($productBranchVariant->variant_quantity > 0) {
                     return response()->json($productBranchVariant->variant_quantity);
@@ -2298,7 +2305,7 @@ class SaleController extends Controller
             } else {
                 return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
             }
-        }else {
+        } else {
             return response()->json(['errorMsg' => 'This product is not available in this shop.']);
         }
     }
@@ -2333,10 +2340,9 @@ class SaleController extends Controller
             } else {
                 return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
             }
-        }else {
+        } else {
             return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
         }
-        
     }
 
     // Check Warehouse Single product Stock
@@ -3122,7 +3128,7 @@ class SaleController extends Controller
         return view('sales.ajax_view.recent_sale_list', compact('sales'));
     }
 
-    
+
     // Get all recent quotations ** requested by ajax **
     public function recentQuotations()
     {

@@ -798,6 +798,11 @@ Route::get('add-user', function () {
     //1=super_admin;2=admin;3=Other;
 });
 
+Route::get('pin_login', function ()
+{
+    return view('auth.pin_login');
+});
+
 Route::get('/test', function () {
     // $bussinessSettings = General_setting::first();
     // return json_decode($bussinessSettings->business, true);
@@ -883,6 +888,8 @@ Route::get('/test', function () {
     // $num = 100.50;
     // $r = (int)$num;
     // return $r;
+    $mac = exec('getmac');
+    return $strtok = strtok($mac, ' ');
 });
 
 // All authenticated routes

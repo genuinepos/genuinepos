@@ -885,4 +885,5 @@ Route::get('/test', function () {
     // return $r;
 });
 
+// All authenticated routes
 Auth::routes();

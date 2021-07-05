@@ -12,6 +12,7 @@ return [
   'setup' => 'Setup',
   'users' => 'Users',
   'hrm' => 'HRM',
+  'essentials' => 'Essentials',
   'reports' => 'Reports',
   // Menu childs of Products module
   'categories' => 'Categories',

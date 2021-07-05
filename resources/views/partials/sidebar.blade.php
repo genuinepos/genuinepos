@@ -123,6 +123,13 @@
                     </a>
                 </li>
 
+                <li class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
+                    <a href="{{ route('workspace.index') }}">
+                        <img src="{{ asset('public/backend/asset/img/icon/to-do-list.svg') }}">
+                        <p class="title">@lang('menu.essentials')</p>
+                    </a>
+                </li>
+
                 @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
                     <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
                         <a href="#">

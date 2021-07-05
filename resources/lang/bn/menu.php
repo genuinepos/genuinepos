@@ -12,6 +12,7 @@ return [
     'setup' => 'সেটআপ',
     'users' => 'ব্যবহারকারী',
     'hrm' => 'মানব সম্পদ',
+    'essentials' => 'প্রয়োজনীয়',
     'reports' => 'রিপোর্ট',
     // Menu child of Products module
     'categories' => 'বিভাগ',

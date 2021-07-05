@@ -159,9 +159,7 @@
 
         // Setup ajax for csrf token.
         $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
         });
 
         // call jquery method 
@@ -189,6 +187,7 @@
                     $('.loading_button').hide();
                     return;
                 }
+
                 $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url:url,
@@ -234,6 +233,7 @@
                         $('.error_'+inputId).html(fieldName+' is required.');
                     } 
                 });
+                
                 if(countErrorField > 0){
                     $('.loading_button').hide();
                     return;

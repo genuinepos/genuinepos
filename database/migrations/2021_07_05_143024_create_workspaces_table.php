@@ -20,8 +20,8 @@ class CreateWorkspacesTable extends Migration
             $table->string('name');
             $table->string('priority');
             $table->string('status');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();

@@ -70,7 +70,7 @@
             @foreach ($req->product_ids as $product)
                 @php $qty = $req->left_qty[$index] ? (int)$req->left_qty[$index] : 0 @endphp
                 @for ($i = 0; $i < $qty; $i++)
-                    <div class="barcode_area text-center" style="width: {{ $br_setting->sticker_width }}in; height:{{ $br_setting->sticker_height }}in;margin-bottom: {{ $br_setting->top_margin }}in;margin-left:{{ $br_setting->left_margin }}in;">
+                    <div class="barcode_area text-center" style="width: {{ $br_setting->sticker_width }}in;margin-bottom: {{ $br_setting->top_margin }}in;margin-left:{{ $br_setting->left_margin }}in;">
                         <div class="barcode">
                             <div class="company_name row">
                                 <small class="p-0 m-0">
@@ -82,7 +82,7 @@
                                 </small>
                             </div>
                             <div class="row justify-content-center">
-                                <img style="" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
+                                <img style="height:{{ $br_setting->sticker_height }}in;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
                             </div>
                             <div class="row justify-content-center">
                                 <p class="sku">{{ $req->product_code[$index] }}</p>

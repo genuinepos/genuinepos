@@ -214,7 +214,7 @@
 
                     tr += '<td class="text-start">';
                     tr += '<span class="span_supplier_name">'+ p_product.purchase.supplier.name +'</span>';
-                    tr += '<input type="hidden" name="supplier_ids[]" value="'+p_product.purchase.supplier.id+'">';
+                    tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+p_product.purchase.supplier.id+'">';
                     tr += '<input type="hidden" name="supplier_prefix[]" value="'+p_product.purchase.supplier.prefix+'">';
                     tr += '</td>';
 

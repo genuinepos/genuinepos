@@ -112,7 +112,8 @@ class BarcodeController extends Controller
     public function genrateProductBarcode($productId)
     {
         $productId = $productId;
-        return view('product.barcode.spacific_product_barcode', compact('productId'));
+        $bc_settings = DB::table('barcode_settings')->orderBy('is_continuous', 'desc')->get(['id', 'name', 'is_default']);
+        return view('product.barcode.specific_product_barcode', compact('productId', 'bc_settings'));
     }
 
     // Get specific product's supplier product

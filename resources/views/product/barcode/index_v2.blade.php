@@ -211,7 +211,7 @@
                                     tax_amount = parseFloat(product.product.product_price) - parseFloat(calcAmount);
                                     priceIncTax = parseFloat(product.product.product_price) + parseFloat(tax_amount);
                                 }
-                                tr += '<input type="hidden" name="product_price[]" value="'+priceIncTax+'">'; 
+                                tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">'; 
                             }
                             
                             tr += '<input type="hidden" name="product_tax[]" value="'+tax+'">';
@@ -220,12 +220,12 @@
 
                             tr += '<td class="text-start">';
                             tr += '<span class="span_supplier_name">'+ supplier.name +'</span>';
-                            tr += '<input type="hidden" name="supplier_ids[]" value="'+supplier.id+'">';
+                            tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+supplier.id+'">';
                             tr += '<input type="hidden" name="supplier_prefix[]" value="'+supplier.prefix+'">';
                             tr += '</td>';
 
                             tr += '<td class="text-start">';
-                            tr += '<input type="number" name="left_qty[]" class="form-control " value="'+product.label_qty+'">';
+                            tr += '<input type="number" name="left_qty[]" id="left_qty" class="form-control " value="'+product.label_qty+'">';
                             tr += '<input type="hidden" name="barcode_type[]" value="'+product.product.barcode_type+'">';
                             tr += '</td>';
                             tr += '<td class="text-start">';
@@ -305,6 +305,7 @@
     $(document).on('click', '.select_product', function(e) {
         e.preventDefault();
         var product_id = $(this).data('p_id');
+        console.log(product_id);
         $('.select_area').hide();
         $('#search_product').val('');
         $.ajax({
@@ -330,6 +331,7 @@
                 });
 
                 $.each(supplierProducts, function (key, sProduct) {
+                    var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                     var sameProduct = rows.filter(function (row) {
                         return row.productPrefix == createPrefix; 
@@ -355,34 +357,33 @@
 
                         var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
                         tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+ sProduct.product.id+sProduct.supplier_id+variant_id +'" id="product_id" value="'+ sProduct.product.id +'">';
-                        tr += '<input type="hidden" name="product_name" id="product_name" value="'+ sProduct.product.name+'">';
+                        tr += '<input type="hidden" name="product_name[]" value="'+ sProduct.product.name+'">';
 
-                        if (sProduct.product_variant_id != null) {
-                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+ sProduct.variant.id +'">';
-                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="'+ sProduct.variant.variant_name +'">';
-                            tr += '<input type="hidden" class="productCode-'+ sProduct.variant.variant_code +'" name="product_code[]" id="product_code" value="'+ sProduct.variant.variant_code +'">';
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+ sProduct.variant.variant_price +'">';
-                        } else {
-                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
-                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="">';
-                            tr += '<input type="hidden" class="productCode-'+ sProduct.product.product_code+'" name="product_code[]" id="product_code" value="'+ sProduct.product.product_code +'">';
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+ sProduct.product.product_price +'">'; 
+                        var priceIncTax = parseFloat(sProduct.product.product_price) /100 * parseFloat(tax) + parseFloat(sProduct.product.product_price);
+                        if (sProduct.product.tax_type == 2) {
+                            var inclusiveTax = 100 + parseFloat(tax)
+                            var calcAmount = parseFloat(sProduct.product.product_price) / parseFloat(inclusiveTax) * 100;
+                            tax_amount = parseFloat(sProduct.product.product_price) - parseFloat(calcAmount);
+                            priceIncTax = parseFloat(sProduct.product.product_price) + parseFloat(tax_amount);
                         }
 
-                        var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
-                        tr += '<input type="hidden" name="product_tax" id="product_tax" value="'+ tax +'">';
+                        tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
+                        tr += '<input type="hidden" name="product_variant[]" value="">';
+                        tr += '<input type="hidden" class="productCode-'+ sProduct.product.product_code+'" name="product_code[]" value="'+ sProduct.product.product_code +'">';
+                        tr += '<input type="hidden" name="product_price[]" id="product_price" value="'+ parseFloat(priceIncTax).toFixed(2) +'">'; 
+                        
+                        tr += '<input type="hidden" name="product_tax[]" value="'+ tax +'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
                         tr += '<span class="span_supplier_name">'+ sProduct.supplier.name +'</span>';
                         tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+ sProduct.supplier_id +'">';
-                        tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+ sProduct.supplier.prefix+'">';
-                        tr += '<input type="hidden" name="supplier_name" id="supplier_name" value="'+ sProduct.supplier.name +'">';
+                        tr += '<input type="hidden" name="supplier_prefix[]" id="supplier_prefix" value="'+ sProduct.supplier.prefix+'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
                         tr += '<input type="number" name="left_qty" class="form-control " id="left_qty" value="'+1+'">';
-                        tr += '<input type="hidden" name="barcode_type" id="barcode_type" value="'+ sProduct.product.barcode_type +'">';
+                        tr += '<input type="hidden" name="barcode_type[]" id="barcode_type" value="'+ sProduct.product.barcode_type +'">';
                         tr += '</td>';
                         tr += '<td class="text-start">';
                         tr += '<input type="date" name="packing_date[]" class="form-control">';
@@ -391,7 +392,7 @@
                         tr += '<a href="#" class="btn btn-sm btn-danger remove_btn float-right ms-1">X</a>';
                         tr += '</td>';
                         tr += '</tr>';
-                        $('#barcode_product_list').append(tr);
+                        $('#barcode_product_list').prepend(tr);
                     }
                 });
             }
@@ -429,6 +430,7 @@
                 });
 
                 $.each(supplierProducts, function (key, sProduct) {
+                    var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00;
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                     var sameProduct = rows.filter(function (row) {
                        return row.productPrefix == createPrefix; 
@@ -457,35 +459,34 @@
                         
                         var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
                         tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+sProduct.product.id+sProduct.supplier_id+variant_id+'" id="product_id" value="'+sProduct.product.id+'">';
-                        tr += '<input type="hidden" name="product_name" id="product_name" value="'+sProduct.product.name+'">';
-                        var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
-                        if (sProduct.product_variant_id != null) {
-                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+sProduct.variant.id+'">';
-                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="'+sProduct.variant.variant_name+'">';
-                            tr += '<input type="hidden" class="productCode-'+sProduct.variant.variant_code+'" name="product_code[]" id="product_code" value="'+sProduct.variant.variant_code+'">';
-                            price_inc_tax = parseFloat(sProduct.variant.variant_price) / 100 * parseFloat(tax) + parseFloat(sProduct.variant.variant_price);
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+parseFloat(price_inc_tax).toFixed(2)+'">';
-                        } else {
-                            tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
-                            tr += '<input type="hidden" name="product_variant" id="product_variant" value="">';
-                            tr += '<input type="hidden" class="productCode-'+sProduct.product.product_code+'" name="product_code[]" id="product_code" value="'+sProduct.product.product_code+'">';
-                            
-                            var price_inc_tax = parseFloat(sProduct.product.product_price) / 100 * parseFloat(tax) + parseFloat(sProduct.product.product_price);
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+parseFloat(price_inc_tax).toFixed(2) +'">'; 
+                        tr += '<input type="hidden" name="product_name[]" id="product_name" value="'+sProduct.product.name+'">';
+                       
+                        tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+sProduct.variant.id+'">';
+                        tr += '<input type="hidden" name="product_variant[]" id="product_variant" value="'+sProduct.variant.variant_name+'">';
+                        tr += '<input type="hidden" class="productCode-'+sProduct.variant.variant_code+'" name="product_code[]" value="'+sProduct.variant.variant_code+'">';
+
+                        var priceIncTax = parseFloat(sProduct.variant.variant_price) / 100 * parseFloat(tax) + parseFloat(sProduct.variant.variant_price);
+                        if (sProduct.product.tax_type == 2) {
+                            var inclusiveTax = 100 + parseFloat(tax)
+                            var calcAmount = parseFloat(sProduct.variant.variant_price) / parseFloat(inclusiveTax) * 100;
+                            tax_amount = parseFloat(sProduct.variant.variant_price) - parseFloat(calcAmount);
+                            priceIncTax = parseFloat(sProduct.variant.variant_price) + parseFloat(tax_amount);
                         }
-                        
-                        tr += '<input type="hidden" name="product_tax" id="product_tax" value="'+tax+'">';
+
+                        tr += '<input type="hidden" name="product_price[]" id="product_price" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
+                      
+                        tr += '<input type="hidden" name="product_tax[]" id="product_tax" value="'+tax+'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
                         tr += '<span class="span_supplier_name">'+ sProduct.supplier.name +'</span>';
                         tr += '<input type="hidden" name="supplier_ids[]" id="supplier_id" value="'+sProduct.supplier_id+'">';
-                        tr += '<input type="hidden" name="supplier_name" id="supplier_name" value="'+sProduct.supplier.name+'">';
+                        tr += '<input type="hidden" name="supplier_prefix[]" id="supplier_name" value="'+sProduct.supplier.prefix+'">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
-                        tr += '<input type="number" name="left_qty" class="form-control " id="left_qty" value="'+1+'">';
-                        tr += '<input type="hidden" name="barcode_type" id="barcode_type" value="'+sProduct.product.barcode_type+'">';
+                        tr += '<input type="number" name="left_qty[]" class="form-control" id="left_qty" value="'+1+'">';
+                        tr += '<input type="hidden" name="barcode_type[]" id="barcode_type" value="'+sProduct.product.barcode_type+'">';
                         tr += '</td>';
                         tr += '<td class="text-start">';
                         tr += '<input type="date" name="packing_date[]" class="form-control">';
@@ -494,7 +495,7 @@
                         tr += '<a href="#" class="btn btn-sm btn-danger remove_btn ms-1">X</a>';
                         tr += '</td>';
                         tr += '</tr>';
-                        $('#barcode_product_list').append(tr);
+                        $('#barcode_product_list').prepend(tr);
                     }
                 });
             }
@@ -570,9 +571,9 @@
         }
     });
 
-    $('#search_product').on('blur', function () {
-        $('.select_area').hide();
-        $('.product_dropdown_list').empty();
-    });
+    // $('#search_product').on('blur', function () {
+    //     $('.select_area').hide();
+    //     $('.product_dropdown_list').empty();
+    // });
 </script>
 @endpush

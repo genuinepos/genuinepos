@@ -7,6 +7,7 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
     Route::group(['prefix' => 'workspaces'], function ()
     {
         Route::get('/', 'WorkSpaceController@index')->name('workspace.index');
+        Route::post('store', 'WorkSpaceController@store')->name('workspace.store');
     });
 
 });

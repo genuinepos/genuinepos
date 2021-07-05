@@ -179,7 +179,8 @@
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
-                    <form  action="" method="get">
+                    <form id="add_work_space_form" action="{{ route('workspace.store') }}" method="post">
+                        @csrf
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <label><b>Name :</b></label>
@@ -188,8 +189,8 @@
 
                             <div class="col-md-6">
                                 <label><b>Assigned To :</b></label>
-                                <select required name="user_ids" class="form-control select2" id="user_ids" multiple="multiple">
-                                    <option> Select Please </option>
+                                <select required name="user_ids[]" class="form-control select2" id="user_ids" multiple="multiple">
+                                    <option disabled value=""> Select Please </option>
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
                                     @endforeach
@@ -201,7 +202,7 @@
                             <div class="col-md-6">
                                 <label><b>Priority : </b></label>
                                 <select name="priority"
-                                    class="form-control" id="priority" autofocus>
+                                    class="form-control" id="priority">
                                     <option value="">All</option>
                                     <option value="Low">Low</option>
                                     <option value="Medium">Medium</option>
@@ -212,13 +213,25 @@
 
                             <div class="col-md-6">
                                 <label><strong>Status : </strong></label>
-                                <select name="status" class="form-control" id="status" autofocus>
+                                <select name="status" class="form-control" id="status">
                                     <option value="">All</option>
                                     <option value="New">New</option>
                                     <option value="In-Progress">In-Progress</option>
                                     <option value="On-Hold">On-Hold</option>
                                     <option value="Complated">Complated</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-6">
+                                <label><b>Start Date : </b></label>
+                                <input required type="date" name="start_date" class="form-control" id="start_date" value="{{date('Y-m-d')}}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><b>End Date : </b></label>
+                                <input required type="date" name="end_date" class="form-control" id="end_date">
                             </div>
                         </div>
 
@@ -314,26 +327,6 @@
     $(document).on('submit', '#add_work_space_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
-        var url = $(this).attr('action');
-        var inputs = $('.p_input');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-            return;
-        }
-
         $.ajax({
             url:url,
             type:'post',
@@ -346,7 +339,7 @@
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
                 }else{
-                    table.ajax.reload();
+                    //table.ajax.reload();
                     $('.loading_button').hide();
                     $('.modal').modal('hide');
                     toastr.success(data); 

@@ -1,9 +1,9 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .top-menu-area ul li {display: inline-block;margin-right: 3px;}
-        .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
-        .form-control {padding: 4px!important;}
+        .top-menu-area ul li { display: inline-block;margin-right: 3px; }
+        .top-menu-area a { border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px; }
+        .form-control { padding: 4px!important; }
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
@@ -119,7 +119,7 @@
                     <!-- =========================================top section button=================== -->
 
                     <div class="row">
-                        <div class="form_element">
+                        <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
                                     <h6>All Work Space <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
@@ -140,11 +140,14 @@
                                         <thead>
                                             <tr>
                                                 <th>Entry Date</th>
-                                                <th>Work Space ID</th>
+                                                <th>Name</th>
+                                                <th>Workspace ID</th>
+                                                <th>Location</th>
+                                                <th>Priority</th>
                                                 <th>Status</th>
                                                 <th>Start Date</th>
                                                 <th>End Date</th>
-                                                <th>Estemated Hour</th>
+                                                <th>Estimated Hour</th>
                                                 <th>Assigned By</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -201,9 +204,8 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><b>Priority : </b></label>
-                                <select name="priority"
-                                    class="form-control" id="priority">
-                                    <option value="">All</option>
+                                <select required name="priority" class="form-control" id="priority">
+                                    <option value="">Select Priority</option>
                                     <option value="Low">Low</option>
                                     <option value="Medium">Medium</option>
                                     <option value="High">High</option>
@@ -213,8 +215,8 @@
 
                             <div class="col-md-6">
                                 <label><strong>Status : </strong></label>
-                                <select name="status" class="form-control" id="status">
-                                    <option value="">All</option>
+                                <select required name="status" class="form-control" id="status">
+                                    <option value="">Select Status</option>
                                     <option value="New">New</option>
                                     <option value="In-Progress">In-Progress</option>
                                     <option value="On-Hold">On-Hold</option>
@@ -268,12 +270,69 @@
         </div>
     </div>
     <!-- Add Modal End-->
+
+      <!-- Add Modal -->
+      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+      aria-labelledby="staticBackdrop" aria-hidden="true">
+      <div class="modal-dialog col-55-modal" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title" id="exampleModalLabel">Edit Work Space</h6>
+                  <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+              </div>
+              <div class="modal-body" id="edit_modal_body">
+                  <!--begin::Form-->
+            
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Add Modal End-->
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
 <script>
+    table = $('.data_tbl').DataTable({
+        "processing": true,
+        "serverSide": true,
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+        ],
+        aaSorting: [[0, 'desc']],
+        "ajax": {
+            "url": "{{ route('workspace.index') }}",
+            "data": function(d) {
+                d.branch_id = $('#branch_id').val();
+                d.priority = $('#priority').val();
+                d.status = $('#status').val();
+                d.date_range = $('#date_range').val();
+            }
+        },
+        columnDefs: [{
+            "targets": [0],
+            "orderable": false,
+            "searchable": false
+        }],
+        columns: [
+            {data: 'date', name: 'date'},
+            {data: 'name', name: 'name'},
+            {data: 'ws_id', name: 'ws_id'},
+            {data: 'from', name: 'from'},
+            {data: 'priority', name: 'priority'},
+            {data: 'status', name: 'status'},
+            {data: 'start_date', name: 'start_date'},
+            {data: 'end_date', name: 'end_date'},
+            {data: 'estimated_hours', name: 'estimated_hours'},
+            {data: 'assigned_by', name: 'assigned_by'},
+            {data: 'action'},
+        ],
+    });
+
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function () {
         table.ajax.reload();
@@ -304,7 +363,7 @@
             url:url,
             type:'get',
             success:function(date){
-               
+            
             }
         });
     });
@@ -318,7 +377,9 @@
             url:url,
             type:'get',
             success:function(data){
-      
+                $('#edit_modal_body').html(data);
+                $('#editModal').modal('show');
+                $('.data_preloader').hide();
             }
         });
     });
@@ -327,6 +388,7 @@
     $(document).on('submit', '#add_work_space_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
+        var url = $(this).attr('action');
         $.ajax({
             url:url,
             type:'post',
@@ -339,10 +401,12 @@
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
                 }else{
-                    //table.ajax.reload();
+                    $('#add_work_space_form')[0].reset();
+                    $(".select2").select2().val('').trigger('change');
                     $('.loading_button').hide();
                     $('.modal').modal('hide');
                     toastr.success(data); 
+                    table.ajax.reload();
                 }
             }
         });
@@ -413,5 +477,4 @@
     });
     $('.select2').select2();
 </script>
-
 @endpush

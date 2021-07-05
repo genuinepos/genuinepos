@@ -24,6 +24,7 @@ class CreateWorkspacesTable extends Migration
             $table->timestamp('end_date')->nullable();
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->text('description')->nullable();
+            $table->string('estimated_hours')->nullable();
             $table->timestamps();
             $table->foreign('admin_id')->references('id')->on('admin_and_users')->onDelete('set null');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');

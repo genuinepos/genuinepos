@@ -80,7 +80,7 @@ class AccountController extends Controller
             $addCashflow->save();
         }
 
-        return response()->json('Successfully account is added');
+        return response()->json('Account created successfully');
     }
 
     // Update bank
@@ -101,7 +101,7 @@ class AccountController extends Controller
             'remark' => $request->remark,
         ]);
 
-        return response()->json('Successfully account is updated');
+        return response()->json('Account updated successfully');
     }
 
     public function delete(Request $request, $accountId)
@@ -111,7 +111,7 @@ class AccountController extends Controller
             $deleteAccount->delete();
         }
 
-        return response()->json('Successfully bank is deleted');
+        return response()->json('Account deleted successfully');
     }
 
     public function allBanks()

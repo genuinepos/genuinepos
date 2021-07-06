@@ -77,7 +77,7 @@ class WorkSpaceController extends Controller
                         Action
                     </button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('workspace.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" href="'.route('workspace.task.index', [$row->id]).'"><i class="fas fa-tasks text-primary"></i> Manage Tasks</a>';
                     $html .= '<a class="dropdown-item" id="edit" href="' . route('workspace.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('workspace.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';

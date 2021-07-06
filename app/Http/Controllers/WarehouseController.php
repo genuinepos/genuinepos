@@ -59,10 +59,9 @@ class WarehouseController extends Controller
     public function delete(Request $request, $warehouseId)
     {
         $deleteWarehouse = Warehouse::where('id', $warehouseId)->first();
-        if (!is_null($deleteWarehouse->delete())) {
+        if (!is_null($deleteWarehouse)) {
             $deleteWarehouse->delete();
         }
         return response()->json('Successfully warehouse is deleted');
-        
     }
 }

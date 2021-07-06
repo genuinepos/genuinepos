@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
 @endpush
-@section('title', 'HRM Payrolls - ')
+@section('title', 'Essentials - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -165,7 +165,6 @@
                             </form>
                         </div>
                     </div>
-                  
                 </div>
             </div>
         </div>
@@ -271,8 +270,8 @@
     </div>
     <!-- Add Modal End-->
 
-      <!-- Add Modal -->
-      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+    <!-- Add Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
       aria-labelledby="staticBackdrop" aria-hidden="true">
       <div class="modal-dialog col-55-modal" role="document">
           <div class="modal-content">
@@ -288,20 +287,79 @@
       </div>
   </div>
   <!-- Add Modal End-->
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="docsModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+      aria-labelledby="staticBackdrop" aria-hidden="true">
+      <div class="modal-dialog col-40-modal" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title" id="exampleModalLabel">Uploaded Documents</h6>
+                  <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+              </div>
+              <div class="modal-body">
+                  <!--begin::Form-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="header">
+                            <p><b>Docs</b></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table modal-table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start">#</th>
+                                        <th class="text-start">File</th>
+                                        <th class="text-start">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="text-start">1</th>
+                                        <th class="text-start">
+                                            <img style="height: 35px;width:40px;" src="{{ asset('public/favicon.png') }}">
+                                        </th>
+                                        <th class="text-start">
+                                            <a href="" class="btn btn-sm btn-info text-white">View</a> 
+                                            <a href="" class="btn btn-sm btn-secondary">Download</a>
+                                        </th>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="text-start">1</th>
+                                        <th class="text-start">Uppldfjasdfu.xls</th>
+                                        <th class="text-start">
+                                            <a href="" class="btn btn-sm btn-info text-white">View</a> 
+                                            <a href="" class="btn btn-sm btn-secondary">Download</a>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Add Modal End-->
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
 <script>
-    table = $('.data_tbl').DataTable({
+    var table = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,
         dom: "lBfrtip",
         buttons: [ 
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         aaSorting: [[0, 'desc']],
         "ajax": {
@@ -352,21 +410,36 @@
             $('.submit_able_input').blur();
         }, 1000);
     });
-
-
+    
     // //Show payment view modal with data
     $(document).on('click', '#view', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
         var url = $(this).attr('href');
-        $.ajax({
-            url:url,
-            type:'get',
-            success:function(date){
+        // $.ajax({
+        //     url:url,
+        //     type:'get',
+        //     success:function(date){
             
-            }
-        });
+        //     }
+        // });
     });
+
+  
+    $(document).on('click', '#docs', function (e) {
+        e.preventDefault();
+        // $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $('#docsModal').modal('show');
+        // $.ajax({
+        //     url:url,
+        //     type:'get',
+        //     success:function(date){
+            
+        //     }
+        // });
+    });
+
 
     // Show add payment modal with date 
     $(document).on('click', '#edit', function (e) {
@@ -384,7 +457,7 @@
         });
     });
 
-    //Add sale payment request by ajax
+    //Add workspace request by ajax
     $(document).on('submit', '#add_work_space_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
@@ -403,6 +476,32 @@
                 }else{
                     $('#add_work_space_form')[0].reset();
                     $(".select2").select2().val('').trigger('change');
+                    $('.loading_button').hide();
+                    $('.modal').modal('hide');
+                    toastr.success(data); 
+                    table.ajax.reload();
+                }
+            }
+        });
+    });
+
+    //Edit workspace request by ajax
+    $(document).on('submit', '#edit_work_space_form', function(e){
+        e.preventDefault();
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        $.ajax({
+            url:url,
+            type:'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success:function(data){
+                if(!$.isEmptyObject(data.errorMsg)){
+                    toastr.error(data.errorMsg,'ERROR'); 
+                    $('.loading_button').hide();
+                }else{
                     $('.loading_button').hide();
                     $('.modal').modal('hide');
                     toastr.success(data); 

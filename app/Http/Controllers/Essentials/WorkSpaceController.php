@@ -19,7 +19,7 @@ class WorkSpaceController extends Controller
 
             $workspaces = '';
             $query = DB::table('workspaces')->leftJoin('branches', 'workspaces.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'workspaces.admin_id', 'admin_and_users.id');
+                ->leftJoin('admin_and_users', 'workspaces.admin_id', 'admin_and_users.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
@@ -78,7 +78,7 @@ class WorkSpaceController extends Controller
                     </button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="' . route('workspace.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" href=""><i class="far fa-eye mr-1 text-primary"></i> Manage</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('workspace.task.index', [$row->id]).'"><i class="fas fa-tasks text-primary"></i> Manage Tasks</a>';
                     $html .= '<a class="dropdown-item" id="edit" href="' . route('workspace.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('workspace.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
@@ -89,7 +89,7 @@ class WorkSpaceController extends Controller
                     return date('d/m/Y', strtotime($row->created_at));
                 })
                 ->editColumn('name', function ($row) {
-                    return $row->name.' <a class="btn btn-sm btn-info text-white" id="docs" href="">Docs</a>';
+                    return $row->name . ' <a class="btn btn-sm btn-info text-white" id="docs" href="">Docs</a>';
                 })
                 ->editColumn('from',  function ($row) {
                     if ($row->branch_name) {
@@ -99,7 +99,7 @@ class WorkSpaceController extends Controller
                     }
                 })
                 ->editColumn('assigned_by', function ($row) {
-                    return $row->prefix.' '.$row->a_name.' '.$row->last_name;
+                    return $row->prefix . ' ' . $row->a_name . ' ' . $row->last_name;
                 })
                 ->rawColumns(['action', 'date', 'from', 'name', 'assigned_by'])
                 ->make(true);
@@ -135,7 +135,7 @@ class WorkSpaceController extends Controller
 
         if (count($request->user_ids) > 0) {
             foreach ($request->user_ids as $user_id) {
-                $addWsUsers = WorkspaceUsers::insert([
+                WorkspaceUsers::insert([
                     'workspace_id' => $addWorkspace,
                     'user_id' => $user_id
                 ]);
@@ -148,7 +148,7 @@ class WorkSpaceController extends Controller
                     $wpDocument = $document;
                     $wpDocumentName = uniqid() . '-' . '.' . $wpDocument->getClientOriginalExtension();
                     $wpDocument->move(public_path('uploads/payment_attachment/'), $wpDocumentName);
-                    $addWsWorkspaceAttachment = WorkspaceAttachment::insert([
+                    WorkspaceAttachment::insert([
                         'workspace_id' => $addWorkspace,
                         'attachment' => $wpDocumentName,
                         'extension' => $wpDocument->getClientOriginalExtension(),
@@ -166,5 +166,82 @@ class WorkSpaceController extends Controller
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
         return view('essentials.work_space.ajax_view.edit', compact('ws', 'users'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'start_date' => 'required',
+            'start_date' => 'required',
+        ]);
+
+        $updateWorkspace = Workspace::with(['users'])->where('id', $id)->first();
+        $updateWorkspace->update([
+            'branch_id' => auth()->user()->branch_id,
+            'name' => $request->name,
+            'priority' => $request->priority,
+            'status' => $request->status,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'description' => $request->description,
+            'estimated_hours' => $request->estimated_hours,
+        ]);
+
+        foreach ($updateWorkspace->users as $user) {
+            $user->is_delete_in_update = 1;
+            $user->save();
+        }
+
+        if (count($request->user_ids) > 0) {
+            foreach ($request->user_ids as $user_id) {
+                $existsUser = WorkspaceUsers::where('workspace_id', $id)
+                    ->where('user_id', $user_id)->first();
+                if ($existsUser) {
+                    $existsUser->is_delete_in_update = 0;
+                    $existsUser->save();
+                }else {
+                    WorkspaceUsers::insert([
+                        'workspace_id' => $id,
+                        'user_id' => $user_id
+                    ]);
+                }
+            }
+        }
+
+        $deleteUsers = WorkspaceUsers::where('workspace_id', $id)->where('is_delete_in_update', 1)->get();
+        foreach ($deleteUsers as $deleteUser) {
+            $deleteUser->delete();
+        }
+
+        if ($request->file('documents')) {
+            if (count($request->file('documents')) > 0) {
+                foreach ($request->file('documents') as $document) {
+                    $wpDocument = $document;
+                    $wpDocumentName = uniqid() . '-' . '.' . $wpDocument->getClientOriginalExtension();
+                    $wpDocument->move(public_path('uploads/payment_attachment/'), $wpDocumentName);
+                    WorkspaceAttachment::insert([
+                        'workspace_id' => $id,
+                        'attachment' => $wpDocumentName,
+                        'extension' => $wpDocument->getClientOriginalExtension(),
+                    ]);
+                }
+            }
+        }
+        return response()->json('Workspace updated successfully.');
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $deleteWorkspace = Workspace::where('id', $id)->first();
+        if (!is_null($deleteWorkspace)) {
+            $deleteWorkspace->delete();
+        }
+        return response()->json('Workspace deleted successfully.');
+    }
+
+    public function manage()
+    {
+        # code...
     }
 }

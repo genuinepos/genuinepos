@@ -1,4 +1,4 @@
-<form id="add_work_space_form" action="{{ route('workspace.update', $ws->id) }}" method="post">
+<form id="edit_work_space_form" action="{{ route('workspace.update', $ws->id) }}" method="post">
     @csrf
     <div class="form-group row">
         <div class="col-md-6">

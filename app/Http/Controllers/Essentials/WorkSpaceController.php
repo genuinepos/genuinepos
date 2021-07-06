@@ -161,7 +161,7 @@ class WorkSpaceController extends Controller
 
     public function edit($id)
     {
-        $ws = Workspace::with(['users'])->where('id', $id)->first();
+        $ws = Workspace::with(['ws_users'])->where('id', $id)->first();
         $users = DB::table('admin_and_users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
@@ -176,7 +176,7 @@ class WorkSpaceController extends Controller
             'start_date' => 'required',
         ]);
 
-        $updateWorkspace = Workspace::with(['users'])->where('id', $id)->first();
+        $updateWorkspace = Workspace::with(['ws_users'])->where('id', $id)->first();
         $updateWorkspace->update([
             'branch_id' => auth()->user()->branch_id,
             'name' => $request->name,
@@ -188,7 +188,7 @@ class WorkSpaceController extends Controller
             'estimated_hours' => $request->estimated_hours,
         ]);
 
-        foreach ($updateWorkspace->users as $user) {
+        foreach ($updateWorkspace->ws_users as $user) {
             $user->is_delete_in_update = 1;
             $user->save();
         }

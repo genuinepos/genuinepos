@@ -17,6 +17,12 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         Route::group(['prefix' => 'tasks'], function()
         {
             Route::get('{workspaceId}', 'WorkSpaceTaskController@index')->name('workspace.task.index');
+            Route::post('store', 'WorkSpaceTaskController@store')->name('workspace.task.store');
+            Route::get('list/{workspaceId}', 'WorkSpaceTaskController@taskList')->name('workspace.task.list');
+            Route::get('assign/user/{id}', 'WorkSpaceTaskController@assignUser')->name('workspace.task.assign.user');
+            Route::get('change/status/{id}', 'WorkSpaceTaskController@changeStatus')->name('workspace.task.status');
+            Route::post('update', 'WorkSpaceTaskController@update');
+            Route::delete('delete/{id}', 'WorkSpaceTaskController@delete')->name('workspace.task.delete');
         });
     });
 

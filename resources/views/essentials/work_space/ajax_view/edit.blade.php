@@ -12,7 +12,7 @@
                 <option disabled value=""> Select Please </option>
                 @foreach ($users as $user)
                     <option 
-                        @foreach ($ws->users as $ws_user)
+                        @foreach ($ws->ws_users as $ws_user)
                             {{ $ws_user->user_id == $user->id ? "SELECTED" : '' }}
                         @endforeach
                      value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}

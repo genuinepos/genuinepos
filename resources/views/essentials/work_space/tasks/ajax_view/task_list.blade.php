@@ -17,8 +17,8 @@
         </td>
         <td class="text-start">
             <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary rounded" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="far fa-user text-white"></i> <b class="text-white">{{ $task->u_id ? $task->u_prefix.' '.$task->u_name.' '.$task->u_last_name : 'Not-Assigned' }}</b>
+                <button id="btnGroupDrop1" type="button" class="btn btn-sm {{ $task->u_id ? 'btn-primary' : 'btn-warning' }} rounded" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="far fa-user {{ $task->u_id ? 'text-white' : 'text-dark' }}"></i> <b class="{{ $task->u_id ? 'text-white' : 'text-dark' }}">{{ $task->u_id ? $task->u_prefix.' '.$task->u_name.' '.$task->u_last_name : 'Not-Assigned' }}</b>
                 </button>
 
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">

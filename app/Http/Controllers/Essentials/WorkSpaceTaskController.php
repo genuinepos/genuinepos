@@ -40,7 +40,7 @@ class WorkSpaceTaskController extends Controller
                 'admin_and_users.id as u_id',
                 'admin_and_users.prefix as u_prefix',
                 'admin_and_users.name as u_name',
-                'admin_and_users.name as u_last_name',
+                'admin_and_users.last_name as u_last_name',
             )->orderBy('workspace_tasks.id', 'desc')->get();
 
         $ws_users = DB::table('workspace_users')->where('workspace_id', $workspaceId)

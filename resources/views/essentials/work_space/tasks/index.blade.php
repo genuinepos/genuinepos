@@ -84,6 +84,7 @@
                                             <div class="col-md-2">
                                                 <select name="task_status" id="task_status" class="form-control form-control-sm">
                                                     <option value="In-Progress">In-Progress</option>
+                                                    <option value="Pending">Pending</option>
                                                     <option value="Completed">Completed</option>
                                                 </select>
                                             </div>
@@ -137,13 +138,13 @@
     });
         // Get all customer by ajax
         function task_list() {
-            // $('.data_preloader').show();
+            $('.data_preloader').show();
             $.ajax({
                 url: "{{ route('workspace.task.list', $ws->id) }}",
                 type: 'get',
                 success: function(data) {
                     $('#task_list').html(data);
-                    // $('.data_preloader').hide();
+                    $('.data_preloader').hide();
                 }
             });
         }

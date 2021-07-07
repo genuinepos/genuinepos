@@ -26,6 +26,26 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         });
     });
 
+    Route::group(['prefix' => 'documents'], function()
+    {
+        Route::get('/', 'DocumentController@index')->name('documents.index');
+        Route::get('show/{id}', 'DocumentController@show')->name('documents.show');
+        Route::post('store', 'DocumentController@store')->name('documents.store');
+        Route::get('edit/{id}', 'DocumentController@edit')->name('documents.edit');
+        Route::post('update/{id}', 'DocumentController@update')->name('documents.update');
+        Route::delete('delete/{id}', 'DocumentController@delete')->name('documents.delete');
+    });
+
+    Route::group(['prefix' => 'memos'], function()
+    {
+        Route::get('/', 'MemoController@index')->name('memos.index');
+        Route::get('show/{id}', 'MemoController@show')->name('memos.show');
+        Route::post('store', 'MemoController@store')->name('memos.store');
+        Route::get('edit/{id}', 'MemoController@edit')->name('memos.edit');
+        Route::post('update/{id}', 'MemoController@update')->name('memos.update');
+        Route::delete('delete/{id}', 'MemoController@delete')->name('memos.delete');
+    });
+
 });
 
 

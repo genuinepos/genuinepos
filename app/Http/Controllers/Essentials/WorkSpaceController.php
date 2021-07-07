@@ -119,8 +119,17 @@ class WorkSpaceController extends Controller
             'start_date' => 'required',
         ]);
 
+        // generate invoice ID
+        $i = 4;
+        $a = 0;
+        $IdNo = '';
+        while ($a < $i) {
+            $IdNo .= rand(1, 9);
+            $a++;
+        }
+
         $addWorkspace = Workspace::insertGetId([
-            'ws_id' => date('Y/ymdhis'),
+            'ws_id' => date('Y/').$IdNo,
             'branch_id' => auth()->user()->branch_id,
             'name' => $request->name,
             'priority' => $request->priority,

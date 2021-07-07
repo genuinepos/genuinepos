@@ -22,7 +22,7 @@
                                     <ul class="list-unstyled">
                                         @if (auth()->user()->permission->essential['assign_todo'] == '1')
                                             <li>
-                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>Work Spaces</b></a>
+                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large text-primary"></i> <b>Work Spaces</b></a>
                                             </li>
                                         @endif
 
@@ -31,7 +31,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Memos</b></a>
+                                            <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>Memos</b></a>
                                         </li>
 
                                         <li>
@@ -118,7 +118,7 @@
                     </div>
                     <!-- =========================================top section button=================== -->
 
-                    <div class="row">
+                    <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
@@ -309,11 +309,11 @@
                     <div class="col-md-12">
                         <div class="table-responsive">
                             <table class="table modal-table table-sm">
-                                <thead>
+                                <thead class="bg-primary">
                                     <tr>
-                                        <th class="text-start">#</th>
-                                        <th class="text-start">File</th>
-                                        <th class="text-start">Action</th>
+                                        <th class="text-start text-white">#</th>
+                                        <th class="text-start text-white">File</th>
+                                        <th class="text-start text-white">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

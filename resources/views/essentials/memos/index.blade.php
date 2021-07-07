@@ -55,26 +55,60 @@
                             <div class="card" id="add_form">
                                 <div class="section-header">
                                     <div class="col-md-12">
-                                        <h6>Add Meno </h6>
+                                        <h6>Add Memo </h6>
                                     </div>
                                 </div>
 
                                 <div class="form-area px-2 pb-2">
                                     <form id="add_memo_form" action="{{ route('memos.store') }}">
+                                        @csrf
                                         <div class="from-group">
                                             <label><b>Heading :</b></label>
-                                            <input type="text" class="form-control" name="heading" placeholder="Memo Heading">
+                                            <input required type="text" class="form-control" name="heading" placeholder="Memo Heading">
                                         </div>
 
                                         <div class="from-group mt-1">
                                             <label><b>Description :</b></label>
-                                            <textarea name="description" class="form-control" id="description" cols="10" rows="4" placeholder="Memo Description"></textarea>
+                                            <textarea required name="description" class="form-control" cols="10" rows="4" placeholder="Memo Description"></textarea>
                                         </div>
 
                                         <div class="form-group row mt-2">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                                 <button type="submit" class="c-btn me-0 btn_blue float-end">Save</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card d-none" id="edit_form">
+                                <div class="section-header">
+                                    <div class="col-md-12">
+                                        <h6>Edit Memo</h6>
+                                    </div>
+                                </div>
+
+                                <div class="form-area px-2 pb-2">
+                                    <form id="edit_memo_form" action="{{ route('memos.update') }}">
+                                        @csrf
+                                        <input type="hidden" id="id" name="id">
+                                        <div class="from-group">
+                                            <label><b>Heading :</b></label>
+                                            <input required type="text" class="form-control" name="heading" id="heading" placeholder="Memo Heading">
+                                        </div>
+
+                                        <div class="from-group mt-1">
+                                            <label><b>Description :</b></label>
+                                            <textarea required name="description" class="form-control" id="description" cols="10" rows="4" placeholder="Memo Description"></textarea>
+                                        </div>
+
+                                        <div class="form-group row mt-2">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                
+                                                <button type="submit" class="c-btn me-0 btn_blue float-end">Save Changes</button>
+                                                <button type="button" class="c-btn btn_orange float-end">Close</button>
                                             </div>
                                         </div>
                                     </form>
@@ -96,7 +130,7 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
-                                                    <th>Name</th>
+                                                    <th>Heading</th>
                                                     <th>Description</th>
                                                     <th>Created Date</th>
                                                     <th>Actions</th>
@@ -120,22 +154,72 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-40-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Share Memo</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="add_user_modal_body">
+                    <!--begin::Form-->
+          
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Modal End-->
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="showModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-40-modal" role="document">
+            <div class="modal-content" id="view_content">
+                
+            </div>
+        </div>
+    </div>
+    <!-- Add Modal End-->
 @endsection
 @push('scripts')
 <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
 <script>
+    var table = $('.data_tbl').DataTable({
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+        ],    
+        processing: true,
+        serverSide: true,
+        aaSorting: [[2, 'desc']],
+        ajax: "{{ route('memos.index') }}",
+        columns: [
+            {data: 'heading', name: 'heading'},
+            {data: 'description', name: 'description'},
+            {data: 'date', name: 'date'},
+            {data: 'action', name: 'action'},
+        ]
+    });
+
     // //Show payment view modal with data
     $(document).on('click', '#view', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
         var url = $(this).attr('href');
-        // $.ajax({
-        //     url:url,
-        //     type:'get',
-        //     success:function(date){
-            
-        //     }
-        // });
+        $.ajax({
+            url:url,
+            type:'get',
+            success:function(data){
+                $('#view_content').html(data);
+                $('#showModal').modal('show'); 
+                $('.data_preloader').hide();
+            }
+        });
     });
 
     // Show add payment modal with date 
@@ -147,8 +231,12 @@
             url:url,
             type:'get',
             success:function(data){
-                $('#edit_modal_body').html(data);
-                $('#editModal').modal('show');
+                console.log(data);
+                $('#id').val(data.id);
+                $('#heading').val(data.heading);
+                $('#description').val(data.description);
+                $('#add_form').hide();
+                $('#edit_form').show();
                 $('.data_preloader').hide();
             }
         });
@@ -171,9 +259,8 @@
                 }else{
                     $('#add_memo_form')[0].reset();
                     $('.loading_button').hide();
-                    $('.modal').modal('hide');
                     toastr.success(data); 
-                    //table.ajax.reload();
+                    table.ajax.reload();
                 }
             }
         });
@@ -190,15 +277,44 @@
             type:'post',
             data: request,
             success:function(data){
-                if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
-                    $('.loading_button').hide();
-                }else{
-                    $('.loading_button').hide();
-                    $('.modal').modal('hide');
-                    toastr.success(data); 
-                    table.ajax.reload();
-                }
+                $('.loading_button').hide();
+                $('#add_memo_form')[0].reset();
+                $('#add_form').show();
+                $('#edit_form').hide();
+                toastr.success(data); 
+                table.ajax.reload();
+            }
+        });
+    });
+
+    $(document).on('click', '#add_user_btn', function (e) {
+       e.preventDefault();
+       $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $.ajax({
+            url:url,
+            type:'get',
+            success:function(data){
+                $('#addUserModal').modal('show'); 
+                $('#add_user_modal_body').html(data)
+                $('.data_preloader').hide();
+            }
+        });
+    });
+
+    $(document).on('submit', '#add_user_form', function (e) {
+       e.preventDefault();
+       $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url:url,
+            type:'post',
+            data: request,
+            success:function(data){
+                toastr.success(data); 
+                $('#addUserModal').modal('hide'); 
+                $('.loading_button').hide();
             }
         });
     });
@@ -242,6 +358,8 @@
             }
         });
     });
+
+    $('.select2').select2();
 </script>
 
 @endpush

@@ -6,11 +6,12 @@
             <div class="task_area" data-id="{{ $task->id }}">
                 <span id="task_name" class="text-muted"> {{ $task->task_name }} </span>  
                 <a href="{{ route('workspace.task.delete', $task->id) }}" class="text-danger float-end" title="Delete" id="delete"><i class="far fa-trash-alt ms-1"></i></a>
-                <a href="#" class="float-end text-muted" title="Edit" id="edit_task_btn"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="text-muted" title="Edit" id="edit_task_btn"><i class="fas fa-pencil-alt"></i></a>
             </div>
 
             <div class="input-group">
-                <input type="text" name="edit_task_name" class="form-control form-control-sm d-none edit_task_name" id="edit_task_name" value="{{ $task->task_name }}">
+                {{-- <input type="text" name="edit_task_name" class="form-control form-control-sm d-none edit_task_name" id="edit_task_name" value="{{ $task->task_name }}"> --}}
+                <textarea  name="edit_task_name" class="form-control form-control-sm d-none edit_task_name" id="edit_task_name" cols="10" rows="2">{{ $task->task_name }}</textarea>
                 <div class="input-group-prepend add_button update_task_button">
                     <span class="input-group-text edit_task_name custom-modify d-none"><i class="far fa-check-circle text-success"></i></span>
                 </div>

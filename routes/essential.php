@@ -42,8 +42,10 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         Route::get('show/{id}', 'MemoController@show')->name('memos.show');
         Route::post('store', 'MemoController@store')->name('memos.store');
         Route::get('edit/{id}', 'MemoController@edit')->name('memos.edit');
-        Route::post('update/{id}', 'MemoController@update')->name('memos.update');
+        Route::post('update', 'MemoController@update')->name('memos.update');
         Route::delete('delete/{id}', 'MemoController@delete')->name('memos.delete');
+        Route::get('add/user/view/{id}', 'MemoController@addUserView')->name('memos.add.user.view');
+        Route::post('add/user/{id}', 'MemoController@addUsers')->name('memos.add.users');
     });
 
 });

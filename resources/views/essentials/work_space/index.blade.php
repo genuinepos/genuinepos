@@ -28,7 +28,7 @@
                                         @endif
                                         
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-list"></i> <b>Todo</b></a>
+                                            <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>Todos</b></a>
                                         </li>
 
                                         <li>
@@ -127,7 +127,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
-                                    <h6>All Work Space <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
+                                    <h6>All Work Space </h6>
                                 </div>
 
                                 <div class="col-md-6">

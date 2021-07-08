@@ -87,13 +87,12 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Sale <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></label></h6>
+                                    <h6>All Sale</h6>
                                 </div>
                                 @if (auth()->user()->permission->purchase['purchase_add'] == '1')
                                     <div class="col-md-2">
                                         <div class="btn_30_blue float-end">
-                                            <a href="{{ route('sales.create') }}"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
+                                            <a href="{{ route('sales.create') }}"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
                                     </div>
                                 @endif

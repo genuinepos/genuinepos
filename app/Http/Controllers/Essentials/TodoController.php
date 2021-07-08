@@ -1,0 +1,174 @@
+<?php
+
+namespace App\Http\Controllers\Essentials;
+
+use Illuminate\Http\Request;
+use App\Models\Essential\Todo;
+use Illuminate\Support\Facades\DB;
+use App\Models\Essential\TodoUsers;
+use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
+
+class TodoController extends Controller
+{
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
+
+            $todos = '';
+            $query = DB::table('todos')->leftJoin('branches', 'todos.branch_id', 'branches.id')
+                ->leftJoin('admin_and_users', 'todos.admin_id', 'admin_and_users.id');
+
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('todos.branch_id', NULL);
+                } else {
+                    $query->where('todos.branch_id', $request->branch_id);
+                }
+            }
+
+            if ($request->priority) {
+                $query->where('todos.priority', $request->priority);
+            }
+
+            if ($request->status) {
+                $query->where('todos.status', $request->status);
+            }
+
+            if ($request->date_range) {
+                $date_range = explode('-', $request->date_range);
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $query->whereBetween('todos.created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            }
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                $workspaces = $query->select(
+                    'todos.*',
+                    'branches.id as branch_id',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                    'admin_and_users.prefix',
+                    'admin_and_users.name as a_name',
+                    'admin_and_users.last_name',
+                )->orderBy('id', 'desc')
+                    ->get();
+            } else {
+                $workspaces = $query->select(
+                    'todos.*',
+                    'branches.id as branch_id',
+                    'branches.name as branch_name',
+                    'branches.branch_code',
+                    'admin_and_users.prefix',
+                    'admin_and_users.name as a_name',
+                    'admin_and_users.last_name',
+                )->where('workspaces.branch_id', auth()->user()->branch_id)
+                    ->orderBy('id', 'desc')
+                    ->get();
+            }
+
+            return DataTables::of($workspaces)
+                ->addColumn('action', function ($row) {
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Action
+                    </button>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+                    $html .= '<a class="dropdown-item" href="' . route('todo.show', [$row->id]) .'"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+
+                    $html .= '<a class="dropdown-item" id="edit" href="' . route('todo.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('todo.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '</div>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->editColumn('due_date', function ($row) {
+                    return date('d/m/Y', strtotime($row->due_date));
+                })
+                ->editColumn('priority', function ($row) {
+                    if($row->priority == 'High'){
+                        return '<span class="badge bg-danger">'.$row->priority.'</span>';
+                    }elseif ($row->priority == 'Low') {
+                        return '<span class="badge bg-warning">'.$row->priority.'</span>';
+                    }elseif ($row->priority == 'Medium') {
+                        return '<span class="badge bg-secondary">'.$row->priority.'</span>';
+                    }else {
+                        return '<span class="badge bg-1">'.$row->priority.'</span>';
+                    }
+                })
+                ->editColumn('status', function ($row) {
+                    if($row->status == 'New'){
+                        return '<span class="badge bg-primary">'.$row->status.'</span>';
+                    }elseif ($row->status == 'In-Progress') {
+                        return '<span class="badge bg-secondary">'.$row->status.'</span>';
+                    }elseif ($row->status == 'On-Hole') {
+                        return '<span class="badge bg-danger">'.$row->status.'</span>';
+                    }else {
+                        return '<span class="badge bg-info">'.$row->priority.'</span>';
+                    }
+                })
+                ->editColumn('from',  function ($row) {
+                    if ($row->branch_name) {
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    } else {
+                        return '<b>Head Office</b>';
+                    }
+                })
+                ->editColumn('assigned_by', function ($row) {
+                    return $row->prefix . ' ' . $row->a_name . ' ' . $row->last_name;
+                })
+                ->rawColumns(['action', 'date', 'from', 'name', 'assigned_by', 'priority', 'status'])
+                ->make(true);
+        }
+
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        $users = DB::table('admin_and_users')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->get(['id', 'prefix', 'name', 'last_name']);
+        return view('essentials.todo.index', compact('branches', 'users'));
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'task' => 'required',
+            'priority' => 'required',
+            'status' => 'required',
+        ]);
+
+        // Generate invoice ID
+        $i = 4;
+        $a = 0;
+        $IdNo = '';
+        while ($a < $i) {
+            $IdNo .= rand(1, 9);
+            $a++;
+        }
+
+        $addTodo = Todo::insertGetId([
+            'todo_id' => date('Y/').$IdNo,
+            'branch_id' => auth()->user()->branch_id,
+            'task' => $request->task,
+            'priority' => $request->priority,
+            'status' => $request->status,
+            'due_date' => $request->due_date,
+            'description' => $request->description,
+            'admin_id' => auth()->user()->id,
+            'created_at' => date('Y-m-d'),
+        ]);
+
+        if (count($request->user_ids) > 0) {
+            foreach ($request->user_ids as $user_id) {
+                TodoUsers::insert([
+                    'todo_id' => $addTodo,
+                    'user_id' => $user_id
+                ]);
+            }
+        }
+
+        return response()->json('Todo created successfully.');
+    }
+}

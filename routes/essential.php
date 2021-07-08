@@ -15,7 +15,6 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         Route::delete('delete/{id}', 'WorkSpaceController@delete')->name('workspace.delete');
         Route::delete('delete/doc/{docId}', 'WorkSpaceController@deleteDoc')->name('workspace.delete.doc');
         
-
         Route::group(['prefix' => 'tasks'], function()
         {
             Route::get('{workspaceId}', 'WorkSpaceTaskController@index')->name('workspace.task.index');
@@ -27,6 +26,19 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
             Route::post('update', 'WorkSpaceTaskController@update');
             Route::delete('delete/{id}', 'WorkSpaceTaskController@delete')->name('workspace.task.delete');
         });
+    });
+
+    Route::group(['prefix' => 'todo'], function()
+    {
+        Route::get('/', 'TodoController@index')->name('todo.index');
+        Route::get('show/{id}', 'TodoController@show')->name('todo.show');
+        Route::post('store', 'TodoController@store')->name('todo.store');
+        Route::get('assign/user/{id}', 'TodoController@assignUser')->name('todo.assign.user');
+        Route::get('change/status/{id}', 'TodoController@changeStatus')->name('todo.status');
+        Route::get('change/priority/{id}', 'TodoController@changePriority')->name('todo.priority');
+        Route::get('edit/{id}', 'TodoController@edit')->name('todo.edit');
+        Route::post('update', 'TodoController@update')->name('todo.update');
+        Route::delete('delete/{id}', 'TodoController@delete')->name('todo.delete');
     });
 
     Route::group(['prefix' => 'documents'], function()
@@ -50,7 +62,6 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         Route::get('add/user/view/{id}', 'MemoController@addUserView')->name('memos.add.user.view');
         Route::post('add/user/{id}', 'MemoController@addUsers')->name('memos.add.users');
     });
-
 
     Route::group(['prefix' => 'messages'], function()
     {

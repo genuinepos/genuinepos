@@ -33,7 +33,7 @@
                                         @endif
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-list"></i> <b>Todos</b></a>
+                                            <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>Todo</b></a>
                                         </li>
 
                                         <li>
@@ -49,7 +49,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope text-primary"></i> <b>Messages</b></a>
+                                            <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope"></i> <b>Messages</b></a>
                                         </li>
 
                                         <li>

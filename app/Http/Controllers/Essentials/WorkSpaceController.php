@@ -98,6 +98,12 @@ class WorkSpaceController extends Controller
                         return '<b>Head Office</b>';
                     }
                 })
+                ->editColumn('start_date', function ($row) {
+                    return date('d/m/Y', strtotime($row->start_date));
+                })
+                ->editColumn('end_date', function ($row) {
+                    return date('d/m/Y', strtotime($row->end_date));
+                })
                 ->editColumn('assigned_by', function ($row) {
                     return $row->prefix . ' ' . $row->a_name . ' ' . $row->last_name;
                 })

@@ -141,9 +141,11 @@
                     <th width="50%" class="text-end">Signature Of Receiver</th>
                 </tr>
 
-                <tr>
-                    <td colspan="2" class="text-center">Software by <b>SpeedDigit Pvt. Ltd.</b></td>
-                </tr>
+                @if (env('PRINT_SD_PAYMENT') == true)
+                    <tr>
+                        <td colspan="2" class="text-center">Software by <b>SpeedDigit Pvt. Ltd.</b></td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>

@@ -72,25 +72,24 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Customer : </strong> <span
-                                    class="customer_name">{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
+                            <li><strong>Customer : </strong> 
+                                {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($sale->branch->add_sale_invoice_layout->customer_address)
-                                <li><strong>Address : </strong> <span
-                                        class="customer_address">{{ $sale->customer ? $sale->customer->address : '' }}</span>
+                                <li><strong>Address : </strong> 
+                                    {{ $sale->customer ? $sale->customer->address : '' }}
                                 </li>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_tax_no)
-                                <li><strong>Tax Number : </strong> <span
-                                        class="customer_tax_number">{{ $sale->customer ? $sale->customer->tax_number : '' }}</span>
+                                <li><strong>Tax Number : </strong> 
+                                    {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_phone)
-                                <li><strong>Phone : </strong> <span
-                                        class="customer_phone">{{ $sale->customer ? $sale->customer->phone : '' }}</span>
-                                </li>
+                                <li><strong>Phone : </strong> 
+                                    {{ $sale->customer ? $sale->customer->phone : '' }}</li>
                             @endif
                         </ul>
                     </div>
@@ -103,9 +102,8 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Draft No : <span class="invoice_id">{{ $sale->invoice_id }}</span>
-                                </strong></li>
-                            <li><strong> Date : <span class="date">{{ $sale->date }}</span> </strong></li>
+                            <li><strong> Draft No : {{ $sale->invoice_id }}</strong></li>
+                            <li><strong> Date : {{ $sale->date }}</strong></li>
                         </ul>
                     </div>
                 </div>

@@ -172,9 +172,11 @@
                         <th width="50%" class="text-dark text-end"><h6 style="border-top:1px solid black;display:inline;">Signature Of Authority</h6>  </th>
                     </tr>
 
-                    <tr>
-                        <td colspan="2" class="text-dark text-center">Developed by SpeedDigit Pvt. Ltd. </td>
-                    </tr>
+                    @if (env('PRINT_SD_OTHERS') == true)
+                        <tr>
+                            <td colspan="2" class="text-dark text-center">Software by SpeedDigit Pvt. Ltd. </td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -186,5 +188,4 @@
         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
         <button type="submit" class="c-btn btn_blue print_payroll">Print</button>
     </div>
-</div>
 </div>

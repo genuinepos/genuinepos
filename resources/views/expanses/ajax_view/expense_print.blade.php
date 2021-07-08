@@ -114,9 +114,11 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td colspan="4" class="text-navy-blue text-center"><small>Software by <b>SpeedDigit Pvt. Ltd.</b></small> </td>
-                </tr>
+                @if (env('PRINT_SD_PAYMENT') == true)
+                    <tr>
+                        <td colspan="4" class="text-navy-blue text-center"><small>Software by <b>SpeedDigit Pvt. Ltd.</b></small> </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>

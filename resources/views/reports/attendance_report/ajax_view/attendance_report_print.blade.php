@@ -59,7 +59,10 @@
             @endforeach
         </tbody>
     </table>
-    <div class="footer_area text-center">
-        <small>Developed by <b>SpeedDigit Pvt. Ltd.</b></small>
-    </div>
+
+    @if (env('PRINT_SD_OTHERS') == true)
+        <div class="footer_area text-center">
+            <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
+        </div>
+    @endif
 </div>

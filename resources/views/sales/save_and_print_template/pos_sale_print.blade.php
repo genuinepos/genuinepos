@@ -463,11 +463,13 @@
                         </div>
                     </div>
         
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    @if (env('PRINT_SD_SALE') == true)
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <small>Software By <b>SpeedDigit Pvt. Ltd.</small></p>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -727,11 +729,13 @@
                                     </th>
                                 </tr>
 
-                                <tr>
-                                    <th class="text-center">
-                                        <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
-                                    </th>
-                                </tr>
+                                @if (env('PRINT_SD_SALE') == true)
+                                    <tr>
+                                        <th class="text-center">
+                                            <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
+                                        </th>
+                                    </tr>
+                                @endif
                             </thead>
                         </table>
                     </div>
@@ -1238,11 +1242,13 @@
                         </div>
                     </div>
         
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    @if (env('PRINT_SD_SALE') == true)
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -1521,11 +1527,13 @@
                                     </th>
                                 </tr>
 
-                                <tr>
-                                    <th class="text-center">
-                                        <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
-                                    </th>
-                                </tr>
+                                @if (env('PRINT_SD_SALE') == true)
+                                    <tr>
+                                        <th class="text-center">
+                                            <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
+                                        </th>
+                                    </tr>
+                                @endif
                             </thead>
                         </table>
                     </div>

@@ -1,7 +1,6 @@
 <!-- Packing slip print templete-->
 <style>
     .packing_slip_print_template{font-family: monospace!important;font-weight: bolder;}
-    /* .sale_product_table table tbody tr td{font-size: 13px;} */
 </style>
 <div class="">
     <div>
@@ -49,7 +48,7 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>INV ID : </strong> {{ $sale->invoice_id }}
+                        <li><strong>Invoice ID : </strong> {{ $sale->invoice_id }}
                         </li>
                         <li><strong>Date : </strong>{{ $sale->date }}</li>
                     </ul>

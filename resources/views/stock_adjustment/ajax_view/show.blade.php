@@ -244,19 +244,13 @@
             </div>
         </div>
 
-        {{-- <div class="bracode_area">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <img id="barcode"/>
+        @if (env('PRINT_SD_OTHERS') == true)
+            <div class="print_footer">
+                <div class="text-center">
+                    <h6>Software by <b>SpeedDigit Pvt. Ltd.</b></h6>
                 </div>
             </div>
-        </div> --}}
-
-        <div class="print_footer">
-            <div class="text-center">
-                <h6>Powered by <b>SpeedDigit Pvt. Ltd</b></h6>
-            </div>
-        </div>
+        @endif
     </div>
 </div>
 <!-- Adjustment print templete end-->

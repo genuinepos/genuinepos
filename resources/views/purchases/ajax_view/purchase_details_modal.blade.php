@@ -1,6 +1,4 @@
- {{-- @php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-@endphp --}}
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
  <!-- Details Modal -->
  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-full-display">
@@ -255,7 +253,6 @@
                  </div>
              </div>
 
-             
              <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12">
@@ -459,30 +456,31 @@
                 </table>
             </div>
 
-            <div class="note">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="details_area">
-                            <h6>Shipping Details : </h6>
-                            <p class="shipping_details">{{ $purchase->shipment_details }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="details_area">
-                            <h6>Purchase Note : </h6>
-                            <p class="purchase_note">{{ $purchase->purchase_note }}</p>
-                        </div>
-                    </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>CHECKED BY : </h6>
+                </div>
+
+                <div class="col-md-6 text-end">
+                    <h6>APPREVED BY : </h6>
                 </div>
             </div>
 
-            <div class="bracode_area">
-                <div class="row">
-                    {{-- <div class="barcode text-center">
-                        <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($sale->invoice_id, $generatorPNG::TYPE_CODE_128)) }}"> 
-                    </div> --}}
-                </div><br><br>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <img style="width: 170px; height:25px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($purchase->invoice_id, $generator::TYPE_CODE_128)) }}">
+                    <p>{{$purchase->invoice_id}}</p>
+                </div>
             </div>
+
+            @if (env('PRINT_SD_PURCHASE') == true)
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
  <!-- Purchase print templete end-->

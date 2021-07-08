@@ -133,9 +133,11 @@
                     <th width="50%" class="text-navy-blue text-end">Signature Of Receiver</th>
                 </tr>
 
-                <tr>
-                    <td colspan="2" class="text-navy-blue text-center">Developed by SpeedDigit Pvt. Ltd.</td>
-                </tr>
+                @if (env('PRINT_SD_PAYMENT') == true)
+                    <tr>
+                        <td colspan="2" class="text-navy-blue text-center">Software by SpeedDigit Pvt. Ltd.</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>

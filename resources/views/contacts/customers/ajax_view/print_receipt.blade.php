@@ -144,9 +144,12 @@
                     <h5 class="borderTop"> Signature Of Authority </h5>
                 </div>
             </div>
-            <div class="col-md-12 text-center">
-                <small>Powered By <b>SpeedDigit Pvt. Ltd.</b> </small> 
-            </div>
+
+            @if (env('PRINT_SD_PAYMENT') == true)
+                <div class="col-md-12 text-center">
+                    <small>Software By <b>SpeedDigit Pvt. Ltd.</b> </small> 
+                </div>
+            @endif
         </div><br>
     </div>
     
@@ -290,9 +293,12 @@
                     <h5 class="borderTop"> Signature Of Authority </h5>
                 </div>
             </div>
-            <div class="col-md-12 text-center">
-                <small>Powered By <b>SpeedDigit Pvt. Ltd.</b> </small> 
-            </div>
+
+            @if (env('PRINT_SD_PAYMENT') == true)
+                <div class="col-md-12 text-center">
+                    <small>Software By <b>SpeedDigit Pvt. Ltd.</b> </small> 
+                </div>
+            @endif
         </div>
     </div>
 </div>

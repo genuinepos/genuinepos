@@ -1,6 +1,4 @@
-@php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-@endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
 <!-- Sale print templete-->
 @if ($sale->branch && $sale->branch->add_sale_invoice_layout)
     @if ($sale->branch->add_sale_invoice_layout->layout_design == 1)
@@ -460,11 +458,13 @@
                         </div>
                     </div>
         
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    @if (env('PRINT_SD_SALE') == true)
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -713,11 +713,13 @@
                                     </th>
                                 </tr>
 
-                                <tr>
-                                    <th class="text-center">
-                                        <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
-                                    </th>
-                                </tr>
+                                @if (env('PRINT_SD_SALE') == true)
+                                    <tr>
+                                        <th class="text-center">
+                                            <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
+                                        </th>
+                                    </tr>
+                                @endif
                             </thead>
                         </table>
                     </div>
@@ -1215,12 +1217,13 @@
                         </div>
                     </div>
         
-                    <div class="row">
-                        
-                        <div class="col-md-12 text-center">
-                            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    @if (env('PRINT_SD_SALE') == true)
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -1452,11 +1455,13 @@
                                     </th>
                                 </tr>
 
-                                <tr>
-                                    <th class="text-center">
-                                        <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
-                                    </th>
-                                </tr>
+                                @if (env('PRINT_SD_SALE') == true)
+                                    <tr>
+                                        <th class="text-center">
+                                            <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
+                                        </th>
+                                    </tr>
+                                @endif
                             </thead>
                         </table>
                     </div>

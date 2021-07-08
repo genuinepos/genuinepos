@@ -7,6 +7,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/image-previewer/jquery.magnify.min.css"/>
 @endpush
 @section('title', 'Essentials - ')
 @section('content')
@@ -301,50 +302,9 @@
                   <h6 class="modal-title" id="exampleModalLabel">Uploaded Documents</h6>
                   <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" id="document-list-modal">
                   <!--begin::Form-->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="header">
-                            <p><b>Docs</b></p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table class="table modal-table table-sm">
-                                <thead class="bg-primary">
-                                    <tr>
-                                        <th class="text-start text-white">#</th>
-                                        <th class="text-start text-white">File</th>
-                                        <th class="text-start text-white">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th class="text-start">1</th>
-                                        <th class="text-start">
-                                            <img style="height: 35px;width:40px;" src="{{ asset('public/favicon.png') }}">
-                                        </th>
-                                        <th class="text-start">
-                                            <a href="" class="btn btn-sm btn-info text-white">View</a> 
-                                            <a href="" class="btn btn-sm btn-secondary">Download</a>
-                                        </th>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-start">1</th>
-                                        <th class="text-start">Uppldfjasdfu.xls</th>
-                                        <th class="text-start">
-                                            <a href="" class="btn btn-sm btn-info text-white">View</a> 
-                                            <a href="" class="btn btn-sm btn-secondary">Download</a>
-                                        </th>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            
               </div>
           </div>
       </div>
@@ -355,6 +315,7 @@
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
+<script src="{{ asset('public') }}/assets/plugins/custom/image-previewer/jquery.magnify.min.js"></script>
 <script>
     var table = $('.data_tbl').DataTable({
         "processing": true,
@@ -375,11 +336,7 @@
                 d.date_range = $('#date_range').val();
             }
         },
-        columnDefs: [{
-            "targets": [0],
-            "orderable": false,
-            "searchable": false
-        }],
+        columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
         columns: [
             {data: 'date', name: 'date'},
             {data: 'name', name: 'name'},
@@ -432,16 +389,17 @@
   
     $(document).on('click', '#docs', function (e) {
         e.preventDefault();
-        // $('.data_preloader').show();
+        $('.data_preloader').show();
         var url = $(this).attr('href');
-        $('#docsModal').modal('show');
-        // $.ajax({
-        //     url:url,
-        //     type:'get',
-        //     success:function(date){
-            
-        //     }
-        // });
+        $.ajax({
+            url:url,
+            type:'get',
+            success:function(data){
+                $('.data_preloader').hide();
+                $('#document-list-modal').html(data);
+                $('#docsModal').modal('show');
+            }
+        });
     });
 
 
@@ -523,18 +481,8 @@
             'title': 'Delete Confirmation',
             'message': 'Are you sure?',
             'buttons': {
-                'Yes': {
-                    'class': 'yes bg-primary',
-                    'action': function() {
-                        $('#deleted_form').submit();
-                    }
-                },
-                'No': {
-                    'class': 'no bg-danger',
-                    'action': function() {
-                        // alert('Deleted canceled.')
-                    } 
-                }
+                'Yes': {'class': 'yes bg-primary','action': function() {$('#deleted_form').submit();}},
+                'No': {'class': 'no bg-danger','action': function() {console.log('Deleted canceled.');}}
             }
         });
     });
@@ -549,7 +497,36 @@
             type:'post',
             data:request,
             success:function(data){
-                table.ajax.reload();
+                toastr.error(data);
+            }
+        });
+    });
+
+    $(document).on('click', '#delete_doc',function(e){
+        e.preventDefault();
+        var url = $(this).attr('href');
+        var tr = $(this).closest('tr');
+        $('#deleted_doc_form').attr('action', url);           
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'message': 'Are you sure?',
+            'buttons': {
+                'Yes': {'class': 'yes bg-primary','action': function() {$('#deleted_doc_form').submit();tr.remove();}},
+                'No': {'class': 'no bg-danger','action': function() {console.log('Deleted canceled.');}}
+            }
+        });
+    });
+
+    //data delete by ajax
+    $(document).on('submit', '#deleted_doc_form',function(e){
+        e.preventDefault();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url:url,
+            type:'post',
+            data:request,
+            success:function(data){
                 toastr.error(data);
             }
         });
@@ -579,5 +556,6 @@
         });
     });
     $('.select2').select2();
+    $('[data-magnify=gallery]').magnify();
 </script>
 @endpush

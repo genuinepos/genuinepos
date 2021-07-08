@@ -799,8 +799,8 @@ class ProductController extends Controller
             // Upload product thumbnail
             if ($request->file('photo')) {
                 if ($updateProduct->thumbnail_photo != 'default.png') {
-                    if (file_exists(public_path('public/uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
-                        unlink(public_path('public/uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
+                    if (file_exists(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
+                        unlink(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
                     }
                 }
                 $productThumbnailPhoto = $request->file('photo');
@@ -849,8 +849,8 @@ class ProductController extends Controller
 
                         if (isset($variant_images[$index])) {
                             if ($updateVariant->variant_image != null) {
-                                if (file_exists(public_path('public/uploads/product/variant_image/' . $updateVariant->variant_image))) {
-                                    unlink(public_path('public/uploads/product/thumbnail/' . $updateVariant->variant_image));
+                                if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
+                                    unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
                                 }
                             }
 
@@ -884,8 +884,8 @@ class ProductController extends Controller
                 $deleteNotFoundVariants = ProductVariant::where('delete_in_update', 1)->get();
                 foreach ($deleteNotFoundVariants as $deleteNotFoundVariant) {
                     if ($deleteNotFoundVariant->variant_image != null) {
-                        if (file_exists(public_path('public/uploads/product/variant_image/' . $updateVariant->variant_image))) {
-                            unlink(public_path('public/uploads/product/thumbnail/' . $updateVariant->variant_image));
+                        if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
+                            unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
                         }
                     }
                     $deleteNotFoundVariant->delete();
@@ -961,8 +961,8 @@ class ProductController extends Controller
             } else {
                 $branches = Branch::all();
                 foreach ($branches as $branch) {
-                    $productOpeningStock = ProductOpeningStock::where('branch_id', $branch->id)->where('product_id', $product->id)
-                        ->first();
+                    $productOpeningStock = ProductOpeningStock::where('branch_id', $branch->id)
+                    ->where('product_id', $product->id)->first();
                     if (!$productOpeningStock) {
                         $addOpeningStock = new ProductOpeningStock();
                         $addOpeningStock->branch_id = $branch->id;

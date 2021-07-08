@@ -89,7 +89,7 @@ class WorkSpaceController extends Controller
                     return date('d/m/Y', strtotime($row->created_at));
                 })
                 ->editColumn('name', function ($row) {
-                    return $row->name . ' <a class="btn btn-sm btn-info text-white" id="docs" href="">Docs</a>';
+                    return $row->name . ' <a class="btn btn-sm btn-info text-white" id="docs" href="'.route('workspace.view.docs', [$row->id]).'">Docs</a>';
                 })
                 ->editColumn('from',  function ($row) {
                     if ($row->branch_name) {
@@ -155,8 +155,8 @@ class WorkSpaceController extends Controller
             if (count($request->file('documents')) > 0) {
                 foreach ($request->file('documents') as $document) {
                     $wpDocument = $document;
-                    $wpDocumentName = uniqid() . '-' . '.' . $wpDocument->getClientOriginalExtension();
-                    $wpDocument->move(public_path('uploads/payment_attachment/'), $wpDocumentName);
+                    $wpDocumentName = uniqid(). '.' . $wpDocument->getClientOriginalExtension();
+                    $wpDocument->move(public_path('uploads/workspace_docs/'), $wpDocumentName);
                     WorkspaceAttachment::insert([
                         'workspace_id' => $addWorkspace,
                         'attachment' => $wpDocumentName,
@@ -227,8 +227,8 @@ class WorkSpaceController extends Controller
             if (count($request->file('documents')) > 0) {
                 foreach ($request->file('documents') as $document) {
                     $wpDocument = $document;
-                    $wpDocumentName = uniqid() . '-' . '.' . $wpDocument->getClientOriginalExtension();
-                    $wpDocument->move(public_path('uploads/payment_attachment/'), $wpDocumentName);
+                    $wpDocumentName = uniqid(). '.' . $wpDocument->getClientOriginalExtension();
+                    $wpDocument->move(public_path('uploads/workspace_docs/'), $wpDocumentName);
                     WorkspaceAttachment::insert([
                         'workspace_id' => $id,
                         'attachment' => $wpDocumentName,
@@ -249,8 +249,21 @@ class WorkSpaceController extends Controller
         return response()->json('Workspace deleted successfully.');
     }
 
-    public function manage()
+    public function viewDocs($id)
     {
-        # code...
+        $docs = DB::table('workspace_attachments')->where('workspace_id', $id)->get(['id', 'attachment', 'extension']);
+        return view('essentials.work_space.ajax_view.view_documents', compact('docs'));
+    }
+
+    public function deleteDoc($docId)
+    {
+        $deleteDoc = WorkspaceAttachment::where('id', $docId)->first();
+        if (!is_null($deleteDoc)) {
+            if (file_exists(public_path('uploads/workspace_docs/'.$deleteDoc->attachment))) {
+                unlink(public_path('uploads/workspace_docs/'.$deleteDoc->attachment));
+            }
+            $deleteDoc->delete();
+        }
+        return response()->json('Document deleted successfully.');
     }
 }

@@ -7,11 +7,13 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
     Route::group(['prefix' => 'workspaces'], function ()
     {
         Route::get('/', 'WorkSpaceController@index')->name('workspace.index');
+        Route::get('view/docs/{id}', 'WorkSpaceController@viewDocs')->name('workspace.view.docs');
         Route::get('show/{id}', 'WorkSpaceController@show')->name('workspace.show');
         Route::post('store', 'WorkSpaceController@store')->name('workspace.store');
         Route::get('edit/{id}', 'WorkSpaceController@edit')->name('workspace.edit');
         Route::post('update/{id}', 'WorkSpaceController@update')->name('workspace.update');
         Route::delete('delete/{id}', 'WorkSpaceController@delete')->name('workspace.delete');
+        Route::delete('delete/doc/{docId}', 'WorkSpaceController@deleteDoc')->name('workspace.delete.doc');
         
 
         Route::group(['prefix' => 'tasks'], function()

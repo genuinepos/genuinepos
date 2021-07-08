@@ -91,7 +91,6 @@ class WorkSpaceTaskController extends Controller
         $updateTask->update([
             'status' => $request->status
         ]);
-
         return response()->json('Successfully.');
     }
 
@@ -101,7 +100,6 @@ class WorkSpaceTaskController extends Controller
         $updateTask->update([
             'priority' => $request->priority
         ]);
-
         return response()->json('Successfully.');
     }
 }

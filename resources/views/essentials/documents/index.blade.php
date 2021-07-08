@@ -27,6 +27,10 @@
                                         @endif
 
                                         <li>
+                                            <a href="" class="text-white"><i class="fas fa-th-list"></i> <b>Todos</b></a>
+                                        </li>
+
+                                        <li>
                                             <a href="" class="text-white"><i class="fas fa-th-large text-primary"></i> <b>Document</b></a>
                                         </li>
 

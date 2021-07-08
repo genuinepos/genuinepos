@@ -26,11 +26,15 @@
                                         @endif
 
                                         <li>
+                                            <a href="" class="text-white"><i class="fas fa-th-list"></i> <b>Todos</b></a>
+                                        </li>
+
+                                        <li>
                                             <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Document</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>Memos</b></a>
+                                            <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>Memos</b></a>
                                         </li>
 
                                         <li>
@@ -38,7 +42,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-envelope"></i> <b>Messages</b></a>
+                                            <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope"></i> <b>Messages</b></a>
                                         </li>
 
                                         <li>

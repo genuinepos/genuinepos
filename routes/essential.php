@@ -21,6 +21,7 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
             Route::get('list/{workspaceId}', 'WorkSpaceTaskController@taskList')->name('workspace.task.list');
             Route::get('assign/user/{id}', 'WorkSpaceTaskController@assignUser')->name('workspace.task.assign.user');
             Route::get('change/status/{id}', 'WorkSpaceTaskController@changeStatus')->name('workspace.task.status');
+            Route::get('change/priority/{id}', 'WorkSpaceTaskController@changePriority')->name('workspace.task.priority');
             Route::post('update', 'WorkSpaceTaskController@update');
             Route::delete('delete/{id}', 'WorkSpaceTaskController@delete')->name('workspace.task.delete');
         });
@@ -48,6 +49,14 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         Route::post('add/user/{id}', 'MemoController@addUsers')->name('memos.add.users');
     });
 
+
+    Route::group(['prefix' => 'messages'], function()
+    {
+        Route::get('/', 'MessageController@index')->name('messages.index');
+        Route::get('all', 'MessageController@allMessage')->name('messages.all');
+        Route::post('store', 'MessageController@store')->name('messages.store');
+        Route::delete('delete/{id}', 'MessageController@delete')->name('messages.delete');
+    });
 });
 
 

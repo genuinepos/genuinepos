@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/pace-master/themes/red/pace-theme-fill-left.css"/> --}}
     <style>
         b{font-weight: 600;font-family: Arial, Helvetica, sans-serif;}
         th.task-name {width: 75%;}
@@ -130,6 +130,7 @@
 
 @endsection
 @push('scripts')
+    {{-- <script src="{{ asset('public') }}/assets/plugins/custom/pace-master/pace.min.js"></script> --}}
     <script>
     $.ajaxSetup({
         headers: {
@@ -139,12 +140,14 @@
         // Get all customer by ajax
         function task_list() {
             $('.data_preloader').show();
+            //Pace.start();
             $.ajax({
                 url: "{{ route('workspace.task.list', $ws->id) }}",
                 type: 'get',
                 success: function(data) {
                     $('#task_list').html(data);
                     $('.data_preloader').hide();
+                    //Pace.stop();
                 }
             });
         }
@@ -292,6 +295,20 @@
             data: { status },
             success:function(data){
                 console.log(data);
+                task_list();
+            }
+        });
+    });
+
+    $(document).on('click', '#change_priority',function (e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        var priority = $(this).data('priority');
+        $.ajax({
+            url:url,
+            type:'get',
+            data: { priority },
+            success:function(data){
                 task_list();
             }
         });

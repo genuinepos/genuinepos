@@ -87,9 +87,19 @@ class WorkSpaceTaskController extends Controller
 
     public function changeStatus(Request $request, $id)
     {
-        $updateTask = WorkspaceTask::where('id', $request->id)->first();
+        $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
             'status' => $request->status
+        ]);
+
+        return response()->json('Successfully.');
+    }
+
+    public function changePriority(Request $request, $id)
+    {
+        $updateTask = WorkspaceTask::where('id', $id)->first();
+        $updateTask->update([
+            'priority' => $request->priority
         ]);
 
         return response()->json('Successfully.');

@@ -12,8 +12,8 @@ $(document).ready(function () {
         $('#' + menuID).addClass('active')
     })
 })
-// =============================================================side manu====================
 
+// =============================================================side manu====================
 // $(document).ready(function() {
 //     $('.main__nav_t ul li').on('click', function() {
 //         $('.main__nav_t ul li').removeClass('active');
@@ -23,6 +23,7 @@ $(document).ready(function () {
 //         $('#' + menuID).addClass('active')
 //     })
 // })
+
 // ===============================================================sub menu active ====================
 // $(document).ready(function() {
 //     $('#sidenav li').on('click', function() {
@@ -35,12 +36,12 @@ $(document).ready(function () {
 // })
 // ===============================================================sub menu active end ====================
 // ===============================================================sub menu active ====================
+
 $(document).ready(function () {
     $('.close-model').on('click', function () {
         $('.sub-menu').removeClass('active');
     })
 })
-
 
 $(document).ready(function () {
     $('.close-model').on('click', function () {
@@ -72,14 +73,11 @@ $(document).ready(function () {
     })
 })
 
-
-
 // ===============================================toltip==============================
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
 })
-
 
 // =====================================================text editor=================================
 // ClassicEditor
@@ -92,7 +90,6 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 //     .catch(err => {
 //         console.error(err.stack);
 //     });
-
 
 // =============================================taginput======================
 // $('#input-tags').selectize({
@@ -121,7 +118,6 @@ $(document).ready(function () {
 
 // =====================================================form repetar==========
 $(document).ready(function () {
-
     $('.repeater').repeater({
         show: function () {
             $(this).slideDown();
@@ -151,7 +147,6 @@ $(document).ready(function () {
 //     }).datepicker('update', new Date());
 // });
 
-
 // ======================================================button switch============
 $(function () {
     $('div.switch-grup button').on('click', function () {
@@ -159,17 +154,15 @@ $(function () {
     });
 });
 
-
 // =========================================rating===============
 $('.star').fontstar({}, function (value, self) {
-
     console.log("hello " + value);
 });
 
 // =========================================clickeditor==================
-$(document).ready(function () {
-    $("#textEditor").cleditor();
-});
+// $(document).ready(function () {
+//     $("#textEditor").cleditor();
+// });
 
 // ===============================================search and select================
 $(function () {

@@ -10,15 +10,12 @@
     </style>
 @endpush
 @section('content')
-    <div class="body-woaper">
-        <div class="mt-5"></div>
-        <div class="container-fluid">
-            <div class="form_element mt-3">
+    <div class="body-woaper mt-5">
+        <div class="container-fluid pt-1">
+            <div class="form_element">
                 <div class="py-2 px-2 form-header">
                     <div class="row">
-                        <div class="col-6">
-                            <h5>Add Sale</h5>
-                        </div>
+                        <div class="col-6"><h5>General Settings</h5></div>
 
                         <div class="col-6">
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -1030,9 +1027,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['damage_product'] == '1' ? 'CHECKED' : '' }}
-                                                        name="damage_product" autocomplete="off"> &nbsp; <b>Damage Products</b> 
+                                                    <input type="checkbox" {{ json_decode($generalSettings->modules, true)['requisite'] == '1' ? 'CHECKED' : '' }} name="requisite" autocomplete="off"> &nbsp; <b>Requisite</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -1077,7 +1072,9 @@
                                                 placeholder="MAIL PORT" autocomplete="off"
                                                 value="{{ env('MAIL_PORT') }}">
                                         </div>
-
+                                    </div>
+                                        
+                                    <div class="form-group row mt-1">
                                         <div class="col-md-4">
                                             <label><strong>MAIL_USERNAME :</strong></label>
                                             <input type="text" name="MAIL_USERNAME" class="form-control es_input"
@@ -1098,7 +1095,9 @@
                                                 placeholder="MAIL ENCRYPTION" autocomplete="off"
                                                 value="{{ env('MAIL_ENCRYPTION') }}">
                                         </div>
+                                    </div>
 
+                                    <div class="form-group row mt-1">
                                         <div class="col-md-4">
                                             <label><strong>MAIL FROM ADDRESS :</strong></label>
                                             <input type="text" name="MAIL_FROM_ADDRESS" class="form-control es_input"
@@ -1456,8 +1455,5 @@
                 }
             });
         });
-
-        
-
     </script>
 @endpush

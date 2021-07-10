@@ -21,9 +21,8 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name mt-1">
+                                <div class="sec-name">
                                     <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)

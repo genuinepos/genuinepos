@@ -16,24 +16,80 @@
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
+                  
+                    <div class="row mt-1">
+                        @if (auth()->user()->permission->category['category_add'] == '1')
+                            <div class="col-md-5">
+                                <div class="card" id="add_form">
+                                    <div class="section-header">
+                                        <div class="col-md-12">
+                                            <h6>Add SubCategory </h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-area px-2 pb-2">
+                                        <form id="add_sub_category_form" action="{{ route('product.subcategories.store') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label><b>Parent category : <span class="text-danger">*</span></b></label> 
+                                                <select name="parent_category_id" class="form-control " id="parent_category"
+                                                    required>
+                                                    <option selected="" disabled="">Select Parent Category</option>
+                                                    @foreach ($category as $row)
+                                                        <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <span class="error error_parent_category_id"></span>
+                                            </div>
+
+                                            <div class="form-group mt-1">
+                                                <label><b>Name :</b> <span class="text-danger">*</span></label> 
+                                                <input type="text" name="name" class="form-control " id="name"
+                                                    placeholder="Sub category name" />
+                                                <span class="error error_name"></span>
+                                            </div>
+
+                                            <div class="form-group mt-2">
+                                                <label><b>Sub-Category photo :</b></label> 
+                                                <input type="file" name="photo" class="form-control " id="photo"
+                                                    accept=".jpg, .jpeg, .png, .gif">
+                                                <span class="error error_photo"></span>
+                                            </div>
+
+                                            <div class="form-group mt-3">
+                                                <div class="col-md-12">
+                                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                    <button type="submit" class="c-btn btn_blue float-end submit_button">Save</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="card d-none" id="edit_form">
+                                    <div class="section-header">
+                                        <div class="col-md-12">
+                                            <h6>Edit SubCategory </h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-area px-2 pb-2" id="edit_form_body">
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="col-md-7">
+                            <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-6">
                                         <h6>All SubCategory</h6>
                                     </div>
-                                    @if (auth()->user()->permission->category['category_add'] == '1')
-                                        <div class="col-md-6">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                        class="fas fa-plus-square"></i> Add</a>
-                                            </div>
-                                        </div>
-                                    @endif
                                 </div>
-
+    
                                 <div class="widget_content">
+                                    <div class="data_preloader">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    </div>
                                     <div class="table-responsive">
                                         <table class="display data_tbl data__table">
                                             <thead>
@@ -46,12 +102,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+    
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-
+    
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -63,84 +119,13 @@
             </div>
         </div>
     </div>
-
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Sub-Category</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_sub_category_form" action="{{ route('product.subcategories.store') }}" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-
-                        <div class="form-group">
-                            <b>Parent category :</b>
-                            <select name="parent_category_id" class="form-control form-control-sm" id="parent_category"
-                                required="">
-                                <option selected="" disabled="">Select Parent Category</option>
-                                @foreach ($category as $row)
-                                    <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                @endforeach
-                            </select>
-                            <span class="error error_parent_category_id"></span>
-                        </div>
-
-                        <div class="form-group mt-2">
-                            <b>Name :</b> <span class="text-danger">*</span>
-                            <input type="text" name="name" class="form-control form-control-sm" id="name"
-                                placeholder="Sub category name" />
-                            <span class="error error_name"></span>
-                        </div>
-
-                        <div class="form-group mt-2">
-                            <b>Sub-Category photo :</b>
-                            <input type="file" name="photo" class="form-control " id="photo"
-                                accept=".jpg, .jpeg, .png, .gif">
-                            <span class="error error_photo"></span>
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Sub-Category</h6>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body" id="edit_body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal-->
 @endsection
 @push('scripts')
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [ 
-                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             ],
@@ -182,14 +167,12 @@
                         $('#add_sub_category_form')[0].reset();
                         $('.loading_button').hide();
                         table.ajax.reload();
-                        $('#addModal').modal('hide');
                         $('.submit_button').prop('type', 'submit');
                     },
                     error: function(err) {
                         $('.loading_button').hide();
                         $('.error').html('');
                         $.each(err.responseJSON.errors, function(key, error) {
-                            //console.log(key);
                             $('.error_' + key + '').html(error[0]);
                         });
                         $('.submit_button').prop('type', 'submit');
@@ -201,9 +184,12 @@
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $('.data_preloader').show();
                 $.get("sub-categories/edit/" + id, function(data) {
-                    $("#edit_body").html(data);
-                    $('#editModal').modal('show');
+                    $("#edit_form_body").html(data);
+                    $('#add_form').hide();
+                    $('#edit_form').show();
+                    $('.data_preloader').hide();
                 })
             });
 
@@ -220,11 +206,13 @@
                     cache: false,
                     processData: false,
                     success: function(data) {
+                        $('.error').html('');
                         toastr.success(data);
                         $('.loading_button').hide();
                         $('#edit_sub_category_form')[0].reset();
                         table.ajax.reload();
-                        $('#editModal').modal('hide');
+                        $('#add_form').show();
+                        $('#edit_form').hide();
                     },
                     error: function(err) {
                         $('.loading_button').hide();
@@ -277,6 +265,11 @@
                         $('#deleted_form')[0].reset();
                     }
                 });
+            });
+
+            $(document).on('click', '#close_form', function() {
+                $('#add_form').show();
+                $('#edit_form').hide();
             });
         });
 

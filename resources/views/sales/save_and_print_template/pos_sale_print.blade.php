@@ -158,7 +158,7 @@
                                     <td class="text-start">
                                         {{ $sale_product->product->name }}
                                         @if ($sale_product->variant)
-                                            -{{ $sale_product->variant->variant_name }}{!! $sale_product->ex_quantity != 0 ? '(<b>EX:</b>'.$sale_product->ex_quantity.')' : '' !!}
+                                            -{{ $sale_product->variant->variant_name }}{!! $sale_product->ex_quantity != 0 ? '(<strong>EX:</strong>'.$sale_product->ex_quantity.')' : '' !!}
                                         @endif
                                         {!! $sale->branch->pos_sale_invoice_layout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                     </td>
@@ -171,7 +171,7 @@
                                                 {{ $sale_product->product->warranty->type == 1 ? 'Warrantiy' : 'Guaranty' }}
                                                 {!! $sale->branch->pos_sale_invoice_layout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->product->warranty->description . '</small>' : '' !!}
                                             @else 
-                                                <b>No</b>
+                                                <strong>No</strong>
                                             @endif
                                         </td>
                                     @endif
@@ -216,7 +216,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         @if ($sale->branch->pos_sale_invoice_layout->show_total_in_word == 1)
-                            <p><b>In Word : <span id="inword"></span></b></p>
+                            <p><strong>In Word : <span id="inword"></span></strong></p>
                         @endif
                         <br>
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
@@ -251,7 +251,7 @@
                                 </tr> --}}
                                 
                                 <tr>
-                                    <td class="text-start"><strong> Order Discount : </strong></td>
+                                    <td class="text-start"><strong> Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                     <td class="order_discount text-end">
                                     <b> @if ($sale->order_discount_type == 1)
                                             {{ $sale->order_discount_amount }} (Fixed)
@@ -262,75 +262,54 @@
                                 </tr>
 
                                 <tr>
-                                    <td class="text-start"><strong> Order Tax : </strong></td>
+                                    <td class="text-start"><strong> Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                     <td class="order_tax text-end">
-                                        <b>
-                                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                                            {{ $sale->order_tax_amount }}
-                                            ({{ $sale->order_tax_percent }} %)</b>
+                                        {{ $sale->order_tax_amount }}({{ $sale->order_tax_percent }} %)
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <td class="text-start"><strong> Shipment charge : </strong></td>
+                                    <td class="text-start"><strong> Shipment charge : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                     <td class="shipment_charge text-end">
-                                        <b>
-                                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                                            {{ number_format($sale->shipment_charge, 2) }}
-                                        </b>
+                                        {{ number_format($sale->shipment_charge, 2) }}
                                     </td>
                                 </tr>
 
                                 {{-- @if ($previous_due > 0) --}}
                                     <tr>
-                                        <td class="text-start"><strong> Previous Due : </strong></td>
+                                        <td class="text-start"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                         <td class="total_payable text-end">
-                                            <b>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($previous_due, 2) }}
-                                            <b>
+                                            {{ number_format($previous_due, 2) }}
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <td class="text-start"><strong> Total Payable : </strong></td>
+                                        <td class="text-start"><strong> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                         <td class="total_payable text-end">
-                                            <b>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($total_payable_amount, 2) }}
-                                            </b>
+                                            {{ number_format($total_payable_amount, 2) }}
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <td class="text-start"><strong> Total Paid : </strong></td>
+                                        <td class="text-start"><strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                         <td class="total_paid text-end">
-                                            <b>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($paying_amount, 2) }}
-                                            </b>
+                                            {{ number_format($paying_amount, 2) }}
                                         </td>
                                     </tr>
 
                                     @if ($change_amount > 0)
                                         <tr>
-                                            <td class="text-start"><strong> Change Amount : </strong></td>
+                                            <td class="text-start"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                             <td class="total_paid text-end">
-                                                <b>
-                                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                                    {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
-                                                </b>
+                                                {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
                                             </td>
                                         </tr>
                                     @endif
                                     
                                     <tr>
-                                        <td class="text-start"><strong> Total Due : </strong></td>
+                                        <td class="text-start"><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                         <td class="total_due text-end">
-                                            <b>
-                                                 {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($total_due > 0 ? $total_due : 0, 2) }}
-                                            </b>
+                                            {{ number_format($total_due > 0 ? $total_due : 0, 2) }}
                                         </td>
                                     </tr>
                                 {{-- @else
@@ -382,22 +361,22 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Customer's signature</b>  </p>
+                            <p class="borderTop"><strong>Customer's signature</strong>  </p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Checked By</b>  </p>
+                            <p class="borderTop"><strong>Checked By</strong>  </p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Approved By</b> </p>
+                            <p class="borderTop"><strong>Approved By</strong> </p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Signature Of Authority</b></p>
+                            <p class="borderTop"><strong>Signature Of Authority</strong></p>
                         </div>
                     </div>
                 </div><br/>
@@ -409,7 +388,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="invoice_notice">
-                            <p>{!! $sale->branch->pos_sale_invoice_layout->invoice_notice ? '<b>Attention : <b>' . $sale->branch->pos_sale_invoice_layout->invoice_notice : '' !!}</p>
+                            <p>{!! $sale->branch->pos_sale_invoice_layout->invoice_notice ? '<strong>Attention : </strong>' . $sale->branch->pos_sale_invoice_layout->invoice_notice : '' !!}</p>
                         </div>
                     </div>
                 </div>
@@ -426,50 +405,50 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="heading text-center">
-                                <h4><b>Our Sister Concern</b></h4><br>
+                                <p><strong>Our Sister Concern</strong></p><br>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="image_area text-center">
-                                <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
+                                <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
                             </div>
                         </div>
         
                         <div class="col-md-3">
                             <div class="image_area text-center">
-                                <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
+                                <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
                             </div>
                         </div>
                         
                         <div class="col-md-3">
                             <div class="image_area text-center">
-                                <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
+                                <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="image_area text-center">
-                                <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
+                                <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                             </div>
                         </div>
                     </div>
         
-                    <div class="row">
-                        <div class="col-md-6 text-center">
+                    <div class="row mt-1">
+                        <div class="col-4 text-center">
                             <small>Print Date : {{ date('d/m/Y') }}</small>
                         </div>
-                        <div class="col-md-6 text-center">
+                        
+                        @if (env('PRINT_SD_SALE') == true)
+                            <div class="col-4 text-center">
+                                <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                                <small class="d-block">Software By <strong>SpeedDigit Pvt. Ltd.</strong></small>
+                            </div>
+                        @endif
+
+                        <div class="col-4 text-center">
                             <small>Print Time : {{ date('h:i:s') }}</small>
                         </div>
                     </div>
-        
-                    @if (env('PRINT_SD_SALE') == true)
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                                <small>Software By <b>SpeedDigit Pvt. Ltd.</small></p>
-                            </div>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -563,7 +542,7 @@
                                         @php
                                             $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
                                         @endphp
-                                        <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }}{!! $saleProduct->ex_quantity != 0 ? '(<b>EX:</b>'.$saleProduct->ex_quantity.')' : '' !!} </th>
+                                        <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }}{!! $saleProduct->ex_quantity != 0 ? '(<strong>EX:</strong>'.$saleProduct->ex_quantity.')' : '' !!} </th>
                                         
                                         <th class="text-center">{{ (float) $saleProduct->quantity }}</th>
                                         <th class="text-center">{{ $saleProduct->unit_price_inc_tax }}</th>
@@ -631,21 +610,16 @@
 
                                     @if ($change_amount > 0)
                                         <tr>
-                                            <td class="text-end"><strong> Change Amount : </strong></td>
-                                            <td class="total_paid text-end">
-                                                <b>
-                                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                                    {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
-                                                </b>
-                                            </td>
+                                            <th class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></th>
+                                            <th class="total_paid text-end">
+                                                {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
+                                            </th>
                                         </tr> 
                                     @endif
                                     
                                     <tr>
-                                        <th class="text-end"> Due : </th>
+                                        <th class="text-end"> <strong>Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>  </th>
                                         <th class="text-end">
-                                            <span>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                                 {{ number_format($total_due > 0 ? $total_due : 0, 2) }}
                                             </span>
                                         </th>
@@ -769,9 +743,9 @@
                             <div class="col-md-4 col-sm-4 col-lg-4">
                                 @if ($defaultLayout->show_shop_logo == 1)
                                     @if ($sale->branch)
-                                        <img style="height: 70px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                        <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                     @else
-                                        <img style="height: 70px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                        <img style="height: 60px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
                                     @endif
                                 @endif
                             </div>
@@ -990,7 +964,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         @if ($defaultLayout->show_total_in_word == 1)
-                            <p><b>In Word : <span id="inword"></span></b></p>
+                            <p><strong>In Word : <span id="inword"></span></strong></p>
                         @endif
                         <br>
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
@@ -1024,85 +998,65 @@
                                     </td>
                                 </tr> --}}
                                 <tr>
-                                    <td class="text-start"><strong> Order Discount : </strong></td>
+                                    <td class="text-end"><strong> Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                     <td class="order_discount text-end">
-                                    <b>@if ($sale->order_discount_type == 1)
+                                        @if ($sale->order_discount_type == 1)
                                             {{ $sale->order_discount_amount }} (Fixed)
                                         @else
                                             {{ $sale->order_discount_amount }} ( {{ $sale->order_discount }}%)
-                                        @endif</b>
+                                        @endif
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <td class="text-start"><strong> Order Tax : </strong></td>
+                                    <td class="text-end"><strong> Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                     <td class="order_tax text-end">
-                                        <b>
-                                             {{ json_decode($generalSettings->business, true)['currency'] }}
-                                            {{ $sale->order_tax_amount }}
-                                            ({{ $sale->order_tax_percent }} %)
-                                        </b>
+                                        {{ $sale->order_tax_amount }}({{ $sale->order_tax_percent }} %)
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <td class="text-start"><strong> Shipment charge : </strong></td>
+                                    <td class="text-end"><strong> Shipment charge : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
                                     <td class="shipment_charge text-end">
-                                        <b>
-                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                            {{ number_format($sale->shipment_charge, 2) }}
-                                        </b>
+                                        {{ number_format($sale->shipment_charge, 2) }}
                                     </td>
                                 </tr>
 
                                 {{-- @if ($previous_due > 0) --}}
                                     <tr>
-                                        <td class="text-start"><strong> Previous Due : </strong></td>
+                                        <td class="text-end"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                         <td class="total_payable text-end">
-                                            <b>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($previous_due, 2) }}
-                                            </b>
+                                            {{ number_format($previous_due, 2) }}
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <td class="text-start"><strong> Total Payable : </strong></td>
+                                        <td class="text-end"><strong> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                         <td class="total_payable text-end">
-                                            <b>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($total_payable_amount, 2) }}
-                                            </b>
+                                            {{ number_format($total_payable_amount, 2) }}
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <td class="text-start"><strong> Total Paid : </strong></td>
+                                        <td class="text-end"><strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                         <td class="total_paid text-end">
-                                            <b>
-                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($paying_amount, 2) }}
-                                            </b>
+                                            {{ number_format($paying_amount, 2) }}
                                         </td>
                                     </tr>
 
                                     @if ($change_amount > 0)
                                         <tr>
-                                            <td class="text-end"><strong> Change Amount : </strong></td>
+                                            <td class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                             <td class="total_paid text-end">
-                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}</b>
+                                                {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
                                             </td>
                                         </tr>
                                     @endif
                                     
 
                                     <tr>
-                                        <td class="text-start"><strong> Total Due : </strong></td>
-                                        <td class="total_due text-end">
-                                        <b>
-                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                            {{ number_format($total_due > 0 ? $total_due : 0, 2) }}</b>
+                                        <td class="text-end"><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
+                                        <td class="total_due text-end">{{ number_format($total_due > 0 ? $total_due : 0, 2) }}
                                         </td>
                                     </tr>
                                 {{-- @else
@@ -1161,22 +1115,22 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Customer's signature</b></p>
+                            <p class="borderTop"><strong>Customer's signature</strong></p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Checked By</b></p>
+                            <p class="borderTop"><strong>Checked By</strong></p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Approved By</b></p>
+                            <p class="borderTop"><strong>Approved By</strong></p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Signature Of Authority</b></p>
+                            <p class="borderTop"><strong>Signature Of Authority</strong></p>
                         </div>
                     </div>
                 </div><br>
@@ -1188,7 +1142,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="invoice_notice">
-                            <p>{!! $defaultLayout->invoice_notice ? '<b>Attention : <b>' . $defaultLayout->invoice_notice : '' !!}</p>
+                            <p>{!! $defaultLayout->invoice_notice ? '<strong>Attention : </strong>' . $defaultLayout->invoice_notice : '' !!}</p>
                         </div>
                     </div>
                 </div>
@@ -1205,50 +1159,50 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="heading text-center">
-                                <h6>Our Sister Concern</h6>
+                                <p><strong>Our Sister Concern</strong></p>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="image_area text-center">
-                                <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
+                                <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
                             </div>
                         </div>
         
                         <div class="col-md-3">
                             <div class="image_area text-center">
-                                <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
+                                <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
                             </div>
                         </div>
                         
                         <div class="col-md-3">
                             <div class="image_area text-center">
-                                <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
+                                <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="image_area text-center">
-                                <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
+                                <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                             </div>
                         </div>
                     </div>
         
-                    <div class="row">
-                        <div class="col-md-6 text-center">
+                    <div class="row mt-1">
+                        <div class="col-4 text-center">
                             <small>Print Date : {{ date('d/m/Y') }}</small>
                         </div>
-                        <div class="col-md-6 text-center">
+                        
+                        @if (env('PRINT_SD_SALE') == true)
+                            <div class="col-4 text-center">
+                                <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                                <small class="d-block">Software By <strong>SpeedDigit Pvt. Ltd.</strong></small>
+                            </div>
+                        @endif
+
+                        <div class="col-4 text-center">
                             <small>Print Time : {{ date('h:i:s') }}</small>
                         </div>
                     </div>
-        
-                    @if (env('PRINT_SD_SALE') == true)
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                                <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
-                            </div>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -1363,7 +1317,7 @@
                                         @php
                                             $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
                                         @endphp
-                                        <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }}{!! $saleProduct->ex_quantity != 0 ? '(<b>EX:</b>'.$saleProduct->ex_quantity.')' : '' !!} </th>
+                                        <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }}{!! $saleProduct->ex_quantity != 0 ? '(<strong>EX:</strong>'.$saleProduct->ex_quantity.')' : '' !!} </th>
                                         
                                         <th class="text-center">{{ (float) $saleProduct->quantity }}</th>
                                         <th class="text-center">{{ $saleProduct->unit_price_inc_tax }}</th>

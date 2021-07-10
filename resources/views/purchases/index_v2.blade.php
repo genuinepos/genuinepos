@@ -22,9 +22,9 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name mt-1">
+                                <div class="sec-name">
                                     <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
+                                     
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -83,57 +83,55 @@
                     </div>
 
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Purchases</h6>
-                                    </div>
-                                    @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                        <div class="col-md-2">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="{{ route('purchases.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                            </div>
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Purchases</h6>
+                                </div>
+                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                    <div class="col-md-2">
+                                        <div class="btn_30_blue float-end">
+                                            <a href="{{ route('purchases.create') }}"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
-                                    @endif
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                     </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Actions</th>
-                                                    <th>Date</th>
-                                                    <th>P.Invoice ID</th>
-                                                    <th>Purchase From</th>
-                                                    <th>Supplier</th>
-                                                    <th>Purchase Status</th>
-                                                    <th>Payment Status</th>
-                                                    <th>Grand Total</th>
-                                                    <th>Paid</th>
-                                                    <th>Payment Due</th>
-                                                    <th>Return Amount</th>
-                                                    <th>Return Due</th>
-                                                    <th>Created By</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
+                                @endif
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Actions</th>
+                                                <th>Date</th>
+                                                <th>P.Invoice ID</th>
+                                                <th>Purchase From</th>
+                                                <th>Supplier</th>
+                                                <th>Purchase Status</th>
+                                                <th>Payment Status</th>
+                                                <th>Grand Total</th>
+                                                <th>Paid</th>
+                                                <th>Payment Due</th>
+                                                <th>Return Amount</th>
+                                                <th>Return Due</th>
+                                                <th>Created By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

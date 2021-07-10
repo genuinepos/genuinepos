@@ -20,7 +20,6 @@ $(function() {
 
 
 $(function() {
-
     $('#data_tbl_tools').dataTable({
         "sPaginationType": "full_numbers",
         "iDisplayLength": 10,

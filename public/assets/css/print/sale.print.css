@@ -71,8 +71,10 @@ div#footer {position:fixed;bottom:0px;left:0px;width:100%;color:#CCC;background:
     /* padding:8px; */}
 
 @page 
-{size:21cm 29.7cmt;
-    /* margin:1cm 1cm 1cm 1cm;  */
+{
+    /* size:21cm 29.7cm; */
+     /* margin:1cm 1cm 1cm 1cm; */
+    margin:5px;
     mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;
 }
 /* Test End */

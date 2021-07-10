@@ -18,24 +18,68 @@
                     </div>
                     <!-- =========================================top section button=================== -->
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
+                    <div class="row mt-1">
+                        @if (auth()->user()->permission->brand['brand_add'] == '1')
+                            <div class="col-md-5">
+                                <div class="card" id="add_form">
+                                    <div class="section-header">
+                                        <div class="col-md-12">
+                                            <h6>Add Brand </h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-area px-2 pb-2">
+                                        <form id="add_brand_form" action="{{ route('product.brands.store') }}">
+                                            <div class="form-group">
+                                                <label><b>@lang('brand.name') :</b> <span class="text-danger">*</span></label> 
+                                                <input type="text" name="name" class="form-control  add_input" data-name="Brand name" id="name"
+                                                    placeholder="Brand Name" />
+                                                <span class="error error_name"></span>
+                                            </div>
+                    
+                                            <div class="form-group mt-2">
+                                                <label><b>@lang('brand.brand_photo') :</b></label> 
+                                                <input type="file" name="photo" class="form-control" data-max-file-size="2M" id="photo"
+                                                    accept=".jpg, .jpeg, .png, .gif">
+                                                <span class="error error_photo"></span>
+                                            </div>
+                    
+                                            <div class="form-group mt-3">
+                                                <div class="col-md-12">
+                                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                    <button type="submit" class="c-btn btn_blue float-end submit_button me-0">Save</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="card d-none" id="edit_form">
+                                    <div class="section-header">
+                                        <div class="col-md-12">
+                                            <h6>Edit Brand </h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-area px-2 pb-2" id="edit_form_body">
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="col-md-7">
+                            <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-6">
                                         <h6>All Brand</h6>
                                     </div>
-                                    @if (auth()->user()->permission->brand['brand_add'] == '1')
-                                        <div class="col-md-6">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                        class="fas fa-plus-square"></i> Add</a>
-                                            </div>
-                                        </div>
-                                    @endif
                                 </div>
 
                                 <div class="widget_content">
+                                    <div class="data_preloader">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    </div>
                                     <div class="table-responsive" id="data-list">
                                         <table class="display data_tbl data__table">
                                             <thead>
@@ -64,60 +108,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('brand.add_brand')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_brand_form" action="{{ route('product.brands.store') }}">
-                        <div class="form-group">
-                            <b>@lang('brand.name') :</b> <span class="text-danger">*</span>
-                            <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Brand name" id="name"
-                                placeholder="Brand Name" />
-                            <span class="error error_name"></span>
-                        </div>
-
-                        <div class="form-group mt-2">
-                            <b>@lang('brand.brand_photo') :</b>
-                            <input type="file" name="photo" class="form-control form-control-sm dropify" data-max-file-size="2M" id="photo"
-                                accept=".jpg, .jpeg, .png, .gif">
-                            <span class="error error_photo"></span>
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('brand.edit_brand')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="edit_body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal-->
 @endsection
 @push('scripts')
     <script>
@@ -125,7 +115,7 @@
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [ 
-                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             ],
@@ -156,7 +146,6 @@
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
                 var inputs = $('.add_input');
-                inputs.removeClass('is-invalid');
                 $('.error').html('');
                 var countErrorField = 0;
                 $.each(inputs, function(key, val) {
@@ -165,10 +154,8 @@
                     if (inputId !== 'parent_category' && inputId !== 'photo') {
                         if (idValue == '') {
                             countErrorField += 1;
-                            $('#' + inputId).addClass('is-invalid');
                             var fieldName = $('#' + inputId).data('name');
-                            $('.error_' + inputId).html(fieldName +
-                                ' is required.');
+                            $('.error_' + inputId).html(fieldName +' is required.');
                         }
                     }
                 });
@@ -177,6 +164,7 @@
                     $('.loading_button').hide();
                     return;
                 }
+
                 $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
@@ -190,8 +178,7 @@
                         $('#add_brand_form')[0].reset();
                         $('.loading_button').hide();
                         $('.submit_button').prop('type', 'submit');
-                        $('.data_tbl').DataTable().ajax.reload();
-                        $('#addModal').modal('hide');
+                        table.ajax.reload();
                     }
                 });
             });
@@ -199,10 +186,13 @@
             // pass editable data to edit modal fields
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
+                $('.data_preloader').show();
                 var id = $(this).data('id');
                 $.get("brands/edit/" + id, function(data) {
-                    $("#edit_body").html(data);
-                    $('#editModal').modal('show');
+                    $("#edit_form_body").html(data);
+                    $('#add_form').hide();
+                    $('#edit_form').show();
+                    $('.data_preloader').hide();
                 })
             });
 
@@ -236,35 +226,15 @@
                     cache: false,
                     processData: false,
                     success:function(data){
-                        console.log(data);
+                        $('.error').html('');
                         toastr.success(data);
                         $('.loading_button').hide();
-                        $('.submit_button').show();
-                        $('.data_tbl').DataTable().ajax.reload();
-                        $('#editModal').modal('hide'); 
+                        table.ajax.reload();
+                        $('#add_form').show();
+                        $('#edit_form').hide();
                     }
                 });
             });
-
-            // Show sweet alert for delete
-            // $(document).on('click', '#delete', function(e) {
-            //     e.preventDefault();
-            //     var url = $(this).attr('href');
-            //     $('#deleted_form').attr('action', url);
-            //     swal({
-            //             title: "@lang('brand.delete_alert')",
-            //             icon: "warning",
-            //             buttons: true,
-            //             dangerMode: true,
-            //         })
-            //         .then((willDelete) => {
-            //             if (willDelete) {
-            //                 $('#deleted_form').submit();
-            //             } else {
-            //                 swal("@lang('brand.delete_cancel')");
-            //             }
-            //         });
-            // });
 
             $(document).on('click', '#delete',function(e){
                 e.preventDefault();
@@ -306,7 +276,11 @@
                     }
                 });
             });
-        });
 
+            $(document).on('click', '#close_form', function() {
+                $('#add_form').show();
+                $('#edit_form').hide();
+            });
+        });
     </script>
 @endpush

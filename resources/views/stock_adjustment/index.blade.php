@@ -24,7 +24,6 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -70,52 +69,50 @@
                     </div>
 
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Adjustment</h6>
-                                    </div>
-    
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('stock.adjustments.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Adjustment</h6>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Actions</th>
-                                                    <th class="text-start">Date</th>
-                                                    <th class="text-start">Reference No</th>
-                                                    <th class="text-start">Adjustment From</th>
-                                                    <th class="text-start">Type</th>
-                                                    <th class="text-start">Total Amount</th>
-                                                    <th class="text-start">Total Recovered Amount</th>
-                                                    <th class="text-start">Reason</th>
-                                                    <th class="text-start">Created By</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
+                                <div class="col-md-2">
+                                    <div class="btn_30_blue float-end">
+                                        <a href="{{ route('stock.adjustments.create') }}"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Actions</th>
+                                                <th class="text-start">Date</th>
+                                                <th class="text-start">Reference No</th>
+                                                <th class="text-start">Adjustment From</th>
+                                                <th class="text-start">Type</th>
+                                                <th class="text-start">Total Amount</th>
+                                                <th class="text-start">Total Recovered Amount</th>
+                                                <th class="text-start">Reason</th>
+                                                <th class="text-start">Created By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

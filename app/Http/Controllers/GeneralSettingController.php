@@ -225,7 +225,7 @@ class GeneralSettingController extends Controller
             'accounting' => isset($request->accounting) ? 1 : 0,
             'contacts' => isset($request->contacts) ? 1 : 0,
             'hrms' => isset($request->hrms) ? 1 : 0,
-            'damage_product' => isset($request->damage_product) ? 1 : 0,
+            'requisite' => isset($request->requisite) ? 1 : 0,
         ];
 
         $updateModuleSettings->modules = json_encode($moduleSettings);
@@ -263,6 +263,7 @@ class GeneralSettingController extends Controller
         $MAIL_PORT = str_replace('"','',$request->get('MAIL_PORT'));
         $MAIL_HOST = str_replace('"','',$request->get('MAIL_HOST'));
         $MAIL_MAILER = str_replace('"','',$request->get('MAIL_MAILER'));
+
         Artisan::call("env:set MAIL_MAILER='" . $MAIL_MAILER . "'");
         Artisan::call("env:set MAIL_HOST='" . $MAIL_HOST . "'");
         Artisan::call("env:set MAIL_PORT='" . $MAIL_PORT . "'");

@@ -21,7 +21,7 @@
 
                     <div class="row mt-1">
                         @if (auth()->user()->permission->category['category_add'] == '1')
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="card" id="add_form">
                                     <div class="section-header">
                                         <div class="col-md-12">
@@ -70,7 +70,7 @@
                             </div>
                         @endif
 
-                        <div class="col-md-7">
+                        <div class="col-md-8">
                             <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-6">

@@ -34,10 +34,11 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         Route::get('show/{id}', 'TodoController@show')->name('todo.show');
         Route::post('store', 'TodoController@store')->name('todo.store');
         Route::get('assign/user/{id}', 'TodoController@assignUser')->name('todo.assign.user');
-        Route::get('change/status/{id}', 'TodoController@changeStatus')->name('todo.status');
+        Route::get('change/status/modal/{id}', 'TodoController@changeStatusModal')->name('todo.status.modal');
+        Route::post('change/status/{id}', 'TodoController@changeStatus')->name('todo.status');
         Route::get('change/priority/{id}', 'TodoController@changePriority')->name('todo.priority');
         Route::get('edit/{id}', 'TodoController@edit')->name('todo.edit');
-        Route::post('update', 'TodoController@update')->name('todo.update');
+        Route::post('update/{id}', 'TodoController@update')->name('todo.update');
         Route::delete('delete/{id}', 'TodoController@delete')->name('todo.delete');
     });
 

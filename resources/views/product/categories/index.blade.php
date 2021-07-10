@@ -29,7 +29,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-area px-2 pb-2">
+                                    <div class="form-area px-3 pb-2">
                                         <form id="add_category_form" action="{{ route('product.categories.store') }}" method="POST"
                                         enctype="multipart/form-data">
                                             @csrf
@@ -63,7 +63,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-area px-2 pb-2" id="edit_form_body">
+                                    <div class="form-area px-3 pb-2" id="edit_form_body">
 
                                     </div>
                                 </div>

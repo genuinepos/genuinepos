@@ -28,7 +28,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-area px-2 pb-2">
+                                    <div class="form-area px-3 pb-2">
                                         <form id="add_brand_form" action="{{ route('product.brands.store') }}">
                                             <div class="form-group">
                                                 <label><b>@lang('brand.name') :</b> <span class="text-danger">*</span></label> 
@@ -44,7 +44,7 @@
                                                 <span class="error error_photo"></span>
                                             </div>
                     
-                                            <div class="form-group mt-3">
+                                            <div class="form-group mt-2">
                                                 <div class="col-md-12">
                                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                                     <button type="submit" class="c-btn btn_blue float-end submit_button me-0">Save</button>
@@ -61,7 +61,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-area px-2 pb-2" id="edit_form_body">
+                                    <div class="form-area px-3 pb-2" id="edit_form_body">
 
                                     </div>
                                 </div>

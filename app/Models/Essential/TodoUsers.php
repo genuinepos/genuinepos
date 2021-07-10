@@ -1,11 +1,16 @@
 <?php
 
 namespace App\Models\Essential;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\AdminAndUser;
 use Illuminate\Database\Eloquent\Model;
 
 class TodoUsers extends Model
 {
-    use HasFactory;
+    protected $guarded = [];
+    protected $hidden = ['created_at', 'updated_at'];
+
+    public function user()
+    {
+        return $this->belongsTo(AdminAndUser::class);
+    }
 }

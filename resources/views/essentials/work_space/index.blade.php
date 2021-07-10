@@ -196,8 +196,7 @@
 
                             <div class="col-md-6">
                                 <label><b>Assigned To :</b></label>
-                                <select required name="user_ids[]" class="form-control select2" id="user_ids" multiple="multiple">
-                                    <option disabled value=""> Select Please </option>
+                                <select required name="user_ids[]" class="form-control select2" multiple="multiple">
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
                                     @endforeach
@@ -208,7 +207,7 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><b>Priority : </b></label>
-                                <select required name="priority" class="form-control" id="priority">
+                                <select required name="priority" class="form-control">
                                     <option value="">Select Priority</option>
                                     <option value="Low">Low</option>
                                     <option value="Medium">Medium</option>
@@ -219,7 +218,7 @@
 
                             <div class="col-md-6">
                                 <label><strong>Status : </strong></label>
-                                <select required name="status" class="form-control" id="status">
+                                <select required name="status" class="form-control">
                                     <option value="">Select Status</option>
                                     <option value="New">New</option>
                                     <option value="In-Progress">In-Progress</option>
@@ -232,12 +231,12 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><b>Start Date : </b></label>
-                                <input required type="date" name="start_date" class="form-control" id="start_date" value="{{date('Y-m-d')}}">
+                                <input required type="date" name="start_date" class="form-control" value="{{date('Y-m-d')}}">
                             </div>
 
                             <div class="col-md-6">
                                 <label><b>End Date : </b></label>
-                                <input required type="date" name="end_date" class="form-control" id="end_date">
+                                <input required type="date" name="end_date" class="form-control">
                             </div>
                         </div>
 
@@ -256,7 +255,7 @@
 
                             <div class="col-md-6">
                                 <label><b>Estimated Hours : </b></label>
-                                <input type="text" name="estimated_hours" class="form-control" id="estimated_hours" placeholder="Estimated Hours">
+                                <input type="text" name="estimated_hours" class="form-control" placeholder="Estimated Hours">
                             </div>
                         </div>
 
@@ -285,13 +284,13 @@
                   <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
               </div>
               <div class="modal-body" id="edit_modal_body">
-                  <!--begin::Form-->
-            
+                <!--begin::Form-->
+                
               </div>
           </div>
       </div>
-  </div>
-  <!-- Add Modal End-->
+    </div>
+    <!-- Add Modal End-->
 
     <!-- Add Modal -->
     <div class="modal fade" id="docsModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -386,7 +385,6 @@
         // });
     });
 
-  
     $(document).on('click', '#docs', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
@@ -497,6 +495,7 @@
             type:'post',
             data:request,
             success:function(data){
+                table.ajax.reload();
                 toastr.error(data);
             }
         });

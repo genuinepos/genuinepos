@@ -120,7 +120,7 @@
                     <!-- =========================================top section button=================== -->
 
                     <div class="row mt-1">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="card" id="add_form">
                                 <div class="section-header">
                                     <div class="col-md-12">
@@ -142,7 +142,6 @@
                                             <div class="col-md-12">
                                                 <label><b>Assigned To :</b></label>
                                                 <select required name="user_ids[]" class="form-control select2" multiple="multiple">
-                                                    <option disabled value=""> Select Please </option>
                                                     @foreach ($users as $user)
                                                         <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
                                                     @endforeach
@@ -206,12 +205,12 @@
                                     </div>
                                 </div>
 
-                                <div class="form-area px-2 pb-2">
+                                <div class="form-area px-2 pb-2" id="edit_form_body">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-12">
@@ -253,6 +252,40 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+      aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-40-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Change Status</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="change_status_modal_body">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Modal End-->
+
+     <!-- Add Modal -->
+     <div class="modal fade" id="showModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-labelledby="staticBackdrop" aria-hidden="true">
+       <div class="modal-dialog col-55-modal" role="document">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h6 class="modal-title" id="exampleModalLabel">View Task</h6>
+                   <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+               </div>
+               <div class="modal-body" id="show_modal_body">
+                  
+               </div>
+           </div>
+       </div>
+   </div>
+   <!-- Add Modal End-->
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
@@ -311,24 +344,7 @@
         }, 1000);
     });
     
-
-    // Show add payment modal with date 
-    $(document).on('click', '#edit', function (e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-        var url = $(this).attr('href');
-        $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
-                $('#edit_modal_body').html(data);
-                $('#editModal').modal('show');
-                $('.data_preloader').hide();
-            }
-        });
-    });
-
-    //Add workspace request by ajax
+    //Add Todo request by ajax
     $(document).on('submit', '#add_todo_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
@@ -351,8 +367,24 @@
         });
     });
 
-    //Edit workspace request by ajax
-    $(document).on('submit', '#edit_work_space_form', function(e){
+    $(document).on('click', '#edit', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $.ajax({
+            url:url,
+            type:'get',
+            success:function(data){
+                $('#edit_form_body').html(data);
+                $('#add_form').hide();
+                $('#edit_form').show();
+                $('.data_preloader').hide();
+            }
+        });
+    });
+
+    //Edit Todo request by ajax
+    $(document).on('submit', '#edit_todo_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
@@ -365,8 +397,61 @@
             processData: false,
             success:function(data){
                 $('.loading_button').hide();
-                $('.modal').modal('hide');
                 toastr.success(data); 
+                table.ajax.reload();
+                $('#add_form').show();
+                $('#edit_form').hide();
+            }
+        });
+    });
+
+    $(document).on('click', '#change_status', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $.ajax({
+            url:url,
+            type:'get',
+            success:function(data){
+                $('#change_status_modal_body').html(data);
+                $('#changeStatusModal').modal('show');
+                $('.data_preloader').hide();
+            }
+        });
+    });
+
+    $(document).on('click', '#show', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $.ajax({
+            url:url,
+            type:'get',
+            success:function(data){
+                $('#show_modal_body').html(data);
+                $('#showModal').modal('show');
+                $('.data_preloader').hide();
+            }
+        });
+    });
+
+    //Edit Todo request by ajax
+    $(document).on('submit', '#changes_status_form', function(e){
+        e.preventDefault();
+        $('.loading_button2').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url:url,
+            type:'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success:function(data){
+                $('.loading_button2').hide();
+                toastr.success(data); 
+                $('#changeStatusModal').modal('hide');
                 table.ajax.reload();
             }
         });
@@ -380,18 +465,8 @@
             'title': 'Delete Confirmation',
             'message': 'Are you sure?',
             'buttons': {
-                'Yes': {
-                    'class': 'yes bg-primary',
-                    'action': function() {
-                        $('#deleted_form').submit();
-                    }
-                },
-                'No': {
-                    'class': 'no bg-danger',
-                    'action': function() {
-                        // alert('Deleted canceled.')
-                    } 
-                }
+                'Yes': {'class': 'yes bg-primary','action': function() { $('#deleted_form').submit();}},
+                'No': {'class': 'no bg-danger','action': function() {console.log('Deleted canceled.');}}
             }
         });
     });

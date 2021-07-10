@@ -13,7 +13,7 @@
         <span class="error error_e_photo"></span>
     </div>
   
-    <div class="form-group row mt-3">
+    <div class="form-group row mt-2">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
             <button type="submit" class="c-btn btn_blue me-0 float-end">Save Change</button>

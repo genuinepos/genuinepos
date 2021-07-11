@@ -54,6 +54,7 @@ class CreateProductsTable extends Migration
             $table->string('custom_field_1')->nullable();
             $table->string('custom_field_2')->nullable();
             $table->string('custom_field_3')->nullable();
+            $table->decimal('variant_price', 22)->default(0);
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('parent_category_id')->references('id')->on('categories')->onDelete('cascade');

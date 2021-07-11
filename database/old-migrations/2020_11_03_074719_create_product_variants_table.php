@@ -27,6 +27,7 @@ class CreateProductVariantsTable extends Migration
             $table->decimal('variant_price', 22, 2);
             $table->string('variant_image')->nullable();
             $table->boolean('is_purchased')->default(0);
+            $table->decimal('variant_price', 22)->default(0);
             $table->boolean('delete_in_update')->default(0);
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

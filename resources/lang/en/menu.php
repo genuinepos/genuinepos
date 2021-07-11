@@ -12,7 +12,7 @@ return [
   'setup' => 'Setup',
   'users' => 'Users',
   'hrm' => 'HRM',
-  'essentials' => 'Requisite',
+  'essentials' => 'Requisites',
   'reports' => 'Reports',
   // Menu childs of Products module
   'categories' => 'Categories',

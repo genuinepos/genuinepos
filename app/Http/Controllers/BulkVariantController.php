@@ -15,7 +15,7 @@ class BulkVariantController extends Controller
 
     public function index()
     {
-        return view('product.bulk_variants.index');
+        return view('product.bulk_variants.index_v2');
     }
 
     public function getAllVariant()

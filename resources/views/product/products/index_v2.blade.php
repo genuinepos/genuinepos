@@ -22,7 +22,6 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 <div class="col-md-3">

@@ -137,7 +137,7 @@
                                                     <th>Product</th>
                                                     <th>Purchase Cost</th>
                                                     <th>Selling Price</th>
-                                                    <th>Current Stock</th>
+                                                    <th>Current Stock</th> 
                                                     <th>Product Type</th>
                                                     <th>Category</th>
                                                     <th>Brand</th>

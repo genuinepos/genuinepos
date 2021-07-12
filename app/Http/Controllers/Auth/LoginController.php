@@ -51,8 +51,8 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $admin = AdminAndUser::where('username', $request->username)->where('allow_login', 1)->first();
-        if ($admin && $admin->allow_login == 1) {
+        $admin = AdminAndUser::with('permission')->where('username', $request->username)->where('allow_login', 1)->first();
+        if ($admin && $admin->allow_login == 1 && $admin->permission) {
             if (Auth::guard('admin_and_user')->attempt(['username' => $request->username, 'password' => $request->password])) {
                 if (!Session::has($admin->language)) {
                     session(['lang' => $admin->language]);

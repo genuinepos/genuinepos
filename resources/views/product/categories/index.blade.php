@@ -132,11 +132,7 @@
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
         // call jquery method 
         $(document).ready(function() {
@@ -225,18 +221,8 @@
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure?',
                     'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-modal-primary',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-danger',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
-                        }
+                        'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                        'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                     }
                 });
             });

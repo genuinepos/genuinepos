@@ -17,7 +17,7 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
-                        <div class="row mt-1">
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
@@ -46,51 +46,49 @@
                     </div>
 
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All User </h6>
-                                    </div>
-                                    @if (auth()->user()->permission->user['user_add'] == '1')
-                                        <div class="col-md-2">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="{{ route('users.create') }}"><i
-                                                        class="fas fa-plus-square"></i> Add</a>
-                                            </div>
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All User </h6>
+                                </div>
+                                @if (auth()->user()->permission->user['user_add'] == '1')
+                                    <div class="col-md-2">
+                                        <div class="btn_30_blue float-end">
+                                            <a href="{{ route('users.create') }}"><i
+                                                    class="fas fa-plus-square"></i> Add</a>
                                         </div>
-                                    @endif
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Username</th>
-                                                    <th class="text-start">Name</th>
-                                                    <th class="text-start">Branch</th>
-                                                    <th class="text-start">Role</th>
-                                                    <th class="text-start">Department</th>
-                                                    <th class="text-start">Designation</th>
-                                                    <th class="text-start">Email</th>
-                                                    <th class="text-start">Salary</th>
-                                                    <th class="text-start">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
                                     </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
+                                @endif
                             </div>
+
+                            <div class="widget_content">
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Username</th>
+                                                <th class="text-start">Name</th>
+                                                <th class="text-start">Branch</th>
+                                                <th class="text-start">Role</th>
+                                                <th class="text-start">Department</th>
+                                                <th class="text-start">Designation</th>
+                                                <th class="text-start">Email</th>
+                                                <th class="text-start">Salary</th>
+                                                <th class="text-start">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

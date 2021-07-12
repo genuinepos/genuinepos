@@ -897,6 +897,44 @@
                                                         <input type="checkbox" {{ $role->permission->setup['g_settings'] == '1' ? 'CHECKED' : '' }} name="g_settings" class="settings"> &nbsp; General Settings</p> 
                                                     </div>
                                                 </div>
+
+                                                
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input {{ $role->permission->setup['p_settings'] == '1' ? 'CHECKED' : '' }} type="checkbox" name="p_settings" class="settings"> &nbsp; Payment settings</p> 
+                                                    </div>
+                                                </div>
+                                           
+                                               
+                                             
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" {{ $role->permission->setup['inv_sc'] == '1' ? 'CHECKED' : '' }} name="inv_sc" class="settings"> &nbsp; Invoice Schemas</p> 
+                                                    </div>
+                                                </div>
+                                          
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" {{ $role->permission->setup['inv_lay'] == '1' ? 'CHECKED' : '' }} name="inv_lay" class="settings"> &nbsp; Invoice Layout</p> 
+                                                    </div>
+                                                </div>
+                                         
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" {{ $role->permission->setup['barcode_settings'] == '1' ? 'CHECKED' : '' }} name="barcode_settings" class="settings"> &nbsp; Barcode Settings</p> 
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" {{ $role->permission->setup['cash_counters'] == '1' ? 'CHECKED' : '' }} name="cash_counters" class="settings"> &nbsp; Cash Counters</p> 
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

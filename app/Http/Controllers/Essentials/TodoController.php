@@ -44,7 +44,7 @@ class TodoController extends Controller
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $workspaces = $query->select(
+                $todos = $query->select(
                     'todos.*',
                     'branches.id as branch_id',
                     'branches.name as branch_name',
@@ -52,10 +52,10 @@ class TodoController extends Controller
                     'admin_and_users.prefix',
                     'admin_and_users.name as a_name',
                     'admin_and_users.last_name',
-                )->orderBy('id', 'desc')
+                )->orderBy('todos.id', 'desc')
                     ->get();
             } else {
-                $workspaces = $query->select(
+                $todos = $query->select(
                     'todos.*',
                     'branches.id as branch_id',
                     'branches.name as branch_name',
@@ -63,12 +63,12 @@ class TodoController extends Controller
                     'admin_and_users.prefix',
                     'admin_and_users.name as a_name',
                     'admin_and_users.last_name',
-                )->where('workspaces.branch_id', auth()->user()->branch_id)
+                )->where('todos.branch_id', auth()->user()->branch_id)
                     ->orderBy('id', 'desc')
                     ->get();
             }
 
-            return DataTables::of($workspaces)
+            return DataTables::of($todos)
                 ->addColumn('action', function ($row) {
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -902,6 +902,41 @@
                                                         <input type="checkbox" name="g_settings" class="settings"> &nbsp; General Settings</p> 
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" name="p_settings" class="settings"> &nbsp; Payment settings</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" name="inv_sc" class="settings"> &nbsp; Invoice Schemas</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" name="inv_lay" class="settings"> &nbsp; Invoice Layout</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" name="barcode_settings" class="settings"> &nbsp; Barcode Settings</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" name="cash_counters" class="settings"> &nbsp; Cash Counters</p> 
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

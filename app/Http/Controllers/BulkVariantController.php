@@ -20,13 +20,12 @@ class BulkVariantController extends Controller
 
     public function getAllVariant()
     {
-        $variants = BulkVariant::with(['bulk_variant_childs'])->get();
+        $variants = BulkVariant::with(['bulk_variant_child'])->get();
         return view('product.bulk_variants.ajax_view.variant_list', compact('variants'));
     }
 
     public function store(Request $request)
     {
-        //return $request->all();
         $this->validate($request, [
             'variant_name' => 'required',
         ]);
@@ -35,7 +34,7 @@ class BulkVariantController extends Controller
         $addVariant->bulk_variant_name = $request->variant_name;
         $addVariant->save();
 
-        foreach ($request->variant_childs as $variant_child) {
+        foreach ($request->variant_child as $variant_child) {
             $addVariantChild = new BulkVariantChild();
             $addVariantChild->bulk_variant_id = $addVariant->id;
             $addVariantChild->child_name = $variant_child;
@@ -47,14 +46,14 @@ class BulkVariantController extends Controller
     
     public function update(Request $request)
     {
-        $updateVariant =  BulkVariant::with(['bulk_variant_childs'])->where('id', $request->id)->first();
+        $updateVariant =  BulkVariant::with(['bulk_variant_child'])->where('id', $request->id)->first();
         $updateVariant->bulk_variant_name = $request->variant_name;
         $updateVariant->save();
 
         $variant_child_ids = $request->variant_child_ids;
-        $variant_childs = $request->variant_childs;
+        $variant_child = $request->variant_child;
 
-        foreach ($updateVariant->bulk_variant_childs as $variantChild) {
+        foreach ($updateVariant->bulk_variant_child as $variantChild) {
             $variantChild->delete_in_update = 1;
             $variantChild->save();
         }
@@ -64,21 +63,21 @@ class BulkVariantController extends Controller
             $variant_child_id = $variant_child_id == 'noid' ? NULL : $variant_child_id; 
             $updateBulkVariantChild = BulkVariantChild::where('id', $variant_child_id)->where('bulk_variant_id', $updateVariant->id)->first();
             if ($updateBulkVariantChild) {
-                $updateBulkVariantChild->child_name = $variant_childs[$index];
+                $updateBulkVariantChild->child_name = $variant_child[$index];
                 $updateBulkVariantChild->delete_in_update = 0;
                 $updateBulkVariantChild->save();
             }else {
                 $addVariantChild = new BulkVariantChild();
                 $addVariantChild->bulk_variant_id = $updateVariant->id;
-                $addVariantChild->child_name = $variant_childs[$index];
+                $addVariantChild->child_name = $variant_child[$index];
                 $addVariantChild->save();
             }
             $index++;
         }
 
-       $deleteBulkVariantChilds = BulkVariantChild::where('bulk_variant_id', $updateVariant->id)->where('delete_in_update', 1)->get();
-        if ($deleteBulkVariantChilds->count() > 0) {
-            foreach ($deleteBulkVariantChilds as $deleteBulkVariantChild) {
+       $deleteBulkVariantChild = BulkVariantChild::where('bulk_variant_id', $updateVariant->id)->where('delete_in_update', 1)->get();
+        if ($deleteBulkVariantChild->count() > 0) {
+            foreach ($deleteBulkVariantChild as $deleteBulkVariantChild) {
                 $deleteBulkVariantChild->delete();
             }
         }

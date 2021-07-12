@@ -52,7 +52,7 @@
                                                 </div>
                                             </div>
 
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            @if (count($warehouses) > 0)
                                                 <div class="input-group mt-1">
                                                     <label for="inputEmail3" class="col-4"><span
                                                         class="text-danger">*</span> <b>Warehouse :</b> </label>
@@ -60,8 +60,18 @@
                                                         <select class="form-control changeable add_input"
                                                             name="warehouse_id" data-name="Warehouse" id="warehouse_id">
                                                             <option value="">Select Warehouse</option>
+                                                            @foreach ($warehouses as $w)
+                                                                <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                            @endforeach
                                                         </select>
                                                         <span class="error error_warehouse_id"></span>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="input-group mt-1">
+                                                    <label for="inputEmail3" class="col-4"><b>Store Location :</b> </label>
+                                                    <div class="col-8">
+                                                        <input readonly type="text" name="branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HF)' }}"/>
                                                     </div>
                                                 </div>
                                             @endif
@@ -241,7 +251,7 @@
                                                 <label for="inputEmail3" class="col-4"><b>Tax :</b><span class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <select name="purchase_tax" class="form-control" id="purchase_tax">
-                                                        <option value="">NoTax</option>
+                                                        <option value="0.00">NoTax</option>
                                                     </select>
                                                     <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00">
                                                 </div>
@@ -587,24 +597,6 @@
                 $('#addSupplierModal').modal('show');
             });
         });
-
-        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-            // Set warehouse in form field
-            function setWarehouses(){
-                $.ajax({
-                    url:"{{route('purchases.get.all.warehouse')}}",
-                    async:true,
-                    type:'get',
-                    dataType: 'json',
-                    success:function(warehouses){
-                        $.each(warehouses, function(key, val){
-                            $('#warehouse_id').append('<option value="'+val.id+'">'+ val.warehouse_name +' ('+val.warehouse_code+')'+'</option>');
-                        });
-                    }
-                });
-            }
-            setWarehouses();
-        @endif
 
         // Get all unite for form field
         var unites = [];

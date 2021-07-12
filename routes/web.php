@@ -118,7 +118,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('all', 'BulkVariantController@getAllVariant')->name('product.variants.all.variant');
         Route::post('store', 'BulkVariantController@store')->name('product.variants.store');
         Route::post('update', 'BulkVariantController@update')->name('product.variants.update');
-        Route::delete('delete/{brandId}', 'BulkVariantController@delete')->name('product.variants.delete');
+        Route::delete('delete/{id}', 'BulkVariantController@delete')->name('product.variants.delete');
     });
 
     // Barcode route group
@@ -245,8 +245,6 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::get('editable/purchase/{purchaseId}', 'PurchaseController@editablePurchase')->name('purchases.get.editable.purchase');
     Route::post('update', 'PurchaseController@update')->name('purchases.update');
     Route::get('get/all/supplier', 'PurchaseController@getAllSupplier')->name('purchases.get.all.supplier');
-    Route::get('get/all/branch', 'PurchaseController@getAllBranch')->name('purchases.get.all.branch');
-    Route::get('get/all/warehouse', 'PurchaseController@getAllWarehouse')->name('purchases.get.all.warehouse');
     Route::get('get/all/unit', 'PurchaseController@getAllUnit')->name('purchases.get.all.unites');
     Route::get('get/all/tax', 'PurchaseController@getAllTax')->name('purchases.get.all.taxes');
     Route::get('search/product/{product_code}', 'PurchaseController@searchProduct');
@@ -571,16 +569,16 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('all/accounts', 'BranchController@getAllAccounts')->name('settings.get.all.accounts');
         Route::post('store', 'BranchController@store')->name('settings.branches.store');
         Route::post('update', 'BranchController@update')->name('settings.branches.update');
-        Route::delete('delete', 'BranchController@delete')->name('settings.branches.delete');
+        Route::delete('delete/{id}', 'BranchController@delete')->name('settings.branches.delete');
         Route::get('all/schemas', 'BranchController@allSchemas')->name('settings.all.invoice.schemas');
         Route::get('all/layouts', 'BranchController@allLayouts')->name('settings.all.invoice.layouts');
     });
 
     Route::group(['prefix' => 'warehouses'], function () {
         Route::get('/', 'WarehouseController@index')->name('settings.warehouses.index');
-        Route::get('get/all/warehuose', 'WarehouseController@getAllBranch')->name('settings.get.all.warehouse');
         Route::post('store', 'WarehouseController@store')->name('settings.warehouses.store');
-        Route::post('update', 'WarehouseController@update')->name('settings.warehouses.update');
+        Route::get('edit/{id}', 'WarehouseController@edit')->name('settings.warehouses.edit');
+        Route::post('update/{id}', 'WarehouseController@update')->name('settings.warehouses.update');
         Route::delete('delete/{warehouseId}', 'WarehouseController@delete')->name('settings.warehouses.delete');
     });
 

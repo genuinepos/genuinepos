@@ -91,116 +91,9 @@
                     <label class="p-0 m-0"><strong>Warehouse Stock Details</strong></label>
                 </div>
                 <div class="table-responsive" id="warehouse_stock_details">
-                    @if ($product->is_variant == 0)
-                        <table id="single_product_warehouse_stock_table" class="table modal-table table-sm">
-                            <thead>
-                                <tr class="bg-primary">
-                                    <th class="text-white text-start">Product Code(SKU)</th>
-                                    <th class="text-white text-start">Product</th>
-                                    <th class="text-white text-start">Warehouse</th>
-                                    <th class="text-white text-start">Unit Price (Inc.Tax)</th>
-                                    <th class="text-white text-start">Current Stock</th>
-                                    <th class="text-white text-start">Stock Value</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (count($product->product_warehouses) > 0)
-                                    @foreach ($product->product_warehouses as $product_warehouse)
-                                        <tr>
-                                            @php
-                                                $tax = $product->tax ? $product->tax->tax_percent : 0;
-                                                $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
-                                                if ($product->tax_type == 2) {
-                                                    $inclusiveTax = 100 + $tax;
-                                                    $calc = ($product->product_price / $inclusiveTax) * 100;
-                                                    $__tax_amount = $product->product_price - $calc;
-                                                    $product_price_inc_tax = $product->product_price + $__tax_amount;
-                                                }
-                                            @endphp
-                                            <td class="text-start">{{ $product->product_code }}</td>
-                                            <td class="text-start">{{ $product->name }}</td>
-                                            <td class="text-start">{{ $product_warehouse->warehouse->warehouse_name . ' - ' . $product_warehouse->warehouse->warehouse_code }}
-                                            </td>
-                                            <td class="text-start">
-                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ bcadd($product_price_inc_tax, 0, 2) }}
-                                            </td>
-                                            <td class="text-start">{{ $product_warehouse->product_quantity . ' (' . $product->unit->code_name . ')' }}
-                                            </td>
-                                            @php
-                                                $stockValue = $product_warehouse->product_quantity * $product_price_inc_tax;
-                                            @endphp
-                                            <td class="text-start">
-                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ bcadd($stockValue, 0, 2) }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="7" class="text-center">This product is not available in any
-                                            warehouse.</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    @else
-                        <table id="variant_product_warehouse_stock_table" class="table modal-table table-sm">
-                            <thead>
-                                <tr class="bg-primary">
-                                    <th class="text-white text-start">Product Code(SKU)</th>
-                                    <th class="text-white text-start">Product</th>
-                                    <th class="text-white text-start">Warehouse</th>
-                                    <th class="text-white text-start">Unit Price (Inc.Tax)</th>
-                                    <th class="text-white text-start">Current Stock</th>
-                                    <th class="text-white text-start">Stock Value</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (count($product->product_warehouses) > 0)
-                                    @foreach ($product->product_warehouses as $product_warehouse)
-                                        @foreach ($product_warehouse->product_warehouse_variants as $product_warehouse_variant)
-                                            @php
-                                                $tax = $product->tax ? $product->tax->tax_percent : 0;
-                                                $variant_price_inc_tax = ($product_warehouse_variant->product_variant->variant_price / 100) * $tax + $product_warehouse_variant->product_variant->variant_price;
-                                                if ($product->tax_type == 2) {
-                                                    $inclusiveTax = 100 + $tax;
-                                                    $calc = ($product_warehouse_variant->product_variant->variant_price / $inclusiveTax) * 100;
-                                                    $__tax_amount = $product_warehouse_variant->product_variant->variant_price - $calc;
-                                                    $variant_price_inc_tax = $product_warehouse_variant->product_variant->variant_price + $__tax_amount;
-                                                }
-                                            @endphp
-                                            <tr>
-                                                <td class="text-start">{{ $product_warehouse_variant->product_variant->variant_code }}
-                                                </td>
-                                                <td class="text-start">{{ $product->name . ' - ' . $product_warehouse_variant->product_variant->variant_name }}
-                                                </td>
-                                                <td class="text-start">
-                                                    {{ $product_warehouse->warehouse->warehouse_name . ' - ' . $product_warehouse->warehouse->warehouse_code }}
-                                                </td>
-                                                <td class="text-start">
-                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                    {{ bcadd($variant_price_inc_tax, 0, 2) }}
-                                                </td>
-                                                <td class="text-start">{{ $product_warehouse_variant->variant_quantity . ' (' . $product->unit->code_name . ')' }}
-                                                </td>
-                                                @php
-                                                    $stockValue = $product_warehouse_variant->variant_quantity * $variant_price_inc_tax;
-                                                @endphp
-                                                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }}
-                                                    {{ bcadd($stockValue, 0, 2) }}</td>
-                                            </tr>
-                                        @endforeach
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="7" class="text-center">This product is not available in any
-                                            warehouse.</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    @endif
+                    <!--Warehouse Stock Details-->
+                    @include('product.products.ajax_view.partials.warehouse_stock_details')
+                    <!--Warehouse Stock Details End-->
                 </div>
             </div>
 
@@ -209,168 +102,19 @@
                     <label class="p-0 m-0"><strong>Branch Stock Details</strong></label>
                 </div>
                 <div class="table-responsive" id="branch_stock_details">
-                    @if ($product->is_variant == 0)
-                        <table id="single_product_branch_stock_table" class="table modal-table table-sm">
-                            <thead>
-                                <tr class="bg-primary">
-                                    <th class="text-white text-start">Product Code(SKU)</th>
-                                    <th class="text-white text-start">Product</th>
-                                    <th class="text-white text-start">Branch</th>
-                                    <th class="text-white text-start">Unit Price (Inc.Tax)</th>
-                                    <th class="text-white text-start">Current Stock</th>
-                                    <th class="text-white text-start">Stock Value</th>
-                                    <th class="text-white text-start">Total Unit Adjusted</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($product->product_branches->count() > 0)
-                                    @foreach ($product->product_branches as $product_branch)
-                                        @php
-                                            $totalAdjustedQty = 0;
-                                            $adjustmentProducts = DB::table('stock_adjustment_products')
-                                                ->join('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
-                                                ->select('stock_adjustment_products.*', 'stock_adjustments.branch_id')
-                                                ->where('product_id', $product_branch->product_id)
-                                                ->get();
-                                            if ($adjustmentProducts->count() > 0) {
-                                                foreach ($adjustmentProducts as $adjustmentProduct) {
-                                                    if ($adjustmentProduct->branch_id == $product_branch->branch_id) {
-                                                        $totalAdjustedQty += $adjustmentProduct->quantity;
-                                                    }
-                                                }
-                                            }
-
-                                            $tax = $product->tax ? $product->tax->tax_percent : 0;
-                                            $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
-                                            if ($product->tax_type == 2) {
-                                                $inclusiveTax = 100 + $tax;
-                                                $calc = ($product->product_price / $inclusiveTax) * 100;
-                                                $__tax_amount = $product->product_price - $calc;
-                                                $product_price_inc_tax = $product->product_price + $__tax_amount;
-                                            }
-                                        @endphp
-                                        <tr>
-                                            <td class="text-white text-start">{{ $product->product_code }}</td>
-                                            <td class="text-white text-start">{{ $product->name }}</td>
-                                            <td class="text-white text-start">{{ $product_branch->branch->name . ' - ' . $product_branch->branch->branch_code }}
-                                            </td>
-                                            <td class="text-white text-start"> {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ bcadd($product_price_inc_tax, 0, 2) }}</td>
-                                            <td class="text-white text-start">{{ $product_branch->product_quantity . ' (' . $product->unit->code_name . ')' }}
-                                            </td>
-                                            @php
-                                                $stockValue = $product_branch->product_quantity * $product_price_inc_tax;
-                                            @endphp
-                                            <td class="text-white text-start">{{ json_decode($generalSettings->business, true)['currency'] }}
-                                                {{ bcadd($stockValue, 0, 2) }}</td>
-                                            <td class="text-white text-start">{{ bcadd($totalAdjustedQty, 0, 2) . ' (' . $product->unit->code_name . ')' }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="7" class="text-center">This product is not available in any branch.
-                                        </td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    @else
-                        <table id="variant_product_branch_stock_table" class="table modal-table table-sm">
-                            <thead>
-                                <tr class="bg-primary">
-                                    <th class="text-white text-start">Product Code(SKU)</th>
-                                    <th class="text-white text-start">Product</th>
-                                    <th class="text-white text-start">Branch</th>
-                                    <th class="text-white text-start">Unit Price (Inc.Tax)</th>
-                                    <th class="text-white text-start">Current Stock</th>
-                                    <th class="text-white text-start">Stock Value</th>
-                                    <th class="text-white text-start">Total Unit Adjusted</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (count($product->product_branches) > 0)
-                                    @foreach ($product->product_branches as $product_branch)
-                                        @foreach ($product_branch->product_branch_variants as $product_branch_variant)
-                                            @php
-                                                $tax = $product->tax ? $product->tax->tax_percent : 0;
-                                                $variant_price_inc_tax = ($product_branch_variant->product_variant->variant_price / 100) * $tax + $product_branch_variant->product_variant->variant_price;
-                                                $totalAdjustedQty = 0;
-                                                $adjustmentProducts = DB::table('stock_adjustment_products')
-                                                    ->join('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
-                                                    ->select('stock_adjustment_products.*', 'stock_adjustments.branch_id')
-                                                    ->where('product_id', $product_branch_variant->product_id)
-                                                    ->where('product_variant_id', $product_branch_variant->product_variant_id)
-                                                    ->get();
-                                                
-                                                if (count($adjustmentProducts) > 0) {
-                                                    foreach ($adjustmentProducts as $adjustmentProduct) {
-                                                        if ($adjustmentProduct->branch_id == $product_branch->branch_id) {
-                                                            $totalAdjustedQty += $adjustmentProduct->quantity;
-                                                        }
-                                                    }
-                                                }
-
-                                                if ($product->tax_type == 2) {
-                                                    $inclusiveTax = 100 + $tax;
-                                                    $calc = ($product_branch_variant->product_variant->variant_price / $inclusiveTax) * 100;
-                                                    $__tax_amount = $product_branch_variant->product_variant->variant_price - $calc;
-                                                    $variant_price_inc_tax = $product_branch_variant->product_variant->variant_price + $__tax_amount;
-                                                }
-                                            @endphp
-                                            <tr>
-                                                <td class="text-start">
-                                                    {{ $product_branch_variant->product_variant->variant_code }}
-                                                </td>
-                                                <td class="text-start">
-                                                    {{ $product->name . ' - ' . $product_branch_variant->product_variant->variant_name }}
-                                                </td>
-
-                                                <td class="text-start">
-                                                    {{ $product_branch->branch->name . ' - ' . $product_branch->branch->branch_code }}
-                                                </td>
-
-                                                <td class="text-start">
-                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                    {{ bcadd($variant_price_inc_tax, 0, 2) }}
-                                                </td>
-
-                                                <td class="text-start">
-                                                    {{ $product_branch_variant->variant_quantity . ' (' . $product->unit->code_name . ')' }}
-                                                </td>
-                                                @php
-                                                    $stockValue = $product_branch_variant->variant_quantity * $variant_price_inc_tax;
-                                                @endphp
-                                                <td class="text-start">
-                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                    {{ bcadd($stockValue, 0, 2) }}</td>
-                                                <td class="text-start">
-                                                    {{ bcadd($totalAdjustedQty, 0, 2) . ' (' . $product->unit->code_name . ')' }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="7" class="text-center">This product is not available in any branch.
-                                        </td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    @endif
+                    @include('product.products.ajax_view.partials.branch_stock_details')
                 </div>
             </div>
         </div>
         <div class="modal-footer text-end">
             {{-- <button type="button" class="btn btn-sm btn-primary print_btn">Print</button>
             <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button> --}}
-                <div class="row">
-                    <div class="col-md-12">
-                        <button type="submit" class="c-btn btn_blue print_btn">Print</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                    </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="c-btn btn_blue print_btn">Print</button>
+                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
                 </div>
+            </div>
         </div>
     </div>
 </div>

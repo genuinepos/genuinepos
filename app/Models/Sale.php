@@ -17,11 +17,6 @@ class Sale extends Model
         return $this->belongsTo(Branch::class, 'branch_id');
     }
     
-    public function warehouse()
-    {
-        return $this->belongsTo(Warehouse::class, 'warehouse_id');
-    }
-    
     public function sale_products()
     {
         return $this->hasMany(SaleProduct::class, 'sale_id');

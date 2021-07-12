@@ -1,7 +1,7 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr>
-            <th class="text-start">Serial</th>
+            <th class="text-start">SL</th>
             <th class="text-start">Variant</th>
             <th class="text-start">Childs</th>
             <th class="text-start">Action</th>
@@ -13,7 +13,7 @@
                 <td class="text-start">{{ $loop->index + 1 }}</td> 
                 <td class="text-start">{{ $variant->bulk_variant_name }}</td> 
                 <td class="text-start">
-                    @foreach ($variant->bulk_variant_childs as $variant_child)
+                    @foreach ($variant->bulk_variant_child as $variant_child)
                         {{ $variant_child->child_name.' ,' }}
                     @endforeach
                 </td> 

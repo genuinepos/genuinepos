@@ -369,34 +369,6 @@ class ProductController extends Controller
             }
         }
 
-        // Add opening stock
-        // $product = Product::with(['product_variants'])->where('id', $addProduct->id)->first();
-        // $branches = DB::table('branches')->select('id')->get();
-        // if (count($branches) > 0) {
-        //     if ($product->type == 1 || $product->type == 2) {
-        //         if ($product->is_variant == 1) {
-        //             foreach ($branches as $branch) {
-        //                 foreach ($product->product_variants as $product_variant) {
-        //                     $addOpeningStock = new ProductOpeningStock();
-        //                     $addOpeningStock->branch_id = $branch->id;
-        //                     $addOpeningStock->product_id = $product->id;
-        //                     $addOpeningStock->unit_cost_exc_tax = $product_variant->variant_cost;
-        //                     $addOpeningStock->product_variant_id = $product_variant->id;
-        //                     $addOpeningStock->save();
-        //                 }
-        //             }
-        //         } else {
-        //             foreach ($branches as $branch) {
-        //                 $addOpeningStock = new ProductOpeningStock();
-        //                 $addOpeningStock->branch_id = $branch->id;
-        //                 $addOpeningStock->product_id = $product->id;
-        //                 $addOpeningStock->unit_cost_exc_tax = $product->product_cost;
-        //                 $addOpeningStock->save();
-        //             }
-        //         }
-        //     }
-        // }
-
         session()->flash('successMsg', 'Product create Successfully');
         return response()->json('Product create Successfully');
     }
@@ -411,6 +383,8 @@ class ProductController extends Controller
             'brand',
             'product_variants',
             'product_warehouses',
+            'product_warehouses.warehouse',
+            'product_warehouses.warehouse.branch',
             'product_warehouses.product_warehouse_variants',
             'product_warehouses.product_warehouse_variants.product_variant',
             'product_branches',
@@ -418,6 +392,32 @@ class ProductController extends Controller
             'product_branches.product_branch_variants',
             'product_branches.product_branch_variants.product_variant',
         ])->where('id', $productId)->first();
+
+        // return $productWarehouse = DB::table('product_warehouses')->where('product_warehouses.product_id', $productId)
+        // ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
+        // ->leftJoin('branches', 'warehouses.branch_id', 'branches.id')
+        // ->leftJoin('products', 'product_warehouses.product_id', 'products.id')
+        // ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
+        // ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
+        // ->where('warehouses.branch_id', auth()->user()->branch_id)
+        // ->select(
+        //     'warehouses.warehouse_name as w_name',
+        //     'warehouses.warehouse_code as w_code',
+        //     'products.name as p_name',
+        //     'products.product_code as p_code',
+        //     'products.is_variant',
+        //     'products.type as p_type',
+        //     'products.product_cost as p_cost_exe_tax',
+        //     'products.product_cost_with_tax as p_cost_inc_tax',
+        //     'products.product_price as p_price',
+        //     'product_variants.variant_name as v_name',
+        //     'product_variants.variant_code as v_code',
+        //     'product_variants.variant_price as v_price',
+        //     'product_variants.variant_cost v_cost_exe_tax',
+        //     'product_variants.variant_cost_with_tax as v_cost_inc_tax',
+        // )
+        // ->get();
+
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
         return view('product.products.ajax_view.product_details_view', compact('product', 'price_groups'));
     }

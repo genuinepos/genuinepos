@@ -347,12 +347,17 @@ class RoleController extends Controller
             'branch' => isset($request->branch) ? 1 : 0,
             'warehouse' => isset($request->warehouse) ? 1 : 0,
             'g_settings' => isset($request->g_settings) ? 1 : 0,
+            'p_settings' => isset($request->p_settings) ? 1 : 0,
+            'inv_sc' => isset($request->inv_sc) ? 1 : 0,
+            'inv_lay' => isset($request->inv_lay) ? 1 : 0,
+            'barcode_settings' => isset($request->barcode_settings) ? 1 : 0,
+            'cash_counters' => isset($request->cash_counters) ? 1 : 0,
         ];
 
         return $permissons;
     }
 
-    // Dashboar permissions
+    // Dashboard permissions
     private function dashboardPermissons($request)
     {
         $permissons = [

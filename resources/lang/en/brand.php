@@ -15,7 +15,7 @@ return [
     'name' => 'Name',
     'brand_photo' => 'Photo',
     'save' => 'Save',
-    'update' => 'Save Change',
+    'update' => 'Save Changes',
     'close' => 'Close',
     'loading' => 'Loading',
     'processing' => 'Processing',

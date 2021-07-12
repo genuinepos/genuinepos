@@ -13,7 +13,7 @@ class ProductWarehouse extends Model
 
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_id');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id')->select('id', 'branch_id','warehouse_name', 'warehouse_code');
     }
     
     public function product()

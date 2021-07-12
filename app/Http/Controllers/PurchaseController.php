@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tax;
 use App\Models\Unit;
-use App\Models\Brand;
 use App\Models\Account;
 use App\Models\Product;
 use App\Models\CashFlow;
-use App\Models\Category;
 use App\Models\Purchase;
 use App\Models\Supplier;
-use App\Models\Warranty;
-use App\Models\Warehouse;
+use App\Utils\PurchaseUtil;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\ProductVariant;
@@ -28,8 +24,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseController extends Controller
 {
-    public function __construct()
+    protected $purchaseUtil;
+    public function __construct(PurchaseUtil $purchaseUtil)
     {
+        $this->purchaseUtil = $purchaseUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -93,7 +91,7 @@ class PurchaseController extends Controller
                     'created_by.name as created_name',
                     'created_by.last_name as created_last_name',
                 )->orderBy('id', 'desc')
-                ->get();
+                    ->get();
             } else {
                 $purchases = $query->select(
                     'purchases.*',
@@ -107,8 +105,8 @@ class PurchaseController extends Controller
                     'created_by.name as created_name',
                     'created_by.last_name as created_last_name',
                 )->where('purchases.branch_id', auth()->user()->branch_id)
-                ->orderBy('id', 'desc')
-                ->get();
+                    ->orderBy('id', 'desc')
+                    ->get();
             }
 
             return DataTables::of($purchases)
@@ -117,7 +115,6 @@ class PurchaseController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-
                     $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
                     if (auth()->user()->branch_id == $row->branch_id) {
@@ -136,7 +133,7 @@ class PurchaseController extends Controller
                         if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
                             $html .= '<a class="dropdown-item" href="' . route('purchases.edit', $row->id) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                         }
-    
+
                         if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
                             $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                         }
@@ -163,8 +160,14 @@ class PurchaseController extends Controller
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
                 })
-                ->editColumn('from',  function ($row) {
-                    return $row->branch_name != null ? ($row->branch_name).'<b>(BR)</b>' : $row->warehouse_name .'<b>(WH)</b>';
+                ->editColumn('from',  function ($row) use ($generalSettings) {
+                    if ($row->warehouse_name) {
+                        return $row->warehouse_name . '<b>(WH)</b>';
+                    } elseif ($row->branch_name) {
+                        return $row->branch_name . '<b>(BR)</b>';
+                    } else {
+                        return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HF</b>)';
+                    }
                 })
                 ->editColumn('total_purchase_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_purchase_amount . '</b>';
@@ -242,19 +245,20 @@ class PurchaseController extends Controller
         if (auth()->user()->permission->purchase['purchase_add'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        return view('purchases.create');
+
+        $warehouses = DB::table('warehouses')->where('branch_id', auth()->user()->branch_id)->get();
+        return view('purchases.create', compact('warehouses'));
     }
 
     // add purchase method
     public function store(Request $request)
     {
-        //return $request->all();
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'purchase'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
         $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
-        //return $request->all();
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+        if (isset($request->warehouse_id)) {
             $this->validate($request, [
                 'warehouse_id' => 'required',
             ]);
@@ -358,11 +362,9 @@ class PurchaseController extends Controller
         // add purchase total information
         $addPurchase = new Purchase();
         $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PI') . date('ymd') . $invoiceId;
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $addPurchase->warehouse_id = $request->warehouse_id;
-        } else {
-            $addPurchase->branch_id = auth()->user()->branch_id;
-        }
+
+        $addPurchase->warehouse_id = isset($request->warehouse_id) ?$request->warehouse_id : NULL;
+        $addPurchase->branch_id = auth()->user()->branch_id;
 
         $addPurchase->supplier_id = $request->supplier_id;
         $addPurchase->pay_term = $request->pay_term;
@@ -372,7 +374,7 @@ class PurchaseController extends Controller
         $addPurchase->order_discount = $request->order_discount ? $request->order_discount : 0.00;
         $addPurchase->order_discount_type = $request->order_discount_type;
         $addPurchase->order_discount_amount = $request->order_discount_amount;
-        $addPurchase->purchase_tax_percent = $request->purchase_tax ? $request->purchase_tax : 0.00;
+        $addPurchase->purchase_tax_percent = $request->purchase_tax_percent ? $request->purchase_tax_percent : 0.00;
         $addPurchase->purchase_tax_amount = $request->purchase_tax_amount ? $request->purchase_tax_amount : 0.00;
         $addPurchase->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0.00;
         $addPurchase->net_total_amount = $request->net_total_amount;
@@ -399,9 +401,9 @@ class PurchaseController extends Controller
 
         // Update supplier due
         $supplier = Supplier::where('id', $request->supplier_id)->first();
-        $supplier->total_purchase = $supplier->total_purchase + $request->total_purchase_amount;
-        $supplier->total_paid = $supplier->total_paid + $request->paying_amount;
-        $supplier->total_purchase_due = $supplier->total_purchase_due + $request->purchase_due;
+        $supplier->total_purchase += (float)$request->total_purchase_amount;
+        $supplier->total_paid += (float)$request->paying_amount;
+        $supplier->total_purchase_due += (float)$request->purchase_due;
         $supplier->save();
 
         // add purchase product
@@ -421,6 +423,7 @@ class PurchaseController extends Controller
             $addPurchaseProduct->unit_tax = $unit_taxes[$index];
             $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
             $addPurchaseProduct->line_total = $linetotals[$index];
+
             if ($isEditProductPrice == '1') {
                 $addPurchaseProduct->profit_margin = $profits[$index];
                 $addPurchaseProduct->selling_price = $selling_prices[$index];
@@ -434,102 +437,8 @@ class PurchaseController extends Controller
             $index++;
         }
 
-        // add purchase product in warehouse
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $index2 = 0;
-            foreach ($product_ids as $productId) {
-                // add warehouse product
-                $productWarehouse = ProductWarehouse::where('warehouse_id', $request->warehouse_id)->where('product_id', $productId)->first();
-                if ($productWarehouse) {
-                    $productWarehouse->product_quantity = $productWarehouse->product_quantity + $quantities[$index2];
-                    $productWarehouse->save();
-                    if ($variant_ids[$index2] != 'noid') {
-                        // add warehouse product variant 
-                        $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
-                        if ($productWarehouseVariant) {
-                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $quantities[$index2];
-                            $productWarehouseVariant->save();
-                        } else {
-                            $addProductWarehousehVariant = new ProductWarehouseVariant();
-                            $addProductWarehousehVariant->product_warehouse_id = $productWarehouse->id;
-                            $addProductWarehousehVariant->product_id = $productId;
-                            $addProductWarehousehVariant->product_variant_id = $variant_ids[$index2];
-                            $addProductWarehousehVariant->variant_quantity = $quantities[$index2];
-                            $addProductWarehousehVariant->save();
-                        }
-                    }
-                } else {
-                    $addProductWarehouse = new ProductWarehouse();
-                    $addProductWarehouse->warehouse_id = $request->warehouse_id;
-                    $addProductWarehouse->product_id = $productId;
-                    $addProductWarehouse->product_quantity = $quantities[$index2];
-                    $addProductWarehouse->save();
-                    if ($variant_ids[$index2] != 'noid') {
-                        // add warehouse product variant 
-                        $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $addProductWarehouse->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
-                        if ($productWarehouseVariant) {
-                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $quantities[$index2];
-                            $productWarehouseVariant->save();
-                        } else {
-                            $addProductWarehouseVariant = new ProductWarehouseVariant();
-                            $addProductWarehouseVariant->product_warehouse_id = $addProductWarehouse->id;
-                            $addProductWarehouseVariant->product_id = $productId;
-                            $addProductWarehouseVariant->product_variant_id = $variant_ids[$index2];
-                            $addProductWarehouseVariant->variant_quantity = $quantities[$index2];
-                            $addProductWarehouseVariant->save();
-                        }
-                    }
-                }
-                $index2++;
-            }
-        } else {
-            $index2 = 0;
-            foreach ($product_ids as $productId) {
-                // add branch product
-                $productBranch = ProductBranch::where('branch_id', auth()->user()->branch_id)->where('product_id', $productId)->first();
-                if ($productBranch) {
-                    $productBranch->product_quantity = $productBranch->product_quantity + $quantities[$index2];
-                    $productBranch->save();
-                    if ($variant_ids[$index2] != 'noid') {
-                        // add warehouse product variant 
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
-                        if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $quantities[$index2];
-                            $productBranchVariant->save();
-                        } else {
-                            $addProductBranchVariant = new ProductBranchVariant();
-                            $addProductBranchVariant->product_branch_id = $productBranch->id;
-                            $addProductBranchVariant->product_id = $productId;
-                            $addProductBranchVariant->product_variant_id = $variant_ids[$index2];
-                            $addProductBranchVariant->variant_quantity = $quantities[$index2];
-                            $addProductBranchVariant->save();
-                        }
-                    }
-                } else {
-                    $addProductBranch = new ProductBranch();
-                    $addProductBranch->branch_id = auth()->user()->branch_id;
-                    $addProductBranch->product_id = $productId;
-                    $addProductBranch->product_quantity = $quantities[$index2];
-                    $addProductBranch->save();
-                    if ($variant_ids[$index2] != 'noid') {
-                        // add warehouse product variant 
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $addProductBranch->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
-                        if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $quantities[$index2];
-                            $productBranchVariant->save();
-                        } else {
-                            $addProductBranchVariant = new ProductWarehouseVariant();
-                            $addProductBranchVariant->product_branch_id = $addProductBranch->id;
-                            $addProductBranchVariant->product_id = $productId;
-                            $addProductBranchVariant->product_variant_id = $variant_ids[$index2];
-                            $addProductBranchVariant->variant_quantity = $quantities[$index2];
-                            $addProductBranchVariant->save();
-                        }
-                    }
-                }
-                $index2++;
-            }
-        }
+        // update product stock branch or warehouse wise
+        $this->purchaseUtil->updateStockForPurchaseStore($request);
 
         // Add supplier ledger
         $addSupplierLedger = new SupplierLedger();
@@ -573,8 +482,8 @@ class PurchaseController extends Controller
             if ($request->account_id) {
                 // update account
                 $account = Account::where('id', $request->account_id)->first();
-                $account->debit = $account->debit + $request->paying_amount;
-                $account->balance = $account->balance - $request->paying_amount;
+                $account->debit += (float)$request->paying_amount;
+                $account->balance -= (float)$request->paying_amount;
                 $account->save();
 
                 // Add cash flow
@@ -613,7 +522,7 @@ class PurchaseController extends Controller
         $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
 
         //return $request->all();
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+        if (isset($request->warehouse_id)) {
             $this->validate($request, [
                 'warehouse_id' => 'required',
             ]);
@@ -654,11 +563,11 @@ class PurchaseController extends Controller
         // update product and variant quantity for adjustment
         foreach ($updatePurchase->purchase_products as $purchase_product) {
             $updateProductQty = Product::where('id', $purchase_product->product_id)->first();
-            $updateProductQty->quantity = $updateProductQty->quantity - $purchase_product->quantity;
+            $updateProductQty->quantity -= (float)$purchase_product->quantity;
             $updateProductQty->save();
             if ($purchase_product->product_variant_id) {
                 $updateVariantQty = ProductVariant::where('id', $purchase_product->product_variant_id)->where('product_id', $purchase_product->product_id)->first();
-                $updateVariantQty->variant_quantity = $updateVariantQty->variant_quantity - $purchase_product->quantity;
+                $updateVariantQty->variant_quantity -= (float)$purchase_product->quantity;
                 $updateVariantQty->save();
             }
 
@@ -668,33 +577,48 @@ class PurchaseController extends Controller
                 ->first();
 
             if ($SupplierProduct) {
-                $SupplierProduct->label_qty = $SupplierProduct->label_qty - $purchase_product->quantity;
+                $SupplierProduct->label_qty -= (float)$purchase_product->quantity;
                 $SupplierProduct->save();
             }
         }
 
-        // update Warehouse product and variant quantity for adjustment
+        // update Branch or Warehouse product and variant quantity for adjustment
         if ($updatePurchase->warehouse_id) {
             foreach ($updatePurchase->purchase_products as $purchase_product) {
-                $updateProductWarehouse = ProductWarehouse::where('warehouse_id', $updatePurchase->warehouse_id)->where('product_id', $purchase_product->product_id)->first();
-                $updateProductWarehouse->product_quantity = $updateProductWarehouse->product_quantity - $purchase_product->quantity;
+                $updateProductWarehouse = ProductWarehouse::where('warehouse_id', $updatePurchase->warehouse_id)
+                    ->where('product_id', $purchase_product->product_id)->first();
+                $updateProductWarehouse->product_quantity -= (float)$purchase_product->quantity;
                 $updateProductWarehouse->save();
                 if ($purchase_product->product_variant_id) {
-                    $updateProductWarehouseVariant =  ProductWarehouseVariant::where('product_warehouse_id', $updateProductWarehouse->id)->where('product_id', $purchase_product->product_id)->where('product_variant_id', $purchase_product->product_variant_id)->first();
-                    $updateProductWarehouseVariant->variant_quantity = $updateProductWarehouseVariant->variant_quantity - $purchase_product->quantity;
+                    $updateProductWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $updateProductWarehouse->id)->where('product_id', $purchase_product->product_id)
+                        ->where('product_variant_id', $purchase_product->product_variant_id)->first();
+                    $updateProductWarehouseVariant->variant_quantity -= (float)$purchase_product->quantity;
                     $updateProductWarehouseVariant->save();
                 }
             }
-        } else {
+        } elseif ($updatePurchase->branch_id) {
             foreach ($updatePurchase->purchase_products as $purchase_product) {
                 $updateProductBranch = ProductBranch::where('branch_id', $updatePurchase->branch_id)->where('product_id', $purchase_product->product_id)->first();
-                $updateProductBranch->product_quantity = $updateProductBranch->product_quantity - $purchase_product->quantity;
+                $updateProductBranch->product_quantity -= (float)$purchase_product->quantity;
                 $updateProductBranch->save();
 
                 if ($purchase_product->product_variant_id) {
                     $updateProductBranchVariant =  ProductBranchVariant::where('product_branch_id', $updateProductBranch->id)->where('product_id', $purchase_product->product_id)->where('product_variant_id', $purchase_product->product_variant_id)->first();
-                    $updateProductBranchVariant->variant_quantity = $updateProductBranchVariant->variant_quantity - $purchase_product->quantity;
+                    $updateProductBranchVariant->variant_quantity -= (float)$purchase_product->quantity;
                     $updateProductBranchVariant->save();
+                }
+            }
+        }else {
+            foreach ($updatePurchase->purchase_products as $purchase_product) {
+                $MbStock = Product::where('id', $purchase_product->product_id)->first();
+                $MbStock->mb_stock -= $purchase_product->quantity;
+                $MbStock->save();
+
+                if ($purchase_product->product_variant_id) {
+                    $updateProVariantMbStock = ProductVariant::where('id', $purchase_product->product_variant_id)
+                        ->where('product_id', $purchase_product->product_id)->first();
+                    $updateProVariantMbStock->mb_stock -= $purchase_product->quantity;
+                    $updateProVariantMbStock->save();
                 }
             }
         }
@@ -739,13 +663,14 @@ class PurchaseController extends Controller
                     if ($isEditProductPrice == '1') {
                         $updateProductQty->profit = $profits[$productIndex];
                         $updateProductQty->product_price = $selling_prices[$productIndex];
-                    } 
+                    }
                 }
             }
             $updateProductQty->save();
+
             if ($variant_ids[$productIndex] != 'noid') {
                 $updateVariantQty = ProductVariant::where('id', $variant_ids[$productIndex])->where('product_id', $productId)->first();
-                $updateVariantQty->variant_quantity = $updateVariantQty->variant_quantity + $quantities[$productIndex];
+                $updateVariantQty->variant_quantity += (float)$quantities[$productIndex];
                 if ($updatePurchase->is_last_created == 1) {
                     $updateVariantQty->variant_cost = $unit_costs_with_discount[$productIndex];
                     $updateVariantQty->variant_cost_with_tax = $net_unit_costs[$productIndex];
@@ -758,11 +683,8 @@ class PurchaseController extends Controller
             }
             $productIndex++;
         }
-
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $updatePurchase->warehouse_id = $request->warehouse_id;
-        }
-
+        $updatePurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
+        
         // generate invoice ID
         $i = 6;
         $a = 0;
@@ -831,7 +753,7 @@ class PurchaseController extends Controller
                     $updatePurchaseProduct->profit_margin = $profits[$index];
                     $updatePurchaseProduct->selling_price = $selling_prices[$index];
                 }
-                
+
                 if (isset($request->lot_number)) {
                     $updatePurchaseProduct->lot_no = $request->lot_number[$index];
                 }
@@ -857,7 +779,7 @@ class PurchaseController extends Controller
                     $addPurchaseProduct->profit_margin = $profits[$index];
                     $addPurchaseProduct->selling_price = $selling_prices[$index];
                 }
-                
+
                 if (isset($request->lot_number)) {
                     $addPurchaseProduct->lot_no = $request->lot_number[$index];
                 }
@@ -866,103 +788,8 @@ class PurchaseController extends Controller
             $index++;
         }
 
-        // add purchase product in warehouse
-        // add purchase product in warehouse
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $index2 = 0;
-            foreach ($product_ids as $productId) {
-                // add warehouse product
-                $productWarehouse = ProductWarehouse::where('warehouse_id', $request->warehouse_id)->where('product_id', $productId)->first();
-                if ($productWarehouse) {
-                    $productWarehouse->product_quantity = $productWarehouse->product_quantity + $quantities[$index2];
-                    $productWarehouse->save();
-                    if ($variant_ids[$index2] != 'noid') {
-                        // add warehouse product variant 
-                        $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
-                        if ($productWarehouseVariant) {
-                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $quantities[$index2];
-                            $productWarehouseVariant->save();
-                        } else {
-                            $addProductWarehousehVariant = new ProductWarehouseVariant();
-                            $addProductWarehousehVariant->product_warehouse_id = $productWarehouse->id;
-                            $addProductWarehousehVariant->product_id = $productId;
-                            $addProductWarehousehVariant->product_variant_id = $variant_ids[$index2];
-                            $addProductWarehousehVariant->variant_quantity = $quantities[$index2];
-                            $addProductWarehousehVariant->save();
-                        }
-                    }
-                } else {
-                    $addProductWarehouse = new ProductWarehouse();
-                    $addProductWarehouse->warehouse_id = $request->warehouse_id;
-                    $addProductWarehouse->product_id = $productId;
-                    $addProductWarehouse->product_quantity = $quantities[$index2];
-                    $addProductWarehouse->save();
-                    if ($variant_ids[$index2] != 'noid') {
-                        // add warehouse product variant 
-                        $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $addProductWarehouse->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
-                        if ($productWarehouseVariant) {
-                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $quantities[$index2];
-                            $productWarehouseVariant->save();
-                        } else {
-                            $addProductWarehouseVariant = new ProductWarehouseVariant();
-                            $addProductWarehouseVariant->product_warehouse_id = $addProductWarehouse->id;
-                            $addProductWarehouseVariant->product_id = $productId;
-                            $addProductWarehouseVariant->product_variant_id = $variant_ids[$index2];
-                            $addProductWarehouseVariant->variant_quantity = $quantities[$index2];
-                            $addProductWarehouseVariant->save();
-                        }
-                    }
-                }
-                $index2++;
-            }
-        } else {
-            $index2 = 0;
-            foreach ($product_ids as $productId) {
-                // add branch product
-                $productBranch = ProductBranch::where('branch_id', auth()->user()->branch_id)->where('product_id', $productId)->first();
-                if ($productBranch) {
-                    $productBranch->product_quantity = $productBranch->product_quantity + $quantities[$index2];
-                    $productBranch->save();
-                    if ($variant_ids[$index2] != 'noid') {
-                        // add warehouse product variant 
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
-                        if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $quantities[$index2];
-                            $productBranchVariant->save();
-                        } else {
-                            $addProductBranchVariant = new ProductWarehouseVariant();
-                            $addProductBranchVariant->product_branch_id = $productBranch->id;
-                            $addProductBranchVariant->product_id = $productId;
-                            $addProductBranchVariant->product_variant_id = $variant_ids[$index2];
-                            $addProductBranchVariant->variant_quantity = $quantities[$index2];
-                            $addProductBranchVariant->save();
-                        }
-                    }
-                } else {
-                    $addProductBranch = new ProductBranch();
-                    $addProductBranch->branch_id = auth()->user()->branch_id;
-                    $addProductBranch->product_id = $productId;
-                    $addProductBranch->product_quantity = $quantities[$index2];
-                    $addProductBranch->save();
-                    if ($variant_ids[$index2] != 'noid') {
-                        // add warehouse product variant 
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $addProductBranch->id)->where('product_id', $productId)->where('product_variant_id', $variant_ids[$index2])->first();
-                        if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $quantities[$index2];
-                            $productBranchVariant->save();
-                        } else {
-                            $addProductBranchVariant = new ProductWarehouseVariant();
-                            $addProductBranchVariant->product_branch_id = $addProductBranch->id;
-                            $addProductBranchVariant->product_id = $productId;
-                            $addProductBranchVariant->product_variant_id = $variant_ids[$index2];
-                            $addProductBranchVariant->variant_quantity = $quantities[$index2];
-                            $addProductBranchVariant->save();
-                        }
-                    }
-                }
-                $index2++;
-            }
-        }
+        // update product stock branch or warehouse wise
+        $this->purchaseUtil->updateStockForPurchaseStore($request);
 
         // deleted not getting previous product
         $deletedPurchaseProducts = PurchaseProduct::where('purchase_id', $request->id)->where('delete_in_update', 1)->get();
@@ -991,9 +818,7 @@ class PurchaseController extends Controller
             'purchase_products',
             'purchase_products.product',
             'purchase_products.variant'
-        ])
-            ->where('id', $purchaseId)
-            ->first();
+        ])->where('id', $purchaseId)->first();
         return response()->json($purchase);
     }
 
@@ -1002,13 +827,6 @@ class PurchaseController extends Controller
     {
         $suppliers = Supplier::select('id',  'name',  'pay_term', 'pay_term_number', 'phone')->get();
         return response()->json($suppliers);
-    }
-
-    // Get all warehouse requested by ajax
-    public function getAllWarehouse()
-    {
-        $warehouses = Warehouse::select('id', 'warehouse_name', 'warehouse_code')->get();
-        return response()->json($warehouses);
     }
 
     // Get all warehouse requested by ajax
@@ -1021,7 +839,7 @@ class PurchaseController extends Controller
     // Get all warehouse requested by ajax
     public function getAllTax()
     {
-        $taxes = Tax::select('id', 'tax_name', 'tax_percent')->get();
+        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
         return response()->json($taxes);
     }
 
@@ -1069,15 +887,7 @@ class PurchaseController extends Controller
             return response()->json(['namedProducts' => $namedProducts]);
         }
 
-        // $namedProducts = Product::with(['product_variants', 'tax', 'unit'])->where('name', 'LIKE', '%' . $product_code . '%')->where('status', 1)->get();
-        // if ($namedProducts->count() > 0) {
-        //     return response()->json(['namedProducts' => $namedProducts]);
-        // }
-
         $product = Product::with(['product_variants', 'tax', 'unit'])->where('type', 1)->where('product_code', $product_code)->where('status', 1)->first();
-        // if ($product->status == 0) {
-        //     return response()->json(['errorMsg' => 'This product is disabled']);
-        // }
 
         if ($product) {
             return response()->json(['product' => $product]);
@@ -1155,11 +965,11 @@ class PurchaseController extends Controller
     // Add product modal view with data
     public function addProductModalVeiw()
     {
-        $units =  Unit::select(['id', 'name'])->get();
-        $warranties = Warranty::select(['id', 'name', 'type'])->get();
-        $taxes = Tax::select(['id', 'tax_name', 'tax_percent'])->get();
-        $categories =  Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
-        $brands = $brands = Brand::all();
+        $units =  DB::table('units')->select('id', 'name')->get();
+        $warranties = DB::table('warranties')->select('id', 'name', 'type')->get();
+        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
+        $categories =  DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
+        $brands = DB::table('brands')->get();
         return view('purchases.ajax_view.add_product_modal_view', compact('units', 'warranties', 'taxes', 'categories', 'brands'));
     }
 
@@ -1218,7 +1028,7 @@ class PurchaseController extends Controller
         $product = Product::with(['tax', 'unit'])
             ->where('id', $product_id)
             ->first();
-        $units = Unit::select(['id', 'name'])->get();
+        $units = DB::table('units')->select('id', 'name')->get();
         return view('purchases.ajax_view.recent_product_view', compact('product', 'units'));
     }
 
@@ -1523,7 +1333,7 @@ class PurchaseController extends Controller
             $purchase->purchase_return->total_return_due = $purchase->purchase_return->total_return_due - $request->amount;
             $purchase->purchase_return->save();
         }
-        
+
         // generate invoice ID
         $i = 5;
         $a = 0;
@@ -1616,9 +1426,7 @@ class PurchaseController extends Controller
 
     public function returnPaymentUpdate(Request $request, $paymentId)
     {
-        $updatePurchasePayment = PurchasePayment::with('account', 'supplier', 'purchase', 'purchase.purchase_return', 'cashFlow')
-            ->where('id', $paymentId)
-            ->first();
+        $updatePurchasePayment = PurchasePayment::with('account', 'supplier', 'purchase', 'purchase.purchase_return', 'cashFlow')->where('id', $paymentId)->first();
 
         //Update Supplier due 
         $updatePurchasePayment->supplier->total_purchase_return_due = $updatePurchasePayment->supplier->total_purchase_return_due + $updatePurchasePayment->paid_amount;

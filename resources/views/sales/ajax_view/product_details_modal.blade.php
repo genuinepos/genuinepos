@@ -29,21 +29,22 @@
                         <ul class="list-unstyled">
                             <li><strong>Sale From : </strong></li>
                             @if ($sale->branch)
-                                <li><strong>Business Name : </strong>{{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                <li>
+                                    <strong>Stock Location : </strong>
+                                    {{ $sale->branch->name }}/{{ $sale->branch->branch_code }}
                                 </li>
-                                <li><strong>Address : </strong>{{ $sale->branch->name }}/{{ $sale->branch->branch_code }},
-                                        {{ $sale->branch->city }}, {{ $sale->branch->state }},
-                                        {{ $sale->branch->zip_code }}, {{ $sale->branch->country }}</li>
+                                <li>
+                                    <strong>Address : </strong>
+                                    {{ $sale->branch->city }}, {{ $sale->branch->state }},
+                                        {{ $sale->branch->zip_code }}, {{ $sale->branch->country }}
+                                </li>
                                 <li><strong>Phone : </strong> {{ $sale->branch->phone }}</li> 
                             @else 
-                                <li><strong>Business Name : </strong>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                                <li><strong>Stock Location : </strong> 
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)
                                 </li>
                                 <li><strong>Address : </strong>{{ json_decode($generalSettings->business, true)['address'] }}</li>
                                 <li><strong>Phone : </strong>{{ json_decode($generalSettings->business, true)['phone'] }}</li> 
-                                <li><strong>Stock Location : </strong> 
-                                    {{ $sale->warehouse->warehouse_name.'/'.$sale->warehouse->warehouse_code }},
-                                    {{ $sale->warehouse->address }}
-                                </li>
                             @endif
                         </ul>
                     </div>

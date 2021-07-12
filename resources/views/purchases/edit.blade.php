@@ -44,7 +44,7 @@
                                                 </div>
                                             </div>
 
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            @if ($purchase->warehouse_id)
                                                 <div class="input-group mt-1">
                                                     <label for="inputEmail3" class="col-4"><b>Warehouse :</b><span
                                                         class="text-danger">*</span></label>
@@ -64,7 +64,7 @@
                                                     <label for="inputEmail3" class=" col-4"><span
                                                         class="text-danger">*</span> <b>Branch :</b> </label>
                                                     <div class="col-8">
-                                                        <input readonly type="text" class="form-control" value="{{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}">
+                                                        <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HF)' }}">
                                                     </div>
                                                 </div>
                                             @endif
@@ -229,7 +229,7 @@
                                                 <label for="inputEmail3" class="col-4"><b>Tax :</b></label>
                                                 <div class="col-8">
                                                     <select name="purchase_tax" class="form-control" id="purchase_tax">
-                                                        <option value="">NoTax</option>
+                                                        <option value="0.00">NoTax</option>
                                                     </select>
                                                     <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00">
                                                 </div>

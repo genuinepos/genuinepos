@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')@endpush
-@section('title', 'All Category - ')
+@section('title', 'All Variant - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -43,16 +43,16 @@
                                         <div class="form-group row mt-1">
                                             <label><b>Variant Childs </b>(Values) : <span class="text-danger">*</span></label>
                                             <div class="col-md-10">
-                                                <input required type="text" name="variant_childs[]" class="form-control"
+                                                <input required type="text" name="variant_child[]" class="form-control"
                                                     placeholder="Variant child" />
                                             </div>
                 
-                                            <div class="col-md-2 text-start">
+                                            <div class="col-md-2 text-end">
                                                 <a class="btn btn-sm btn-primary add_more_for_add" href="#">+</a>
                                             </div>
                                         </div>
                 
-                                        <div class="form-group more_variant_childs_area">
+                                        <div class="form-group more_variant_child_area">
                 
                                         </div>
                 
@@ -75,8 +75,43 @@
                                     </div>
                                 </div>
 
-                                <div class="form-area px-3 pb-2" id="edit_form_body">
-
+                                <div class="form-area px-3 pb-2">
+                                    <form id="edit_variant_form" action="{{ route('product.variants.update') }}">
+                                        <input type="hidden" name="id" id="id">
+                                        <div class="form-group">
+                                            <b>Name :</b> <span class="text-danger">*</span>
+                                            <input type="text" name="variant_name" class="form-control edit_input"
+                                                data-name="Brand name" id="e_variant_name" placeholder="Brand Name" />
+                                            <span class="error error_e_variant_name"></span>
+                                        </div>
+                
+                                        <div class="form-group row mt-2">
+                                            <div class="col-md-12"><b>Variant Childs (Values) :</b> <span class="text-danger">*</span></div>
+                                            <div class="col-md-10">
+                                                <input type="hidden" name="variant_child_ids[]" id="e_variant_child_id" value="">
+                                                <input required type="text" name="variant_child[]" class="form-control"
+                                                    id="e_variant_child" placeholder="Variant child" />
+                                            </div>
+                
+                                            <div class="col-md-2 text-end">
+                                                <a class="btn btn-sm btn-primary add_more_for_edit" href="#">+</a>
+                                            </div>
+                                        </div>
+                
+                                        <div class="form-group more_variant_child_area_edit">
+                
+                                        </div>
+                
+                                        <div class="form-group row mt-2">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn loading_button d-none"><i
+                                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                <button type="submit" class="c-btn me-0 btn_blue float-end">Save Changes</button>
+                                                <button type="button" data-bs-dismiss="modal"
+                                                    class="c-btn btn_orange float-end" id="close_form">Close</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -150,23 +185,21 @@
             var html = '<div class="more_variant_child mt-2 more' + index + '">';
             html += '<div class="row">';
             html += '<div class="col-md-10"> ';
-            html +=
-                '<input required type="text" name="variant_childs[]" class="form-control " placeholder="Variant child"/>';
-            html += ' </div>';
+            html += '<input required type="text" name="variant_child[]" class="form-control " placeholder="Variant child"/>';
+            html += '</div>';
 
-            html += '<div class="col-md-2 text-start">';
+            html += '<div class="col-md-2 text-end">';
             html += '<a class="btn btn-sm btn-danger delete_more_for_add" data-index="' + index +
                 '" href="#">X</a>';
             html += '</div>';
             html += '</div>';
             html += '</div>';
-            $('.more_variant_childs_area').append(html);
+            $('.more_variant_child_area').append(html);
         });
 
         // delete add more field for adding
         $(document).on('click', '.delete_more_for_add', function(e) {
             var index = $(this).data('index');
-            console.log(index);
             $('.more' + index).remove();
         })
 
@@ -207,8 +240,7 @@
                     $('#add_variant_form')[0].reset();
                     $('.loading_button').hide();
                     getAllVariant();
-                    $('#addModal').modal('hide');
-                    $('.more_variant_childs_area').empty();
+                    $('.more_variant_child_area').empty();
                     $('.submit_button').prop('type', 'submit');
                 }
             });
@@ -225,33 +257,30 @@
             console.log(variantInfo);
             $('#id').val(variantInfo.id);
             $('#e_variant_name').val(variantInfo.bulk_variant_name);
-            $('#e_variant_child_id').val(variantInfo.bulk_variant_childs[0].id);
-            $('#e_variant_child').val(variantInfo.bulk_variant_childs[0].child_name);
-            $('.more_variant_childs_area_edit').empty();
-            $.each(variantInfo.bulk_variant_childs, function(key, bulk_variant_child) {
+            $('#e_variant_child_id').val(variantInfo.bulk_variant_child[0].id);
+            $('#e_variant_child').val(variantInfo.bulk_variant_child[0].child_name);
+            $('.more_variant_child_area_edit').empty();
+            $.each(variantInfo.bulk_variant_child, function(key, bulk_variant_child) {
                 if (add_more_index_for_edit != 0) {
                     var html = '<div class="more_variant_child mt-2 e_more' +
                         add_more_index_for_edit + '">';
                     html += '<div class="row">';
-                    html += '<div class="col-md-11"> ';
+                    html += '<div class="col-md-10"> ';
                     html += '<input type="hidden" name="variant_child_ids[]" value="' +
                         bulk_variant_child.id + '"/>';
-                    html +=
-                        '<input required type="text" name="variant_childs[]" class="form-control " placeholder="Variant child" value="' +
-                        bulk_variant_child.child_name + '"/>';
+                    html += '<input required type="text" name="variant_child[]" class="form-control " placeholder="Variant child" value="' + bulk_variant_child.child_name + '"/>';
                     html += '</div>';
-
-                    html += '<div class="col-md-1 text-right">';
-                    html +=
-                        '<a class="btn btn-sm btn-danger delete_more_for_edit" data-index="' +
-                        add_more_index_for_edit + '" href="#">X</a>';
+                    html += '<div class="col-md-2 text-end">';
+                    html +='<a class="btn btn-sm btn-danger delete_more_for_edit" data-index="' + add_more_index_for_edit + '" href="#">X</a>';
                     html += '</div>';
                     html += '</div>';
                     html += '</div>';
-                    $('.more_variant_childs_area_edit').append(html);
+                    $('.more_variant_child_area_edit').append(html);
                 }
                 add_more_index_for_edit++;
-            })
+            });
+            $('#add_form').hide();
+            $('#edit_form').show();
         });
 
         $('.add_more_for_edit').on('click', function(e) {
@@ -259,26 +288,24 @@
             var index = add_more_index_for_edit++;
             var html = '<div class="more_variant_child mt-2 e_more' + index + '">';
             html += '<div class="row">';
-            html += '<div class="col-md-11"> ';
+            html += '<div class="col-md-10"> ';
             html += '<input type="hidden" name="variant_child_ids[]" value="noid"/>';
-            html +=
-                '<input required type="text" name="variant_childs[]" class="form-control " placeholder="Variant child"/>';
+            html += '<input required type="text" name="variant_child[]" class="form-control " placeholder="Variant child"/>';
             html += ' </div>';
 
-            html += '<div class="col-md-1 text-right">';
+            html += '<div class="col-md-2 text-end">';
             html += '<a class="btn btn-sm btn-danger delete_more_for_edit" data-index="' + index +
                 '" href="#">X</a>';
             html += '</div>';
             html += '</div>';
             html += '</div>';
-            $('.more_variant_childs_area_edit').append(html);
+            $('.more_variant_child_area_edit').append(html);
         });
 
 
         // delete add more field for adding
         $(document).on('click', '.delete_more_for_edit', function(e) {
             var index = $(this).data('index');
-            console.log(index);
             $('.e_more' + index).remove();
         })
 
@@ -286,11 +313,9 @@
         $('#edit_variant_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
-            $('.submit_button').hide();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.edit_input');
-            inputs.removeClass('is-invalid');
             $('.error').html('');
             var countErrorField = 0;
             $.each(inputs, function(key, val) {
@@ -298,27 +323,26 @@
                 var idValue = $('#' + inputId).val()
                 if (idValue == '') {
                     countErrorField += 1;
-                    $('#' + inputId).addClass('is-invalid');
                     var fieldName = $('#' + inputId).data('name');
                     $('.error_' + inputId).html(fieldName + ' is required.');
                 }
             });
+
             if (countErrorField > 0) {
                 $('.loading_button').hide();
-                $('.submit_button').show();
                 return;
             }
+
             $.ajax({
                 url: url,
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
-                    $('.submit_button').show();
+                    $('#add_form').show();
+                    $('#edit_form').hide();
                     getAllVariant();
-                    $('#editModal').modal('hide');
                 }
             });
         });
@@ -331,17 +355,8 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.')} 
                     }
                 }
             });
@@ -355,13 +370,17 @@
             $.ajax({
                 url: url,
                 type: 'post',
-                async: false,
                 data: request,
                 success: function(data) {
                     getAllVariant();
                     toastr.error(data);
                 }
             });
+        });
+
+        $(document).on('click', '#close_form', function() {
+            $('#add_form').show();
+            $('#edit_form').hide();
         });
     });
 </script>

@@ -24,7 +24,6 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                     
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -206,7 +205,6 @@
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
                                     <li class="mt-1">
-                                        {{-- <a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a> --}}
                                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
                                         <button type="submit" id="print_payment" class="c-btn me-0 btn_blue">Print</button>
                                     </li>

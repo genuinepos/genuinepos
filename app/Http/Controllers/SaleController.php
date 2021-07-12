@@ -177,11 +177,11 @@ class SaleController extends Controller
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
                 })
-                ->editColumn('from',  function ($row) {
+                ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HF</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {

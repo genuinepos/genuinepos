@@ -90,19 +90,19 @@
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Name" id="name" placeholder="Branch name"/>
+                                <input type="text" name="name" class="form-control  add_input" data-name="Name" id="name" placeholder="Branch name"/>
                                 <span class="error error_name"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Branch Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
-                                <input type="text" name="code" class="form-control form-control-sm add_input" data-name="Branch code" id="code" placeholder="Branch code"/>
+                                <input type="text" name="code" class="form-control  add_input" data-name="Branch code" id="code" placeholder="Branch code"/>
                                 <span class="error error_code"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Phone :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="phone" class="form-control form-control-sm add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
+                                <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
                                 <span class="error error_phone"></span>
                             </div>
                         </div>
@@ -110,19 +110,19 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <label> <strong>City :</strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="city" class="form-control form-control-sm add_input" data-name="City" id="city" placeholder="City"/>
+                                <input type="text" name="city" class="form-control  add_input" data-name="City" id="city" placeholder="City"/>
                                 <span class="error error_city"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>State :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="state" class="form-control form-control-sm add_input" data-name="State" id="state" placeholder="State name"/>
+                                <input type="text" name="state" class="form-control  add_input" data-name="State" id="state" placeholder="State name"/>
                                 <span class="error error_state"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Country :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="country" class="form-control form-control-sm add_input" data-name="country" id="country" placeholder="Country"/>
+                                <input type="text" name="country" class="form-control  add_input" data-name="country" id="country" placeholder="Country"/>
                                 <span class="error error_country"></span>
                             </div>
                         </div>
@@ -130,35 +130,35 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <label> <strong>Zip-code :</strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="zip_code" class="form-control form-control-sm add_input" data-name="Zip code" id="zip_code" placeholder="Zip code"/>
+                                <input type="text" name="zip_code" class="form-control  add_input" data-name="Zip code" id="zip_code" placeholder="Zip code"/>
                                 <span class="error error_zip_code"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Alternate Phone Number :</strong> </label>
-                                <input type="text" name="alternate_phone_number" class="form-control form-control-sm" id="alternate_phone_number" placeholder="Alternate phone number"/>
+                                <input type="text" name="alternate_phone_number" class="form-control " id="alternate_phone_number" placeholder="Alternate phone number"/>
                             </div>
 
                             <div class="col-md-4">
                                 <label> <strong>Email :</strong> </label>
-                                <input type="text" name="email" class="form-control form-control-sm"  id="email" placeholder="Email address"/>
+                                <input type="text" name="email" class="form-control "  id="email" placeholder="Email address"/>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <label> <strong>Website :</strong> </label>
-                                <input type="text" name="website" class="form-control form-control-sm" id="website" placeholder="Website URL"/>
+                                <input type="text" name="website" class="form-control " id="website" placeholder="Website URL"/>
                             </div>
 
                             <div class="col-md-4">
                                 <label> <strong>Branch Logo :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
-                                <input type="file" name="logo" class="form-control form-control-sm" id="logo"/>
+                                <input type="file" name="logo" class="form-control " id="logo"/>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Default Account :</strong> </label>
-                                <select name="default_account_id" id="default_account_id" class="form-control form-control-sm">
+                                <select name="default_account_id" id="default_account_id" class="form-control ">
                                     <option value="">Select Please</option>
                                 </select>
                             </div>
@@ -167,7 +167,7 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <label><strong>Add Sale Invoice Scheme :</strong>  <span class="text-danger">*</span></label>
-                                <select name="invoice_schema_id" id="invoice_schema_id" data-name="invoice schema" class="form-control form-control-sm add_input">
+                                <select name="invoice_schema_id" id="invoice_schema_id" data-name="invoice schema" class="form-control  add_input">
                                     <option value="">Select Please</option>
                                 </select>
                                 <span class="error error_invoice_schema_id"></span>
@@ -175,7 +175,7 @@
 
                             <div class="col-md-4">
                                 <label><strong>Add Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
-                                <select name="add_sale_invoice_layout_id" id="add_sale_invoice_layout_id" data-name="Add sale invoice layout" class="form-control form-control-sm add_input">
+                                <select name="add_sale_invoice_layout_id" id="add_sale_invoice_layout_id" data-name="Add sale invoice layout" class="form-control  add_input">
                                     <option value="">Select Please</option>
                                 </select>
                                 <span class="error error_add_sale_invoice_layout_id"></span>
@@ -183,7 +183,7 @@
 
                             <div class="col-md-4">
                                 <label><strong>POS Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
-                                <select name="pos_sale_invoice_layout_id" id="pos_sale_invoice_layout_id" data-name="POS sale invoice layout" class="form-control form-control-sm add_input">
+                                <select name="pos_sale_invoice_layout_id" id="pos_sale_invoice_layout_id" data-name="POS sale invoice layout" class="form-control  add_input">
                                     <option value="">Select Please</option>
                                 </select>
                                 <span class="error error_pos_sale_invoice_layout_id"></span>
@@ -228,19 +228,19 @@
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control form-control-sm edit_input" data-name="Name" id="e_name" placeholder="Branch name"/>
+                                <input type="text" name="name" class="form-control  edit_input" data-name="Name" id="e_name" placeholder="Branch name"/>
                                 <span class="error error_e_name"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Branch Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
-                                <input type="text" name="code" class="form-control form-control-sm edit_input" data-name="Branch code" id="e_code" placeholder="Branch code"/>
+                                <input type="text" name="code" class="form-control  edit_input" data-name="Branch code" id="e_code" placeholder="Branch code"/>
                                 <span class="error error_e_code"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Phone :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="phone" class="form-control form-control-sm edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number"/>
+                                <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number"/>
                                 <span class="error error_e_phone"></span>
                             </div>
                         </div>
@@ -248,19 +248,19 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <label> <strong>City :</strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="city" class="form-control form-control-sm edit_input" data-name="City" id="e_city" placeholder="City"/>
+                                <input type="text" name="city" class="form-control  edit_input" data-name="City" id="e_city" placeholder="City"/>
                                 <span class="error error_e_city"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>State :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="state" class="form-control form-control-sm edit_input" data-name="State" id="e_state" placeholder="State name"/>
+                                <input type="text" name="state" class="form-control  edit_input" data-name="State" id="e_state" placeholder="State name"/>
                                 <span class="error error_e_state"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Country :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="country" class="form-control form-control-sm edit_input" data-name="country" id="e_country" placeholder="Country"/>
+                                <input type="text" name="country" class="form-control  edit_input" data-name="country" id="e_country" placeholder="Country"/>
                                 <span class="error error_e_country"></span>
                             </div>
                         </div>
@@ -268,35 +268,35 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <label> <strong>Zip-code :</strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="zip_code" class="form-control form-control-sm edit_input" data-name="Zip code" id="e_zip_code" placeholder="Zip code"/>
+                                <input type="text" name="zip_code" class="form-control  edit_input" data-name="Zip code" id="e_zip_code" placeholder="Zip code"/>
                                 <span class="error error_e_zip_code"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Alternate Phone Number :</strong> </label>
-                                <input type="text" name="alternate_phone_number" class="form-control form-control-sm" id="e_alternate_phone_number" placeholder="Alternate phone number"/>
+                                <input type="text" name="alternate_phone_number" class="form-control " id="e_alternate_phone_number" placeholder="Alternate phone number"/>
                             </div>
 
                             <div class="col-md-4">
                                 <label> <strong>Email :</strong> </label>
-                                <input type="text" name="email" class="form-control form-control-sm"  id="e_email" placeholder="Email address"/>
+                                <input type="text" name="email" class="form-control "  id="e_email" placeholder="Email address"/>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <label> <strong>Website :</strong> </label>
-                                <input type="text" name="website" class="form-control form-control-sm" id="e_website" placeholder="Website URL"/>
+                                <input type="text" name="website" class="form-control " id="e_website" placeholder="Website URL"/>
                             </div>
 
                             <div class="col-md-4">
                                 <label> <strong>Branch Logo :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
-                                <input type="file" name="logo" class="form-control form-control-sm" id="logo"/>
+                                <input type="file" name="logo" class="form-control " id="logo"/>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>Default Account :</strong> </label>
-                                <select name="default_account_id" id="e_default_account_id" class="form-control form-control-sm">
+                                <select name="default_account_id" id="e_default_account_id" class="form-control ">
                                     <option value="">Select Please</option>
                                 </select>
                             </div>
@@ -305,7 +305,7 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <label><strong>Invoice Scheme :</strong>  <span class="text-danger">*</span></label>
-                                <select name="invoice_schema_id" id="e_invoice_schema_id" data-name="Add sale pos invoice schema" class="form-control form-control-sm edit_input">
+                                <select name="invoice_schema_id" id="e_invoice_schema_id" data-name="Add sale pos invoice schema" class="form-control  edit_input">
                                     <option value="">Select Please</option>
                                 </select>
                                 <span class="error error_e_invoice_schema_id"></span>
@@ -313,7 +313,7 @@
 
                             <div class="col-md-4">
                                 <label><strong>Add Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
-                                <select name="add_sale_invoice_layout_id" id="e_add_sale_invoice_layout_id" data-name="Add sale invoice layout" class="form-control form-control-sm edit_input">
+                                <select name="add_sale_invoice_layout_id" id="e_add_sale_invoice_layout_id" data-name="Add sale invoice layout" class="form-control  edit_input">
                                     <option value="">Select Please</option>
                                 </select>
                                 <span class="error error_e_add_sale_invoice_layout_id"></span>
@@ -321,7 +321,7 @@
 
                             <div class="col-md-4">
                                 <label><strong>POS Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
-                                <select name="pos_sale_invoice_layout_id" id="e_pos_sale_invoice_layout_id" data-name="POS sale invoice layout" class="form-control form-control-sm edit_input">
+                                <select name="pos_sale_invoice_layout_id" id="e_pos_sale_invoice_layout_id" data-name="POS sale invoice layout" class="form-control  edit_input">
                                     <option value="">Select Please</option>
                                 </select>
                                 <span class="error error_e_pos_sale_invoice_layout_id"></span>
@@ -550,9 +550,7 @@
         $(document).on('click', '#delete',function(e){
             e.preventDefault(); 
             var url = $(this).attr('href');
-            var id = $(this).data('id');
-            $('#deleted_form').attr('action', url);
-            $('#deleteId').val(id);    
+            $('#deleted_form').attr('action', url);   
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -583,12 +581,8 @@
                 type:'delete',
                 data:request,
                 success:function(data){
-                    if($.isEmptyObject(data.errorMsg)){
-                        getAllBranch();
-                        toastr.error(data);
-                    }else{
-                        toastr.error(data.errorMsg, 'Error'); 
-                    }
+                    getAllBranch();
+                    toastr.error(data.errorMsg, 'Error'); 
                 }
             });
         });

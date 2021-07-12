@@ -27,40 +27,34 @@
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
                              <li><strong>Purchase From : </strong></li>
-                             <li>
-                                 <strong>Enterprise Name : </strong> <span class="business_name">
-                                     @if ($purchase->branch)
-                                         {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
-                                     @else
-                                         {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                                            Office</b>)
-                                     @endif
-                                 </span>
-                             </li>
+                             <li><strong>Business Location : </strong>
+                                @if ($purchase->branch_id)
+                                    {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>Branch/Concern</b>)
+                                @else
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
+                                    Office</b>)
+                                @endif
+                            </li>
                              <li><strong>Stored Location : </strong>
-                                 <span class="branch_or_warehouse">
-                                     @if ($purchase->branch)
-                                         {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
-                                         (<b>Branch/Concern</b>) ,<br>
-                                         {{ $purchase->branch ? $purchase->branch->city : '' }},
-                                         {{ $purchase->branch ? $purchase->branch->state : '' }},
-                                         {{ $purchase->branch ? $purchase->branch->zip_code : '' }},
-                                         {{ $purchase->branch ? $purchase->branch->country : '' }}.
-                                     @else
-                                         {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_name }}
-                                         (<b>Warehouse</b>),<br>
-                                         {{ $purchase->warehouse->address }}.
-                                     @endif
-                                 </span>
+                                    @if ($purchase->warehouse_id)
+                                        {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_name }}
+                                        (<b>Warehouse</b>)
+                                    @elseif($purchase->branch_id)
+                                        {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
+                                        (<b>Branch/Concern</b>) 
+                                    @else
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
+                                        Office</b>)
+                                    @endif
                              </li>
                              <li><strong>Phone : </strong>
-                                 <span class="phone">
-                                     @if ($purchase->branch)
-                                         {{ $purchase->branch->phone }}, <br>
-                                     @else
-                                         {{ $purchase->warehouse->phone }}
-                                     @endif
-                                 </span>
+                                @if ($purchase->branch)
+                                    {{ $purchase->branch->phone }}, <br>
+                                @elseif($purchase->warehouse_id)
+                                    {{ $purchase->warehouse->phone }}
+                                @else
+                                    {{ json_decode($generalSettings->business, true)['phone'] }}
+                                @endif
                              </li>
                          </ul>
                      </div>
@@ -304,38 +298,33 @@
                         <ul class="list-unstyled">
                             <li><strong>Purchase From : </strong></li>
                             <li>
-                                <strong>Enterprise Name : </strong> 
+                                <strong>Business Location : </strong> 
                                 @if ($purchase->branch)
-                                    {{ $purchase->branch->name }}
+                                    {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BR)</b>' !!}
                                 @else
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
                                         Office</b>)
                                 @endif
                             </li>
                             <li><strong>Stored Location : </strong>
-                                <span class="branch_or_warehouse">
-                                    @if ($purchase->branch)
-                                        {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
-                                        (<b>Branch/Concern</b>) ,<br>
-                                        {{ $purchase->branch ? $purchase->branch->city : '' }},
-                                        {{ $purchase->branch ? $purchase->branch->state : '' }},
-                                        {{ $purchase->branch ? $purchase->branch->zip_code : '' }},
-                                        {{ $purchase->branch ? $purchase->branch->country : '' }}.
-                                    @else
-                                        {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_name }}
-                                        (<b>Warehouse</b>),<br>
-                                        {{ $purchase->warehouse->address }}.
-                                    @endif
-                                </span>
+                                @if ($purchase->warehouse_id )
+                                    {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_name }}
+                                    (<b>Warehouse</b>)
+                                @elseif($purchase->branch_id)
+                                    {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
+                                    (<b>Branch/Concern</b>)
+                                @else
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                                @endif
                             </li>
                             <li><strong>Phone : </strong>
-                                <span class="phone">
-                                    @if ($purchase->branch)
-                                        {{ $purchase->branch->phone }}, <br>
-                                    @else
-                                        {{ $purchase->warehouse->phone }}
-                                    @endif
-                                </span>
+                                @if ($purchase->branch)
+                                    {{ $purchase->branch->phone }}
+                                @elseif($purchase->warehouse_id)
+                                    {{ $purchase->warehouse->phone }}.
+                                @else
+                                    {{ json_decode($generalSettings->business, true)['phone'] }}
+                                @endif
                             </li>
                         </ul>
                     </div>
@@ -463,7 +452,7 @@
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <h6>APPREVED BY : </h6>
+                    <h6>APPROVED BY : </h6>
                 </div>
             </div>
 

@@ -28,19 +28,18 @@
             <tr>
                 <td class="text-start">{{ $variant->variant_name }}</td>
                 <td class="text-start">{{ $variant->variant_code }}</td>
-                <td class="text-start">
-                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                    {{ $variant->variant_cost }}</td>
-                <td class="text-start">
-                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                    {{ $variant->variant_cost_with_tax }}</td>
+                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $variant->variant_cost }}</td>
+                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $variant->variant_cost_with_tax }}</td>
                 <td class="text-start"> {{ $variant->variant_profit }}</td>
+                
+                <td class="text-start">
+                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                    {{ bcadd($variant->variant_price, 0, 2) }}
+                </td>
+
                 <td class="text-start">
                     {{ json_decode($generalSettings->business, true)['currency'] }}
                     {{ bcadd($priceIncTax, 0, 2) }}
-                </td>
-                <td class="text-start">
-                    
                 </td>
                 
                 @if (count($price_groups) > 0)
@@ -64,7 +63,7 @@
 
                 <td class="text-start">
                     @if ($variant->variant_image)
-                        <img src="{{ asset('public/uploads/product/variant_image/'. $variant->variant_image) }}">
+                        <img style="width: 40px;height:40px;" src="{{ asset('public/uploads/product/variant_image/'. $variant->variant_image) }}">
                     @endif
                 </td>
             </tr>

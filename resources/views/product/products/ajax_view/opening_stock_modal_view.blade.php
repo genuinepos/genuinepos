@@ -3,14 +3,8 @@ use App\Models\ProductOpeningStock;
 use App\Models\Product;
 @endphp
 <style>
-    .input-group-text {
-        padding: 0px 8px !important;
-    }
-
-    .input-group-prepend {
-        background: white !important;
-    }
-
+    .input-group-text {padding: 0px 8px !important;}
+    .input-group-prepend {background: white !important;}
 </style>
 
 <form id="update_opening_stock_form" action="{{ route('products.opening.stock.update', $productId) }}"
@@ -117,16 +111,13 @@ use App\Models\Product;
                                                     </td>
 
                                                     <td>
-                                                        <input type="number" step="any" name="unit_costs_exc_tax[]"
-                                                            class="form-control"
-                                                            id="unit_cost_exc_tax"
-                                                            value="{{ $variant->variant_cost }}">
+                                                        <input type="number" step="any" name="unit_costs_exc_tax[]" class="form-control"
+                                                            id="unit_cost_exc_tax" value="{{ $variant->variant_cost }}">
                                                     </td>
 
                                                     <td class="text">
                                                         <b><span class="span_subtotal">0.00</span></b>
-                                                        <input type="hidden" id="subtotal" name="subtotals[]"
-                                                            value="0.00">
+                                                        <input type="hidden" id="subtotal" name="subtotals[]" value="0.00">
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -134,33 +125,27 @@ use App\Models\Product;
                                             <tr>
                                                 <td class="text">{{ $product->name }}</td>
                                                 <td>
-                                                    <input type="hidden" name="warehouse_ids[]"
-                                                        value="{{ $warehouse->id }}">
-                                                    <input type="hidden" name="product_ids[]"
-                                                        value="{{ $product->id }}">
+                                                    <input type="hidden" name="warehouse_ids[]" value="{{ $warehouse->id }}">
+                                                    <input type="hidden" name="product_ids[]" value="{{ $product->id }}">
                                                     <input type="hidden" name="variant_ids[]" value="noid">
 
                                                     <div class="input-group width-25 ml-2">
-                                                        <input type="number" step="any" name="qunatities[]"
-                                                            class="form-control" id="quantity"
+                                                        <input type="number" step="any" name="qunatities[]" class="form-control" id="quantity"
                                                             value="0.00">
                                                         <div class="input-group-prepend">
-                                                            <span
-                                                                class="input-group-text input_group_text_custom text-dark">{{ $product->unit->code_name }}</span>
+                                                            <span class="input-group-text input_group_text_custom text-dark">{{ $product->unit->code_name }}</span>
                                                         </div>
                                                     </div>
                                                 </td>
 
                                                 <td>
-                                                    <input type="number" step="any" name="unit_costs_exc_tax[]"
-                                                        class="form-control" id="unit_cost_exc_tax"
+                                                    <input type="number" step="any" name="unit_costs_exc_tax[]" class="form-control" id="unit_cost_exc_tax"
                                                         value="{{ $product->product_cost }}">
                                                 </td>
 
                                                 <td class="text">
                                                     <b><span class="span_subtotal">0.00</span></b>
-                                                    <input type="hidden" id="subtotal" name="subtotals[]"
-                                                        value="0.00">
+                                                    <input type="hidden" id="subtotal" name="subtotals[]" value="0.00">
                                                 </td>
                                             </tr>
                                         @endif
@@ -215,35 +200,27 @@ use App\Models\Product;
                                             </td>
 
                                             <td>
-                                                <input type="hidden" name="branch_ids[]"
-                                                    value="{{ auth()->user()->branch->id }}">
-                                                <input type="hidden" name="product_ids[]"
-                                                    value="{{ $openingStock->product_id }}">
-                                                <input type="hidden" name="variant_ids[]"
-                                                    value="{{ $openingStock->product_variant_id ? $openingStock->product_variant_id : 'noid' }}">
+                                                <input type="hidden" name="branch_ids[]" value="{{ auth()->user()->branch->id }}">
+                                                <input type="hidden" name="product_ids[]" value="{{ $openingStock->product_id }}">
+                                                <input type="hidden" name="variant_ids[]" value="{{ $openingStock->product_variant_id ? $openingStock->product_variant_id : 'noid' }}">
 
                                                 <div class="input-group width-25 ml-2">
-                                                    <input type="number" step="any" name="qunatities[]"
-                                                        class="form-control" id="quantity"
+                                                    <input type="number" step="any" name="qunatities[]" class="form-control" id="quantity"
                                                         value="{{ $openingStock->quantity }}">
                                                     <div class="input-group-prepend">
-                                                        <span
-                                                            class="input-group-text input_group_text_custom text-dark">{{ $openingStock->product->unit->code_name }}</span>
+                                                        <span class="input-group-text input_group_text_custom text-dark">{{ $openingStock->product->unit->code_name }}</span>
                                                     </div>
                                                 </div>
                                             </td>
 
                                             <td>
-                                                <input type="number" step="any" name="unit_costs_exc_tax[]"
-                                                    class="form-control" id="unit_cost_exc_tax"
+                                                <input type="number" step="any" name="unit_costs_exc_tax[]" class="form-control" id="unit_cost_exc_tax"
                                                     value="{{ $openingStock->unit_cost_exc_tax }}">
                                             </td>
 
                                             <td class="text">
-                                                <b><span
-                                                        class="span_subtotal">{{ $openingStock->subtotal }}</span></b>
-                                                <input type="hidden" id="subtotal" name="subtotals[]"
-                                                    value="{{ $openingStock->subtotal }}">
+                                                <b><span class="span_subtotal">{{ $openingStock->subtotal }}</span></b>
+                                                <input type="hidden" id="subtotal" name="subtotals[]" value="{{ $openingStock->subtotal }}">
                                             </td>
                                         </tr>
                                         @php
@@ -281,15 +258,13 @@ use App\Models\Product;
                                                 </td>
 
                                                 <td>
-                                                    <input type="number" step="any" name="unit_costs_exc_tax[]"
-                                                        class="form-control" id="unit_cost_exc_tax"
+                                                    <input type="number" step="any" name="unit_costs_exc_tax[]" class="form-control" id="unit_cost_exc_tax"
                                                         value="{{ $product->variant_cost }}">
                                                 </td>
 
                                                 <td class="text">
                                                     <b><span class="span_subtotal">0.00</span></b>
-                                                    <input type="hidden" id="subtotal" name="subtotals[]"
-                                                        value="0.00">
+                                                    <input type="hidden" id="subtotal" name="subtotals[]" value="0.00">
                                                 </td>
                                             </tr>
                                         @endforeach

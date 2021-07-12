@@ -1,7 +1,7 @@
  <!--begin::Form-->
 <form id="edit_brand_form" action="{{ route('product.brands.update') }}">
     <input type="hidden" name="id" id="id" value="{{$data->id}}">
-    <div class="form-group mt-2">
+    <div class="form-group">
         <label><b>@lang('brand.name')</b> : <span class="text-danger">*</span></label> 
         <input type="text" name="name" class="form-control edit_input" value="{{$data->name}}" id="e_name" placeholder="Brand Name"/>
         <span class="error error_e_name"></span>

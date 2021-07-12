@@ -20,7 +20,12 @@ class BranchController extends Controller
 
     public function getAllBranch()
     {
-        $branches = Branch::all();
+        $branches = '';
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            $branches = Branch::all();
+        }else {
+            $branches = Branch::where('id', auth()->user()->branch_id)->get();
+        }
         return view('settings.branches.ajax_view.branch_list', compact('branches'));
     }
 
@@ -54,6 +59,7 @@ class BranchController extends Controller
         $addBranch->add_sale_invoice_layout_id = $request->add_sale_invoice_layout_id;
         $addBranch->pos_sale_invoice_layout_id = $request->pos_sale_invoice_layout_id;
         $addBranch->default_account_id = $request->default_account_id;
+        
         if ($request->hasFile('logo')) {
             $branchLogo = $request->file('logo');
             $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
@@ -110,15 +116,11 @@ class BranchController extends Controller
         return response()->json('Branch updated successfully');
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request, $id)
     {
-        $updateBranch = Branch::where('id', $request->deleteId)->first();
-        if ($updateBranch->is_main_branch == 1) {
-            return response()->json(['errorMsg' => 'You can not delete main branch.']); 
-        }else{
-            $updateBranch->delete();
-            return response()->json('Branch deleted successfully');
-        }
+        $updateBranch = Branch::where('id', $id)->first();
+        $updateBranch->delete();
+        return response()->json('Branch deleted successfully');
     }
 
     public function allSchemas()

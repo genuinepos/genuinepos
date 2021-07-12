@@ -1,9 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .input-group-text {
-            font-size: 12px !important;
-        }
+        .input-group-text {font-size: 12px !important;}
     </style>
 @endpush
 @section('content')
@@ -30,23 +28,37 @@
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="m-0"><strong>Invoice ID: </strong> <span class="purchase_invoice_id">SI-14252-45525588</span> </p> 
-                                            <p class="m-0"><strong>Date: </strong> <span class="purchase_date">05-12-2020</span></p> 
+                                            <p class="m-0"><strong>Invoice ID: </strong> SI-14252-45525588 </p> 
+                                            <p class="m-0"><strong>Date: </strong> 05-12-2020</p> 
                                          </div>
                                          <div class="col-md-6">
-                                             <p class="m-0 "><strong>Supplier: </strong> <span class="purchase_supplier">Walk_in_customer</span> </p> 
-                                             <p class="m-0 branch"><strong>Branch : </strong> <span class="purchase_branch">Dhaka Branch - 145225</span></p>
-                                             <p class="m-0 warehouse"><strong>Warehouse : </strong> <span class="purchase_warehouse">Warehouse - W-01</span></p>
+                                            <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p> 
+                                            <p class="m-0 branch"><strong>Business Location : </strong> 
+                                                @if($purchase->branch) 
+                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(BRANCH)</b>
+                                                @else 
+                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                                                @endif
+                                            </p>
+                                             <p class="m-0 warehouse"><strong>Purchase Stored Location : </strong>
+                                                @if ($purchase->warehouse)
+                                                    {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WAREHOUSE)</b>
+                                                @elseif($purchase->branch)
+                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }} <b>(BRANCH)</b>
+                                                @else 
+                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b> 
+                                                @endif
+                                            </p>
                                          </div>
                                     </div>
                                     <hr>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Reference ID:<span
+                                                <label for="inputEmail3" class=" col-4">PR.Invoice ID:<span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" class="form-control" id="invoice_id">
+                                                    <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="Purchase Return Invoice ID">
                                                 </div>
                                             </div>
                                         </div>
@@ -124,12 +136,12 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area py-3">
+                <div class="submit_button_area pt-1">
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-success float-end">Save</button>
+                            <button class="btn btn-sm btn-primary float-end">Save</button>
                         </div>
                     </div>
                 </div>
@@ -147,26 +159,6 @@
             type:'get',
             dataType: 'json',
             success:function(purchase){
-                console.log(purchase); 
-                $('.purchase_invoice_id').html(purchase.invoice_id); 
-                $('.purchase_date').html(purchase.date); 
-                $('.purchase_supplier').html(purchase.supplier.name); 
-                console.log(purchase.branch);
-                if (purchase.branch != null) {
-                    $('.purchase_branch').html(purchase.branch.name + ' - ' + purchase.branch.branch_code);
-                }else{
-                    $('.branch').hide();
-                }
-
-                if (purchase.warehouse != null) {
-                    $('.purchase_warehouse').html(purchase.warehouse.warehouse_name + ' - ' + purchase.warehouse.warehouse_code);
-                }else{
-                    $('.warehouse').hide();
-                }
-                
-                $('#invoice_id').val(purchase.purchase_return != null ? purchase.purchase_return.invoice_id : '');
-                $('#date').val(purchase.purchase_return != null ? purchase.purchase_return.date : '');
-            
                 if (purchase.purchase_return != null) {
                     $.each(purchase.purchase_return.purchase_return_products, function (key, return_product) {
                         var tr = "";
@@ -278,14 +270,12 @@
     // Return Quantity increase or dicrease and clculate row amount
     $(document).on('input', '#return_quantity', function(){
         var return_quantity = $(this).val() ? $(this).val() : 0;
-        console.log(return_quantity);
         if (parseFloat(return_quantity) >= 0) {
             var tr = $(this).closest('tr');
             var previousReturnQty = tr.find('#previous_return_quantity').val();
             var unit = tr.find('#unit').val();
             var limit = tr.find('#purchase_quantity').val();
             var qty_limit = parseFloat(previousReturnQty) + parseFloat(limit);
-            console.log(qty_limit);
             if(parseInt(return_quantity) > parseInt(qty_limit)){
                 alert('Only '+limit+' '+unit+' is available.');
                 $(this).val(parseFloat(limit).toFixed(2));
@@ -339,7 +329,6 @@
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
                 }else {
-                    console.log(data);
                     $('.loading_button').hide();
                     toastr.success('Successfully purchase return is addedd.'); 
                     $(data).printThis({

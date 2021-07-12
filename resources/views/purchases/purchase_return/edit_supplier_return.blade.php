@@ -41,7 +41,7 @@
                                                 </div>
                                             </div>
 
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            @if ($return->warehouse_id)
                                                 <div class="input-group mt-1">
                                                     <label for="inputEmail3" class="col-4">Warehouse:<span
                                                         class="text-danger">*</span></label>
@@ -57,7 +57,13 @@
                                                     </div>
                                                 </div>
                                             @else 
-                                                <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class="col-4">Location :</label>
+                                                <div class="col-8">
+                                                    <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                                    <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
+                                                </div>
+                                            </div>
                                             @endif
                                         </div>
 

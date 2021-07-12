@@ -281,9 +281,9 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
 
         Route::get('create', 'PurchaseReturnController@supplierReturn')->name('purchases.returns.supplier.return');
         Route::get('search/product/{productCode}/{warehouseId}', 'PurchaseReturnController@searchProduct');
-        Route::get('search/product/in/branch/{productCode}/{branchId}', 'PurchaseReturnController@searchProductInBranch');
+        Route::get('search/product/in/branch/{productCode}', 'PurchaseReturnController@searchProductInBranch');
         Route::get('check/warehouse/variant/qty/{productId}/{variantId}/{warehouseId}', 'PurchaseReturnController@checkWarehouseProductVariant');
-        Route::get('check/branch/variant/qty/{productId}/{variantId}/{branchId}', 'PurchaseReturnController@checkBranchProductVariant');
+        Route::get('check/branch/variant/qty/{productId}/{variantId}', 'PurchaseReturnController@checkBranchProductVariant');
         Route::post('supplier/return/store', 'PurchaseReturnController@supplierReturnStore')->name('purchases.returns.supplier.return.store');
         Route::get('supplier/return/edit/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnEdit')->name('purchases.returns.supplier.return.edit');
         Route::get('get/editable/supplierReturn/{purchaseReturnId}', 'PurchaseReturnController@getEditableSupplierReturn')->name('purchases.return.get.editable.supplier.return');

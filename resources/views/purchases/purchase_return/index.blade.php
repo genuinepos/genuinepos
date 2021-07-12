@@ -102,6 +102,7 @@
                                                     <th>PR.Invoice ID</th>
                                                     <th>Parent Sale</th>
                                                     <th>Supplier Name</th>
+                                                    <th>Location</th>
                                                     <th>Return From</th>
                                                     <th>Payment Status</th>
                                                     <th>Total Amount</th>
@@ -172,7 +173,8 @@
                 {data: 'invoice_id',name: 'invoice_id'},
                 {data: 'parent_invoice_id',name: 'parent_invoice_id'},
                 {data: 'sup_name',name: 'sup_name'},
-                {data: 'from',name: 'from'},
+                {data: 'location',name: 'location'},
+                {data: 'return_from',name: 'return_from'},
                 {data: 'payment_status',name: 'payment_status'},
                 {data: 'total_return_amount',name: 'total_return_amount'},
                 {data: 'total_return_due',name: 'total_return_due'},

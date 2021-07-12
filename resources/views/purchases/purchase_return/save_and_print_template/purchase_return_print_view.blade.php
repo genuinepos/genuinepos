@@ -28,27 +28,25 @@
 
         <div class="purchase_return_and_deal_info pt-3">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-6">
                     <ul class="list-unstyled">
                         <li><strong>Return Details : </strong> </li>
                         <li><strong>Invoice ID : </strong> <span class="return_invoice_id">{{ $purchaseReturn->invoice_id }}</span></li>
                         <li><strong>Return Date : </strong> <span class="return_date">{{ $purchaseReturn->date }}</span></li>
                         <li><strong>Supplier Name : </strong> {{ $purchaseReturn->supplier->name }}</li>
-                        <li><strong>Stock Loction : </strong> 
+                        <li><strong>Return Stock Loction : </strong> 
                             @if ($purchaseReturn->warehouse)
-                                {{ $purchaseReturn->warehouse->warehouse_name.'/'.$purchaseReturn->warehouse->warehouse_code }}
+                                {{ $purchaseReturn->warehouse->warehouse_name.'/'.$purchaseReturn->warehouse->warehouse_code }}<b>(WAREHOUSE)</b>
+                            @elseif($purchaseReturn->branch)
+                                {{ $purchaseReturn->branch->name.'/'.$purchaseReturn->branch->branch_code }} <b>(BRANCH)</b>
                             @else 
-                                {{ $purchaseReturn->branch->name.'/'.$purchaseReturn->branch->branch_code }}
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b> 
                             @endif
                         </li>
                     </ul>
                 </div>
-                <div class="col-lg-4">
-                    <ul class="list-unstyled">
-                        
-                    </ul>
-                </div>
-                <div class="col-lg-4">
+                
+                <div class="col-6">
                     <ul class="list-unstyled float-right">
                         <li><strong>Purchase Details : </li>
                         <li><strong>Invoice No : </strong> {{ $purchaseReturn->purchase ? $purchaseReturn->purchase->invoice_id : 'N/A' }}</li>

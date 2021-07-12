@@ -49,7 +49,7 @@
                                                 </div>
                                             </div>
 
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            @if (count($warehouses) > 0)
                                                 <div class="input-group mt-1">
                                                     <label for="inputEmail3" class="col-4">Warehouse:<span
                                                         class="text-danger">*</span></label>
@@ -65,7 +65,12 @@
                                                     </div>
                                                 </div>
                                             @else 
-                                                <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                                <div class="input-group mt-1">
+                                                    <label for="inputEmail3" class="col-4">Location :</label>
+                                                    <div class="col-8">
+                                                        <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
+                                                    </div>
+                                                </div>
                                             @endif
                                         </div>
 
@@ -73,7 +78,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4">Invoice ID:</label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control">
+                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID">
                                                 </div>
                                             </div>
                                         </div>
@@ -215,7 +220,7 @@
     <script>
         function getTaxes(){
             $.ajax({
-                url:"{{route('purchases.get.all.taxes')}}",
+                url:"{{ route('purchases.get.all.taxes') }}",
                 async:false,
                 type:'get',
                 dataType: 'json',
@@ -242,14 +247,13 @@
                 return;
             }
             $.ajax({
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
+                @if (count($warehouses) > 0) 
                     url:"{{url('purchases/returns/search/product')}}"+"/"+product_code+"/"+warehouse_id,
                 @else
-                    url:"{{url('purchases/returns/search/product/in/branch')}}"+"/"+product_code+"/"+branch_id,  
+                    url:"{{url('purchases/returns/search/product/in/branch')}}"+"/"+product_code,  
                 @endif
                 dataType: 'json',
                 success:function(product){
-                    console.log(product); 
                     if(!$.isEmptyObject(product.errorMsg)){
                         toastr.error(product.errorMsg); 
                         return;
@@ -331,7 +335,6 @@
                             }else{
                                 var li = "";
                                 $.each(product.product_variants, function(key, variant){
-                                    
                                     li += '<li>';
                                     li += '<a class="select_variant_product" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost_with_tax+'" data-v_name="'+variant.variant_name+'" href="#">'+product.name+' ('+variant.variant_name+')'+'</a>';
                                     li +='</li>';
@@ -347,7 +350,6 @@
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
-                                console.log(input.value);
                                 if(input.value != 'noid'){
                                     if(input.value == variant_product.id){
                                         sameVariant += 1;
@@ -442,10 +444,10 @@
                 return;
             }
             $.ajax({
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
+                @if (count($warehouses) > 0) 
                     url:"{{url('purchases/returns/check/warehouse/variant/qty/')}}"+"/"+product_id+"/"+variant_id+"/"+warehouse_id, 
                 @else
-                    url:"{{url('purchases/returns/check/branch/variant/qty')}}"+"/"+product_id+"/"+variant_id+"/"+branch_id, 
+                    url:"{{url('purchases/returns/check/branch/variant/qty')}}"+"/"+product_id+"/"+variant_id,
                 @endif
                 type:'get',
                 dataType: 'json',
@@ -529,7 +531,6 @@
              // Calculate total amount functionalitie
         function calculateTotalAmount(){
             var subtotals = document.querySelectorAll('#return_subtotal');
-            
             // Update Net total Amount
             var netTotalAmount = 0;
             subtotals.forEach(function(subtotal){
@@ -538,17 +539,14 @@
 
             var purchaseTaxAmount = $('#purchase_tax_amount').val() ? $('#purchase_tax_amount').val() : 0; 
             var calcTotalReturnAmount = parseFloat(netTotalAmount) + parseFloat(purchaseTaxAmount);
-            console.log(calcTotalReturnAmount);
             $('.span_total_return_amount').html(parseFloat(calcTotalReturnAmount).toFixed(2));
             $('#total_return_amount').val(parseFloat(calcTotalReturnAmount).toFixed(2));
-            console.log('Calculating');
         }
 
 
         // Quantity increase or dicrease and clculate row amount
         $(document).on('input', '#return_quantity', function(){
             var qty = $(this).val() ? $(this).val() : 0;
-          
             var tr = $(this).closest('tr');
             //Update subtotal 
             var qty_limit = tr.find('#qty_limit').val();

@@ -46,14 +46,15 @@ class DashboardController extends Controller
 
         $userQuery = DB::table('admin_and_users');
         $productQuery = DB::table('product_branches');
-        $purchaseQuery = DB::table('purchases')->select(
+        $purchaseQuery = DB::table('purchases')
+        ->select(
             DB::raw('sum(total_purchase_amount) as total_purchase'),
-            DB::raw('sum(due) as total_due'),
+            DB::raw('sum(case when due > 0 then due end) as total_due'),
         );
 
         $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
-            DB::raw('sum(due) as total_due')
+            DB::raw('sum(case when due > 0 then due end) as total_due')
         );
 
         $expenseQuery = DB::table('expanses')->select(

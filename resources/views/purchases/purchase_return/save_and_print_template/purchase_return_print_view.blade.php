@@ -1,5 +1,6 @@
- <!-- purchase print templete-->
- <div class="purchase_return_print_template">
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
+<!-- purchase print templete-->
+<div class="purchase_return_print_template">
     <div class="details_area">
         <div class="heading_area">
             <div class="row">
@@ -31,7 +32,7 @@
                 <div class="col-6">
                     <ul class="list-unstyled">
                         <li><strong>Return Details : </strong> </li>
-                        <li><strong>Invoice ID : </strong> <span class="return_invoice_id">{{ $purchaseReturn->invoice_id }}</span></li>
+                        <li><strong>PR.Invoice ID : </strong> <span class="return_invoice_id">{{ $purchaseReturn->invoice_id }}</span></li>
                         <li><strong>Return Date : </strong> <span class="return_date">{{ $purchaseReturn->date }}</span></li>
                         <li><strong>Supplier Name : </strong> {{ $purchaseReturn->supplier->name }}</li>
                         <li><strong>Return Stock Loction : </strong> 
@@ -124,20 +125,19 @@
             </div>
         </div>
 
-        <div class="note">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <small>Powered by <strong>SpeedDigit Pvt. Ltd.</strong></small>
-                </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img style="width: 170px; height:25px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($purchaseReturn->invoice_id, $generator::TYPE_CODE_128)) }}">
+                <p>{{$purchaseReturn->invoice_id}}</p>
             </div>
         </div>
 
-        <div class="bracode_area">
+        @if (env('PRINT_SD_PURCHASE') == true)
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <img id="barcode"/>
+                <div class="col-md-12 text-center">
+                    <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 </div>

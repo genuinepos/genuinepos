@@ -25,6 +25,7 @@
                             </li>
                         </ul>
                     </div>
+
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
                             <li><strong>Sale From : </strong></li>
@@ -41,13 +42,14 @@
                                 <li><strong>Phone : </strong> {{ $sale->branch->phone }}</li> 
                             @else 
                                 <li><strong>Stock Location : </strong> 
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                                 </li>
                                 <li><strong>Address : </strong>{{ json_decode($generalSettings->business, true)['address'] }}</li>
                                 <li><strong>Phone : </strong>{{ json_decode($generalSettings->business, true)['phone'] }}</li> 
                             @endif
                         </ul>
                     </div>
+
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
                             <li><strong>Date : </strong>{{ $sale->date . ' ' . $sale->time }}</li>

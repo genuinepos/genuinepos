@@ -1,3 +1,4 @@
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
 <div class="sale_payment_print_area">
     <div class="header_area">
         <div class="company_name text-center">
@@ -100,7 +101,7 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Referance No :</th>
+                            <th width="50%" class="text-start">Voucher No :</th>
                             <td width="50%" class="text-navy-blue">
                                 {{ $payment->invoice_id }}
                             </td>
@@ -126,11 +127,19 @@
     </div>
 
     <div class="signature_area pt-5 mt-5 d-none">
+        <br>
         <table class="w-100 pt-5">
             <tbody>
                 <tr>
                     <th width="50%" class="text-navy-blue">Signature Of Authority</th>
                     <th width="50%" class="text-navy-blue text-end">Signature Of Receiver</th>
+                </tr>
+
+                <tr>
+                    <td colspan="2" class="text-navy-blue text-center">
+                        <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($payment->invoice_id , $generator::TYPE_CODE_128)) }}">
+                        <p>{{ $payment->invoice_id }}</p>
+                    </td>
                 </tr>
 
                 @if (env('PRINT_SD_PAYMENT') == true)

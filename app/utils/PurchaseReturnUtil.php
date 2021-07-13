@@ -144,7 +144,6 @@ class PurchaseReturnUtil
         }
     }
 
-
     public function updatePurchaseInvoiceWiseReturn($purchaseId, $purchaseReturn, $request, $invoicePrefix, $invoiceId)
     {
         $purchase_product_ids = $request->purchase_product_ids;

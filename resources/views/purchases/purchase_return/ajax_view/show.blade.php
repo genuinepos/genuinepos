@@ -49,7 +49,7 @@
                     </div>
                     <div class="col-md-5 text-left">
                         <ul class="list-unstyled">
-                            <li class="parent_purchase"><strong>Purchase Details : </li>
+                            <li class="parent_purchase"><strong>Purchase Details :</strong>  </li>
                             <li class="parent_purchase">
                                 <strong>P.Invoice ID : </strong> 
                                 {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}
@@ -191,7 +191,7 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Purchase Details : </li>
+                        <li><strong>Purchase Details : </strong> </li>
                         <li><strong>P.Invoice No : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
                         <li><strong>Date : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
                     </ul>

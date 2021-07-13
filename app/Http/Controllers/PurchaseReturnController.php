@@ -145,10 +145,11 @@ class PurchaseReturnController extends Controller
 
                 ->editColumn('payment_status', function ($row) {
                     $html = '';
-                    if ($row->total_return_due >= 0) {
-                        $html .= '<span class="text-success"><b>Paid</b></span>';
+                    if ($row->total_return_due > 0) {
+                        $html .= '<span class="text-danger"><b>Due</b></span>';
                     } else {
-                        $html .= '<<span class="text-danger"><b>Due</b></span>';
+                        $html .= '<span class="text-success"><b>Paid</b></span>';
+                        
                     }
                     return $html;
                 })

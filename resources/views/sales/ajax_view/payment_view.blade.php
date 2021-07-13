@@ -24,7 +24,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong> Invoice ID : </strong><span class="invoice_no">{{ $sale->invoice_id }}</span> </li>
-                    <li><strong>Branch/Business : </strong>
+                    <li><strong>Business Location: </strong>
                         <span>
                             @if ($sale->branch)
                                 {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
@@ -59,7 +59,7 @@
             <thead>
                 <tr class="bg-primary">
                     <th class="text-white">Date</th>
-                    <th class="text-white">Invoice ID</th>
+                    <th class="text-white">Voucher No</th>
                     <th class="text-white">Amount</th>
                     <th class="text-white">Method</th>
                     <th class="text-white">Type</th>

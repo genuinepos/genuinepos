@@ -22,18 +22,17 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name mt-1">
+                                <div class="sec-name">
                                     <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-md-3">
                                                         <label><strong>Branch :</strong></label>
                                                         <select name="branch_id"
-                                                            class="form-control form-control-sm submit_able" id="branch_id"
-                                                            data-live-search="true">
-                                                            <option value="NULL">Head Office</option>
+                                                            class="form-control submit_able" id="branch_id">
+                                                            <option value="">All</option>
+                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }}(Head Office)</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     {{ $branch->name . '/' . $branch->branch_code }}
@@ -46,7 +45,7 @@
                                                 <div class="col-md-3">
                                                     <label><strong>Supplier :</strong></label>
                                                     <select name="supplier_id"
-                                                        class="form-control form-control-sm selectpicker submit_able"
+                                                        class="form-control selectpicker submit_able"
                                                         id="supplier_id" data-live-search="true">
                                                     </select>
                                                 </div>
@@ -56,10 +55,10 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week text-navy-blue"></i></span>
+                                                                    class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
                                                         <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control form-control-sm daterange submit_able_input"
+                                                            class="form-control daterange submit_able_input"
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
@@ -72,58 +71,57 @@
                     </div>
 
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Purchase Returns <small>Note: Initially current year's data is available here, if you need
-                                                another year's data go to the data filter.</small></h6>
-                                    </div>
-                                    @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                        <div class="col-md-2">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="{{ route('purchases.returns.supplier.return') }}"><i
-                                                        class="fas fa-plus-square"></i> Add Return</a>
-                                            </div>
+                   
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Purchase Returns</h6>
+                                </div>
+                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                    <div class="col-md-2">
+                                        <div class="btn_30_blue float-end">
+                                            <a href="{{ route('purchases.returns.supplier.return') }}"><i
+                                                    class="fas fa-plus-square"></i> Add Return</a>
                                         </div>
-                                    @endif
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                     </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>PR.Invoice ID</th>
-                                                    <th>Parent Sale</th>
-                                                    <th>Supplier Name</th>
-                                                    <th>Location</th>
-                                                    <th>Return From</th>
-                                                    <th>Payment Status</th>
-                                                    <th>Total Amount</th>
-                                                    <th>Payment Due</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
+                                @endif
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>PR.Invoice ID</th>
+                                                <th>Parent Sale</th>
+                                                <th>Supplier Name</th>
+                                                <th>Location</th>
+                                                <th>Return From</th>
+                                                <th>Payment Status</th>
+                                                <th>Total Amount</th>
+                                                <th>Payment Due</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -230,25 +228,6 @@
         })
 
       
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure to delete ?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     }).then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         } else {
-        //             swal("Your imaginary file is safe!");
-        //         }
-        //     });
-        // });
-
         $(document).on('click', '#delete',function(e){
             e.preventDefault(); 
             var url = $(this).attr('href');

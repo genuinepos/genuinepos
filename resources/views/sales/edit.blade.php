@@ -4,7 +4,7 @@
         .input-group-text {font-size: 12px !important;}
         .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 88.3%;z-index: 9999999;padding: 0;left: 6%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
         .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
-        .select_area ul li a {color: #000000;text-decoration: none;font-size: 13px;padding: 4px 3px;display: block;}
+        .select_area ul li a {color: #000000;text-decoration: none;font-size: 12px;padding: 4px 3px;display: block;border: 1px solid lightgray;margin-top: 3px;}
         .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
@@ -44,40 +44,20 @@
                                                 </div>
                                             </div>
 
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><span
-                                                        class="text-danger">*</span> <b>Warehosue :</b></label>
-                                                    <div class="col-8">
-                                                        <select name="warehouse_id" data-name="Warehouse"
-                                                            class="form-control add_input" id="warehouse_id">
-                                                            @foreach ($warehouses as $warehouse)
-                                                                <option {{ $sale->warehouse_id == $warehouse->id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.' - '.$warehouse->warehouse_code }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_warehouse_id"></span>
-                                                        <input type="hidden" name="warehouse_id" id="req_warehouse_id"
-                                                            value="">
-                                                    </div>
-                                                </div>
-                                            @else
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><span
-                                                    class="text-danger">*</span> <b>Branch :</b> </label>
+                                                <label for="inputEmail3" class="col-4"> <b>B. Location :</b> </label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}">
-                                                    <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
+                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HF)' }}">
                                                 </div>
                                             </div>
-                                            @endif
+                                         
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-4"><b>Invoice ID :</b> </label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id"
-                                                        class="form-control">
+                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control">
                                                 </div>
                                             </div>
 
@@ -161,9 +141,7 @@
                                                 <div class="select_area">
                                                     {{-- <div class="remove_select_area_btn">X</div> --}}
                                                     <ul id="list" class="variant_list_area">
-                                                        {{-- <li>
-                                                            <a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="" data-v_id="" data-p_name="" data-p_tax_id="" data-unit="" data-tax_percent="" data-tax_amount="" data-v_code="" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:30px; height:30px;" src=""> Samsung A30 (4GB, 64Gb) Price-510000 </a>
-                                                        </li> --}}
+                                                     
                                                     </ul>
                                                 </div>
                                             </div>
@@ -518,35 +496,16 @@
             $('.variant_list_area').empty();
             $('.select_area').hide();
             var product_code = $(this).val();
-            var warehouse_id = $('#warehouse_id').val();
-            var branch_id = $('#branch_id').val();
-            var role = $('#role').val();
-            if(warehouse_id == ""){
-                $('#search_product').val("");
-                alert('Warehouse field must not be empty.');
-                return;
-            }
-            delay(function() { searchProduct(product_code, branch_id, warehouse_id); }, 200); //sendAjaxical is the name of remote-command
+            delay(function() { searchProduct(product_code); }, 200); //sendAjaxical is the name of remote-command
         });
 
         // add Sale product by searching product code
-        function searchProduct(product_code, branch_id){
+        function searchProduct(product_code){
             var price_group_id = $('#price_group_id').val();
             $('.variant_list_area').empty();
             $('.select_area').hide();
-            var warehouse_id = $('#warehouse_id').val();
-            if(warehouse_id == ""){
-                $('#search_product').val("");
-                alert('Warehouse field must not be empty.');
-                return;
-            }
-
             $.ajax({
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
-                    url:"{{ url('sales/search/product/in/warehouse') }}"+"/"+product_code+"/"+warehouse_id,
-                @else
-                    url:"{{ url('sales/search/product') }}"+"/"+product_code+"/"+branch_id,
-                @endif
+                url:"{{ url('sales/search/product') }}"+"/"+product_code,
                 dataType: 'json',
                 success:function(product){
                     if(!$.isEmptyObject(product.errorMsg)){
@@ -587,7 +546,6 @@
                                         closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                         closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                                         calculateTotalAmount();
-                                        productTable();
                                         return;
                                     }
                                 });
@@ -664,7 +622,6 @@
                                     tr += '</tr>';
                                     $('#sale_list').append(tr);
                                     calculateTotalAmount(); 
-                                    productTable();  
                                 }
                             }else{
                                 var li = "";
@@ -681,7 +638,7 @@
                                         tax_amount = __tax_amount;
                                     }
                                     li += '<li class="mt-1">';
-                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li += '</li>';
                                 });
                                 $('.variant_list_area').append(li);
@@ -719,7 +676,6 @@
                                         closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                         closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                                         calculateTotalAmount();
-                                        productTable();
                                         return;
                                     }
                                 }    
@@ -797,7 +753,6 @@
                                 tr += '</tr>';
                                 $('#sale_list').append(tr);
                                 calculateTotalAmount();
-                                productTable();
                             }    
                         }else if (!$.isEmptyObject(product.namedProducts)) {
                             if(product.namedProducts.length > 0){
@@ -818,7 +773,7 @@
                                                 tax_amount = __tax_amount;
                                             }
                                             li += '<li>';
-                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-description="'+product.is_show_emi_on_pos+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-description="'+product.is_show_emi_on_pos+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                             li +='</li>';
                                         });
                                     }else{
@@ -833,7 +788,7 @@
                                         }
 
                                         li += '<li>';
-                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'"  data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'"  data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
                                     }
                                 });
@@ -861,8 +816,6 @@
                 document.getElementById('search_product').focus();
             }
 
-            var warehouse_id = $('#warehouse_id').val();
-            var branch_id = $('#branch_id').val();
             var product_id = e.getAttribute('data-p_id');
             var product_name = e.getAttribute('data-p_name');
             var product_code = e.getAttribute('data-p_code');
@@ -873,18 +826,9 @@
             var p_tax_amount = e.getAttribute('data-p_tax_amount');
             var p_tax_type = e.getAttribute('data-tax_type');
             var description = e.getAttribute('data-description');
-            if(warehouse_id == ""){
-                $('#search_product').val("");
-                alert('Warehouse field must not be empty.');
-                return;
-            }
-
+        
             $.ajax({
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
-                    url:"{{ url('sales/check/single/product/stock/in/warehouse') }}"+"/"+product_id+"/"+warehouse_id,
-                @else
-                    url:"{{ url('sales/check/single/product/stock/') }}"+"/"+product_id+"/"+branch_id,
-                @endif
+                url:"{{ url('sales/check/single/product/stock/') }}"+"/"+product_id,
                 async:true,
                 type:'get',
                 dataType: 'json',
@@ -995,8 +939,7 @@
                             tr += '</td>';
                             tr += '</tr>';
                             $('#sale_list').prepend(tr);
-                            calculateTotalAmount(); 
-                            productTable();  
+                            calculateTotalAmount();  
                             if (keyName == 9) {
                                 $("#quantity").select();
                                 keyName = 1;
@@ -1019,8 +962,6 @@
             $('.select_area').hide();
             $('#search_product').val("");
             $('#selectVairantModal').modal('hide');
-            var warehouse_id = $('#warehouse_id').val();
-            var branch_id = $('#branch_id').val();
             var product_id = e.getAttribute('data-p_id');
             var product_name = e.getAttribute('data-p_name');
             var tax_percent = e.getAttribute('data-tax_percent');
@@ -1035,18 +976,8 @@
             var variant_price = e.getAttribute('data-v_price');
             var description = e.getAttribute('data-description');
 
-            if(warehouse_id == ""){
-                $('#search_product').val("");
-                alert('Warehouse field must not be empty.');
-                return;
-            }
-
             $.ajax({
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
-                    url:"{{ url('sales/check/warehouse/variant/qty') }}"+"/"+product_id+"/"+variant_id+"/"+warehouse_id,
-                @else
-                    url:"{{ url('sales/check/branch/variant/qty/') }}"+"/"+product_id+"/"+variant_id+"/"+branch_id,
-                @endif
+                url:"{{ url('sales/check/branch/variant/qty/') }}"+"/"+product_id+"/"+variant_id,
                 async:true,
                 type:'get',
                 dataType: 'json',
@@ -1080,7 +1011,6 @@
                                     closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                     closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                                     calculateTotalAmount();
-                                    productTable();
                                     if (keyName == 9) {
                                         closestTr.find('#quantity').focus();
                                         closestTr.find('#quantity').select();
@@ -1160,7 +1090,6 @@
                             tr += '</tr>';
                             $('#sale_list').append(tr);
                             calculateTotalAmount();
-                            productTable();
                             if (keyName == 9) {
                                 $("#quantity").select();
                                 keyName = 1;
@@ -1189,7 +1118,6 @@
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                     calculateTotalAmount();  
-                    productTable();
                     return;
                 }
                 var unitPrice = tr.find('#unit_price').val();
@@ -1197,7 +1125,6 @@
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                 calculateTotalAmount(); 
-                productTable(); 
             }
         });
 
@@ -1219,7 +1146,6 @@
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                     calculateTotalAmount();  
-                    productTable();
                     return;
                 }
                 var unitPrice = tr.find('#unit_price').val();
@@ -1227,20 +1153,17 @@
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                 calculateTotalAmount(); 
-                productTable(); 
             }
         });
 
         // Input order discount and clculate total amount
         $(document).on('input', '#order_discount', function(){
             calculateTotalAmount();
-            productTable();
         });
 
         // Input order discount type and clculate total amount
         $(document).on('change', '#order_discount_type', function(){
             calculateTotalAmount();
-            productTable();
         });
 
         // Input shipment charge and clculate total amount
@@ -1251,7 +1174,6 @@
         // chane purchase tax and clculate total amount
         $(document).on('change', '#order_tax', function(){
             calculateTotalAmount();
-            productTable();
         });
 
         // Input paying amount and clculate due amount
@@ -1274,7 +1196,6 @@
             e.preventDefault();
             $(this).closest('tr').remove();
             calculateTotalAmount();
-            productTable();
         });
 
         // Show selling product's update modal
@@ -1510,24 +1431,9 @@
         }, 1000);
 
         // Disable branch field after add the products 
-        function productTable(){
-            var totalItem = $('#total_item').val() ? $('#total_item').val() : 0;
-            if(parseFloat(totalItem) > 0){
-                $('#warehouse_id').prop('disabled', true);
-            }else{
-                $('#warehouse_id').prop('disabled', false);
-            }
-        }
-
         $('.submit_button').on('click', function () {
             var value = $(this).val();
             $('#action').val(value); 
-        });
-        
-        $('#warehouse_id').on('change', function(e){
-            e.preventDefault();
-            var warehouse_id = $(this).val();
-            $('#req_warehouse_id').val(warehouse_id);
         });
 
         // Get editable data by ajax
@@ -1540,8 +1446,6 @@
                     var qty_limits = sale.qty_limits;
                     var sale = sale.sale;
                     $('#invoice_id').val(sale.invoice_id);
-                    $('#branch_id').val(sale.branch_id);
-                    $('#req_warehouse_id').val(sale.warehouse_id);
                     $('#status').val(sale.status);
                     $('#date').val(sale.date);
                     $('#pay_term').val(sale.pay_term);
@@ -1622,18 +1526,12 @@
                         $('#sale_list').append(tr);
                     });
                     calculateTotalAmount();
-                    productTable();
                 }
             });
         }
         getEditableSale();
 
         $('#add_product').on('click', function () {
-            var warehouse_id = $('#warehouse_id').val();
-            if (warehouse_id == '') {
-                toastr.error("Warehouse field must not be empty.");
-                return;
-            }
             $.ajax({
                 url:"{{ route('sales.add.product.modal.view') }}",
                 type:'get',
@@ -1717,8 +1615,7 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-            var branch_id = $('#branch_id').val() ? $('#branch_id').val() : null;
-            var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : null;
+
             $.ajax({
                 url: url,
                 type: 'post',
@@ -1726,7 +1623,7 @@
                 success: function(data) {
                     toastr.success('Successfully product is added.');
                     $.ajax({
-                        url:"{{url('sales/get/recent/product')}}"+"/"+branch_id+"/"+warehouse_id+"/"+data.id,
+                        url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
                         type:'get',
                         success:function(data){
                             $('.loading_button').hide();
@@ -1736,7 +1633,6 @@
                             }else{
                                 $('#sale_list').prepend(data);
                                 calculateTotalAmount();
-                                productTable();
                             }
                         }
                     });
@@ -1786,10 +1682,5 @@
             $('#list>li>a').removeClass('selectProduct');
             $(this).addClass('selectProduct');
         });
-
-        // $('#search_product').on('blur', function () {
-        //     $('.select_area').hide();
-        //     $('.variant_list_area').empty();
-        // });
     </script>
 @endpush

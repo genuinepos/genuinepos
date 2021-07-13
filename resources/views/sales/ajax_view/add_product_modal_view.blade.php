@@ -171,63 +171,34 @@
                 <table class="table modal-table table-sm">
                     <thead>
                         <tr class="bg-primary text-white">
-                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                <th>Warehouse</th>
-                            @else 
-                                <th>Branch</th>
-                            @endif
+                            <th>Business Location</th>
                             <th>Quantity</th>
                             <th>Unit Cost Exc.Tax</th>
                             <th>SubTotal</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                            @php
-                                $warehouses = DB::table('warehouses')->select(['id', 'warehouse_name', 'warehouse_code'])->get();
-                            @endphp
-                            @foreach ($warehouses as $warehouse)
-                                <tr>
-                                    <td>
-                                        <input type="hidden" name="warehouse_ids[]" id="os_warehuse_id" value="{{ $warehouse->id }}">
-                                        <p>{{ $warehouse->warehouse_name }} - {{ $warehouse->warehouse_code }}</p> 
-                                    </td>
-        
-                                    <td>
-                                        <input type="number" name="quantities[]" id="os_quantity" step="any" class="form-control" value="0.00">
-                                    </td>
-        
-                                    <td>
-                                        <input type="number" name="unit_costs_exc_tax[]" id="os_unit_cost_exc_tax" step="any" class="form-control os_unit_costs_exc_tax" value="0.00">
-                                    </td>
-        
-                                    <td>
-                                        <b><span class="os_span_subtotal">0.00</span></b>
-                                        <input type="hidden" name="subtotals[]" id="os_subtotal" value="0.00">
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @else 
-                            <tr>
-                                <td>
-                                    <input type="hidden" name="branch_ids[]" id="os_branch_id" value="{{ auth()->user()->branch->id }}">
-                                    <p>{{ auth()->user()->branch->name }} - {{ auth()->user()->branch->branch_code }}</p> 
-                                </td>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="branch_id" id="os_branch_id" value="{{ auth()->user()->branch_id }}">
+                                <p>
+                                    {{ auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : 'Head Office' }}
+                                </p> 
+                            </td>
 
-                                <td>
-                                    <input type="number" name="quantities[]" id="os_quantity" step="any" class="form-control" value="0.00">
-                                </td>
+                            <td>
+                                <input type="number" name="quantity" id="os_quantity" step="any" class="form-control" value="0.00">
+                            </td>
 
-                                <td>
-                                    <input type="number" name="unit_costs_exc_tax[]"  id="os_unit_cost_exc_tax" step="any" class="form-control os_unit_costs_exc_tax" value="0.00">
-                                </td>
+                            <td>
+                                <input type="number" name="unit_cost_exc_tax"  id="os_unit_cost_exc_tax" step="any" class="form-control os_unit_costs_exc_tax" value="0.00">
+                            </td>
 
-                                <td>
-                                    <b><span class="os_span_subtotal">0.00</span></b>
-                                    <input type="hidden" name="subtotals[]" id="os_subtotal" value="0.00">
-                                </td>
-                            </tr> 
-                        @endif
+                            <td>
+                                <b><span class="os_span_subtotal">0.00</span></b>
+                                <input type="hidden" name="subtotal" id="os_subtotal" value="0.00">
+                            </td>
+                        </tr> 
                     </tbody>
                 </table>
             </div>

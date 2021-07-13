@@ -15,7 +15,7 @@
             @if ($product->mb_stock > 0)
             @php
                 $tax = $product->tax ? $product->tax->tax_percent : 0;
-                $variant_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
+                $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
                 $totalAdjustedQty = 0;
                 $adjustmentProducts = DB::table('stock_adjustment_products')
                     ->join('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
@@ -70,7 +70,7 @@
                 </tr>
             @endif
 
-            @if ($product->product_branches->count() > 0)
+            @if (count($product->product_branches) > 0)
                 @foreach ($product->product_branches as $product_branch)
                     @php
                         $totalAdjustedQty = 0;
@@ -115,7 +115,7 @@
                         </td>
                     </tr>
                 @endforeach
-            @else
+            @elseif(count($product->product_branches) == 0 && $product->mb_stock == 0)
                 <tr>
                     <td colspan="7" class="text-center">This product is not available in any branch.
                     </td>

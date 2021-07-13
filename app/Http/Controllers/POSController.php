@@ -1359,32 +1359,7 @@ class POSController extends Controller
     public function branchStock(Request $request)
     {
         $products = '';
-        $warehouse = '';
-        $branch = '';
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $warehouse = DB::table('warehouses')
-                ->where('id', $request->warehouse_id)
-                ->select('warehouse_name', 'warehouse_code')->first();
-            $products = DB::table('product_warehouses')
-                ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
-                ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
-                ->leftJoin('products', 'product_warehouses.product_id', 'products.id')
-                ->leftJoin('units', 'products.unit_id', 'units.id')
-                ->select(
-                    'product_warehouses.product_quantity',
-                    'products.name as pro_name',
-                    'products.product_code as pro_code',
-                    'product_variants.variant_name as var_name',
-                    'product_variants.variant_code as var_code',
-                    'product_warehouse_variants.variant_quantity',
-                    'units.code_name as u_code',
-                )
-                ->where('warehouse_id', $request->warehouse_id)
-                ->get();
-        } else {
-            $branch = DB::table('branches')
-                ->where('id', auth()->user()->branch_id)
-                ->select('name', 'branch_code')->first();
+        if (auth()->user()->branch_id) {
             $products = DB::table('product_branches')
                 ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
                 ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
@@ -1401,9 +1376,23 @@ class POSController extends Controller
                 )
                 ->where('branch_id', auth()->user()->branch_id)
                 ->get();
+        } else {
+            $products = DB::table('products')
+                ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+                ->leftJoin('units', 'products.unit_id', 'units.id')
+                ->select(
+                    'products.name as pro_name',
+                    'products.product_code as pro_code',
+                    'products.mb_stock as product_quantity',
+                    'product_variants.variant_name as var_name',
+                    'product_variants.variant_code as var_code',
+                    'product_variants.mb_stock as variant_quantity',
+                    'units.code_name as u_code',
+                )
+                ->get();
         }
 
-        return view('sales.pos.ajax_view.stock', compact('products', 'warehouse', 'branch'));
+        return view('sales.pos.ajax_view.stock', compact('products'));
     }
 
     public function searchExchangeableInv(Request $request)
@@ -1734,17 +1723,17 @@ class POSController extends Controller
                     $__net_point = (int)$calc_point;
                     if ($max_rp_per_order && $__net_point > $max_rp_per_order) {
                         return $max_rp_per_order;
-                    }else {
+                    } else {
                         return $__net_point;
                     }
-                }else {
+                } else {
                     return 0;
                 }
-            }else {
+            } else {
                 return 0;
             }
-        }else {
+        } else {
             return 0;
         }
-    } 
+    }
 }

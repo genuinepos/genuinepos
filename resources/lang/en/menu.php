@@ -54,7 +54,8 @@ return [
   'to_branch' => 'To Branch',
   'to_warehouse' => 'To Warehouse',
   // Menu childs of Adjustment module 
-  'add_stock_adjustment' => 'Add Stock Adjustment',
+  'add_stock_adjustment_from_branch' => 'Add Stock Adjustment <br/>(<small>From Branch</small>)',
+  'add_stock_adjustment_from_warehouse' => 'Add Stock Adjustment <br/>(<small>From warehouse</small>)',
   'stock_adjustment_list' => 'Stock Adjustment List',
   // Menu childs of Expense module 
   'expense_list' => 'Expense List',

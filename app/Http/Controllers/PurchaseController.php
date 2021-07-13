@@ -683,6 +683,7 @@ class PurchaseController extends Controller
             }
             $productIndex++;
         }
+        
         $updatePurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         
         // generate invoice ID
@@ -887,7 +888,9 @@ class PurchaseController extends Controller
             return response()->json(['namedProducts' => $namedProducts]);
         }
 
-        $product = Product::with(['product_variants', 'tax', 'unit'])->where('type', 1)->where('product_code', $product_code)->where('status', 1)->first();
+        $product = Product::with(['product_variants', 'tax', 'unit'])->where('type', 1)
+        ->where('product_code', $product_code)
+        ->where('status', 1)->first();
 
         if ($product) {
             return response()->json(['product' => $product]);

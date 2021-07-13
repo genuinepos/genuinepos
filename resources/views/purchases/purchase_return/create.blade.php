@@ -28,8 +28,8 @@
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="m-0"><strong>Invoice ID: </strong> SI-14252-45525588 </p> 
-                                            <p class="m-0"><strong>Date: </strong> 05-12-2020</p> 
+                                            <p class="m-0"><strong>Invoice ID: </strong> {{ $purchase->invoice_id }} </p> 
+                                            <p class="m-0"><strong>Date: </strong> {{ $purchase->date }}</p> 
                                          </div>
                                          <div class="col-md-6">
                                             <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p> 
@@ -67,7 +67,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-2">Date:</label>
                                                 <div class="col-8">
-                                                    <input type="date" name="date" class="form-control" autocomplete="off" value="{{ date('Y-m-d') }}">
+                                                    <input type="date" name="date" id="date" class="form-control" autocomplete="off" value="{{ date('Y-m-d') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -160,6 +160,8 @@
             dataType: 'json',
             success:function(purchase){
                 if (purchase.purchase_return != null) {
+                    $('#invoice_id').val(purchase.purchase_return.invoice_id);
+                    $('#date').val(purchase.purchase_return.date);
                     $.each(purchase.purchase_return.purchase_return_products, function (key, return_product) {
                         var tr = "";
                         tr += '<tr >';
@@ -301,7 +303,6 @@
         var request = $(this).serialize();
         var url = $(this).attr('action');
         var inputs = $('.add_input');
-            inputs.removeClass('is-invalid');
             $('.error').html('');  
             var countErrorField = 0;  
         $.each(inputs, function(key, val){
@@ -336,7 +337,7 @@
                         importCSS: true,                
                         importStyle: true,          
                         loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: true, 
+                        removeInline: false, 
                         printDelay: 1000, 
                         header: null,        
                     });

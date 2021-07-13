@@ -124,6 +124,7 @@ class PurchaseUtil
                         $updateProVariantMbStock->mb_stock += (float)$quantities[$index2];
                         $updateProVariantMbStock->save();
                     }
+                    $index2++;
                 }
             }
         }

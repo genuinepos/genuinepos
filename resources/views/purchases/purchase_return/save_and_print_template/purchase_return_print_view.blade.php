@@ -21,7 +21,7 @@
                             <p class="company_address">Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                         @endif
                         
-                        <h6 class="bill_name">Purchase Return Invoice</h6>
+                        <h6 class="bill_name">Purchase Return Details</h6>
                     </div>
                 </div>
             </div>

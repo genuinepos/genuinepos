@@ -1,3 +1,4 @@
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog col-60-modal">
@@ -159,7 +160,7 @@
                             <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
                             <p class="company_address">Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                         @endif
-                        <h6 class="bill_name">Purchase Return Bill</h6>
+                        <h6 class="bill_name">Purchase Return Details</h6>
                     </div>
                 </div>
             </div>
@@ -277,11 +278,16 @@
             </div>
         </div>
 
-        <div class="note">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
-                </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img style="width: 170px; height:25px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($return->invoice_id, $generator::TYPE_CODE_128)) }}">
+                <p>{{$return->invoice_id}}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
             </div>
         </div>
     </div>

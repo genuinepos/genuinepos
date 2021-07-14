@@ -8,7 +8,6 @@
                 <th class="text-white text-start">Unit Price (Inc.Tax)</th>
                 <th class="text-white text-start">Current Stock</th>
                 <th class="text-white text-start">Stock Value</th>
-                <th class="text-white text-start">Total Unit Adjusted</th>
             </tr>
         </thead>
         <tbody>
@@ -16,21 +15,7 @@
             @php
                 $tax = $product->tax ? $product->tax->tax_percent : 0;
                 $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
-                $totalAdjustedQty = 0;
-                $adjustmentProducts = DB::table('stock_adjustment_products')
-                    ->join('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
-                    ->select('stock_adjustment_products.*', 'stock_adjustments.branch_id')
-                    ->where('product_id', $product->id)
-                    ->get();
-                
-                if (count($adjustmentProducts) > 0) {
-                    foreach ($adjustmentProducts as $adjustmentProduct) {
-                        if ($adjustmentProduct->branch_id == $product_branch->branch_id) {
-                            $totalAdjustedQty += $adjustmentProduct->quantity;
-                        }
-                    }
-                }
-
+        
                 if ($product->tax_type == 2) {
                     $inclusiveTax = 100 + $tax;
                     $calc = ($product->product_price / $inclusiveTax) * 100;
@@ -63,9 +48,7 @@
                     @endphp
                     <td class="text-start">
                         {{ json_decode($generalSettings->business, true)['currency'] }}
-                        {{ bcadd($stockValue, 0, 2) }}</td>
-                    <td class="text-start">
-                        {{ bcadd($totalAdjustedQty, 0, 2) . ' (' . $product->unit->code_name . ')' }}
+                        {{ bcadd($stockValue, 0, 2) }}
                     </td>
                 </tr>
             @endif
@@ -73,20 +56,6 @@
             @if (count($product->product_branches) > 0)
                 @foreach ($product->product_branches as $product_branch)
                     @php
-                        $totalAdjustedQty = 0;
-                        $adjustmentProducts = DB::table('stock_adjustment_products')
-                            ->join('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
-                            ->select('stock_adjustment_products.*', 'stock_adjustments.branch_id')
-                            ->where('product_id', $product_branch->product_id)
-                            ->get();
-                        if ($adjustmentProducts->count() > 0) {
-                            foreach ($adjustmentProducts as $adjustmentProduct) {
-                                if ($adjustmentProduct->branch_id == $product_branch->branch_id) {
-                                    $totalAdjustedQty += $adjustmentProduct->quantity;
-                                }
-                            }
-                        }
-
                         $tax = $product->tax ? $product->tax->tax_percent : 0;
                         $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
                         if ($product->tax_type == 2) {
@@ -109,9 +78,9 @@
                         @php
                             $stockValue = $product_branch->product_quantity * $product_price_inc_tax;
                         @endphp
-                        <td class="text-white text-start">{{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ bcadd($stockValue, 0, 2) }}</td>
-                        <td class="text-white text-start">{{ bcadd($totalAdjustedQty, 0, 2) . ' (' . $product->unit->code_name . ')' }}
+                        <td class="text-white text-start">
+                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ bcadd($stockValue, 0, 2) }}
                         </td>
                     </tr>
                 @endforeach
@@ -142,22 +111,7 @@
                 @php
                     $tax = $product->tax ? $product->tax->tax_percent : 0;
                     $variant_price_inc_tax = ($variant->variant_price / 100) * $tax + $variant->variant_price;
-                    $totalAdjustedQty = 0;
-                    $adjustmentProducts = DB::table('stock_adjustment_products')
-                        ->join('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
-                        ->select('stock_adjustment_products.*', 'stock_adjustments.branch_id')
-                        ->where('product_id', $variant->product_id)
-                        ->where('product_variant_id', $variant->id)
-                        ->get();
-                    
-                    if (count($adjustmentProducts) > 0) {
-                        foreach ($adjustmentProducts as $adjustmentProduct) {
-                            if ($adjustmentProduct->branch_id == $product_branch->branch_id) {
-                                $totalAdjustedQty += $adjustmentProduct->quantity;
-                            }
-                        }
-                    }
-
+        
                     if ($product->tax_type == 2) {
                         $inclusiveTax = 100 + $tax;
                         $calc = ($variant->variant_price / $inclusiveTax) * 100;
@@ -190,9 +144,7 @@
                         @endphp
                         <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ bcadd($stockValue, 0, 2) }}</td>
-                        <td class="text-start">
-                            {{ bcadd($totalAdjustedQty, 0, 2) . ' (' . $product->unit->code_name . ')' }}
+                            {{ bcadd($stockValue, 0, 2) }}
                         </td>
                     </tr>
                 @endif

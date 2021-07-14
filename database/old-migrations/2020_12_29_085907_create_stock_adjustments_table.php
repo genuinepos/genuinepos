@@ -15,6 +15,7 @@ class CreateStockAdjustmentsTable extends Migration
     {
         Schema::create('stock_adjustments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('warehouse_id');
             $table->unsignedBigInteger('branch_id');
             $table->string('invoice_id')->nullable();
             $table->bigInteger('total_item')->default(0);
@@ -28,6 +29,7 @@ class CreateStockAdjustmentsTable extends Migration
             $table->timestamp('report_date_ts')->nullable();
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->timestamps();
+            $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('admin_id')->references('id')->on('admin_and_users')->onDelete('set null');
         });

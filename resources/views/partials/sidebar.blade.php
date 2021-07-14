@@ -721,7 +721,7 @@
 
                                         <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                             <div class="switch_bar">
-                                                <a href="" class="bar-link">
+                                                <a href="{{ route('stock.adjustments.create.from.warehouse') }}" class="bar-link">
                                                     <span><i class="fas fa-plus-square"></i></span>
                                                 </a>
                                             </div>

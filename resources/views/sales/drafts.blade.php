@@ -31,7 +31,10 @@
                                                     <div class="col-md-3">
                                                         <label><strong>Branch :</strong></label>
                                                         <select name="branch_id" class="form-control submit_able" id="branch_id">
-                                                            
+                                                            <option value="">All</option>
+                                                            @foreach ($branches as $b)
+                                                                <option value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 @endif
@@ -65,53 +68,50 @@
                     </div>
 
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Drafts <small>Note: Initially current year's data is available here, if
-                                                another year's data go to the data filter.</small></h6>
-                                    </div>
-                                    @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                        <div class="col-md-2">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="{{ route('sales.create') }}"><i
-                                                        class="fas fa-plus-square"></i> Add</a>
-                                            </div>
+                  
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Drafts </h6>
+                                </div>
+                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                    <div class="col-md-2">
+                                        <div class="btn_30_blue float-end">
+                                            <a href="{{ route('sales.create') }}"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
-                                    @endif
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                     </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Draft ID</th>
-                                                    <th>Branch</th>
-                                                    <th>Customer</th>
-                                                    <th>Total Amount</th>
-                                                    <th>Created By</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
+                                @endif
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Draft ID</th>
+                                                <th>Branch</th>
+                                                <th>Customer</th>
+                                                <th>Total Amount</th>
+                                                <th>Created By</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -186,21 +186,6 @@
             });
         }
         setCustomers();
-
-
-        @if(auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-            // Set branch in form field
-            function setBranches(){
-                $.get("{{route('sales.get.all.branches')}}", function(branches) {
-                    $('#branch_id').append('<option value="NULL">'+'{{ json_decode($generalSettings->business, true)["shop_name"]."(Head Office)" }}'+'</option>');
-                    $.each(branches, function(key, val){
-                        var branch_code = ' - '+val.branch_code;
-                        $('#branch_id').append('<option value="'+val.id+'">'+val.name+branch_code+'</option>');
-                    });
-                });
-            }
-            setBranches();
-        @endif
 
         // Pass sale details in the details modal
         function draftDetails(url) {

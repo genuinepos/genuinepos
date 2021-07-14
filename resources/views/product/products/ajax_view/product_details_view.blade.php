@@ -14,6 +14,7 @@
                             src="{{ asset('public/uploads/product/thumbnail/' . $product->thumbnail_photo) }}" class="d-block w-100">
                     </div>
                 </div>
+
                 <div class="col-md-3">
                     <ul class="list-unstyled">
                         <li><strong>Code(SKU) : </strong> {{ $product->product_code }}</li>
@@ -31,6 +32,7 @@
                         </li>
                     </ul>
                 </div>
+
                 <div class="col-md-3">
                     <ul class="list-unstyled">
                         <li><strong>Category : </strong> {{ $product->category->name }}</li>
@@ -42,6 +44,7 @@
                         </li>
                     </ul>
                 </div>
+                
                 <div class="col-md-3">
                     <ul class="list-unstyled">
                         <li><strong>Expire Date : </strong> {{ $product->expire_date }}</li>
@@ -106,9 +109,8 @@
                 </div>
             </div>
         </div>
+
         <div class="modal-footer text-end">
-            {{-- <button type="button" class="btn btn-sm btn-primary print_btn">Print</button>
-            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button> --}}
             <div class="row">
                 <div class="col-md-12">
                     <button type="submit" class="c-btn btn_blue print_btn">Print</button>

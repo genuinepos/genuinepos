@@ -424,14 +424,15 @@ Route::group(['prefix' => 'stock/adjustments', 'namespace' => 'App\Http\Controll
     Route::get('/', 'StockAdjustmentController@index')->name('stock.adjustments.index');
     Route::get('show/{adjustmentId}', 'StockAdjustmentController@show')->name('stock.adjustments.show');
     Route::get('create', 'StockAdjustmentController@create')->name('stock.adjustments.create');
+    Route::get('create/from/warehouse', 'StockAdjustmentController@createFromWarehouse')->name('stock.adjustments.create.from.warehouse');
     Route::post('store', 'StockAdjustmentController@store')->name('stock.adjustments.store');
     Route::get('search/product/in/warehouse/{keyword}/{warehouse_id}', 'StockAdjustmentController@searchProductInWarehouse');
-    Route::get('search/product/{keyword}/{branch_id}', 'StockAdjustmentController@searchProduct');
+    Route::get('search/product/{keyword}', 'StockAdjustmentController@searchProduct');
 
-    Route::get('check/single/product/stock/{product_id}/{branch_id}', 'StockAdjustmentController@checkSingleProductStock');
+    Route::get('check/single/product/stock/{product_id}', 'StockAdjustmentController@checkSingleProductStock');
     Route::get('check/single/product/stock/in/warehouse/{product_id}/{warehouse_id}', 'StockAdjustmentController@checkSingleProductStockInWarehouse');
 
-    Route::get('check/variant/product/stock/{product_id}/{variant_id}/{branch_id}', 'StockAdjustmentController@checkVariantProductStock');
+    Route::get('check/variant/product/stock/{product_id}/{variant_id}', 'StockAdjustmentController@checkVariantProductStock');
     Route::get('check/variant/product/stock/in/warehouse/{product_id}/{variant_id}/{warehouse_id}', 'StockAdjustmentController@checkVariantProductStockInWarehouse');
     Route::delete('delete/{adjustmentId}', 'StockAdjustmentController@delete')->name('stock.adjustments.delete');
 });

@@ -94,7 +94,8 @@
                                                 <th class="text-start">Actions</th>
                                                 <th class="text-start">Date</th>
                                                 <th class="text-start">Reference No</th>
-                                                <th class="text-start">Adjustment From</th>
+                                                <th class="text-start">Adjustment location</th>
+                                                <th class="text-start">Business location</th>
                                                 <th class="text-start">Type</th>
                                                 <th class="text-start">Total Amount</th>
                                                 <th class="text-start">Total Recovered Amount</th>
@@ -133,24 +134,9 @@
         adjustment_table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [ 
-                {
-                    extend: 'excel',
-                    text: 'Excel',
-                    className: 'btn btn-primary',
-                    exportOptions: {columns: 'th:not(:first-child)'}
-                },
-                {
-                    extend: 'pdf',
-                    text: 'Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {columns: 'th:not(:first-child)'}
-                },
-                {
-                    extend: 'print',
-                    text: 'Print',
-                    className: 'btn btn-primary',
-                    exportOptions: {columns: 'th:not(:first-child)'}
-                },
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
             ],
             "processing": true,
             "serverSide": true,
@@ -172,7 +158,8 @@
                 {data: 'action'},
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id', name: 'invoice_id'},
-                {data: 'from', name: 'from'},
+                {data: 'adjustment_location', name: 'adjustment_location'},
+                {data: 'business_location', name: 'business_location'},
                 {data: 'type', name: 'type'},
                 {data: 'net_total', name: 'net_total'},
                 {data: 'recovered_amount', name: 'recovered_amount'},
@@ -279,7 +266,7 @@
                 importCSS: true,                
                 importStyle: true,          
                 loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: true, 
+                removeInline: false, 
                 printDelay: 500,
                 header : null,        
             });

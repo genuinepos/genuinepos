@@ -417,7 +417,6 @@
         $(document).on('submit', '#payment_deleted_form',function(e){
             e.preventDefault();
             var url = $(this).attr('action');
-            console.log(url);
             var request = $(this).serialize();
             $.ajax({
                 url:url,

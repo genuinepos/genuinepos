@@ -8,23 +8,11 @@
                 <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
                 <th class="text-white" scope="col">Current Stock</th>
                 <th class="text-white" scope="col">Stock Value</th>
-                <th class="text-white" scope="col">Total Unit Adjusted</th>
             </tr>
         </thead>
         <tbody>
             @if($product->product_branches->count() > 0)
                 @foreach ($product->product_branches as $product_branch)
-                    @php
-                        $totalAdjustedQty = 0;
-                        $adjustmentProducts = DB::table('stock_adjustment_products')->join('stock_adjustments','stock_adjustment_products.stock_adjustment_id','stock_adjustments.id')->select('stock_adjustment_products.*','stock_adjustments.branch_id')->where('product_id', $product_branch->product_id)->get();   
-                        if ($adjustmentProducts->count() > 0) {
-                            foreach ($adjustmentProducts as $adjustmentProduct) {
-                                if ($adjustmentProduct->branch_id == $product_branch->branch_id) {
-                                    $totalAdjustedQty += $adjustmentProduct->quantity;
-                                }
-                            }
-                        } 
-                    @endphp
                     <tr>
                         @php
                             $tax = $product->tax ? $product->tax->tax_percent : 0;
@@ -39,7 +27,6 @@
                             $stockValue = $product_branch->product_quantity * $product_price_inc_tax;
                         @endphp
                         <td>{{ number_format($stockValue, 2)  }}</td>
-                        <td>{{ number_format($totalAdjustedQty, 2).' ('. $product->unit->code_name.')'  }} </td>
                     </tr>
                 @endforeach
             @else 
@@ -59,7 +46,6 @@
                 <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
                 <th class="text-white" scope="col">Current Stock</th>
                 <th class="text-white" scope="col">Stock Value</th>
-                <th class="text-white" scope="col">Total Unit Adjusted</th>
             </tr>
         </thead>
         <tbody>
@@ -69,18 +55,6 @@
                         @php
                             $tax = $product->tax ? $product->tax->tax_percent : 0;
                             $variant_price_inc_tax = ($product_branch_variant->product_variant->variant_price / 100 * $tax) + $product_branch_variant->product_variant->variant_price;
-
-                            $totalAdjustedQty = 0;
-                            
-                            $adjustmentProducts = DB::table('stock_adjustment_products')->join('stock_adjustments','stock_adjustment_products.stock_adjustment_id','stock_adjustments.id')->select('stock_adjustment_products.*','stock_adjustments.branch_id')->where('product_id', $product_branch_variant->product_id)->where('product_variant_id', $product_branch_variant->product_variant_id)->get(); 
-
-                            if ($adjustmentProducts->count() > 0) {
-                                foreach ($adjustmentProducts as $adjustmentProduct) {
-                                    if ($adjustmentProduct->branch_id == $product_branch->branch_id) {
-                                        $totalAdjustedQty += $adjustmentProduct->quantity;
-                                    }
-                                }
-                            }
                         @endphp
                         <tr>
                             <td>{{ $product_branch_variant->product_variant->variant_code }}</td>
@@ -92,7 +66,6 @@
                                 $stockValue = $product_branch_variant->variant_quantity * $variant_price_inc_tax;
                             @endphp
                             <td>{{ number_format($stockValue, 2)  }}</td>
-                            <td>{{ number_format($totalAdjustedQty, 2).' ('. $product->unit->code_name.')'  }}</td>
                         </tr>
                     @endforeach
                 @endforeach

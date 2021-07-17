@@ -19,11 +19,9 @@ use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\ProductVariant;
-use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
-use App\Models\ProductWarehouseVariant;
 use App\Utils\NameSearchUtil;
 use App\Utils\SaleUtil;
 use Yajra\DataTables\Facades\DataTables;
@@ -180,7 +178,7 @@ class SaleController extends Controller
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HF</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {

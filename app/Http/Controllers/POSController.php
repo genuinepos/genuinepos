@@ -1372,12 +1372,12 @@ class POSController extends Controller
                     $qty_limits[] = $productBranch->product_quantity;
                 }
             } else {
-                $mbProduct = Product::where('product_id', $sale_product->product_id)->first();
+                $mbProduct = Product::where('id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {
                     $qty_limits[] = 500000;
                 } elseif ($sale_product->product_variant_id) {
                     $mbProductVariant = ProductVariant::where('product_id', $sale_product->product_id)
-                        ->where('product_variant_id', $sale_product->product_variant_id)
+                        ->where('id', $sale_product->product_variant_id)
                         ->first();
                     $qty_limits[] = $mbProductVariant->mb_stock;
                 } else {
@@ -1460,13 +1460,13 @@ class POSController extends Controller
                     $productBranchVariant->save();
                 }
             } else {
-                $mbProduct = Product::where('product_id', $product_id)
+                $mbProduct = Product::where('id', $product_id)
                     ->first();
                 $mbProduct->mb_stock -= (float)$quantities[$index];
                 $mbProduct->save();
                 if ($variant_id) {
                     $mbProductVariant = ProductVariant::where('product_id', $product_id)
-                        ->where('product_variant_id', $variant_id)
+                        ->where('id', $variant_id)
                         ->first();
                     $mbProductVariant->mb_stock -= (float)$quantities[$index];
                     $mbProductVariant->save();

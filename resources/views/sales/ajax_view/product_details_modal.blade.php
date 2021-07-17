@@ -719,12 +719,12 @@
                             <small>Print Date : {{ date('d/m/Y') }}</small>
                         </div>
                         
-                        @if (env('PRINT_SD_SALE') == true)
-                            <div class="col-4 text-center">
-                                <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                        <div class="col-4 text-center">
+                            <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                            @if (env('PRINT_SD_SALE') == true)
                                 <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
 
                         <div class="col-4 text-center">
                             <small>Print Time : {{ date('h:i:s') }}</small>
@@ -1168,7 +1168,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         @if ($defaultLayout->show_total_in_word)
-                            <p><b>In Word : <span id="inword"></span></b></p>
+                            <p style="text-transform: uppercase;"><b>In Word : <span id="inword"></span> ONLY.</b></p>
                         @endif
                         <br>
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
@@ -1318,12 +1318,12 @@
                             <small>Print Date : {{ date('d/m/Y') }}</small>
                         </div>
                         
-                        @if (env('PRINT_SD_SALE') == true)
-                            <div class="col-4 text-center">
-                                <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                        <div class="col-4 text-center">
+                            <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                            @if (env('PRINT_SD_SALE') == true)
                                 <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
 
                         <div class="col-4 text-center">
                             <small>Print Time : {{ date('h:i:s') }}</small>
@@ -1773,15 +1773,14 @@
                     </div>
                 </div>
     
-                @if (env('PRINT_SD_SALE') == true)
-                    <div class="row">
-                        <div class="col-md-12 text-center">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        @if (env('PRINT_SD_SALE') == true)
                             <small>Software By <b>SpeedDigit Pvt. Ltd.</small></p>
-                        </div>
+                        @endif
                     </div>
-                @endif
+                </div>
             </div>
-            
         </div>
     </div>
 @else
@@ -2006,66 +2005,18 @@
                     </div>
                 </div>
     
-                @if (env('PRINT_SD_SALE') == true)
-                    <div class="row">
-                        <div class="col-md-12 text-center">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        @if (env('PRINT_SD_SALE') == true)
                             <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
-                        </div>
+                        @endif
                     </div>
-                @endif
+                </div>
             </div>
         </div>
     </div>
 @endif
 <!-- Challan print templete end-->
-{{-- <script>
-    // actual  conversion code starts here
-    var ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-    var tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-    var teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen','nineteen'
-    ];
-
-    function convert_millions(num) {
-        if (num >= 100000) {
-            return convert_millions(Math.floor(num / 100000)) + " Lack " + convert_thousands(num % 1000000);
-        } else {
-            return convert_thousands(num);
-        }
-    }
-
-    function convert_thousands(num) {
-        if (num >= 1000) {
-            return convert_hundreds(Math.floor(num / 1000)) + " thousand " + convert_hundreds(num % 1000);
-        } else {
-            return convert_hundreds(num);
-        }
-    }
-
-    function convert_hundreds(num) {
-        if (num > 99) {
-            return ones[Math.floor(num / 100)] + " hundred " + convert_tens(num % 100);
-        } else {
-            return convert_tens(num);
-        }
-    }
-
-    function convert_tens(num) {
-        if (num < 10) return ones[num];
-        else if (num >= 10 && num < 20) return teens[num - 10];
-        else {
-            return tens[Math.floor(num / 10)] + " " + ones[num % 10];
-        }
-    }
-
-    function convert(num) {
-        if (num == 0) return "zero";
-        else return convert_millions(num);
-    }
-
-    document.getElementById('inword').innerHTML = convert(parseInt("{{ $sale->total_payable_amount }}")).replace(
-        'undefined', '(some Penny)').toUpperCase() + ' ONLY.';
-</script> --}}
-
 <script>
   var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
     var b= ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];

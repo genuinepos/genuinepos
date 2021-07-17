@@ -37,9 +37,9 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-3"><b>Branch :</b><span class="text-danger">*</span></label>
+                                                <label for="inputEmail3" class="col-3"><b>B.Location :</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}">
+                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : 'Head Office' }}">
                                                     <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
                                                 </div>
                                             </div>
@@ -207,16 +207,6 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script>
-        // Set Warehouse in form field
-        function setWarehouses(){
-            $.get("{{route('transfer.stock.to.branch.all.warehouse')}}",  function(warehouses) {
-                $.each(warehouses, function(key, val){
-                    $('#warehouse_id').append('<option value="'+val.id+'">'+ val.warehouse_name +' ('+val.warehouse_code+')'+'</option>');
-                });
-            });
-        }
-        setWarehouses();
-       
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
             var quantities = document.querySelectorAll('#quantity');

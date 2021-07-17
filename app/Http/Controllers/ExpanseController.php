@@ -144,7 +144,9 @@ class ExpanseController extends Controller
                 ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'due', 'net_total'])
                 ->make(true);
         }
-        return view('expanses.index');
+        
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('expanses.index', compact('branches'));
     }
 
     // Create expanse view

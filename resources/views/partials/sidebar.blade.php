@@ -166,7 +166,6 @@
                                     <div class="switch_bar">
                                         <a href="{{ route('product.categories.index') }}" class="bar-link">
                                             <span>
-                                                {{-- <img src="{{ asset('public/backend/asset/img/categories.png') }}"> --}}
                                                 <i class="fas fa-th-large"></i>
                                             </span>
                                         </a>
@@ -178,7 +177,6 @@
                                     <div class="switch_bar">
                                         <a href="{{ route('product.subcategories.index') }}" class="bar-link">
                                             <span>
-                                                {{-- <img src="{{ asset('public/backend/asset/img/convert.png') }}"> --}}
                                                 <i class="fas fa-code-branch"></i>
                                             </span>
                                         </a>
@@ -193,7 +191,6 @@
                                     <div class="switch_bar">
                                         <a href="{{ route('product.brands.index') }}" class="bar-link">
                                             <span>
-                                                {{-- <img src="{{ asset('public/backend/asset/img/brand.png') }}"> --}}
                                                 <i class="fas fa-band-aid"></i>
                                             </span>
                                         </a>
@@ -208,7 +205,6 @@
                                     <div class="switch_bar">
                                         <a href="{{ route('products.all.product') }}" class="bar-link">
                                             <span>
-                                                {{-- <img src="{{ asset('public/backend/asset/img/clipboard.png') }}"> --}}
                                                 <i class="fas fa-sitemap"></i>
                                             </span>
                                         </a>
@@ -223,7 +219,6 @@
                                     <div class="switch_bar">
                                         <a href="{{ route('products.add.view') }}" class="bar-link">
                                             <span>
-                                                {{-- <img src="{{ asset('public/backend/asset/img/add.png') }}"> --}}
                                                 <i class="fas fa-plus-circle"></i>
                                             </span>
                                         </a>
@@ -237,7 +232,6 @@
                                 <div class="switch_bar">
                                     <a href="{{ route('product.variants.index') }}" class="bar-link">
                                         <span>
-                                            {{-- <img src="{{ asset('public/backend/asset/img/line-chart.png') }}"> --}}
                                             <i class="fas fa-align-center"></i>
                                         </span>
                                     </a>
@@ -251,7 +245,6 @@
                                     <div class="switch_bar">
                                         <a href="{{ route('product.import.create') }}" class="bar-link">
                                             <span>
-                                                {{-- <img src="{{ asset('public/backend/asset/img/import.png') }}"> --}}
                                                 <i class="fas fa-file-import"></i>
                                             </span>
                                         </a>
@@ -264,7 +257,6 @@
                                 <div class="switch_bar">
                                     <a href="{{ route('product.selling.price.groups.index') }}" class="bar-link">
                                         <span>
-                                            {{-- <img src="{{ asset('public/backend/asset/img/price-tag.png') }}"> --}}
                                             <i class="fas fa-layer-group"></i>
                                         </span>
                                     </a>
@@ -277,7 +269,6 @@
                                 <div class="switch_bar">
                                     <a href="{{ route('barcode.index') }}" class="bar-link">
                                         <span>
-                                            {{-- <img src="{{ asset('public/backend/asset/img/barcode.png') }}"> --}}
                                             <i class="fas fa-barcode"></i>
                                         </span>
                                     </a>
@@ -290,7 +281,6 @@
                                 <div class="switch_bar">
                                     <a href="{{ route('product.warranties.index') }}" class="bar-link">
                                         <span>
-                                            {{-- <img src="{{ asset('public/backend/asset/img/warranty.png') }}"> --}}
                                             <i class="fas fa-shield-alt"></i>
                                         </span>
                                     </a>
@@ -624,68 +614,69 @@
                         </div>
                         <div class="container-fluid">
                             <div class="row">
-                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('transfer.stock.to.branch.create') }}"
-                                                class="bar-link">
-                                                <span><i class="fas fa-exchange-alt"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.add_transfer') <small
-                                                class="ml-1"><b>(@lang('menu.to_branch'))</small></b></p>
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stock.to.branch.create') }}"
+                                            class="bar-link"> <span><i class="fas fa-exchange-alt"></i></span>
+                                        </a>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('transfer.stock.to.branch.index') }}" class="bar-link">
-                                                <span><i class="fas fa-list-ul"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.transfer_list')</p>
-                                    </div>
+                                    <p class="switch_text">@lang('menu.add_transfer') 
+                                        <small class="ml-1"><b>(@lang('menu.to_branch'))</small></b>
+                                    </p>
+                                </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('transfer.stocks.to.branch.receive.stock.index') }}"
-                                                class="bar-link">
-                                                <span><i class="fas fa-check-double"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.receive_stocks')</p>
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stock.to.branch.index') }}" class="bar-link">
+                                            <span><i class="fas fa-list-ul"></i></span>
+                                        </a>
                                     </div>
-                                @else
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('transfer.stock.to.warehouse.create') }}" class="bar-link">
-                                                <span><i class="fas fa-exchange-alt"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.add_transfer') <small class="ml-1">
-                                                (@lang('menu.to_warehouse'))</small></p>
-                                    </div>
+                                    <p class="switch_text">@lang('menu.transfer_list')</p>
+                                </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('transfer.stock.to.warehouse.index') }}" class="bar-link">
-                                                <span><i class="fas fa-list-ul"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.transfer_list') <small class="ml-1">
-                                                (@lang('menu.to_warehouse'))</small></p>
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stocks.to.warehouse.receive.stock.index') }}"
+                                            class="bar-link">
+                                            <span><i class="fas fa-check-double"></i></span>
+                                        </a>
                                     </div>
+                                    <p class="switch_text">@lang('menu.receive_stocks') 
+                                        <small class="ml-1"><b>(From Branch)</small></b>
+                                    </p>
+                                </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            {{-- <span class="notify-grin">30</span> --}}
-                                            <a href="{{ route('transfer.stocks.to.warehouse.receive.stock.index') }}"
-                                                class="bar-link">
-                                                <span><i class="fas fa-check-double"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.receive_stocks')</p>
+                                {{-- <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stock.to.warehouse.create') }}" class="bar-link">
+                                            <span><i class="fas fa-exchange-alt"></i></span>
+                                        </a>
                                     </div>
-                                @endif
+                                    <p class="switch_text">@lang('menu.add_transfer') 
+                                        <small class="ml-1">(@lang('menu.to_warehouse'))</small></p>
+                                </div>
+
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stock.to.warehouse.index') }}" class="bar-link">
+                                            <span><i class="fas fa-list-ul"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.transfer_list') <small class="ml-1">
+                                            (@lang('menu.to_warehouse'))</small>
+                                    </p>
+                                </div>
+
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stocks.to.branch.receive.stock.index') }}"
+                                            class="bar-link">
+                                            <span><i class="fas fa-check-double"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.receive_stocks')</p>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -707,6 +698,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="container-fluid">
                                 <div class="row">
                                     @if (auth()->user()->permission->s_adjust['adjustment_add'] == '1')

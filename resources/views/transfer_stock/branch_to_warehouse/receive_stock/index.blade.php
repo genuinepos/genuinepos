@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets') @endpush
-@section('title', 'Receive Stocks(From Warehouse) - ')
+@section('title', 'Receive Stocks(From Branch) - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -24,7 +24,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-10">
-                                        <h6>All Transferred Stocks From Warehouse</h6>
+                                        <h6>All Transferred Stocks <small>(From Branch)</small></h6>
                                     </div>
                                 </div>
 

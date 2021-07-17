@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
+use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
@@ -17,8 +18,10 @@ use App\Models\TransferStockToBranchProduct;
 
 class TransferToBranchController extends Controller
 {
-    public function __construct()
+    protected $nameSearchUtil;
+    public function __construct(NameSearchUtil $nameSearchUtil,)
     {
+        $this->nameSearchUtil = $nameSearchUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -35,7 +38,9 @@ class TransferToBranchController extends Controller
                     'warehouses.warehouse_code',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                )->orderBy('id', 'desc')->get();
+                )->orderBy('id', 'desc')
+                ->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)
+                ->get();
 
 
             return DataTables::of($transfers)
@@ -46,7 +51,6 @@ class TransferToBranchController extends Controller
                     $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye me-1 text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" href="' . route('transfer.stock.to.branch.edit', $row->id) . '"><i class="far fa-edit me-1 text-primary"></i> Edit</a>';
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('transfer.stock.to.branch.delete', $row->id) . '"><i class="far fa-trash-alt me-1 text-primary"></i> Delete</a>';
-
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
@@ -57,8 +61,12 @@ class TransferToBranchController extends Controller
                 ->editColumn('from',  function ($row) {
                     return  $row->warehouse_name . '/' . $row->warehouse_code;
                 })
-                ->editColumn('to',  function ($row) {
-                    return  $row->branch_name . '/' . $row->branch_code;
+                ->editColumn('to',  function ($row) use ($generalSettings) {
+                    if ($row->branch_name) {
+                        return  $row->branch_name . '/' . $row->branch_code;
+                    }else {
+                        return json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>';
+                    }
                 })
                 ->editColumn('shipping_charge', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->shipping_charge . '</b>';
@@ -105,7 +113,8 @@ class TransferToBranchController extends Controller
     // Add transfer stock to branch create view
     public function create()
     {
-        return view('transfer_stock.warehouse_to_branch.create');
+        $warehouses = DB::table('warehouses')->where('branch_id', auth()->user()->branch_id)->get();
+        return view('transfer_stock.warehouse_to_branch.create', compact('warehouses'));
     }
 
     // Store transfer products form warehouse to branch
@@ -113,10 +122,8 @@ class TransferToBranchController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['stock_transfer'];
-        //return $request->all();
         $this->validate($request, [
             'warehouse_id' => 'required',
-            'branch_id' => 'required',
         ]);
 
         $i = 6;
@@ -382,30 +389,7 @@ class TransferToBranchController extends Controller
             }
         }
 
-        $namedProducts = '';
-        $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', $product_code . '%')
-            ->where('status', 1)
-            ->get();
-
-        if (count($nameSearch) > 0) {
-            $namedProducts = $nameSearch;
-        }
-
-        $priceSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('product_price', 'like', "%$product_code%")
-            ->where('status', 1)
-            ->get();
-
-        if (count($priceSearch) > 0) {
-            $namedProducts = $priceSearch;
-        }
-
-        if ($namedProducts && $namedProducts->count() > 0) {
-            return response()->json(['namedProducts' => $namedProducts]);
-        } else {
-            return response()->json(['NotFoundMsg' => 'Not Found.']);
-        }
+        return $this->nameSearchUtil->nameSearching($product_code);
     }
 
     public function checkWarehouseSingleProduct($product_id, $warehouse_id)

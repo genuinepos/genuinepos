@@ -1,3 +1,4 @@
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
 <div class="transfer_print_template">
     <div class="details_area">
         <div class="heading_area">
@@ -5,9 +6,7 @@
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
                         <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                        <small class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</small><br>
-                        <small class="company_address">Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</small>
-                        <h6 class="bill_name">Transfer Stock Invoice (To Branch)</h6>
+                        <h6 class="bill_name">Transfer Stock Details (To Branch)</h6>
                     </div>
                 </div>
             </div>
@@ -17,7 +16,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Warehouse (Form) : </strong></li>
+                        <li><strong>Warehouse (From) : </strong></li>
                         <li><strong>Name :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
                         <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
                         <li><strong>Address : </strong> {{ $transfer->warehouse->address }}</li>
@@ -25,15 +24,20 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Branch (To) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->branch->name.'/'.$transfer->branch->branch_code }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->branch->phone }}</li>
-                        <li><strong>Address : </strong> 
-                            {{ $transfer->branch->city }},
-                            {{ $transfer->branch->state }},
-                            {{ $transfer->branch->zip_code }},
-                            {{ $transfer->branch->country }}.
-                        </li>
+                        <li><strong>B.Location (To) : </strong></li>
+                        <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        @if ($transfer->branch)
+                            <li><strong>Address : </strong> 
+                                {{ $transfer->branch->city }},
+                                {{ $transfer->branch->state }},
+                                {{ $transfer->branch->zip_code }},
+                                {{ $transfer->branch->country }}.
+                            </li>
+                        @else 
+                            {{ json_decode($generalSettings->business, true)['address'] }}
+                        @endif
+                        
                     </ul>
                 </div>
                 <div class="col-lg-4">
@@ -106,7 +110,8 @@
                 </tfoot>
             </table>
         </div>
-        <br><br>
+        <br>
+
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
@@ -115,6 +120,16 @@
                 <div class="col-md-6 text-end">
                     <p><strong>Signature Of Authority</strong></p>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4 text-center">
+                <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($transfer->invoice_id, $generator::TYPE_CODE_128)) }}">
+                <p class="p-0 m-0">{{ $transfer->invoice_id }}</b></small>
+                @if (env('PRINT_SD_OTHERS') == true)
+                    <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                @endif
             </div>
         </div>
     </div>

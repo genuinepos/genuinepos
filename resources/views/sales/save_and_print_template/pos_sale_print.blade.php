@@ -215,10 +215,10 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        {{-- @if ($sale->branch->pos_sale_invoice_layout->show_total_in_word == 1)
-                            <p><strong>In Word : <span id="inword"></span></strong></p>
+                        @if ($sale->branch->pos_sale_invoice_layout->show_total_in_word == 1)
+                            <p style="text-transform: uppercase;"><strong>In Word : <span id="inword"></span> ONLY.</strong></p>
                         @endif
-                        <br> --}}
+                        <br>
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($sale->branch->pos_sale_invoice_layout->account_name)
                                 <p>Account Name : {{ $sale->branch->pos_sale_invoice_layout->account_name }}</p>
@@ -963,10 +963,10 @@
                 
                 <div class="row">
                     <div class="col-md-6">
-                        {{-- @if ($defaultLayout->show_total_in_word == 1)
-                            <p><strong>In Word : <span id="inword"></span></strong></p>
+                        @if ($defaultLayout->show_total_in_word == 1)
+                            <p style="text-transform: uppercase;"><strong>In Word : <span id="inword"></span> ONLY.</strong></p> 
                         @endif
-                        <br> --}}
+                        <br>
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($defaultLayout->account_name)
                                 <p>Account Name : {{ $defaultLayout->account_name }}</p>
@@ -1134,11 +1134,7 @@
                         </div>
                     </div>
                 </div><br>
-                {{-- <div class="row">
-                    <div class="barcode text-center">
-                        <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($sale->invoice_id, $generatorPNG::TYPE_CODE_128)) }}">
-                    </div> 
-                </div><br> --}}
+           
                 <div class="row">
                     <div class="col-md-12">
                         <div class="invoice_notice">
@@ -1499,52 +1495,19 @@
 @endif
 <!-- Sale print templete end-->
 <script>
-    // actual  conversion code starts here
-    var ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-    var tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-    var teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-
-    function convert_millions(num) {
-        if (num >= 100000) {
-            return convert_millions(Math.floor(num / 100000)) + " Lack " + convert_thousands(num % 1000000);
-        } else {
-            return convert_thousands(num);
-        }
-    }
-
-    function convert_thousands(num) {
-        if (num >= 1000) {
-            return convert_hundreds(Math.floor(num / 1000)) + " thousand " + convert_hundreds(num % 1000);
-        } else {
-            return convert_hundreds(num);
-        }
-    }
-
-    function convert_hundreds(num) {
-        if (num > 99) {
-            return ones[Math.floor(num / 100)] + " hundred " + convert_tens(num % 100);
-        } else {
-            return convert_tens(num);
-        }
-    }
-
-    function convert_tens(num) {
-        if (num < 10) return ones[num];
-        else if (num >= 10 && num < 20) return teens[num - 10];
-        else {
-            return tens[Math.floor(num / 10)] + " " + ones[num % 10];
-        }
-    }
-
-    function convert(num) {
-        if (num == 0) return "zero";
-        else return convert_millions(num);
-    }
-
-    @if ($previous_due > 0)
-        document.getElementById('inword').innerHTML = convert(parseInt("{{ $total_payable_amount }}")).toUpperCase()+' ONLY.';  
-    @else
-        document.getElementById('inword').innerHTML = convert(parseInt("{{ $sale->total_payable_amount }}")).toUpperCase()+' ONLY.';  
-    @endif
-   //document.getElementById('inword').innerHTML = convert("{{ $sale->total_payable_amount }}").replace('undefined', '(some Penny)').toUpperCase()+' ONLY.';
+    var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+      var b= ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+  
+      function inWords (num) {
+          if ((num = num.toString()).length > 9) return 'overflow';
+          n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+          if (!n) return; var str = '';
+          str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+          str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+          str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+          str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+          str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+          return str;
+      }
+      document.getElementById('inword').innerHTML = inWords(parseInt("{{ $sale->total_payable_amount }}"));
 </script>

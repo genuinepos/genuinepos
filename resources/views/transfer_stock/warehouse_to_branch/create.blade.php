@@ -24,7 +24,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Add Transfer Stock</h5>
+                                            <h5>Add Transfer Stock <small>(Warehouse To Branch)</small></h5>
                                         </div>
 
                                         <div class="col-6">
@@ -37,12 +37,15 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Warehouse :</b><span
+                                                <label for="inputEmail3" class="col-4"><b>Warehouse :</b> <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <select class="form-control changeable add_input"
                                                         name="warehouse_id" data-name="Warehouse" id="warehouse_id">
                                                         <option value="">Select Warehouse</option>
+                                                        @foreach ($warehouses as $w)
+                                                            <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                        @endforeach
                                                     </select>
                                                     <input type="text" name="warehouse_id" id="req_warehouse_id" class="d-none" value="">
                                                     <span class="error error_warehouse_id"></span>
@@ -52,20 +55,19 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-3"><b>Branch :</b><span
-                                                    class="text-danger">*</span></label>
+                                                <label for="inputEmail3" class="col-4"><b>B.Location :</b></label>
                                                 <div class="col-8">
-                                                    <select name="branch_id" data-name="Branch" class="form-control add_input" id="branch_id">
-                                                        <option value="">Select Branch</option>
-                                                    </select>
-                                                    <span class="error error_branch_id"></span>
+                                                    <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                                    <input readonly type="text" class="form-control" value="{{ 
+                                                        auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)'
+                                                    }}">
                                                 </div>
                                             </div>
                                         </div> 
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2"><b>Date :</b></label>
+                                                <label for="inputEmail3" class="col-4"><b>Date :</b></label>
                                                 <div class="col-8">
                                                     <input type="date" name="date" class="form-control changeable"
                                                         value="{{ date('Y-m-d') }}" id="date">
@@ -75,7 +77,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-3"><b>Ref ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                <label for="inputEmail3" class="col-4"><b>Ref ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Reference ID">
                                                 </div>
@@ -105,11 +107,8 @@
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
                                                     </div>
                                                     <div class="select_area">
-                                                        {{-- <div class="remove_select_area_btn">X</div> --}}
                                                         <ul id="list" class="variant_list_area">
-                                                            {{-- <li>
-                                                                <a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="" data-v_id="" data-p_name="" data-p_tax_id="" data-unit="" data-tax_percent="" data-tax_amount="" data-v_code="" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:30px; height:30px;" src=""> Samsung A30 (4GB, 64Gb) Price-510000 </a>
-                                                            </li> --}}
+                                                          
                                                         </ul>
                                                     </div>
                                                 </div> 
@@ -120,7 +119,7 @@
                                             <div class="sale-item-sec">
                                                 <div class="sale-item-inner">
                                                     <div class="table-responsive">
-                                                        <table class="table display table-sm data__table">
+                                                        <table class="table modal-table table-sm">
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th>Product</th>
@@ -176,7 +175,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><b>Ship Cost :</b> </label>
                                                 <div class="col-8">
-                                                    <input name="shipping_charge" type="number" class="form-control form-control-sm" id="shipping_charge" value="0.00"> 
+                                                    <input name="shipping_charge" type="number" class="form-control " id="shipping_charge" value="0.00"> 
                                                 </div>
                                             </div>
                                         </div>
@@ -214,26 +213,6 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script>
-        // Set Branch in form field
-        function setBranches(){
-            $.get("{{route('sales.get.all.branches')}}",  function(branches) {
-                $.each(branches, function(key, val){
-                    $('#branch_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.branch_code+')'+'</option>');
-                });
-            });
-        }
-        setBranches();
-
-        // Set Warehouse in form field
-        function setWarehouses(){
-            $.get("{{route('transfer.stock.to.branch.all.warehouse')}}",  function(warehouses) {
-                $.each(warehouses, function(key, val){
-                    $('#warehouse_id').append('<option value="'+val.id+'">'+ val.warehouse_name +' ('+val.warehouse_code+')'+'</option>');
-                });
-            });
-        }
-        setWarehouses();
-       
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
             var quantities = document.querySelectorAll('#quantity');
@@ -254,7 +233,6 @@
             subtotals.forEach(function(subtotal){
                 netTotalAmount += parseFloat(subtotal.value);
             });
-
             $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
         }
 
@@ -273,7 +251,7 @@
             var warehouse_id = $('#warehouse_id').val();
             if(warehouse_id == ""){
                 $('#search_product').val("");
-                alert('Warehouse field must not be empty.');
+                toastr.error('Warehouse field must not be empty.');
                 return;
             }
             delay(function() { searchProduct(product_code, warehouse_id); }, 200); //sendAjaxical is the name of remote-command
@@ -310,7 +288,7 @@
                                         var presentQty = closestTr.find('#quantity').val();
                                         var qty_limit = closestTr.find('#qty_limit').val();
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
-                                            alert('Quantity Limit is - '+qty_limit+' '+product.unit.name);
+                                            toastr.error('Quantity Limit is - '+qty_limit+' '+product.unit.name);
                                             return;
                                         }
                                         var updateQty = parseFloat(presentQty) + 1;
@@ -347,15 +325,7 @@
                                     tr += '</td>';
 
                                     tr += '<td>';
-                                    tr += '<div class="input-group">';
-                                    tr += '<div class="input-group-prepend">';
-                                    tr += '<a href="#" class="input-group-text  input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                    tr += '</div>';
                                     tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                                    tr += '<div class="input-group-prepend">';
-                                    tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                    tr += '</div>';
-                                    tr += '</div>';
                                     tr += '</td>';
                                     tr += '<td class="text text-center">';
                                     tr += '<span class="span_unit">'+product.unit.name+'</span>'; 
@@ -384,7 +354,7 @@
                                     var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
                                     var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
                                     li += '<li id="list" class="mt-1">';
-                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
                                 });
                                 $('.variant_list_area').prepend(li);
@@ -412,7 +382,7 @@
                                         var presentQty = closestTr.find('#quantity').val();
                                         var qty_limit = closestTr.find('#qty_limit').val();
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
-                                            alert('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name);
+                                            toastr.error('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name); 
                                             return;
                                         }
                                         var updateQty = parseFloat(presentQty) + 1;
@@ -449,15 +419,7 @@
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<div class="input-group">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                tr += '</div>';
-                                tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center form-control-sm" id="quantity">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                tr += '</div>';
-                                tr += '</div>';
+                                tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center " id="quantity">';
                                 tr += '</td>';
                                 tr += '<td class="text text-center">';
                                 tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
@@ -489,14 +451,14 @@
                                             var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
                                             var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
                                             li += '<li id="list" class="mt-1">';
-                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                             li +='</li>';
                                         });
                                     }else{
                                         var tax_amount = parseFloat(product.tax != null ? product.product_price/100 * product.tax.tax_percent : 0);
                                         var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
                                         li += '<li class="mt-1">';
-                                        li += '<a class="select_single_product mt-1" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:30px; height:30px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li += '<a class="select_single_product mt-1" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
                                     }
                                 });
@@ -533,7 +495,7 @@
             var p_tax_amount = e.getAttribute('data-p_tax_amount');
             if(warehouse_id == ""){
                 $('#search_product').val("");
-                alert('Warehouse field must not be empty.');
+                toastr.error('Warehouse field must not be empty.');
                 return;
             }
 
@@ -557,7 +519,7 @@
                                 var qty_limit = closestTr.find('#qty_limit').val();
                                 console.log('pq - '+presentQty+', ql - '+qty_limit);
                                 if(parseFloat(qty_limit)  === parseFloat(presentQty)){
-                                    alert('Quantity Limit is - '+qty_limit+' '+product_unit);
+                                    toastr.error('Quantity Limit is - '+qty_limit+' '+product_unit); 
                                     return;
                                 }
                                 var updateQty = parseFloat(presentQty) + 1;
@@ -595,15 +557,7 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<div class="input-group">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                            tr += '</div>';
                             tr += '<input type="number" step="any" value="1.00" required name="quantities[]"  class="form-control text-center" id="quantity">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn"><i class="fas fa-plus text-success "></i></a>';
-                            tr += '</div>';
-                            tr += '</div>';
                             tr += '</td>';
                             tr += '<td class="text">';
                             tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
@@ -655,7 +609,7 @@
 
             if(warehouse_id == ""){
                 $('#search_product').val("");
-                alert('Warehouse field must not be empty.');
+                toastr.error('Warehouse field must not be empty.');
                 return;
             }
 
@@ -680,7 +634,7 @@
                                     var qty_limit = closestTr.find('#qty_limit').val();
                                     console.log('pq - '+presentQty+', ql - '+qty_limit);
                                     if(parseFloat(qty_limit)  === parseFloat(presentQty)){
-                                        alert('Quantity Limit is - '+qty_limit+' '+product_unit);
+                                        toastr.error('Quantity Limit is - '+qty_limit+' '+product_unit);
                                         return;
                                     }
 
@@ -724,16 +678,9 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<div class="input-group">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                            tr += '</div>';
                             tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success"></i></a>';
-                            tr += '</div>';
-                            tr += '</div>';
                             tr += '</td>';
+
                             tr += '<td class="text text-center">';
                             tr += '<span class="span_unit">'+product_unit+'</span>'; 
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
@@ -771,7 +718,7 @@
                 var qty_limit = tr.find('#qty_limit').val();
                 var unit = tr.find('#unit').val();
                 if(parseInt(qty) > parseInt(qty_limit)){
-                    alert('Quantity Limit Is - '+qty_limit+' '+unit);
+                    toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
                     $(this).val(qty_limit);
                     var unitPrice = tr.find('#unit_price').val();
                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
@@ -797,7 +744,7 @@
                 var qty_limit = tr.find('#qty_limit').val();
                 var unit = tr.find('#unit').val();
                 if(parseInt(qty) > parseInt(qty_limit)){
-                    alert('Quantity Limit Is - '+qty_limit+' '+unit);
+                    toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
                     $(this).val(qty_limit);
                     var unitPrice = tr.find('#unit_price').val();
                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
@@ -895,28 +842,28 @@
             });
         });
 
-        // Decrease qty
-        $(document).on('click', '.decrease_qty_btn', function (e) {
-            e.preventDefault();
-            var tr = $(this).closest('tr');
-            var presentQty = tr.find('#quantity').val();
-            var updateQty = parseFloat(presentQty) - 1;
-            tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-            tr.find('#quantity').addClass('.form-control:focus');
-            tr.find('#quantity').blur();
-        });
+        // // Decrease qty
+        // $(document).on('click', '.decrease_qty_btn', function (e) {
+        //     e.preventDefault();
+        //     var tr = $(this).closest('tr');
+        //     var presentQty = tr.find('#quantity').val();
+        //     var updateQty = parseFloat(presentQty) - 1;
+        //     tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
+        //     tr.find('#quantity').addClass('.form-control:focus');
+        //     tr.find('#quantity').blur();
+        // });
 
-         // Iecrease qty
-         $(document).on('click', '.increase_qty_btn', function (e) {
-            e.preventDefault();
-            var tr = $(this).closest('tr');
-            var presentQty = tr.find('#quantity').val();
-            var updateQty = parseFloat(presentQty) + 1;
-            tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-            tr.find('#quantity').addClass('.form-control:focus');
-            tr.find('#quantity').blur();
-        })
-        // Automatic remove searching product is found signal 
+        //  // Iecrease qty
+        //  $(document).on('click', '.increase_qty_btn', function (e) {
+        //     e.preventDefault();
+        //     var tr = $(this).closest('tr');
+        //     var presentQty = tr.find('#quantity').val();
+        //     var updateQty = parseFloat(presentQty) + 1;
+        //     tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
+        //     tr.find('#quantity').addClass('.form-control:focus');
+        //     tr.find('#quantity').blur();
+        // })
+        // // Automatic remove searching product is found signal 
 
         setInterval(function(){
             $('#search_product').removeClass('is-invalid');

@@ -1183,7 +1183,7 @@
                                         // update unit cost with discount
                                         var unitPriceIncTax = closestTr.find('#unit_price_inc_tax').val();
                                         // update subtotal
-                                    var calcSubTotal = parseFloat(unitPriceIncTax) * parseFloat(updateQty);
+                                        var calcSubTotal = parseFloat(unitPriceIncTax) * parseFloat(updateQty);
                                         var subTatal = closestTr.find('#subtotal').val(parseFloat(calcSubTotal).toFixed(2));
                                         calculateTotalAmount();
                                         return;

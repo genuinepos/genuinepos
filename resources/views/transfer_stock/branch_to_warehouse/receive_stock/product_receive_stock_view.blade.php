@@ -32,12 +32,12 @@
                                     <hr class="m-1">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="m-0"><strong>Reference ID: </strong> <span class="transfer_invoice_id">SI-14252-45525588</span> </p> 
-                                            <p class="m-0"><strong>Date: </strong> <span class="transfer_date">05-12-2020</span></p> 
+                                            <p class="m-0"><strong>Reference ID: </strong> <span class="transfer_invoice_id"></span> </p> 
+                                            <p class="m-0"><strong>Date: </strong> <span class="transfer_date"></span></p> 
                                          </div>
                                          <div class="col-md-6">
-                                             <p class="m-0"><strong>Warehouse (From) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p> 
-                                             <p class="m-0"><strong>Branch : </strong> <span class="branch">Dhaka Branch - 145225</span></p>
+                                             <p class="m-0"><strong>Warehouse (From) : </strong> <span class="warehouse"></span> </p> 
+                                             <p class="m-0"><strong>Business Location : </strong> <span class="branch"></span></p>
                                          </div>
                                     </div>
                                 </div>
@@ -134,10 +134,9 @@
             type:'get',
             dataType: 'json',
             success:function(sendStock){
-                console.log(sendStock);
                 $('.transfer_invoice_id').html(sendStock.invoice_id);
                 $('.warehouse').html(sendStock.warehouse.warehouse_name+'/'+sendStock.warehouse.warehouse_code);
-                $('.branch').html(sendStock.branch.name+'/'+sendStock.branch.branch_code);
+                $('.branch').html(sendStock.branch ? sendStock.branch.name+'/'+sendStock.branch.branch_code : 'Head Office');
                 $('.transfer_date').html(sendStock.date);
                 $('#receiver_note').val(sendStock.receiver_note);
                 $.each(sendStock.transfer_products, function (key, sendProduct) {

@@ -205,7 +205,7 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Expired Date :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="date" name="expired_date" class="form-control" autocomplete="off" value="{{ date('Y-m-d', strtotime($product->expire_date)) }}">
+                                                        <input type="date" name="expired_date" class="form-control" autocomplete="off" value="{{$product->expire_date ? date('Y-m-d', strtotime($product->expire_date)) : '' }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -237,7 +237,7 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-2"> <b>Description :</b> </label>
                                                     <div class="col-10">
-                                                        <textarea name="product_details" id="textEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;">{{ $product->product_details }}</textarea>
+                                                        <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;">{{ $product->product_details }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -924,7 +924,7 @@
         var variant = variantsWithChild.filter(function(variant) {
             return variant.id == id;
         });
-        $.each(variant[0].bulk_variant_childs, function(key, child) {
+        $.each(variant[0].bulk_variant_child, function(key, child) {
             html += '<li class="modal_variant_child_list">';
             html += '<a class="select_variant_child" data-child="' + child.child_name + '" href="#">' +
                 child.child_name + '</a>';
@@ -1580,6 +1580,46 @@
         });
     });
 
+    // Add category from create product by ajax
+    $(document).on('submit', '#add_warranty_form', function(e) {
+        e.preventDefault();
+         $('.loading_button').removeClass('d-none');
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        var inputs = $('.add_warranty_input');
+        $('.error').html('');
+        var countErrorField = 0;
+        $.each(inputs, function(key, val) {
+            var inputId = $(val).attr('id');
+            var idValue = $('#' + inputId).val();
+            if (idValue == '') {
+                countErrorField += 1;
+                var fieldName = $('#' + inputId).data('name');
+                $('.error_' + inputId).html(fieldName + ' is required.');
+            }
+        });
+
+        if (countErrorField > 0) {
+             $('.loading_button').addClass('d-none');
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+                $('.loading_button').addClass('d-none');
+                toastr.success('Successfully warranty is added.');
+                $('#warranty_id').append('<option value="' + data.id + '">' + data.name + ' (' + data
+                    .type+' '+data.duration_type+ ')' + '</option>');
+                $('#warranty_id').val(data.id);
+                $('#addWarrantyModal').modal('hide');
+                $('#add_warranty_form')[0].reset();
+            }
+        });
+    });
+
     @if ($product->is_variant == 1) 
         function getProductVariants() {
             $.ajax({
@@ -1630,6 +1670,6 @@
         }
         getProductVariants();
     @endif
-
+    $('#myEditor').cleditor();
 </script>
 @endpush

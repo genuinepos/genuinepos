@@ -101,7 +101,6 @@ class ProductController extends Controller
                     return '<img loading="lazy" class="rounded" style="height:40px; width:40px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
                 })
                 ->addColumn('action', function ($row) use ($priceGroups) {
-                    // return $action_btn;
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
@@ -131,7 +130,7 @@ class ProductController extends Controller
                     if (count($priceGroups) > 0) {
                         $html .= '<a class="dropdown-item" href="' . route('products.add.price.groups', [$row->id, $row->is_variant]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add or edit price group</a>';
                     }
-                    
+
                     $html .= ' </div>';
                     $html .= '</div>';
                     return $html;
@@ -148,7 +147,7 @@ class ProductController extends Controller
                     }
                 })
                 ->editColumn('category', function ($row) {
-                    return '<span>' . ($row->cate_name ? $row->cate_name : '') . ($row->sub_cate_name ? '<br>--' . $row->sub_cate_name : '') . '</span>';
+                    return '<span>' . ($row->cate_name ? $row->cate_name : '...') . ($row->sub_cate_name ? '<br>--' . $row->sub_cate_name : '') . '</span>';
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 1) {
@@ -180,8 +179,7 @@ class ProductController extends Controller
                     'expire_date',
                     'tax_name',
                     'brand_name',
-                ])
-                ->make(true);
+                ])->make(true);
         }
         $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
@@ -238,7 +236,7 @@ class ProductController extends Controller
         $addProduct->alert_quantity = $request->alert_quantity;
         $addProduct->tax_id = $tax_id;
         $addProduct->tax_type = $request->tax_type;
-        $addProduct->expire_date = $request->expired_date;
+        $addProduct->expire_date = $request->expired_date ? $request->expired_date : NULL;
         $addProduct->product_condition = $request->product_condition;
         $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
         $addProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
@@ -343,7 +341,6 @@ class ProductController extends Controller
         }
 
         if ($request->type == 2) {
-            //return $request->all();
             if ($request->product_ids == null) {
                 return response()->json(['errorMsg' => 'You have selected combo product but there is no product at all']);
             }
@@ -393,230 +390,145 @@ class ProductController extends Controller
             'product_branches.product_branch_variants.product_variant',
         ])->where('id', $productId)->first();
 
-        // return $productWarehouse = DB::table('product_warehouses')->where('product_warehouses.product_id', $productId)
-        // ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
-        // ->leftJoin('branches', 'warehouses.branch_id', 'branches.id')
-        // ->leftJoin('products', 'product_warehouses.product_id', 'products.id')
-        // ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
-        // ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
-        // ->where('warehouses.branch_id', auth()->user()->branch_id)
-        // ->select(
-        //     'warehouses.warehouse_name as w_name',
-        //     'warehouses.warehouse_code as w_code',
-        //     'products.name as p_name',
-        //     'products.product_code as p_code',
-        //     'products.is_variant',
-        //     'products.type as p_type',
-        //     'products.product_cost as p_cost_exe_tax',
-        //     'products.product_cost_with_tax as p_cost_inc_tax',
-        //     'products.product_price as p_price',
-        //     'product_variants.variant_name as v_name',
-        //     'product_variants.variant_code as v_code',
-        //     'product_variants.variant_price as v_price',
-        //     'product_variants.variant_cost v_cost_exe_tax',
-        //     'product_variants.variant_cost_with_tax as v_cost_inc_tax',
-        // )
-        // ->get();
-
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
         return view('product.products.ajax_view.product_details_view', compact('product', 'price_groups'));
     }
 
     //update opening stock
-    public function openingStockUpdate(Request $request, $productId)
+    public function openingStockUpdate(Request $request)
     {
-        //return $request->all();
-        $branch_ids = $request->branch_ids;
-        $warehouse_ids = $request->warehouse_ids;
+       //return $request->all();
+        $branch_id = auth()->user()->branch_id;
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
-        $qunatities = $request->qunatities;
+        $quantities = $request->quantities;
         $subtotals = $request->subtotals;
-        $unit_costs_exc_tax = $request->unit_costs_exc_tax;
+        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $index = 0;
-            foreach ($product_ids as $product_id) {
-                $variant_id = $variant_ids[$index] == 'noid' ? NULL : $variant_ids[$index];
-                $updateOpeningStock = '';
-                $openignStock = ProductOpeningStock::where('warehouse_id', $warehouse_ids[$index])
-                    ->where('product_id', $product_id)
-                    ->where('product_variant_id', $variant_id)
+        // Add Opening Stock and update branch stock
+        $index = 0;
+        foreach ($product_ids as $product_id) {
+            $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $openingStock = ProductOpeningStock::where('branch_id', $branch_id)
+                ->where('product_id', $product_id)
+                ->where('product_variant_id', $variant_id)->first();
+
+            if ($openingStock) {
+                $product = Product::where('id', $openingStock->product_id)->first();
+                $product->quantity -= $openingStock->quantity;
+                $product->save();
+                
+                if ($openingStock->product_variant_id) {
+                    $productVariant = ProductVariant::where('id', $variant_id)->first();
+                    $productVariant->variant_quantity -= $openingStock->quantity;
+                    $productVariant->save();
+                }
+
+                if ($branch_id) {
+                    $productBranch = ProductBranch::where('branch_id', $branch_id)
+                    ->where('product_id', $openingStock->product_id)
                     ->first();
+                    $productBranch->product_quantity -= $openingStock->quantity;
+                    $productBranch->save();
 
-                if ($openignStock) {
-                    $updateOpeningStock = $openignStock;
+                    if ($openingStock->product_variant_id) {
+                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
+                        ->where('product_id', $openingStock->product_id)
+                        ->where('product_variant_id', $openingStock->product_variant_id)->first();
+                        $productBranchVariant->variant_quantity -= $openingStock->quantity;
+                    }
                 } else {
-                    $variant_id = $variant_ids[$index] == 'noid' ? NULL : $variant_ids[$index];
-                    $addOpeningStock = new ProductOpeningStock();
-                    $addOpeningStock->warehouse_id = $warehouse_ids[$index];
-                    $addOpeningStock->product_id = $product_id;
-                    $addOpeningStock->product_variant_id = $variant_id;
-                    $addOpeningStock->quantity = 0.00;
-                    $addOpeningStock->save();
+                    $mbProduct = Product::where('id', $product_id)->first();
+                    $mbProduct->mb_stock -= $openingStock->quantity;
+                    $mbProduct->save();
 
-                    $updateOpeningStock = ProductOpeningStock::where('warehouse_id', $warehouse_ids[$index])
-                        ->where('product_id', $product_id)
-                        ->where('product_variant_id', $variant_id)
-                        ->first();
+                    if ($openingStock->product_variant_id) {
+                        $mbProductVariant = ProductVariant::where('id', $openingStock->product_variant_id)->first();
+                        $mbProductVariant->mb_stock -= $openingStock->quantity;
+                        $mbProductVariant->save();
+                    }
                 }
 
-                if ($updateOpeningStock) {
-                    // update  product quantity 
-                    $updateProductQty = Product::where('id', $product_id)->first();
-                    $updateProductQty->quantity -= $updateOpeningStock->quantity;
-                    $updateProductQty->quantity += $qunatities[$index];
-                    $updateProductQty->is_purchased = 1;
-                    $updateProductQty->save();
-
-                    // update  product variant quantity 
-                    if ($updateOpeningStock->product_variant_id) {
-                        $updateVariantQty = ProductVariant::where('id', $updateOpeningStock->product_variant_id)
-                            ->where('product_id', $product_id)->first();
-                        $updateVariantQty->variant_quantity -= $updateOpeningStock->quantity;
-                        $updateVariantQty->variant_quantity += $qunatities[$index];
-                        $updateVariantQty->save();
-                    }
-
-                    // update branch product qty
-                    $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_ids[$index])
-                        ->where('product_id', $product_id)->first();
-                    if ($productWarehouse) {
-                        $productWarehouse->product_quantity -= $updateOpeningStock->quantity;
-                        $productWarehouse->product_quantity += $qunatities[$index];
-                        $productWarehouse->save();
-                        if ($updateOpeningStock->product_variant_id) {
-                            $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
-                                ->where('product_id', $product_id)
-                                ->where('product_variant_id', $updateOpeningStock->product_variant_id)->first();
-                            if ($productWarehouseVariant) {
-                                $productWarehouseVariant->variant_quantity -= $updateOpeningStock->quantity;
-                                $productWarehouseVariant->variant_quantity += $qunatities[$index];
-                                $productWarehouseVariant->save();
-                            } else {
-                                $addProductWarehousehVariant = new ProductWarehouseVariant();
-                                $addProductWarehousehVariant->product_warehouse_id = $productWarehouse->id;
-                                $addProductWarehousehVariant->product_id = $product_id;
-                                $addProductWarehousehVariant->product_variant_id = $updateOpeningStock->product_variant_id;
-                                $addProductWarehousehVariant->variant_quantity = $qunatities[$index];
-                                $addProductWarehousehVariant->save();
-                            }
-                        }
-                    } else {
-                        $addWarehouseProduct = new ProductWarehouse();
-                        $addWarehouseProduct->warehouse_id = $warehouse_ids[$index];
-                        $addWarehouseProduct->product_id = $product_id;
-                        $addWarehouseProduct->product_quantity = $qunatities[$index];
-                        $addWarehouseProduct->save();
-
-                        if ($updateOpeningStock->product_variant_id) {
-                            $addProductWarehouseVariant = new ProductWarehouseVariant();
-                            $addProductWarehouseVariant->product_warehouse_id = $addWarehouseProduct->id;
-                            $addProductWarehouseVariant->product_id = $product_id;
-                            $addProductWarehouseVariant->product_variant_id = $updateOpeningStock->product_variant_id;
-                            $addProductWarehouseVariant->variant_quantity = $qunatities[$index];
-                            $addProductWarehouseVariant->save();
-                        }
-                    }
-
-                    $updateOpeningStock->quantity = $qunatities[$index];
-                    $updateOpeningStock->unit_cost_exc_tax = $unit_costs_exc_tax[$index];
-                    $updateOpeningStock->subtotal = $subtotals[$index];
-                    $updateOpeningStock->save();
-                    $index++;
-                }
+                $openingStock->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
+                $openingStock->quantity = $quantities[$index];
+                $openingStock->subtotal = $subtotals[$index];
+                $openingStock->save();
+            } else {
+                $addOpeningStock = new ProductOpeningStock();
+                $addOpeningStock->branch_id = $branch_id;
+                $addOpeningStock->product_id = $product_id;
+                $addOpeningStock->product_variant_id = $variant_id;
+                $addOpeningStock->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
+                $addOpeningStock->quantity = $quantities[$index];
+                $addOpeningStock->subtotal = $subtotals[$index];
+                $addOpeningStock->save();
             }
-        } else {
-            $index = 0;
-            foreach ($product_ids as $product_id) {
-                $variant_id = $variant_ids[$index] == 'noid' ? NULL : $variant_ids[$index];
-                $updateOpeningStock = '';
-                $openignStock = ProductOpeningStock::where('branch_id', $branch_ids[$index])
+
+            $product = Product::where('id', $product_id)->first();
+            $product->quantity += (float)$quantities[$index];
+            $product->save();
+
+            if ($variant_ids[$index] != 'noid') {
+                $productVariant = ProductVariant::where('id', $variant_id)->first();
+                $productVariant->variant_quantity += (float)$quantities[$index];
+                $productVariant->save();
+            }
+
+            if ($branch_id) {
+                // update branch product qty
+                $productBranch = ProductBranch::where('branch_id', $branch_id)
                     ->where('product_id', $product_id)
-                    ->where('product_variant_id', $variant_id)
                     ->first();
+                
+                if ($productBranch) {
+                    $productBranch->product_quantity += (float)$quantities[$index];
+                    $productBranch->save();
+                    if ($variant_ids[$index] != 'noid') {
+                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
+                            ->where('product_id', $product_id)
+                            ->where('product_variant_id', $variant_id)->first();
 
-                if ($openignStock) {
-                    $updateOpeningStock = $openignStock;
-                } else {
-                    $variant_id = $variant_ids[$index] == 'noid' ? NULL : $variant_ids[$index];
-                    $addOpeningStock = new ProductOpeningStock();
-                    $addOpeningStock->branch_id = $branch_ids[$index];
-                    $addOpeningStock->product_id = $product_id;
-                    $addOpeningStock->product_variant_id = $variant_id;
-                    $addOpeningStock->quantity = 0.00;
-                    $addOpeningStock->save();
-
-                    $updateOpeningStock = ProductOpeningStock::where('branch_id', $branch_ids[$index])
-                        ->where('product_id', $product_id)
-                        ->where('product_variant_id', $variant_id)
-                        ->first();
-                }
-
-                if ($updateOpeningStock) {
-                    // update  product quantity 
-                    $updateProductQty = Product::where('id', $product_id)->first();
-                    $updateProductQty->quantity -= $updateOpeningStock->quantity;
-                    $updateProductQty->quantity += $qunatities[$index];
-                    $updateProductQty->is_purchased = 1;
-                    $updateProductQty->save();
-
-                    // update  product variant quantity 
-                    if ($updateOpeningStock->product_variant_id) {
-                        $updateVariantQty = ProductVariant::where('id', $updateOpeningStock->product_variant_id)
-                            ->where('product_id', $product_id)->first();
-                        $updateVariantQty->variant_quantity -= $updateOpeningStock->quantity;
-                        $updateVariantQty->variant_quantity += $qunatities[$index];
-                        $updateVariantQty->save();
-                    }
-
-                    // update branch product qty
-                    $productBranch = ProductBranch::where('branch_id', $branch_ids[$index])->where('product_id', $product_id)->first();
-                    if ($productBranch) {
-                        $productBranch->product_quantity -= $updateOpeningStock->quantity;
-                        $productBranch->product_quantity += $qunatities[$index];
-                        $productBranch->save();
-                        if ($updateOpeningStock->product_variant_id) {
-                            $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                                ->where('product_id', $product_id)
-                                ->where('product_variant_id', $updateOpeningStock->product_variant_id)->first();
-                            if ($productBranchVariant) {
-                                $productBranchVariant->variant_quantity -= $updateOpeningStock->quantity;
-                                $productBranchVariant->variant_quantity += $qunatities[$index];
-                                $productBranchVariant->save();
-                            } else {
-                                $addProductBranchVariant = new ProductBranchVariant();
-                                $addProductBranchVariant->product_branch_id = $productBranch->id;
-                                $addProductBranchVariant->product_id = $product_id;
-                                $addProductBranchVariant->product_variant_id = $updateOpeningStock->product_variant_id;
-                                $addProductBranchVariant->variant_quantity = $qunatities[$index];
-                                $addProductBranchVariant->save();
-                            }
-                        }
-                    } else {
-                        $addBranchProduct = new ProductBranch();
-                        $addBranchProduct->branch_id = $branch_ids[$index];
-                        $addBranchProduct->product_id = $product_id;
-                        $addBranchProduct->product_quantity = $qunatities[$index];
-                        $addBranchProduct->save();
-
-                        if ($updateOpeningStock->product_variant_id) {
+                        if ($productBranchVariant) {
+                            $productBranchVariant->variant_quantity += (float)$quantities[$index];
+                            $productBranchVariant->save();
+                        } else {
                             $addProductBranchVariant = new ProductBranchVariant();
-                            $addProductBranchVariant->product_branch_id = $addBranchProduct->id;
+                            $addProductBranchVariant->product_branch_id = $productBranch->id;
                             $addProductBranchVariant->product_id = $product_id;
-                            $addProductBranchVariant->product_variant_id = $updateOpeningStock->product_variant_id;
-                            $addProductBranchVariant->variant_quantity = $qunatities[$index];
+                            $addProductBranchVariant->product_variant_id = $variant_id;
+                            $addProductBranchVariant->variant_quantity = $quantities[$index];
                             $addProductBranchVariant->save();
                         }
                     }
+                } else {
+                    $addBranchProduct = new ProductBranch();
+                    $addBranchProduct->branch_id = $branch_id;
+                    $addBranchProduct->product_id = $product_id;
+                    $addBranchProduct->product_quantity = $quantities[$index];
+                    $addBranchProduct->save();
 
-                    $updateOpeningStock->quantity = $qunatities[$index];
-                    $updateOpeningStock->unit_cost_exc_tax = $unit_costs_exc_tax[$index];
-                    $updateOpeningStock->subtotal = $subtotals[$index];
-                    $updateOpeningStock->save();
-                    $index++;
+                    if ($variant_ids[$index] != 'noid') {
+                        $addProductBranchVariant = new ProductBranchVariant();
+                        $addProductBranchVariant->product_branch_id = $addBranchProduct->id;
+                        $addProductBranchVariant->product_id = $product_id;
+                        $addProductBranchVariant->product_variant_id = $variant_id;
+                        $addProductBranchVariant->variant_quantity = $quantities[$index];
+                        $addProductBranchVariant->save();
+                    }
+                }
+            } else {
+                $mbProduct = Product::where('id', $product_id)->first();
+                $mbProduct->mb_stock += $quantities[$index];
+                $mbProduct->save();
+
+                if ($variant_ids[$index] != 'noid') {
+                    $mbProductVariant = ProductVariant::where('id', $variant_id)->first();
+                    $mbProductVariant->mb_stock += (float)$quantities[$index];
+                    $mbProductVariant->save();
                 }
             }
+
+            $index++;
         }
 
         return response()->json('Successfully product opening stock is added');
@@ -625,9 +537,22 @@ class ProductController extends Controller
     // Get opening stock
     public function openingStock($productId)
     {
-        $warehouses = DB::table('warehouses')->get();
-        $productId = $productId;
-        return view('product.products.ajax_view.opening_stock_modal_view', compact('warehouses', 'productId'));
+        $products = DB::table('products')->where('products.id', $productId)
+            ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->select(
+                'products.id as p_id',
+                'products.name as p_name',
+                'products.product_cost as p_cost',
+                'products.product_cost_with_tax as p_cost_inc_tax',
+                'units.code_name as u_code',
+                'product_variants.id as v_id',
+                'product_variants.variant_name as v_name',
+                'product_variants.variant_cost as v_cost',
+                'product_variants.variant_cost_with_tax as v_cost_inc_tax',
+            )
+            ->get();
+        return view('product.products.ajax_view.opening_stock_modal_view', compact('products'));
     }
 
     public function addPriceGroup($productId, $type)
@@ -680,7 +605,7 @@ class ProductController extends Controller
 
         if ($request->action_type == 'save') {
             return response()->json(['saveMessage' =>  'Product price group updated Successfully']);
-        }else {
+        } else {
             return response()->json(['saveAndAnotherMsg' =>  'Product price group updated Successfully']);
         }
     }
@@ -689,9 +614,9 @@ class ProductController extends Controller
     public function edit($productId)
     {
         $product = DB::table('products')->where('products.id', $productId)
-        ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
-        ->select('products.*', 'taxes.tax_percent')
-        ->first();
+            ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+            ->select('products.*', 'taxes.tax_percent')
+            ->first();
         $categories = DB::table('categories')->get();
         $units = DB::table('units')->get();
         $brands = DB::table('brands')->get();
@@ -746,7 +671,7 @@ class ProductController extends Controller
         $updateProduct->alert_quantity = $request->alert_quantity;
         $updateProduct->tax_id = $tax_id;
         $updateProduct->tax_type = $request->tax_type;
-        $updateProduct->expire_date = $request->expired_date;
+        $updateProduct->expire_date = $request->expired_date ? $request->expired_date : NULL;
         $updateProduct->product_condition = $request->product_condition;
         $updateProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
         $updateProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
@@ -896,7 +821,6 @@ class ProductController extends Controller
         }
 
         if ($updateProduct->type == 2) {
-            //return $request->all();
             if ($request->product_ids == null) {
                 return response()->json(['errorMsg' => 'You have selected combo product but there is no product at all']);
             }
@@ -939,40 +863,6 @@ class ProductController extends Controller
             $deleteNotFoundComboProduct->delete();
         }
 
-        // Add opening stock
-        $product = Product::with(['product_variants'])->where('id', $updateProduct->id)->first();
-        if ($product->type == 1 || $product->type == 2) {
-            if ($product->is_variant == 1) {
-                $branches = Branch::all();
-                foreach ($branches as $branch) {
-                    foreach ($product->product_variants as $product_variant) {
-                        $productOpeningStock = ProductOpeningStock::where('branch_id', $branch->id)->where('product_id', $product->id)
-                            ->where('product_variant_id', $product_variant->id)->first();
-                        if (!$productOpeningStock) {
-                            $addOpeningStock = new ProductOpeningStock();
-                            $addOpeningStock->branch_id = $branch->id;
-                            $addOpeningStock->product_id = $product->id;
-                            $addOpeningStock->unit_cost_exc_tax = $product_variant->variant_cost;
-                            $addOpeningStock->product_variant_id = $product_variant->id;
-                            $addOpeningStock->save();
-                        }
-                    }
-                }
-            } else {
-                $branches = Branch::all();
-                foreach ($branches as $branch) {
-                    $productOpeningStock = ProductOpeningStock::where('branch_id', $branch->id)
-                    ->where('product_id', $product->id)->first();
-                    if (!$productOpeningStock) {
-                        $addOpeningStock = new ProductOpeningStock();
-                        $addOpeningStock->branch_id = $branch->id;
-                        $addOpeningStock->product_id = $product->id;
-                        $addOpeningStock->unit_cost_exc_tax = $product->product_cost;
-                        $addOpeningStock->save();
-                    }
-                }
-            }
-        }
         session()->flash('successMsg', 'Successfully product is updated');
         return response()->json('Successfully product is updated');
     }
@@ -1077,7 +967,7 @@ class ProductController extends Controller
     //Get all form variant by ajax request
     public function getAllFormVariants()
     {
-        $variants = BulkVariant::with(['bulk_variant_childs'])->get();
+        $variants = BulkVariant::with(['bulk_variant_child'])->get();
         return response()->json($variants);
     }
 
@@ -1193,7 +1083,7 @@ class ProductController extends Controller
     public function getFormPart($type)
     {
         $type = $type;
-        $variants = BulkVariant::with(['bulk_variant_childs'])->get();
+        $variants = BulkVariant::with(['bulk_variant_child'])->get();
         return view('product.products.ajax_view.form_part', compact('type', 'variants'));
     }
 

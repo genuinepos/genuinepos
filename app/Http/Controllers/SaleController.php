@@ -238,7 +238,6 @@ class SaleController extends Controller
 
             $sales = '';
             $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
-                ->leftJoin('warehouses', 'sales.warehouse_id', 'warehouses.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id');
 
             if ($request->branch_id) {
@@ -272,11 +271,8 @@ class SaleController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                //$form_date = date('Y-m-d', strtotime($date_range[0]. '-1 days'));
                 $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                //$to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-                //$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -285,8 +281,6 @@ class SaleController extends Controller
                     'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
                     'customers.name as customer_name',
                 )->where('sales.status', 1)->where('created_by', 2)
                     ->orderBy('id', 'desc')
@@ -297,10 +291,8 @@ class SaleController extends Controller
                     'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
                     'customers.name as customer_name',
-                )->where('branch_id', auth()->user()->branch_id)->where('created_by', 2)
+                )->where('sales.branch_id', auth()->user()->branch_id)->where('created_by', 2)
                     ->where('sales.status', 1)
                     ->orderBy('id', 'desc')
                     ->get();
@@ -363,11 +355,11 @@ class SaleController extends Controller
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
                 })
-                ->editColumn('from',  function ($row) {
+                ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HF</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -456,7 +448,6 @@ class SaleController extends Controller
 
             $drafts = '';
             $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
-                ->leftJoin('warehouses', 'sales.warehouse_id', 'warehouses.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
                 ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
 
@@ -483,11 +474,8 @@ class SaleController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                //$form_date = date('Y-m-d', strtotime($date_range[0]. '-1 days'));
                 $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                //$to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-                //$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -496,8 +484,6 @@ class SaleController extends Controller
                     'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
                     'customers.name as customer_name',
                     'admin_and_users.prefix as u_prefix',
                     'admin_and_users.name as u_name',
@@ -511,8 +497,6 @@ class SaleController extends Controller
                     'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
                     'customers.name as customer_name',
                     'admin_and_users.prefix as u_prefix',
                     'admin_and_users.name as u_name',
@@ -549,11 +533,11 @@ class SaleController extends Controller
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) {
+                ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>BR</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -575,7 +559,7 @@ class SaleController extends Controller
                 ->make(true);
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        return view('sales.drafts');
+        return view('sales.drafts', compact('branches'));
     }
 
     // Quotations list view 
@@ -586,7 +570,6 @@ class SaleController extends Controller
 
             $quotations = '';
             $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
-                ->leftJoin('warehouses', 'sales.warehouse_id', 'warehouses.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
                 ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
 
@@ -623,8 +606,6 @@ class SaleController extends Controller
                     'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
                     'customers.name as customer_name',
                     'admin_and_users.prefix as u_prefix',
                     'admin_and_users.name as u_name',
@@ -638,13 +619,11 @@ class SaleController extends Controller
                     'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
                     'customers.name as customer_name',
                     'admin_and_users.prefix as u_prefix',
                     'admin_and_users.name as u_name',
                     'admin_and_users.last_name as u_last_name',
-                )->where('branch_id', auth()->user()->branch_id)
+                )->where('sales.branch_id', auth()->user()->branch_id)
                     ->where('sales.status', 4)
                     ->orderBy('id', 'desc')
                     ->get();
@@ -676,11 +655,11 @@ class SaleController extends Controller
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) {
+                ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>BR</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -701,7 +680,8 @@ class SaleController extends Controller
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'user'])
                 ->make(true);
         }
-        return view('sales.quotations');
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('sales.quotations', compact('branches'));
     }
 
     // Quotation Details
@@ -709,7 +689,6 @@ class SaleController extends Controller
     {
         $quotation = Sale::with([
             'branch',
-            'warehouse',
             'branch.add_sale_invoice_layout',
             'customer',
             'admin',
@@ -837,7 +816,7 @@ class SaleController extends Controller
 
         // Update customer due
         if ($request->status == 1) {
-            $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0.00;
+            $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $paidAmount = $request->paying_amount - $changedAmount;
             if ($request->previous_due > 0) {
                 $addSale->total_payable_amount = $request->total_invoice_payable;
@@ -852,7 +831,7 @@ class SaleController extends Controller
                 }
             } else {
                 $addSale->total_payable_amount = $request->total_payable_amount;
-                $addSale->paid = $request->paying_amount;
+                $addSale->paid = $request->paying_amount ? $request->paying_amount : 0;
                 $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
                 $addSale->due = $request->total_due > 0 ? $request->total_due : 0.00;
             }
@@ -1172,7 +1151,7 @@ class SaleController extends Controller
         if ($request->status == 1) {
             $this->saleUtil->updateProductBranchStock($request, auth()->user()->branch_id);
         }
-        
+
         // Update sale product rows
         $__index = 0;
         foreach ($product_ids as $product_id) {
@@ -1258,12 +1237,12 @@ class SaleController extends Controller
         if ($deleteSale->status == 1) {
             foreach ($deleteSale->sale_products as $sale_product) {
                 if ($sale_product->product->type == 1) {
-                    $sale_product->product->quantity = $sale_product->product->quantity + $sale_product->quantity;
-                    $sale_product->product->number_of_sale = $sale_product->product->number_of_sale - $sale_product->quantity;
+                    $sale_product->product->quantity += $sale_product->quantity;
+                    $sale_product->product->number_of_sale -= $sale_product->quantity;
                     $sale_product->product->save();
                     if ($sale_product->product_variant_id) {
-                        $sale_product->variant->variant_quantity = $sale_product->variant->variant_quantity + $sale_product->quantity;
-                        $sale_product->variant->number_of_sale = $sale_product->variant->number_of_sale - $sale_product->quantity;
+                        $sale_product->variant->variant_quantity += $sale_product->quantity;
+                        $sale_product->variant->number_of_sale -= $sale_product->quantity;
                         $sale_product->variant->save();
                     }
 
@@ -1271,7 +1250,7 @@ class SaleController extends Controller
                         $productBranch = ProductBranch::where('branch_id', $deleteSale->branch_id)
                             ->where('product_id', $sale_product->product_id)
                             ->first();
-                        $productBranch->product_quantity = $productBranch->product_quantity + $sale_product->quantity;
+                        $productBranch->product_quantity += $sale_product->quantity;
                         $productBranch->save();
                         if ($sale_product->product_variant_id) {
                             $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
@@ -1279,22 +1258,21 @@ class SaleController extends Controller
                                 ->where('product_variant_id', $sale_product->product_variant_id)
                                 ->first();
 
-                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $sale_product->quantity;
+                            $productBranchVariant->variant_quantity += $sale_product->quantity;
                             $productBranchVariant->save();
                         }
                     } else {
-                        $productWarehouse = ProductWarehouse::where('warehouse_id', $deleteSale->warehouse_id)
-                            ->where('product_id', $sale_product->product_id)
+                        $product = Product::where('id', $sale_product->product_id)
                             ->first();
-                        $productWarehouse->product_quantity = $productWarehouse->product_quantity + $sale_product->quantity;
-                        $productWarehouse->save();
+                        $product->mb_stock += $sale_product->quantity;
+                        $product->save();
+
                         if ($sale_product->product_variant_id) {
-                            $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
-                                ->where('product_id', $sale_product->product_id)
-                                ->where('product_variant_id', $sale_product->product_variant_id)
+                            $productVariant = ProductVariant::where('id', $sale_product->product_variant_id)
+                                ->where('id', $sale_product->product_id)
                                 ->first();
-                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $sale_product->quantity;
-                            $productWarehouseVariant->save();
+                            $productVariant->mb_stock += $sale_product->quantity;
+                            $productVariant->save();
                         }
                     }
                 }
@@ -2338,8 +2316,8 @@ class SaleController extends Controller
             }
         } else {
             $mb_product = Product::with(['tax', 'unit'])
-            ->where('id', $product_id)
-            ->first();
+                ->where('id', $product_id)
+                ->first();
             if ($mb_product->mb_stock > 0) {
                 return view('sales.ajax_view.recent_product_view', compact('mb_product'));
             } else {

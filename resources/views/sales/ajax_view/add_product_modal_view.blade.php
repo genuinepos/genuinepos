@@ -54,7 +54,7 @@
                 <label><b>Child category :</b></label>
                 <select class="form-control" name="child_category_id"
                     id="sale_child_category_id">
-                    <option value="">Select child category first</option>
+                    <option value="">Select category first</option>
                 </select>
             </div>
         @endif
@@ -182,7 +182,7 @@
                             <td>
                                 <input type="hidden" name="branch_id" id="os_branch_id" value="{{ auth()->user()->branch_id }}">
                                 <p>
-                                    {{ auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : 'Head Office' }}
+                                    {!! auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code :  json_decode($generalSettings->business, true)['shop_name'] .'<b>(HO)</b>' !!}
                                 </p> 
                             </td>
 

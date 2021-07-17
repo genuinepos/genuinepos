@@ -85,6 +85,7 @@ class SalePaymentReportController extends Controller
             ->rawColumns(['date', 'customer_name', 'paid_amount'])
             ->make(true);
         }
-        return view('reports.sale_payment_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.sale_payment_report.index', compact('branches'));
     }
 }

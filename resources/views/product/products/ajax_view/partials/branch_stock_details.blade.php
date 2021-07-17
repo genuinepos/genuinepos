@@ -66,19 +66,19 @@
                         }
                     @endphp
                     <tr>
-                        <td class="text-white text-start">{{ $product->product_code }}</td>
-                        <td class="text-white text-start">{{ $product->name }}</td>
-                        <td class="text-white text-start">
+                        <td class="text-start">{{ $product->product_code }}</td>
+                        <td class="text-start">{{ $product->name }}</td>
+                        <td class="text-start">
                             <b>{{ $product_branch->branch->name . ' - ' .$product_branch->branch->branch_code }}</b>
                         </td>
-                        <td class="text-white text-start"> {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <td class="text-start"> {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ bcadd($product_price_inc_tax, 0, 2) }}</td>
-                        <td class="text-white text-start">{{ $product_branch->product_quantity . ' (' . $product->unit->code_name . ')' }}
+                        <td class="text-start">{{ $product_branch->product_quantity . ' (' . $product->unit->code_name . ')' }}
                         </td>
                         @php
                             $stockValue = $product_branch->product_quantity * $product_price_inc_tax;
                         @endphp
-                        <td class="text-white text-start">
+                        <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ bcadd($stockValue, 0, 2) }}
                         </td>

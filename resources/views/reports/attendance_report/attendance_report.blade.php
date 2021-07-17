@@ -80,37 +80,37 @@
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="widget_content">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Employee</th>
-                                                    <th>Clock IN - CLock Out</th>
-                                                    <th>Work Duration</th>
-                                                    <th>Shift</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+               
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="widget_content">
+                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Employee</th>
+                                                <th>Clock IN - CLock Out</th>
+                                                <th>Work Duration</th>
+                                                <th>Shift</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                            </tbody>
-                                        </table>
-                                        <a href="{{ route('reports.attendance.print') }}" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
-                                    </div>
+                                        </tbody>
+                                    </table>
+                                    <a href="{{ route('reports.attendance.print') }}" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
+               
                 </div>
             </div>
         </div>

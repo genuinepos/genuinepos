@@ -90,7 +90,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('add/price/groups/{productId}/{type}', 'ProductController@addPriceGroup')->name('products.add.price.groups');
         Route::post('save/price/groups', 'ProductController@savePriceGroup')->name('products.save.price.groups');
 
-        Route::post('opening/stock/update/{productId}', 'ProductController@openingStockUpdate')->name('products.opening.stock.update');
+        Route::post('opening/stock/update', 'ProductController@openingStockUpdate')->name('products.opening.stock.update');
         Route::post('add/category', 'ProductController@addCategory')->name('products.add.category');
         Route::post('add/brand', 'ProductController@addBrand')->name('products.add.brand');
         Route::post('add/unit', 'ProductController@addUnit')->name('products.add.unit');
@@ -384,7 +384,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::get('branch/stock', 'POSController@branchStock')->name('sales.pos.branch.stock');
         Route::get('add/customer/modal', 'POSController@addQuickCustomerModal')->name('sales.pos.add.quick.customer.modal');
         Route::post('add/customer', 'POSController@addCustomer')->name('sales.pos.add.customer');
-        Route::get('get/recent/product/{branch_id}/{warehouse_id}/{product_id}', 'POSController@getRecentProduct');
+        Route::get('get/recent/product/{product_id}', 'POSController@getRecentProduct');
         Route::get('close/cash/registser/modal/view', 'POSController@close');
         Route::get('search/exchangeable/invoice', 'POSController@searchExchangeableInv')->name('sales.pos.serc.ex.inv');
         Route::post('prepare/exchange', 'POSController@prepareExchange')->name('sales.pos.prepare.exchange');

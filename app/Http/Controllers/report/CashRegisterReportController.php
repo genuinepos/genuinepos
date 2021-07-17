@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\report;
 
-use App\Http\Controllers\Controller;
 use App\Models\CashRegister;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class CashRegisterReportController extends Controller
 {
@@ -16,7 +17,8 @@ class CashRegisterReportController extends Controller
     // Index view of cash register report
     public function index()
     {
-        return view('reports.cash_register_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.cash_register_report.index', compact('branches'));
     }
 
     // Get cash register reports
@@ -47,7 +49,6 @@ class CashRegisterReportController extends Controller
 
         if ($request->date_range) {
             $date_range = explode('-', $request->date_range);
-            //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
             $form_date = date('Y-m-d', strtotime($date_range[0]));
             $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
             $query->whereBetween('created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);

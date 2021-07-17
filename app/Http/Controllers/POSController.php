@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\Account;
 use App\Models\Product;
+use App\Utils\SaleUtil;
 use App\Models\CashFlow;
 use App\Models\Customer;
 use App\Models\SalePayment;
@@ -14,16 +15,16 @@ use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\ProductVariant;
-use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\CashRegisterTransaction;
-use App\Models\ProductWarehouseVariant;
 
 class POSController extends Controller
 {
-    public function __construct()
+    protected $saleUtil;
+    public function __construct(SaleUtil $saleUtil)
     {
+        $this->saleUtil = $saleUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -58,10 +59,12 @@ class POSController extends Controller
     public function store(Request $request)
     {
         //return $request->all();
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'contact_default_cr_limit', 'reward_poing_settings'])->first();
+        $prefixSettings = DB::table('general_settings')
+            ->select(['id', 'prefix', 'contact_default_cr_limit', 'reward_poing_settings'])
+            ->first();
+
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
-
         $branchInvoiceSchema = DB::table('branches')
             ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
             ->where('branches.id', auth()->user()->branch_id)
@@ -118,13 +121,7 @@ class POSController extends Controller
         $addSale->invoice_id = $invoicePrefix . $invoiceId;
         $addSale->admin_id = auth()->user()->id;
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $addSale->warehouse_id = $request->warehouse_id;
-        } else {
-            $addSale->branch_id = auth()->user()->branch_id;
-        }
-
-        // $addSale->customer_id = $request->customer_id;
+        $addSale->branch_id = auth()->user()->branch_id;
         $addSale->customer_id = $request->customer_id != 0 ? $request->customer_id : NULL;
         $addSale->status = $request->action;
 
@@ -225,71 +222,31 @@ class POSController extends Controller
         $subtotals = $request->subtotals;
 
         // update product quantity and add sale product
-        $index = 0;
+        $branch_id = auth()->user()->branch_id;
+        if ($request->action == 1) {
+            $this->saleUtil->updateProductBranchStock($request, $branch_id);
+        }
+
+        $__index = 0;
         foreach ($product_ids as $product_id) {
-            if ($request->action == 1) {
-                $updateProductQty = Product::where('id', $product_id)->first();
-                if ($updateProductQty->type == 1) {
-                    $updateProductQty->quantity = $updateProductQty->quantity - $quantities[$index];
-                    $updateProductQty->number_of_sale = $updateProductQty->number_of_sale + $quantities[$index];
-                    $updateProductQty->save();
-
-                    if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                        $updateWarehouseProductQty = ProductWarehouse::where('warehouse_id', $request->warehouse_id)
-                            ->where('product_id', $product_id)
-                            ->first();
-                        $updateWarehouseProductQty->product_quantity = $updateWarehouseProductQty->product_quantity - $quantities[$index];
-                        $updateWarehouseProductQty->save();
-
-                        if ($variant_ids[$index] != 'noid') {
-                            $updateProductVariant = ProductVariant::where('id', $variant_ids[$index])
-                                ->where('product_id', $product_id)
-                                ->first();
-                            $updateProductVariant->variant_quantity = $updateProductVariant->variant_quantity - $quantities[$index];
-                            $updateProductVariant->number_of_sale = $updateProductVariant->number_of_sale + $quantities[$index];
-                            $updateProductVariant->save();
-
-                            $updateProductWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $updateWarehouseProductQty->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                            $updateProductWarehouseVariant->variant_quantity = $updateProductWarehouseVariant->variant_quantity - $quantities[$index];
-                            $updateProductWarehouseVariant->save();
-                        }
-                    } else {
-                        $updateBranchProductQty = ProductBranch::where('branch_id', $request->branch_id)->where('product_id', $product_id)->first();
-                        $updateBranchProductQty->product_quantity = $updateBranchProductQty->product_quantity - $quantities[$index];
-                        $updateBranchProductQty->save();
-
-                        if ($variant_ids[$index] != 'noid') {
-                            $updateProductVariant = ProductVariant::where('id', $variant_ids[$index])->where('product_id', $product_id)->first();
-                            $updateProductVariant->variant_quantity = $updateProductVariant->variant_quantity - $quantities[$index];
-                            $updateProductVariant->number_of_sale = $updateProductVariant->number_of_sale + $quantities[$index];
-                            $updateProductVariant->save();
-
-                            $updateProductBranchVariant = ProductBranchVariant::where('product_branch_id', $updateBranchProductQty->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                            $updateProductBranchVariant->variant_quantity = $updateProductBranchVariant->variant_quantity - $quantities[$index];
-                            $updateProductBranchVariant->save();
-                        }
-                    }
-                }
-            }
-
             $addSaleProduct = new SaleProduct();
             $addSaleProduct->sale_id = $addSale->id;
             $addSaleProduct->product_id = $product_id;
-            $addSaleProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $addSaleProduct->quantity = $quantities[$index];
-            $addSaleProduct->unit_discount_type = $unit_discount_types[$index];
-            $addSaleProduct->unit_discount = $unit_discounts[$index];
-            $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$index];
-            $addSaleProduct->unit_tax_percent = $unit_tax_percents[$index];
-            $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$index];
-            $addSaleProduct->unit = $units[$index];
-            $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-            $addSaleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$index];
-            $addSaleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$index];
-            $addSaleProduct->description = $descriptions[$index] ? $descriptions[$index] : NULL;
-            $addSaleProduct->subtotal = $subtotals[$index];
+            $addSaleProduct->product_variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+            $addSaleProduct->quantity = $quantities[$__index];
+            $addSaleProduct->unit_discount_type = $unit_discount_types[$__index];
+            $addSaleProduct->unit_discount = $unit_discounts[$__index];
+            $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$__index];
+            $addSaleProduct->unit_tax_percent = $unit_tax_percents[$__index];
+            $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$__index];
+            $addSaleProduct->unit = $units[$__index];
+            $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$__index];
+            $addSaleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$__index];
+            $addSaleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$__index];
+            $addSaleProduct->description = $descriptions[$__index] ? $descriptions[$__index] : NULL;
+            $addSaleProduct->subtotal = $subtotals[$__index];
             $addSaleProduct->save();
-            $index++;
+            $__index++;
         }
 
         if ($request->customer_id) {
@@ -373,12 +330,14 @@ class POSController extends Controller
         $qty_limits = [];
         foreach ($invoiceProducts as $sale_product) {
             if ($sale_product->sale->branch_id) {
-                $productBranch = ProductBranch::where('branch_id', $sale_product->sale->branch_id)
+                $productBranch = DB::table('product_branches')->where('branch_id', $sale_product->sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {
                     $qty_limits[] = 500000;
                 } elseif ($sale_product->product_variant_id) {
-                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $sale_product->product_id)
+                    $productBranchVariant = DB::table('product_branch_variant')
+                        ->where('product_branch_id', $productBranch->id)
+                        ->where('product_id', $sale_product->product_id)
                         ->where('product_variant_id', $sale_product->product_variant_id)
                         ->first();
                     $qty_limits[] = $productBranchVariant->variant_quantity;
@@ -386,17 +345,18 @@ class POSController extends Controller
                     $qty_limits[] = $productBranch->product_quantity;
                 }
             } else {
-                $productWarehouse = ProductWarehouse::where('warehouse_id', $sale_product->sale->warehouse_id)
-                    ->where('product_id', $sale_product->product_id)->first();
+                $mbProduct = DB::table('products')
+                    ->where('id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {
                     $qty_limits[] = 500000;
                 } elseif ($sale_product->product_variant_id) {
-                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $sale_product->product_id)
-                        ->where('product_variant_id', $sale_product->product_variant_id)
+                    $mbProductVariant = DB::table('product_variants')
+                        ->where('id', $sale_product->product_variant_id)
+                        ->where('product_id', $sale_product->product_id)
                         ->first();
-                    $qty_limits[] = $productWarehouseVariant->variant_quantity;
+                    $qty_limits[] = $mbProductVariant->mb_stock;
                 } else {
-                    $qty_limits[] = $productWarehouse->product_quantity;
+                    $qty_limits[] = $mbProduct->mb_stock;
                 }
             }
         }
@@ -408,9 +368,7 @@ class POSController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
-
         $updateSale = Sale::with(['sale_payments', 'sale_products', 'sale_products.product', 'sale_products.variant', 'sale_products.product.comboProducts'])->where('id', $request->sale_id)->first();
-        //return $request->all();
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
         }
@@ -455,7 +413,6 @@ class POSController extends Controller
                     $customer->total_sale_due -= $updateSale->due;
                     $customer->total_sale_due += $request->total_due;
                 }
-
                 $customer->save();
             }
         }
@@ -465,8 +422,6 @@ class POSController extends Controller
         $updateSale->report_date = date('Y-m-d h:m:i');
         $updateSale->month = date('F');
         $updateSale->year = date('Y');
-        //$addSale->pay_term = $request->pay_term;
-        //$addSale->pay_term_number = $request->pay_term_number;
         $updateSale->total_item = $request->total_item;
         $updateSale->net_total_amount = $request->net_total_amount;
         $updateSale->order_discount_type = 1;
@@ -493,7 +448,6 @@ class POSController extends Controller
         } else {
             $updateSale->total_payable_amount += $request->total_payable_amount;
         }
-
         $updateSale->save();
 
         // Add product quantity for adjustment
@@ -515,29 +469,26 @@ class POSController extends Controller
                         $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
                             ->where('product_id', $sale_product->product_id)
                             ->first();
-                        $productBranch->product_quantity = $productBranch->product_quantity + $sale_product->quantity;
+                        $productBranch->product_quantity +=  $sale_product->quantity;
                         $productBranch->save();
                         if ($sale_product->product_variant_id) {
                             $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
                                 ->where('product_id', $sale_product->product_id)
                                 ->where('product_variant_id', $sale_product->product_variant_id)
                                 ->first();
-                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $sale_product->quantity;
+                            $productBranchVariant->variant_quantity += $sale_product->quantity;
                             $productBranchVariant->save();
                         }
                     } else {
-                        $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSale->warehouse_id)
-                            ->where('product_id', $sale_product->product_id)
+                        $mbProduct = Product::where('id', $sale_product->product_id)
                             ->first();
-                        $productWarehouse->product_quantity = $productWarehouse->product_quantity + $sale_product->quantity;
-                        $productWarehouse->save();
+                        $mbProduct->mb_stock += $sale_product->quantity;
+                        $mbProduct->save();
                         if ($sale_product->product_variant_id) {
-                            $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
-                                ->where('product_id', $sale_product->product_id)
-                                ->where('product_variant_id', $sale_product->product_variant_id)
-                                ->first();
-                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity + $sale_product->quantity;
-                            $productWarehouseVariant->save();
+                            $mbProductVariant = ProductVariant::where('id', $sale_product->product_variant_id)
+                                ->where('product_id', $sale_product->product_id)->first();
+                            $mbProductVariant->mb_stock += $sale_product->quantity;
+                            $mbProductVariant->save();
                         }
                     }
                 }
@@ -560,93 +511,56 @@ class POSController extends Controller
         $unit_prices_inc_tax = $request->unit_prices_inc_tax;
         $subtotals = $request->subtotals;
 
-        $index = 0;
+        if ($request->action == 1) {
+            $this->saleUtil->updateProductBranchStock($request, auth()->user()->branch_id);
+        }
+
+        $__index = 0;
         foreach ($product_ids as $product_id) {
-            if ($request->action == 1) {
-                $product = Product::where('id', $product_id)->first();
-                if ($product->type == 1) {
-                    $product->quantity = $product->quantity - $quantities[$index];
-                    $product->number_of_sale = $product->number_of_sale + $quantities[$index];
-                    $product->save();
-
-                    if ($updateSale->branch_id) {
-                        $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
-                            ->where('product_id', $product_id)->first();
-                        $productBranch->product_quantity = $productBranch->product_quantity - $quantities[$index];
-                        $productBranch->save();
-                    } else {
-                        $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSale->warehouse_id)
-                            ->where('product_id', $product_id)->first();
-                        $productWarehouse->product_quantity = $productWarehouse->product_quantity - $quantities[$index];
-                        $productWarehouse->save();
-                    }
-
-                    if ($variant_ids[$index] != 'noid') {
-                        $productVariant = ProductVariant::where('id', $variant_ids[$index])
-                            ->where('product_id', $product_id)->first();
-                        $productVariant->variant_quantity = $productVariant->variant_quantity - $quantities[$index];
-                        $productVariant->number_of_sale = $productVariant->number_of_sale + $quantities[$index];
-                        $productVariant->save();
-
-                        if ($updateSale->branch_id) {
-                            $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                                ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])
-                                ->first();
-
-                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity - $quantities[$index];
-                            $productBranchVariant->save();
-                        } else {
-                            $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
-                                ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])
-                                ->first();
-
-                            $productWarehouseVariant->variant_quantity = $productWarehouseVariant->variant_quantity - $quantities[$index];
-                            $productWarehouseVariant->save();
-                        }
-                    }
-                }
-            }
-
-            $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $saleProduct = SaleProduct::where('sale_id', $updateSale->id)->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
+            $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+            $saleProduct = SaleProduct::where('sale_id', $updateSale->id)
+                ->where('product_id', $product_id)
+                ->where('product_variant_id', $variant_id)
+                ->first();
             if ($saleProduct) {
-                $saleProduct->quantity = $quantities[$index];
-                $saleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                $saleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$index];
-                $saleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$index];
-                $saleProduct->unit_discount_type = $unit_discount_types[$index];
-                $saleProduct->unit_discount = $unit_discounts[$index];
-                $saleProduct->unit_discount_amount = $unit_discount_amounts[$index];
-                $saleProduct->unit_tax_percent = $unit_tax_percents[$index];
-                $saleProduct->unit_tax_amount = $unit_tax_amounts[$index];
-                $saleProduct->unit = $units[$index];
-                $saleProduct->subtotal = $subtotals[$index];
-                $saleProduct->description = $descriptions[$index];
+                $saleProduct->quantity = $quantities[$__index];
+                $saleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$__index];
+                $saleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$__index];
+                $saleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$__index];
+                $saleProduct->unit_discount_type = $unit_discount_types[$__index];
+                $saleProduct->unit_discount = $unit_discounts[$__index];
+                $saleProduct->unit_discount_amount = $unit_discount_amounts[$__index];
+                $saleProduct->unit_tax_percent = $unit_tax_percents[$__index];
+                $saleProduct->unit_tax_amount = $unit_tax_amounts[$__index];
+                $saleProduct->unit = $units[$__index];
+                $saleProduct->subtotal = $subtotals[$__index];
+                $saleProduct->description = $descriptions[$__index];
                 $saleProduct->delete_in_update = 0;
                 $saleProduct->save();
             } else {
                 $addSaleProduct = new SaleProduct();
                 $addSaleProduct->sale_id = $updateSale->id;
                 $addSaleProduct->product_id = $product_id;
-                $addSaleProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-                $addSaleProduct->quantity = $quantities[$index];
-                $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                $addSaleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$index];
-                $addSaleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$index];
-                $addSaleProduct->unit_discount_type = $unit_discount_types[$index];
-                $addSaleProduct->unit_discount = $unit_discounts[$index];
-                $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$index];
-                $addSaleProduct->unit_tax_percent = $unit_tax_percents[$index];
-                $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$index];
-                $addSaleProduct->unit = $units[$index];
-                $addSaleProduct->subtotal = $subtotals[$index];
-                $addSaleProduct->description = $descriptions[$index];
+                $addSaleProduct->product_variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+                $addSaleProduct->quantity = $quantities[$__index];
+                $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$__index];
+                $addSaleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$__index];
+                $addSaleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$__index];
+                $addSaleProduct->unit_discount_type = $unit_discount_types[$__index];
+                $addSaleProduct->unit_discount = $unit_discounts[$__index];
+                $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$__index];
+                $addSaleProduct->unit_tax_percent = $unit_tax_percents[$__index];
+                $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$__index];
+                $addSaleProduct->unit = $units[$__index];
+                $addSaleProduct->subtotal = $subtotals[$__index];
+                $addSaleProduct->description = $descriptions[$__index];
                 $addSaleProduct->save();
             }
-            $index++;
+            $__index++;
         }
 
-        $deleteNotFoundSaleProducts = SaleProduct::where('sale_id', $updateSale->id)->where('delete_in_update', 1)->get();
+        $deleteNotFoundSaleProducts = SaleProduct::where('sale_id', $updateSale->id)
+            ->where('delete_in_update', 1)->get();
         foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
             $deleteNotFoundSaleProduct->delete();
         }
@@ -800,9 +714,10 @@ class POSController extends Controller
     }
 
     // Get recent added product which has been added from pos
-    public function getRecentProduct($branch_id, $warehouse_id, $product_id)
+    public function getRecentProduct($product_id)
     {
-        if ($branch_id != 'null') {
+        $branch_id = auth()->user()->branch_id;
+        if ($branch_id) {
             $product = ProductBranch::with(['product', 'product.tax', 'product.unit'])
                 ->where('branch_id', $branch_id)
                 ->where('product_id', $product_id)
@@ -811,19 +726,18 @@ class POSController extends Controller
                 return view('sales.pos.ajax_view.recent_product_view', compact('product'));
             } else {
                 return response()->json([
-                    'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this branch.'
+                    'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this branch/shop.'
                 ]);
             }
         } else {
-            $product = ProductWarehouse::with(['product', 'product.tax', 'product.unit'])
-                ->where('warehouse_id', $warehouse_id)
-                ->where('product_id', $product_id)
+            $mbProduct = Product::with(['tax', 'unit'])
+                ->where('id', $product_id)
                 ->first();
-            if ($product->product_quantity > 0) {
-                return view('sales.pos.ajax_view.recent_product_view', compact('product'));
+            if ($mbProduct->mb_stock > 0) {
+                return view('sales.pos.ajax_view.recent_product_view', compact('mbProduct'));
             } else {
                 return response()->json([
-                    'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this warehouse.'
+                    'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in branch/shop.'
                 ]);
             }
         }
@@ -1374,8 +1288,7 @@ class POSController extends Controller
                     'product_branch_variants.variant_quantity',
                     'units.code_name as u_code',
                 )
-                ->where('branch_id', auth()->user()->branch_id)
-                ->get();
+                ->where('branch_id', auth()->user()->branch_id)->get();
         } else {
             $products = DB::table('products')
                 ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
@@ -1388,8 +1301,7 @@ class POSController extends Controller
                     'product_variants.variant_code as var_code',
                     'product_variants.mb_stock as variant_quantity',
                     'units.code_name as u_code',
-                )
-                ->get();
+                )->get();
         }
 
         return view('sales.pos.ajax_view.stock', compact('products'));
@@ -1418,14 +1330,9 @@ class POSController extends Controller
         $sale_id = $request->sale_id;
         $sale = Sale::where('id', $sale_id)->first();
         $ex_quantities = $request->ex_quantities;
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
         $product_row_ids = $request->product_row_ids;
         $sold_prices_inc_tax = $request->sold_prices_inc_tax;
         $sold_quantities = $request->sold_quantities;
-        $sold_subtotals = $request->sold_subtotals;
-        $unit_tax_amounts = $request->unit_tax_amounts;
-        $unit_tax_percents = $request->unit_tax_percents;
 
         $index = 0;
         $exchange_item_total_price = 0;
@@ -1465,17 +1372,16 @@ class POSController extends Controller
                     $qty_limits[] = $productBranch->product_quantity;
                 }
             } else {
-                $productWarehouse = ProductWarehouse::where('warehouse_id', $sale_product->sale->warehouse_id)
-                    ->where('product_id', $sale_product->product_id)->first();
+                $mbProduct = Product::where('product_id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {
                     $qty_limits[] = 500000;
                 } elseif ($sale_product->product_variant_id) {
-                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $sale_product->product_id)
+                    $mbProductVariant = ProductVariant::where('product_id', $sale_product->product_id)
                         ->where('product_variant_id', $sale_product->product_variant_id)
                         ->first();
-                    $qty_limits[] = $productWarehouseVariant->variant_quantity;
+                    $qty_limits[] = $mbProductVariant->mb_stock;
                 } else {
-                    $qty_limits[] = $productWarehouse->product_quantity;
+                    $qty_limits[] = $mbProduct->mb_stock;
                 }
             }
         }
@@ -1491,7 +1397,6 @@ class POSController extends Controller
 
     public function exchangeConfirm(Request $request)
     {
-        //return $request->all();
         if ($request->action != 1) {
             return response()->json(['errorMsg' => 'You can not create another entry when item exchange in going on.']);
         }
@@ -1499,7 +1404,9 @@ class POSController extends Controller
         $updateSale = Sale::with('customer')->where('id', $request->ex_sale_id)->first();
 
         if ($request->total_due > 0 && $updateSale->customer_id == NULL) {
-            return response()->json(['errorMsg' => 'Listed Customer is required when exchange is due or partial.']);
+            return response()->json([
+                'errorMsg' => 'Listed Customer is required when exchange is due or partial.'
+            ]);
         }
 
         if ($updateSale->customer) {
@@ -1553,18 +1460,16 @@ class POSController extends Controller
                     $productBranchVariant->save();
                 }
             } else {
-                $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSale->warehouse_id)
-                    ->where('product_id', $product_id)
+                $mbProduct = Product::where('product_id', $product_id)
                     ->first();
-                $productWarehouse->product_quantity -= $quantities[$index];
-                $productWarehouse->save();
+                $mbProduct->mb_stock -= (float)$quantities[$index];
+                $mbProduct->save();
                 if ($variant_id) {
-                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
-                        ->where('product_id', $product_id)
+                    $mbProductVariant = ProductVariant::where('product_id', $product_id)
                         ->where('product_variant_id', $variant_id)
                         ->first();
-                    $productWarehouseVariant->variant_quantity -= $quantities[$index];
-                    $productWarehouseVariant->save();
+                    $mbProductVariant->mb_stock -= (float)$quantities[$index];
+                    $mbProductVariant->save();
                 }
             }
 

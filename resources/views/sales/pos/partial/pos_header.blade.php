@@ -9,12 +9,6 @@
 </style>
 
 <div class="head-pos">
-    @if ($openedCashRegister->branch_id)
-        <input type="hidden" name="branch_id" id="branch_id" value="{{ $openedCashRegister->branch_id }}"> 
-    @else
-        <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ $openedCashRegister->warehouse_id }}">
-    @endif
-    
     <input type="hidden" name="action" id="action" value="">
     <input type="text" class="d-none" name="ex_sale_id" id="ex_sale_id" value="">
     <input type="hidden" name="cash_register_id" value="{{ $openedCashRegister->id }}">
@@ -466,8 +460,6 @@
         $('.loading_button').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
-        var branch_id = $('#branch_id').val() ? $('#branch_id').val() : null;
-        var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : null;
         $.ajax({
             url: url,
             type: 'post',
@@ -475,7 +467,7 @@
             success: function(data) {
                 toastr.success('Successfully product is added.');
                 $.ajax({
-                    url:"{{url('sales/pos/get/recent/product')}}"+"/"+branch_id+"/"+warehouse_id+"/"+data.id,
+                    url:"{{url('sales/pos/get/recent/product')}}"+"/"+data.id,
                     type:'get',
                     success:function(data){
                         console.log(data);
@@ -495,7 +487,6 @@
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                 $('.error').html('');
                 $.each(err.responseJSON.errors, function(key, error) {
-                    //console.log(key);
                     $('.error_sale_' + key + '').html(error[0]);
                 });
             }

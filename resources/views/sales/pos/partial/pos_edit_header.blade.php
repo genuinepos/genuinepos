@@ -10,8 +10,6 @@
 
 <div class="head-pos">
     <input type="hidden" name="sale_id" value="{{ $sale->id }}">
-    <input type="hidden" name="branch_id" id="branch_id" value="{{ $sale->branch_id }}">
-    <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ $sale->warehouse_id }}">
     <input type="hidden" name="action" id="action" value="">
     <nav class="pos-navigation">
         <div class="col-lg-4 col-sm-12 col-12 nav-left-sec">
@@ -250,8 +248,6 @@
         $('.loading_button').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
-        var branch_id = $('#branch_id').val() ? $('#branch_id').val() : null;
-        var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : null;
         $.ajax({
             url: url,
             type: 'post',
@@ -259,7 +255,7 @@
             success: function(data) {
                 toastr.success('Successfully product is added.');
                 $.ajax({
-                    url:"{{url('sales/pos/get/recent/product')}}"+"/"+branch_id+"/"+warehouse_id+"/"+data.id,
+                    url:"{{url('sales/pos/get/recent/product')}}"+"/"+data.id,
                     type:'get',
                     success:function(data){
                         console.log(data);

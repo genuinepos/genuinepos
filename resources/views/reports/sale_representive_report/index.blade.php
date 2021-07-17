@@ -37,10 +37,14 @@
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-md-3 offset-md-3">
                                                         <label><strong>Branch :</strong></label>
-                                                        <select name="branch_id"
-                                                            class="form-control submit_able" id="branch_id" autofocus>
+                                                        <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                             <option value="">All</option>
                                                             <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 @else 
@@ -321,22 +325,6 @@
 </script>
 
 <script type="text/javascript">
-    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-        // Set branch in form field
-        function setBranches(){
-            $.ajax({
-                url:"{{route('sales.get.all.branches')}}",
-                async:true,
-                success:function(branches){
-                    $.each(branches, function(key, val){
-                        $('#branch_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.branch_code+')'+'</option>');
-                    });
-                }
-            });
-        }
-        setBranches();
-    @endif
-
     // Set accounts in payment and payment edit form
     function setAdmin(){
         $.ajax({

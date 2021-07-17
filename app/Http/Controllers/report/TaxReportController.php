@@ -16,7 +16,8 @@ class TaxReportController extends Controller
     // Index view of cash register report
     public function index()
     {
-        return view('reports.tax_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.tax_report.index', compact('branches'));
     }
 
     public function getTaxReport(Request $request)

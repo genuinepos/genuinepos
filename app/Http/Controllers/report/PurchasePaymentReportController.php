@@ -78,7 +78,7 @@ class PurchasePaymentReportController extends Controller
             ->make(true);
         }
 
-
-        return view('reports.purchase_payment_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.purchase_payment_report.index', compact('branches'));
     }
 }

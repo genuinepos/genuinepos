@@ -152,6 +152,9 @@
                                                         <label for="inputEmail3" class="col-4"><b>Access Branch :</b> </label>
                                                         <div class="col-8">
                                                             <select name="branch_id" id="branch_id" class="form-control">
+                                                                @foreach ($branches as $b)
+                                                                    <option value="{{ $b->id }}">{{$b->name.'/'.$b->branch_code}}</option>
+                                                                @endforeach
                                                             </select>
                                                             <span class="error error_branch_id"></span>
                                                         </div>
@@ -164,6 +167,10 @@
                                                                 class="text-danger">*</span> <b>Belonging Branch :</b> </label>
                                                         <div class="col-8">
                                                             <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
+                                                                <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $b)
+                                                                <option value="{{ $b->id }}">{{$b->name.'/'.$b->branch_code}}</option>
+                                                                @endforeach
                                                             </select>
                                                             <span class="error error_belonging_branch_id"></span>
                                                         </div>
@@ -554,25 +561,6 @@
         });
     }
     setRoles();
-
-    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-        function setBranches(){
-            $.ajax({
-                url:"{{ route('sales.get.all.branches') }}",
-                success:function(branches){
-                    $('#belonging_branch_id').append('<option value="head_office">'+"{{ json_decode($generalSettings->business, true)['shop_name'] }}"+' (Head Office)'+'</option>');
-                    $.each(branches, function(key, val){
-                        $('#branch_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.branch_code+')'+'</option>');
-                    });
-
-                    $.each(branches, function(key, val){
-                        $('#belonging_branch_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.branch_code+')'+'</option>');
-                    });
-                }
-            });
-        }
-        setBranches();
-    @endif
 
     // Add user by ajax
     $(document).on('submit', '#add_user_form', function(e) {

@@ -11,9 +11,10 @@
             <span class="product_code">({{ $mb_product->product_code }})</span>
             </a><br/>
             <input type="{{ ($mb_product->is_show_emi_on_pos == 1 ? 'text' : 'hidden') }}" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">
-            <input value="{{ $mb_product->product_id }}" type="hidden" class="productId-{{ $mb_product->product_id }}" id="product_id" name="product_ids[]">
+            <input value="{{ $mb_product->id }}" type="hidden" class="productId-{{ $mb_product->id }}" id="product_id" name="product_ids[]">
             <input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">
             <input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="{{ bcadd($tax_percent, 0, 2) }}">
+            <input type="hidden" id="tax_type" value="{{ $mb_product->tax_type }}">
             <input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="{{ bcadd($tax_amount, 0, 2) }}">
             <input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">
             <input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">
@@ -73,6 +74,7 @@
             <input value="{{ $product->product_id }}" type="hidden" class="productId-{{ $product->product_id }}" id="product_id" name="product_ids[]">
             <input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">
             <input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="{{ bcadd($tax_percent, 0, 2) }}">
+            <input type="hidden" id="tax_type" value="{{ $product->product->tax_type }}">
             <input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="{{ bcadd($tax_amount, 0, 2) }}">
             <input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">
             <input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">

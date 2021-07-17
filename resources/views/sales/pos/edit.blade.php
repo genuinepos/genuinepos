@@ -57,8 +57,6 @@
         var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val("");
-        var warehouse_id = $('#warehouse_id').val();
-        var branch_id = $('#branch_id').val();
         var product_id = e.getAttribute('data-p_id');
         var product_name = e.getAttribute('data-p_name');
         var product_code = e.getAttribute('data-p_code');
@@ -71,11 +69,7 @@
         var description = e.getAttribute('data-description');
         $('#search_product').val('');
         $.ajax({
-            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
-                url:"{{ url('sales/check/single/product/stock/in/warehouse') }}"+"/"+product_id+"/"+warehouse_id,
-            @else
-                url:"{{ url('sales/check/single/product/stock/') }}"+"/"+product_id+"/"+branch_id,
-            @endif
+            url:"{{ url('sales/check/single/product/stock/') }}"+"/"+product_id,
             async: true,
             type: 'get',
             dataType: 'json',
@@ -199,8 +193,6 @@
         var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val("");
-        var branch_id = $('#branch_id').val();
-        var warehouse_id = $('#warehouse_id').val();
         var product_id = e.getAttribute('data-p_id');
         var product_name = e.getAttribute('data-p_name');
         var tax_percent = e.getAttribute('data-tax_percent');
@@ -215,11 +207,7 @@
         var variant_price = e.getAttribute('data-v_price');
         var description = e.getAttribute('data-description');
         $.ajax({
-            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
-                url:"{{url('sales/check/warehouse/variant/qty')}}"+"/"+product_id+"/"+variant_id+"/"+warehouse_id,
-            @else
-                url:"{{url('sales/check/branch/variant/qty/')}}"+"/"+product_id+"/"+variant_id+"/"+branch_id,
-            @endif
+            url:"{{url('sales/check/branch/variant/qty/')}}"+"/"+product_id+"/"+variant_id,
             type: 'get',
             dataType: 'json',
             success: function(branchVariantQty) {

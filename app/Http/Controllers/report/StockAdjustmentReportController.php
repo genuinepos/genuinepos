@@ -30,7 +30,6 @@ class StockAdjustmentReportController extends Controller
 
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
-                //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
                 $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
                 $query->whereBetween('report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
@@ -41,11 +40,11 @@ class StockAdjustmentReportController extends Controller
                 DB::raw('sum(recovered_amount) as t_recovered_amount'),
                 DB::raw("SUM(IF(type = '1', net_total_amount, 0)) as total_normal"),
                 DB::raw("SUM(IF(type = '2', net_total_amount, 0)) as total_abnormal"),
-            )
-                ->get();
+            )->get();
         }
 
-        return view('reports.adjustment_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.adjustment_report.index', compact('branches'));
     }
 
     // All Stock Adjustment **requested by ajax**

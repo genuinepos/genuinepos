@@ -489,7 +489,7 @@
     });
 
     // Reduce empty opening stock unit cost field
-    $(document).on('blur', '#unit_cost_exc_tax', function() {
+    $(document).on('blur', '#unit_cost_inc_tax', function() {
         if ($(this).val() == '') {
             $(this).val(parseFloat(0).toFixed(2));
         }
@@ -498,18 +498,18 @@
     $(document).on('input', '#quantity', function() {
         var qty = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        var unit_cost_exc_tax = tr.find('#unit_cost_exc_tax').val() ? tr.find('#unit_cost_exc_tax').val() :
+        var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val() ? tr.find('#unit_cost_inc_tax').val() :
             0;
-        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_exc_tax);
+        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_inc_tax);
         tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
         tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
     });
 
-    $(document).on('input', '#unit_cost_exc_tax', function() {
-        var unit_cost_exc_tax = $(this).val() ? $(this).val() : 0;
+    $(document).on('input', '#unit_cost_inc_tax', function() {
+        var unit_cost_inc_tax = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         var qty = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
-        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_exc_tax);
+        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_inc_tax);
         tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
         tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
     });

@@ -22,9 +22,8 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name mt-1">
+                                <div class="sec-name">
                                     <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -32,6 +31,7 @@
                                                         <label><strong>Branch :</strong></label>
                                                         <select name="branch_id" class="form-control submit_able" id="branch_id">
                                                             <option value="">All</option>
+                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                             @foreach ($branches as $b)
                                                                 <option value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
                                                             @endforeach

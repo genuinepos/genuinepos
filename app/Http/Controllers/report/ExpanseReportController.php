@@ -42,11 +42,8 @@ class ExpanseReportController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                //$form_date = date('Y-m-d', strtotime($date_range[0]. '-1 days'));
                 $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                //$to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-                //$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -122,8 +119,8 @@ class ExpanseReportController extends Controller
                 ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'paid', 'due', 'net_total'])
                 ->make(true);
         }
-
-        return view('reports.expense_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.expense_report.index', compact('branches'));
     }
 
     // // Get expense report of current year

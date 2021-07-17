@@ -42,19 +42,14 @@
         $('.select_area').hide();
         $('.variant_list_area').empty();
         var product_code = $(this).val() ? $(this).val() : 'no_key_word';
-        var branch_id = $('#branch_id').val();
-        var warehouse_id = $('#warehouse_id').val();
-        delay(function() { searchProduct(product_code, branch_id, warehouse_id); }, 200); //sendAjaxical is the name of remote-command
+        delay(function() { searchProduct(product_code); }, 200); //sendAjaxical is the name of remote-command
     });
 
-    function searchProduct(product_code, branch_id, warehouse_id) {
+    function searchProduct(product_code) {
         var price_group_id = $('#price_group_id').val();
         $.ajax({
-            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
-                url:"{{ url('sales/search/product/in/warehouse') }}"+"/"+product_code+"/"+warehouse_id,
-            @else
-                url:"{{ url('sales/search/product') }}"+"/"+product_code+"/"+branch_id,
-            @endif
+           
+            url:"{{ url('sales/search/product') }}"+"/"+product_code,
             dataType: 'json',
             success: function(product) {
                 if(!$.isEmptyObject(product.errorMsg || product_code == '')){

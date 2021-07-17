@@ -1529,46 +1529,6 @@
         });
     });
 
-     // Add category from create product by ajax
-     $(document).on('submit', '#add_warranty_form', function(e) {
-        e.preventDefault();
-         $('.loading_button').removeClass('d-none');
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-        var inputs = $('.add_warranty_input');
-        $('.error').html('');
-        var countErrorField = 0;
-        $.each(inputs, function(key, val) {
-            var inputId = $(val).attr('id');
-            var idValue = $('#' + inputId).val();
-            if (idValue == '') {
-                countErrorField += 1;
-                var fieldName = $('#' + inputId).data('name');
-                $('.error_' + inputId).html(fieldName + ' is required.');
-            }
-        });
-
-        if (countErrorField > 0) {
-             $('.loading_button').addClass('d-none');
-            return;
-        }
-
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-                $('.loading_button').addClass('d-none');
-                toastr.success('Successfully warranty is added.');
-                $('#warranty_id').append('<option value="' + data.id + '">' + data.name + ' (' + data
-                    .type+' '+data.duration_type+ ')' + '</option>');
-                $('#warranty_id').val(data.id);
-                $('#addWarrantyModal').modal('hide');
-                $('#add_warranty_form')[0].reset();
-            }
-        });
-    });
-    
     $(document).keypress(".scanable",function(event){
         if (event.which == '10' || event.which == '13') {
             event.preventDefault();

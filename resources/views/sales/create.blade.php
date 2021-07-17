@@ -2051,8 +2051,12 @@
 
         $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
 
-        $('#price_group_id').on('change', function () {
-            console.log(price_groups);
+        $(document).on('blur', '#paying_amount', function () {
+            var value = $(this).val();
+            console.log(value);
+            if (value == "") {
+                $(this).val(parseFloat(0).toFixed(2));
+            }
         });
 
         $(document).on('click', '.resent-tn',function (e) {

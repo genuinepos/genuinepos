@@ -23,8 +23,7 @@
                                                 </div>
     
                                                 <div class="col-md-6">
-                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                                        class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -57,25 +56,17 @@
                                             </div>
                                         </div>
 
-                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="row mt-2">
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label class="col-4"><span class="text-danger">*</span> <b>Warehouse :</b> </label>
-                                                        <div class="col-8">
-                                                            <select required name="warehouse_id" class="form-control">
-                                                                <option value="">Select Warehouse</option>
-                                                                @foreach ($warehouses as $warehouse)
-                                                                    <option value="{{ $warehouse->id }}">
-                                                                        {{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }} 
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                            <span class="error">{{ $errors->first('warehouse_id') }}</span>
-                                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>Branch :</b></label>
+                                                    <div class="col-8">
+                                                        <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HF)' }}">
                                                     </div>
                                                 </div>
+                                            </div>
 
+                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label class="col-4"><b>Default Account :</b> </label>
@@ -83,20 +74,25 @@
                                                         <select name="account_id" class="form-control">
                                                             <option value="">None</option>
                                                             @foreach ($accounts as $account)
-                                                                <option value="{{ $account->id }}">{{ $account->name }} (A/C:
-                                                                {{ $account->account_number }}) (Balance: {{ $account->balance }})</option>
+                                                                <option value="{{ $account->id }}">
+                                                                    {{ $account->name }} 
+                                                                    (A/C: {{ $account->account_number }}) 
+                                                                    (Balance: {{ $account->balance }})
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        @endif
+                                            @endif
+                                        </div>
                                         
                                         <div class="submitBtn">
                                             <div class="row justify-content-center">
                                                 <div class="col-12 text-end">
-                                                    <button type="submit" class="btn btn-sm btn-primary "><b>Submit</b></button>
+                                                    <button type="submit" class="btn btn-sm btn-primary ">
+                                                        <b>Submit</b>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -109,7 +105,6 @@
             </form>
         </div>
     </div>
-
 @endsection
 @push('scripts')
     

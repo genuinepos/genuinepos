@@ -37,13 +37,19 @@
                                                     <label><strong>Category :</strong></label>
                                                     <select id="category_id" name="category_id" class="form-control common_submitable">
                                                         <option value="">All</option>
+                                                        @foreach ($categories as $c)
+                                                            <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                                        @endforeach
                                                     </select>
                                                  </div>
             
                                                  <div class="col-md-3">
                                                     <label><strong>Brand :</strong></label>
                                                     <select id="brand_id" name="brand_id" class="form-control common_submitable">
-                                                         <option value="">All</option>
+                                                        <option value="">All</option>
+                                                        @foreach ($brands as $b)
+                                                            <option value="{{ $b->id }}">{{ $b->name }}</option>
+                                                        @endforeach
                                                     </select>
                                                  </div>
             
@@ -51,6 +57,9 @@
                                                     <label><strong>Unit :</strong></label>
                                                     <select id="unit_id" name="unit_id" class="form-control common_submitable">
                                                         <option value="">All</option>
+                                                        @foreach ($units as $u)
+                                                            <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                                        @endforeach
                                                     </select>
                                                  </div>
             
@@ -58,6 +67,9 @@
                                                     <label><strong>Tax :</strong></label>
                                                     <select id="tax_id" name="tax_id" class="form-control common_submitable">
                                                         <option value="">All</option>
+                                                        @foreach ($taxes as $t)
+                                                            <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
+                                                        @endforeach
                                                     </select>
                                                  </div>
                                             </div>
@@ -66,8 +78,14 @@
                                             <div class="form-group row">
                                                 <div class="col-md-3">
                                                     <label><strong>Only Branch Wise Stock :</strong></label>
-                                                    <select id="branch_id" name="branch_id" class="form-control">
+                                                    <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                         <option value="">All</option>
+                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                        @foreach ($branches as $branch)
+                                                            <option value="{{ $branch->id }}">
+                                                                {{ $branch->name . '/' . $branch->branch_code }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                  </div>
                                             </div>
@@ -142,86 +160,6 @@
         });
     }
     getAllProduct();
-
-    // Get all parent category
-    function setParentCategory(){
-        $.ajax({
-            url:"{{ route('reports.stock.all.parent.categories') }}",
-            async: true,
-            type:'get',
-            dataType: 'json',
-            success:function(categories){
-                $.each(categories, function(key, val){
-                    $('#category_id').append('<option value="'+val.id+'">'+ val.name +'</option>');
-                });
-            }
-        });
-    }
-    setParentCategory();
-
-    // Set brnads in brnad form field
-    function setBrands(){
-        $.ajax({
-            url:"{{route('products.add.get.all.form.brand')}}",
-            async:true,
-            type:'get',
-            dataType: 'json',
-            success:function(brands){
-                $.each(brands, function(key, val){
-                    $('#brand_id').append('<option value="'+val.id+'">'+ val.name +'</option>');
-                });
-            }
-        });
-    }
-    setBrands();
-
-    // Set all vats in form units field
-    function setVats(){
-        $.ajax({
-            url:"{{route('products.add.get.all.form.taxes')}}",
-            async:true,
-            type:'get',
-            dataType: 'json',
-            success:function(taxes){
-                $.each(taxes, function(key, val){
-                    $('#tax_id').append('<option value="'+val.id+'">'+ val.tax_name +'</option>');
-                });
-            }
-        });
-    }
-    setVats();
-
-    // Set all units in form units field
-    function setAllUnitsInFormUnitsField(){
-        $.ajax({
-            url:"{{route('products.add.get.all.form.units')}}",
-            async:true,
-            type:'get',
-            dataType: 'json',
-            success:function(units){
-                $.each(units, function(key, val){
-                    $('#unit_id').append('<option value="'+val.id+'">'+ val.name +'</option>');
-                });
-            }
-        });
-    }
-    setAllUnitsInFormUnitsField();
-
-    function setBranches(){
-        $.ajax({
-            url:"{{route('sales.get.all.branches')}}",
-            async:true,
-            type:'get',
-            dataType: 'json',
-            success:function(branches){
-                $.each(branches, function(key, val){
-                    var branch_code = ' - '+val.branch_code;
-                    $('#branch_id').append('<option value="'+val.id+'">'+val.name+branch_code+'</option>');
-                });
-            }
-        });
-    }
-    setBranches();
 
     $(document).on('change', '.common_submitable', function () {
         $('#branch_id').val('');

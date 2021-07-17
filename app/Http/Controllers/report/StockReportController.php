@@ -5,10 +5,9 @@ namespace App\Http\Controllers\report;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\ProductBranch;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class StockReportController extends Controller
 {
@@ -20,7 +19,12 @@ class StockReportController extends Controller
     // Index view of Stock report
     public function index()
     {
-        return view('reports.stock_report.index');
+        $brands = DB::table('brands')->get(['id', 'name']);
+        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
+        $taxes = DB::table('taxes')->get(['id', 'tax_name']);
+        $units = DB::table('units')->get(['id', 'name']);
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.stock_report.index', compact('branches', 'brands', 'taxes', 'units', 'categories'));
     }
 
     // Get all product stock **requested by ajax**
@@ -40,14 +44,10 @@ class StockReportController extends Controller
         return view('reports.stock_report.ajax_view.product_list', compact('products'));
     }
 
-    // Get all parent Cateogry
+    // Get all parent Category
     public function allParentCategories()
     {
-        $categories = Cache::rememberForever('all-parent-categories', function () {
-            return Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
-        });
-
-        return response()->json($categories);
+        return Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
     }
 
     // Filter product stocks

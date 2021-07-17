@@ -215,7 +215,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr class="bg-primary">
-                                        <th colspan="3" class="text-center text-white"><b>Total :</b></th>
+                                        <th colspan="2" class="text-center text-white"><b>Total :</b></th>
                                         <th  class="text-white"> 
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalExpense, 2, '.', '') }}</b>

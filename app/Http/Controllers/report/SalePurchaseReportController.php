@@ -16,7 +16,8 @@ class SalePurchaseReportController extends Controller
     // Index view of sale & purchase report
     public function index()
     {
-        return view('reports.sale_purchase_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.sale_purchase_report.index', compact('branches'));
     }
 
     // Get sale purchase amounts **requested by ajax**

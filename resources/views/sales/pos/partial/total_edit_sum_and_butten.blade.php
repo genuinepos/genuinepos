@@ -400,10 +400,8 @@
     function showStock() {
         $('#stock_preloader').show();
         $('#showStockModal').modal('show');
-        var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : null;
         $.ajax({
             url:"{{route('sales.pos.branch.stock')}}",
-            data:{warehouse_id},
             type:'get',
             success:function(data){
                 $('#stock_modal_body').html(data);

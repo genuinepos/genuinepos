@@ -848,11 +848,6 @@
                 $('#'+id).addClass('ac_item');
             });
         }
-
-        // $('#search_product').on('blur', function () {
-        //     $('.select_area').hide();
-        //     $('.variant_list_area').empty();
-        // });
     </script>
     @stack('js')
 </body>

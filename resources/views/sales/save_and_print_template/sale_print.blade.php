@@ -211,10 +211,10 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        @if ($sale->branch->add_sale_invoice_layout->show_total_in_word == 1)
+                        {{-- @if ($sale->branch->add_sale_invoice_layout->show_total_in_word == 1)
                             <p><strong>In Word : <span id="inword"></span></strong></p>
                         @endif
-                        <br>
+                        <br> --}}
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($sale->branch->add_sale_invoice_layout->account_name)
                                 <p>Account Name : {{ $sale->branch->add_sale_invoice_layout->account_name }}</p>
@@ -936,10 +936,10 @@
                 
                 <div class="row">
                     <div class="col-md-6">
-                        @if ($defaultLayout->show_total_in_word == 1)
+                        {{-- @if ($defaultLayout->show_total_in_word == 1)
                             <p><strong>In Word : <span id="inword"></span></strong></p>
                         @endif
-                        <br>
+                        <br> --}}
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($defaultLayout->account_name)
                                 <p>Account Name : {{ $defaultLayout->account_name }}</p>
@@ -1443,17 +1443,13 @@
     function convert_hundreds(num) {
         if (num > 99) {
             return ones[Math.floor(num / 100)] + " hundred " + convert_tens(num % 100);
-        } else {
-            return convert_tens(num);
-        }
+        } else {return convert_tens(num);}
     }
 
     function convert_tens(num) {
         if (num < 10) return ones[num];
         else if (num >= 10 && num < 20) return teens[num - 10];
-        else {
-            return tens[Math.floor(num / 10)] + " " + ones[num % 10];
-        }
+        else {return tens[Math.floor(num / 10)] + " " + ones[num % 10];}
     }
 
     function convert(num) {

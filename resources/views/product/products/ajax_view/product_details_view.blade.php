@@ -35,7 +35,7 @@
 
                 <div class="col-md-3">
                     <ul class="list-unstyled">
-                        <li><strong>Category : </strong> {{ $product->category->name }}</li>
+                        <li><strong>Category : </strong> {{$product->category ? $product->category->name : 'N/A' }}</li>
                         <li><strong>Sub-Category : </strong> {{ $product->child_category ? $product->child_category->name : 'N/A' }}</li>
                         <li><strong>Is For Sale : </strong>{{ $product->is_for_sale == 1 ? 'Yes' : 'No' }}</li>
                         <li><strong>Alert Quantity : </strong>{{ $product->alert_quantity }}</li>

@@ -23,7 +23,8 @@ class ProfitLossReportController extends Controller
     // Index view of profit loss report
     public function index()
     {
-        return view('reports.profit_loss_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.profit_loss_report.index', compact('branches'));
     }
 
     // Sale purchase and profit

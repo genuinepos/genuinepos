@@ -14,18 +14,18 @@
                 <div class="col-md-4">
                     <ul class="list-unstyled">
                         <li><strong>Customer :- </strong></li>
-                            <li>
-                                <strong>Namne : </strong>{{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
-                            </li>
-                            <li>
-                                <strong>Address : </strong>{{ $draft->customer ? $draft->customer->address : '' }}
-                            </li>
-                            <li>
-                                <strong>Tax Number : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
-                            </li>
-                            <li>
-                                <strong>Phone : </strong> {{ $draft->customer ? $draft->customer->phone : '' }}
-                            </li>
+                        <li>
+                            <strong>Namne : </strong>{{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
+                        </li>
+                        <li>
+                            <strong>Address : </strong>{{ $draft->customer ? $draft->customer->address : '' }}
+                        </li>
+                        <li>
+                            <strong>Tax Number : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
+                        </li>
+                        <li>
+                            <strong>Phone : </strong> {{ $draft->customer ? $draft->customer->phone : '' }}
+                        </li>
                     </ul>
                 </div>
                 <div class="col-md-4 text-left">

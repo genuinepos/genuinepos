@@ -560,9 +560,9 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        @if ($sale->branch->add_sale_invoice_layout->show_total_in_word)
+                        {{-- @if ($sale->branch->add_sale_invoice_layout->show_total_in_word)
                             <p><b>In Word : <span id="inword"></span></b></p>
-                        @endif
+                        @endif --}}
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px; margin-top:13px;">
                             @if ($sale->branch->add_sale_invoice_layout->account_name)
                                 <p>Account Name : {{ $sale->branch->add_sale_invoice_layout->account_name }}</p>
@@ -1192,15 +1192,12 @@
                     <div class="col-md-6">
                         <table class="table modal-table table-sm">
                             <tbody>
-                                {{-- <tr>
-                                    <td class="text-start"><strong>Net Total Amount :</strong></td>
-                                    <td class="net_total text-end">
-                                        <b>
-                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                            {{ $sale->net_total_amount }}
-                                        </b>
+                                <tr>
+                                    <td class="text-end"><strong>Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                    <td class="net_total text-end"> 
+                                        {{ $sale->net_total_amount }}
                                     </td>
-                                </tr> --}}
+                                </tr> 
 
                                 <tr>
                                     <td class="text-end"><strong> Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
@@ -1703,12 +1700,6 @@
                 </table>
             </div><br>
 
-            {{--<div class="row">
-                 <div class="barcode text-center">
-                    <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($sale->invoice_id, $generatorPNG::TYPE_CODE_128)) }}">
-                </div> 
-            </div><br>--}}
-
             @if (count($sale->sale_products) > 11)
                 <br>
                 <div class="row page_break">
@@ -2027,7 +2018,7 @@
     </div>
 @endif
 <!-- Challan print templete end-->
-<script>
+{{-- <script>
     // actual  conversion code starts here
     var ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
     var tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
@@ -2073,4 +2064,22 @@
 
     document.getElementById('inword').innerHTML = convert(parseInt("{{ $sale->total_payable_amount }}")).replace(
         'undefined', '(some Penny)').toUpperCase() + ' ONLY.';
+</script> --}}
+
+<script>
+  var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+    var b= ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+
+    function inWords (num) {
+        if ((num = num.toString()).length > 9) return 'overflow';
+        n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n) return; var str = '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+        str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+        return str;
+    }
+    document.getElementById('inword').innerHTML = inWords(parseInt("{{ $sale->total_payable_amount }}"));
 </script>

@@ -24,7 +24,6 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -80,48 +79,44 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Shipment <small>Note: Initially current year's data is available here, if need
-                                                another year's data go to the data filter.</small></h6>
-                                    </div>
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Shipment </h6>
                                 </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Invoice ID</th>
-                                                    <th>Sale From</th>
-                                                    <th>Customer</th>
-                                                    <th>Created By</th>
-                                                    <th>Shipment Status</th>
-                                                    <th>Payment Status</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Invoice ID</th>
+                                                <th>Sale From</th>
+                                                <th>Customer</th>
+                                                <th>Created By</th>
+                                                <th>Shipment Status</th>
+                                                <th>Payment Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -276,7 +271,7 @@
                         importCSS: true,                
                         importStyle: true,          
                         loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: true, 
+                        removeInline: false, 
                         printDelay: 700, 
                         header: null,        
                     });

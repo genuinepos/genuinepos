@@ -118,8 +118,8 @@ class SaleRepresentiveReportController extends Controller
                 ->rawColumns(['date', 'branch', 'customer', 'payment_status', 'total_amount', 'paid', 'total_return', 'due'])
                 ->make(true);
         }
-
-        return view('reports.sale_representive_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.sale_representive_report.index', compact('branches'));
     }
 
     public function SaleRepresentiveExpenseReport(Request $request)

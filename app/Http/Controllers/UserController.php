@@ -120,7 +120,8 @@ class UserController extends Controller
         $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
         $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
         $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
-        return view('users.create', compact('departments', 'designations', 'shifts'));
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('users.create', compact('departments', 'designations', 'shifts', 'branches'));
     }
 
     // Add/Store user

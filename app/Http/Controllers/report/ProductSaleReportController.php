@@ -114,8 +114,8 @@ class ProductSaleReportController extends Controller
                 ->rawColumns(['product', 'sku', 'date', 'qty', 'branch', 'unit_price_inc_tax', 'subtotal'])
                 ->make(true);
         }
-
-        return view('reports.product_sale_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.product_sale_report.index', compact('branches'));
     }
 
     // Search product 

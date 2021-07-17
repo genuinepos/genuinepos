@@ -95,7 +95,8 @@ class ProductPurchaseReportController extends Controller
                 ->rawColumns(['product', 'sku', 'date', 'qty', 'branch', 'net_unit_cost', 'subtotal'])
                 ->make(true);
         }
-        return view('reports.product_purchase_report.index');
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('reports.product_purchase_report.index', compact('branches'));
     }
 
     // Search product 

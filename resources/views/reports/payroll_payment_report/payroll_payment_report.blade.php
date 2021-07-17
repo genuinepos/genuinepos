@@ -67,44 +67,43 @@
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="widget_content">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Employee</th>
-                                                    <th>Payment Voucher No</th>
-                                                    <th>Paid</th>
-                                                    <th>Pay For(Payroll)</th>
-                                                    <th>Paid By</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+             
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="widget_content">
+                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Employee</th>
+                                                <th>Payment Voucher No</th>
+                                                <th>Paid</th>
+                                                <th>Pay For(Payroll)</th>
+                                                <th>Paid By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                            </tbody>
-                                            <tfoot>
-                                                <tr class="bg-secondary">
-                                                    <th colspan="3" class="text-end text-white">Total :</th>
-                                                    <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid"></span></th>
-                                                    <th class="text-white">--</th>
-                                                    <th class="text-white">--</th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                        <a href="{{ route('reports.payroll.payment.print') }}" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
-                                    </div>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="3" class="text-end text-white">Total :</th>
+                                                <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid"></span></th>
+                                                <th class="text-white">--</th>
+                                                <th class="text-white">--</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                    <a href="{{ route('reports.payroll.payment.print') }}" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -217,10 +216,7 @@
                 $('.data_preloader').hide();
             }
         });
-    });
-
-   
-          
+    });   
 </script>
 
 <script type="text/javascript">

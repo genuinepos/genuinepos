@@ -39,6 +39,11 @@
                                                         <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                             <option value="">All</option>
                                                             <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 @else 
@@ -173,22 +178,6 @@
             }
         }); 
     });
-
-    // Set branch in form field
-    function setBranches(){
-        $.ajax({
-            url:"{{route('sales.get.all.branches')}}",
-            async:true,
-            type:'get',
-            dataType: 'json',
-            success:function(branches){
-                $.each(branches, function(key, val){
-                    $('#branch_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.branch_code+')'+'</option>');
-                });
-            }
-        });
-    }
-    setBranches();
 
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function () {

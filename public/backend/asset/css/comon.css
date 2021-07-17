@@ -10,7 +10,6 @@
     outline: 0px;
 }
 
-
 /*===== VARIABLES CSS =====*/
 
  :root {
@@ -443,7 +442,7 @@ label{font-size: 12px;}
 select {height: 26px;}
 
 .widget_content .table-responsive {
-    margin-top: -11px;
+    margin-top: -15px; 
 }
 
 a#print_report {

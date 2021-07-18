@@ -1,3 +1,4 @@
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-full-display">
@@ -13,21 +14,25 @@
             <div class="row">
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>Branch (Form) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->branch->name.'/'.$transfer->branch->branch_code }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->branch->phone }}</li>
-                        <li><strong>Address : </strong> 
-                            {{ $transfer->branch->city }},
-                            {{ $transfer->branch->state }},
-                            {{ $transfer->branch->zip_code }},
-                            {{ $transfer->branch->country }}.
-                        </li>
+                        <li><strong>B.Location (To) : </strong></li>
+                        <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        @if ($transfer->branch)
+                            <li><strong>Address : </strong> 
+                                {{ $transfer->branch->city }},
+                                {{ $transfer->branch->state }},
+                                {{ $transfer->branch->zip_code }},
+                                {{ $transfer->branch->country }}.
+                            </li>
+                        @else 
+                            {{ json_decode($generalSettings->business, true)['address'] }}
+                        @endif
                     </ul>
                 </div>
 
                 <div class="col-md-4">
                     <ul class="list-unstyled">
-                        <li><strong>Warehouse (To) : </strong></li>
+                        <li><strong>Warehouse (From) : </strong></li>
                         <li><strong>Name :</strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
                         <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
                         <li><strong>Address : </strong>{{ $transfer->warehouse->address }}</li>
@@ -169,26 +174,31 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Warehouse (Form) : </strong></li>
+                        <li><strong>B.Location (From) : </strong></li>
+                        <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        @if ($transfer->branch)
+                            <li><strong>Address : </strong> 
+                                {{ $transfer->branch->city }},
+                                {{ $transfer->branch->state }},
+                                {{ $transfer->branch->zip_code }},
+                                {{ $transfer->branch->country }}.
+                            </li>
+                        @else 
+                            {{ json_decode($generalSettings->business, true)['address'] }}
+                        @endif
+                    </ul>
+                </div>
+
+                <div class="col-lg-4">
+                    <ul class="list-unstyled">
+                        <li><strong>Warehouse (To) : </strong></li>
                         <li><strong>Name :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
                         <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
                         <li><strong>Address : </strong> {{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
 
-                <div class="col-lg-4">
-                    <ul class="list-unstyled">
-                        <li><strong>Branch (To) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->branch->name.'/'.$transfer->branch->branch_code }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->branch->phone }}</li>
-                        <li><strong>Address : </strong> 
-                            {{ $transfer->branch->city }},
-                            {{ $transfer->branch->state }},
-                            {{ $transfer->branch->zip_code }},
-                            {{ $transfer->branch->country }}.
-                        </li>
-                    </ul>
-                </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
                         <li><strong>Date : </strong> {{ $transfer->date }}</li>
@@ -270,24 +280,26 @@
         </div>
         
         <br><br>
-        <div class="note">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Receiver's Signature</strong></p>
-                </div>
-                <div class="col-md-6 text-end">
-                    <p><strong>Signature Of Authority</strong></p>
-                </div>
+   
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Receiver's Signature</strong></p>
+            </div>
+            <div class="col-md-6 text-end">
+                <p><strong>Signature Of Authority</strong></p>
             </div>
         </div>
 
-        <div class="barcode">
-            <div class="row">
-                <div class="col-md-12">
-                    
-                </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($transfer->invoice_id, $generator::TYPE_CODE_128)) }}">
+                <p class="p-0 m-0"><b>{{ $transfer->invoice_id }}</b></p>
+                @if (env('PRINT_SD_OTHERS') == true)
+                    <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                @endif
             </div>
         </div>
+     
     </div>
 </div>
 <!-- Print Template End-->

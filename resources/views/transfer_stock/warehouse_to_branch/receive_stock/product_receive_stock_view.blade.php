@@ -126,6 +126,7 @@
 @endsection
 @push('scripts')
 <script>
+     var headBranch = "{{json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}";
     // Get editable data by ajax
     function getReceiveableStock(){
         $.ajax({
@@ -137,7 +138,7 @@
                 console.log(sendStock);
                 $('.transfer_invoice_id').html(sendStock.invoice_id);
                 $('.warehouse').html(sendStock.warehouse.warehouse_name+' - '+sendStock.warehouse.warehouse_code);
-                $('.branch').html(sendStock.branch.name+' - '+sendStock.branch.branch_code);
+                $('.branch').html(sendStock.branch ? sendStock.branch.name+' - '+sendStock.branch.branch_code : headBranch);
                 $('.transfer_date').html(sendStock.date);
                 $('#receiver_note').val(sendStock.receiver_note);
                 $.each(sendStock.transfer_products, function (key, sendProduct) {
@@ -269,13 +270,6 @@
                 }
             }
         });
-    });
-
-    // Acivate date picker
-    $('.date-picker').datepicker({
-        format: 'dd-mm-yyyy',
-        todayHighlight: true,
-        autoclose: true,
     });
 
     // Automatic remove searching product is found signal 

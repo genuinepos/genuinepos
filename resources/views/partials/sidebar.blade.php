@@ -647,7 +647,7 @@
                                     </p>
                                 </div>
 
-                                {{-- <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('transfer.stock.to.warehouse.create') }}" class="bar-link">
                                             <span><i class="fas fa-exchange-alt"></i></span>
@@ -676,7 +676,7 @@
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.receive_stocks')</p>
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>

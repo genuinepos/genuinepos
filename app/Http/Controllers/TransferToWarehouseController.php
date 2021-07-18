@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
+use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
@@ -17,8 +18,10 @@ use App\Models\TransferStockToWarehouseProduct;
 
 class TransferToWarehouseController extends Controller
 {
-    public function __construct()
+    protected $nameSearchUtil;
+    public function __construct(NameSearchUtil $nameSearchUtil)
     {
+        $this->nameSearchUtil = $nameSearchUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -35,7 +38,8 @@ class TransferToWarehouseController extends Controller
                     'warehouses.warehouse_code',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                )->where('branch_id', auth()->user()->branch_id)->orderBy('id', 'desc')->get();
+                )->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)
+                ->orderBy('id', 'desc')->get();
 
             return DataTables::of($transfers)
                 ->addColumn('action', function ($row) {
@@ -43,7 +47,7 @@ class TransferToWarehouseController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" href="'. route('transfer.stock.to.warehouse.edit', $row->id).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('transfer.stock.to.warehouse.edit', $row->id) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('transfer.stock.to.warehouse.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
@@ -52,8 +56,12 @@ class TransferToWarehouseController extends Controller
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) {
-                    return  $row->branch_name . '/' . $row->branch_code;
+                ->editColumn('from',  function ($row) use ($generalSettings) {
+                    if ($row->branch_name) {
+                        return  $row->branch_name . '/' . $row->branch_code;
+                    }else {
+                        return json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>';
+                    }
                 })
                 ->editColumn('to',  function ($row) {
                     return  $row->warehouse_name . '/' . $row->warehouse_code;
@@ -89,14 +97,18 @@ class TransferToWarehouseController extends Controller
 
     public function show($id)
     {
-        $transfer = TransferStockToWarehouse::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $id)->first();
+        $transfer = TransferStockToWarehouse::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')
+            ->where('id', $id)
+            ->first();
+
         return view('transfer_stock.branch_to_warehouse.ajax_view.show', compact('transfer'));
     }
 
     // Add transfer stock to branch create view
     public function create()
     {
-        return view('transfer_stock.branch_to_warehouse.create');
+        $warehouses = DB::table('warehouses')->where('branch_id', auth()->user()->branch_id)->get();
+        return view('transfer_stock.branch_to_warehouse.create', compact('warehouses'));
     }
 
     // Store transfer products form warehouse to branch
@@ -104,7 +116,6 @@ class TransferToWarehouseController extends Controller
     {
         $this->validate($request, [
             'warehouse_id' => 'required',
-            'branch_id' => 'required',
         ]);
 
         $i = 6;
@@ -157,7 +168,8 @@ class TransferToWarehouseController extends Controller
             session()->flash('successMsg', ' Transfer stock created successfully');
             return response()->json(['successMsg' => 'Successfully transfer stock is added']);
         } else {
-            $transfer = TransferStockToWarehouse::with('branch', 'warehouse', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $addTransferToWarehouse->id)->first();
+            $transfer = TransferStockToWarehouse::with('branch', 'warehouse', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')
+                ->where('id', $addTransferToWarehouse->id)->first();
             return view('transfer_stock.branch_to_warehouse.save_and_print_template.print', compact('transfer'));
         }
     }
@@ -168,7 +180,7 @@ class TransferToWarehouseController extends Controller
         $transferId = $transferId;
         $transfer = DB::table('transfer_stock_to_warehouses')->where('id', $transferId)->select('id', 'warehouse_id', 'date')->first();
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->get();
-        return view('transfer_stock.branch_to_warehouse.edit', compact('transferId', 'transfer','warehouses'));
+        return view('transfer_stock.branch_to_warehouse.edit', compact('transferId', 'transfer', 'warehouses'));
     }
 
     // Get editable transfer **requested by ajax
@@ -196,10 +208,8 @@ class TransferToWarehouseController extends Controller
     // Update Transfer to branch
     public function update(Request $request, $transferId)
     {
-        //return $request->all();
         $this->validate($request, [
             'warehouse_id' => 'required',
-            'branch_id' => 'required',
         ]);
 
         $i = 6;
@@ -272,9 +282,9 @@ class TransferToWarehouseController extends Controller
         }
 
         // Delete not found which was previous
-        $deleteableTransferProducts = TransferStockToWarehouseProduct::where('transfer_stock_id', $transferId)->where('is_delete_in_update', 1)->get();
-        foreach ($deleteableTransferProducts as $deleteableTransferProduct) {
-            $deleteableTransferProduct->delete();
+        $delectableTransferProducts = TransferStockToWarehouseProduct::where('transfer_stock_id', $transferId)->where('is_delete_in_update', 1)->get();
+        foreach ($delectableTransferProducts as $delectableTransferProduct) {
+            $delectableTransferProduct->delete();
         }
 
         return response()->json(['successMsg' => 'Transfer stock updated successfully']);
@@ -316,115 +326,182 @@ class TransferToWarehouseController extends Controller
         }
     }
 
-    // Product search by product code
-    public function productSearch($product_code, $branch_id)
+    public function productSearch($product_code)
     {
-        $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $product_code)->first();
+        $product_code = (string)$product_code;
+        $branch_id = auth()->user()->branch_id;
+        $product = Product::with(['product_variants', 'tax', 'unit'])
+            ->where('product_code', $product_code)
+            ->select([
+                'id',
+                'name', 'product_code',
+                'product_price',
+                'profit',
+                'product_cost_with_tax',
+                'thumbnail_photo',
+                'unit_id',
+                'tax_id',
+                'tax_type',
+                'is_show_emi_on_pos',
+                'mb_stock',
+            ])->first();
+
         if ($product) {
-            $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $product->id)->first();
-            if ($productBranch) {
-                if ($product->type == 2) {
-                    return response()->json(['errorMsg' => 'Combo product is not transferable.']);
-                } else {
-                    if ($productBranch->product_quantity > 0) {
-                        return response()->json(['product' => $product, 'qty_limit' => $productBranch->product_quantity]);
+            if ($branch_id) {
+                $productBranch = DB::table('product_branches')
+                    ->where('branch_id', $branch_id)
+                    ->where('product_id', $product->id)
+                    ->select('product_quantity')
+                    ->first();
+                if ($productBranch) {
+                    if ($product->type == 2) {
+                        return response()->json(['errorMsg' => 'Combo product is not transferable.']);
                     } else {
-                        return response()->json(['errorMsg' => 'Stock is out of this product of this branch']);
-                    }
-                }
-            } else {
-                return response()->json(['errorMsg' => 'This product is not available in this branch.']);
-            }
-        } else {
-            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $product_code)->first();
-            if ($variant_product) {
-                $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $variant_product->product_id)->first();
-
-                if (is_null($productBranch)) {
-                    return response()->json(['errorMsg' => 'This product is not available in this branch']);
-                }
-
-                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $variant_product->product_id)->where('product_variant_id', $variant_product->id)->first();
-
-                if (is_null($productBranchVariant)) {
-                    return response()->json(['errorMsg' => 'This variant is not available in this branch']);
-                }
-
-                if ($productBranch && $productBranchVariant) {
-                    if ($productBranchVariant->variant_quantity > 0) {
-                        return response()->json(['variant_product' => $variant_product, 'qty_limit' => $productBranchVariant->variant_quantity]);
-                    } else {
-                        return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this branch']);
+                        if ($productBranch->product_quantity > 0) {
+                            return response()->json(
+                                [
+                                    'product' => $product,
+                                    'qty_limit' => $productBranch->product_quantity
+                                ]
+                            );
+                        } else {
+                            return response()->json(['errorMsg' => 'Stock is out of this product in this shop/branch']);
+                        }
                     }
                 } else {
                     return response()->json(['errorMsg' => 'This product is not available in this branch.']);
                 }
+            } else {
+                if ($product->type == 2) {
+                    return response()->json(['errorMsg' => 'Combo product is not transferable.']);
+                } else {
+                    if ($product->mb_stock > 0) {
+                        return response()->json(
+                            [
+                                'product' => $product,
+                                'qty_limit' => $product->mb_stock
+                            ]
+                        );
+                    } else {
+                        return response()->json(['errorMsg' => 'Stock is not available of this product in this branch/shop']);
+                    }
+                }
+            }
+        } else {
+            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+                ->where('variant_code', $product_code)
+                ->select([
+                    'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price', 'mb_stock'
+                ])->first();
+            if ($variant_product) {
+                if ($branch_id) {
+                    if ($variant_product) {
+                        $productBranch = DB::table('product_branches')
+                            ->where('branch_id', $branch_id)
+                            ->where('product_id', $variant_product->product_id)
+                            ->first();
+
+                        if (is_null($productBranch)) {
+                            return response()->json(['errorMsg' => 'This product is not available in this shop']);
+                        }
+
+                        $productBranchVariant = DB::table('product_branch_variants')
+                            ->where('product_branch_id', $productBranch->id)
+                            ->where('product_id', $variant_product->product_id)
+                            ->where('product_variant_id', $variant_product->id)
+                            ->select('variant_quantity')
+                            ->first();
+
+                        if (is_null($productBranchVariant)) {
+                            return response()->json(['errorMsg' => 'This variant is not available in this shop']);
+                        }
+
+                        if ($productBranch && $productBranchVariant) {
+                            if ($productBranchVariant->variant_quantity > 0) {
+                                return response()->json([
+                                    'variant_product' => $variant_product,
+                                    'qty_limit' => $productBranchVariant->variant_quantity
+                                ]);
+                            } else {
+                                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this branch']);
+                            }
+                        } else {
+                            return response()->json(['errorMsg' => 'This product is not available in this branch.']);
+                        }
+                    }
+                } else {
+                    if ($variant_product->mb_stock > 0) {
+                        return response()->json(['variant_product' => $product, 'qty_limit' => $variant_product->mb_stock]);
+                    } else {
+                        return response()->json(['errorMsg' => 'Stock is not available of this product in this branch/shop']);
+                    }
+                }
             }
         }
 
-        $namedProducts = '';
-        $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', $product_code . '%')
-            ->where('status', 1)
-            ->get();
-
-        if (count($nameSearch) > 0) {
-            $namedProducts = $nameSearch;
-        }
-
-        $priceSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('product_price', 'like', "%$product_code%")
-            ->where('status', 1)
-            ->get();
-
-        if (count($priceSearch) > 0) {
-            $namedProducts = $priceSearch;
-        }
-
-        if ($namedProducts && $namedProducts->count() > 0) {
-            return response()->json(['namedProducts' => $namedProducts]);
-        } else {
-            return response()->json(['NotFoundMsg' => 'Not Found.']);
-        }
+        return $this->nameSearchUtil->nameSearching($product_code);
     }
 
-    public function checkBranchSingleProduct($product_id, $branch_id)
+    public function checkBranchSingleProduct($product_id)
     {
-        $productBranch = ProductBranch::where('product_id', $product_id)->where('branch_id', $branch_id)->first();
-        if ($productBranch) {
-            if ($productBranch->product_quantity > 0) {
-                return response()->json($productBranch->product_quantity);
+        $branch_id = auth()->user()->branch_id;
+        if ($branch_id) {
+            $productBranch = DB::table('product_branches')->where('product_id', $product_id)->where('branch_id', $branch_id)->first();
+            if ($productBranch) {
+                if ($productBranch->product_quantity > 0) {
+                    return response()->json($productBranch->product_quantity);
+                } else {
+                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch']);
+                }
             } else {
-                return response()->json(['errorMsg' => 'Stock is out of this product from this branch']);
+                return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
             }
         } else {
-            return response()->json(['errorMsg' => 'This product is not available in this branch.']);
+            $mb_product_stock = DB::table('products')
+                ->where('id', $product_id)
+                ->first();
+
+            if ($mb_product_stock->mb_stock > 0) {
+                return response()->json($mb_product_stock->mb_stock);
+            } else {
+                return response()->json(['errorMsg' => 'Stock is not available of this product(variant) in this branch/shop']);
+            }
         }
     }
 
     // Check branch product variant qty 
-    public function checkBranchProductVariant($product_id, $variant_id, $branch_id)
+    public function checkBranchProductVariant($product_id, $variant_id)
     {
-        $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $product_id)->first();
-
-        if (is_null($productBranch)) {
-            return response()->json(['errorMsg' => 'This product is not available in this branch']);
-        }
-
-        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
-
-        if (is_null($productBranchVariant)) {
-            return response()->json(['errorMsg' => 'This variant is not available in this branch']);
-        }
-
-        if ($productBranch && $productBranchVariant) {
-            if ($productBranchVariant->variant_quantity > 0) {
-                return response()->json($productBranchVariant->variant_quantity);
+        $branch_id = auth()->user()->branch_id;
+        if ($branch_id) {
+            $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
+            if ($productBranch) {
+                $productBranchVariant = DB::table('product_branch_variants')->where('product_branch_id', $productBranch->id)
+                    ->where('product_id', $product_id)
+                    ->where('product_variant_id', $variant_id)->first();
+                if ($productBranchVariant) {
+                    if ($productBranchVariant->variant_quantity > 0) {
+                        return response()->json($productBranchVariant->variant_quantity);
+                    } else {
+                        return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop']);
+                    }
+                } else {
+                    return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
+                }
             } else {
-                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this branch']);
+                return response()->json(['errorMsg' => 'This product is not available in this shop.']);
             }
         } else {
-            return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
+            $mb_variant_stock = DB::table('product_variants')
+                ->where('id', $variant_id)
+                ->where('product_id', $product_id)
+                ->first();
+
+            if ($mb_variant_stock->mb_stock > 0) {
+                return response()->json($mb_variant_stock->mb_stock);
+            } else {
+                return response()->json(['errorMsg' => 'Stock is not available of this product(variant) in this branch/shop']);
+            }
         }
     }
 

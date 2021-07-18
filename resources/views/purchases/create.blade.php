@@ -71,7 +71,7 @@
                                                 <div class="input-group mt-1">
                                                     <label for="inputEmail3" class="col-4"><b>Store Location :</b> </label>
                                                     <div class="col-8">
-                                                        <input readonly type="text" name="branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HF)' }}"/>
+                                                        <input readonly type="text" name="branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
                                                     </div>
                                                 </div>
                                             @endif

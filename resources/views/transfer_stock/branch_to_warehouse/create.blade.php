@@ -39,7 +39,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-3"><b>B.Location :</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : 'Head Office' }}">
+                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                     <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
                                                 </div>
                                             </div>
@@ -53,6 +53,9 @@
                                                     <select class="form-control changeable add_input"
                                                         name="warehouse_id" data-name="Warehouse" id="warehouse_id">
                                                         <option value="">Select Warehouse</option>
+                                                        @foreach ($warehouses as $w)
+                                                            <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                        @endforeach
                                                     </select>
                                                     <span class="error error_warehouse_id"></span>
                                                 </div>
@@ -113,7 +116,7 @@
                                             <div class="sale-item-sec">
                                                 <div class="sale-item-inner">
                                                     <div class="table-responsive">
-                                                        <table class="table display table-sm data__table">
+                                                        <table class="table modal-table table-sm">
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th>Product</th>
@@ -243,19 +246,13 @@
             $('.variant_list_area').empty();
             $('.select_area').hide();
             var product_code = $(this).val();
-            var branch_id = $('#branch_id').val();
-            if(branch_id == ""){
-                $('#search_product').val("");
-                alert('Branch field must not be empty.');
-                return;
-            }
-            delay(function() { searchProduct(product_code, branch_id); }, 200); //sendAjaxical is the name of remote-command
+            delay(function() { searchProduct(product_code); }, 200); //sendAjaxical is the name of remote-command
         });
 
         // add Transfer product by searching product code
         function searchProduct(product_code, branch_id){
             $.ajax({
-                url:"{{ url('transfer/stocks/to/warehouse/sarach/product') }}"+"/"+product_code+"/"+branch_id,
+                url:"{{ url('transfer/stocks/to/warehouse/sarach/product') }}"+"/"+product_code,
                 dataType: 'json',
                 success:function(product){
                     if(!$.isEmptyObject(product.errorMsg)){
@@ -319,15 +316,7 @@
                                     tr += '</td>';
 
                                     tr += '<td>';
-                                    tr += '<div class="input-group">';
-                                    tr += '<div class="input-group-prepend">';
-                                    tr += '<a href="#" class="input-group-text  input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                    tr += '</div>';
                                     tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                                    tr += '<div class="input-group-prepend">';
-                                    tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                    tr += '</div>';
-                                    tr += '</div>';
                                     tr += '</td>';
                                     tr += '<td class="text text-center">';
                                     tr += '<span class="span_unit">'+product.unit.name+'</span>'; 
@@ -354,7 +343,7 @@
                                     var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
                                     var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
                                     li += '<li id="list" class="mt-1">';
-                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
                                 });
                                 $('.variant_list_area').prepend(li);
@@ -415,15 +404,7 @@
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<div class="input-group">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                tr += '</div>';
                                 tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                tr += '</div>';
-                                tr += '</div>';
                                 tr += '</td>';
                                 tr += '<td class="text text-center">';
                                 tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
@@ -454,14 +435,14 @@
                                             var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
                                             var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
                                             li += '<li id="list" class="mt-1">';
-                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                             li +='</li>';
                                         });
                                     }else{
                                         var tax_amount = parseFloat(product.tax != null ? product.product_price/100 * product.tax.tax_percent : 0);
                                         var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
                                         li += '<li class="mt-1">';
-                                        li += '<a class="select_single_product mt-1" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:30px; height:30px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li += '<a class="select_single_product mt-1" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
                                     }
                                 });
@@ -496,14 +477,9 @@
             var product_price_exc_tax = e.getAttribute('data-p_price_exc_tax');
             var p_tax_percent = e.getAttribute('data-p_tax_percent');
             var p_tax_amount = e.getAttribute('data-p_tax_amount');
-            if(branch_id == ""){
-                $('#search_product').val("");
-                alert('Branch field must not be empty.');
-                return;
-            }
-
+       
             $.ajax({
-                url:"{{ url('transfer/stocks/to/warehouse/check/single/product/stock/') }}"+"/"+product_id+"/"+branch_id,
+                url:"{{ url('transfer/stocks/to/warehouse/check/single/product/stock/') }}"+"/"+product_id,
                 async:true,
                 type:'get',
                 dataType: 'json',
@@ -558,15 +534,7 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<div class="input-group">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                            tr += '</div>';
                             tr += '<input type="number" step="any" value="1.00" required name="quantities[]"  class="form-control text-center" id="quantity">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn"><i class="fas fa-plus text-success "></i></a>';
-                            tr += '</div>';
-                            tr += '</div>';
                             tr += '</td>';
                             tr += '<td class="text">';
                             tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
@@ -605,7 +573,6 @@
 
             $('.select_area').hide();
             $('#search_product').val('');
-            var branch_id = $('#branch_id').val();
             var product_id = e.getAttribute('data-p_id');
             var product_name = e.getAttribute('data-p_name');
             var tax_percent = e.getAttribute('data-tax_percent');
@@ -615,14 +582,8 @@
             var variant_code = e.getAttribute('data-v_code');
             var variant_price = e.getAttribute('data-v_price');
 
-            if(branch_id == ""){
-                $('#search_product').val("");
-                alert('Branch field must not be empty.');
-                return;
-            }
-
             $.ajax({
-                url:"{{url('transfer/stocks/to/warehouse/check/branch/variant/qty')}}"+"/"+product_id+"/"+variant_id+"/"+branch_id,
+                url:"{{url('transfer/stocks/to/warehouse/check/branch/variant/qty')}}"+"/"+product_id+"/"+variant_id,
                 async:true,
                 type:'get',
                 dataType: 'json',
@@ -683,15 +644,7 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<div class="input-group">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                            tr += '</div>';
                             tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success"></i></a>';
-                            tr += '</div>';
-                            tr += '</div>';
                             tr += '</td>';
                             tr += '<td class="text text-center">';
                             tr += '<span class="span_unit">'+product_unit+'</span>'; 
@@ -846,29 +799,6 @@
                 }
             });
         });
-
-        // Decrease qty
-        $(document).on('click', '.decrease_qty_btn', function (e) {
-            e.preventDefault();
-            var tr = $(this).closest('tr');
-            var presentQty = tr.find('#quantity').val();
-            var updateQty = parseFloat(presentQty) - 1;
-            tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-            tr.find('#quantity').addClass('.form-control:focus');
-            tr.find('#quantity').blur();
-        });
-
-         // Iecrease qty
-         $(document).on('click', '.increase_qty_btn', function (e) {
-            e.preventDefault();
-            var tr = $(this).closest('tr');
-            var presentQty = tr.find('#quantity').val();
-            var updateQty = parseFloat(presentQty) + 1;
-            tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-            tr.find('#quantity').addClass('.form-control:focus');
-            tr.find('#quantity').blur();
-        })
-        // Automatic remove searching product is found signal 
 
         setInterval(function(){
             $('#search_product').removeClass('is-invalid');

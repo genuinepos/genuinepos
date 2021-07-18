@@ -448,9 +448,9 @@ Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Ht
     Route::get('get/editable/transfer/{transferId}', 'TransferToWarehouseController@editableTransfer')->name('transfer.stock.to.warehouse.editable.transfer');
     Route::post('update/{transferId}', 'TransferToWarehouseController@update')->name('transfer.stock.to.warehouse.update');
     Route::delete('delete/{transferId}', 'TransferToWarehouseController@delete')->name('transfer.stock.to.warehouse.delete');
-    Route::get('sarach/product/{product_code}/{branch_id}', 'TransferToWarehouseController@productSearch');
-    Route::get('check/single/product/stock/{product_id}/{branch_id}', 'TransferToWarehouseController@checkBranchSingleProduct');
-    Route::get('check/branch/variant/qty/{product_id}/{variant_id}/{branch_id}', 'TransferToWarehouseController@checkBranchProductVariant');
+    Route::get('sarach/product/{product_code}', 'TransferToWarehouseController@productSearch');
+    Route::get('check/single/product/stock/{product_id}', 'TransferToWarehouseController@checkBranchSingleProduct');
+    Route::get('check/branch/variant/qty/{product_id}/{variant_id}', 'TransferToWarehouseController@checkBranchProductVariant');
     
 
     // Receive stock from branch **route group**

@@ -240,7 +240,7 @@ class SupplierController extends Controller
                     } elseif ($row->branch_name) {
                         return $row->branch_name . '<b>(BR)</b>';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HF</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
                     }
                 })
                 ->editColumn('total_purchase_amount', function ($row) use ($generalSettings) {

@@ -4,7 +4,7 @@
         <div class="col-md-6">
             <select name="branch_id" id="today_branch_id" class="form-control">
                 <option value="">All Branch</option>
-                <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ json_decode($generalSettings->business, true)['shop_name'] }}(HF)</option>
+                <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ json_decode($generalSettings->business, true)['shop_name'] }}(HO)</option>
                 @foreach ($branches as $br)
                     <option {{ $branch_id == $br->id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                 @endforeach

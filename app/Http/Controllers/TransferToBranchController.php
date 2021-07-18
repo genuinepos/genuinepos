@@ -42,7 +42,6 @@ class TransferToBranchController extends Controller
                 ->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)
                 ->get();
 
-
             return DataTables::of($transfers)
                 ->addColumn('action', function ($row) {
                     $html = '<div class="btn-group" role="group">';
@@ -64,8 +63,8 @@ class TransferToBranchController extends Controller
                 ->editColumn('to',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
                         return  $row->branch_name . '/' . $row->branch_code;
-                    }else {
-                        return json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>';
+                    } else {
+                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('shipping_charge', function ($row) use ($generalSettings) {
@@ -188,7 +187,7 @@ class TransferToBranchController extends Controller
         $warehouses = DB::table('warehouses')
             ->select('id', 'warehouse_name', 'warehouse_code')->get();
         $branches = DB::table('branches')
-        ->select('id', 'name', 'branch_code')->get();
+            ->select('id', 'name', 'branch_code')->get();
         return view('transfer_stock.warehouse_to_branch.edit', compact('transferId', 'transfer', 'warehouses', 'branches'));
     }
 
@@ -196,7 +195,7 @@ class TransferToBranchController extends Controller
     public function editableTransfer($transferId)
     {
         $transfer = TransferStockToBranch::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')
-        ->where('id', $transferId)->first();
+            ->where('id', $transferId)->first();
         $qty_limits = [];
         foreach ($transfer->Transfer_products as $transfer_product) {
             $productWarehouse = ProductWarehouse::where('warehouse_id', $transfer->warehouse_id)
@@ -296,14 +295,13 @@ class TransferToBranchController extends Controller
         }
 
         // Delete not found which was previous
-        $deleteableTransferProducts = TransferStockToBranchProduct::where('transfer_stock_id', $transferId)->where('is_delete_in_update', 1)->get();
-        foreach ($deleteableTransferProducts as $deleteableTransferProduct) {
-            $deleteableTransferProduct->delete();
+        $delectableTransferProducts = TransferStockToBranchProduct::where('transfer_stock_id', $transferId)->where('is_delete_in_update', 1)->get();
+        foreach ($delectableTransferProducts as $delectableTransferProduct) {
+            $delectableTransferProduct->delete();
         }
 
         session()->flash('successMsg', 'Successfully transfer stock is updated');
         return response()->json(['successMsg' => 'Successfully transfer stock is updated']);
-        
     }
 
     // delete transfer
@@ -325,16 +323,31 @@ class TransferToBranchController extends Controller
                     $productWarehouseVariant->save();
                 }
 
-                // update branch product qty for adjustment
-                $productBranch = ProductBranch::where('branch_id', $deleteTransferToBranch->branch_id)
-                ->where('product_id', $transfer_product->product_id)->first();
-                $productBranch->product_quantity -= $transfer_product->received_qty;
-                $productBranch->save();
+                if ($deleteTransferToBranch->branch_id) {
+                    // update branch product qty for adjustment
+                    $productBranch = ProductBranch::where('branch_id', $deleteTransferToBranch->branch_id)
+                        ->where('product_id', $transfer_product->product_id)->first();
+                    $productBranch->product_quantity -= $transfer_product->received_qty;
+                    $productBranch->save();
 
-                if ($transfer_product->product_variant_id) {
-                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $transfer_product->product_id)->where('product_variant_id', $transfer_product->product_variant_id)->first();
-                    $productBranchVariant->variant_quantity -= $transfer_product->received_qty;
-                    $productBranchVariant->save();
+                    if ($transfer_product->product_variant_id) {
+                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $transfer_product->product_id)->where('product_variant_id', $transfer_product->product_variant_id)->first();
+                        $productBranchVariant->variant_quantity -= $transfer_product->received_qty;
+                        $productBranchVariant->save();
+                    }
+                } else {
+                    // update branch product qty for adjustment
+                    $productBranch = Product::where('id', $transfer_product->product_id)->first();
+                    $productBranch->mb_stock -= $transfer_product->received_qty;
+                    $productBranch->save();
+
+                    if ($transfer_product->product_variant_id) {
+                        $productBranchVariant = ProductVariant::where('product_id', $transfer_product->product_id)
+                        ->where('product_variant_id', $transfer_product->product_variant_id)
+                        ->first();
+                        $productBranchVariant->variant_quantity -= $transfer_product->received_qty;
+                        $productBranchVariant->save();
+                    }
                 }
             }
 

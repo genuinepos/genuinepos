@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
+use App\Models\ProductVariant;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
@@ -21,8 +23,9 @@ class WarehouseReceiveStockController extends Controller
 
     //Branch receiving stock index view
     public function index(Request $request)
-    {   
+    {
         if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
             $transfers = DB::table('transfer_stock_to_warehouses')
                 ->leftJoin('warehouses', 'transfer_stock_to_warehouses.warehouse_id', 'warehouses.id')
                 ->leftJoin('branches', 'transfer_stock_to_warehouses.branch_id', 'branches.id')->select(
@@ -31,15 +34,15 @@ class WarehouseReceiveStockController extends Controller
                     'warehouses.warehouse_code',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                )->orderBy('id', 'desc')->get();
+                )->orderBy('id', 'desc')->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)->get();;
 
             return DataTables::of($transfers)
                 ->addColumn('action', function ($row) {
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="'.route('transfer.stocks.to.warehouse.receive.stock.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('transfer.stocks.to.branch.receive.stock.process.view', [$row->id] ) . '"><i class="far fa-edit text-primary"></i> Process To Receive</a>';
+                    $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stocks.to.warehouse.receive.stock.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('transfer.stocks.to.branch.receive.stock.process.view', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Process To Receive</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
@@ -47,8 +50,12 @@ class WarehouseReceiveStockController extends Controller
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) {
-                    return  $row->branch_name . '/' . $row->branch_code;
+                ->editColumn('from',  function ($row) use ($generalSettings) {
+                    if ($row->branch_name) {
+                        return  $row->branch_name . '/' . $row->branch_code;
+                    } else {
+                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                    }
                 })
                 ->editColumn('to',  function ($row) {
                     return  $row->warehouse_name . '/' . $row->warehouse_code;
@@ -82,7 +89,7 @@ class WarehouseReceiveStockController extends Controller
         return view('transfer_stock.warehouse_to_branch.receive_stock.ajax_view.show', compact('sendStock'));
     }
 
- 
+
     public function receiveProducessView($sendStockId)
     {
         $sendStockId = $sendStockId;
@@ -122,50 +129,128 @@ class WarehouseReceiveStockController extends Controller
         $index = 0;
         foreach ($product_ids as $product_id) {
             // Update warehouse and branch qty for adjustment
-            $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSandStocks->warehouse_id)->where('product_id', $product_id)->first();
-            $productWarehouse->product_quantity -= $previous_received_quantities[$index];
-            $productWarehouse->save();
+            $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSandStocks->warehouse_id)
+                ->where('product_id', $product_id)
+                ->first();
+            if ($productWarehouse) {
+                $productWarehouse->product_quantity -= (float)$previous_received_quantities[$index];
+                $productWarehouse->save();
 
-            if ($variant_ids[$index] != 'noid') {
-                $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                $productWarehouseVariant->variant_quantity -= $previous_received_quantities[$index];
-                $productWarehouseVariant->save();
+                if ($variant_ids[$index] != 'noid') {
+                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
+                        ->where('product_id', $product_id)
+                        ->where('product_variant_id', $variant_ids[$index])->first();
+                    if ($productWarehouseVariant) {
+                        $productWarehouseVariant->variant_quantity -= (float)$previous_received_quantities[$index];
+                        $productWarehouseVariant->save();
+                    }
+                }
             }
 
-            $productBranch = ProductBranch::where('branch_id', $updateSandStocks->branch_id)->where('product_id', $product_id)->first();
-            $productBranch->product_quantity += $previous_received_quantities[$index];
-            $productBranch->save();
+            if ($updateSandStocks->branch_id) {
+                $productBranch = ProductBranch::where('branch_id', $updateSandStocks->branch_id)->where('product_id', $product_id)->first();
+                $productBranch->product_quantity += $previous_received_quantities[$index];
+                $productBranch->save();
 
-            if ($variant_ids[$index] != 'noid') {
-                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                $productBranchVariant->variant_quantity += $previous_received_quantities[$index];
-                $productBranchVariant->save();
+                if ($variant_ids[$index] != 'noid') {
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
+                    $productBranchVariant->variant_quantity += $previous_received_quantities[$index];
+                    $productBranchVariant->save();
+                }
+            } else {
+                $product = Product::where('id', $product_id)->first();
+                $product->mb_stock += (float)$previous_received_quantities[$index];
+                $product->save();
+
+                if ($variant_ids[$index] != 'noid') {
+                    $productVariant = ProductVariant::where('product_id', $product_id)
+                        ->where('id', $variant_ids[$index])
+                        ->first();
+                    $productVariant->mb_stock += (float)$previous_received_quantities[$index];
+                    $productVariant->save();
+                }
             }
 
             $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $updateTransferProduct = TransferStockToWarehouseProduct::where('transfer_stock_id', $updateSandStocks->id)->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
+            $updateTransferProduct = TransferStockToWarehouseProduct::where('transfer_stock_id', $updateSandStocks->id)
+                ->where('product_id', $product_id)
+                ->where('product_variant_id', $variant_id)->first();
+                
             $updateTransferProduct->received_qty = $receive_quantities[$index];
             $updateTransferProduct->save();
 
             // Update warehouse and branch qty 
-            $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSandStocks->warehouse_id)->where('product_id', $product_id)->first();
-            $productWarehouse->product_quantity += $receive_quantities[$index];
-            $productWarehouse->save();
+            $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSandStocks->warehouse_id)
+                ->where('product_id', $product_id)->first();
 
-            if ($variant_ids[$index] != 'noid') {
-                $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                $productWarehouseVariant->variant_quantity += $receive_quantities[$index];
-                $productWarehouseVariant->save();
+            if ($productWarehouse) {
+                $productWarehouse->product_quantity += (float)$receive_quantities[$index];
+                $productWarehouse->save();
+
+                if ($variant_ids[$index] != 'noid') {
+                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $product_id)
+                        ->where('product_variant_id', $variant_ids[$index])
+                        ->first();
+                    if ($productWarehouseVariant) {
+                        $productWarehouseVariant->variant_quantity += (float)$receive_quantities[$index];
+                        $productWarehouseVariant->save();
+                    } else {
+                        $addWarehouseVariant = new ProductWarehouseVariant();
+                        $addWarehouseVariant->product_warehouse_id = $productWarehouse->id;
+                        $addWarehouseVariant->product_id = $product_id;
+                        $addWarehouseVariant->product_variant_id = $variant_ids[$index];
+                        $addWarehouseVariant->variant_quantity = $receive_quantities[$index];
+                        $addWarehouseVariant->save();
+                    }
+                }
+            }else {
+                $addWarehouseProduct = new ProductWarehouse();
+                $addWarehouseProduct->warehouse_id = $updateSandStocks->warehouse_id;
+                $addWarehouseProduct->product_id = $product_id;
+                $addWarehouseProduct->product_quantity = $receive_quantities[$index];
+                $addWarehouseProduct->save();
+                if ($variant_ids[$index] != 'noid') {
+                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $addWarehouseProduct->id)->where('product_id', $product_id)
+                    ->where('product_variant_id', $variant_ids[$index])
+                    ->first();
+
+                    if ($productWarehouseVariant) {
+                        $productWarehouseVariant->variant_quantity += (float)$receive_quantities[$index];
+                        $productWarehouseVariant->save();
+                    } else {
+                        $addWarehouseVariant = new ProductBranchVariant();
+                        $addWarehouseVariant->product_warehouse_id = $addWarehouseProduct->id;
+                        $addWarehouseVariant->product_id = $product_id;
+                        $addWarehouseVariant->product_variant_id = $variant_ids[$index];
+                        $addWarehouseVariant->variant_quantity = $receive_quantities[$index];
+                        $addWarehouseVariant->save();
+                    }
+                }
             }
 
-            $productBranch = ProductBranch::where('branch_id', $updateSandStocks->branch_id)->where('product_id', $product_id)->first();
-            $productBranch->product_quantity -= $receive_quantities[$index];
-            $productBranch->save();
+            if ($updateSandStocks->branch_id) {
+                $productBranch = ProductBranch::where('branch_id', $updateSandStocks->branch_id)->where('product_id', $product_id)->first();
+                $productBranch->product_quantity -= $receive_quantities[$index];
+                $productBranch->save();
 
-            if ($variant_ids[$index] != 'noid') {
-                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                $productBranchVariant->variant_quantity -= $receive_quantities[$index];
-                $productBranchVariant->save();
+                if ($variant_ids[$index] != 'noid') {
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
+                    $productBranchVariant->variant_quantity -= $receive_quantities[$index];
+                    $productBranchVariant->save();
+                }
+            } else {
+                $product = Product::where('id', $product_id)->first();
+                $product->mb_stock -= (float)$receive_quantities[$index];
+                $product->save();
+
+                if ($variant_ids[$index] != 'noid') {
+                    $productVariant = ProductVariant::where('product_id', $product_id)
+                        ->where('id', $variant_ids[$index])
+                        ->first();
+
+                    $productVariant->mb_stock -= (float)$receive_quantities[$index];
+                    $productVariant->save();
+                }
             }
             $index++;
         }

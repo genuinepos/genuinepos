@@ -1,7 +1,7 @@
 <link href="{{asset('public/backend/css/data-table.min.css')}}" rel="stylesheet" type="text/css">
 <p>
     <b>Stock Location : 
-    {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code.' (BR)' : json_decode($generalSettings->business, true)['shop_name'].'<b>(HF)</b>' !!}
+    {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code.' (BR)' : json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>' !!}
     </b>
 </p>
 <table class="table modal-table table-sm table-striped" id="data_table">

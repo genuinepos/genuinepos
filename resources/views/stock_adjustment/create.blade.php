@@ -42,7 +42,7 @@
                                                         value="{{ 
                                                             auth()->user()->branch ?
                                                             auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code
-                                                            : json_decode($generalSettings->business, true)['shop_name'].' (HF)' 
+                                                            : json_decode($generalSettings->business, true)['shop_name'].' (HO)' 
                                                         }}">
                                                 </div>
                                             </div>

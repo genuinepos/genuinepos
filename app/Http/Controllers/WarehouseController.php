@@ -69,7 +69,7 @@ class WarehouseController extends Controller
                     if ($row->b_name) {
                         return $row->b_name . '/' . $row->b_code . '(<b>BR</b>)';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HF</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->rawColumns(['branch', 'action'])

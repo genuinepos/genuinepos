@@ -234,8 +234,14 @@ class SupplierController extends Controller
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
                 })
-                ->editColumn('from',  function ($row) {
-                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BRANCH)</b>' : ($row->warehouse_name . '/' . $row->warehouse_code) . '<b>(WAREHOUSE)</b>';
+                ->editColumn('from',  function ($row) use ($generalSettings) {
+                    if ($row->warehouse_name) {
+                        return $row->warehouse_name . '<b>(WH)</b>';
+                    } elseif ($row->branch_name) {
+                        return $row->branch_name . '<b>(BR)</b>';
+                    } else {
+                        return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HF</b>)';
+                    }
                 })
                 ->editColumn('total_purchase_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_purchase_amount . '</b>';

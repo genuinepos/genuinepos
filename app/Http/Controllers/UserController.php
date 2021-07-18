@@ -147,18 +147,18 @@ class UserController extends Controller
                 'password' => 'required|confirmed',
             ]);
 
-            if ($request->role_id) {
-                $this->validate($request, [
-                    'branch_id' => 'required',
-                ], [
-                    'branch_id.required' => 'Branch field must not be empty.'
-                ]);
-            }
+            // if ($request->role_id) {
+            //     $this->validate($request, [
+            //         'branch_id' => 'required',
+            //     ], [
+            //         'branch_id.required' => 'Branch field must not be empty.'
+            //     ]);
+            // }
         }else {
             $this->validate($request, [
                 'belonging_branch_id' => 'required',
             ], [
-                'belonging_branch_id.required' => 'Beloging Branch field must not be empty.'
+                'belonging_branch_id.required' => 'Belonging Branch field must not be empty.'
             ]);
         }
 

@@ -19,7 +19,7 @@ use App\Models\TransferStockToBranchProduct;
 class TransferToBranchController extends Controller
 {
     protected $nameSearchUtil;
-    public function __construct(NameSearchUtil $nameSearchUtil,)
+    public function __construct(NameSearchUtil $nameSearchUtil)
     {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->middleware('auth:admin_and_user');

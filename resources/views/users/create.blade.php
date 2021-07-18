@@ -152,6 +152,7 @@
                                                         <label for="inputEmail3" class="col-4"><b>Access Branch :</b> </label>
                                                         <div class="col-8">
                                                             <select name="branch_id" id="branch_id" class="form-control">
+                                                                <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                                 @foreach ($branches as $b)
                                                                     <option value="{{ $b->id }}">{{$b->name.'/'.$b->branch_code}}</option>
                                                                 @endforeach

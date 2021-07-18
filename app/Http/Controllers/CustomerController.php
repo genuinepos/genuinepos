@@ -139,7 +139,7 @@ class CustomerController extends Controller
         return response()->json('Customer deleted successfully');
     }
 
-    // Change stauts method
+    // Change status method
     public function changeStatus($customerId)
     {
         $statusChange = Customer::where('id', $customerId)->first();
@@ -164,15 +164,12 @@ class CustomerController extends Controller
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $sales = DB::table('sales')
                     ->leftJoin('branches', 'sales.branch_id', 'branches.id')
-                    ->leftJoin('warehouses', 'sales.warehouse_id', 'warehouses.id')
                     ->leftJoin('customers', 'sales.customer_id', 'customers.id')
                     ->select(
                         'sales.*',
                         'branches.id as branch_id',
                         'branches.name as branch_name',
                         'branches.branch_code',
-                        'warehouses.warehouse_name',
-                        'warehouses.warehouse_code',
                         'customers.name as customer_name',
                     )->where('sales.customer_id', $customerId)
                     ->orderBy('id', 'desc')
@@ -180,15 +177,12 @@ class CustomerController extends Controller
             } else {
                 $sales = DB::table('sales')
                     ->leftJoin('branches', 'sales.branch_id', 'branches.id')
-                    ->leftJoin('warehouses', 'sales.warehouse_id', 'warehouses.id')
                     ->leftJoin('customers', 'sales.customer_id', 'customers.id')
                     ->select(
                         'sales.*',
                         'branches.id as branch_id',
                         'branches.name as branch_name',
                         'branches.branch_code',
-                        'warehouses.warehouse_name',
-                        'warehouses.warehouse_code',
                         'customers.name as customer_name',
                     )->where('sales.customer_id', $customerId)
                     ->where('sales.branch_id', auth()->user()->branch_id)
@@ -206,8 +200,7 @@ class CustomerController extends Controller
                     $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i
                                     class="far fa-eye mr-1 text-primary"></i> View</a>';
                    
-                    $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i
-                                    class="far fa-money-bill-alt mr-1 text-primary"></i> Packing Slip</a>';
+                    $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Packing Slip</a>';
 
                     if (auth()->user()->permission->sale['shipment_access'] == '1') {
                             $html .= '<a class="dropdown-item" id="edit_shipment"
@@ -230,8 +223,7 @@ class CustomerController extends Controller
                         }
 
                         if (auth()->user()->permission->sale['return_access'] == '1') {
-                            $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i
-                                    class="fas fa-undo-alt mr-1 text-primary"></i> Sale Return</a>';
+                            $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i class="fas fa-undo-alt mr-1 text-primary"></i> Sale Return</a>';
                         }
 
                         if ($row->created_by == 1) {
@@ -267,11 +259,11 @@ class CustomerController extends Controller
                     $html .= $row->is_return_available ? '<span class="badge rounded bg-danger p-0 pl-1 pb-1"><i style="font-size:11px;margin-top:3px;" class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
                 })
-                ->editColumn('from',  function ($row) {
+                ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code.'(<b>BRANCH</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $row->warehouse_name . '/' . $row->warehouse_code.'(<b>WAREHOUSE</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {

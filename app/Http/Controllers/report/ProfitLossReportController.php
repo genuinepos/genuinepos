@@ -31,7 +31,7 @@ class ProfitLossReportController extends Controller
     public function salePurchaseProfit()
     {
         $opening_stocks = DB::table('product_opening_stocks')->whereYear('created_at', date('Y'))
-            ->select('id', 'unit_cost_exc_tax', 'subtotal')
+            ->select('id', 'unit_cost_inc_tax', 'subtotal')
             ->get();
         $stock_adjustments = DB::table('stock_adjustments')->whereYear('report_date_ts', date('Y'))->get();
         $purchases = DB::table('purchases')->whereYear('report_date', date('Y'))->get();
@@ -115,7 +115,7 @@ class ProfitLossReportController extends Controller
             $transfer_to_warehouses_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
         }
 
-        $opening_stocks = $opening_stocks_query->select('id', 'unit_cost_exc_tax', 'subtotal')->get();
+        $opening_stocks = $opening_stocks_query->select('id', 'unit_cost_inc_tax', 'subtotal')->get();
         $stock_adjustments =  $stock_adjustments_query->get();
         $purchases = $purchases_query->get();
         $sales = $sales_query->get();

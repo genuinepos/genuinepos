@@ -35,7 +35,7 @@
                             </a>
                         </li>
                     @else
-                        @if (auth()->user()->branch->purchase_permission == 1)
+                        @if (auth()->user()->branch_id && auth()->user()->branch->purchase_permission == 1)
                             @if (auth()->user()->permission->purchase['purchase_all'] == '1')
 
                                 <li data-menu="purchases"
@@ -425,7 +425,7 @@
                     </div>
                 @else
 
-                    @if (auth()->user()->branch->purchase_permission == 1)
+                    @if (auth()->user()->branch_id && auth()->user()->branch->purchase_permission == 1)
                         @if (auth()->user()->permission->purchase['purchase_all'] == '1')
                             <div class="sub-menu_t" id="purchases">
                                 <div class="sub-menu-width">

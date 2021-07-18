@@ -19,7 +19,7 @@
                 <td>{{ $warranty->description }}</td> 
                 <td> 
                     <div class="dropdown table-dropdown">
-                        <a href="javascript:;" class="action-btn c-edit" id="edit" title="Edit details" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <a href="javascript:;" class="action-btn c-edit" id="edit" title="Edit details">
                          <i class="fa fa-edit"></i>
                         </a>
                         <a href="{{ route('product.warranties.delete', $warranty->id) }}" class="action-btn c-delete" id="delete">
@@ -36,7 +36,7 @@
     $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [ 
-            {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],

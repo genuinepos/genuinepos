@@ -18,7 +18,6 @@
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
-
                     <div class="row mt-1">
                         @if (auth()->user()->permission->category['category_add'] == '1')
                             <div class="col-md-4">
@@ -120,14 +119,13 @@
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 // {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {
-                extend: 'print',
-                autoPrint: true,
-                exportOptions: {
-                    columns: ':visible'
+                    extend: 'print',
+                    autoPrint: true,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
                 }
-            }
             ],
-          
             processing: true,
             serverSide: true,
             searchable: true,

@@ -33,28 +33,11 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> Reference ID : </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
+                                <li><strong> Reference ID : </strong>
+                                    {{ $purchase->invoice_id }}
                                 </li>
-                                <li><strong>Purchase Form : </strong>
-                                    <span class="warehouse">
-                                        {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : 'Head Office' }}
-                                    </span>
-                                </li>
-                                <li><strong>Stored Loacation : </strong>
-                                    <span>
-                                        @if ($purchase->branch)
-                                            {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
-                                            (<b>Branch/Company</b>) ,<br>
-                                            {{ $purchase->branch ? $purchase->branch->city : '' }},
-                                            {{ $purchase->branch ? $purchase->branch->state : '' }},
-                                            {{ $purchase->branch ? $purchase->branch->zip_code : '' }},
-                                            {{ $purchase->branch ? $purchase->branch->country : '' }}.
-                                        @else
-                                            {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_name }}
-                                            (<b>Warehouse</b>),<br>
-                                            {{ $purchase->warehouse->address }}.
-                                        @endif
-                                    </span>
+                                <li><strong>B.Location : </strong>
+                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (Head Office)' }}
                                 </li>
                             </ul>
                         </div>

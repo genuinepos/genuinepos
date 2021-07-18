@@ -34,26 +34,10 @@
                             <ul class="list-unstyled">
                                 <li><strong> Reference ID : </strong><span class="invoice_no">{{ $payment->purchase->invoice_id }}</span>
                                 </li>
-                                <li><strong>Purchase Form : </strong>
-                                    <span class="warehouse">
-                                        {{ $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : 'Head Office' }}
-                                    </span>
-                                </li>
-                                <li><strong>Stored Loacation : </strong>
-                                    <span>
-                                        @if ($payment->purchase->branch)
-                                            {{ $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code }}
-                                            (<b>Branch/Company</b>) ,<br>
-                                            {{ $payment->purchase->branch ? $payment->purchase->branch->city : '' }},
-                                            {{ $payment->purchase->branch ? $payment->purchase->branch->state : '' }},
-                                            {{ $payment->purchase->branch ? $payment->purchase->branch->zip_code : '' }},
-                                            {{ $payment->purchase->branch ? $payment->purchase->branch->country : '' }}.
-                                        @else
-                                            {{ $payment->purchase->warehouse->warehouse_name . '/' . $payment->purchase->warehouse->warehouse_name }}
-                                            (<b>Warehouse</b>),<br>
-                                            {{ $payment->purchase->warehouse->address }}.
-                                        @endif
-                                    </span>
+                                <li><strong>B.Location : </strong>
+                                  
+                                    {{ $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : 'Head Office' }}
+                                   
                                 </li>
                             </ul>
                         </div>

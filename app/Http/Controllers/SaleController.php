@@ -705,18 +705,14 @@ class SaleController extends Controller
         if (auth()->user()->permission->sale['sale_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        $warehouses = DB::table('warehouses')
-            ->select('id', 'warehouse_name', 'warehouse_code')
-            ->orderBy('id', 'desc')
-            ->get();
-
+  
         $customers = DB::table('customers')
             ->where('status', 1)->select('id', 'name', 'phone')
             ->orderBy('id', 'desc')->get();
         $invoice_schemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);
         $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-        return view('sales.create', compact('warehouses', 'customers', 'accounts', 'price_groups', 'invoice_schemas'));
+        return view('sales.create', compact('customers', 'accounts', 'price_groups', 'invoice_schemas'));
     }
 
     // Add Sale method
@@ -1671,7 +1667,7 @@ class SaleController extends Controller
     public function paymentModal($saleId)
     {
         $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        $sale = Sale::with('branch', 'warehouse', 'customer')->where('id', $saleId)->first();
+        $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
         return view('sales.ajax_view.add_payment', compact('sale', 'accounts'));
     }
 
@@ -1781,7 +1777,7 @@ class SaleController extends Controller
     public function paymentEdit($paymentId)
     {
         $accounts =  Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch', 'sale.warehouse')->where('id', $paymentId)->first();
+        $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch')->where('id', $paymentId)->first();
         return view('sales.ajax_view.edit_payment', compact('payment', 'accounts'));
     }
 
@@ -1902,7 +1898,7 @@ class SaleController extends Controller
     public function returnPaymentModal($saleId)
     {
         $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        $sale = Sale::with('branch', 'warehouse', 'customer')->where('id', $saleId)->first();
+        $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
         return view('sales.ajax_view.add_return_payment', compact('sale', 'accounts'));
     }
 
@@ -2011,7 +2007,7 @@ class SaleController extends Controller
     public function returnPaymentEdit($paymentId)
     {
         $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch', 'sale.warehouse')->where('id', $paymentId)->first();
+        $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch')->where('id', $paymentId)->first();
         return view('sales.ajax_view.edit_return_payment', compact('payment', 'accounts'));
     }
 

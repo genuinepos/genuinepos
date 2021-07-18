@@ -37,10 +37,8 @@
                             <ul class="list-unstyled">
                                 <li><strong>Reference ID : </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
                                 </li>
-                                <li><strong>Purchase Form : </strong>
-                                    <span class="warehouse">
-                                        {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : 'Head Office' }}
-                                    </span>
+                                <li><strong>B.Location : </strong>
+                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (Head Office)'}}
                                 </li>
                             </ul>
                         </div>

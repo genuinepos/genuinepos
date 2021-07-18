@@ -35,18 +35,7 @@
                                     Office</b>)
                                 @endif
                             </li>
-                             <li><strong>Stored Location : </strong>
-                                    @if ($purchase->warehouse_id)
-                                        {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_name }}
-                                        (<b>Warehouse</b>)
-                                    @elseif($purchase->branch_id)
-                                        {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
-                                        (<b>Branch/Concern</b>) 
-                                    @else
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                                        Office</b>)
-                                    @endif
-                             </li>
+                     
                              <li><strong>Phone : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}, <br>

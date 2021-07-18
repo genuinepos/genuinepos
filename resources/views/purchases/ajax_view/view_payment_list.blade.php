@@ -42,9 +42,8 @@
                             {{ $purchase->branch ? $purchase->branch->zip_code : '' }},
                             {{ $purchase->branch ? $purchase->branch->country : '' }}.
                         @else
-                            {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
-                            (<b>Warehouse</b>),<br>
-                            {{ $purchase->warehouse->address }}.
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
+                            Office</b>)
                         @endif
                     </li>
                 </ul>

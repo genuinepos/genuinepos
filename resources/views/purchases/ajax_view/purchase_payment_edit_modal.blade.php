@@ -19,12 +19,14 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Supplier : </strong><span>{{ $payment->purchase->supplier->name }}</span></li>
+                                <li><strong>Supplier : </strong>
+                                    {{ $payment->purchase->supplier->name }}
+                                </li>
                                 <li><strong>Business : </strong>
-                                    <span>{{ $payment->purchase->supplier->business_name }}</span> 
+                                    {{ $payment->purchase->supplier->business_name }}
                                 </li>
                                 <li><strong>phone : </strong>
-                                    <span>{{ $payment->purchase->supplier->phone }}</span> 
+                                    {{ $payment->purchase->supplier->phone }}
                                 </li>
                             </ul>
                         </div>
@@ -32,12 +34,11 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> Reference ID : </strong><span class="invoice_no">{{ $payment->purchase->invoice_id }}</span>
+                                <li><strong> Reference ID : </strong>
+                                    {{ $payment->purchase->invoice_id }}
                                 </li>
                                 <li><strong>B.Location : </strong>
-                                  
                                     {{ $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : 'Head Office' }}
-                                   
                                 </li>
                             </ul>
                         </div>

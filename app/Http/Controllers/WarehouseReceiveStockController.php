@@ -175,7 +175,7 @@ class WarehouseReceiveStockController extends Controller
             $updateTransferProduct = TransferStockToWarehouseProduct::where('transfer_stock_id', $updateSandStocks->id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
-                
+
             $updateTransferProduct->received_qty = $receive_quantities[$index];
             $updateTransferProduct->save();
 
@@ -203,7 +203,7 @@ class WarehouseReceiveStockController extends Controller
                         $addWarehouseVariant->save();
                     }
                 }
-            }else {
+            } else {
                 $addWarehouseProduct = new ProductWarehouse();
                 $addWarehouseProduct->warehouse_id = $updateSandStocks->warehouse_id;
                 $addWarehouseProduct->product_id = $product_id;
@@ -211,8 +211,8 @@ class WarehouseReceiveStockController extends Controller
                 $addWarehouseProduct->save();
                 if ($variant_ids[$index] != 'noid') {
                     $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $addWarehouseProduct->id)->where('product_id', $product_id)
-                    ->where('product_variant_id', $variant_ids[$index])
-                    ->first();
+                        ->where('product_variant_id', $variant_ids[$index])
+                        ->first();
 
                     if ($productWarehouseVariant) {
                         $productWarehouseVariant->variant_quantity += (float)$receive_quantities[$index];
@@ -234,7 +234,10 @@ class WarehouseReceiveStockController extends Controller
                 $productBranch->save();
 
                 if ($variant_ids[$index] != 'noid') {
-                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)
+                        ->where('product_variant_id', $variant_ids[$index])
+                        ->first();
+
                     $productBranchVariant->variant_quantity -= $receive_quantities[$index];
                     $productBranchVariant->save();
                 }

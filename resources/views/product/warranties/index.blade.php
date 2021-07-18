@@ -32,8 +32,10 @@
 
                     <div class="card-body">
                         <!--begin: Datatable-->
-                        <div class="table_area">
-                            <div class="data_preloader"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
+                        <div class="widget_content">
+                            <div class="data_preloader">
+                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            </div>
                             <div class="table-responsive" id="data-list">
                                 <table class="table table-hover table-sm table-checkable" id="kt_datatable" >
                                     <thead>

@@ -17,9 +17,7 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-
                     <!-- =========================================top section button=================== -->
-                  
                     <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">

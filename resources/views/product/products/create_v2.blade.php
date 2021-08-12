@@ -18,8 +18,7 @@
                                 <div class="form_element m-0 mt-4">
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
-                                            <div class="col-6"><h5>Add Product</h5></div>
-    
+                                            <div class="col-6"><h5>Add Product</h5></div> 
                                             <div class="col-6">
                                                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
@@ -1489,7 +1488,7 @@
         });
     });
 
-    // Add category from create product by ajax
+    // Add unit from create product by ajax
     $(document).on('submit', '#add_unit_form', function(e) {
         e.preventDefault();
          $('.loading_button').removeClass('d-none');
@@ -1525,6 +1524,45 @@
                 $('#unit_id').val(data.id);
                 $('#addUnitModal').modal('hide');
                 $('#add_unit_form')[0].reset();
+            }
+        });
+    });
+
+    // Add warranty from create product by ajax
+    $(document).on('submit', '#add_warranty_form', function(e) {
+        e.preventDefault();
+         $('.loading_button').removeClass('d-none');
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        var inputs = $('.add_warranty_input');
+        $('.error').html('');
+        var countErrorField = 0;
+        $.each(inputs, function(key, val) {
+            var inputId = $(val).attr('id');
+            var idValue = $('#' + inputId).val();
+            if (idValue == '') {
+                countErrorField += 1;
+                var fieldName = $('#' + inputId).data('name');
+                $('.error_' + inputId).html(fieldName + ' is required.');
+            }
+        });
+
+        if (countErrorField > 0) {
+             $('.loading_button').addClass('d-none');
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+                $('.loading_button').addClass('d-none');
+                toastr.success('Successfully warranty is added.');
+                $('#warranty_id').append('<option value="' + data.id + '">' + data.name + '</option>');
+                $('#warranty_id').val(data.id);
+                $('#add_warranty_form').modal('hide');
+                $('#add_warranty_form')[0].reset();
             }
         });
     });

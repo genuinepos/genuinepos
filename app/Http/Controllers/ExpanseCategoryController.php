@@ -28,16 +28,24 @@ class ExpanseCategoryController extends Controller
     // Store expanse category
     public function store(Request $request)
     {
-        // return $request->all();
         $this->validate($request, [
             'name' => 'required',
-            'code' => 'required',
         ]);
 
+        $codePrefix = ''; 
+        if (!$request->code) {
+            $name = explode(' ', $request->name);
+            for ($i= 0; $i < count($name); $i++) {
+                $prefix = str_split($name[$i])[0];
+                $codePrefix .= $prefix;
+            }
+        }
+        
         ExpanseCategory::insert([
             'name' => $request->name,
-            'code' => $request->code,
+            'code' => $request->code ? $request->code : $codePrefix,
         ]);
+
         return response()->json('Expanse category created successfully');
     }
 
@@ -47,14 +55,21 @@ class ExpanseCategoryController extends Controller
         //return $request->all();
         $this->validate($request, [
             'name' => 'required',
-            'code' => 'required',
         ]);
 
-        $updateCategory = ExpanseCategory::where('id', $request->id)->first();
+        $codePrefix = ''; 
+        if (!$request->code) {
+            $name = explode(' ', $request->name);
+            for ($i= 0; $i < count($name); $i++) {
+                $prefix = str_split($name[$i])[0];
+                $codePrefix .= $prefix;
+            }
+        }
 
+        $updateCategory = ExpanseCategory::where('id', $request->id)->first();
         $updateCategory->update([
             'name' => $request->name,
-            'code' => $request->code,
+            'code' => $request->code ? $request->code : $codePrefix,
         ]);
         return response()->json('Expanse category updated successfully');
     }

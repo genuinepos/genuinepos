@@ -164,7 +164,7 @@
                                         <td class="text-start">
                                             @if ($sale_product->product->warranty)
                                                 {{ $sale_product->product->warranty->duration . ' ' . $sale_product->product->warranty->duration_type }}
-                                                {{ $sale_product->product->warranty->type == 1 ? 'Warrantiy' : 'Guaranty' }}
+                                                {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
                                                 {!! $sale->branch->add_sale_invoice_layout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->product->warranty->description . '</small>' : '' !!}
                                             @else 
                                                 <strong>No</strong>
@@ -893,7 +893,7 @@
                                         <td class="text-start">
                                             @if ($sale_product->product->warranty)
                                                 {{ $sale_product->product->warranty->duration . ' ' . $sale_product->product->warranty->duration_type }}
-                                                {{ $sale_product->product->warranty->type == 1 ? 'Warrantiy' : 'Guaranty' }}
+                                                {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
                                                 {!! $defaultLayout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->product->warranty->description . '</small>' : '' !!}
                                             @else 
                                                 <strong>No</strong>

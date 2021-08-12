@@ -86,8 +86,8 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <label for=""><b>Code :</b></label> 
-                                <input type="text" name="code" class="form-control add_input" data-name="Expanse category code" id="code" placeholder="Code"/>
+                                <label><b>Code :</b></label> 
+                                <input type="text" name="code" class="form-control" data-name="Expanse category code" placeholder="Code"/>
                                 <span class="error error_code"></span>
                             </div>
                         </div>
@@ -125,9 +125,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label><strong>Code :</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="code" class="form-control edit_input" data-name="Expanse category code" id="e_code" placeholder="Code"/>
-                            <span class="error error_e_code"></span>
+                            <label><strong>Code :</strong> </label>
+                            <input type="text" name="code" class="form-control" id="e_code" placeholder="Code"/>
                         </div>
 
                         <div class="form-group text-right mt-3">
@@ -276,6 +275,7 @@
         //         }
         //     });
         // });
+
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');

@@ -10,11 +10,11 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-desktop"></span>
-                                <h5> Warranties/Guaranties</h5>
+                                <span class="fas fa-desktop"></span> <h5> Warranties/Guaranties</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            </a>
                         </div>
                     </div>
 
@@ -295,7 +295,6 @@
                     type: 'post',
                     data: request,
                     success: function(data) {
-                        console.log(data);
                         toastr.success(data);
                         $('.loading_button').hide();
                         getAllWarranty();

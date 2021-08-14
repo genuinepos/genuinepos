@@ -556,7 +556,7 @@
             }); 
         });
 
-        $(document).on('click', '#delete',function(e){
+        $(document).on('click', '#delete',function(e){ 
             e.preventDefault(); 
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);       

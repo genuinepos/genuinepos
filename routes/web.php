@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
+use function PHPUnit\Framework\callback;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -885,6 +886,12 @@ Route::get('/test', function () {
     // return $r;
     // $mac = exec('getmac');
     // return $strtok = strtok($mac, ' ');
+    function myFunction($name, $callback)
+    {
+        echo $callback($name);
+    }
+
+    myFunction('Harrison Roy', fn($name) => $name);
 });
 
 // All authenticated routes

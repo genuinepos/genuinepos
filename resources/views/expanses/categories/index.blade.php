@@ -18,21 +18,92 @@
                     </div>
                     <!-- =========================================top section button=================== -->
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
+                    <div class="row mt-1">
+                        <div class="col-md-4">
+                            <div class="card" id="add_form">
+                                <div class="section-header">
+                                    <div class="col-md-6">
+                                        <h6>Add Expanse Category</h6>
+                                    </div>
+                                </div>
+
+                                <div class="form-area px-3 pb-2">
+                                    <form id="add_category_form" action="{{ route('expanses.categories.store') }}">
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <label><b>Name :</b> <span class="text-danger">*</span></label>
+                                                <input type="text" name="name" class="form-control add_input" data-name="Category name" id="name" placeholder="Expense Category Name"/>
+                                                <span class="error error_name"></span>
+                                            </div>
+                                        </div>
+                
+                                        <div class="form-group row mt-1">
+                                            <div class="col-md-12">
+                                                <label><b>Code :</b></label> 
+                                                <input type="text" name="code" class="form-control" data-name="Expanse category Code" placeholder="Code"/>
+                                                <span class="error error_code"></span>
+                                            </div>
+                                        </div>
+                
+                                        <div class="form-group row mt-2">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                <button type="submit" class="c-btn btn_blue float-end me-0">Save</button>
+                                                <button type="reset" class="c-btn btn_orange float-end">Reset</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card d-none" id="edit_form">
+                                <div class="section-header">
+                                    <div class="col-md-6">
+                                        <h6>Edit Expanse Category</h6>
+                                    </div>
+                                </div>
+
+                                <div class="form-area px-3 pb-2">
+                                    <form id="edit_category_form" action="{{ route('expanses.categories.update') }}">
+                                        <input type="hidden" name="id" id="id">
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
+                                                <input type="text" name="name" class="form-control edit_input" data-name="Category name" id="e_name" placeholder="Expense Category Name"/>
+                                                <span class="error error_e_name"></span>
+                                            </div>
+                                        </div>
+                
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <label><strong>Code :</strong> </label>
+                                                <input type="text" name="code" class="form-control" id="e_code" placeholder="Code"/>
+                                            </div>
+                                        </div>
+                
+                                        <div class="form-group row text-right mt-2">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                <button type="submit" class="c-btn btn_blue float-end me-0">Save Changes</button>
+                                                <button type="button" id="close_form" class="c-btn btn_orange float-end">Close</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-6">
                                         <h6>All Expense Categories</h6>
                                     </div>
-                                   
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
                                 </div>
-
+                                <!--begin: Datatable-->
+                                <div class="widget_content">
+                                    <div class="data_preloader">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    </div>
                                     <div class="widget_content">
                                         <div class="table-responsive" id="data-list">
                                             <table class="display data_tbl data__table">
@@ -50,91 +121,15 @@
                                             </table>
                                         </div>
                                     </div>
-
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
                                 </div>
+    
+                                <form id="deleted_form" action="" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
-        aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Expanse Category</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_category_form" action="{{ route('expanses.categories.store') }}">
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <label><b>Name :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control add_input" data-name="Category name" id="name" placeholder="Category name"/>
-                                <span class="error error_name"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <label><b>Code :</b></label> 
-                                <input type="text" name="code" class="form-control" data-name="Expanse category code" placeholder="Code"/>
-                                <span class="error error_code"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Expense Category</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="edit_category_form" action="{{ route('expanses.categories.update') }}">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group">
-                            <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control edit_input" data-name="Category name" id="e_name" placeholder="Category 
-                            name"/>
-                            <span class="error error_e_name"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label><strong>Code :</strong> </label>
-                            <input type="text" name="code" class="form-control" id="code" placeholder="Code"/>
-                        </div>
-
-                        <div class="form-group text-right mt-3">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -156,7 +151,6 @@
     }
     getAllCateogry();
 
-
     // Setup ajax for csrf token.
     $.ajaxSetup({
         headers: {
@@ -173,20 +167,16 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
-                inputs.removeClass('is-invalid');
                 $('.error').html('');  
                 var countErrorField = 0;  
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
-                if(inputId !== 'parent_category' && inputId !== 'photo'){
-                    if(idValue == ''){
-                        countErrorField += 1;
-                        $('#'+inputId).addClass('is-invalid');
-                        var fieldName = $('#'+inputId).data('name');
-                        $('.error_'+inputId).html(fieldName+' is required.');
-                    }
-                } 
+                if(idValue == ''){
+                    countErrorField += 1;
+                    var fieldName = $('#'+inputId).data('name');
+                    $('.error_'+inputId).html(fieldName+' is required.');
+                }
             });
 
             if(countErrorField > 0){
@@ -203,7 +193,6 @@
                     $('#add_category_form')[0].reset();
                     $('.loading_button').hide();
                     getAllCateogry();
-                    $('#addModal').modal('hide');
                 }
             });
         });
@@ -211,13 +200,13 @@
         // pass editable data to edit modal fields
         $(document).on('click', '#edit', function(e){
             e.preventDefault();
-            $('.form-control').removeClass('is-invalid');
             $('.error').html('');
             var categoryInfo = $(this).closest('tr').data('info');
             $('#id').val(categoryInfo.id);
             $('#e_name').val(categoryInfo.name);
             $('#e_code').val(categoryInfo.code);
-            $('#editModal').modal('show');
+            $('#add_form').hide();
+            $('#edit_form').show();
         });
 
         // edit category by ajax
@@ -253,7 +242,8 @@
                     toastr.success(data);
                     $('.loading_button').hide();
                     getAllCateogry();
-                    $('#editModal').modal('hide'); 
+                    $('#add_form').show();
+                    $('#edit_form').hide();
                 }
             });
         });
@@ -298,6 +288,12 @@
                     $('#deleted_form')[0].reset();
                 }
             });
+        });
+
+        $(document).on('click', '#close_form', function() {
+            $('#add_form').show();
+            $('#edit_form').hide();
+            $('.error').html('');
         });
     });
 </script>

@@ -12,13 +12,23 @@ class WorkSpaceTaskController extends Controller
 {
     public function index($workspaceId)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $ws = Workspace::with(['admin', 'ws_users', 'ws_users.user'])->where('id', $workspaceId)->first();
         return view('essentials.work_space.tasks.index', compact('ws'));
     }
 
     public function store(Request $request)
     {
-        $addWorkspaceTask = WorkspaceTask::insert([
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
+        WorkspaceTask::insert([
             'workspace_id' => $request->ws_id,
             'task_name' => $request->task_name,
             'status' => $request->task_status,
@@ -29,6 +39,11 @@ class WorkSpaceTaskController extends Controller
 
     public function taskList($workspaceId)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $ws_tasks = DB::table('workspace_tasks')->where('workspace_id', $workspaceId)
             ->leftJoin('admin_and_users', 'workspace_tasks.user_id', 'admin_and_users.id')
             ->select(
@@ -58,7 +73,11 @@ class WorkSpaceTaskController extends Controller
 
     public function update(Request $request)
     {
-        //return $request->all();
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $updateTask = WorkspaceTask::where('id', $request->id)->first();
         $updateTask->update([
             'task_name' => $request->value
@@ -68,6 +87,11 @@ class WorkSpaceTaskController extends Controller
 
     public function delete(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $deleteWorkspaceTask = WorkspaceTask::where('id', $id)->first();
         if (!is_null($deleteWorkspaceTask)) {
             $deleteWorkspaceTask->delete();
@@ -77,6 +101,11 @@ class WorkSpaceTaskController extends Controller
 
     public function assignUser(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
             'user_id' => $request->user_id
@@ -87,6 +116,11 @@ class WorkSpaceTaskController extends Controller
 
     public function changeStatus(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
             'status' => $request->status
@@ -96,6 +130,11 @@ class WorkSpaceTaskController extends Controller
 
     public function changePriority(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+        
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
             'priority' => $request->priority

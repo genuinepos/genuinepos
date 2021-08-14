@@ -13,6 +13,11 @@ class TodoController extends Controller
 {
     public function index(Request $request)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
 
@@ -134,6 +139,11 @@ class TodoController extends Controller
 
     public function store(Request $request)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'task' => 'required',
             'priority' => 'required',
@@ -175,6 +185,11 @@ class TodoController extends Controller
 
     public function edit($id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $todo = Todo::with(['todo_users'])->where('id', $id)->first();
         $users = DB::table('admin_and_users')
             ->where('branch_id', auth()->user()->branch_id)
@@ -184,6 +199,11 @@ class TodoController extends Controller
 
     public function update(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'task' => 'required',
             'priority' => 'required',
@@ -232,12 +252,22 @@ class TodoController extends Controller
 
     public function changeStatusModal($id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $todo = Todo::with('todo_users')->where('id', $id)->first(['id', 'status']);
         return view('essentials.todo.ajax_view.change_status', compact('todo'));
     }
 
     public function changeStatus(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $todo = Todo::where('id', $id)->first();
         $todo->update([
             'status' => $request->status
@@ -248,12 +278,22 @@ class TodoController extends Controller
 
     public function show($id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $todo = Todo::with(['admin', 'todo_users', 'todo_users.user'])->where('id', $id)->first();
         return view('essentials.todo.ajax_view.show', compact('todo'));
     }
 
     public function delete(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+        
         $deleteTodo = Todo::where('id', $id)->first();
         if (!is_null($deleteTodo)) {
             $deleteTodo->delete();

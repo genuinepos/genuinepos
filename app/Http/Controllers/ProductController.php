@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use App\Models\Brand;
-use App\Models\Branch;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Warranty;
@@ -16,12 +15,10 @@ use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\ProductVariant;
 use App\Models\SupplierProduct;
-use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
 use Intervention\Image\Facades\Image;
-use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
@@ -40,6 +37,7 @@ class ProductController extends Controller
 
         //return $request->status;
         if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->select('business')->first();
             $priceGroups = DB::table('price_groups')->where('status', 'Active')->get();
             $img_url = asset('public/uploads/product/thumbnail');
             $products = '';
@@ -48,17 +46,16 @@ class ProductController extends Controller
                 ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
                 ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
                 ->leftJoin('brands', 'products.brand_id', 'brands.id');
-            //return $request->all();
-
-            if ($request->product_type == 1) {
+       
+            if ($request->type == 1) {
                 $query->where('products.type', 1)->where('products.is_variant', 0);
             }
 
-            if ($request->product_type == 2) {
+            if ($request->type == 2) {
                 $query->where('products.is_variant', 1)->where('products.type', 1);
             }
 
-            if ($request->product_type == 3) {
+            if ($request->type == 3) {
                 $query->where('products.type', 2)->where('products.is_combo', 1);
             }
 
@@ -162,8 +159,8 @@ class ProductController extends Controller
                 ->editColumn('tax_name', function ($row) {
                     return $row->tax_name ? $row->tax_name : '...';
                 })
-                ->editColumn('expire_date', function ($row) {
-                    return $row->expire_date ? date('d/m/Y', strtotime($row->expire_date)) : '...';
+                ->editColumn('expire_date', function ($row) use ($generalSettings) {
+                    return $row->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->expire_date)) : '...';
                 })
                 ->setRowAttr([
                     'data-href' => function ($row) {

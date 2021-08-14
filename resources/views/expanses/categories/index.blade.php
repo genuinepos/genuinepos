@@ -126,7 +126,7 @@
 
                         <div class="form-group">
                             <label><strong>Code :</strong> </label>
-                            <input type="text" name="code" class="form-control" id="e_code" placeholder="Code"/>
+                            <input type="text" name="code" class="form-control" id="code" placeholder="Code"/>
                         </div>
 
                         <div class="form-group text-right mt-3">
@@ -257,24 +257,6 @@
                 }
             });
         });
-
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     })
-        //     .then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         }
-        //     });
-        // });
 
         $(document).on('click', '#delete',function(e){
             e.preventDefault();

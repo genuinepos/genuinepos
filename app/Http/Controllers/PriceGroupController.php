@@ -16,7 +16,6 @@ class PriceGroupController extends Controller
             return DataTables::of($price_groups)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    // return $action_btn;
                     $html = '<div class="dropdown table-dropdown">';
                     $html .= '<a href="' . route('product.selling.price.groups.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
                     $html .= '<a href="' . route('product.selling.price.groups.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
@@ -30,7 +29,6 @@ class PriceGroupController extends Controller
                     return $html;
                 })
                 ->addColumn('status', function ($row) {
-                    // return $action_btn;
                     $html = '';
                     if ($row->status == "Active") {
                         $html .= '<a href="" class="text-success" id="change_status">Active</a>';
@@ -87,7 +85,6 @@ class PriceGroupController extends Controller
         if (!is_null($delete)) {
             $delete->delete();
         }
-
         return response()->json('Price group delete Successfully.');
     }
 

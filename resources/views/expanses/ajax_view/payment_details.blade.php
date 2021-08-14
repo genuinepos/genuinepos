@@ -32,7 +32,7 @@
             </div>
 
             <div class="col-md-6 text-end">
-                <p><b>Date :</b> {{ date('d/m/Y', strtotime($payment->date))  }}</p>
+                <p><b>Date :</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date))  }}</p>
             </div>
         </div>
     </div>

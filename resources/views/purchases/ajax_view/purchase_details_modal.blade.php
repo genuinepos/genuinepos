@@ -49,7 +49,7 @@
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>Date : </strong> {{ $purchase->date . ' ' . $purchase->time }}</li>
+                             <li><strong>Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . $purchase->time }}</li>
                              <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                              <li>
                                 <strong>Purchase Status : </strong>
@@ -148,7 +148,7 @@
                                        @if (count($purchase->purchase_payments) > 0)
                                            @foreach ($purchase->purchase_payments as $payment)
                                                <tr data-info="{{ $payment }}">
-                                                   <td>{{ date('d/m/Y', strtotime($payment->date)) }}</td>
+                                                   <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
                                                    <td>{{ $payment->invoice_id }}</td>
                                                    <td>{{json_decode($generalSettings->business, true)['currency'] .' '. $payment->paid_amount }}</td>
                                                    <td>{{ $payment->pay_mode }}</td>
@@ -319,7 +319,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Date : </strong>{{ $purchase->date . ' ' . $purchase->time }}</li>
+                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . $purchase->time }}</li>
                             <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>Purchase Status : </strong>
                                 <span class="purchase_status">

@@ -111,7 +111,7 @@
                         <tr>
                             <th width="50%" class="text-start">Paid On :</th>
                             <td width="50%" class="text-start">
-                                {{ $payment->date }}
+                                {{date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
                             </td>
                         </tr>
 

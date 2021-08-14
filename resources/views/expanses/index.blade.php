@@ -25,21 +25,23 @@
                                     <div class="col-md-12">
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-2">
-                                                        <label><strong>Branch :</strong></label>
-                                                        <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                            <option value="">All</option>
-                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                            @foreach ($branches as $branch)
-                                                                <option value="{{ $branch->id }}">
-                                                                    {{ $branch->name . '/' . $branch->branch_code }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-2">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                                                <option value="">All</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
                                                 @endif
-
+                                             
                                                 <div class="col-md-2">
                                                     <label><strong>Expense For :</strong></label>
                                                     <select name="admin_id" class="form-control submit_able" id="admin_id" >
@@ -93,7 +95,7 @@
                                                 <th class="text-start">Actions</th>
                                                 <th class="text-start">Date</th>
                                                 <th class="text-start">Reference ID</th>
-                                                <th class="text-start">Branch</th>
+                                                <th class="text-start">B.Location</th>
                                                 <th class="text-start">Payment Status</th>
                                                 <th class="text-start">Tax</th>
                                                 <th class="text-start">Net Total</th>

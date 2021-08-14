@@ -192,17 +192,17 @@
                                             <label><strong>Date Format:</strong><span class="text-danger">*</span></label>
                                             <select name="date_format" class="form-control bs_input" data-name="Date format"
                                                 id="date_format">
-                                                <option value="dd-mm-yyyy"
-                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'dd-mm-yyyy' ? 'SELECTED' : '' }}>
+                                                <option value="d-m-Y"
+                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>
                                                     dd-mm-yyyy</option>
-                                                <option value="mm-dd-yyyy"
-                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'mm-dd-yyyy' ? 'SELECTED' : '' }}>
+                                                <option value="m-d-Y"
+                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>
                                                     mm-dd-yyyy</option>
-                                                <option value="mm/dd/yyyy"
-                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'mm/dd/yyyy' ? 'SELECTED' : '' }}>
+                                                <option value="m/d/Y"
+                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'm/d/Y' ? 'SELECTED' : '' }}>
                                                     mm/dd/yyyy</option>
-                                                <option value="dd/mm/yyyy"
-                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'dd/mm/yyyy' ? 'SELECTED' : '' }}>
+                                                <option value="d/m/Y"
+                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'd/m/Y' ? 'SELECTED' : '' }}>
                                                     dd/mm/yyyy</option>
                                             </select>
                                             <span class="error error_date_format"></span>

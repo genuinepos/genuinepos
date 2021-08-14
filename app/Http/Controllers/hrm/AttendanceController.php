@@ -27,6 +27,7 @@ class AttendanceController extends Controller
         // return  $interval->format('%R%a days');
 
         if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->select('business')->first();
 			$attendances = '';
 			$query = DB::table('hrm_attendances')
 				->leftJoin('admin_and_users', 'hrm_attendances.user_id', 'admin_and_users.id')
@@ -90,8 +91,8 @@ class AttendanceController extends Controller
                 ->editColumn('name', function ($row) {
 					return $row->prefix.' '.$row->name.' '.$row->last_name;
 				})
-				->editColumn('date', function ($row) {
-					return date('d/m/Y', strtotime($row->at_date));
+				->editColumn('date', function ($row) use ($generalSettings) {
+					return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->at_date));
 				})
 				->editColumn('clock_in_out', function ($row) {
                     $clockOut = $row->clock_out_ts ? ' - ' . date('h:i a', strtotime($row->clock_out)) : '';

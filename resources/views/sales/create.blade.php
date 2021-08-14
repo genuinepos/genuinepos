@@ -99,7 +99,7 @@
                                                 <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
                                                 <div class="col-8">
                                                     <input type="date" name="date" class="form-control"
-                                                        value="{{ date('Y-m-d') }}">
+                                                        value="{{ date('Y-m-d') }}" id="dt">
                                                 </div>
                                             </div>
                                         </div>
@@ -808,11 +808,13 @@
                                         tax_amount = parseFloat(price) - parseFloat(calcAmount);
                                         var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                     }
+
+                                    var name = product.name.length > 35 ? product.name.substring(0, 35)+'...' : product.name; 
                                     var tr = '';
                                     tr += '<tr>';
                                     tr += '<td colspan="2" class="text-start">';
                                     tr += '<a href="#" class="text-success" id="edit_product">';
-                                    tr += '<span class="product_name">'+product.name+'</span>';
+                                    tr += '<span class="product_name">'+name+'</span>';
                                     tr += '<span class="product_variant"></span>'; 
                                     tr += '</a><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
@@ -946,11 +948,12 @@
                                     tax_amount = parseFloat(price) - parseFloat(calcAmount);
                                     unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                 }
+                                var name = variant_product.product.name.length > 35 ? variant_product.product.name.substring(0, 35)+'...' : variant_product.product.name; 
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td colspan="2" class="text-start">';
                                 tr += '<a href="#" class="text-success" id="edit_product">';
-                                tr += '<span class="product_name">'+variant_product.product.name+'</span>';
+                                tr += '<span class="product_name">'+name+'</span>';
                                 tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'</span>'; 
                                 tr += '</a><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable" placeholder="IMEI, Serial number or other info.">';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
@@ -1140,11 +1143,12 @@
                                 price = product_price_exc_tax;
                             }
 
+                            var name = product_name.length > 35 ? product_name.substring(0, 35)+'...' : product_name; 
                             var tr = '';
                             tr += '<tr>';
                             tr += '<td colspan="2" class="text-start">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
-                            tr += '<span class="product_name">'+product_name+'</span>';
+                            tr += '<span class="product_name">'+name+'</span>';
                             tr += '<span class="product_variant"></span>';
                             tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info">';
                         
@@ -1284,12 +1288,12 @@
                             } else {
                                 price = variant_price;
                             }
-                       
+                            var name = product_name.length > 35 ? product_name.substring(0, 35)+'...' : product_name; 
                             var tr = '';
                             tr += '<tr>';
                             tr += '<td colspan="2" class="text-start">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
-                            tr += '<span class="product_name">'+product_name+'</span>';
+                            tr += '<span class="product_name">'+name+'</span>';
                             tr += '<span class="product_variant">'+' -'+variant_name+'</span>'; 
                             tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
@@ -1457,7 +1461,7 @@
 
             var calcTotalPayableAmount = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge) + parseFloat(previousDue);
             $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-            $('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
+            //$('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
             // Update purchase due
             var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
             var changeAmount = parseFloat(payingAmount) - parseFloat(calcTotalPayableAmount);
@@ -2130,5 +2134,6 @@
                 });
             }); 
         });
+
     </script>
 @endpush

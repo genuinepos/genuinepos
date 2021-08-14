@@ -72,9 +72,9 @@
     {{-- <script src="{{asset('public/backend/js/iphone-style-checkbox.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/meta-data.jquery.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/quicksand.jquery.js')}}"></script>
-    <script src="{{asset('public/backend/js/raty.jquery.js')}}"></script>
-    <script src="{{asset('public/backend/js/smart-wizard.jquery.js')}}"></script>
-    <script src="{{asset('public/backend/js/stepy.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/raty.jquery.js')}}"></script> --}}
+    {{-- <script src="{{asset('public/backend/js/smart-wizard.jquery.js')}}"></script>--}}
+    {{--<script src="{{asset('public/backend/js/stepy.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/treeview.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/ui-accordion.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/vaidation.jquery.js')}}"></script>
@@ -96,7 +96,7 @@
     <script src="{{asset('public/backend/js/chart-plugins/jqplot.categoryAxisRenderer.min.js')}}"></script>
     <script src="{{asset('public/backend/js/chart-plugins/jqplot.pointLabels.min.js')}}"></script>
     <script src="{{asset('public/backend/js/chart-plugins/jqplot.meterGaugeRenderer.min.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/custom-scripts.js')}}"></script>
+    <script src="{{asset('public/backend/js/custom-script.js')}}"></script>
     <script src="{{asset('public/backend/asset/js/main.js')}}"></script>
     <script src="{{asset('public/backend/asset/js/SimpleCalculadorajQuery.js')}}" defer></script>
 

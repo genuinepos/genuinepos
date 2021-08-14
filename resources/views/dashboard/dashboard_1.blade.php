@@ -217,24 +217,25 @@
                         <div class="row mx-2 mt-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <input type="hidden" id="date_range" value="{{ $thisMonth }}">
-                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                    <div class="select-dropdown">
-                                        <select name="branch_id" id="branch_id">
-                                            <option value="">All Branch</option>
-                                            <option value="NULL">
-                                                {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                                (Head Office)</option>
-                                            @foreach ($branches as $br)
-                                                <option value="{{ $br->id }}">
-                                                    {{ $br->name . '/' . $br->branch_code }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @else
-                                    <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                @if ($addons->branches == 1)
+                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                        <div class="select-dropdown">
+                                            <select name="branch_id" id="branch_id">
+                                                <option value="">All Branch</option>
+                                                <option value="NULL">
+                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                    (Head Office)</option>
+                                                @foreach ($branches as $br)
+                                                    <option value="{{ $br->id }}">
+                                                        {{ $br->name . '/' . $br->branch_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @else
+                                        <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                    @endif
                                 @endif
-
                                 <div class="button-group">
                                     <label class="button-group__btn" id="date" data-value="{{ $toDay }}">
                                         <input type="radio" name="group" />

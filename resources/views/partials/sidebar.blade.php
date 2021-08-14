@@ -8,6 +8,7 @@
                         <p class="title">Dashboard</p>
                     </a>
                 </li>
+
                 <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
                     <a href="#">
                         <img src="{{ asset('public/backend/asset/img/icon/package.svg') }}" alt="">
@@ -109,10 +110,33 @@
                     </li>
                 @endif
 
-                <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
+                @if ($addons->hrm)
+                    <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
+                            <p class="title">@lang('menu.hrm')</p>
+                        </a>
+                    </li>
+                @endif
+                
+                <li data-menu="service" class="">
                     <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
-                        <p class="title">@lang('menu.hrm')</p>
+                        <img src="{{ asset('public/backend/asset/img/icon/consult.svg') }}">
+                        <p class="title">Service</p>
+                    </a>
+                </li>
+
+                <li data-menu="menufeaturing" class="">
+                    <a href="#">
+                        <img src="{{ asset('public/backend/asset/img/icon/production.svg') }}">
+                        <p class="title">Manufacturing</p>
+                    </a>
+                </li>
+
+                <li data-menu="ecommerce" class="">
+                    <a href="#">
+                        <img src="{{ asset('public/backend/asset/img/icon/ecommerce.svg') }}">
+                        <p class="title">E-Commerce</p>
                     </a>
                 </li>
 
@@ -123,15 +147,17 @@
                     </a>
                 </li>
 
-                @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
-                    <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
-                        <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/to-do-list.svg') }}">
-                            <p class="title">@lang('menu.essentials')</p>
-                        </a>
-                    </li>
+                @if ($addons->todo == 1)
+                    @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
+                        <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
+                            <a href="#">
+                                <img src="{{ asset('public/backend/asset/img/icon/to-do-list.svg') }}">
+                                <p class="title">@lang('menu.essentials')</p>
+                            </a>
+                        </li>
+                    @endif
                 @endif
-
+                
                 @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1' || auth()->user()->permission->setup['p_settings'] == '1' || auth()->user()->permission->setup['inv_sc'] == '1' || auth()->user()->permission->setup['inv_lay'] == '1' || auth()->user()->permission->setup['barcode_settings'] == '1' || auth()->user()->permission->setup['cash_counters'] == '1')
                     <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
                         <a href="#">
@@ -155,7 +181,7 @@
                                 <p class="text-muted float-start mt-1"><strong>Product Management</strong></p>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                             </div>
                         </div>
                     </div>
@@ -302,7 +328,7 @@
                                         <p class="text-muted float-start mt-1"><strong>Contact Management</strong></p>
                                     </div>
                                     <div class="col-md-4">
-                                        <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                     </div>
                                 </div>
                             </div>
@@ -385,7 +411,7 @@
                                         <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
                                     </div>
                                     <div class="col-md-4">
-                                        <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                     </div>
                                 </div>
                             </div>
@@ -435,7 +461,7 @@
                                                 <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
                                             </div>
                                             <div class="col-md-4">
-                                                <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
@@ -494,7 +520,7 @@
                                 <p class="text-muted float-start mt-1"><strong>Sale Management</strong></p>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                             </div>
                         </div>
                     </div>
@@ -608,7 +634,7 @@
                                     <p class="text-muted float-start mt-1"><strong>Stock Transfer Management</strong></p>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
                             </div>
                         </div>
@@ -694,7 +720,7 @@
                                         <p class="text-muted float-start mt-1"><strong>Stock Adjustment</strong></p>
                                     </div>
                                     <div class="col-md-4">
-                                        <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                     </div>
                                 </div>
                             </div>
@@ -745,7 +771,7 @@
                                     <p class="text-muted float-start mt-1"><strong>Expense Management</strong></p>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
                             </div>
                         </div>
@@ -794,7 +820,7 @@
                                         <p class="text-muted float-start mt-1"><strong>Account Management</strong></p>
                                     </div>
                                     <div class="col-md-4">
-                                        <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                     </div>
                                 </div>
                             </div>
@@ -878,7 +904,7 @@
                                     <p class="text-muted float-start mt-1"><strong>User Management</strong></p>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
                             </div>
                         </div>
@@ -945,7 +971,7 @@
                                 <p class="text-muted float-start mt-1"><strong>Human Resource Management </strong></p>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                             </div>
                         </div>
                     </div>
@@ -1054,22 +1080,35 @@
                                     <p class="text-muted float-start mt-1"><strong>Settings</strong></p>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn-close close-model mt-1 text-danger"></button>
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
                             </div>
                         </div>
                         <div class="container-fluid">
                             <div class="row">
-                                @if (auth()->user()->permission->setup['branch'] == '1')
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                @if (auth()->user()->permission->setup['g_settings'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
-                                            <a href="{{ route('settings.branches.index') }}" class="bar-link">
-                                                <span><i class="fas fa-project-diagram"></i></span>
+                                            <a href="{{ route('settings.general.index') }}" class="bar-link">
+                                                <span><i class="fas fa-cogs"></i></span>
                                             </a>
                                         </div>
-                                        <p class="switch_text">@lang('menu.branches')</p>
+                                        <p class="switch_text">@lang('menu.general_settings')</p>
                                     </div>
+                                @endif
+
+                                @if ($addons->branches == 1)
+                                    @if (auth()->user()->permission->setup['branch'] == '1')
+                                        <div
+                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('settings.branches.index') }}" class="bar-link">
+                                                    <span><i class="fas fa-project-diagram"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.branches')</p>
+                                        </div>
+                                    @endif
                                 @endif
 
                                 @if (auth()->user()->permission->setup['warehouse'] == '1')
@@ -1103,18 +1142,6 @@
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.taxes')</p>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->permission->setup['g_settings'] == '1')
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('settings.general.index') }}" class="bar-link">
-                                                <span><i class="fas fa-cogs"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.general_settings')</p>
                                     </div>
                                 @endif
 
@@ -1187,7 +1214,7 @@
                                 <p class="text-muted float-start mt-1"><strong>All Report</strong></p>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn-close close-model"></button>
+                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                             </div>
                         </div>
                     </div>
@@ -1390,79 +1417,80 @@
                 </div>
             </div>
             <!-- ===========================================FILE SIDEBAR=================== -->
-      
-            @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
-                <div class="sub-menu_t" id="essentials">
-                    <div class="sub-menu-width">
-                        <div class="model__close bg-secondary-2">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>Requisites</strong></p>
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn-close close-model mt-1 text-info"></button>
+            @if ($addons->todo == 1)
+                @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
+                    <div class="sub-menu_t" id="essentials">
+                        <div class="sub-menu-width">
+                            <div class="model__close bg-secondary-2">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p class="text-muted float-start mt-1"><strong>Requisites</strong></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('workspace.index') }}" class="bar-link">
-                                            <span><i class="fas fa-th-large"></i></span>
-                                        </a>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('workspace.index') }}" class="bar-link">
+                                                <span><i class="fas fa-th-large"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Work Spaces</p>
                                     </div>
-                                    <p class="switch_text">Work Spaces</p>
-                                </div>
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('todo.index') }}" class="bar-link">
-                                            <span><i class="fas fa-th-list"></i></span>
-                                        </a>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('todo.index') }}" class="bar-link">
+                                                <span><i class="fas fa-th-list"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Todo</p>
                                     </div>
-                                    <p class="switch_text">Todo</p>
-                                </div>
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                    <div class="switch_bar">
-                                        <a href="#" class="bar-link">
-                                            <span><i class="fas fa-file-medical-alt"></i></span>
-                                        </a>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="#" class="bar-link">
+                                                <span><i class="fas fa-file-medical-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Documents</p>
                                     </div>
-                                    <p class="switch_text">Documents</p>
-                                </div>
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('memos.index') }}" class="bar-link">
-                                            <span><i class="fas fa-file-alt text-primary"></i> </span>
-                                        </a>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('memos.index') }}" class="bar-link">
+                                                <span><i class="fas fa-file-alt text-primary"></i> </span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Memos</p>
                                     </div>
-                                    <p class="switch_text">Memos</p>
-                                </div>
-                                
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                    <div class="switch_bar">
-                                        <a href="#" class="bar-link">
-                                            <span><i class="fas fa-stopwatch"></i></span>
-                                        </a>
+                                    
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="#" class="bar-link">
+                                                <span><i class="fas fa-stopwatch"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Remainders</p>
                                     </div>
-                                    <p class="switch_text">Remainders</p>
-                                </div>
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('messages.index') }}" class="bar-link">
-                                            <span><i class="fas fa-envelope"></i></span>
-                                        </a>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('messages.index') }}" class="bar-link">
+                                                <span><i class="fas fa-envelope"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Messages</p>
                                     </div>
-                                    <p class="switch_text">Messages</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @endif
         </div>
     </div>

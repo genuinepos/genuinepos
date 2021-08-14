@@ -79,7 +79,7 @@ class StockAdjustmentController extends Controller
                     'admin_and_users.name',
                     'admin_and_users.last_name',
                 )->where('stock_adjustments.branch_id', auth()->user()->branch_id)
-                    ->get();
+                ->orderBy('id', 'desc')->get();
             }
 
             return DataTables::of($adjustments)
@@ -100,8 +100,8 @@ class StockAdjustmentController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('date', function ($row) {
-                    return date('d/m/Y', strtotime($row->date));
+                ->editColumn('date', function ($row) use ($generalSettings) {
+                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
                 })
                 ->editColumn('business_location',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
@@ -219,6 +219,7 @@ class StockAdjustmentController extends Controller
         $addStockAdjustment->net_total_amount = $request->net_total_amount;
         $addStockAdjustment->recovered_amount = $request->total_recodered_amount ? $request->total_recodered_amount : 0;
         $addStockAdjustment->date = $request->date;
+        $addStockAdjustment->time = date('h:i:s a');;
         $addStockAdjustment->month = date('F');
         $addStockAdjustment->year = date('Y');
         $addStockAdjustment->report_date_ts = date('Y-m-d', strtotime($request->date));

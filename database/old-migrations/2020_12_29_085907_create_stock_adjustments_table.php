@@ -24,6 +24,7 @@ class CreateStockAdjustmentsTable extends Migration
             $table->decimal('recovered_amount', 22, 2)->default(0.00);
             $table->tinyInteger('type',)->default(0);
             $table->string('date')->nullable();
+            $table->string('time')->nullable();
             $table->string('month')->nullable();
             $table->string('year')->nullable();
             $table->timestamp('report_date_ts')->nullable();

@@ -164,8 +164,8 @@ class SaleController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('date', function ($row) {
-                    return date('d/m/Y', strtotime($row->date));
+                ->editColumn('date', function ($row) use ($generalSettings) {
+                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
                 })
                 ->editColumn('invoice_id', function ($row) {
                     $html = '';
@@ -343,12 +343,11 @@ class SaleController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('date', function ($row) {
-                    return date('d/m/Y', strtotime($row->date));
+                ->editColumn('date', function ($row) use ($generalSettings) {
+                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
                 })
                 ->editColumn('invoice_id', function ($row) {
                     $html = '';
-                    // $html .= $row->is_return_available ? '<br>' : '';
                     $html .= $row->invoice_id;
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;

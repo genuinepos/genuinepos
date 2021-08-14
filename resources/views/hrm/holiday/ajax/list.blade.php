@@ -14,7 +14,7 @@
             <tr data-info="{{ $row }}" class="text-center">
                 <td>{{ $key+1 }}</td> 
                 <td>{{ $row->holiday_name }}</td> 
-                <td>{{ $row->start_date }} to {{ $row->end_date }} </td> 
+                <td>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->start_date)) }} to {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->end_date)) }} </td> 
                 <td>
                     @if ($row->is_all)
                         All

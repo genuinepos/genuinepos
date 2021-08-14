@@ -2,8 +2,8 @@
     <thead>
         <tr>
             <th class="text-start">Logo</th>
-            <th class="text-start">Branch Name</th>
-            <th class="text-start">Branch Code</th>
+            <th class="text-start">B.Location Name</th>
+            <th class="text-start">B.Location Code</th>
             <th class="text-start">Phone</th>
             <th class="text-start">City</th>
             <th class="text-start">State</th>

@@ -100,14 +100,14 @@ class ExpanseController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('date', function ($row) {
-                    return date('d/m/Y', strtotime($row->date));
+                ->editColumn('date', function ($row) use ($generalSettings) {
+                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) {
+                ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return '(<b>Head Office</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('user_name',  function ($row) {

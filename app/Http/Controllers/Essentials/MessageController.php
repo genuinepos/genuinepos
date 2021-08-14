@@ -12,11 +12,21 @@ class MessageController extends Controller
 {
     public function index()
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         return view('essentials.messages.index');
     }
 
     public function store(Request $request)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             
             'description' => 'required',
@@ -34,6 +44,11 @@ class MessageController extends Controller
 
     public function delete($id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $deleteMsg = Message::where('id', $id)->first();
         if (!is_null($deleteMsg)) {
             $deleteMsg->delete();
@@ -43,6 +58,11 @@ class MessageController extends Controller
 
     public function allMessage()
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+        
         $messages = DB::table('messages')
         ->leftJoin('admin_and_users', 'messages.user_id', 'admin_and_users.id')
         ->where('messages.branch_id', auth()->user()->branch_id)

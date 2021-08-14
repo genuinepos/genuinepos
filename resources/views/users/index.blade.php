@@ -17,32 +17,34 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form action="" method="get" class="px-2">
-                                            <div class="form-group row">
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-4">
-                                                        <label><strong>Branch :</strong></label>
-                                                        <select name="branch_id" class="form-control submit_able" id="branch_id">
-                                                            <option value="">All</option>
-                                                            <option value="NULL"> {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                            @foreach ($branches as $branch)
-                                                                <option value="{{ $branch->id }}">
-                                                                    {{ $branch->name . '/' . $branch->branch_code }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </form>
+                        @if ($addons->branches == 1)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="sec-name">
+                                        <div class="col-md-12">
+                                            <form action="" method="get" class="px-2">
+                                                <div class="form-group row">
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-4">
+                                                            <label><strong>Branch :</strong></label>
+                                                            <select name="branch_id" class="form-control submit_able" id="branch_id">
+                                                                <option value="">All</option>
+                                                                <option value="NULL"> {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
 
                     <!-- =========================================top section button=================== -->

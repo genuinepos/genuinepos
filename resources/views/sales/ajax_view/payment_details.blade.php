@@ -23,10 +23,10 @@
     </div>
 
     <div class="reference_area pt-3">
-        <h6 class="text-navy-blue"><b>Title :</b>
+        <h6><b>Title :</b>
             {{ $payment->payment_type == 1 ? 'Sale Payment' : 'Sale Return Payment' }} </h6>
-        <h6 class="text-navy-blue"><b>Invoice No :</b> {{ $payment->sale->invoice_id }}</h6>
-        <h6 class="text-navy-blue"><b>Customer :</b>
+        <h6><b>Invoice No :</b> {{ $payment->sale->invoice_id }}</h6>
+        <h6><b>Customer :</b>
             {{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}</h6>
     </div>
 
@@ -37,7 +37,7 @@
                     <tbody>
                         <tr>
                             <th width="50%" class="text-start">Paid Amount :</th>
-                            <td width="50%" class="text-navy-blue">
+                            <td width="50%">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $payment->paid_amount }}
                             </td>
@@ -45,53 +45,53 @@
 
                         <tr>
                             <th width="50%" class="text-start">Payment Method :</th>
-                            <td width="50%" class="text-navy-blue">{{ $payment->pay_mode }}</td>
+                            <td width="50%">{{ $payment->pay_mode }}</td>
                         </tr>
 
                         @if ($payment->pay_mode == 'Card')
                             <tr>
                                 <th width="50%" class="text-start">Card Number :</th>
-                                <td width="50%" class="text-navy-blue">{{ $payment->card_no }}</td>
+                                <td width="50%">{{ $payment->card_no }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Card Holder :</th>
-                                <td width="50%" class="text-navy-blue">{{ $payment->card_holder }}</td>
+                                <td width="50%">{{ $payment->card_holder }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Card Type :</th>
-                                <td width="50%" class="text-navy-blue">{{ $payment->card_type }}</td>
+                                <td width="50%">{{ $payment->card_type }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%" class="text-navy-blue">{{ $payment->card_transaction_no }}</td>
+                                <td width="50%">{{ $payment->card_transaction_no }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Month :</th>
-                                <td width="50%" class="text-navy-blue">{{ $payment->card_month }}</td>
+                                <td width="50%">{{ $payment->card_month }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Year :</th>
-                                <td width="50%" class="text-navy-blue">{{ $payment->card_year }}</td>
+                                <td width="50%">{{ $payment->card_year }}</td>
                             </tr>
                         @elseif($payment->pay_mode == 'Cheque')
                             <tr>
                                 <th width="50%" class="text-start">Chaque No :</th>
-                                <td width="50%" class="text-navy-blue">{{ $payment->cheque_no }}</td>
+                                <td width="50%">{{ $payment->cheque_no }}</td>
                             </tr>
                         @elseif($payment->pay_mode == 'Bank-Transfer')
                             <tr>
                                 <th width="50%" class="text-start">Account No :</th>
-                                <td width="50%" class="text-navy-blue">{{ $payment->account_no }}</td>
+                                <td width="50%">{{ $payment->account_no }}</td>
                             </tr>
                         @elseif($payment->pay_mode == 'Custom')
                             <tr>
                                 <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%" class="text-navy-blue">{{ $payment->transaction_no }}</td>
+                                <td width="50%">{{ $payment->transaction_no }}</td>
                             </tr>
                         @endif
                     </tbody>
@@ -102,21 +102,21 @@
                     <tbody>
                         <tr>
                             <th width="50%" class="text-start">Voucher No :</th>
-                            <td width="50%" class="text-navy-blue">
+                            <td width="50%">
                                 {{ $payment->invoice_id }}
                             </td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">Paid On :</th>
-                            <td width="50%" class="text-navy-blue">
-                                {{ $payment->date . ' ' . $payment->time }}
+                            <td width="50%">
+                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) . ' ' . $payment->time }}
                             </td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">Payment Note :</th>
-                            <td width="50%" class="text-navy-blue">
+                            <td width="50%">
                                 {{ $payment->note }}
                             </td>
                         </tr>
@@ -131,12 +131,12 @@
         <table class="w-100 pt-5">
             <tbody>
                 <tr>
-                    <th width="50%" class="text-navy-blue">Signature Of Authority</th>
-                    <th width="50%" class="text-navy-blue text-end">Signature Of Receiver</th>
+                    <th width="50%">Signature Of Authority</th>
+                    <th width="50%" class="text-end">Signature Of Receiver</th>
                 </tr>
 
                 <tr>
-                    <td colspan="2" class="text-navy-blue text-center">
+                    <td colspan="2" class="text-center">
                         <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($payment->invoice_id , $generator::TYPE_CODE_128)) }}">
                         <p>{{ $payment->invoice_id }}</p>
                     </td>
@@ -144,7 +144,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="2" class="text-navy-blue text-center">Software by SpeedDigit Pvt. Ltd.</td>
+                        <td colspan="2" class="text-center">Software by SpeedDigit Pvt. Ltd.</td>
                     </tr>
                 @endif
             </tbody>

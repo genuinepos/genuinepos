@@ -47,7 +47,8 @@
                 
                 <div class="col-md-3">
                     <ul class="list-unstyled">
-                        <li><strong>Expire Date : </strong> {{ $product->expire_date }}</li>
+                        <li><strong>Expire Date : </strong> {{$product->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($product->expire_date)) : 'N/A' }}
+                        </li>
                         <li><strong>Tax : </strong>{{ $product->tax ? $product->tax->tax_name : 'N/A' }}</li>
                         @if ($product->tax)
                             <li><strong>Tax Type: </strong>{{ $product->tax_type == 1 ? 'Exclusive' : 'Inclusive' }}</li>

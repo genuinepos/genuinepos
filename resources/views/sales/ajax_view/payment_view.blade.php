@@ -11,11 +11,12 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong><span
-                            class="customer_name">{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
+                    <li><strong>Customer : </strong>
+                        {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                     </li>
-                    <li><strong>Business : </strong><span class="customer_business">
-                            {{ $sale->customer ? $sale->customer->business_name : '' }}</span> </li>
+                    <li><strong>Business : </strong>
+                        {{ $sale->customer ? $sale->customer->business_name : '' }}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -23,16 +24,14 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Invoice ID : </strong><span class="invoice_no">{{ $sale->invoice_id }}</span> </li>
+                    <li><strong> Invoice ID : </strong>{{ $sale->invoice_id }}</li>
                     <li><strong>Business Location: </strong>
-                        <span>
-                            @if ($sale->branch)
-                                {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
-                            @else
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                                Office</b>)
-                            @endif
-                        </span> 
+                        @if ($sale->branch)
+                            {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
+                        @else
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
+                            Office</b>)
+                        @endif
                     </li>
                 </ul>
             </div>
@@ -42,8 +41,8 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                        </strong><span class="total_due">{{ $sale->due }}</span> </li>
-                    <li><strong>Date : </strong><span class="sale_date">{{ $sale->date }}</span> </li>
+                        </strong>{{ $sale->due }}</li>
+                    <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}</li>
                 </ul>
             </div>
         </div>
@@ -71,7 +70,9 @@
                 @if (count($sale->sale_payments) > 0)
                     @foreach ($sale->sale_payments as $payment)
                         <tr data-info="{{ $payment }}">
-                            <td>{{ date('d/m/Y', strtotime($payment->date)) }}</td>
+                            <td>
+                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
+                            </td>
                             <td>{{ $payment->invoice_id }}</td>
                             <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
                             </td>

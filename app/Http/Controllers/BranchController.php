@@ -15,11 +15,21 @@ class BranchController extends Controller
 
     public function index()
     {
+        $addons = DB::table('addons')->select('branches')->first();
+        if ($addons->branches == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         return view('settings.branches.index');
     }
 
     public function getAllBranch()
     {
+        $addons = DB::table('addons')->select('branches')->first();
+        if ($addons->branches == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $branches = '';
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
             $branches = Branch::all();
@@ -31,6 +41,11 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
+        $addons = DB::table('addons')->select('branches')->first();
+        if ($addons->branches == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         //return $request->all();
         $this->validate($request, [
             'name' => 'required',
@@ -72,6 +87,11 @@ class BranchController extends Controller
     
     public function update(Request $request)
     {
+        $addons = DB::table('addons')->select('branches')->first();
+        if ($addons->branches == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'name' => 'required',
             'code' => 'required',
@@ -118,6 +138,11 @@ class BranchController extends Controller
 
     public function delete(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('branches')->first();
+        if ($addons->branches == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+        
         $updateBranch = Branch::where('id', $id)->first();
         $updateBranch->delete();
         return response()->json('Branch deleted successfully');

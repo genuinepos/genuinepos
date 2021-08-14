@@ -14,6 +14,11 @@ class WorkSpaceController extends Controller
 {
     public function index(Request $request)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
 
@@ -119,6 +124,11 @@ class WorkSpaceController extends Controller
 
     public function store(Request $request)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+        
         $this->validate($request, [
             'name' => 'required',
             'start_date' => 'required',
@@ -176,6 +186,11 @@ class WorkSpaceController extends Controller
 
     public function edit($id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $ws = Workspace::with(['ws_users'])->where('id', $id)->first();
         $users = DB::table('admin_and_users')
             ->where('branch_id', auth()->user()->branch_id)
@@ -248,6 +263,11 @@ class WorkSpaceController extends Controller
 
     public function delete(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $deleteWorkspace = Workspace::where('id', $id)->first();
         if (!is_null($deleteWorkspace)) {
             $deleteWorkspace->delete();
@@ -257,12 +277,22 @@ class WorkSpaceController extends Controller
 
     public function viewDocs($id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $docs = DB::table('workspace_attachments')->where('workspace_id', $id)->get(['id', 'attachment', 'extension']);
         return view('essentials.work_space.ajax_view.view_documents', compact('docs'));
     }
 
     public function deleteDoc($docId)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+        
         $deleteDoc = WorkspaceAttachment::where('id', $docId)->first();
         if (!is_null($deleteDoc)) {
             if (file_exists(public_path('uploads/workspace_docs/'.$deleteDoc->attachment))) {

@@ -40,7 +40,7 @@
                 <ul class="list-unstyled">
                     <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ $payroll->due }} </li>
-                    <li><strong>Date : </strong>{{ $payroll->date }} </li>
+                    <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payroll->date))}} </li>
                 </ul>
             </div>
         </div>
@@ -67,7 +67,7 @@
                 @if (count($payroll->payments) > 0)
                     @foreach ($payroll->payments as $payment)
                         <tr>
-                            <td>{{ date('d/m/Y', strtotime($payment->date)) }}</td>
+                            <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
                             <td>{{ $payment->reference_no }}</td>
                             <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid }}
                             </td>

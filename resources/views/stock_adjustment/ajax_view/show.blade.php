@@ -49,7 +49,7 @@
 
                 <div class="col-md-6 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>Date : </strong> {{ $adjustment->date }}</li>
+                        <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
                         <li><strong>Reference No : </strong> {{ $adjustment->invoice_id }}</li>
                         <li><strong>Type : </strong>
                             {!! $adjustment->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>' !!}
@@ -162,7 +162,7 @@
             <div class="row">
                 <div class="col-8">
                     <ul class="list-unstyled">
-                        <li><strong>Date : </strong>{{ $adjustment->date }}</li>
+                        <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
                         <li><strong>Reference No : </strong>{{ $adjustment->invoice_id }}</li>
                           @if ($adjustment->warehouse_id)
                             <li>

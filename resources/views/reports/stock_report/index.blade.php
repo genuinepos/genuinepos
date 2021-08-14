@@ -77,7 +77,7 @@
                                             <hr class="m-0 p-0 mt-1">
                                             <div class="form-group row">
                                                 <div class="col-md-3">
-                                                    <label><strong>Only Branch Wise Stock :</strong></label>
+                                                    <label><strong>Only Business Location Wise Stock :</strong></label>
                                                     <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                         <option value="">All</option>
                                                         <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>

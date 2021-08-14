@@ -17,7 +17,7 @@
                     <th scope="col">Unit</th>
                     <th scope="col">Price.Inc.Tax</th>
                     <th scope="col">Subtotal</th>
-                    <th scope="col"><i class="fas fa-trash-alt text-danger"></i></th>
+                    <th scope="col"><i class="fas fa-trash-alt"></i></th>
                 </tr>
             </thead>
 
@@ -118,12 +118,15 @@
                                     tax_amount = parseFloat(price) - parseFloat(calcAmount);
                                     unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                 }
+
+                                var name = product.name.length > 30 ? product.name.substring(0, 30)+'...' : product.name;
+
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td class="serial">1</td>';
                         
                                 tr += '<td class="text-start">';
-                                tr += '<a class="product-name text-info" id="edit_product" title="'+ product.product_code +'" href="#">' +product.name + '</a><br/><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info.">';
+                                tr += '<a class="product-name text-info" id="edit_product" title="'+ product.product_code +'" href="#">' +name + '</a><br/><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info.">';
                                 tr += '<input value="'+ product.id +'" type="hidden" class="productId-'+ product.id +'" id = "product_id" name="product_ids[]" >';
                                 tr +='<input input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                                 tr += '<input value="'+ product.tax_type +'" type="hidden" id="tax_type">';
@@ -258,12 +261,13 @@
                                 tax_amount = parseFloat(price) - parseFloat(calcAmount);
                                 unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                             }
+                            var name = variant_product.product.name.length > 30 ? variant_product.product.name.substring(0, 30)+'...' : variant_product.product.name; 
                             var tr = '';
                             tr += '<tr>';
                             tr += '<td class="serial">1</td>';
                         
                             tr += '<td class="text-start">';
-                            tr += '<a class="product-name text-info" id="edit_product" title="'+variant_product.variant_code+'" href="#">' +variant_product.product.name + ' - ' + variant_product.variant_name +'</a><br/><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info.">';
+                            tr += '<a class="product-name text-info" id="edit_product" title="'+variant_product.variant_code+'" href="#">' +name + ' - ' + variant_product.variant_name +'</a><br/><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info.">';
                             tr += '<input value="'+ variant_product.product.id +'" type="hidden" class="productId-'+ variant_product.product.id +'" id="product_id" name="product_ids[]" >';
                             tr += '<input input value="'+ variant_product.id +'" type="hidden" class="variantId-'+ variant_product.id +'" id="variant_id" name="variant_ids[]">';
                             tr += '<input value="'+variant_product.product.tax_type+'" type="hidden" id="tax_type">';

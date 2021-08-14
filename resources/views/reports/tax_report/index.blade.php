@@ -34,23 +34,25 @@
                                         <form id="filter_tax_report_form" action="" method="get">
                                             @csrf
                                             <div class="form-group row">
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-3 offset-md-6">
-                                                        <label><strong>Branch :</strong></label>
-                                                        <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                            <option value="">All</option>
-                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                            @foreach ($branches as $branch)
-                                                                <option value="{{ $branch->id }}">
-                                                                    {{ $branch->name . '/' . $branch->branch_code }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                @else 
-                                                    <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-3 offset-md-6">
+                                                            <label><strong>Branch :</strong></label>
+                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                                                <option value="">All</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @else 
+                                                        <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                                    @endif
                                                 @endif
-
+                                                
                                                 <div class="col-md-3">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">

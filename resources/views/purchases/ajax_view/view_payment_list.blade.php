@@ -57,7 +57,7 @@
                         <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                         {{ $purchase->due }}
                     </li>
-                    <li><strong>Date : </strong>{{ $purchase->date . ' ' . $purchase->time }} </li>
+                    <li><strong>Date : </strong>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date))  . ' ' . $purchase->time }} </li>
                     <li><strong>Purchase Status : </strong>
                         @if ($purchase->purchase_status == 1)
                             <span class="text-success"><b>Received</b></span>
@@ -107,7 +107,7 @@
                 @if (count($purchase->purchase_payments) > 0)
                     @foreach ($purchase->purchase_payments as $payment)
                         <tr data-info="{{ $payment }}">
-                            <td>{{ date('d/m/Y', strtotime($payment->date)) }}</td>
+                            <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
                             <td>{{ $payment->invoice_id }}</td>
                             <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
                             </td>

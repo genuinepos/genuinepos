@@ -122,7 +122,7 @@
                         <div class="col-lg-4">
                             <ul class="list-unstyled">
                                 <li><strong> Invoice No : </strong> {{ $sale->invoice_id }}</li>
-                                <li><strong> Date : {{ $sale->date }}</strong></li>
+                                <li><strong> Date :  {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</strong></li>
                                 <li><strong> Entered By : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                             </ul>
                         </div>
@@ -432,10 +432,10 @@
                             </div>
                         </div>
                     </div>
-        
+                    
                     <div class="row mt-1">
                         <div class="col-4 text-center">
-                            <small>Print Date : {{ date('d/m/Y') }}</small>
+                            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                         </div>
                         
                         @if (env('PRINT_SD_SALE') == true)
@@ -498,7 +498,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">
-                                        <b>Date:</b> <span>{{ $sale->date.' '.$sale->time }}</span> 
+                                        <b>Date:</b> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span> 
                                     </th>
                                 </tr>
 
@@ -869,7 +869,7 @@
                         <div class="col-lg-4">
                             <ul class="list-unstyled">
                                 <li><strong> Invoice No : </strong> {{ $sale->invoice_id }}</li>
-                                <li><strong> Date : </strong> {{ $sale->date.' '.$sale->time }}</li>
+                                <li><strong> Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
                                 <li><strong> Entered By : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }}</li>
                             </ul>
                         </div>
@@ -1182,10 +1182,10 @@
                             </div>
                         </div>
                     </div>
-        
+                   
                     <div class="row mt-1">
                         <div class="col-4 text-center">
-                            <small>Print Date : {{ date('d/m/Y') }}</small>
+                            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                         </div>
                         
                         @if (env('PRINT_SD_SALE') == true)
@@ -1269,7 +1269,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">
-                                        <b>Date:</b> <span>{{ $sale->date.' '.$sale->time }}</span> 
+                                        <b>Date:</b> <span> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span> 
                                     </th>
                                 </tr>
 

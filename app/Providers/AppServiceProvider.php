@@ -28,19 +28,14 @@ class AppServiceProvider extends ServiceProvider
         // The application will send a exception(warning) message. But will work.
         try {
             $generalSettings = DB::table('general_settings')->first();
-            if (isset($generalSettings)) {
+            $addons = DB::table('addons')->first();
+            if (isset($generalSettings) && isset($addons)) {
                 view()->share('generalSettings', $generalSettings);
+                view()->share('addons', $addons);
             }
         } catch (Exception $e) {
             echo 'General setting is important! ' . PHP_EOL;
             echo $e->getMessage() . PHP_EOL;
         }
-
-        /**
-         * Old code, for purpose
-         */
-
-        // $generalSettings = DB::table('general_settings')->first();
-        // view()->share('generalSettings', $generalSettings);
     }
 }

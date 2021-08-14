@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\AdminAndUser;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
@@ -882,8 +883,8 @@ Route::get('/test', function () {
     // $num = 100.50;
     // $r = (int)$num;
     // return $r;
-    $mac = exec('getmac');
-    return $strtok = strtok($mac, ' ');
+    // $mac = exec('getmac');
+    // return $strtok = strtok($mac, ' ');
 });
 
 // All authenticated routes

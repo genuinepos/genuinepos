@@ -12,64 +12,63 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-code-branch"></span>
-                                <h5>Branches</h5>
+                                <h5>Business Locations</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
-
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Branches</h6>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
+                 
+                    <div class="row">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>All Business Locations</h6>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-white">Logo</th>
-                                                    <th class="text-white">Branch Name</th>
-                                                    <th class="text-white">Branch Code</th>
-                                                    <th class="text-white">Phone</th>
-                                                    <th class="text-white">City</th>
-                                                    <th class="text-white">State</th>
-                                                    <th class="text-white">Zip-Code</th>
-                                                    <th class="text-white">Country</th>
-                                                    <th class="text-white">Email</th>
-                                                    <th class="text-white">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
+                                <div class="col-md-6">
+                                    <div class="btn_30_blue float-end">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
+                                                class="fas fa-plus-square"></i> Add</a>
                                     </div>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-white">Logo</th>
+                                                <th class="text-white">B.Location Name</th>
+                                                <th class="text-white">Branch Code</th>
+                                                <th class="text-white">Phone</th>
+                                                <th class="text-white">City</th>
+                                                <th class="text-white">State</th>
+                                                <th class="text-white">Zip-Code</th>
+                                                <th class="text-white">Country</th>
+                                                <th class="text-white">Email</th>
+                                                <th class="text-white">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
+                  
                 </div>
             </div>
         </div>
@@ -80,7 +79,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Branch</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Add Business Location</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -90,13 +89,13 @@
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control  add_input" data-name="Name" id="name" placeholder="Branch name"/>
+                                <input type="text" name="name" class="form-control add_input" data-name="Name" id="name" placeholder="Business Location Name"/>
                                 <span class="error error_name"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Branch Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
-                                <input type="text" name="code" class="form-control  add_input" data-name="Branch code" id="code" placeholder="Branch code"/>
+                                <label><strong>Location Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
+                                <input type="text" name="code" class="form-control  add_input" data-name="Branch code" id="code" placeholder="Business Location Code"/>
                                 <span class="error error_code"></span>
                             </div>
 
@@ -216,7 +215,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Branch</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Business Location</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -228,13 +227,13 @@
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control  edit_input" data-name="Name" id="e_name" placeholder="Branch name"/>
+                                <input type="text" name="name" class="form-control edit_input" data-name="Name" id="e_name" placeholder="Business Location Name"/>
                                 <span class="error error_e_name"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Branch Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
-                                <input type="text" name="code" class="form-control  edit_input" data-name="Branch code" id="e_code" placeholder="Branch code"/>
+                                <label><strong>Location Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
+                                <input type="text" name="code" class="form-control  edit_input" data-name="Branch code" id="e_code" placeholder="Business Location code"/>
                                 <span class="error error_e_code"></span>
                             </div>
 

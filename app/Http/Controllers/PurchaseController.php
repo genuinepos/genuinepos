@@ -150,8 +150,8 @@ class PurchaseController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('date', function ($row) {
-                    return date('d/m/Y', strtotime($row->date));
+                ->editColumn('date', function ($row) use ($generalSettings) {
+                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
                 })
                 ->editColumn('invoice_id', function ($row) {
                     $html = '';

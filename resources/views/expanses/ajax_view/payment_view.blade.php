@@ -13,7 +13,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong> Reference ID : </strong>{{ $expense->invoice_id }} </li>
-                    <li><strong>Branch : </strong>
+                    <li><strong>Business Location : </strong>
                         {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : 'Head Office' }}
                     </li>
                 </ul>
@@ -63,7 +63,7 @@
                 @if (count($expense->expense_payments) > 0)
                     @foreach ($expense->expense_payments as $payment)
                         <tr data-info="{{ $payment }}">
-                            <td class="text-start">{{ date('d/m/Y', strtotime($payment->date)) }}</td>
+                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
                             <td class="text-start">{{ $payment->invoice_id }}</td>
                             <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'].' '.$payment->paid_amount }}</td>
                             <td class="text-start">{{ $payment->pay_mode }}</td>
@@ -77,15 +77,15 @@
                         </tr>
                     @endforeach
                 @else   
-                <tr>
-                    <td colspan="6" class="text-center">No Data Found</td>
-                </tr>
+                    <tr>
+                        <td colspan="6" class="text-center">No Data Found</td>
+                    </tr>
                 @endif
             </tbody>
         </table>
         <form id="payment_deleted_form" action="" method="post">
-            @method('DELETE')
             @csrf
+            @method('DELETE')
         </form>
     </div>
 </div>

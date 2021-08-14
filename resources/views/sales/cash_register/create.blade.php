@@ -59,7 +59,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Branch :</b></label>
+                                                    <label class="col-4"><b>B.Location :</b></label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                     </div>

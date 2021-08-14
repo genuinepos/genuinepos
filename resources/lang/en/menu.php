@@ -51,10 +51,10 @@ return [
   'add_transfer' => 'Add Transfer',
   'transfer_list' => 'Transfer List',
   'receive_stocks' => 'Receive Stocks',
-  'to_branch' => 'To Branch',
+  'to_branch' => 'To B.Location',
   'to_warehouse' => 'To Warehouse',
   // Menu childs of Adjustment module 
-  'add_stock_adjustment_from_branch' => 'Add Stock Adjustment <br/>(<small>From Branch</small>)',
+  'add_stock_adjustment_from_branch' => 'Add Stock Adjustment <br/>(<small>From B.Location</small>)',
   'add_stock_adjustment_from_warehouse' => 'Add Stock Adjustment <br/>(<small>From warehouse</small>)',
   'stock_adjustment_list' => 'Stock Adjustment List',
   // Menu childs of Expense module 
@@ -70,7 +70,7 @@ return [
   'trial_balance' => 'Trial Balance',
   'cash_flow' => 'Cash Flow',
   // Menu childs of Setup module  
-  'branches' => 'Branches',
+  'branches' => 'Business Locations',
   'warehouses' => 'Warehouses',
   'units' => 'Units',
   'taxes' => 'Taxes',

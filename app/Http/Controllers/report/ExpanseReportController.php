@@ -72,8 +72,8 @@ class ExpanseReportController extends Controller
             }
 
             return DataTables::of($expenses)
-                ->editColumn('date', function ($row) {
-                    return date('d/m/Y', strtotime($row->date));
+                ->editColumn('date', function ($row) use ($generalSettings) {
+                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
@@ -112,7 +112,6 @@ class ExpanseReportController extends Controller
                     $html .= '<span class="due" data-value="'.$row->due.'" class="text-danger"><strong>' .
                             json_decode($generalSettings->business, true)['currency'] . $row->due .
                             '</strong></span>';
-                    
                     return $html;
                 })
                 ->setRowClass('text-start')

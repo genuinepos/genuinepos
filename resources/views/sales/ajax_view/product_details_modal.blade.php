@@ -52,7 +52,7 @@
 
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
-                            <li><strong>Date : </strong>{{ $sale->date . ' ' . $sale->time }}</li>
+                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
                             <li><strong>Invoice ID : </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>Sale Status : </strong>
                                 @if ($sale->status == 1)
@@ -254,52 +254,42 @@
                                 <tr>
                                     <th class="text-start">Order Tax</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                        <span class="order_tax">
-                                            {{ $sale->order_tax_amount . ' (' . $sale->order_tax_percent . '%)' }}
-                                        </span>
+                                        {{ $sale->order_tax_amount . ' (' . $sale->order_tax_percent . '%)' }}
                                     </td>
                                 </tr>
     
                                 <tr>
                                     <th class="text-start">Shipment Charge</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                        <span class="shipment_charge">
-                                            {{ $sale->shipment_charge }}
-                                        </span>
+                                        {{ $sale->shipment_charge }}
                                     </td>
                                 </tr>
     
                                 <tr>
                                     <th class="text-start">Grand Total</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                        <span class="total_payable_amount">
-                                            {{ $sale->total_payable_amount }}
-                                        </span>
+                                        {{ $sale->total_payable_amount }}
                                     </td>
                                 </tr>
     
                                 <tr>
                                     <th class="text-start">Sale Return</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                        <span class="sale_return_amount">
-                                            {{ $sale->sale_return_amount }}
-                                        </span>
+                                        {{ $sale->sale_return_amount }}
                                     </td>
                                 </tr>
     
                                 <tr>
                                     <th class="text-start">Total Paid</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                        <span class="total_paid">{{ $sale->paid }}</span>
+                                        {{ $sale->paid }}
                                     </td>
                                 </tr>
     
                                 <tr>
                                     <th class="text-start">Total Due</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                        <span class="total_due">
-                                            {{ $sale->due }}
-                                        </span>
+                                        {{ $sale->due }}
                                     </td>
                                 </tr>
                             </table>
@@ -716,7 +706,7 @@
         
                     <div class="row mt-1">
                         <div class="col-4 text-center">
-                            <small>Print Date : {{ date('d/m/Y') }}</small>
+                            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                         </div>
                         
                         <div class="col-4 text-center">
@@ -968,22 +958,21 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-4 col-sm-4 col-lg-4">
-                                <div class="middle_header_text text-center">
-                                    <h5>{{ $defaultLayout->invoice_heading }}</h5>
-                                    <h6>
-                                        @php
-                                            $payable = $sale->total_payable_amount - $sale->sale_return_amount;
-                                        @endphp
+                            <div class="col-md-4 col-sm-4 col-lg-4 text-center">
+                                <h5>{{ $defaultLayout->invoice_heading }}</h5>
+                                <h6>
+                                    @php
+                                        $payable = $sale->total_payable_amount - $sale->sale_return_amount;
+                                    @endphp
 
-                                        @if ($sale->due <= 0)
-                                            Paid
-                                        @elseif ($sale->due > 0 && $sale->due < $payable) Partial
-                                            @elseif($payable==$sale->due)
-                                                Due
-                                        @endif
-                                    </h6>
-                                </div>
+                                    @if ($sale->due <= 0)
+                                        Paid
+                                    @elseif ($sale->due > 0 && $sale->due < $payable) 
+                                        Partial
+                                    @elseif($payable==$sale->due)
+                                        Due
+                                    @endif
+                                </h6>
                             </div>
 
                             <div class="col-md-4 col-sm-4 col-lg-4">
@@ -1057,30 +1046,29 @@
                                 @endif
                             </ul>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 text-center">
                             @if ($defaultLayout->is_header_less == 1)
-                                <div class="middle_header_text text-center">
-                                    <h5>{{ $defaultLayout->invoice_heading }}</h5>
-                                    <h6>
-                                        @php
-                                            $payable = $sale->total_payable_amount - $sale->sale_return_amount;
-                                        @endphp
+                                <h5>{{ $defaultLayout->invoice_heading }}</h5>
+                                <h6>
+                                    @php
+                                        $payable = $sale->total_payable_amount - $sale->sale_return_amount;
+                                    @endphp
 
-                                        @if ($sale->due <= 0)
-                                            Paid
-                                        @elseif ($sale->due > 0 && $sale->due < $payable) 
-                                            Partial 
-                                        @elseif($payable==$sale->due)
-                                            Due
-                                        @endif
-                                    </h6>
-                                </div>
+                                    @if ($sale->due <= 0)
+                                        Paid
+                                    @elseif ($sale->due > 0 && $sale->due < $payable) 
+                                        Partial 
+                                    @elseif($payable==$sale->due)
+                                        Due
+                                    @endif
+                                </h6>
                             @endif
+                            <img style="width: 170px; height:40px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                         </div>
                         <div class="col-lg-4">
                             <ul class="list-unstyled">
                                 <li><strong> Invoice No : </strong> {{ $sale->invoice_id }}</li>
-                                <li><strong> Date : </strong> {{ $sale->date . ' ' . $sale->time }}</li>
+                                <li><strong> Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
                                 <li><strong> Entered By : </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                             </ul>
                         </div>
@@ -1095,7 +1083,7 @@
                                 <th class="text-start">Descrpiton</th>
                                 <th class="text-start">Sold Qty</th>
                                 @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
-                                    <th scope="col">Warranty</th>
+                                    <th class="text-start">Warranty</th>
                                 @endif
 
                                 <th class="text-start">Price</th>
@@ -1315,11 +1303,10 @@
                     
                     <div class="row mt-1">
                         <div class="col-4 text-center">
-                            <small>Print Date : {{ date('d/m/Y') }}</small>
+                            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                         </div>
                         
                         <div class="col-4 text-center">
-                            <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                             @if (env('PRINT_SD_SALE') == true)
                                 <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
                             @endif
@@ -1334,7 +1321,7 @@
         </div>
     @else 
         <style>@page{margin: 8px;}</style>
-        <!-- Packing slip print templete-->
+        <!-- Tharmal print templete-->
         <div class="sale_print_template d-none">
             <div class="pos_print_template">
                 <div class="row">
@@ -1399,7 +1386,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">
-                                        <b>Date:</b> <span>{{ $sale->date.' '.$sale->time }}</span> 
+                                        <b>Date:</b> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span> 
                                     </th>
                                 </tr>
 
@@ -1601,22 +1588,22 @@
 
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
-                                <h3 class="company_name">
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}</h3>
-                                <h6 class="company_address">
+                                <h5 class="company_name">
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                                <p class="company_address">
                                     {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                     {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
                                     {{ $sale->branch->add_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
                                     {{ $sale->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
                                     {{ $sale->branch->add_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                </h6>
+                                </p>
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_phone)
-                                    <h6>Phone : {{ $sale->branch->phone }}</h6>
+                                    <p><b>Phone :</b>  {{ $sale->branch->phone }}</p>
                                 @endif
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_email)
-                                    <h6>Eamil : {{ $sale->branch->email }}</h6>
+                                    <p><b>Eamil :</b> : {{ $sale->branch->email }}</p>
                                 @endif
                             </div>
                         </div>
@@ -1652,18 +1639,19 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 text-center">
                         @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
-                            <div class="middle_header_text text-center">
-                                <h5>{{ $sale->branch->add_sale_invoice_layout->challan_heading }}</h5>
-                            </div>
+                            <h5>{{ $sale->branch->add_sale_invoice_layout->challan_heading }}</h5>
                         @endif
+
+                        <img style="width: 170px; height:45px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                        <p>{{ $sale->invoice_id }}</p>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> Challan No : </strong> {{ $sale->invoice_id }}
                                 </li>
-                            <li><strong> Date : </strong> {{ $sale->date.'  '.$sale->time }} </li>
+                            <li><strong> Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }} </li>
                             <li><strong> Entered By : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                         </ul>
                     </div>
@@ -1689,7 +1677,6 @@
                                     @if ($sale_product->variant)
                                         -{{ $sale_product->variant->variant_name }}
                                     @endif
-                               
                                     {!! $sale->branch->add_sale_invoice_layout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                 </td>
                                 <td class="text-start">{{ $sale_product->unit }}</td>
@@ -1764,20 +1751,20 @@
                     </div>
                 </div>
                 
-                <div class="row">
-                    <div class="col-md-6 text-center">
-                        <small>Print Date : {{ date('d/m/Y') }}</small>
+                <div class="row mt-1">
+                    <div class="col-4 text-center">
+                        <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                     </div>
-                    <div class="col-md-6 text-center">
-                        <small>Print Time : {{ date('h:i:s') }}</small>
-                    </div>
-                </div>
-    
-                <div class="row">
-                    <div class="col-md-12 text-center">
+                    
+                    <div class="col-4 text-center">
+                        <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                         @if (env('PRINT_SD_SALE') == true)
-                            <small>Software By <b>SpeedDigit Pvt. Ltd.</small></p>
+                            <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
                         @endif
+                    </div>
+
+                    <div class="col-4 text-center">
+                        <small>Print Time : {{ date('h:i:s') }}</small>
                     </div>
                 </div>
             </div>
@@ -1819,36 +1806,40 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
                                 @if ($sale->branch)
-                                    <h3 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h3>
-                                    <h6 class="company_address">
+                                    <h5 class="company_name">
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                    </h5>
+                                    <p class="company_address">
                                         {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                         {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
                                         {{ $sale->branch->add_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
                                         {{ $sale->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
                                         {{ $sale->branch->add_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                    </h6>
+                                    </p>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <h6>Phone : {{ $sale->branch->phone }}</h6>
+                                        <p><b>Phone :</b>{{ $sale->branch->phone }}</p>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <h6>email : {{ $sale->branch->email }}</h6>
+                                        <p><b>Email :</b> {{ $sale->branch->email }}</p>
                                     @endif 
                                 @else
-                                    <h3 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h3>
-                                    <h6 class="company_address">
+                                    <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                                    <p class="company_address">
                                         {{ json_decode($generalSettings->business, true)['address'] }}
-                                    </h6>
+                                    </p>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <h6>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
+                                        <p><b>Phone :</b>
+                                            {{ json_decode($generalSettings->business, true)['phone'] }}
+                                        </p>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <h6>Email : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
+                                        <p><b>Email :</b>
+                                            {{ json_decode($generalSettings->business, true)['email'] }}
+                                        </p>
                                     @endif
                                 @endif
                             </div>
@@ -1884,18 +1875,19 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 text-center">
                         @if ($defaultLayout->is_header_less == 1)
-                            <div class="middle_header_text text-center">
-                                <h5>{{ $defaultLayout->challan_heading }}</h5>
-                            </div>
+                            <h5>{{ $defaultLayout->challan_heading }}</h5>
                         @endif
+
+                        <img style="width: 170px; height:45px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                        <p>{{ $sale->invoice_id }}</p>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> Challan No : </strong> {{ $sale->invoice_id }}
                                 </li>
-                            <li><strong> Date : </strong> {{ $sale->date.' '.$sale->time }} </li>
+                            <li><strong> Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }} </li>
                             <li><strong> Entered By : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                         </ul>
                     </div>
@@ -1996,20 +1988,21 @@
                     </div>
                 </div>
                 
-                <div class="row">
-                    <div class="col-md-6 text-center">
-                        <small>Print Date : {{ date('d/m/Y') }}</small>
+                <div class="row mt-1">
+                    <div class="col-4 text-center">
+                        <small>Print Date : 
+                            {{ date(json_decode($generalSettings->business, true)['date_format']) }}
+                        </small>
                     </div>
-                    <div class="col-md-6 text-center">
-                        <small>Print Time : {{ date('h:i:s') }}</small>
-                    </div>
-                </div>
-    
-                <div class="row">
-                    <div class="col-md-12 text-center">
+                    
+                    <div class="col-4 text-center">
                         @if (env('PRINT_SD_SALE') == true)
-                            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                            <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
                         @endif
+                    </div>
+
+                    <div class="col-4 text-center">
+                        <small>Print Time : {{ date('h:i:s') }}</small>
                     </div>
                 </div>
             </div>

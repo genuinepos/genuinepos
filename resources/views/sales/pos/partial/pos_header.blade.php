@@ -35,10 +35,10 @@
                     </p>
                 @else 
                     <p class="store-name">
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (HEAD OFFICE)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HEAD OFFICE)</b>
                     </p>
                     <p class="address-name">
-                        {{ json_decode($generalSettings->business, true)['address'] }}
+                        {{ Str::limit(json_decode($generalSettings->business, true)['address'], 45) }}
                     </p>
                 @endif
                 <small class="login-user-name">

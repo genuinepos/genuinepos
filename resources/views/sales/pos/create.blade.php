@@ -131,12 +131,13 @@
                             unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
                             p_tax_amount = __tax_amount;
                         }
-                            
+
+                        var name = product_name.length > 30 ? product_name.substring(0, 30)+'...' : product_name; 
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
                         tr += '<td class="text-start">';
-                        tr += '<a class="product-name text-info" title="'+'SKU-'+product_code+'" id="edit_product" href="#">' + product_name +'</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info">';
+                        tr += '<a class="product-name text-info" title="'+'SKU-'+product_code+'" id="edit_product" href="#">' + name +'</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info">';
                         tr += '<input value="'+ product_id +'" type="hidden" class="productId-'+
                             product_id +'" id = "product_id" name="product_ids[]" >';
                         tr +='<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -275,11 +276,12 @@
                             tax_amount = __tax_amount;
                         }
 
+                        var name = product_name.length > 30 ? product_name.substring(0, 30)+'...' : product_name; 
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
                         tr += '<td class="text-start">';
-                        tr += '<a class="product-name text-info" title="'+'SKU-'+ variant_code +'" id="edit_product" href="#">' + product_name +' - ' + variant_name + '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info">';
+                        tr += '<a class="product-name text-info" title="'+'SKU-'+ variant_code +'" id="edit_product" href="#">' + name +' - ' + variant_name + '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info">';
                         tr += '<input value="'+ product_id +'" type="hidden" class="productId-'+ product_id +'" id = "product_id" name="product_ids[]">';
                         tr += '<input value="'+ variant_id +'" type="hidden" class="variantId-'+ variant_id +'" id="variant_id" name="variant_ids[]">';
                         tr +='<input type="hidden" id="tax_type" value="'+ tax_type +'">';

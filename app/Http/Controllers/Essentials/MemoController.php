@@ -13,6 +13,11 @@ class MemoController extends Controller
 {
     public function index(Request $request)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $memos = DB::table('memo_users')
                 ->join('memos', 'memo_users.memo_id', 'memos.id')
@@ -62,6 +67,11 @@ class MemoController extends Controller
 
     public function store(Request $request)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'heading' => 'required',
             'description' => 'required',
@@ -85,6 +95,11 @@ class MemoController extends Controller
 
     public function delete(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $deleteMemo = Memo::where('id', $id)->first();
         if (!is_null($deleteMemo)) {
             $deleteMemo->delete();
@@ -94,11 +109,21 @@ class MemoController extends Controller
 
     public function edit($id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         return $memo = Memo::where('id', $id)->first(['id', 'heading', 'description']);
     }
 
     public function update(Request $request)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'heading' => 'required',
             'description' => 'required',
@@ -122,6 +147,11 @@ class MemoController extends Controller
 
     public function addUsers(Request $request, $id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $memo = Memo::with(['memo_users'])->where('id', $id)->first();
         foreach ($memo->memo_users as $user) {
             $user->is_delete_in_update = 1;
@@ -154,6 +184,11 @@ class MemoController extends Controller
 
     public function show($id)
     {
+        $addons = DB::table('addons')->select('todo')->first();
+        if ($addons->todo == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+        
         $memo = Memo::where('id', $id)->first();
         return view('essentials.memos.ajax_view.show', compact('memo'));
     }

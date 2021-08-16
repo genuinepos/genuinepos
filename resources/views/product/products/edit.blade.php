@@ -222,7 +222,6 @@
                                 <div class="col-4">
                                 &nbsp;&nbsp;&nbsp;&nbsp; <h6 class="checkbox_input_wrap"> <input type="checkbox" {{ $product->is_for_sale == 0 ? 'CHECKED' : '' }} name="is_not_for_sale" class="checkbox" id="is_not_for_sale" value="0"> &nbsp; Not For Sale &nbsp; <i data-toggle="tooltip" data-placement="top" title="If checked, product will not be displayed in sales screen for selling purposes." class="fas fa-info-circle tp"></i></h6>
                                 </div>
-
                            </div>
                         </div>
                     </div>    

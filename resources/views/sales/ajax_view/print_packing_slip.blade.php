@@ -1,4 +1,7 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php 
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';  
+@endphp 
 <style>
     .packing_slip_print_template{font-family: monospace!important;font-weight: bolder;}
 </style>
@@ -50,7 +53,7 @@
                     <ul class="list-unstyled">
                         <li><strong>Invoice ID : </strong> {{ $sale->invoice_id }}
                         </li>
-                        <li><strong>Date : </strong>{{ $sale->date }}</li>
+                        <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
                         <li><img style="width: 100%; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}"></li>
                         
                     </ul>

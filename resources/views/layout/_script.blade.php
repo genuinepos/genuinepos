@@ -7,7 +7,7 @@
     {{-- <script src="a{{ asset('public/backend/sset/js/canvas-main.js') }}"></script> --}}
     <script src="{{ asset('public/backend/asset/js/jquery.fontstar.js') }}"></script>
     {{-- <script src="{{ asset('public/backend/asset/js/dropzone.js') }}"></script> --}}
-    <script src="{{ asset('public/backend/asset/js/jquery.repeater.js') }}"></script>
+    {{-- <script src="{{ asset('public/backend/asset/js/jquery.repeater.js') }}"></script> --}}
     {{-- <script src="{{ asset('public/backend/asset/js/selectize.js') }}"></script> --}}
     {{-- <script src="{{ asset('public/backend/asset/js/apexcharts.js') }}"></script> --}}
     {{-- <script src="{{ asset('public/backend/asset/js/canvas-main.js') }}"></script> --}}
@@ -40,7 +40,7 @@
     {{-- <script src="{{asset('public/backend/js/chosen.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/uniform.jquery.js')}}"></script> --}}
     <script src="{{asset('public/backend/js/bootstrap-dropdown.js')}}"></script>
-    <script src="{{asset('public/backend/js/sticky.full.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/sticky.full.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/jquery.noty.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/selectToUISlider.jQuery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/fg.menu.js')}}"></script> --}}
@@ -65,13 +65,13 @@
     <script src="{{asset('public/backend/js/jeditable.jquery.js')}}"></script>
     {{-- <script src="{{asset('public/backend/js/accordion.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/duallist.jquery.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/easing.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/easing.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/full-calendar.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/input-limiter.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/inputmask.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/iphone-style-checkbox.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/meta-data.jquery.js')}}"></script> --}}
-    <script src="{{asset('public/backend/js/quicksand.jquery.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/quicksand.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/raty.jquery.js')}}"></script> --}}
     {{-- <script src="{{asset('public/backend/js/smart-wizard.jquery.js')}}"></script>--}}
     {{--<script src="{{asset('public/backend/js/stepy.jquery.js')}}"></script> --}}

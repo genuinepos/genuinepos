@@ -118,21 +118,21 @@ $(document).ready(function() {
 });
 
 // =====================================================form repetar==========
-$(document).ready(function() {
-    $('.repeater').repeater({
-        show: function() {
-            $(this).slideDown();
-        },
-        hide: function(deleteElement) {
-            if (confirm('Are you sure you want to delete this element?')) {
-                $(this).slideUp(deleteElement);
-            }
-        },
-        ready: function(setIndexes) {
+// $(document).ready(function() {
+//     $('.repeater').repeater({
+//         show: function() {
+//             $(this).slideDown();
+//         },
+//         hide: function(deleteElement) {
+//             if (confirm('Are you sure you want to delete this element?')) {
+//                 $(this).slideUp(deleteElement);
+//             }
+//         },
+//         ready: function(setIndexes) {
 
-        }
-    });
-});
+//         }
+//     });
+// });
 
 // ===========================================date picer==================
 $(function() {

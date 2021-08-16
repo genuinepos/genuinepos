@@ -350,6 +350,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col">
                         <div class="form_element">
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
@@ -383,10 +384,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </section>
 @endsection

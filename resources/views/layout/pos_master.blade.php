@@ -623,140 +623,9 @@
     </form>
     <!--Data delete form end-->
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('public/backend/asset/js/pos.js') }}"></script>
+    <script src="{{ asset('public/backend/asset/js/pos-amount-calculation.js') }}"></script>
     <script>
-        // Calculate total amount functionalitie
-        function calculateTotalAmount(){
-            var indexs = document.querySelectorAll('#index');
-            indexs.forEach(function(index) {
-                var className = index.getAttribute("class");
-                var rowIndex = $('.' + className).closest('tr').index();
-                $('.' + className).closest('tr').find('.serial').html(rowIndex + 1);
-            });
-
-            var quantities = document.querySelectorAll('#quantity');
-            var subtotals = document.querySelectorAll('#subtotal');
-            // Update Total Item
-            var total_item = 0;
-            var total_qty = 0;
-            quantities.forEach(function(qty){
-                total_item += 1;
-                total_qty += parseFloat(qty.value)
-            });
-
-            $('#total_item').val(parseFloat(total_item));
-            $('.mb_total_item').val(parseFloat(total_item));
-            $('#total_qty').val(parseFloat(total_qty).toFixed(2));
-            $('.mb_total_qty').val(parseFloat(total_qty).toFixed(2));
-
-            // Update Net total Amount
-            var netTotalAmount = 0;
-            subtotals.forEach(function(subtotal){
-                netTotalAmount += parseFloat(subtotal.value);
-            });
-
-            $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
-
-            if ($('#order_discount_type').val() == 2) {
-                var orderDisAmount = parseFloat(netTotalAmount) /100 * parseFloat($('#order_discount').val() ? $('#order_discount').val() : 0);
-                $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
-            }else{
-                var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
-                $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
-            }
-
-            var orderDiscountAmount = $('#order_discount_amount').val() ? $('#order_discount_amount').val() : 0;
-            // Calc order tax amount
-            var orderTax = $('#order_tax').val() ? $('#order_tax').val() : 0;
-            var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax) ;
-            $('#order_tax_amount').val(parseFloat(calcOrderTaxAmount).toFixed(2));
-
-            // Update Total payable Amount
-            var calcOrderTaxAmount = $('#order_tax_amount').val() ? $('#order_tax_amount').val() : 0;
-            var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
-            var previousDue = $('#previous_due').val() ? $('#previous_due').val() : 0;
-
-            var calcInvoicePayable = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge);
-
-            $('#total_invoice_payable').val(parseFloat(calcInvoicePayable).toFixed(2));
-            var ex_inv_payable_amount = $('#ex_inv_payable_amount').val() ? $('#ex_inv_payable_amount').val() : 0;
-            var ex_inv_paid = $('#ex_inv_paid').val() ? $('#ex_inv_paid').val() : 0;
-            var exchange_item_total_price = $('#exchange_item_total_price').val() ? $('#exchange_item_total_price').val() : 0;
-
-            var calcTotalPayableAmount = parseFloat(netTotalAmount) - 
-            parseFloat(orderDiscountAmount) + 
-            parseFloat(calcOrderTaxAmount) + 
-            parseFloat(shipmentCharge) + 
-            parseFloat(previousDue);
-            
-            $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-            //$('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-            // Update purchase due
-            var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
-            var changeAmount = parseFloat(payingAmount) - parseFloat(calcTotalPayableAmount);
-            $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-            var calcTotalDue = parseFloat(calcTotalPayableAmount) - parseFloat(payingAmount);
-            $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
-        }
-
-        $(document).keypress(".scanable",function(event){
-            if (event.which == '10' || event.which == '13') {
-                event.preventDefault();
-            }
-        });
-
-        $('#payment_method').on('change', function () {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#'+value).show();
-        });
-
-        var tableRowIndex = 0;
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var parentTableRow = $(this).closest('tr');
-            tableRowIndex = parentTableRow.index();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure?',
-                'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                            $('#recent_trans_preloader').show();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
-                }
-            });
-        });
-
-        //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-                    toastr.error(data);
-                    var productTableRow = $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
-                    $('#recent_trans_preloader').hide();
-                    $('#suspendedSalesModal').modal('hide');
-                    $('#holdInvoiceModal').modal('hide');
-                }
-            });
-        });
-
         $('#cash_register_details').on('click', function (e) {
             e.preventDefault();
             $.ajax({
@@ -791,63 +660,17 @@
                 'buttons': {
                     'Yes': {
                         'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            window.location = "{{ route('dashboard.dashboard') }}";
-                        }
+                        'action': function() {window.location = "{{ route('dashboard.dashboard') }}";}
                     },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'No': {'class': 'no btn-danger','action': function() { console.log('Deleted canceled.')}}
                 }
             });
         });
 
-        //data delete by ajax
-        $(document).on('submit', '#search_inv_form',function(e){
-            e.preventDefault();
-            $('#get_inv_preloader').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({ 
-                url:url,
-                type:'get',
-                data:request,
-                success:function(data){
-                    $('#get_inv_preloader').hide();
-                    $('#invoice_description').empty();
-                    if (!$.isEmptyObject(data.errorMsg)) {
-                        toastr.error(data.errorMsg);
-                    }else{
-                        $('#invoice_description').html(data);
-                    }
-                }
-            });
+        //Key shortcut for to the settings
+        shortcuts.add('ctrl+q',function() { 
+            window.location = "{{ route('settings.general.index') }}";
         });
-
-        $('#submit_form_btn').on('click', function (e) {
-            e.preventDefault();
-            $('#search_inv_form').submit();
-        });
-
-        $('#exchange_btn').on('click', function (e) {
-            e.preventDefault();
-            $('#invoice_description').empty();$('#invoice_id').val('');
-        });
-
-        $('.calculator-bg__main button').prop('type','button');
-
-        function activeSelectedItems() {
-            $('.product-name').removeClass('ac_item');
-            $('#product_list').find('tr').each(function() {
-                var p_id = $(this).find('#product_id').val();
-                var v_id = $(this).find('#variant_id').val();
-                var id = p_id+v_id;
-                $('#'+id).addClass('ac_item');
-            });
-        }
     </script>
     @stack('js')
 </body>

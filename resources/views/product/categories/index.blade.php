@@ -131,8 +131,8 @@
             searchable: true,
             ajax: "{{ route('product.categories.index') }}",
             columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
-                {data: 'photo',name: 'category.photo'},
-                {data: 'name',name: 'category.name'},
+                {data: 'photo',name: 'photo'},
+                {data: 'name',name: 'name'},
                 {data: 'action',name: 'action'},
             ],
         });
@@ -190,6 +190,20 @@
                 });
             });
 
+            $(document).on('click', '#update_btn',function(e){
+                e.preventDefault(); 
+                var url = $(this).attr('href');
+                $('#deleted_form').attr('action', url);       
+                $.confirm({
+                    'title': 'Edit Confirmation?',
+                    'content': 'Are you sure to edit?',
+                    'buttons': {
+                        'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#edit_category_form').submit();}},
+                        'No': {'class': 'no btn-danger','action': function() {console.log('Edit canceled.');}}
+                    }
+                });
+            });
+
             // edit category by ajax
             $(document).on('submit', '#edit_category_form', function(e) {
                 e.preventDefault();
@@ -216,8 +230,9 @@
                             $('.error_e_' + key + '').html(error[0]);
                         });
                     }
-                });
+                }); 
             });
+            
 
             $(document).on('click', '#delete',function(e){
                 e.preventDefault(); 

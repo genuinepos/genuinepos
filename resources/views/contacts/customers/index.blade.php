@@ -17,64 +17,63 @@
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Customer</h6>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('contacts.customers.import.create') }}"><i class="fas fa-plus-square"></i> Import Customers</a>
-                                        </div>
-                                    </div>
+                 
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>All Customer</h6>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                <div class="col-md-6">
+                                    <div class="btn_30_blue float-end">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
+                                                class="fas fa-plus-square"></i> Add</a>
                                     </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr class="text-center">
-                                                    <th>Actions</th>
-                                                    <th>Customer ID</th>
-                                                    <th>Name</th>
-                                                    <th>Business Name</th>
-                                                    <th>Phone</th>
-                                                    <th>Email</th>
-                                                    <th>Tax Number</th>
-                                                    <th>Opening Balance</th>
-                                                    <th>Total Purchase Due</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
 
-                                            </tbody>
-                                        </table>
+                                    <div class="btn_30_blue float-end">
+                                        <a href="{{ route('contacts.customers.import.create') }}"><i class="fas fa-plus-square"></i> Import Customers</a>
                                     </div>
                                 </div>
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>Actions</th>
+                                                <th>Customer ID</th>
+                                                <th>Name</th>
+                                                <th>Business Name</th>
+                                                <th>Phone</th>
+                                                <th>Email</th>
+                                                <th>Tax Number</th>
+                                                <th>Opening Balance</th>
+                                                <th>Total Purchase Due</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
 
     <!-- Add Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -500,7 +499,7 @@
         }
         getAllCustomer();
 
-        function setBranches() {
+        function setCustomerGroup() {
             $.ajax({
                 url: "{{ route('contacts.customer.get.all.group') }}",
                 async: true,
@@ -516,7 +515,7 @@
                 }
             });
         }
-        setBranches();
+        setCustomerGroup();
 
         // Setup ajax for csrf token.
         $.ajaxSetup({
@@ -641,18 +640,8 @@
                     'title': 'Delete Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-danger',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-modal-primary',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
-                        }
+                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                     }
                 });
             });
@@ -679,13 +668,22 @@
             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
-                console.log(url);
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-                        toastr.success(data);
-                        getAllCustomer();
+                 $.confirm({
+                    'title': 'Changes Status Confirmation',
+                    'message': 'Are you sure?',
+                    'buttons': {
+                        'Yes': {
+                            'class': 'yes btn-danger', 'action': function() {
+                                $.ajax({
+                                    url: url,type: 'get',
+                                    success: function(data) {
+                                        toastr.success(data);
+                                        getAllCustomer();
+                                    }
+                                });
+                            }
+                        },
+                        'No': {'class': 'no btn-modal-primary','action': function() { console.log('Confirmation canceled.');}}
                     }
                 });
             });

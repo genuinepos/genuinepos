@@ -89,11 +89,11 @@
                                                     </select>
                                                 </div>
 
-                                                {{-- <div class="col-md-3">
-                                                    &nbsp;&nbsp;&nbsp;&nbsp; <h6 class="checkbox_input_wrap"> <input type="checkbox"
-                                                            name="is_for_sale" class="form-control form-control-sm submit_able"
-                                                            id="is_for_sale" value="">Not For Selling. </h6>
-                                                </div> --}}
+                                               {{-- <div class="col-md-3">
+                                                   <p> <input type="checkbox"
+                                                            name="is_for_sale" class="submit_able"
+                                                            id="is_for_sale" value="">Not For Selling. </p>
+                                                </div>  --}}
                                             </div>
                                         </form>
                                     </div>

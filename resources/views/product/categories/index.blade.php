@@ -195,7 +195,7 @@
                 var url = $(this).attr('href');
                 $('#deleted_form').attr('action', url);       
                 $.confirm({
-                    'title': 'Edit Confirmation?',
+                    'title': 'Edit Confirmation',
                     'content': 'Are you sure to edit?',
                     'buttons': {
                         'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#edit_category_form').submit();}},

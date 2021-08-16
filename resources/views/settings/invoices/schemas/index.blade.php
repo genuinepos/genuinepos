@@ -242,11 +242,8 @@
                     },
                     error: function(err) {
                         $('.loading_button').hide();
-                        toastr.error('Please check again all form fields.',
-                            'Some thing want wrong.');
                         $('.error').html('');
                         $.each(err.responseJSON.errors, function(key, error) {
-                            //console.log(key);
                             $('.error_' + key + '').html(error[0]);
                         });
                     }
@@ -303,11 +300,8 @@
                     },
                     error: function(err) {
                         $('.loading_button').hide();
-                        toastr.error('Please check again all form fields.',
-                            'Some thing want wrong.');
                         $('.error').html('');
                         $.each(err.responseJSON.errors, function(key, error) {
-                            //console.log(key);
                             $('.error_e_' + key + '').html(error[0]);
                         });
                     }
@@ -322,18 +316,8 @@
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure?',
                     'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-danger',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-modal-primary',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
-                        }
+                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                     }
                 });
             });

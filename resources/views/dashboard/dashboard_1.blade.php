@@ -106,7 +106,7 @@
                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                         <div class="select-dropdown">
                                             <select name="branch_id" id="branch_id">
-                                                <option value="">All Branch</option>
+                                                <option value="">All Business Locations</option>
                                                 <option value="NULL">
                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}
                                                     (Head Office)</option>

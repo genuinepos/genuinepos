@@ -68,6 +68,7 @@
                                                                             <span class="customer_due"></span>
                                                                         </td>
                                                                     </tr>
+
                                                                     <tr>
                                                                         <td class="text-start"><strong>Supplier Return Due :</strong></td>
                                                                         <td class="text-end"> 
@@ -75,6 +76,7 @@
                                                                             <span class="supplier_return_due"></span>
                                                                         </td>
                                                                     </tr>
+
                                                                     <tr>
                                                                         <td class="text-start"><strong>Closing Stock :</strong></td>
                                                                         <td class=" text-end">
@@ -82,9 +84,21 @@
                                                                             <span class="closing_stock"></span>
                                                                         </td>
                                                                     </tr>
+
                                                                     <tr>
-                                                                        <td class="text-start" colspan="2"><strong>Account Balance :</strong></td>
+                                                                        <td class="text-start"><strong>Asset :</strong></td>
+                                                                        <td class=" text-end">
+                                                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                                            <span class="total_physical_asset"></span>
+                                                                        </td>
                                                                     </tr>
+
+                                                                    <tr>
+                                                                        <td class="text-start" colspan="2">
+                                                                            <strong>Account Balance :</strong>
+                                                                        </td>
+                                                                    </tr>
+
                                                                     <tr class="account_balance_list_area">
                                                                         <td colspan="2">
                                                                             <table class="table table-sm">
@@ -165,6 +179,7 @@
                 $('.total_liability').html(parseFloat(amounts.totalLiLiability).toFixed(2));
                 $('.closing_stock').html(parseFloat(amounts.closingStock).toFixed(2));
                 
+                $('.total_physical_asset').html(parseFloat(amounts.totalPhysicalAsset).toFixed(2));
                 if(amounts.totalAsset >= 0){
                     $('.total_asset').html(parseFloat(amounts.totalAsset).toFixed(2));
                 }else{

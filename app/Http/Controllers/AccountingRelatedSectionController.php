@@ -53,6 +53,10 @@ class AccountingRelatedSectionController extends Controller
             $accountBalance += $account->balance;
         }
 
+        $totalPhysicalAsset = DB::table('assets')->select(
+            DB::raw('sum(total_value) as t_value'),
+        )->groupBy('assets.id')->get();
+
         $products = Product::with('product_variants')->select(['id', 'product_cost_with_tax'])->get();
 
         foreach ($products as $product) {
@@ -66,7 +70,11 @@ class AccountingRelatedSectionController extends Controller
         }
 
         $totalLiLiability = $totalSupplierDue + $totalCustomerReturnDue;
-        $totalAsset = $totalSupplierReturnDue + $totalCustomerDue + $accountBalance + $closingStock;
+        $totalAsset = $totalSupplierReturnDue + 
+        $totalCustomerDue + 
+        $accountBalance + 
+        $closingStock + 
+        $totalPhysicalAsset->sum('t_value');
 
         return response()->json([
             'totalSupplierDue' => $totalSupplierDue,
@@ -74,9 +82,10 @@ class AccountingRelatedSectionController extends Controller
             'totalCustomerReturnDue' => $totalCustomerReturnDue,
             'totalCustomerDue' => $totalCustomerDue,
             'closingStock' => $closingStock,
+            'totalPhysicalAsset' => $totalPhysicalAsset->sum('t_value'),
             'totalLiLiability' => $totalLiLiability,
             'totalAsset' => $totalAsset,
-            'accounts' => $accounts
+            'accounts' => $accounts,
         ]);
     }
 
@@ -115,14 +124,20 @@ class AccountingRelatedSectionController extends Controller
             $accountBalance += $account->balance;
         }
 
+        $totalPhysicalAsset = DB::table('assets')->select(
+            DB::raw('sum(total_value) as t_value'),
+        )->groupBy('assets.id')->get();
+
+
         $totalDebit = $totalSupplierDue + $totalCustomerReturnDue;
-        $totalCredit = $totalSupplierReturnDue + $totalCustomerDue + $accountBalance;
+        $totalCredit = $totalSupplierReturnDue + $totalCustomerDue + $accountBalance + $totalPhysicalAsset->sum('t_value');
 
         return response()->json([
             'totalSupplierDue' => $totalSupplierDue,
             'totalSupplierReturnDue' => $totalSupplierReturnDue,
             'totalCustomerReturnDue' => $totalCustomerReturnDue,
             'totalCustomerDue' => $totalCustomerDue,
+            'totalPhysicalAsset' => $totalPhysicalAsset->sum('t_value'),
             'totalDebit' => $totalDebit,
             'totalCredit' => $totalCredit,
             'accounts' => $accounts

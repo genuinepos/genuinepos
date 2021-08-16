@@ -27,7 +27,7 @@
                 <td class="text-start">{{ $branch->email }}</td>
                 
                 <td nowrap="nowrap" class="text-start">
-                    <a href="javascript:;" id="edit" class="action-btn c-edit" id="edit"><span class="fas fa-edit"></span>
+                    <a href="{{ route('settings.branches.edit', $branch->id) }}" id="edit" class="action-btn c-edit" id="edit"><span class="fas fa-edit"></span>
                     </a>
                     <a href="{{ route('settings.branches.delete', $branch->id) }}" id="delete" class="action-btn c-delete"><span class="fas fa-trash "></span>
                     </a>

@@ -566,10 +566,12 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('get/all/branch', 'BranchController@getAllBranch')->name('settings.get.all.branch');
         Route::get('all/accounts', 'BranchController@getAllAccounts')->name('settings.get.all.accounts');
         Route::post('store', 'BranchController@store')->name('settings.branches.store');
-        Route::post('update', 'BranchController@update')->name('settings.branches.update');
+        Route::get('edit/{branchId}', 'BranchController@edit')->name('settings.branches.edit');
+        Route::post('update/{branchId}', 'BranchController@update')->name('settings.branches.update');
         Route::delete('delete/{id}', 'BranchController@delete')->name('settings.branches.delete');
         Route::get('all/schemas', 'BranchController@allSchemas')->name('settings.all.invoice.schemas');
         Route::get('all/layouts', 'BranchController@allLayouts')->name('settings.all.invoice.layouts');
+        Route::post('quick/invoice/schema', 'BranchController@quickInvoiceSchema')->name('settings.branches.quick.invoice.schema');
     });
 
     Route::group(['prefix' => 'warehouses'], function () {

@@ -45,6 +45,9 @@
                     <div class="today_summery_modal_contant">
 
                     </div>
+                    <div class="print-button-area">
+                        <a href="" class="btn btn-sm btn-primary float-end">Print</a>
+                    </div>
                 </div>
             </div>
         </div>

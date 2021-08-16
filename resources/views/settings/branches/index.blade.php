@@ -20,7 +20,7 @@
                     </div>
                     <!-- =========================================top section button=================== -->
                  
-                    <div class="row">
+                    <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
@@ -86,115 +86,126 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="add_branch_form" action="{{ route('settings.branches.store') }}" enctype="multipart/form-data">
+                        @csrf
                         <div class="form-group row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control add_input" data-name="Name" id="name" placeholder="Business Location Name"/>
                                 <span class="error error_name"></span>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label><strong>Location Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
                                 <input type="text" name="code" class="form-control  add_input" data-name="Branch code" id="code" placeholder="Business Location Code"/>
                                 <span class="error error_code"></span>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label><strong>Phone :</strong>  <span class="text-danger">*</span></label>
                                 <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
                                 <span class="error error_phone"></span>
                             </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Alternate Phone Number :</strong> </label>
+                                <input type="text" name="alternate_phone_number" class="form-control " id="alternate_phone_number" placeholder="Alternate phone number"/>
+                            </div>
                         </div>
 
                         <div class="form-group row mt-1">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label> <strong>City :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="city" class="form-control  add_input" data-name="City" id="city" placeholder="City"/>
                                 <span class="error error_city"></span>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label><strong>State :</strong>  <span class="text-danger">*</span></label>
                                 <input type="text" name="state" class="form-control  add_input" data-name="State" id="state" placeholder="State name"/>
                                 <span class="error error_state"></span>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label><strong>Country :</strong>  <span class="text-danger">*</span></label>
                                 <input type="text" name="country" class="form-control  add_input" data-name="country" id="country" placeholder="Country"/>
                                 <span class="error error_country"></span>
                             </div>
-                        </div>
 
-                        <div class="form-group row mt-1">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label> <strong>Zip-code :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="zip_code" class="form-control  add_input" data-name="Zip code" id="zip_code" placeholder="Zip code"/>
                                 <span class="error error_zip_code"></span>
                             </div>
-
-                            <div class="col-md-4">
-                                <label><strong>Alternate Phone Number :</strong> </label>
-                                <input type="text" name="alternate_phone_number" class="form-control " id="alternate_phone_number" placeholder="Alternate phone number"/>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label> <strong>Email :</strong> </label>
-                                <input type="text" name="email" class="form-control "  id="email" placeholder="Email address"/>
-                            </div>
                         </div>
 
                         <div class="form-group row mt-1">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <label> <strong>Email :</strong> </label>
+                                <input type="text" name="email" class="form-control "  id="email" placeholder="Email address"/>
+                            </div>
+
+                            <div class="col-md-3">
                                 <label> <strong>Website :</strong> </label>
                                 <input type="text" name="website" class="form-control " id="website" placeholder="Website URL"/>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label> <strong>Branch Logo :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
                                 <input type="file" name="logo" class="form-control " id="logo"/>
                             </div>
+                        </div>
 
-                            <div class="col-md-4">
+                        <div class="form-group row mt-1">
+                            <div class="col-md-3">
                                 <label><strong>Default Account :</strong> </label>
                                 <select name="default_account_id" id="default_account_id" class="form-control ">
                                     <option value="">Select Please</option>
+                                    @foreach ($accounts as $ac)
+                                        <option value="{{ $ac->id }}">{{ $ac->name.' (A/C:'.$ac->account_number.')' }}</option>
+                                    @endforeach
                                 </select>
                             </div>
-                        </div>
-                        
-                        <div class="form-group row mt-1">
-                            <div class="col-md-4">
+
+                            <div class="col-md-3">
                                 <label><strong>Add Sale Invoice Scheme :</strong>  <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <select name="invoice_schema_id" id="invoice_schema_id" data-name="invoice schema" class="form-control add_input">
                                         <option value="">Select Please</option>
+                                        @foreach ($invSchemas as $schema)
+                                            <option value="{{ $schema->id }}">{{ $schema->name }}</option>
+                                        @endforeach
                                     </select>
                                     <div class="input-group-prepend">
                                         <span class="input-group-text add_button" data-bs-toggle="modal"
-                                            data-bs-target="#addInvoiceModal"><i class="fas fa-plus-square input_i"></i></span>
+                                            data-bs-target="#quickInvSchemaModal"><i class="fas fa-plus-square input_i"></i></span>
                                     </div>
                                 </div>
                                 <span class="error error_invoice_schema_id"></span>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label><strong>Add Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
                                 <select name="add_sale_invoice_layout_id" id="add_sale_invoice_layout_id" data-name="Add sale invoice layout" class="form-control  add_input">
                                     <option value="">Select Please</option>
+                                    @foreach ($invLayouts as $layout)
+                                        <option value="{{ $layout->id }}">{{ $layout->name }}</option>
+                                    @endforeach
                                 </select>
                                 <span class="error error_add_sale_invoice_layout_id"></span>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label><strong>POS Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
                                 <select name="pos_sale_invoice_layout_id" id="pos_sale_invoice_layout_id" data-name="POS sale invoice layout" class="form-control  add_input">
                                     <option value="">Select Please</option>
+                                    @foreach ($invLayouts as $layout)
+                                        <option value="{{ $layout->id }}">{{ $layout->name }}</option>
+                                    @endforeach
                                 </select>
                                 <span class="error error_pos_sale_invoice_layout_id"></span>
                             </div>
                         </div>
-
+                   
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <div class="row">
@@ -209,6 +220,63 @@
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                             <button type="submit" class="me-0 c-btn btn_blue float-end">Save</button>
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end submit_button">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="quickInvSchemaModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Add Invoice Schema</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <!--begin::Form-->
+                    <form id="add_schema_form" action="{{ route('settings.branches.quick.invoice.schema') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label><b>Preview : <span id="q_schema_preview"></span></label>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-6">
+                                <label><b>Name :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" id="q_name" placeholder="Schema name"/>
+                                <span class="error error_q_name"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><b>Format :</b> <span class="text-danger">*</span></label>
+                                <select name="format" class="form-control" id="q_format">
+                                    <option value="1">FORMAT-XXXX</option>
+                                    <option value="2">FORMAT-{{ date('Y') }}/XXXX</option>
+                                </select>
+                                <span class="error error_q_format"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-6">
+                                <label><b>Prefix :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="prefix" class="form-control" id="q_prefix" placeholder="Prefix"/>
+                                <span class="error error_q_prefix"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><b>Start From :</b></label>
+                                <input type="number" name="start_from" class="form-control" id="q_start_from" placeholder="Start From" value="0"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-end mt-3">
+                            <button type="button" class="btn loading_button d-none q_ld_btn"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                            <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                         </div>
                     </form>
                 </div>
@@ -250,65 +318,6 @@
     }
     getAllBranch();
 
-    function getAllAccounts(){
-        $.ajax({
-            url:"{{ route('settings.get.all.accounts') }}",
-            type:'get',
-            success:function(accounts){
-                $.each(accounts, function (key, account) {
-                    $('#e_default_account_id').append('<option value="'+account.id+'">'+account.name+' (AC:'+account.account_number+')'+'</option>');
-                });
-
-                $.each(accounts, function (key, account) {
-                    $('#default_account_id').append('<option value="'+account.id+'">'+account.name+' (AC:'+account.account_number+')'+'</option>');
-                });
-            }
-        });
-    }
-    getAllAccounts();
-
-    function getAllInvoiceSchemas(){
-        $.ajax({
-            url:"{{ route('settings.all.invoice.schemas') }}",
-            type:'get',
-            success:function(schemas){
-                $.each(schemas, function (key, schema) {
-                    $('#e_invoice_schema_id').append('<option value="'+schema.id+'">'+schema.name+'</option>');
-                });
-
-                $.each(schemas, function (key, schema) {
-                    $('#invoice_schema_id').append('<option value="'+schema.id+'">'+schema.name+'</option>');
-                });
-            }
-        });
-    }
-    getAllInvoiceSchemas();
-
-    function getAllInvoiceLayouts(){
-        $.ajax({
-            url:"{{ route('settings.all.invoice.layouts') }}",
-            type:'get',
-            success:function(loyouts){
-                $.each(loyouts, function (key, loyout) {
-                    $('#e_add_sale_invoice_layout_id').append('<option value="'+loyout.id+'">'+loyout.name+'</option>');
-                });
-
-                $.each(loyouts, function (key, loyout) {
-                    $('#e_pos_sale_invoice_layout_id').append('<option value="'+loyout.id+'">'+loyout.name+'</option>');
-                });
-
-                $.each(loyouts, function (key, loyout) {
-                    $('#add_sale_invoice_layout_id').append('<option value="'+loyout.id+'">'+loyout.name+'</option>');
-                });
-
-                $.each(loyouts, function (key, loyout) {
-                    $('#pos_sale_invoice_layout_id').append('<option value="'+loyout.id+'">'+loyout.name+'</option>');
-                });
-            }
-        });
-    }
-    getAllInvoiceLayouts();
-
     // insert branch by ajax
     $.ajaxSetup({
         headers: {
@@ -341,6 +350,7 @@
                  $('.loading_button').hide();
                 return;
             }
+            
             $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
@@ -364,14 +374,16 @@
         $(document).on('click', '#edit', function(e){
             e.preventDefault();
             var url = $(this).attr('href');
+            $('.data_preloader').show();
             $.get(url, function(data) {
                 $('#edit-modal-body').html(data);
                 $('#editModal').modal('show');
+                $('.data_preloader').hide();
             });
         });
 
         // edit branch by ajax
-        $('#edit_branch_form').on('submit', function(e){
+        $(document).on('submit', '#edit_branch_form',function(e){
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
@@ -418,18 +430,9 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}
                     },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
@@ -446,6 +449,56 @@
                 success:function(data){
                     getAllBranch();
                     toastr.error(data.errorMsg, 'Error'); 
+                }
+            });
+        });
+
+        $(document).on('change', '#q_format', function () {
+            var val = $(this).val();
+            if (val == 2) {
+                $('#q_prefix').val("{{ date('Y') }}"+'/');
+                $('#q_prefix').prop('readonly', true);
+            }else{
+                $('#q_prefix').val("");
+                $('#q_prefix').prop('readonly', false);
+            }
+            previewInvoieId();
+        });
+
+        $(document).on('input', '#q_prefix', function () {previewInvoieId();});
+        $(document).on('input', '#q_start_from', function () {previewInvoieId();});
+
+        function previewInvoieId() {
+            var prefix = $('#q_prefix').val();
+            var start_from = $('#q_start_from').val();
+            $('#q_schema_preview').html('#'+prefix+start_from);
+        }
+
+        // Add category by ajax
+        $(document).on('submit', '#add_schema_form',function(e){
+            e.preventDefault();
+            $('.q_ld_btn').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url:url,
+                type:'post',
+                data: request,
+                success:function(data){
+                    toastr.success(data);
+                    $('#add_schema_form')[0].reset();
+                    $('.q_ld_btn').hide();
+                    $('#quickInvSchemaModal').modal('hide');
+                    $('#q_schema_preview').html('');
+                    $('#q_prefix').prop('readonly', false);
+                    $('#invoice_schema_id').append('<option SELECTED value="'+data.id+'">'+data.name+'</option>');
+                },
+                error: function(err) {
+                    $('.q_ld_btn').hide();
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_q_' + key + '').html(error[0]);
+                    });
                 }
             });
         });

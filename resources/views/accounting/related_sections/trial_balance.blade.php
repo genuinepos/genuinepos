@@ -74,6 +74,15 @@
                                                             {{ json_decode($generalSettings->business, true)['currency'] }}
                                                         </td>
                                                     </tr>
+
+                                                    <tr>
+                                                        <td class="text-start"><strong>Asset :</strong> </td>
+                                                        <td class="sp">
+                                                            <span class="total_physical_asset">0.00</span> 
+                                                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                        </td>
+                                                        <td class="sp">&nbsp;</td>
+                                                    </tr>
                 
                                                     <tr>
                                                         <td class="text-start"><strong>Account Balance :</strong> </td>
@@ -133,11 +142,11 @@
         $.ajax({
             url:"{{route('accounting.trial.balance.amounts')}}",
             success:function(amounts){
-                console.log(amounts);
                 $('.supplier_due').html(parseFloat(amounts.totalSupplierDue).toFixed(2));
                 $('.customer_return_due').html(parseFloat(amounts.totalCustomerReturnDue).toFixed(2));
                 $('.customer_due').html(parseFloat(amounts.totalCustomerDue).toFixed(2));
                 $('.supplier_return_due').html(parseFloat(amounts.totalSupplierReturnDue).toFixed(2));
+                $('.total_physical_asset').html(parseFloat(amounts.totalPhysicalAsset).toFixed(2));
                 $('.total_credit').html(parseFloat(amounts.totalCredit).toFixed(2));
                 $('.total_debit').html(parseFloat(amounts.totalDebit).toFixed(2));
                 

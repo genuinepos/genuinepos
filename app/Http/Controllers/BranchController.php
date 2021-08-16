@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use Illuminate\Http\Request;
+use App\Models\InvoiceSchema;
 use Illuminate\Support\Facades\DB;
 
 class BranchController extends Controller
@@ -20,7 +21,10 @@ class BranchController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        return view('settings.branches.index');
+        $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
+        $invSchemas = DB::table('invoice_schemas')->select('id', 'name')->get();
+        $invLayouts = DB::table('invoice_layouts')->select('id', 'name')->get();
+        return view('settings.branches.index', compact('accounts', 'invSchemas', 'invLayouts'));
     }
 
     public function getAllBranch()
@@ -84,8 +88,17 @@ class BranchController extends Controller
         $addBranch->save();
         return response()->json('Branch created successfully');
     }
+
+    public function edit($branchId)
+    {
+        $branch = DB::table('branches')->where('id', $branchId)->first();
+        $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
+        $invSchemas = DB::table('invoice_schemas')->select('id', 'name')->get();
+        $invLayouts = DB::table('invoice_layouts')->select('id', 'name')->get();
+        return view('settings.branches.ajax_view.edit', compact('branch', 'accounts', 'invSchemas', 'invLayouts'));
+    }
     
-    public function update(Request $request)
+    public function update(Request $request, $branchId)
     {
         $addons = DB::table('addons')->select('branches')->first();
         if ($addons->branches == 0) {
@@ -103,7 +116,7 @@ class BranchController extends Controller
             'logo' => 'sometimes|image|max:2048',
         ]);
 
-        $updateBranch = Branch::where('id', $request->id)->first();
+        $updateBranch = Branch::where('id', $branchId)->first();
         $updateBranch->name = $request->name;
         $updateBranch->branch_code = $request->code;
         $updateBranch->phone = $request->phone;
@@ -164,5 +177,29 @@ class BranchController extends Controller
     {
         $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
         return response()->json($accounts);
+    }
+
+    public function quickInvoiceSchema(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|unique:invoice_schemas,name',
+            'prefix' => 'required',
+        ]);
+
+        $addSchema = new InvoiceSchema();
+        $addSchema->name = $request->name;
+        $addSchema->format = $request->format;
+        $addSchema->prefix = $request->prefix;
+        $addSchema->start_from = $request->start_from;
+        $addSchema->save();
+
+        $invoiceSchemas = DB::table('invoice_schemas')->get();
+        if (count($invoiceSchemas) == 1) {
+            $defaultSchema = InvoiceSchema::first();
+            $defaultSchema->is_default = 1;
+            $defaultSchema->save();
+        }
+
+        return response()->json($addSchema);
     }
 }

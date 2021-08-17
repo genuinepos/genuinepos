@@ -1,4 +1,4 @@
-    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/fontawesome/css/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/bootstrap.min.css') }}">
     {{-- <link rel="stylesheet" href="{{asset('public/backend/asset/css/selectize.css')}}"> --}}
     {{-- <link rel="stylesheet" href="{{asset('public/backend/asset/css/dropzone.css')}}"> --}}
@@ -12,7 +12,7 @@
     {{-- <link href="{{ asset('public/backend/css/jquery-ui-1.8.18.custom.css') }}" rel="stylesheet" type="text/css"> --}}
     <link href="{{ asset('public/backend/css/data-table.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/backend/css/form.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('public/backend/css/ui-elements.css') }}" rel="stylesheet" type="text/css">
+    {{-- <link href="{{ asset('public/backend/css/ui-elements.css') }}" rel="stylesheet" type="text/css"> --}}
     <link href="{{ asset('public/backend/css/wizard.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/backend/css/sprite.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/backend/css/gradient.css') }}" rel="stylesheet" type="text/css">

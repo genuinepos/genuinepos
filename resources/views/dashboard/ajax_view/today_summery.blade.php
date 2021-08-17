@@ -25,16 +25,20 @@
     <div class="today_summery_area mt-2">
         <div class="print_today_summery_header d-none">
             <div class="row text-center">
-                <h4>
-                    @if ($branch_id == 'HF')
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
-                    @elseif($branch_id == '')
-                         All Business Locations.
-                    @else 
-                        {{ $branch->name.'/'.$branch->branch_code }}
-                    @endif
-                    {{-- SpeedDigit Computers <b>(Head Office)</b> --}}
-                </h4>
+                @if ($addons->branches == 1)
+                    <h4>
+                        @if ($branch_id == 'HF')
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                        @elseif($branch_id == '')
+                            All Business Locations.
+                        @else 
+                            {{ $branch->name.'/'.$branch->branch_code }}
+                        @endif
+                        {{-- SpeedDigit Computers <b>(Head Office)</b> --}}
+                    </h4>
+                @else 
+                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                @endif
             </div>
 
             <div class="row text-center">

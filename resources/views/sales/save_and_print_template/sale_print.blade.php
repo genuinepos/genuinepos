@@ -1,4 +1,6 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
+@php 
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+@endphp 
 <!-- Sale print templete-->
 @if ($sale->branch && $sale->branch->add_sale_invoice_layout)
     @if ($sale->branch->add_sale_invoice_layout->layout_design == 1)

@@ -79,9 +79,6 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
         Route::get('edit/{attendanceId}', 'AttendanceController@edit')->name('hrm.attendance.edit');
         Route::post('update', 'AttendanceController@update')->name('hrm.attendance.update');
         Route::delete('delete/{attendanceId}', 'AttendanceController@delete')->name('hrm.attendance.delete');
-
-        // Route::get('/ajax-all-leavetype', 'attendancecontroller@getleavetype')->name('hrm.get.all.leavetype');
-        // Route::post('/hrm/shift/update', 'attendancecontroller@updateshift')->name('hrm.shift.update');
     });
 
     //Attendance  routes group

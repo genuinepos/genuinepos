@@ -112,7 +112,7 @@
 
                 @if ($addons->hrm)
                     <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
-                        <a href="#">
+                        <a href="{{ route('hrm.dashboard.index') }}">
                             <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
                             <p class="title">@lang('menu.hrm')</p>
                         </a>
@@ -171,7 +171,6 @@
     </div>
     <div class="category-bar">
         <div id="sidebar_t">
-            <!-- ===========================================DASHBOARD SIDEBAR=================== -->
             <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="product">
                 <div class="sub-menu-width">
@@ -450,7 +449,6 @@
                         </div>
                     </div>
                 @else
-
                     @if (auth()->user()->branch_id && auth()->user()->branch->purchase_permission == 1)
                         @if (auth()->user()->permission->purchase['purchase_all'] == '1')
                             <div class="sub-menu_t" id="purchases">
@@ -709,7 +707,6 @@
                 </div>
             @endif
             <!-- ===========================================SETTING SIDEBAR=================== -->
-
             @if (json_decode($generalSettings->modules, true)['stock_adjustment'] == '1')
                 @if (auth()->user()->permission->s_adjust['adjustment_all'] == '1')
                     <div class="sub-menu_t" id="adjustment">
@@ -963,114 +960,6 @@
                 </div>
             @endif
 
-            <div class="sub-menu_t" id="hrm">
-                <div class="sub-menu-width">
-                    <div class="model__close bg-secondary-2">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>Human Resource Management </strong></p>
-                            </div>
-                            <div class="col-md-4">
-                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.dashboard.index') }}" class="bar-link">
-                                        <span><i class="fas fa-tachometer-alt"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.hrm_dashboard')</p>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.leave.type') }}" class="bar-link">
-                                        <span><i class="fas fa-th-large"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.leave_type')</p>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.leave') }}" class="bar-link">
-                                        <span><i class="fas fa-level-down-alt"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.leave')</p>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.attendance.shift') }}" class="bar-link">
-                                        <span><i class="fas fa-network-wired"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.shift')</p>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.attendance') }}" class="bar-link">
-                                        <span><i class="fas fa-paste"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.attendance')</p>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.allowance') }}" class="bar-link">
-                                        <span><i class="fas fa-plus"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.allowance_deduction')</p>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.payroll.index') }}" class="bar-link">
-                                        <span><i class="far fa-money-bill-alt"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.payroll')</p>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.holidays') }}" class="bar-link">
-                                        <span><i class="fas fa-toggle-off"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.holiday')</p>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.departments') }}" class="bar-link">
-                                        <span><i class="far fa-building"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.department')</p>
-                            </div>
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('hrm.designations') }}" class="bar-link">
-                                        <span><i class="fas fa-map-marker-alt"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.designation')</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
                 <div class="sub-menu_t" id="settings">
                     <div class="sub-menu-width">
@@ -1099,8 +988,7 @@
 
                                 @if ($addons->branches == 1)
                                     @if (auth()->user()->permission->setup['branch'] == '1')
-                                        <div
-                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                             <div class="switch_bar">
                                                 <a href="{{ route('settings.branches.index') }}" class="bar-link">
                                                     <span><i class="fas fa-project-diagram"></i></span>
@@ -1123,8 +1011,7 @@
                                     </div>
                                 @endif
 
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('settings.units.index') }}" class="bar-link">
                                             <span><i class="fas fa-weight-hanging"></i></span>
@@ -1267,8 +1154,7 @@
                                     <p class="switch_text">@lang('menu.supplier_report')</p>
                                 </div>
 
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.customer.index') }}" class="bar-link">
                                             <span><i class="far fa-id-card"></i></span>
@@ -1279,8 +1165,7 @@
                             @endif
 
                             @if (auth()->user()->permission->report['stock_report'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.stock.index') }}" class="bar-link">
                                             <span><i class="fas fa-sitemap"></i></span>
@@ -1315,8 +1200,7 @@
                             @endif
 
                             @if (auth()->user()->permission->report['pro_sale_report'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.product.sales.index') }}" class="bar-link">
                                             <span><i class="fas fa-cart-arrow-down"></i></span>

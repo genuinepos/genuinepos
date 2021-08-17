@@ -10,7 +10,7 @@
 @section('content')
     <section>
         <div class="main__content">
-            <!-- =====================================================================BODY CONTENT================== -->
+            <!-- ======================BODY CONTENT================== -->
             <div class="sec-name">
                 <div class="breadCrumbHolder module w-100">
                     <div id="breadCrumb3" class="breadCrumb module">
@@ -74,7 +74,7 @@
 
             <div class="card-title mt-2 ps-4">
                 <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
-                    <option value="">All Branch</option>
+                    <option value="">All Business Lacation</option>
                     <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                     @foreach ($branches as $branch)
                         <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>

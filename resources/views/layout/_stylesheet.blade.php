@@ -9,7 +9,7 @@
     <link href="{{ asset('public/backend/css/body.css') }}" rel="stylesheet" type="text/css">
     {{-- <link href="{{ asset('public/backend/css/shCore.css') }}" rel="stylesheet" type="text/css"> --}}
     {{-- <link href="{{ asset('public/backend/css/jquery.jqplot.css') }}" rel="stylesheet" type="text/css"> --}}
-    <link href="{{ asset('public/backend/css/jquery-ui-1.8.18.custom.css') }}" rel="stylesheet" type="text/css">
+    {{-- <link href="{{ asset('public/backend/css/jquery-ui-1.8.18.custom.css') }}" rel="stylesheet" type="text/css"> --}}
     <link href="{{ asset('public/backend/css/data-table.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/backend/css/form.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/backend/css/ui-elements.css') }}" rel="stylesheet" type="text/css">

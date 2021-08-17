@@ -5,8 +5,8 @@
 
 $(document).ready(function () {
     $('.main__nav ul li').on('click', function () {
-        $('.main__nav ul li').removeClass('active');
-        $(this).addClass('active');
+        $('.main__nav ul li').removeClass('menu_active');
+        $(this).addClass('menu_active');
         let menuID = $(this).data('menu')
         $('#sidebar_t div').removeClass('active');
         $('#' + menuID).addClass('active')

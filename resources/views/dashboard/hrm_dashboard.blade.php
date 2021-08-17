@@ -111,38 +111,6 @@
                                                     <td>CRM</td>
                                                     <td>15</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>HRM</td>
-                                                    <td>23</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>CRM</td>
-                                                    <td>15</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Marketing</td>
-                                                    <td>215</td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>

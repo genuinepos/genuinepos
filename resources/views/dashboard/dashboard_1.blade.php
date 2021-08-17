@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     <link href="{{ asset('public/backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('title', 'Dashboard - ')
@@ -10,7 +10,6 @@
             <div class="row">
                 <div class="main__content">
                     <div class="row mx-3 mt-3 switch_bar_cards">
-
                         <div class="switch_bar">
                             <a href="{{ route('sales.create') }}" class="bar-link">
                                 <span>
@@ -18,57 +17,64 @@
                                 </span>
                                 <p>Add Sale</p>
                             </a>
-                            
                         </div>
+
                         <div class="switch_bar">
                             <a href="{{ route('purchases.create') }}" class="bar-link">
                                 <span><i class="fas fa-shopping-basket"></i></span>
                                 <p>Add Purchase</p>
                             </a>
                         </div>
+
                         <div class="switch_bar">
                             <a href="{{ route('products.add.view') }}" class="bar-link">
                                 <span><i class="fas fa-plus-square"></i></span>
                                 <p>Add Product</p>
                             </a>
-                            
                         </div>
+
                         <div class="switch_bar">
                             <a href="{{ route('expanses.create') }}" class="bar-link">
                                 <span><i class="fas fa-money-bill"></i></span>
                                 <p>Add Expense</p>
                             </a>
                         </div>
+
                         <div class="switch_bar">
                             <a href="{{ route('stock.adjustments.create') }}" class="bar-link">
                                 <span><i class="fas fa-sliders-h"></i></span>
                                 <p>Add Adjustment</p>
                             </a>
                         </div>
+
                         <div class="switch_bar">
                             <a href="{{ route('users.create') }}" class="bar-link">
                                 <span><i class="fas fa-user-plus"></i></span>
                                 <p>Add User</p>
                             </a>
                         </div>
+
                         <div class="switch_bar">
                             <a href="{{ route('settings.general.index') }}" class="bar-link">
                                 <span><i class="fas fa-cogs"></i></span>
                                 <p>G.Settings</p>
                             </a>
                         </div>
+
                         <div class="switch_bar">
                             <a href="{{ route('product.categories.index') }}" class="bar-link">
                                 <span><i class="fas fa-cubes"></i></span>
                                 <p>Categories</p>
                             </a>
                         </div>
+
                         <div class="switch_bar">
                             <a href="{{ route('product.brands.index') }}" class="bar-link">
                                 <span><i class="fas fa-band-aid"></i></span>
                                 <p>Brands</p>
                             </a>
                         </div>
+
                         <div class="switch_bar">
                             <a href="{{ route('contacts.supplier.index') }}" class="bar-link">
                                 <span><i class="fas fa-users"></i></span>
@@ -619,8 +625,7 @@
                         $('#total_expense').html(__currency + ' ' + parseFloat(data.totalExpense).toFixed(2));
                         $('#total_user').html(data.users);
                         $('#total_product').html(data.products);
-                        $('#total_adjustment').html(__currency + ' ' + parseFloat(data.total_adjustment)
-                            .toFixed(2));
+                        $('#total_adjustment').html(__currency + ' ' + parseFloat(data.total_adjustment).toFixed(2));
                     }
                 });
             }

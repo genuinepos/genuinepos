@@ -1,3 +1,6 @@
+@php
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+@endphp
 <style>
     .payment_top_card {background: #d7dfe8;}
     .payment_top_card span {font-size: 12px;font-weight: 400;}
@@ -49,8 +52,12 @@
                                 <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                                     <span class="total_due">{{ $purchase->due }}</span>
                                 </li>
-                                <li><strong>Date : </strong><span
-                                        class="purchase_date">{{ $purchase->date . ' ' . $purchase->time }}</span> </li>
+                                <li>
+                                    <strong>Date : </strong>
+                                    {{ 
+                                        date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) 
+                                    }}
+                                </li>
                                 <li><strong>Purchase Status : </strong>
                                     @if ($purchase->purchase_status == 1)
                                         <span class="text-success"><b>Received</b></span>

@@ -1,3 +1,6 @@
+@php
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+@endphp 
 <style>
     .payment_top_card {background: #d7dfe8;}
     .payment_top_card span {font-size: 12px;font-weight: 400;}
@@ -38,7 +41,7 @@
                                     {{ $payment->purchase->invoice_id }}
                                 </li>
                                 <li><strong>B.Location : </strong>
-                                    {{ $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : 'Head Office' }}
+                                    {!! $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(<b>HO</b>)' !!}
                                 </li>
                             </ul>
                         </div>
@@ -50,7 +53,11 @@
                                 <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                                     <span class="total_due">{{ $payment->purchase->due }}</span>
                                 </li>
-                                <li><strong>Date : </strong>{{ $payment->purchase->date . ' ' . $payment->purchase->time }}</span> </li>
+                                <li><strong>Date : </strong>
+                                    {{ 
+                                        date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->purchase->date)) . ' ' . date($timeFormat, strtotime($payment->purchase->time)) 
+                                    }}
+                                </span> </li>
                                 <li><strong>Purchase Status : </strong>
                                     @if ($payment->purchase->purchase_status == 1)
                                         <span class="text-success"><b>Received</b></span>

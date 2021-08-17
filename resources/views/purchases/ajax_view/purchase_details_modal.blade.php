@@ -1,4 +1,7 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
+@php 
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+@endphp 
  <!-- Details Modal -->
  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-full-display">
@@ -49,8 +52,9 @@
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . $purchase->time }}</li>
+                             <li><strong>Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                              <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
+
                              <li>
                                 <strong>Purchase Status : </strong>
                                 @if ($purchase->purchase_status == 1)
@@ -61,6 +65,7 @@
                                     <span class="badge bg-primary">Ordered</span>
                                 @endif
                              </li>
+
                              <li><strong>Payment Status : </strong>
                                 @php
                                     $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
@@ -182,7 +187,7 @@
                      <div class="col-md-6">
                          <div class="table-responsive">
                             <table class="table modal-table table-sm">
-                                <tr >
+                                <tr>
                                     <th class="text-start">Net Total Amount</th>
                                     <td class="text-start"> <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
                                            {{ $purchase->net_total_amount }} 
@@ -192,7 +197,7 @@
                                     <th class="text-start">Purchase Discount</th>
                                     <td class="text-start">
                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
-                                           {{ $purchase->order_discount }} {{$purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
+                                           {{ $purchase->order_discount }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                    </td>
                                 </tr>
                                 <tr>
@@ -319,7 +324,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . $purchase->time }}</li>
+                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>Purchase Status : </strong>
                                 <span class="purchase_status">
@@ -345,7 +350,7 @@
                                @endif
                             </li>
                             <li><strong>Created By : </strong>
-                                   {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
+                                {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
                             </li>
                         </ul>
                     </div>

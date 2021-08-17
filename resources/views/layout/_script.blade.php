@@ -11,7 +11,7 @@
     {{-- <script src="{{ asset('public/backend/asset/js/selectize.js') }}"></script> --}}
     {{-- <script src="{{ asset('public/backend/asset/js/apexcharts.js') }}"></script> --}}
     {{-- <script src="{{ asset('public/backend/asset/js/canvas-main.js') }}"></script> --}}
-
+    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>

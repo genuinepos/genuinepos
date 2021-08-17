@@ -319,7 +319,6 @@
     @endif
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
     <script>
         $('.data_preloader').show();

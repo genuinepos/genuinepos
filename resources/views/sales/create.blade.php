@@ -704,7 +704,6 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script>
         // Get all price group
         var price_groups = '';

@@ -483,7 +483,6 @@
     <!--add money receipt Modal End-->
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script>
         // Get all customer by ajax
         function getAllCustomer() {

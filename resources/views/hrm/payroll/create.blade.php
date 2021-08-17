@@ -1,15 +1,8 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {
-            border: 1px solid #7e0d3d;
-        }
-
-        b {
-            font-weight: 500;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
+        .form_element {border: 1px solid #7e0d3d;}
+        b {font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
 @endpush
 @section('content')

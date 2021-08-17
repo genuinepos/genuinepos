@@ -1,4 +1,6 @@
-<!--begin::Form-->
+@php
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+@endphp
 <style>
     .payment_top_card {background: #d7dfe8;}
     .payment_top_card span {font-size: 12px;font-weight: 400;}
@@ -57,7 +59,7 @@
                         <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                         {{ $purchase->due }}
                     </li>
-                    <li><strong>Date : </strong>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date))  . ' ' . $purchase->time }} </li>
+                    <li><strong>Date : </strong>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
                     <li><strong>Purchase Status : </strong>
                         @if ($purchase->purchase_status == 1)
                             <span class="text-success"><b>Received</b></span>
@@ -68,17 +70,16 @@
                         @endif
                     </li>
                     <li><strong>Payment Status : </strong>
-                            @php
-                                $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
-                            @endphp
-                            @if ($purchase->due <= 0)
-                                <span class="text-success"><b>Paid</b></span>
-                            @elseif($purchase->due > 0 && $purchase->due < $payable) 
-                                <span class="text-primary"><b>Partial</b></span>
-                            @elseif($payable == $purchase->due)
-                                <span class="text-danger"><b>Due</b></span>
-                            @endif
-                       
+                        @php
+                            $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
+                        @endphp
+                        @if ($purchase->due <= 0)
+                            <span class="text-success"><b>Paid</b></span>
+                        @elseif($purchase->due > 0 && $purchase->due < $payable) 
+                            <span class="text-primary"><b>Partial</b></span>
+                        @elseif($payable == $purchase->due)
+                            <span class="text-danger"><b>Due</b></span>
+                        @endif
                     </li>
                 </ul>
             </div>

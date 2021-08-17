@@ -369,7 +369,6 @@
 
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script>
         // Set accounts in payment and payment edit form
         var ex_categories = '';

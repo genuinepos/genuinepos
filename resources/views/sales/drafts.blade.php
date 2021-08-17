@@ -129,8 +129,6 @@
 @push('scripts')
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
-
     <script>
         // Show session message by toster alert.
         @if (Session::has('successMsg'))

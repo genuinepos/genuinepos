@@ -220,7 +220,6 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script>
         // Calculate total amount functionalitie
         function calculateTotalAmount(){

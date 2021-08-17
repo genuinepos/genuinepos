@@ -1,3 +1,6 @@
+@php
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+@endphp
 <div class="sale_payment_print_area">
     <div class="header_area">
         <div class="company_name text-center">
@@ -116,7 +119,7 @@
                         <tr>
                             <th width="50%" class="text-start">Paid On :</th>
                             <td width="50%" class="text-navy-blue">
-                                {{date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date))  . ' ' . $payment->time }}
+                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date))  . ' ' . date($timeFormat, strtotime($payment->time)) }}
                             </td>
                         </tr>
 

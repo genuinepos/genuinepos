@@ -36,9 +36,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> Reference ID : </strong>
-                                    {{ $purchase->invoice_id }}
-                                </li>
+                                <li><strong> Reference ID : </strong>{{ $purchase->invoice_id }}</li>
                                 <li><strong>B.Location : </strong>
                                     {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (Head Office)' }}
                                 </li>

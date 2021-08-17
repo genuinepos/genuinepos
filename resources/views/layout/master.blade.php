@@ -46,7 +46,7 @@
 
                     </div>
                     <div class="print-button-area">
-                        <a href="" class="btn btn-sm btn-primary float-end">Print</a>
+                        <a href="#" class="btn btn-sm btn-primary float-end" id="today_summery_print_btn">Print</a>
                     </div>
                 </div>
             </div>
@@ -78,6 +78,23 @@
 
         $(document).on('change', '#today_branch_id',function () {
             todaySummery();
+        });
+
+        $(document).on('click', '#today_summery_print_btn', function (e) {
+            e.preventDefault();
+            var body = $('.print_body').html();
+            var header = $('.print_today_summery_header').html();
+            var footer = $('.print_today_summery_footer').html();
+            $(body).printThis({
+                debug: false,                   
+                importCSS: true,                
+                importStyle: true,          
+                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
+                removeInline: true, 
+                printDelay: 500, 
+                header: header,  
+                footer: footer
+            });
         });
     </script>
     <!-- Logout form for global -->

@@ -198,9 +198,7 @@
     <!-- Opening stock Modal-->
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
 <!--Data table js active link-->
-
 <script>
     $('.loading_button').hide();
     // Filter toggle

@@ -68,7 +68,6 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",

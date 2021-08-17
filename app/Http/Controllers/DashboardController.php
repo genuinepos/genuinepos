@@ -396,13 +396,13 @@ class DashboardController extends Controller
         );
 
         $purchaseReturnQuery = DB::table('purchase_returns')->select(
-            DB::raw('sum(total_return_amount) as total_return'),
+            DB::raw('sum(total_return_amount) as total_return')
         );
 
         $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
             DB::raw('sum(order_discount) as total_discount'),
-            DB::raw('sum(shipment_charge) as total_shipment_charge'),
+            DB::raw('sum(shipment_charge) as total_shipment_charge')
         );
 
         $saleReturnQuery = DB::table('sale_returns')

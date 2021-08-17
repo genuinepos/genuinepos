@@ -28,16 +28,15 @@
                 @if ($addons->branches == 1)
                     <h4>
                         @if ($branch_id == 'HF')
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} <strong>(Head Office)</strong>
                         @elseif($branch_id == '')
                             All Business Locations.
                         @else 
                             {{ $branch->name.'/'.$branch->branch_code }}
                         @endif
-                        {{-- SpeedDigit Computers <b>(Head Office)</b> --}}
                     </h4>
                 @else 
-                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <strong>(Head Office)</strong>
                 @endif
             </div>
 
@@ -138,10 +137,10 @@
             <br><br>
             <div class="row">
                 <div class="col-6">
-                    <p><b>CHECKED BY :</b></p>
+                    <p><strong>CHECKED BY :</strong></p>
                 </div>
                 <div class="col-6 text-end">
-                    <p><b>APPROVED BY :</b></p>
+                    <p><strong>APPROVED BY :</strong></p>
                 </div>
             </div>
         </div>

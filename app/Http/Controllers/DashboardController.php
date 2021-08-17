@@ -377,7 +377,7 @@ class DashboardController extends Controller
         $total_recovered = 0;
         $totalTransferShippingCost = 0;
         $purchaseTotalShipmentCost = 0;
-        // $totalPayroll = 0;
+        $totalPayroll = 0;
 
         $purchases = '';
         $purchaseReturn = '';

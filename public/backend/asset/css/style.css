@@ -816,9 +816,7 @@ a.forget-pw:hover {
     background: linear-gradient(#00aebd, #273245);
 }
 
-
 /* ===========================================registar form================ */
-
 .required-mark:after {
     content: "*";
     color: #fb2222;
@@ -826,9 +824,7 @@ a.forget-pw:hover {
     padding-left: 3px;
 }
 
-
 /* ======================model====================================================== */
-
 .model-sec {
     margin-bottom: 20px;
     padding-bottom: 20px;
@@ -836,9 +832,7 @@ a.forget-pw:hover {
     display: flex;
 }
 
-
 /* =======================================wizard style========================== */
-
 li#stepy_form-title-0 div {
     height: 11px;
     font-size: 12px;
@@ -882,7 +876,6 @@ div#wizard {
 
 
 /* ============================content post=========================== */
-
 legend {
     width: auto;
     padding: 0 7px;
@@ -970,9 +963,7 @@ legend {
     z-index: 0;
 }
 
-
 /* =================================T Dashboard========================= */
-
 .main__nav_t ul li a img {
     width: 35px;
     height: 45px;
@@ -1131,7 +1122,6 @@ span.menu-title-t {
 
 
 /* =========================================================== */
-
 @media (min-width: 551px) and (max-width: 768px) {
     .main__nav_t ul li a {
         color: #fff;
@@ -1187,15 +1177,12 @@ span.menu-title-t {
     border-radius: 10px;
 }
 
-
 /* ==========================gellery style=========================== */
-
 .mosaic-block.fade:not(.show) {
     opacity: 1;
 }
 
 /* =================================MAKE CALE PAGE========================= */
-
 .cs-btn-bg {
     border: 3px solid;
     border-color: var(--main-color-alt);

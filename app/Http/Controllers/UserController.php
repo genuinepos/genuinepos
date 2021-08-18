@@ -358,10 +358,11 @@ class UserController extends Controller
     // Delete user
     public function delete($userId)
     {
+        
         if (auth()->user()->permission->user['user_delete'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-
+        
         $deleteUser = AdminAndUser::find($userId);
 
         if ($deleteUser->role_type == 1) {

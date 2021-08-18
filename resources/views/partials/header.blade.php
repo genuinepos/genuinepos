@@ -4,9 +4,8 @@
         <div class="panel__nav">
             <div class=" top-menu">
                 <div class="logo__sec">
-                    <a href="" class="logo">
-                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                        
+                    <a href="{{ route('dashboard.dashboard') }}" class="logo">
+                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img"> 
                     </a>
                 </div>
                 <div class="notify-menu">

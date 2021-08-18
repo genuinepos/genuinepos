@@ -19,7 +19,7 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
-                        <div class="sec-name">
+                        {{-- <div class="sec-name">
                             <div class="col-md-6 col-sm-12">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <!-- =========================================top section button=================== -->

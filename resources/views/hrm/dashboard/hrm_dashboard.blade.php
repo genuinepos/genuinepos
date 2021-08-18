@@ -72,16 +72,18 @@
                 </h1>
             </div>
 
-            <div class="card-title mt-2 ps-4">
-                <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
-                    <option value="">All Business Lacation</option>
-                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                    @foreach ($branches as $branch)
-                        <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
-                    @endforeach
-                </select>
-            </div>
-
+            @if ($addons->branches == 1)
+                <div class="card-title mt-2 ps-4">
+                    <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
+                        <option value="">All Business Lacation</option>
+                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                        @foreach ($branches as $branch)
+                            <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
+           
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -281,28 +283,5 @@
             getTodayAttTable();
             getLeaveTable();
         });
-
-        // const attendanceTable = $('#attendance_table').DataTable({
-        //     dom: "Bfrtip",
-        //     buttons: ["excel", "pdf", "print"],
-        //     pageLength: 5,
-        // });
-
-        // const leaveApplicationTable = $('#leave_application_table').DataTable({
-        //     dom: "Bfrtip",
-        //     pageLength: 6,
-        //     ordering: false,
-        //     info: false,
-        //     // searching: false,
-        // });
-
-        // const holidaysTable = $('#holidays_table').DataTable({
-        //     dom: "Bfrtip",
-        //     pageLength: 5,
-        //     ordering: false,
-        //     info: false,
-        //     // searching: false,
-        // });
-
     </script>
 @endpush

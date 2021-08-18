@@ -538,13 +538,11 @@
                     $('.error').html('');
                     $('.form-control').removeClass('is-invalid');
                     $.each(err.responseJSON.errors, function(key, error) {
-                        //console.log(key);
                         $('.error_' + key + '').html(error[0]);
                         $('#' + key).addClass('is-invalid');
                     });
                 }
             });
         });
-
     </script>
 @endpush

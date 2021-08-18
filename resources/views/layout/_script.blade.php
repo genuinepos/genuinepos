@@ -120,7 +120,7 @@
                     'No': {
                         'btnClass': 'no btn-danger',
                         'action': function() {
-                            // alert('Deleted canceled.')
+                             console.log('Deleted canceled.');
                         } 
                     }
                 }

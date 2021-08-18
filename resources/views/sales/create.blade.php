@@ -9,7 +9,7 @@
         .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
-        b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        b{font-weight: 500; font-family: Arial, Helvetica, sans-serif;}
         #display_pre_due{font-weight: 800;}
     </style>
 @endpush

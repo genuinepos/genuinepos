@@ -1,25 +1,9 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {
-            border: 1px solid #7e0d3d;
-        }
-
-        b {
-            font-weight: 500;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        @media only screen and (max-width: 770px) {
-            .sm-mt-65 {
-                margin-top: 65px !important;
-            }
-
-            .row {
-                --bs-gutter-x: 0.5rem !important;
-            }
-        }
-
+        .form_element {border: 1px solid #7e0d3d;}
+        b {font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        @media only screen and (max-width: 770px) {.sm-mt-65 {margin-top: 65px !important;}.row {--bs-gutter-x: 0.5rem !important;}}
     </style>
 @endpush
 @section('content')
@@ -63,7 +47,7 @@
                                                             </div>
                                                             <input type="password" name="current_password"
                                                                 class="form-control" autocomplete="off"
-                                                                placeholder="New password">
+                                                                placeholder="Current password">
                                                         </div>
                                                         <span class="error error_password"></span>
                                                     </div>

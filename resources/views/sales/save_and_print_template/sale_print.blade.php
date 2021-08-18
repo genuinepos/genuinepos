@@ -11,7 +11,7 @@
 <!-- Sale print templete end-->
 <script>
     var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
-      var b= ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+    var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
   
       function inWords (num) {
           if ((num = num.toString()).length > 9) return 'overflow';

@@ -36,7 +36,7 @@
                         @endif
                     </h4>
                 @else 
-                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <strong>(Head Office)</strong>
+                    <h4>{{ json_decode($generalSettings->business, true)['shop_name'] }} <strong>(HO)</strong></h4>
                 @endif
             </div>
 

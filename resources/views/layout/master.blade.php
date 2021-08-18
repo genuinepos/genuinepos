@@ -28,7 +28,7 @@
         </div>
         <footer>
             <div class="logo_wrapper">
-                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="" class="logo">
+                <img src="{{ asset('public/backend/images/static/app_logo.png') }}" class="logo">
             </div>
         </footer>
     </div>

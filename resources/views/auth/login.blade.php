@@ -77,9 +77,8 @@
                                             Genuine Point Of Sale
                                         </h2> --}}
                                         <div class="px-2">
-                                            <p class="logo-main-sec"><img
-                                                    src="{{ asset('public/assets/images/genuine_pos.png') }}" alt="POS"
-                                                    class="logo">
+                                            <p class="logo-main-sec">
+                                                <img src="{{ asset('public/backend/images/static/app_logo.png') }}" class="logo">
                                             </p>
                                             <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>
                                             <p class="details"><span>Support:</span> support@speeddigit.com</p>

@@ -103,7 +103,14 @@
                             @endif
                         </div>
 
+                        <div class="switch_bar">
+                            <a href="{{ route('contacts.customer.index') }}" class="bar-link">
+                                <span><i class="fas fa-plus-square"></i></span>
+                                <p>Add Shortcut</p>
+                            </a>
+                        </div>
                     </div>
+
                     <div class="">
                         <div class="row mx-2 mt-3">
                             <div class="d-flex justify-content-between align-items-center">

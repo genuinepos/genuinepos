@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 
-class CategoryControlle extends Controller
+class CategoryController extends Controller
 {
     public function __construct()
     {
@@ -33,7 +32,6 @@ class CategoryControlle extends Controller
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="'.$img_url.'/'.$row->photo.'">';
             })
             ->addColumn('action', function($row) {
-                // return $action_btn;
                 $html = '<div class="dropdown table-dropdown">';
                 if (auth()->user()->permission->category['category_edit'] == '1'){
                     $html .= '<a href="javascript:;" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
@@ -56,16 +54,8 @@ class CategoryControlle extends Controller
         return view('product.categories.index');
     }
 
-    // // Get all category by ajax
-    // public function getAllCategory()
-    // {
-    //     $categories = Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
-    //     return view('product.categories.ajax_view.category_list', compact('categories'));
-    // }
-
     public function store(Request $request)
     {
-        // return $request->all();
         $this->validate($request, [
             'name' => 'required|unique:categories,name',
             'photo' => 'sometimes|image|max:2048',
@@ -95,7 +85,6 @@ class CategoryControlle extends Controller
 
     public function update(Request $request)
     {
-        //return $request->all();
         $this->validate($request, [
             'name' => 'required|unique:categories,name,'.$request->id,
             'photo' => 'sometimes|image|max:2048',
@@ -126,7 +115,6 @@ class CategoryControlle extends Controller
 
     public function delete(Request $request, $categoryId)
     {
-        //return $categoryId;
         $deleteCategory = Category::find($categoryId);
         if ($deleteCategory->photo !== 'default.png') {
             if (file_exists(public_path('uploads/category/'.$deleteCategory->photo))) {

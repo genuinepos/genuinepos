@@ -31,12 +31,12 @@ Route::post('change-current-password', [ResetPasswordController::class, 'resetCu
 Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], function () {
     // Branch route group
     Route::group(['prefix' => 'categories'], function () {
-        Route::get('/', 'CategoryControlle@index')->name('product.categories.index');
-        Route::get('form/category', 'CategoryControlle@getAllFormCategory')->name('product.categories.all.category.form');
-        Route::post('store', 'CategoryControlle@store')->name('product.categories.store');
-        Route::get('edit/{categoryId}', 'CategoryControlle@edit')->name('product.categories.edit');
-        Route::post('update', 'CategoryControlle@update')->name('product.categories.update');
-        Route::delete('delete/{categoryId}', 'CategoryControlle@delete')->name('product.categories.delete');
+        Route::get('/', 'CategoryController@index')->name('product.categories.index');
+        Route::get('form/category', 'CategoryController@getAllFormCategory')->name('product.categories.all.category.form');
+        Route::post('store', 'CategoryController@store')->name('product.categories.store');
+        Route::get('edit/{categoryId}', 'CategoryController@edit')->name('product.categories.edit');
+        Route::post('update', 'CategoryController@update')->name('product.categories.update');
+        Route::delete('delete/{categoryId}', 'CategoryController@delete')->name('product.categories.delete');
     });
 
     Route::group(['prefix' => 'sub-categories'], function () {

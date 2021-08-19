@@ -885,12 +885,6 @@ Route::get('/test', function () {
     // return $r;
     // $mac = exec('getmac');
     // return $strtok = strtok($mac, ' ');
-    function myFunction($name, $callback)
-    {
-        echo $callback($name);
-    }
-
-    myFunction('Harrison Roy', fn($name) => $name);
 });
 
 // All authenticated routes

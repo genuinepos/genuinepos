@@ -254,17 +254,7 @@
                 "searchable": false
             }],
             columns: [
-                {data: 'action'},
-                {data: 'date', name: 'date'},
-                {data: 'invoice_id', name: 'invoice_id'},
-                {data: 'from', name: 'from'},
-                {data: 'customer', name: 'customer'},
-                {data: 'total_payable_amount', name: 'total_payable_amount'},
-                {data: 'paid', name: 'paid'},
-                {data: 'due', name: 'due'},
-                {data: 'paid_status', name: 'paid_status'},
-                {data: 'sale_return_amount', name: 'sale_return_amount'},
-                {data: 'sale_return_due', name: 'sale_return_due'},
+                {data: 'action'},{data: 'date', name: 'date'},{data: 'invoice_id', name: 'invoice_id'},{data: 'from', name: 'from'},{data: 'customer', name: 'customer'},{data: 'total_payable_amount', name: 'total_payable_amount'},{data: 'paid', name: 'paid'},{data: 'due', name: 'due'},{data: 'paid_status', name: 'paid_status'},{data: 'sale_return_amount', name: 'sale_return_amount'},{data: 'sale_return_due', name: 'sale_return_due'},
             ],fnDrawCallback: function() {
                 $('.data_preloader').hide();
             },

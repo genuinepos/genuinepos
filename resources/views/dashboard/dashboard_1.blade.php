@@ -102,7 +102,7 @@
                         </div>
 
                         <div class="switch_bar">
-                            <a href="#" class="bar-link">
+                            <a href="#" class="bar-link" id="addShortcutBtn">
                                 <span><i class="fas fa-plus-square text-success"></i></span>
                                 <p>Add Shortcut</p>
                             </a>
@@ -415,91 +415,34 @@
                 </div>
             </div>
         </div>
+
+        <!--Add Payment modal-->
+        <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog four-col-modal" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="payment_heading">Add Shortcut Menus</h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body" id="modal-body_shortcuts">
+                        <!--begin::Form-->
+                    </div>
+                </div>
+            </div>
+        </div>
     @else
         <div id="dashboard" class="pb-5">
             <div class="row">
                 <div class="main__content">
-                    <div class="row mx-3 mt-3">
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-chart-line"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-group"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-receipt"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-home"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-file-invoice"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-chart-pie"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-chart-line"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-group"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-receipt"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-home"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-file-invoice"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                        <div class="switch_bar">
-                            <a href="#" class="bar-link">
-                                <span><i class="fas fa-chart-pie"></i></span>
-                                <p></p>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
-
+            <br><br><br>
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h1 class="text-primary">Welcome,
-                        {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}!</h1>
+                    <h1 class="text-primary display-5">Welcome,
+                        <strong>{{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}!</strong> 
+                    </h1>
                 </div>
             </div>
         </div>
@@ -550,12 +493,7 @@
                     "url": "{{ route('dashboard.sale.order') }}",
                     "data": function(d) {d.branch_id = $('#branch_id').val();d.date_range = $('#date_range').val();}
                 },
-                columns: [{data: 'date',name: 'date'},
-                    {data: 'invoice_id',name: 'invoice_id'},
-                    {data: 'from',name: 'from'},
-                    {data: 'customer',name: 'customer'},
-                    {data: 'shipment_status',name: 'shipment_status'},
-                    {data: 'created_by',name: 'created_by'},
+                columns: [{data: 'date',name: 'date'},{data: 'invoice_id',name: 'invoice_id'},{data: 'from',name: 'from'},{data: 'customer',name: 'customer'},{data: 'shipment_status',name: 'shipment_status'},{data: 'created_by',name: 'created_by'},
                 ],
             });
 
@@ -571,11 +509,7 @@
                     "url": "{{ route('dashboard.sale.due') }}",
                     "data": function(d) {d.branch_id = $('#branch_id').val();d.date_range = $('#date_range').val();}
                 },
-                columns: [{data: 'customer',name: 'customer'},
-                    {data: 'invoice_id',name: 'invoice_id'},
-                    {data: 'from',name: 'from'},
-                    {data: 'due',name: 'due'},
-                ],
+                columns: [{data: 'customer',name: 'customer'},{data: 'invoice_id',name: 'invoice_id'},{data: 'from',name: 'from'},{data: 'due',name: 'due'},],
             });
 
             var purchase_due_table = $('.purchase_due_table').DataTable({
@@ -590,11 +524,7 @@
                     "url": "{{ route('dashboard.purchase.due') }}",
                     "data": function(d) {d.branch_id = $('#branch_id').val();d.date_range = $('#date_range').val();}
                 },
-                columns: [{data: 'sup_name',name: 'sup_name'},
-                    {data: 'invoice_id',name: 'invoice_id'},
-                    {data: 'from',name: 'from'},
-                    {data: 'due',name: 'due'},
-                ],
+                columns: [{data: 'sup_name',name: 'sup_name'},{data: 'invoice_id',name: 'invoice_id'},{data: 'from',name: 'from'},{data: 'due',name: 'due'},],
             });
 
             var __currency = "{{ json_decode($generalSettings->business, true)['currency'] }}";
@@ -624,6 +554,10 @@
             }
             getCardAmount();
 
+            $(document).on('click', '#addShortcutBtn', function (e) {
+               e.preventDefault();
+               $('#shortcutMenuModal').modal('show');
+            });
         </script>
     @endif
 @endpush

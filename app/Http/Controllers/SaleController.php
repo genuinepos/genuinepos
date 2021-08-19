@@ -704,7 +704,7 @@ class SaleController extends Controller
         if (auth()->user()->permission->sale['sale_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-  
+
         $customers = DB::table('customers')
             ->where('status', 1)->select('id', 'name', 'phone')
             ->orderBy('id', 'desc')->get();
@@ -1698,77 +1698,7 @@ class SaleController extends Controller
             $a++;
         }
         // Add sale payment
-        $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
-        $addSalePayment->sale_id = $sale->id;
-        $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
-        $addSalePayment->account_id = $request->account_id;
-        $addSalePayment->pay_mode = $request->payment_method;
-        $addSalePayment->paid_amount = $request->amount;
-        $addSalePayment->date = date('d-m-Y', strtotime($request->date));
-        $addSalePayment->time = date('h:i:s a');
-        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-        $addSalePayment->month = date('F');
-        $addSalePayment->year = date('Y');
-        $addSalePayment->note = $request->note;
-
-        if ($request->payment_method == 'Card') {
-            $addSalePayment->card_no = $request->card_no;
-            $addSalePayment->card_holder = $request->card_holder_name;
-            $addSalePayment->card_transaction_no = $request->card_transaction_no;
-            $addSalePayment->card_type = $request->card_type;
-            $addSalePayment->card_month = $request->month;
-            $addSalePayment->card_year = $request->year;
-            $addSalePayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $addSalePayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $addSalePayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $addSalePayment->transaction_no = $request->transaction_no;
-        }
-        $addSalePayment->admin_id = auth()->user()->id;
-
-        if ($request->hasFile('attachment')) {
-            $salePaymentAttachment = $request->file('attachment');
-            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
-            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
-            $addSalePayment->attachment = $salePaymentAttachmentName;
-        }
-
-        $addSalePayment->save();
-
-        if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->credit = $account->credit + $request->amount;
-            $account->balance = $account->balance + $request->amount;
-            $account->save();
-
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->credit = $request->amount;
-            $addCashFlow->balance = $account->balance;
-            $addCashFlow->sale_payment_id = $addSalePayment->id;
-            $addCashFlow->transaction_type = 2;
-            $addCashFlow->cash_type = 2;
-            $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->user()->id;
-            $addCashFlow->save();
-        }
-
-        if ($customer) {
-            $addCustomerLedger = new CustomerLedger();
-            $addCustomerLedger->customer_id = $customer->id;
-            $addCustomerLedger->sale_payment_id = $addSalePayment->id;
-            $addCustomerLedger->row_type = 2;
-            $addCustomerLedger->save();
-        }
-
+        $this->saleUtil->addPayment($paymentInvoicePrefix, $request, $request->amount, $invoiceId, $saleId);
         return response()->json('Payment added successfully.');
     }
 
@@ -2140,7 +2070,8 @@ class SaleController extends Controller
     // Delete sale payment
     public function paymentDelete(Request $request, $paymentId)
     {
-        $deleteSalePayment = SalePayment::with('account', 'customer', 'sale', 'sale.sale_return', 'cashFlow')->where('id', $paymentId)->first();
+        $deleteSalePayment = SalePayment::with('account', 'customer', 'sale', 'sale.sale_return', 'cashFlow')
+            ->where('id', $paymentId)->first();
 
         if (!is_null($deleteSalePayment)) {
             //Update customer due 

@@ -22,70 +22,7 @@ class SaleUtil
 
             if ($request->previous_due > 0) {
                 if ($paidAmount >= $request->total_invoice_payable) {
-                    $addSalePayment = new SalePayment();
-                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
-                    $addSalePayment->sale_id = $addSale->id;
-                    $addSalePayment->customer_id = $request->customer_id ? $request->customer_id : NULL;
-                    $addSalePayment->account_id = $request->account_id;
-                    $addSalePayment->pay_mode = $request->payment_method;
-                    $addSalePayment->paid_amount = $request->total_invoice_payable;
-                    $addSalePayment->date = $request->date;
-                    $addSalePayment->time = date('h:i:s a');
-                    $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-                    $addSalePayment->month = date('F');
-                    $addSalePayment->year = date('Y');
-                    $addSalePayment->note = $request->payment_note;
-
-                    if ($request->payment_method == 'Card') {
-                        $addSalePayment->card_no = $request->card_no;
-                        $addSalePayment->card_holder = $request->card_holder_name;
-                        $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                        $addSalePayment->card_type = $request->card_type;
-                        $addSalePayment->card_month = $request->month;
-                        $addSalePayment->card_year = $request->year;
-                        $addSalePayment->card_secure_code = $request->secure_code;
-                    } elseif ($request->payment_method == 'Cheque') {
-                        $addSalePayment->cheque_no = $request->cheque_no;
-                    } elseif ($request->payment_method == 'Bank-Transfer') {
-                        $addSalePayment->account_no = $request->account_no;
-                    } elseif ($request->payment_method == 'Custom') {
-                        $addSalePayment->transaction_no = $request->transaction_no;
-                    }
-
-                    $addSalePayment->admin_id = auth()->user()->id;
-                    $addSalePayment->save();
-
-                    if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->credit = $account->credit + $request->total_invoice_payable;
-                        $account->balance = $account->balance + $request->total_invoice_payable;
-                        $account->save();
-
-                        // Add cash flow
-                        $addCashFlow = new CashFlow();
-                        $addCashFlow->account_id = $request->account_id;
-                        $addCashFlow->credit = $request->total_invoice_payable;
-                        $addCashFlow->balance = $account->balance;
-                        $addCashFlow->sale_payment_id = $addSalePayment->id;
-                        $addCashFlow->transaction_type = 2;
-                        $addCashFlow->cash_type = 2;
-                        $addCashFlow->date = $request->date;
-                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                        $addCashFlow->month = date('F');
-                        $addCashFlow->year = date('Y');
-                        $addCashFlow->admin_id = auth()->user()->id;
-                        $addCashFlow->save();
-                    }
-
-                    if ($request->customer_id) {
-                        $addCustomerLedger = new CustomerLedger();
-                        $addCustomerLedger->customer_id = $request->customer_id;
-                        $addCustomerLedger->sale_payment_id = $addSalePayment->id;
-                        $addCustomerLedger->row_type = 2;
-                        $addCustomerLedger->save();
-                    }
-
+                    $this->addPayment($paymentInvoicePrefix, $request, $request->total_invoice_payable, $invoiceId, $addSale->id);
                     $payingPreviousDue = $paidAmount - $request->total_invoice_payable;
                     if ($payingPreviousDue > 0) {
                         $dueAmounts = $payingPreviousDue;
@@ -99,77 +36,7 @@ class SaleUtil
                                     $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
                                     $dueInvoice->due = $dueInvoice->due - $dueAmounts;
                                     $dueInvoice->save();
-                                    $addSalePayment = new SalePayment();
-                                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
-                                    $addSalePayment->sale_id = $dueInvoice->id;
-                                    $addSalePayment->customer_id = $request->customer_id;
-                                    $addSalePayment->account_id = $request->account_id;
-                                    $addSalePayment->paid_amount = $dueAmounts;
-                                    $addSalePayment->date = date('d-m-Y', strtotime($request->date));
-                                    $addSalePayment->time = date('h:i:s a');
-                                    $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-                                    $addSalePayment->month = date('F');
-                                    $addSalePayment->year = date('Y');
-                                    $addSalePayment->pay_mode = $request->payment_method;
-
-                                    if ($request->payment_method == 'Card') {
-                                        $addSalePayment->card_no = $request->card_no;
-                                        $addSalePayment->card_holder = $request->card_holder_name;
-                                        $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                                        $addSalePayment->card_type = $request->card_type;
-                                        $addSalePayment->card_month = $request->month;
-                                        $addSalePayment->card_year = $request->year;
-                                        $addSalePayment->card_secure_code = $request->secure_code;
-                                    } elseif ($request->payment_method == 'Cheque') {
-                                        $addSalePayment->cheque_no = $request->cheque_no;
-                                    } elseif ($request->payment_method == 'Bank-Transfer') {
-                                        $addSalePayment->account_no = $request->account_no;
-                                    } elseif ($request->payment_method == 'Custom') {
-                                        $addSalePayment->transaction_no = $request->transaction_no;
-                                    }
-
-                                    if ($request->hasFile('attachment')) {
-                                        $SalePaymentAttachment = $request->file('attachment');
-                                        $salePaymentAttachmentName = uniqid() . '-' . '.' . $SalePaymentAttachment->getClientOriginalExtension();
-                                        $SalePaymentAttachment->move(public_path('uploads/payment_attachment/'), $SalePaymentAttachment);
-                                        $addSalePayment->attachment = $salePaymentAttachmentName;
-                                    }
-
-                                    $addSalePayment->admin_id = auth()->user()->id;
-                                    $addSalePayment->payment_on = 1;
-                                    $addSalePayment->save();
-
-                                    if ($request->account_id) {
-                                        // update account
-                                        $account = Account::where('id', $request->account_id)->first();
-                                        $account->credit = $account->credit + $dueAmounts;
-                                        $account->balance = $account->balance + $dueAmounts;
-                                        $account->save();
-
-                                        // Add cash flow
-                                        $addCashFlow = new CashFlow();
-                                        $addCashFlow->account_id = $request->account_id;
-                                        $addCashFlow->credit = $dueAmounts;
-                                        $addCashFlow->balance = $account->balance;
-                                        $addCashFlow->sale_payment_id = $addSalePayment->id;
-                                        $addCashFlow->transaction_type = 2;
-                                        $addCashFlow->cash_type = 2;
-                                        $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                                        $addCashFlow->month = date('F');
-                                        $addCashFlow->year = date('Y');
-                                        $addCashFlow->admin_id = auth()->user()->id;
-                                        $addCashFlow->save();
-                                    }
-
-                                    if ($dueInvoice->customer_id) {
-                                        $addCustomerLedger = new CustomerLedger();
-                                        $addCustomerLedger->customer_id = $request->customer_id;
-                                        $addCustomerLedger->sale_payment_id = $addSalePayment->id;
-                                        $addCustomerLedger->row_type = 2;
-                                        $addCustomerLedger->save();
-                                    }
-
+                                    $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
                                     //$dueAmounts -= $dueAmounts; 
                                     if ($index == 1) {
                                         break;
@@ -178,152 +45,12 @@ class SaleUtil
                                     $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
                                     $dueInvoice->due = $dueInvoice->due - $dueAmounts;
                                     $dueInvoice->save();
-                                    $addSalePayment = new SalePayment();
-                                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
-                                    $addSalePayment->sale_id = $dueInvoice->id;
-                                    $addSalePayment->customer_id = $request->customer_id;
-                                    $addSalePayment->account_id = $request->account_id;
-                                    $addSalePayment->paid_amount = $dueAmounts;
-                                    $addSalePayment->date = date('d-m-Y', strtotime($request->date));
-                                    $addSalePayment->time = date('h:i:s a');
-                                    $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-                                    $addSalePayment->month = date('F');
-                                    $addSalePayment->year = date('Y');
-                                    $addSalePayment->pay_mode = $request->payment_method;
-
-                                    if ($request->payment_method == 'Card') {
-                                        $addSalePayment->card_no = $request->card_no;
-                                        $addSalePayment->card_holder = $request->card_holder_name;
-                                        $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                                        $addSalePayment->card_type = $request->card_type;
-                                        $addSalePayment->card_month = $request->month;
-                                        $addSalePayment->card_year = $request->year;
-                                        $addSalePayment->card_secure_code = $request->secure_code;
-                                    } elseif ($request->payment_method == 'Cheque') {
-                                        $addSalePayment->cheque_no = $request->cheque_no;
-                                    } elseif ($request->payment_method == 'Bank-Transfer') {
-                                        $addSalePayment->account_no = $request->account_no;
-                                    } elseif ($request->payment_method == 'Custom') {
-                                        $addSalePayment->transaction_no = $request->transaction_no;
-                                    }
-
-                                    if ($request->hasFile('attachment')) {
-                                        $salePaymentAttachment = $request->file('attachment');
-                                        $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
-                                        $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
-                                        $addSalePayment->attachment = $salePaymentAttachmentName;
-                                    }
-
-                                    $addSalePayment->admin_id = auth()->user()->id;
-                                    $addSalePayment->payment_on = 1;
-                                    $addSalePayment->save();
-
-                                    if ($request->account_id) {
-                                        // update account
-                                        $account = Account::where('id', $request->account_id)->first();
-                                        $account->credit = $account->credit + $dueAmounts;
-                                        $account->balance = $account->balance + $dueAmounts;
-                                        $account->save();
-
-                                        // Add cash flow
-                                        $addCashFlow = new CashFlow();
-                                        $addCashFlow->account_id = $request->account_id;
-                                        $addCashFlow->credit = $dueAmounts;
-                                        $addCashFlow->balance = $account->balance;
-                                        $addCashFlow->sale_payment_id = $addSalePayment->id;
-                                        $addCashFlow->transaction_type = 2;
-                                        $addCashFlow->cash_type = 2;
-                                        $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                                        $addCashFlow->month = date('F');
-                                        $addCashFlow->year = date('Y');
-                                        $addCashFlow->admin_id = auth()->user()->id;
-                                        $addCashFlow->save();
-                                    }
-
-                                    if ($dueInvoice->customer_id) {
-                                        $addCustomerLedger = new CustomerLedger();
-                                        $addCustomerLedger->customer_id = $request->customer_id;
-                                        $addCustomerLedger->sale_payment_id = $addSalePayment->id;
-                                        $addCustomerLedger->row_type = 2;
-                                        $addCustomerLedger->save();
-                                    }
-
+                                    $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
                                     if ($index == 1) {
                                         break;
                                     }
                                 } elseif ($dueInvoice->due < $dueAmounts) {
-                                    $addSalePayment = new SalePayment();
-                                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
-                                    $addSalePayment->sale_id = $dueInvoice->id;
-                                    $addSalePayment->customer_id = $request->customer_id;
-                                    $addSalePayment->account_id = $request->account_id;
-                                    $addSalePayment->paid_amount = $dueInvoice->due;
-                                    $addSalePayment->date = date('d-m-Y', strtotime($request->date));
-                                    $addSalePayment->time = date('h:i:s a');
-                                    $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-                                    $addSalePayment->month = date('F');
-                                    $addSalePayment->year = date('Y');
-                                    $addSalePayment->pay_mode = $request->payment_method;
-
-                                    if ($request->payment_method == 'Card') {
-                                        $addSalePayment->card_no = $request->card_no;
-                                        $addSalePayment->card_holder = $request->card_holder_name;
-                                        $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                                        $addSalePayment->card_type = $request->card_type;
-                                        $addSalePayment->card_month = $request->month;
-                                        $addSalePayment->card_year = $request->year;
-                                        $addSalePayment->card_secure_code = $request->secure_code;
-                                    } elseif ($request->payment_method == 'Cheque') {
-                                        $addSalePayment->cheque_no = $request->cheque_no;
-                                    } elseif ($request->payment_method == 'Bank-Transfer') {
-                                        $addSalePayment->account_no = $request->account_no;
-                                    } elseif ($request->payment_method == 'Custom') {
-                                        $addSalePayment->transaction_no = $request->transaction_no;
-                                    }
-
-                                    if ($request->hasFile('attachment')) {
-                                        $salePaymentAttachment = $request->file('attachment');
-                                        $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
-                                        $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
-                                        $addSalePayment->attachment = $salePaymentAttachmentName;
-                                    }
-
-                                    $addSalePayment->admin_id = auth()->user()->id;
-                                    $addSalePayment->payment_on = 1;
-                                    $addSalePayment->save();
-
-                                    if ($request->account_id) {
-                                        // update account
-                                        $account = Account::where('id', $request->account_id)->first();
-                                        $account->credit = $account->credit + $dueInvoice->due;
-                                        $account->balance = $account->balance + $dueInvoice->due;
-                                        $account->save();
-
-                                        // Add cash flow
-                                        $addCashFlow = new CashFlow();
-                                        $addCashFlow->account_id = $request->account_id;
-                                        $addCashFlow->credit = $dueInvoice->due;
-                                        $addCashFlow->balance = $account->balance;
-                                        $addCashFlow->sale_payment_id = $addSalePayment->id;
-                                        $addCashFlow->transaction_type = 2;
-                                        $addCashFlow->cash_type = 2;
-                                        $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                                        $addCashFlow->month = date('F');
-                                        $addCashFlow->year = date('Y');
-                                        $addCashFlow->admin_id = auth()->user()->id;
-                                        $addCashFlow->save();
-                                    }
-
-                                    if ($dueInvoice->customer_id) {
-                                        $addCustomerLedger = new CustomerLedger();
-                                        $addCustomerLedger->customer_id = $request->customer_id;
-                                        $addCustomerLedger->sale_payment_id = $addSalePayment->id;
-                                        $addCustomerLedger->row_type = 2;
-                                        $addCustomerLedger->save();
-                                    }
-
+                                    $this->addPayment($paymentInvoicePrefix, $request, $dueInvoice->due, $invoiceId, $dueInvoice->id);
                                     $dueAmounts = $dueAmounts - $dueInvoice->due;
                                     $dueInvoice->paid = $dueInvoice->paid + $dueInvoice->due;
                                     $dueInvoice->due = $dueInvoice->due - $dueInvoice->due;
@@ -334,140 +61,10 @@ class SaleUtil
                         }
                     }
                 } elseif ($paidAmount < $request->invoice_payable_amount) {
-                    $addSalePayment = new SalePayment();
-                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
-                    $addSalePayment->sale_id = $paidAmount;
-                    $addSalePayment->customer_id = $request->customer_id;
-                    $addSalePayment->account_id = $request->account_id;
-                    $addSalePayment->paid_amount = $paidAmount;
-                    $addSalePayment->date = date('d-m-Y', strtotime($request->date));
-                    $addSalePayment->time = date('h:i:s a');
-                    $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-                    $addSalePayment->month = date('F');
-                    $addSalePayment->year = date('Y');
-                    $addSalePayment->pay_mode = $request->payment_method;
-
-                    if ($request->payment_method == 'Card') {
-                        $addSalePayment->card_no = $request->card_no;
-                        $addSalePayment->card_holder = $request->card_holder_name;
-                        $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                        $addSalePayment->card_type = $request->card_type;
-                        $addSalePayment->card_month = $request->month;
-                        $addSalePayment->card_year = $request->year;
-                        $addSalePayment->card_secure_code = $request->secure_code;
-                    } elseif ($request->payment_method == 'Cheque') {
-                        $addSalePayment->cheque_no = $request->cheque_no;
-                    } elseif ($request->payment_method == 'Bank-Transfer') {
-                        $addSalePayment->account_no = $request->account_no;
-                    } elseif ($request->payment_method == 'Custom') {
-                        $addSalePayment->transaction_no = $request->transaction_no;
-                    }
-
-                    if ($request->hasFile('attachment')) {
-                        $salePaymentAttachment = $request->file('attachment');
-                        $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
-                        $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
-                        $addSalePayment->attachment = $salePaymentAttachmentName;
-                    }
-
-                    $addSalePayment->admin_id = auth()->user()->id;
-                    $addSalePayment->payment_on = 1;
-                    $addSalePayment->save();
-
-                    if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->credit = $account->credit + $paidAmount;
-                        $account->balance = $account->balance - $paidAmount;
-                        $account->save();
-
-                        // Add cash flow
-                        $addCashFlow = new CashFlow();
-                        $addCashFlow->account_id = $request->account_id;
-                        $addCashFlow->credit = $paidAmount;
-                        $addCashFlow->balance = $account->balance;
-                        $addCashFlow->sale_payment_id = $addSalePayment->id;
-                        $addCashFlow->transaction_type = 2;
-                        $addCashFlow->cash_type = 2;
-                        $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                        $addCashFlow->month = date('F');
-                        $addCashFlow->year = date('Y');
-                        $addCashFlow->admin_id = auth()->user()->id;
-                        $addCashFlow->save();
-                    }
-
-                    if ($request->customer_id) {
-                        $addCustomerLedger = new CustomerLedger();
-                        $addCustomerLedger->customer_id = $request->customer_id;
-                        $addCustomerLedger->sale_payment_id = $addSalePayment->id;
-                        $addCustomerLedger->row_type = 2;
-                        $addCustomerLedger->save();
-                    }
+                    $this->addPayment($paymentInvoicePrefix, $request, $paidAmount, $invoiceId, $addSale->id);
                 }
             } else {
-                $addSalePayment = new SalePayment();
-                $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
-                $addSalePayment->sale_id = $addSale->id;
-                $addSalePayment->customer_id = $request->customer_id ? $request->customer_id : NULL;
-                $addSalePayment->account_id = $request->account_id;
-                $addSalePayment->pay_mode = $request->payment_method;
-                $addSalePayment->paid_amount = $paidAmount;
-                $addSalePayment->date = $request->date;
-                $addSalePayment->time = date('h:i:s a');
-                $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-                $addSalePayment->month = date('F');
-                $addSalePayment->year = date('Y');
-                $addSalePayment->note = $request->payment_note;
-
-                if ($request->payment_method == 'Card') {
-                    $addSalePayment->card_no = $request->card_no;
-                    $addSalePayment->card_holder = $request->card_holder_name;
-                    $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                    $addSalePayment->card_type = $request->card_type;
-                    $addSalePayment->card_month = $request->month;
-                    $addSalePayment->card_year = $request->year;
-                    $addSalePayment->card_secure_code = $request->secure_code;
-                } elseif ($request->payment_method == 'Cheque') {
-                    $addSalePayment->cheque_no = $request->cheque_no;
-                } elseif ($request->payment_method == 'Bank-Transfer') {
-                    $addSalePayment->account_no = $request->account_no;
-                } elseif ($request->payment_method == 'Custom') {
-                    $addSalePayment->transaction_no = $request->transaction_no;
-                }
-                $addSalePayment->admin_id = auth()->user()->id;
-                $addSalePayment->save();
-
-                if ($request->account_id) {
-                    // update account
-                    $account = Account::where('id', $request->account_id)->first();
-                    $account->credit = $account->credit + $paidAmount;
-                    $account->balance = $account->balance + $paidAmount;
-                    $account->save();
-
-                    // Add cash flow
-                    $addCashFlow = new CashFlow();
-                    $addCashFlow->account_id = $request->account_id;
-                    $addCashFlow->credit = $paidAmount;
-                    $addCashFlow->balance = $account->balance;
-                    $addCashFlow->sale_payment_id = $addSalePayment->id;
-                    $addCashFlow->transaction_type = 2;
-                    $addCashFlow->cash_type = 2;
-                    $addCashFlow->date = $request->date;
-                    $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                    $addCashFlow->month = date('F');
-                    $addCashFlow->year = date('Y');
-                    $addCashFlow->admin_id = auth()->user()->id;
-                    $addCashFlow->save();
-                }
-
-                if ($request->customer_id) {
-                    $addCustomerLedger = new CustomerLedger();
-                    $addCustomerLedger->customer_id = $request->customer_id;
-                    $addCustomerLedger->sale_payment_id = $addSalePayment->id;
-                    $addCustomerLedger->row_type = 2;
-                    $addCustomerLedger->save();
-                }
+                $this->addPayment($paymentInvoicePrefix, $request, $paidAmount, $invoiceId, $addSale->id);
             }
         }
     }
@@ -478,7 +75,7 @@ class SaleUtil
         $quantities = $request->quantities;
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
-        
+
         $index = 0;
         foreach ($product_ids as $product_id) {
             // Update Branch product stock
@@ -530,6 +127,74 @@ class SaleUtil
                     }
                 }
             }
+        }
+    }
+
+    // Add sale add payment util method
+    public function addPayment($invoicePrefix, $request, $payingAmount, $invoiceId, $saleId)
+    {
+        $addSalePayment = new SalePayment();
+        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+        $addSalePayment->sale_id = $saleId;
+        $addSalePayment->customer_id = $request->customer_id ? $request->customer_id : NULL;
+        $addSalePayment->account_id = $request->account_id;
+        $addSalePayment->pay_mode = $request->payment_method;
+        $addSalePayment->paid_amount = $payingAmount;
+        $addSalePayment->date = $request->date;
+        $addSalePayment->time = date('h:i:s a');
+        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
+        $addSalePayment->month = date('F');
+        $addSalePayment->year = date('Y');
+        $addSalePayment->note = $request->payment_note;
+
+        if ($request->payment_method == 'Card') {
+            $addSalePayment->card_no = $request->card_no;
+            $addSalePayment->card_holder = $request->card_holder_name;
+            $addSalePayment->card_transaction_no = $request->card_transaction_no;
+            $addSalePayment->card_type = $request->card_type;
+            $addSalePayment->card_month = $request->month;
+            $addSalePayment->card_year = $request->year;
+            $addSalePayment->card_secure_code = $request->secure_code;
+        } elseif ($request->payment_method == 'Cheque') {
+            $addSalePayment->cheque_no = $request->cheque_no;
+        } elseif ($request->payment_method == 'Bank-Transfer') {
+            $addSalePayment->account_no = $request->account_no;
+        } elseif ($request->payment_method == 'Custom') {
+            $addSalePayment->transaction_no = $request->transaction_no;
+        }
+
+        $addSalePayment->admin_id = auth()->user()->id;
+        $addSalePayment->save();
+
+        if ($request->account_id) {
+            // update account
+            $account = Account::where('id', $request->account_id)->first();
+            $account->credit = $account->credit + $payingAmount;
+            $account->balance = $account->balance + $payingAmount;
+            $account->save();
+
+            // Add cash flow
+            $addCashFlow = new CashFlow();
+            $addCashFlow->account_id = $request->account_id;
+            $addCashFlow->credit = $payingAmount;
+            $addCashFlow->balance = $account->balance;
+            $addCashFlow->sale_payment_id = $addSalePayment->id;
+            $addCashFlow->transaction_type = 2;
+            $addCashFlow->cash_type = 2;
+            $addCashFlow->date = $request->date;
+            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+            $addCashFlow->month = date('F');
+            $addCashFlow->year = date('Y');
+            $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
+        }
+
+        if ($request->customer_id) {
+            $addCustomerLedger = new CustomerLedger();
+            $addCustomerLedger->customer_id = $request->customer_id;
+            $addCustomerLedger->sale_payment_id = $addSalePayment->id;
+            $addCustomerLedger->row_type = 2;
+            $addCustomerLedger->save();
         }
     }
 }

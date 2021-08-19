@@ -105,7 +105,7 @@
 
                         <div class="switch_bar">
                             <a href="{{ route('contacts.customer.index') }}" class="bar-link">
-                                <span><i class="fas fa-plus-square"></i></span>
+                                <span><i class="fas fa-plus-square text-success"></i></span>
                                 <p>Add Shortcut</p>
                             </a>
                         </div>

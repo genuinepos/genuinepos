@@ -1240,7 +1240,7 @@ class PurchaseController extends Controller
         $updatePurchasePayment->supplier->total_purchase_due = $updatePurchasePayment->supplier->total_purchase_due - $request->amount;
         $updatePurchasePayment->supplier->save();
 
-        // Update previoues account and delete previous cashflow.
+        // Update previous account and delete previous cashflow.
         if ($updatePurchasePayment->account) {
             $updatePurchasePayment->account->debit = $updatePurchasePayment->account->debit - $updatePurchasePayment->paid_amount;
             $updatePurchasePayment->account->balance = $updatePurchasePayment->account->balance + $updatePurchasePayment->paid_amount;
@@ -1520,7 +1520,6 @@ class PurchaseController extends Controller
             $updatePurchasePayment->attachment = $purchasePaymentAttachmentName;
         }
         $updatePurchasePayment->save();
-
 
         if ($request->account_id) {
             // update account

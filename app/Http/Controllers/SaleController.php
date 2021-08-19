@@ -1676,7 +1676,7 @@ class SaleController extends Controller
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
         $sale = Sale::where('id', $saleId)->first();
-        //Update Supplier due 
+        //Update Customer due 
         $customer = Customer::where('id', $sale->customer_id)->first();
         if ($customer) {
             $customer->total_paid = $customer->total_paid + $request->amount;
@@ -1693,10 +1693,8 @@ class SaleController extends Controller
         $i = 5;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
+        while ($a < $i) {$invoiceId .= rand(1, 9);$a++;}
+
         // Add sale payment
         $this->saleUtil->addPayment($paymentInvoicePrefix, $request, $request->amount, $invoiceId, $saleId);
         return response()->json('Payment added successfully.');

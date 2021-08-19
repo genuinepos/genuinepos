@@ -776,6 +776,13 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     });
 });
 
+Route::group(['prefix' => 'short-menus', 'namespace' => 'App\Http\Controllers'], function ()
+{
+    Route::get('modal/form', 'ShortMenuController@showModalForm')->name('short.menus.modal.form');
+    Route::get('show', 'ShortMenuController@show')->name('short.menus.show');
+    Route::post('store', 'ShortMenuController@store')->name('short.menus.store');
+});
+
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
 
 Route::get('add-user', function () {

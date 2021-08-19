@@ -2,6 +2,12 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     <link href="{{ asset('public/backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        .menu-list-area ul li {display: inline-block;margin-left: 8px;border: 1px solid lightgray;padding: 9px 11px 6px 24px;;border-radius: 3px;margin-top: 5px;}
+        .menu-list-area .s-menu-icon {font-size: 14px;margin-right: 12px;}
+        .menu-list-area ul li .s-menu-text {display: flex;font-size: 11px;font-weight: 500;margin-top: -20px;margin-left: 31px;}
+        .menu-list-area ul li input {display: flex;margin-bottom: -15px;margin-left: -16px;}
+    </style>
 @endpush
 @section('title', 'Dashboard - ')
 @section('content')
@@ -10,84 +16,8 @@
             <div class="row">
                 <div class="main__content">
                     <div class="row mx-3 mt-3 switch_bar_cards">
-                        <div class="switch_bar">
-                            <a href="{{ route('sales.create') }}" class="bar-link">
-                                <span><i class="fas fa-shopping-cart"></i></span>
-                                <p>Add Sale</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('purchases.create') }}" class="bar-link">
-                                <span><i class="fas fa-shopping-basket"></i></span>
-                                <p>Add Purchase</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('products.add.view') }}" class="bar-link">
-                                <span><i class="fas fa-plus-square"></i></span>
-                                <p>Add Product</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('expanses.create') }}" class="bar-link">
-                                <span><i class="fas fa-money-bill"></i></span>
-                                <p>Add Expense</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('stock.adjustments.create') }}" class="bar-link">
-                                <span><i class="fas fa-sliders-h"></i></span>
-                                <p>Add Adjustment</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('users.create') }}" class="bar-link">
-                                <span><i class="fas fa-user-plus"></i></span>
-                                <p>Add User</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('settings.general.index') }}" class="bar-link">
-                                <span><i class="fas fa-cogs"></i></span>
-                                <p>G.Settings</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('product.categories.index') }}" class="bar-link">
-                                <span><i class="fas fa-cubes"></i></span>
-                                <p>Categories</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('product.brands.index') }}" class="bar-link">
-                                <span><i class="fas fa-band-aid"></i></span>
-                                <p>Brands</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('contacts.supplier.index') }}" class="bar-link">
-                                <span><i class="fas fa-users"></i></span>
-                                <p>Suppliers</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
-                            <a href="{{ route('contacts.customer.index') }}" class="bar-link">
-                                <span><i class="fas fa-people-arrows"></i></span>
-                                <p>Customers</p>
-                            </a>
-                        </div>
-
-                        <div class="switch_bar">
+            
+                        {{-- <div class="switch_bar">
                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                 <a href="{{ route('transfer.stock.to.branch.create') }}" class="bar-link">
                                     <span><i class="fas fa-exchange-alt"></i></span>
@@ -99,10 +29,10 @@
                                     <p>Add Transfer</p>
                                 </a>
                             @endif
-                        </div>
+                        </div> --}}
 
                         <div class="switch_bar">
-                            <a href="#" class="bar-link" id="addShortcutBtn">
+                            <a href="{{ route('short.menus.modal.form') }}" class="bar-link" id="addShortcutBtn">
                                 <span><i class="fas fa-plus-square text-success"></i></span>
                                 <p>Add Shortcut</p>
                             </a>
@@ -556,8 +486,45 @@
 
             $(document).on('click', '#addShortcutBtn', function (e) {
                e.preventDefault();
-               $('#shortcutMenuModal').modal('show');
+                var url = $(this).attr('href');
+                $.get(url, function(data) {
+                    $('#modal-body_shortcuts').html(data);
+                    $('#shortcutMenuModal').modal('show');
+                });
             });
+
+            $(document).on('change', '#check_menu', function () {
+                $('#add_shortcut_menu').submit();
+            });
+
+            $(document).on('submit', '#add_shortcut_menu', function (e) {
+                e.preventDefault();
+                var url = $(this).attr('action');
+                var request = $(this).serialize();
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: request,
+                    success: function(data) {
+                        allShortcutMenus();
+                        //toastr.success(data);
+                    }
+                });
+            });
+
+            // Get all shortcut menus by ajax
+            function allShortcutMenus() {
+                //$('.data_preloader').show();
+                $.ajax({
+                    url: "{{ route('short.menus.show') }}",
+                    type: 'get',
+                    success: function(data) {
+                        $('.switch_bar_cards').html(data);
+                        //$('.data_preloader').hide();
+                    }
+                });
+            }
+            allShortcutMenus();
         </script>
     @endif
 @endpush

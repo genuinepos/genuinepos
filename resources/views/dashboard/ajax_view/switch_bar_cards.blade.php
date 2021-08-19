@@ -1,0 +1,17 @@
+@foreach ($shortMenus as $sm)
+    @php
+        $route = $sm->url;
+    @endphp
+    <div class="switch_bar">
+        <a href="{{ route($sm->url) }}" class="bar-link">
+            <span><i class="{{ $sm->icon }}"></i></span>
+            <p>{{ $sm->name}}</p>
+        </a>
+    </div>
+@endforeach
+<div class="switch_bar">
+    <a href="{{ route('short.menus.modal.form') }}" class="bar-link" id="addShortcutBtn">
+        <span><i class="fas fa-plus-square text-success"></i></span>
+        <p>Add Shortcut</p>
+    </a>
+</div>

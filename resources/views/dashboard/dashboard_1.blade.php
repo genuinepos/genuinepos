@@ -12,9 +12,7 @@
                     <div class="row mx-3 mt-3 switch_bar_cards">
                         <div class="switch_bar">
                             <a href="{{ route('sales.create') }}" class="bar-link">
-                                <span>
-                                    <i class="fas fa-shopping-cart"></i>
-                                </span>
+                                <span><i class="fas fa-shopping-cart"></i></span>
                                 <p>Add Sale</p>
                             </a>
                         </div>
@@ -104,7 +102,7 @@
                         </div>
 
                         <div class="switch_bar">
-                            <a href="{{ route('contacts.customer.index') }}" class="bar-link">
+                            <a href="#" class="bar-link">
                                 <span><i class="fas fa-plus-square text-success"></i></span>
                                 <p>Add Shortcut</p>
                             </a>
@@ -550,10 +548,7 @@
                 ],
                 "ajax": {
                     "url": "{{ route('dashboard.sale.order') }}",
-                    "data": function(d) {
-                        d.branch_id = $('#branch_id').val();
-                        d.date_range = $('#date_range').val();
-                    }
+                    "data": function(d) {d.branch_id = $('#branch_id').val();d.date_range = $('#date_range').val();}
                 },
                 columns: [{data: 'date',name: 'date'},
                     {data: 'invoice_id',name: 'invoice_id'},
@@ -574,10 +569,7 @@
                 ],
                 "ajax": {
                     "url": "{{ route('dashboard.sale.due') }}",
-                    "data": function(d) {
-                        d.branch_id = $('#branch_id').val();
-                        d.date_range = $('#date_range').val();
-                    }
+                    "data": function(d) {d.branch_id = $('#branch_id').val();d.date_range = $('#date_range').val();}
                 },
                 columns: [{data: 'customer',name: 'customer'},
                     {data: 'invoice_id',name: 'invoice_id'},
@@ -596,10 +588,7 @@
                 ],
                 "ajax": {
                     "url": "{{ route('dashboard.purchase.due') }}",
-                    "data": function(d) {
-                        d.branch_id = $('#branch_id').val();
-                        d.date_range = $('#date_range').val();
-                    }
+                    "data": function(d) {d.branch_id = $('#branch_id').val();d.date_range = $('#date_range').val();}
                 },
                 columns: [{data: 'sup_name',name: 'sup_name'},
                     {data: 'invoice_id',name: 'invoice_id'},
@@ -618,10 +607,7 @@
                 $.ajax({
                     url: "{{ route('dashboard.card.data') }}",
                     type: 'get',
-                    data: {
-                        branch_id,
-                        date_range
-                    },
+                    data: {branch_id,date_range},
                     success: function(data) {
                         $('.card_preloader').hide();
                         $('#total_purchase').html(__currency + ' ' + parseFloat(data.totalPurchase).toFixed(2));
@@ -641,4 +627,3 @@
         </script>
     @endif
 @endpush
-

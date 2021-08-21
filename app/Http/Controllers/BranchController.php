@@ -21,6 +21,10 @@ class BranchController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        if (auth()->user()->permission->setup['branch'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
         $invSchemas = DB::table('invoice_schemas')->select('id', 'name')->get();
         $invLayouts = DB::table('invoice_layouts')->select('id', 'name')->get();

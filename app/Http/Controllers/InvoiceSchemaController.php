@@ -17,18 +17,18 @@ class InvoiceSchemaController extends Controller
     // Category main page/index page
     public function index(Request $request)
     {
+        if (auth()->user()->permission->setup['inv_sc'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $schemas = DB::table('invoice_schemas')->orderBy('id', 'DESC')->get();
             return DataTables::of($schemas)
                 ->addColumn('action', function ($row) {
-                    // return $action_btn;
                     $html = '<div class="dropdown table-dropdown">';
-
                     $html .= '<a href="' . route('invoices.schemas.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-
                     if ($row->is_default == 0) {
                         $html .= '<a href="' . route('invoices.schemas.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-
                         $html .= '<a href="' . route('invoices.schemas.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn">
                         Set Default
                         </a>';

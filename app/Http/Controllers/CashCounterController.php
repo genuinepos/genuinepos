@@ -12,6 +12,10 @@ class CashCounterController extends Controller
     // Cash Counter main page/index page
     public function index(Request $request)
     {
+        if (auth()->user()->permission->setup['cash_counters'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first(['business']);
             $cashCounters = '';
@@ -40,7 +44,6 @@ class CashCounterController extends Controller
             return DataTables::of($cashCounters)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    // return $action_btn;
                     $html = '<div class="dropdown table-dropdown">';
 
                     $html .= '<a href="' . route('settings.cash.counter.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';

@@ -960,7 +960,7 @@
                 </div>
             @endif
 
-            @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1')
+            @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1' || auth()->user()->permission->setup['p_settings'] == '1' || auth()->user()->permission->setup['inv_sc'] == '1' || auth()->user()->permission->setup['inv_lay'] == '1' || auth()->user()->permission->setup['barcode_settings'] == '1' || auth()->user()->permission->setup['cash_counters'] == '1')
                 <div class="sub-menu_t" id="settings">
                     <div class="sub-menu-width">
                         <div class="model__close bg-secondary-2">

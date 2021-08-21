@@ -16,6 +16,10 @@ class InvoiceLayoutController extends Controller
 
     public function index(Request $request)
     {
+        if (auth()->user()->permission->setup['inv_lay'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+        
         if ($request->ajax()) {
             $layouts = DB::table('invoice_layouts')->orderBy('id', 'DESC')->select('id', 'name', 'is_default', 'is_header_less')->get();
             return DataTables::of($layouts)

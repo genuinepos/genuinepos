@@ -116,7 +116,7 @@
 
                     <div class="col-lg-4 btn-section">
                         <div class="date">
-                            <p>3-11-2021 <span>6:58 AM</span></p>
+                            <p>{{ date('d-m-Y') }} <span id="time">6:58 AM</span></p>
                         </div>
 
                         <div class="btn-sec">

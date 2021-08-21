@@ -12,15 +12,15 @@
 
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/bootstrap.min.css">
-    <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css">
+    {{-- <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css"> --}}
     <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
 
-    <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css">
+    {{-- <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css"> --}}
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css">
+    {{-- <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css"> --}}
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">
     <link href="{{asset('public')}}/assets/plugins/custom/toastrjs/toastr.min.css" rel="stylesheet"
     type="text/css"/>
@@ -35,6 +35,7 @@
     <script src="{{asset('public')}}/backend/asset/js/bootstrap.bundle.min.js "></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script src="{{asset('public')}}/assets/plugins/custom/Shortcuts-master/shortcuts.js"></script>
+    <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 </head>
 

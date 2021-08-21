@@ -121,7 +121,9 @@
 
                         <div class="btn-sec">
                             <a href="{{ route('sales.pos.suspended.list') }}" class="pos-btn status" id="suspends"><i class="fas text-warning fa-pause"></i></a>
-                            <a href="" class="pos-btn"><span class="fas fa-calculator"></span></a>
+                            <a href="" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal">
+                                <span class="fas fa-calculator"></span>
+                            </a>
                             {{-- <a href="" class="pos-btn"><span class="fas fa-briefcase"></span></a>
                             <a href="" class="pos-btn text-danger"><span class="fas fa-times"></span></a> --}}
                             <a href="" class="pos-btn"><span class="fas fa-bell"></span></a>

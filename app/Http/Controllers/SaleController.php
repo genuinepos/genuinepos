@@ -82,7 +82,8 @@ class SaleController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                //$to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
             }
 
@@ -169,7 +170,6 @@ class SaleController extends Controller
                 })
                 ->editColumn('invoice_id', function ($row) {
                     $html = '';
-                    // $html .= $row->is_return_available ? '<br>' : '';
                     $html .= $row->invoice_id;
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
@@ -269,7 +269,8 @@ class SaleController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                //$to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
             }
 

@@ -59,7 +59,6 @@ class POSController extends Controller
     // Store pos sale
     public function store(Request $request)
     {
-        //return $request->all();
         $prefixSettings = DB::table('general_settings')
             ->select(['id', 'prefix', 'contact_default_cr_limit', 'reward_poing_settings'])
             ->first();
@@ -139,7 +138,7 @@ class POSController extends Controller
 
         $addSale->date = date('d-m-Y');
         $addSale->time = date('h:i:s a');
-        $addSale->report_date = date('Y-m-d h:i:s');
+        $addSale->report_date = date('Y-m-d');
         $addSale->month = date('F');
         $addSale->year = date('Y');
         $addSale->total_item = $request->total_item;

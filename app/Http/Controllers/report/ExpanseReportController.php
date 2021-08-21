@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\report;
 
 use App\Models\Expanse;
-use App\Charts\CommonChart;
+//use App\Charts\CommonChart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -19,7 +19,6 @@ class ExpanseReportController extends Controller
     // Index view of expense report
     public function index(Request $request)
     {
-
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
             $expenses = '';
@@ -42,7 +41,7 @@ class ExpanseReportController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
             }
 
@@ -121,30 +120,6 @@ class ExpanseReportController extends Controller
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('reports.expense_report.index', compact('branches'));
     }
-
-    // // Get expense report of current year
-    // public function getExpenseReport()
-    // {
-    //     $expanseCateogries = DB::table('expanse_categories')->get();
-    //     $labels = [];
-    //     $values = [];
-    //     foreach ($expanseCateogries as $expanseCateogory) {
-    //         $labels[] = $expanseCateogory->name;
-    //         $expenses = DB::table('expanses')->where('expanse_category_id', $expanseCateogory->id)
-    //             ->whereYear('report_date', date('Y'))->select(['net_total_amount'])->get();
-    //         $total_amount = 0;
-    //         foreach ($expenses as $expense) {
-    //             $total_amount += $expense->net_total_amount;
-    //         }
-    //         $values[] = $total_amount;
-    //     }
-
-    //     $chart = new CommonChart();
-    //     $chart->labels($labels)
-    //         ->dataset('Total Expanse', 'column', $values);
-
-    //     return view('reports.expense_report.ajax_view.expense_report', compact('chart', 'labels', 'values'));
-    // }
 
     public function getFilteredExpenseReport(Request $request)
     {

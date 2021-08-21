@@ -524,7 +524,6 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::post('fund/transfer', 'AccountController@fundTransfer')->name('accounting.accounts.fund.transfer');
 
         Route::post('deposit', 'AccountController@deposit')->name('accounting.accounts.fund.deposit');
-
         Route::get('account/cash/flows/{accountId}', 'AccountController@accountCashflows')->name('accounting.accounts.account.cash.flows');
         Route::get('account/cash/flow/filter/{accountId}', 'AccountController@accountCashflowFilter')->name('accounting.accounts.account.cash.flow.filter');
         Route::delete('delete/cash/flow/{cashFlowId}', 'AccountController@deleteCashFlow')->name('accounting.accounts.account.delete.cash.flow');

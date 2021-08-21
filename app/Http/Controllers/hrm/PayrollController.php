@@ -51,9 +51,7 @@ class PayrollController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                //$form_date = date('Y-m-d', strtotime($date_range[0]. '-1 days'));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                //$to_date = date('Y-m-d', strtotime($date_range[1]));
+                $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('hrm_payrolls.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
                 //$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
             }
@@ -212,7 +210,7 @@ class PayrollController extends Controller
         $addPayroll->total_deduction_amount = $request->total_deduction_amount;
         $addPayroll->gross_amount = $request->gross_amount;
         $addPayroll->due = $request->gross_amount;
-        $addPayroll->report_date_ts = Carbon::now();
+        $addPayroll->report_date_ts = date('Y-m-d');
         $addPayroll->date = date('d-m-Y');
         $addPayroll->month = $request->month;
         $addPayroll->year = $request->year;

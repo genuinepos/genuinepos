@@ -233,11 +233,12 @@ span.input-group-text.valus {
 }
 
 a.head-tbl-icon {
-    padding: 5px 3px;
-    font-size: 20px;
+    padding: 0px 5px;
+    font-size: 19px;
     margin: 0 6px;
     color: #4a4a4a;
-    border: 1px solid #eaaf07;
+    /* border: 1px solid #eaaf07; */
+    border: 1px solid #0d8394;
     border-radius: 2px;
 }
 

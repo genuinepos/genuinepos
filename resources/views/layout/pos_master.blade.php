@@ -9,21 +9,21 @@
     <!-- Icon -->
     <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
 
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.css">
+    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 
-    <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css">
+    {{-- <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css"> --}}
     <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
 
-    <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css">
+    {{-- <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css"> --}}
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
 
     <!-- Calculator -->
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css">
+    {{-- <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css"> --}}
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">
     <link href="{{asset('public')}}/assets/plugins/custom/toastrjs/toastr.min.css" rel="stylesheet"
     type="text/css"/>
@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/style.css">
     <style> .btn-bg {padding: 2px!important;} </style>
     @stack('css')
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="{{asset('public/backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>
     <!--Toaster.js js link end-->
@@ -616,6 +616,22 @@
     </div>
     <!-- Exchange modal End-->
 
+     <!--Add shortcut menu modal-->
+     <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="payment_heading">Add POS Shortcut Menus</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                        class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="modal-body_shortcuts">
+                    <!--begin::Form-->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--Data delete form-->
     <form id="deleted_form" action="" method="post">
         @method('DELETE')
@@ -626,6 +642,18 @@
     <script src="{{ asset('public/backend/asset/js/pos.js') }}"></script>
     <script src="{{ asset('public/backend/asset/js/pos-amount-calculation.js') }}"></script>
     <script>
+        // Get all pos shortcut menus by ajax
+        function allPosShortcutMenus() {
+            $.ajax({
+                url: "{{ route('pos.short.menus.show') }}",
+                type: 'get',
+                success: function(data) {
+                    $('#pos-shortcut-menus').html(data);
+                }
+            });
+        }
+        allPosShortcutMenus();
+
         $('#cash_register_details').on('click', function (e) {
             e.preventDefault();
             $.ajax({

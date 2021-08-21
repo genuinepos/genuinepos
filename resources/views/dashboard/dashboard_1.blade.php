@@ -2,12 +2,6 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     <link href="{{ asset('public/backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
-    <style>
-        .menu-list-area ul li {display: inline-block;margin-left: 8px;border: 1px solid lightgray;padding: 9px 11px 6px 24px;;border-radius: 3px;margin-top: 5px;}
-        .menu-list-area .s-menu-icon {font-size: 14px;margin-right: 12px;}
-        .menu-list-area ul li .s-menu-text {display: flex;font-size: 11px;font-weight: 500;margin-top: -20px;margin-left: 31px;}
-        .menu-list-area ul li input {display: flex;margin-bottom: -15px;margin-left: -16px;}
-    </style>
 @endpush
 @section('title', 'Dashboard - ')
 @section('content')
@@ -346,7 +340,7 @@
             </div>
         </div>
 
-        <!--Add Payment modal-->
+        <!--Add shortcut menu modal-->
         <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">

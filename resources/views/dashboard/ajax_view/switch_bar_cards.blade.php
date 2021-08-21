@@ -1,7 +1,4 @@
 @foreach ($shortMenus as $sm)
-    @php
-        $route = $sm->url;
-    @endphp
     <div class="switch_bar">
         <a href="{{ route($sm->url) }}" class="bar-link">
             <span><i class="{{ $sm->icon }}"></i></span>

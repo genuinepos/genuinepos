@@ -1347,3 +1347,9 @@ ul.add_sale_ex_btn li {display: inline-block; float: right; margin-left: 5px;}
 .extra_label ul li {display: inline-block;margin-right: 9px;margin-top: 4px;}
 .extra_label ul li p {font-size: 12px;font-weight: 600;}
 .sub-menu_t .switch_bar i {font-size: 26px;color: #5d1b3f;}
+
+/* Short menu modal style */
+.menu-list-area ul li {display: inline-block;margin-left: 8px;border: 1px solid lightgray;padding: 9px 11px 6px 24px;;border-radius: 3px;margin-top: 5px;}
+.menu-list-area .s-menu-icon {font-size: 14px;margin-right: 12px;}
+.menu-list-area ul li .s-menu-text {display: flex;font-size: 11px;font-weight: 500;margin-top: -20px;margin-left: 31px;}
+.menu-list-area ul li input {display: flex;margin-bottom: -15px;margin-left: -16px;}

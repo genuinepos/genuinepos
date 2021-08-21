@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Models\PosShortMenu;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -782,6 +784,13 @@ Route::group(['prefix' => 'short-menus', 'namespace' => 'App\Http\Controllers'],
     Route::post('store', 'ShortMenuController@store')->name('short.menus.store');
 });
 
+Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controllers'], function ()
+{
+    Route::get('modal/form', 'PosShortMenuController@showModalForm')->name('pos.short.menus.modal.form');
+    Route::get('show', 'PosShortMenuController@show')->name('pos.short.menus.show');
+    Route::post('store', 'PosShortMenuController@store')->name('pos.short.menus.store');
+});
+
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
 
 Route::get('add-user', function () {
@@ -891,6 +900,14 @@ Route::get('/test', function () {
     // return $r;
     // $mac = exec('getmac');
     // return $strtok = strtok($mac, ' ');
+    $sms = DB::table("short_menus")->get();
+    foreach ($sms as $sm) {
+        $add = new PosShortMenu();
+        $add->url = $sm->url;
+        $add->icon = $sm->icon;
+        $add->name = $sm->name;
+        $add->save();
+    }
 });
 
 // All authenticated routes

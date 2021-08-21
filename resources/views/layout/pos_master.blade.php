@@ -8,22 +8,17 @@
     <title>Genuine POS</title>
     <!-- Icon -->
     <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
-
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-
-    {{-- <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css"> --}}
     <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
 
-    {{-- <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css"> --}}
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
 
     <!-- Calculator -->
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
-    {{-- <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css"> --}}
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">
     <link href="{{asset('public')}}/assets/plugins/custom/toastrjs/toastr.min.css" rel="stylesheet"
     type="text/css"/>
@@ -616,8 +611,8 @@
     </div>
     <!-- Exchange modal End-->
 
-     <!--Add shortcut menu modal-->
-     <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <!--Add shortcut menu modal-->
+    <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">

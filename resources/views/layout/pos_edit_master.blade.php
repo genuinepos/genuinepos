@@ -459,8 +459,20 @@
     <!--Data delete form end-->
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script>
+        // Get all pos shortcut menus by ajax
+        function allPosShortcutMenus() {
+            $.ajax({
+                url: "{{ route('pos.short.menus.show') }}",
+                type: 'get',
+                success: function(data) {
+                    $('#pos-shortcut-menus').html(data);
+                }
+            });
+        }
+        allPosShortcutMenus();
+        
          // Set accounts in payment and payment edit form
-         function setAccount(){
+        function setAccount(){
             $.ajax({
                 url:"{{ route('accounting.accounts.all.form.account') }}",
                 success:function(accounts){

@@ -17,11 +17,8 @@
                                     <div class="cart-table">
                                         <div class="cart-table-inner-pos">
                                             <div class="tbl-head">
-                                                <ul>
-                                                    <li><a href="" class="head-tbl-icon"><span class="fas fa-calculator"></span></a></li>
-                                                    <li><a href="" class="head-tbl-icon"><span class="fas fa-phone"></span></a></li>
-                                                    <li><a href="" class="head-tbl-icon text-danger"><span class="fas fa-box"></span></a></li>
-                                                    <li><a href="" class="head-tbl-icon border-none"><span class="fas fa-plus"></span></a></li>
+                                                <ul id="pos-shortcut-menus">
+                                                    <li><a href="{{ route('pos.short.menus.modal.form') }}" id="addPosShortcutBtn" class="head-tbl-icon border-none"><span class="fas fa-plus"></span></a></li>
                                                 </ul>
                                             </div>
                                             <!-- Sale Product Table -->

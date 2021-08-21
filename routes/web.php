@@ -788,6 +788,7 @@ Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controller
 {
     Route::get('modal/form', 'PosShortMenuController@showModalForm')->name('pos.short.menus.modal.form');
     Route::get('show', 'PosShortMenuController@show')->name('pos.short.menus.show');
+    Route::get('edit/page/show', 'PosShortMenuController@editPageShow')->name('pos.short.menus.edit.page.show');
     Route::post('store', 'PosShortMenuController@store')->name('pos.short.menus.store');
 });
 
@@ -900,14 +901,6 @@ Route::get('/test', function () {
     // return $r;
     // $mac = exec('getmac');
     // return $strtok = strtok($mac, ' ');
-    $sms = DB::table("short_menus")->get();
-    foreach ($sms as $sm) {
-        $add = new PosShortMenu();
-        $add->url = $sm->url;
-        $add->icon = $sm->icon;
-        $add->name = $sm->name;
-        $add->save();
-    }
 });
 
 // All authenticated routes

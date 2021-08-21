@@ -462,7 +462,7 @@
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {
             $.ajax({
-                url: "{{ route('pos.short.menus.show') }}",
+                url: "{{ route('pos.short.menus.edit.page.show') }}",
                 type: 'get',
                 success: function(data) {
                     $('#pos-shortcut-menus').html(data);
@@ -470,7 +470,7 @@
             });
         }
         allPosShortcutMenus();
-        
+
          // Set accounts in payment and payment edit form
         function setAccount(){
             $.ajax({

@@ -1,10 +1,7 @@
 <?php
 namespace App\Utils;
 
-class PurchaseUtil
+class CashFlowUtil
 {
-    public function de()
-    {
-        # code...
-    }
+    
 }

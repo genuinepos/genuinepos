@@ -6,7 +6,7 @@ use App\Models\Tax;
 use App\Models\Sale;
 use App\Models\Unit;
 use App\Models\Brand;
-use App\Mail\DemoMail;
+use App\Mail\SaleMail;
 use App\Models\Account;
 use App\Models\Product;
 use App\Utils\SaleUtil;
@@ -721,7 +721,7 @@ class SaleController extends Controller
     {
         //return $request->all();
         $prefixSettings = DB::table('general_settings')
-            ->select(['id', 'prefix', 'contact_default_cr_limit'])
+            ->select(['id', 'prefix', 'contact_default_cr_limit', 'send_es_settings'])
             ->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
@@ -923,12 +923,15 @@ class SaleController extends Controller
             'admin'
         ])->where('id', $addSale->id)->first();
 
-        if (env('MAIL_ACTIVE') == 'true') {
+        if (
+            env('MAIL_ACTIVE') == 'true' &&
+            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email']
+        ) {
             if ($customer && $customer->email) {
-                Mail::to($customer->email)->send(new DemoMail($sale));
+                Mail::to($customer->email)->send(new SaleMail($sale));
             }
         }
-        
+
         if ($request->action == 'save_and_print') {
             if ($request->status == 1) {
                 return view('sales.save_and_print_template.sale_print', compact(
@@ -1486,8 +1489,8 @@ class SaleController extends Controller
             ->where('product_code', $product_code)
             ->select([
                 'id',
-                'name', 
-                'type', 
+                'name',
+                'type',
                 'product_code',
                 'product_price',
                 'profit',
@@ -1704,7 +1707,10 @@ class SaleController extends Controller
         $i = 5;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) {$invoiceId .= rand(1, 9);$a++;}
+        while ($a < $i) {
+            $invoiceId .= rand(1, 9);
+            $a++;
+        }
 
         // Add sale payment
         $this->saleUtil->addPayment($paymentInvoicePrefix, $request, $request->amount, $invoiceId, $saleId);

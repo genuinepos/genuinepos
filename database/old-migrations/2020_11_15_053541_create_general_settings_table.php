@@ -26,6 +26,7 @@ class CreateGeneralSettingsTable extends Migration
             $table->longText('prefix')->nullable();
             $table->longText('email_setting')->nullable();
             $table->longText('reward_poing_settings')->nullable();
+            $table->longText('send_es_settings')->nullable();
             $table->longText('sms_setting')->nullable();
             $table->longText('modules')->nullable();
             $table->decimal('contact_default_cr_limit', 22, 2)->nullable();

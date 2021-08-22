@@ -4,7 +4,7 @@
     {{-- <link rel="stylesheet" href="{{asset('public/backend/asset/css/dropzone.css')}}"> --}}
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
 
-    <link href="{{ asset('public/backend/css/reset.css') }}" rel="stylesheet" type="text/css">
+    {{-- <link href="{{ asset('public/backend/css/reset.css') }}" rel="stylesheet" type="text/css"> --}}
     <link href="{{ asset('public/backend/css/typography.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/backend/css/body.css') }}" rel="stylesheet" type="text/css">
     {{-- <link href="{{ asset('public/backend/css/shCore.css') }}" rel="stylesheet" type="text/css"> --}}

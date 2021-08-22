@@ -81,7 +81,6 @@ html {overflow-x: hidden;}
 
 /* Arrow */
 .select-dropdown::after {font-family: "Font Awesome 5 Free";font-weight: 600;content: "\f063";position: absolute;font-size: 10px;top: 0;right: 0;padding: 0px 1em;cursor: pointer;pointer-events: none;-webkit-transition: .25s all ease;-o-transition: .25s all ease;transition: .25s all ease;color: #fff;}
-
 .button-group {display: table;}
 .button-group__btn {cursor: pointer;display: table-cell; position: relative;}
 .button-group__btn input[type=radio],

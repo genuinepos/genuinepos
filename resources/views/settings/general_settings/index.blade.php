@@ -79,6 +79,10 @@
                                         </li>
 
                                         <li class="menu_list">
+                                            <a class="menu_btn" data-form="es_settings_form" href="#">Send Email & SMS Settings</a>
+                                        </li>
+
+                                        <li class="menu_list">
                                             <a class="menu_btn" data-form="email_settings_form" href="#">Email Setting</a>
                                         </li>
 
@@ -1042,6 +1046,60 @@
                                     </div>
                                 </form>
 
+                                <form id="es_settings_form" class="setting_form d-none"
+                                    action="{{ route('settings.send.email.sms.settings') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">Send Email & SMS Settings</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>Send Invoice After Sale Via Email</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>Send Notification After Sale Via SMS</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>Customer Due Remainder Via Email</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>Customer Due Remainder Via SMS</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
+                                        </div>
+                                    </div>
+                                </form>
+
                                 <form id="email_settings_form" class="setting_form d-none"
                                     action="{{ route('settings.email.settings') }}" method="post">
                                     @csrf
@@ -1416,7 +1474,6 @@
             });
         });
         
-
         $('#point_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
@@ -1441,6 +1498,23 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data);
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#es_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
             $.ajax({
                 url: url,
                 type: 'post',

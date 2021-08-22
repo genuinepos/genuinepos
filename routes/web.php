@@ -608,6 +608,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('dashboard/settings', 'GeneralSettingController@dashboardSettings')->name('settings.dashboard.settings');
         Route::post('prefix/settings', 'GeneralSettingController@prefixSettings')->name('settings.prefix.settings');
         Route::post('module/settings', 'GeneralSettingController@moduleSettings')->name('settings.module.settings');
+        Route::post('send/email/sms/settings', 'GeneralSettingController@SendEmailSmsSettings')->name('settings.send.email.sms.settings');
         Route::post('email/settings', 'GeneralSettingController@emailSettings')->name('settings.email.settings');
         Route::post('rp/settings', 'GeneralSettingController@rewardPoingSettings')->name('settings.reward.point.settings');
     });

@@ -25,6 +25,7 @@ class CreateGeneralSettingsTable extends Migration {
 			$table->text('dashboard')->nullable();
 			$table->text('system')->nullable();
 			$table->text('prefix')->nullable();
+			$table->longText('send_es_settings')->nullable()->comment('send email and sms settings');
 			$table->text('email_setting')->nullable();
 			$table->text('sms_setting')->nullable();
 			$table->text('modules')->nullable();

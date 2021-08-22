@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
+use App\Mail\SaleMail;
 use App\Models\Account;
 use App\Models\Product;
 use App\Utils\SaleUtil;
@@ -17,6 +18,7 @@ use App\Models\CustomerLedger;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
+use Illuminate\Support\Facades\Mail;
 use App\Models\CashRegisterTransaction;
 
 class POSController extends Controller
@@ -60,7 +62,7 @@ class POSController extends Controller
     public function store(Request $request)
     {
         $prefixSettings = DB::table('general_settings')
-            ->select(['id', 'prefix', 'contact_default_cr_limit', 'reward_poing_settings'])
+            ->select(['id', 'prefix', 'contact_default_cr_limit', 'reward_poing_settings', 'send_es_settings'])
             ->first();
 
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
@@ -154,7 +156,7 @@ class POSController extends Controller
         $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
         $paidAmount = $request->paying_amount - $changedAmount;
         //
-
+        $customer = Customer::where('id', $request->customer_id)->first();
         if ($request->action == 1) {
             $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
             $paidAmount = $request->paying_amount - $changedAmount;
@@ -177,7 +179,7 @@ class POSController extends Controller
             }
 
             $addSale->save();
-            $customer = Customer::where('id', $request->customer_id)->first();
+        
             if ($customer) {
                 $customer->point = $customer->point - $request->pre_redeemed;
                 $customer->point = $customer->point + $this->calculateCustomerPoint($prefixSettings, $request->total_invoice_payable);
@@ -285,6 +287,15 @@ class POSController extends Controller
             'sale_products.variant',
             'admin'
         ])->where('id', $addSale->id)->first();
+
+        if (
+            env('MAIL_ACTIVE') == 'true' &&
+            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email']
+        ) {
+            if ($customer && $customer->email) {
+                Mail::to($customer->email)->send(new SaleMail($sale));
+            }
+        }
 
         if ($request->action == 1) {
             return view('sales.save_and_print_template.pos_sale_print', compact(

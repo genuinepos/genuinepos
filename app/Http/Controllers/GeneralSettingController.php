@@ -233,6 +233,21 @@ class GeneralSettingController extends Controller
         return response()->json('modules settings updated successfully');
     }
 
+    public function SendEmailSmsSettings(Request $request)
+    {
+        $updateEmailSmsSettings = General_setting::first();
+        $moduleSettings = [
+            'send_inv_via_email' => isset($request->send_inv_via_email) ? 1 : 0,
+            'send_notice_via_sms' => isset($request->send_notice_via_sms) ? 1 : 0,
+            'cmr_due_rmdr_via_email' => isset($request->cmr_due_rmdr_via_email) ? 1 : 0,
+            'cmr_due_rmdr_via_sms' => isset($request->cmr_due_rmdr_via_sms) ? 1 : 0,
+        ];
+
+        $updateEmailSmsSettings->send_es_settings = json_encode($moduleSettings);
+        $updateEmailSmsSettings->save();
+        return response()->json('Send Email & SMS settings updated successfully');
+    }
+
     public function rewardPoingSettings(Request $request)
     {
         $updateRewardPointgSettings = General_setting::first();

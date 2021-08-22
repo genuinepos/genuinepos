@@ -255,11 +255,9 @@
 
     $(document).ready(function() {
         $(document).on('change', '.submit_able',
-            function() {
-                // $('#product_filter_form').submit();
-                console.log('Submit');
-                product_table.ajax.reload();
-            });
+        function() {
+            product_table.ajax.reload();
+        });
     });
 
     $(document).on('ifChanged', '#is_for_sale', function() {
@@ -267,7 +265,6 @@
     });
 
     $(document).on('change', '.all', function() {
-        console.log('OK');
         if ($(this).is(':CHECKED', true)) {
             $('.data_id').prop('checked', true);
         } else {

@@ -46,7 +46,8 @@
                                 <div class="heading text-end">
                                     @if ($sale->branch)
                                         <h6 class="company_name">
-                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                        </h6>
                                         <p class="company_address">
                                             <strong>
                                                 {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
@@ -184,7 +185,9 @@
                                             @if ($sale_product->product->warranty)
                                                 {{ $sale_product->product->warranty->duration . ' ' . $sale_product->product->warranty->duration_type }}
                                                 {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
-                                                {!! $defaultLayout->product_w_discription ? '<br><small class="text-muted">' . ($sale_product->description == 'null' ? '' : $sale_product->description) . '</small>' : '' !!}
+                                                @if ($sale_product->product->warranty->description)
+                                                    {!! '<br><small>'.$sale_product->product->warranty->description.'</small>'  !!}
+                                                @endif
                                             @else 
                                                 <b>No</b>
                                             @endif

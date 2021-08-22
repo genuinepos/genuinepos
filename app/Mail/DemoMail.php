@@ -16,9 +16,10 @@ class DemoMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public $sale;
+    public function __construct($sale)
     {
-        //
+        $this->sale = $sale;
     }
 
     /**
@@ -28,6 +29,7 @@ class DemoMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.demo');
+        $sale = $this->sale;
+        return $this->view('mail.demo', compact('sale'));
     }
 }

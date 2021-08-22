@@ -912,8 +912,6 @@ class SaleController extends Controller
         $total_due = $request->total_due;
         $change_amount = $request->change_amount;
 
-        Mail::to('koalasoftsolution@gmail.com')->send(new DemoMail());
-
         $sale = Sale::with([
             'customer',
             'branch',
@@ -924,6 +922,8 @@ class SaleController extends Controller
             'sale_products.variant',
             'admin'
         ])->where('id', $addSale->id)->first();
+
+        Mail::to('koalasoftsolution@gmail.com')->send(new DemoMail($sale));
 
         if ($request->action == 'save_and_print') {
             if ($request->status == 1) {

@@ -117,7 +117,7 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 text-center">
                         @if ($defaultLayout->is_header_less == 1)
                             <div class="middle_header_text text-center">
                                 <h5>{{ $defaultLayout->invoice_heading }}</h5>

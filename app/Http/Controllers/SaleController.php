@@ -6,8 +6,10 @@ use App\Models\Tax;
 use App\Models\Sale;
 use App\Models\Unit;
 use App\Models\Brand;
+use App\Mail\DemoMail;
 use App\Models\Account;
 use App\Models\Product;
+use App\Utils\SaleUtil;
 use App\Models\CashFlow;
 use App\Models\Category;
 use App\Models\Customer;
@@ -17,13 +19,13 @@ use App\Models\SaleProduct;
 use App\Models\AdminAndUser;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
+use App\Utils\NameSearchUtil;
 use App\Models\CustomerLedger;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
-use App\Utils\NameSearchUtil;
-use App\Utils\SaleUtil;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleController extends Controller
@@ -82,7 +84,6 @@ class SaleController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                //$to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
                 $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
             }
@@ -911,6 +912,8 @@ class SaleController extends Controller
         $total_due = $request->total_due;
         $change_amount = $request->change_amount;
 
+        Mail::to('koalasoftsolution@gmail.com')->send(new DemoMail());
+
         $sale = Sale::with([
             'customer',
             'branch',
@@ -1479,7 +1482,9 @@ class SaleController extends Controller
             ->where('product_code', $product_code)
             ->select([
                 'id',
-                'name', 'product_code',
+                'name', 
+                'type', 
+                'product_code',
                 'product_price',
                 'profit',
                 'product_cost_with_tax',
@@ -1510,14 +1515,15 @@ class SaleController extends Controller
                                 ]
                             );
                         } else {
-                            return response()->json(['errorMsg' => 'Stock is out of this product of this branch']);
+                            return response()->json(['errorMsg' => 'Stock is out of this product of this branch/shop']);
                         }
                     }
                 } else {
-                    return response()->json(['errorMsg' => 'This product is not available in this branch.']);
+                    return response()->json(['errorMsg' => 'This product is not available in this branch/shop. ']);
                 }
             } else {
-                if ($product->type == 2) {
+                if ($product->type === 2) {
+                    //$this->saleUtil->checkComboProductStock();
                     return response()->json(['errorMsg' => 'Combo product is not sellable in this demo']);
                 } else {
                     if ($product->mb_stock > 0) {
@@ -1528,7 +1534,7 @@ class SaleController extends Controller
                             ]
                         );
                     } else {
-                        return response()->json(['errorMsg' => 'Stock is not available of this product in this branch/shop']);
+                        return response()->json(['errorMsg' => 'Stock is not available of this product in this branch/shop 87819368']);
                     }
                 }
             }

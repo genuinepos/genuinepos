@@ -16,7 +16,7 @@
                                 <div class="cart-table">
                                     <div class="cart-table-inner-pos">
                                         <div class="tbl-head">
-                                            <ul id="pos-shortcut-menus">
+                                            <ul class="tbl-head-shortcut-menus" id="pos-shortcut-menus">
                                                 <li><a href="{{ route('pos.short.menus.modal.form') }}" id="addPosShortcutBtn" class="head-tbl-icon border-none"><span class="fas fa-plus"></span></a></li>
                                             </ul>
                                         </div>

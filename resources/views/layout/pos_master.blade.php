@@ -694,6 +694,13 @@
         shortcuts.add('ctrl+q',function() { 
             window.location = "{{ route('settings.general.index') }}";
         });
+
+        const scrollContainer = document.querySelector("#pos-shortcut-menus");
+
+        scrollContainer.addEventListener("wheel", (evt) => {
+            evt.preventDefault();
+            scrollContainer.scrollLeft += evt.deltaY;
+        });
     </script>
     @stack('js')
 </body>

@@ -1111,6 +1111,20 @@
                                                 placeholder="MAIL FROM NAME" autocomplete="off"
                                                 value="{{ env('MAIL_FROM_NAME') }}">
                                         </div>
+
+                                        <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox"
+                                                        {{  env('MAIL_ACTIVE') == 'true' ? 'CHECKED' : '' }}
+                                                        name="MAIL_ACTIVE" autocomplete="off"> &nbsp; <b>Is Active</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-1">
+                                        
                                     </div>
 
                                     <div class="row mt-2">

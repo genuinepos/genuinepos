@@ -809,6 +809,7 @@ class SaleController extends Controller
         $addSale->month = date('F');
         $addSale->year = date('Y');
 
+        $customer = Customer::where('id', $request->customer_id)->first();
         // Update customer due
         if ($request->status == 1) {
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0;
@@ -832,7 +833,6 @@ class SaleController extends Controller
             }
             $addSale->save();
 
-            $customer = Customer::where('id', $request->customer_id)->first();
             if ($customer) {
                 $customer->total_sale = $customer->total_sale + $request->total_payable_amount - $request->previous_due;
                 $customer->total_paid = $customer->total_paid + ($request->paying_amount ? $request->paying_amount : 0);
@@ -923,8 +923,12 @@ class SaleController extends Controller
             'admin'
         ])->where('id', $addSale->id)->first();
 
-        Mail::to('koalasoftsolution@gmail.com')->send(new DemoMail($sale));
-
+        if (env('MAIL_ACTIVE') == 'true') {
+            if ($customer && $customer->email) {
+                Mail::to($customer->email)->send(new DemoMail($sale));
+            }
+        }
+        
         if ($request->action == 'save_and_print') {
             if ($request->status == 1) {
                 return view('sales.save_and_print_template.sale_print', compact(

@@ -263,6 +263,7 @@ class GeneralSettingController extends Controller
         $MAIL_PORT = str_replace('"','',$request->get('MAIL_PORT'));
         $MAIL_HOST = str_replace('"','',$request->get('MAIL_HOST'));
         $MAIL_MAILER = str_replace('"','',$request->get('MAIL_MAILER'));
+        $MAIL_ACTIVE = isset($request->MAIL_ACTIVE) ? 'true' : 'false';
 
         Artisan::call("env:set MAIL_MAILER='" . $MAIL_MAILER . "'");
         Artisan::call("env:set MAIL_HOST='" . $MAIL_HOST . "'");
@@ -272,6 +273,7 @@ class GeneralSettingController extends Controller
         Artisan::call("env:set MAIL_ENCRYPTION='" . $MAIL_ENCRYPTION  . "'");
         Artisan::call("env:set MAIL_FROM_ADDRESS='" . $MAIL_FROM_ADDRESS . "'");
         Artisan::call("env:set MAIL_FROM_NAME='" . $MAIL_FROM_NAME . "'");
+        Artisan::call("env:set MAIL_ACTIVE='" . $MAIL_ACTIVE . "'");
         return response()->json('Email settings updated successfully');
     }
 }

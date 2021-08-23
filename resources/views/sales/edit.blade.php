@@ -123,26 +123,40 @@
                                 <div class="item-details-sec">
                                     <div class="content-inner">
                                         <div class="row">
-                                            <div class="searching_area" style="position: relative;">
-                                                <label for="inputEmail3" class="col-form-label">Item Search</label>
-                                                <div class="input-group ">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-barcode text-dark"></i></span>
+                                            <div class="col-md-9">
+                                                <div class="searching_area" style="position: relative;">
+                                                    <label class="col-form-label">Item Search</label>
+                                                    <div class="input-group ">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i
+                                                                    class="fas fa-barcode text-dark"></i></span>
+                                                        </div>
+                                                        <input type="text" name="search_product" class="form-control scanable"
+                                                            autocomplete="off" id="search_product"
+                                                            placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
+                                                        <div class="input-group-prepend">
+                                                            <span id="add_product" class="input-group-text add_button"><i
+                                                                    class="fas fa-plus-square text-dark"></i></span>
+                                                        </div>
                                                     </div>
-                                                    <input type="text" name="search_product" class="form-control scanable"
-                                                        autocomplete="off" id="search_product"
-                                                        placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                    <div class="input-group-prepend">
-                                                        <span id="add_product" class="input-group-text add_button"><i
-                                                                class="fas fa-plus-square text-dark"></i></span>
+    
+                                                    <div class="select_area">
+                                                        <ul id="list" class="variant_list_area">
+                                                           
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                                <div class="select_area">
-                                                    {{-- <div class="remove_select_area_btn">X</div> --}}
-                                                    <ul id="list" class="variant_list_area">
-                                                     
-                                                    </ul>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="col-form-label"></label>
+                                                <div class="input-group ">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text add_button p-1 m-0">Stock</span>
+                                                    </div>
+                                                    <input type="text" readonly class="form-control"
+                                                        autocomplete="off" id="stock_quantity"
+                                                        placeholder="Stock Quantity">
                                                 </div>
                                             </div>
                                         </div>

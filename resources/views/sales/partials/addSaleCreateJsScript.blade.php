@@ -43,6 +43,7 @@
                     toastr.error(product.errorMsg); 
                     $('#search_product').val("");
                     $('.select_area').hide();
+                    $('#stock_quantity').val(parseFloat(0).toFixed(2));
                     return;
                 }
 
@@ -54,6 +55,7 @@
                         if(product.product_variants.length == 0){
                             $('.select_area').hide();
                             $('#search_product').val('');
+                            $('#stock_quantity').val(parseFloat(qty_limit).toFixed(2));
                             product_ids = document.querySelectorAll('#product_id');
                             var sameProduct = 0;
                             product_ids.forEach(function(input){
@@ -192,6 +194,7 @@
                     }else if(!$.isEmptyObject(product.variant_product)){
                         $('.select_area').hide();
                         $('#search_product').val('');
+                        $('#stock_quantity').val(parseFloat(qty_limit).toFixed(2));
                         var variant_product = product.variant_product;
                         var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                         var variant_ids = document.querySelectorAll('#variant_id');
@@ -394,6 +397,7 @@
             dataType: 'json',
             success:function(singleProductQty){
                 if($.isEmptyObject(singleProductQty.errorMsg)){
+                    $('#stock_quantity').val(parseFloat(singleProductQty).toFixed(2));
                     var product_ids = document.querySelectorAll('#product_id');
                     var sameProduct = 0;
                     product_ids.forEach(function(input){
@@ -538,6 +542,7 @@
             dataType: 'json',
             success:function(branchVariantQty){
                 if($.isEmptyObject(branchVariantQty.errorMsg)){
+                    $('#stock_quantity').val(parseFloat(branchVariantQty).toFixed(2));
                     var variant_ids = document.querySelectorAll('#variant_id');
                     var sameVariant = 0;
                     variant_ids.forEach(function(input){

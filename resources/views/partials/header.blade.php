@@ -12,12 +12,12 @@
                     <small class="text-white float-start d-none d-md-block"><strong>{!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] !!}</strong></small>
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon ms-3"><a href="#" id="today_summery"><b>Today</b></a></li>
-                            <li class="top-icon ms-3"><a href=""><i class="far fa-bell"></i></a></li>
+                            <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
+                            <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
-                                <li class="top-icon ms-3"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
+                                <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
                             @endif
-                            <li class="top-icon ms-3">
+                            <li class="top-icon">
                                 <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
                                     <span class="fas fa-calculator"></span>
                                 </a>

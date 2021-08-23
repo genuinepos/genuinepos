@@ -927,7 +927,6 @@ class SaleController extends Controller
             json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email']
         ) {
             if ($customer && $customer->email) {
-                //Mail::to($customer->email)->send(new SaleMail($sale));
                 dispatch(new SaleMailJob($customer->email, $sale));
             }
         }

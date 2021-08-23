@@ -21,9 +21,7 @@ class BarcodeSettingController extends Controller
                 ->addColumn('action', function ($row) {
                     // return $action_btn;
                     $html = '<div class="dropdown table-dropdown">';
-
                     $html .= '<a href="' . route('settings.barcode.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-
                     if ($row->is_default == 0) {
                         $html .= '<a href="' . route('settings.barcode.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                         $html .= '<a href="' . route('settings.barcode.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn">
@@ -37,7 +35,6 @@ class BarcodeSettingController extends Controller
                 ->rawColumns(['action', 'name'])
                 ->make(true);
         }
-
         return view('settings.barcode_settings.index');
     }
 
@@ -48,7 +45,6 @@ class BarcodeSettingController extends Controller
 
     public function store(Request $request)
     {
-
         $this->validate($request, [
             'name' => 'required',
             'top_margin' => 'required',

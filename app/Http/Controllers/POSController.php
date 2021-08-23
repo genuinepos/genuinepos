@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
-use App\Mail\SaleMail;
+use App\Utils\SmsUtil;
 use App\Models\Account;
 use App\Models\Product;
 use App\Utils\SaleUtil;
 use App\Models\CashFlow;
 use App\Models\Customer;
+use App\Jobs\SaleMailJob;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
 use App\Models\CashRegister;
@@ -18,15 +19,16 @@ use App\Models\CustomerLedger;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
-use Illuminate\Support\Facades\Mail;
 use App\Models\CashRegisterTransaction;
 
 class POSController extends Controller
 {
     protected $saleUtil;
-    public function __construct(SaleUtil $saleUtil)
+    protected $smsUtil;
+    public function __construct(SaleUtil $saleUtil, SmsUtil $smsUtil)
     {
         $this->saleUtil = $saleUtil;
+        $this->smsUtil = $smsUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -290,10 +292,19 @@ class POSController extends Controller
 
         if (
             env('MAIL_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email']
+            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email'] == '1'
         ) {
             if ($customer && $customer->email) {
-                Mail::to($customer->email)->send(new SaleMail($sale));
+                dispatch(new SaleMailJob($customer->email, $sale));
+            }
+        }
+
+        if (
+            env('SMS_ACTIVE') == 'true' &&
+            json_decode($prefixSettings->send_es_settings, true)['send_notice_via_sms'] == '1'
+        ) {
+            if ($customer && $customer->phone) {
+                $this->smsUtil->singleSms($sale);
             }
         }
 

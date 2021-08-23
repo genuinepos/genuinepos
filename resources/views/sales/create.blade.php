@@ -549,13 +549,13 @@
                     <!--begin::Form-->
                     <form id="update_selling_product" action="">
                         <div class="form-group">
-                            <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
+                            <label> <strong>Quantity</strong> : <span class="text-danger">*</span></label>
                             <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
                             <span class="error error_e_quantity"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label> <strong>Unit Price Exc.Tax</strong>  : <span class="text-danger">*</span></label>
+                            <label> <strong>Unit Price Exc.Tax</strong> : <span class="text-danger">*</span></label>
                             <input type="number" step="any" {{ auth()->user()->permission->sale['edit_price_sale_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price"/>
                             <span class="error error_e_unit_price"></span>
                         </div>
@@ -563,7 +563,7 @@
                         @if (auth()->user()->permission->sale['edit_discount_sale_screen'] == '1')
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><strong>Discount Type</strong>  :</label>
+                                    <label><strong>Discount Type</strong> :</label>
                                     <select class="form-control " id="e_unit_discount_type">
                                         <option value="2">Percentage</option>
                                         <option value="1">Fixed</option>
@@ -571,7 +571,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><strong>Discount</strong>  :</label>
+                                    <label><strong>Discount</strong> :</label>
                                     <input type="number" step="any" class="form-control " id="e_unit_discount" value="0.00"/>
                                     <input type="hidden" id="e_discount_amount"/>
                                 </div>
@@ -581,13 +581,11 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><strong>Tax</strong> :</label>
-                                <select class="form-control" id="e_unit_tax">
-                                    
-                                </select>
+                                <select class="form-control" id="e_unit_tax"></select>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Tax Type</strong>  :</label>
+                                <label><strong>Tax Type</strong> :</label>
                                 <select class="form-control" id="e_tax_type">
                                     <option value="1">Exclusive</option>
                                     <option value="2">Inclusive</option>

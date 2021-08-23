@@ -9,7 +9,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BarcodeSettingController extends Controller
 {
-
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -27,7 +26,6 @@ class BarcodeSettingController extends Controller
 
                     if ($row->is_default == 0) {
                         $html .= '<a href="' . route('settings.barcode.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-
                         $html .= '<a href="' . route('settings.barcode.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn">
                         Set Default
                         </a>';

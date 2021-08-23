@@ -6,6 +6,7 @@ use App\Models\Tax;
 use App\Models\Sale;
 use App\Models\Unit;
 use App\Models\Brand;
+use App\Utils\SmsUtil;
 use App\Models\Account;
 use App\Models\Product;
 use App\Utils\SaleUtil;
@@ -31,10 +32,12 @@ class SaleController extends Controller
 {
     protected $nameSearchUtil;
     protected $saleUtil;
-    public function __construct(NameSearchUtil $nameSearchUtil, SaleUtil $saleUtil)
+    protected $smsUtil;
+    public function __construct(NameSearchUtil $nameSearchUtil, SaleUtil $saleUtil, SmsUtil $smsUtil)
     {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->saleUtil = $saleUtil;
+        $this->smsUtil = $smsUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -924,10 +927,19 @@ class SaleController extends Controller
 
         if (
             env('MAIL_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email']
+            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email'] == '1'
         ) {
             if ($customer && $customer->email) {
                 dispatch(new SaleMailJob($customer->email, $sale));
+            }
+        }
+
+        if (
+            env('SMS_ACTIVE') == 'true' &&
+            json_decode($prefixSettings->send_es_settings, true)['send_notice_via_sms'] == '1'
+        ) {
+            if ($customer && $customer->phone) {
+                $this->smsUtil->singleSms($sale);
             }
         }
 

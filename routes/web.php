@@ -904,13 +904,14 @@ Route::get('/test', function () {
     // $mac = exec('getmac');
     // return $strtok = strtok($mac, ' ');
 
+    // $msg = 'Mr. Harrison Your purchase amount is 100, total paid 00, total due 100';
     // $url = "https://880sms.com/smsapi";
     // $data = [
     //   "api_key" => "demo161220a9fe90583.07621618",
     //   "type" => "text/unicode",
-    //   "contacts" => "8801961363543",
+    //   "contacts" => "8801919585035",
     //   "senderid" => "eSMS",
-    //   "msg" => "Hey Sohel Bhai! How you doing?",
+    //   "msg" => $msg,
     // ];
     // $ch = curl_init();
     // curl_setopt($ch, CURLOPT_URL, $url);

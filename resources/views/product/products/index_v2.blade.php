@@ -327,8 +327,7 @@
             'content': 'Are you sure, you want to delete?',
             'buttons': {
                 'Yes': {
-                    'class': 'yes btn-modal-primary',
-                    'action': function() {
+                    'class': 'yes btn-modal-primary','action': function() {
                         $('#deleted_form').submit();
                     }
                 },

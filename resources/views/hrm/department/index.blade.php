@@ -23,38 +23,38 @@
                                         
                                         @if (auth()->user()->permission->hrms['leave_type'] == '1')
                                             <li>
-                                                <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
+                                                <a href="{{ route('hrm.leave.type') }}" class="text-white"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
                                             </li>
                                         @endif
 
                                         @if (auth()->user()->permission->hrms['leave_approve'] == '1')
                                             <li>
-                                                <a href="{{ route('hrm.leave') }}" class="text-white "><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
+                                                <a href="{{ route('hrm.leave') }}" class="text-white"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                                             </li>
                                         @endif
 
                                         <li>
-                                            <a href="{{ route('hrm.attendance.shift') }}" class="text-white "><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                                            <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('hrm.attendance') }}" class="text-white "><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                                            <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('hrm.allowance') }}" class="text-white "><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
+                                            <a href="{{ route('hrm.allowance') }}" class="text-white"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('hrm.payroll.index') }}" class="text-white "><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
+                                            <a href="{{ route('hrm.payroll.index') }}" class="text-white"><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('hrm.holidays') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
+                                            <a href="{{ route('hrm.holidays') }}" class="text-white"><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('hrm.departments') }}" class="text-primary"><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
+                                            <a href="{{ route('hrm.departments') }}" class="text-white"><i class="far fa-building text-primary"></i> <b>@lang('menu.department')</b></a>
                                         </li>
 
                                         <li>

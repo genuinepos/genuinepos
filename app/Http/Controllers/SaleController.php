@@ -6,7 +6,6 @@ use App\Models\Tax;
 use App\Models\Sale;
 use App\Models\Unit;
 use App\Models\Brand;
-use App\Mail\SaleMail;
 use App\Models\Account;
 use App\Models\Product;
 use App\Utils\SaleUtil;
@@ -14,6 +13,7 @@ use App\Models\CashFlow;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Warranty;
+use App\Jobs\SaleMailJob;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
 use App\Models\AdminAndUser;
@@ -25,7 +25,6 @@ use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
-use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleController extends Controller
@@ -928,7 +927,8 @@ class SaleController extends Controller
             json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email']
         ) {
             if ($customer && $customer->email) {
-                Mail::to($customer->email)->send(new SaleMail($sale));
+                //Mail::to($customer->email)->send(new SaleMail($sale));
+                dispatch(new SaleMailJob($customer->email, $sale));
             }
         }
 
@@ -942,7 +942,6 @@ class SaleController extends Controller
                     'total_due',
                     'change_amount'
                 ));
-                //return view('sales.save_and_print_template.sale_print', compact('addSale'));
             } elseif ($request->status == 2) {
                 return view('sales.save_and_print_template.draft_print', compact('sale'));
             } elseif ($request->status == 4) {

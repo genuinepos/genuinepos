@@ -934,7 +934,6 @@ class ProductController extends Controller
             //             $deleteProduct->delete(); 
             //         }
             //     }
-            //Cache::forget('all-products');
             return response()->json('Multiple delete feature is disabled in this demo');
         } elseif ($request->action == 'multipla_deactive') {
             foreach ($request->data_ids as $data_id) {

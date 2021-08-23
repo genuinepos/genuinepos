@@ -18,7 +18,7 @@
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul>
                                         <li>
-                                            <a href="{{ route('hrm.dashboard.index') }}" class="text-white "><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
+                                            <a href="{{ route('hrm.dashboard.index') }}" class="text-white"><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
                                         </li>
                                         
                                         @if (auth()->user()->permission->hrms['leave_type'] == '1')
@@ -29,20 +29,20 @@
 
                                         @if (auth()->user()->permission->hrms['leave_approve'] == '1')
                                             <li>
-                                                <a href="{{ route('hrm.leave') }}" class="text-white "><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
+                                                <a href="{{ route('hrm.leave') }}" class="text-white"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                                             </li>
                                         @endif
 
                                         <li>
-                                            <a href="{{ route('hrm.attendance.shift') }}" class="text-white "><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                                            <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('hrm.attendance') }}" class="text-white "><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                                            <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('hrm.allowance') }}" class="text-primary"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
+                                            <a href="{{ route('hrm.allowance') }}" class="text-white"><i class="fas fa-plus text-primary"></i> <b>@lang('menu.allowance_deduction')</b></a>
                                         </li>
 
                                         <li>

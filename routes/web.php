@@ -610,6 +610,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('module/settings', 'GeneralSettingController@moduleSettings')->name('settings.module.settings');
         Route::post('send/email/sms/settings', 'GeneralSettingController@SendEmailSmsSettings')->name('settings.send.email.sms.settings');
         Route::post('email/settings', 'GeneralSettingController@emailSettings')->name('settings.email.settings');
+        Route::post('sms/settings', 'GeneralSettingController@smsSettings')->name('settings.sms.settings');
         Route::post('rp/settings', 'GeneralSettingController@rewardPoingSettings')->name('settings.reward.point.settings');
     });
 
@@ -902,6 +903,24 @@ Route::get('/test', function () {
     // return $r;
     // $mac = exec('getmac');
     // return $strtok = strtok($mac, ' ');
+
+    // $url = "https://880sms.com/smsapi";
+    // $data = [
+    //   "api_key" => "demo161220a9fe90583.07621618",
+    //   "type" => "text/unicode",
+    //   "contacts" => "8801961363543",
+    //   "senderid" => "eSMS",
+    //   "msg" => "Hey Sohel Bhai! How you doing?",
+    // ];
+    // $ch = curl_init();
+    // curl_setopt($ch, CURLOPT_URL, $url);
+    // curl_setopt($ch, CURLOPT_POST, 1);
+    // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // $response = curl_exec($ch);
+    // curl_close($ch);
+    // dd($response);
 });
 
 // All authenticated routes

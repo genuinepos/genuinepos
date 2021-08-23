@@ -291,4 +291,18 @@ class GeneralSettingController extends Controller
         Artisan::call("env:set MAIL_ACTIVE='" . $MAIL_ACTIVE . "'");
         return response()->json('Email settings updated successfully');
     }
+
+    public function smsSettings(Request $request)
+    {
+        $SMS_URL = str_replace('"','',$request->get('SMS_URL'));
+        $API_KEY = str_replace('"','',$request->get('API_KEY'));
+        $SENDER_ID = str_replace('"','',$request->get('SENDER_ID'));
+        $SMS_ACTIVE = isset($request->SMS_ACTIVE) ? 'true' : 'false';
+
+        Artisan::call("env:set SMS_URL='" . $SMS_URL . "'");
+        Artisan::call("env:set API_KEY='" . $API_KEY . "'");
+        Artisan::call("env:set SENDER_ID='" . $SENDER_ID . "'");
+        Artisan::call("env:set SMS_ACTIVE='" . $SMS_ACTIVE . "'");
+        return response()->json('SMS settings updated successfully');
+    }
 }

@@ -493,7 +493,6 @@
                         tr += '<input value="'+product_cost_inc_tax+'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                         tr += '<input type="hidden" id="previous_quantity" value="0">';
                         tr += '<input type="hidden" id="qty_limit" value="'+singleProductQty+'">';
-
                         tr += '</td>';
 
                         tr += '<td>';

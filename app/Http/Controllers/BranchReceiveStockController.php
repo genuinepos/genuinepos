@@ -43,6 +43,7 @@ class BranchReceiveStockController extends Controller
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stocks.to.warehouse.receive.stock.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" href="' . route('transfer.stocks.to.warehouse.receive.stock.process.view', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Process To Receive</a>';
+                    $html .= '<a class="dropdown-item" href=""><i class="fas fa-envelope mr-1 text-primary"></i> Send Receive Details Via Email</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;

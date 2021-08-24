@@ -37,7 +37,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="text-start">Date</th>
-                                                    <th class="text-start">Invoice ID</th>
+                                                    <th class="text-start">Reference ID</th>
                                                     <th class="text-start">Warehouse(From)</th>
                                                     <th class="text-start">Branch(To)</th>
                                                     <th class="text-start">Total Item</th>

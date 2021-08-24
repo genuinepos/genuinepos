@@ -14,7 +14,6 @@
             @php
                 $tax = $product->tax ? $product->tax->tax_percent : 0;
                 $product_price_inc_tax = ($product->product_price / 100) * $tax + $product->product_price;
-        
                 if ($product->tax_type == 2) {
                     $inclusiveTax = 100 + $tax;
                     $calc = ($product->product_price / $inclusiveTax) * 100;

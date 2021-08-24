@@ -72,27 +72,40 @@
                 </div>
             </div><br>
             @php $tax = $product->tax ? $product->tax->tax_percent : 0  @endphp
-            @if ($product->is_variant == 0)
+            @if ($product->is_combo == 1)
                 <div class="row">
-                    <div class="table-responsive">
-                        <!--single_product_pricing_table-->
-                        @include('product.products.ajax_view.partials.single_product_pricing_table')
-                        <!--single_product_pricing_table End-->
+                    <div class="heading">
+                        <label class="p-0 m-0"><strong>COMBO :</strong></label>
+                    </div>
+                    <div class="table-responsive" id="combo_product_details">
+                        <!--Warehouse Stock Details-->
+                        @include('product.products.ajax_view.partials.combo_product_list')
+                        <!--Warehouse Stock Details End-->
                     </div>
                 </div>
-            @elseif($product->is_variant == 1)
-                <div class="row">
-                    <div class="table-responsive">
-                        <!--variant_product_pricing_table-->
-                        @include('product.products.ajax_view.partials.variant_product_pricing_table')
-                        <!--variant_product_pricing_table End-->
+            @else
+                @if ($product->is_variant == 0)
+                    <div class="row">
+                        <div class="table-responsive">
+                            <!--single_product_pricing_table-->
+                            @include('product.products.ajax_view.partials.single_product_pricing_table')
+                            <!--single_product_pricing_table End-->
+                        </div>
                     </div>
-                </div>
+                @elseif($product->is_variant == 1)
+                    <div class="row">
+                        <div class="table-responsive">
+                            <!--variant_product_pricing_table-->
+                            @include('product.products.ajax_view.partials.variant_product_pricing_table')
+                            <!--variant_product_pricing_table End-->
+                        </div>
+                    </div>
+                @endif 
             @endif
-
+            
             <div class="row">
                 <div class="heading">
-                    <label class="p-0 m-0"><strong>Warehouse Stock Details</strong></label>
+                    <label class="p-0 m-0"><strong>WAREHOUSE STOCK DETAILS :</strong></label>
                 </div>
                 <div class="table-responsive" id="warehouse_stock_details">
                     <!--Warehouse Stock Details-->
@@ -103,7 +116,7 @@
 
             <div class="row">
                 <div class="heading">
-                    <label class="p-0 m-0"><strong>Branch Stock Details</strong></label>
+                    <label class="p-0 m-0"><strong>BUSINESS LOCATION STOCK DETAILS</strong></label>
                 </div>
                 <div class="table-responsive" id="branch_stock_details">
                     @include('product.products.ajax_view.partials.branch_stock_details')

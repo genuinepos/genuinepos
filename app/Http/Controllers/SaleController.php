@@ -126,9 +126,7 @@ class SaleController extends Controller
                     $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Packing Slip</a>';
 
                     if (auth()->user()->permission->sale['shipment_access'] == '1') {
-                        $html .= '<a class="dropdown-item" id="edit_shipment"
-                    href="' . route('sales.shipment.edit', [$row->id]) . '"><i
-                        class="fas fa-truck mr-1 text-primary"></i> Edit Shipping</a>';
+                        $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck mr-1 text-primary"></i> Edit Shipping</a>';
                     }
 
                     if (auth()->user()->branch_id == $row->branch_id) {
@@ -159,7 +157,7 @@ class SaleController extends Controller
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
 
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
                     }
 
                     $html .= '<a class="dropdown-item" id="items_notification" href=""><i

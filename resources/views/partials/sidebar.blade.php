@@ -119,27 +119,6 @@
                     </li>
                 @endif
                 
-                <li data-menu="service" class="">
-                    <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/consult.svg') }}">
-                        <p class="title">Service</p>
-                    </a>
-                </li>
-
-                <li data-menu="menufeaturing" class="">
-                    <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/production.svg') }}">
-                        <p class="title">Manufacturing</p>
-                    </a>
-                </li>
-
-                <li data-menu="ecommerce" class="">
-                    <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/ecommerce.svg') }}">
-                        <p class="title">E-Commerce</p>
-                    </a>
-                </li>
-
                 <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
                     <a href="#">
                         <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">

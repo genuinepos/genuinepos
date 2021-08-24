@@ -89,6 +89,7 @@ class BranchController extends Controller
             $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
             $addBranch->logo = $branchLogoName;
         }
+        
         $addBranch->save();
         return response()->json('Branch created successfully');
     }

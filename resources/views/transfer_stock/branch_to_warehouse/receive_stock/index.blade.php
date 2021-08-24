@@ -180,10 +180,10 @@
             $('#sendMailModal').modal('show');
         });
 
+        // Submit send mail form to send mail
         $(document).on('submit', '#send_mail_form', function(e) {
             e.preventDefault();
             $('.loading_button').show();
-            $('.submit_button').prop('type', 'button');
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
@@ -194,7 +194,6 @@
                     toastr.success(data);
                     $('#send_mail_form')[0].reset();
                     $('.loading_button').hide();
-                    $('.submit_button').prop('type', 'submit');
                 }
             });
         });

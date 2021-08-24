@@ -147,22 +147,19 @@ class SaleController extends Controller
 
                         if ($row->sale_return_due > 0) {
                             if (auth()->user()->permission->sale['sale_payment'] == '1') {
-                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '" 
-                            ><i class="far fa-money-bill-alt mr-1 text-primary"></i> Pay Return Amount</a>';
+                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Pay Return Amount</a>';
                             }
                         }
 
                         if (auth()->user()->permission->sale['return_access'] == '1') {
-                            $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i
-                                    class="fas fa-undo-alt mr-1 text-primary"></i> Sale Return</a>';
+                            $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i class="fas fa-undo-alt mr-1 text-primary"></i> Sale Return</a>';
                         }
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
                     }
 
-                    $html .= '<a class="dropdown-item" id="send_notification" href=""><i
-                                    class="fas fa-envelope mr-1 text-primary"></i> New Sale Notification</a>';
+                    $html .= '<a class="dropdown-item" id="send_notification" href="' . route('sales.notification.form', [$row->id]) . '"><i class="fas fa-envelope mr-1 text-primary"></i> New Sale Notification</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
@@ -2180,5 +2177,10 @@ class SaleController extends Controller
             ->limit(10)
             ->get();
         return view('sales.ajax_view.recent_draft_list', compact('drafts'));
+    }
+
+    // Get notification form method
+    public function getNotificationForm($saleId)
+    {
     }
 }

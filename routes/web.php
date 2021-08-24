@@ -350,6 +350,8 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('get/recent/product/{product_id}', 'SaleController@getRecentProduct');
     Route::get('get/product/price/group', 'SaleController@getProductPriceGroup')->name('sales.product.price.groups');
 
+    Route::get('notification/form/{saleId}', 'SaleController@getNotificationForm')->name('sales.notification.form');
+
     // Sale return route
     Route::group(['prefix' => 'returns'], function () {
         Route::get('/', 'SaleReturnController@index')->name('sales.returns.index');

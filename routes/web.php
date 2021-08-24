@@ -661,6 +661,10 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('update/{id}', 'CashCounterController@update')->name('settings.cash.counter.update');
         Route::delete('delete/{id}', 'CashCounterController@delete')->name('settings.cash.counter.delete');
     });
+
+    Route::group(['prefix' => 'release/note'], function () {
+        Route::get('/', 'ReleaseNoteController@index')->name('settings.release.note.index');
+    });
 });
 
 Route::group(['prefix' => 'users',  'namespace' => 'App\Http\Controllers'], function () {

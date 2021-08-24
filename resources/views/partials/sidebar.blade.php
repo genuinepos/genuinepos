@@ -1065,6 +1065,15 @@
                                         <p class="switch_text">@lang('menu.cash_counter')</p>
                                     </div>
                                 @endif
+
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.release.note.index') }}" class="bar-link">
+                                            <span><i class="far fa-arrow-alt-circle-up"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">Version Release Notes</p>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -219,6 +219,7 @@ class SaleController extends Controller
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status'])
                 ->make(true);
         }
+        
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $customers = DB::table('customers')->get(['id', 'name', 'phone']);
         return view('sales.index2', compact('branches', 'customers'));

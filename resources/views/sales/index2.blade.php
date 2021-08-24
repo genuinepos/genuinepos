@@ -635,5 +635,15 @@
             $('.payment_method').hide();
             $('#'+value).show();
         });
+
+        //Show payment view modal with data
+        $(document).on('click', '#view_payment', function (e) {
+           e.preventDefault();
+           var url = $(this).attr('href');
+            $.get(url, function(data) {
+                $('#payment_view_modal_body').html(data);
+                $('#paymentViewModal').modal('show');
+            });
+        });
     </script>
 @endpush

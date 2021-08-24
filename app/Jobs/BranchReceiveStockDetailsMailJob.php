@@ -19,10 +19,13 @@ class BranchReceiveStockDetailsMailJob implements ShouldQueue
      *
      * @return void
      */
-    public $request;
-    public function __construct($request, $transfer)
+    public $transfer;
+    public $to;
+    public $mail_note;
+    public function __construct($to, $mail_note, $transfer)
     {
-        $this->request = $request;
+        $this->to = $to;
+        $this->mail_note = $mail_note;
         $this->transfer = $transfer;
     }
 
@@ -33,7 +36,7 @@ class BranchReceiveStockDetailsMailJob implements ShouldQueue
      */
     public function handle()
     {
-        $email = new BranchReceiveStockDetailsMail($this->request, $this->transfer);
-        Mail::to($this->request->user_email)->send($email);
+        $email = new BranchReceiveStockDetailsMail($this->mail_note, $this->transfer);
+        Mail::to($this->to)->send($email);
     }
 }

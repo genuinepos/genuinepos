@@ -17,11 +17,13 @@ class BranchReceiveStockDetailsMail extends Mailable
      * @return void
      */
     public $transfer;
-    public $request;
-    public function __construct($request,$transfer)
+    public $mail_note;
+
+    public function __construct($mail_note, $transfer)
     {
         $this->transfer = $transfer;
-        $this->request = $request;
+        $this->mail_note = $mail_note;
+
     }
 
     /**
@@ -32,7 +34,7 @@ class BranchReceiveStockDetailsMail extends Mailable
     public function build()
     {
         $transfer = $this->transfer;
-        $request = $this->request;
-        return $this->view('mail.branch_stock_receive_mail', compact('request', 'transfer'));
+        $mail_note = $this->mail_note;
+        return $this->view('mail.branch_stock_receive_mail', compact('mail_note', 'transfer'));
     }
 }

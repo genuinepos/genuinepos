@@ -5,7 +5,7 @@
       <tr>
         <th style="text-align:left;">
             @if ($transfer->branch)
-                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $transfer->branch->logo) }}">
             @else 
                 <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
             @endif
@@ -25,7 +25,15 @@
         <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;">
                 <span style="font-weight:bold;display:inline-block;min-width:150px">Paid Status :</span>
-                <b style="color:green;font-weight:normal;margin:0">Paid</b>
+                <b style="color:green;font-weight:normal;margin:0">
+                  @if ($transfer->status == 1) 
+                    Pending
+                  @elseif($transfer->status == 2)
+                    Partial
+                  @elseif($transfer->status == 3)
+                    Completed
+                  @endif
+                </b>
             </p>
             <p style="font-size:14px;margin:0 0 6px 0;">
                 <span style="font-weight:bold;display:inline-block;min-width:146px">Reference ID :</span> 
@@ -39,56 +47,75 @@
       <tr>
         <td style="width:50%;padding:20px;vertical-align:top">
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px">Customer Name: </span> 
-                {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+              <span style="display:block;font-weight:bold;font-size:13px"><strong>Warehouse (From):</strong></span> 
+            </p>
+            <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
+                <span style="display:block;font-weight:bold;font-size:13px">Name : </span> 
+                {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
                 <span style="display:block;font-weight:bold;font-size:13px;">Address :</span> 
-                {{ $sale->customer ? $sale->customer->address : '' }}</p>
+                 {{ $transfer->warehouse->address }}</p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">Phone :</span> {{ $sale->customer ? $sale->customer->phone : '' }}
+                <span style="display:block;font-weight:bold;font-size:13px;">Phone :</span> {{ $transfer->warehouse->phone }}
             </p>
         </td>
 
-        @if ($sale->branch)
-            <td style="width:50%;padding:20px;vertical-align:top">
-                <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span> </h6>
-                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">  
-                    {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
-                    {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
-                    {{ $defaultLayout->branch_state == 1 ? $sale->branch->state : '' }},
-                    {{ $defaultLayout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
-                    {{ $defaultLayout->branch_country == 1 ? $sale->branch->country : '' }}.</span> 
-                </p>
-                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Phone :</span> {{ $sale->branch->phone }}</p>
-            </td>
-        @else 
-            <td style="width:50%;padding:20px;vertical-align:top">
-                <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span> </h6>
-                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ json_decode($generalSettings->business, true)['address'] }}</span> </p>
-                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Phone :</span> {{ json_decode($generalSettings->business, true)['phone'] }}</p>
-            </td>
-        @endif
+        <td style="width:50%;padding:20px;vertical-align:top">
+            <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Business Location(To)</span> </h6>
+            <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
+              <span style="display:block;font-weight:bold;font-size:13px;"> Name :</span>
+              {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}
+            </p>
+            <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Phone :</span> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</p>
+
+            <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
+              <span style="display:block;font-weight:bold;font-size:13px;">Address :</span> 
+              @if ($transfer->branch)
+                  {{ $transfer->branch->city }},
+                  {{ $transfer->branch->state }},
+                  {{ $transfer->branch->zip_code }},
+                  {{ $transfer->branch->country }}.
+              @else 
+                  {{ json_decode($generalSettings->business, true)['address'] }}
+              @endif
+            </p>
+        </td>
+       
       </tr>
       <tr>
         <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">Description</td>
       </tr>
-      @foreach ($sale->sale_products as $sale_product)
+      @foreach ($transfer->transfer_products as $transfer_product)
+        @php
+            $panding_qty = $transfer_product->quantity - $transfer_product->received_qty;
+        @endphp
         <tr>
             <td colspan="2" style="padding:15px;">
                 <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;">
                 <span style="display:block;font-size:13px;font-weight:normal;">
-                    {{ $sale_product->product->name }}
-                    @if ($sale_product->variant)
-                        -{{ $sale_product->variant->variant_name }}
-                    @endif
-                </span>Price- {{ $sale_product->unit_price_inc_tax }}
-                    <b style="font-size:12px;font-weight:300;"> /Qty-{{ $sale_product->quantity }}({{ $sale_product->unit }})/Subtotal-{{ $sale_product->subtotal }}</b>
+                  @php
+                    $variant = $transfer_product->variant ? ' ('.$transfer_product->variant->variant_name.')' : '';
+                  @endphp
+                  {{ $transfer_product->product->name.$variant }}
+                </span>Send Stock- {{ $transfer_product->quantity.' ('.$transfer_product->unit.')' }}
+                    <b style="font-size:12px;font-weight:300;"> /Pending Qty-{{ bcadd($panding_qty, 0, 2).' ('.$transfer_product->unit.')' }}/Receive Qty-{{ $transfer_product->received_qty.' ('.$transfer_product->unit.')' }}</b>
                 </p>
             </td>
         </tr>
       @endforeach
     </tbody>
+    @if ($mail_note)
+      <tfoot>
+        <tr>
+          <td colspan="2" style="font-size:14px;padding:50px 15px 0 15px;">
+            <strong style="display:block;margin:0 0 10px 0;">Mail Note: </strong> <br>  
+                {{ $mail_note }}
+              <br>
+          </td>
+        </tr>
+      </tfoot>
+    @endif
   </table>
 </body>
 </html>

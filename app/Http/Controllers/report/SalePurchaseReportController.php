@@ -58,7 +58,7 @@ class SalePurchaseReportController extends Controller
             $date_range = explode('-', $request->date_range);
             //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
             $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+            $to_date = date('Y-m-d', strtotime($date_range[1]));
 
             $sale_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
             $purchase_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);

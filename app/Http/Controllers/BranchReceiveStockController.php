@@ -269,7 +269,7 @@ class BranchReceiveStockController extends Controller
     public function receiveMail(Request $request, $sendStockId)
     {
         $this->validate($request, [
-            'user_mail' => 'required',
+            'user_email' => 'required',
         ]);
 
         $transfer = TransferStockToBranch::with([
@@ -277,9 +277,8 @@ class BranchReceiveStockController extends Controller
             'transfer_products.product', 'transfer_products.variant'
         ])->where('id', $sendStockId)->first();
 
-        dispatch(new BranchReceiveStockDetailsMailJob($request, $transfer));
-        // BranchReceiveStockDetailsMailJob::dispatch($request, $transfer)
-        //     ->delay(now()->addSeconds(5));
-        
+        BranchReceiveStockDetailsMailJob::dispatch($request->user_email, $request->mail_note, $transfer)
+            ->delay(now()->addSeconds(5));
+        return response()->json('Successfully mail is send.');
     }
 }

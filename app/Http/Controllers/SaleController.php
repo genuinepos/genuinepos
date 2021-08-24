@@ -25,7 +25,6 @@ use App\Utils\NameSearchUtil;
 use App\Models\CustomerLedger;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
 use Yajra\DataTables\Facades\DataTables;
 

@@ -15,7 +15,6 @@ class Util
         }
 
         $request->validate(
-            $request,
             [
                 'name' => 'required',
                 'product_code' => 'required',

@@ -156,11 +156,10 @@ class SaleController extends Controller
                         }
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
                     }
 
-                    $html .= '<a class="dropdown-item" id="items_notification" href=""><i
+                    $html .= '<a class="dropdown-item" id="send_notification" href=""><i
                                     class="fas fa-envelope mr-1 text-primary"></i> New Sale Notification</a>';
                     $html .= '</div>';
                     $html .= '</div>';
@@ -1230,70 +1229,7 @@ class SaleController extends Controller
     // Delete Sale
     public function delete(Request $request, $saleId)
     {
-        $deleteSale = Sale::with([
-            'sale_products',
-            'sale_products.product',
-            'sale_products.variant',
-            'sale_products.product.comboProducts'
-        ])->where('id', $saleId)->first();
-
-        if ($deleteSale->status == 1) {
-            $customer = Customer::where('id', $deleteSale->customer_id)->first();
-            if ($customer) {
-                $customer->total_sale_due = $customer->total_sale_due - ($deleteSale->due > 0 ? $deleteSale->due : 0);
-                $customer->total_sale_return_due = $customer->total_sale_return_due - $deleteSale->sale_return_due;
-                $customer->save();
-            }
-        }
-
-        // Add product quantity for adjustment
-        if ($deleteSale->status == 1) {
-            foreach ($deleteSale->sale_products as $sale_product) {
-                if ($sale_product->product->type == 1) {
-                    $sale_product->product->quantity += $sale_product->quantity;
-                    $sale_product->product->number_of_sale -= $sale_product->quantity;
-                    $sale_product->product->save();
-                    if ($sale_product->product_variant_id) {
-                        $sale_product->variant->variant_quantity += $sale_product->quantity;
-                        $sale_product->variant->number_of_sale -= $sale_product->quantity;
-                        $sale_product->variant->save();
-                    }
-
-                    if ($deleteSale->branch_id) {
-                        $productBranch = ProductBranch::where('branch_id', $deleteSale->branch_id)
-                            ->where('product_id', $sale_product->product_id)
-                            ->first();
-                        $productBranch->product_quantity += $sale_product->quantity;
-                        $productBranch->save();
-                        if ($sale_product->product_variant_id) {
-                            $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                                ->where('product_id', $sale_product->product_id)
-                                ->where('product_variant_id', $sale_product->product_variant_id)
-                                ->first();
-
-                            $productBranchVariant->variant_quantity += $sale_product->quantity;
-                            $productBranchVariant->save();
-                        }
-                    } else {
-                        $product = Product::where('id', $sale_product->product_id)
-                            ->first();
-                        $product->mb_stock += $sale_product->quantity;
-                        $product->save();
-
-                        if ($sale_product->product_variant_id) {
-                            $productVariant = ProductVariant::where('id', $sale_product->product_variant_id)
-                                ->where('id', $sale_product->product_id)
-                                ->first();
-                            $productVariant->mb_stock += $sale_product->quantity;
-                            $productVariant->save();
-                        }
-                    }
-                }
-            }
-        }
-
-        $deleteSale->delete();
-        return response()->json('Sale deleted successfully');
+        $this->saleUtil->deleteSale($request, $saleId);
     }
 
     // Sale Packing Slip
@@ -2094,70 +2030,7 @@ class SaleController extends Controller
     // Delete sale payment
     public function paymentDelete(Request $request, $paymentId)
     {
-        $deleteSalePayment = SalePayment::with('account', 'customer', 'sale', 'sale.sale_return', 'cashFlow')
-            ->where('id', $paymentId)->first();
-
-        if (!is_null($deleteSalePayment)) {
-            //Update customer due 
-            if ($deleteSalePayment->payment_type == 1) {
-                if ($deleteSalePayment->customer) {
-                    $deleteSalePayment->customer->total_sale_due = $deleteSalePayment->customer->total_sale_due + $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->customer->save();
-                }
-
-                // Update sale 
-                $deleteSalePayment->sale->paid = $deleteSalePayment->sale->paid - $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->due = $deleteSalePayment->sale->due + $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->save();
-
-                // Update previous account and delete previous cashflow.
-                if ($deleteSalePayment->account) {
-                    $deleteSalePayment->account->credit = $deleteSalePayment->account->credit - $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->balance = $deleteSalePayment->account->balance - $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->save();
-                    $deleteSalePayment->cashFlow->delete();
-                }
-
-                if ($deleteSalePayment->attachment != null) {
-                    if (file_exists(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment))) {
-                        unlink(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment));
-                    }
-                }
-
-                $deleteSalePayment->delete();
-            } elseif ($deleteSalePayment->payment_type == 2) {
-                if ($deleteSalePayment->customer) {
-                    $deleteSalePayment->customer->total_sale_return_due = $deleteSalePayment->customer->total_sale_return_due + $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->customer->save();
-                }
-
-                // Update sale 
-                $deleteSalePayment->sale->sale_return_due = $deleteSalePayment->sale->sale_return_due + $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->save();
-
-                // Update sale return
-                $deleteSalePayment->sale->sale_return->total_return_due = $deleteSalePayment->sale->sale_return->total_return_due + $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->sale_return->total_return_due_pay = $deleteSalePayment->sale->sale_return->total_return_due_pay - $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->sale_return->save();
-
-                // Update previous account and delete previous cashflow.
-                if ($deleteSalePayment->account) {
-                    $deleteSalePayment->account->debit = $deleteSalePayment->account->debit - $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->balance = $deleteSalePayment->account->balance + $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->save();
-                    $deleteSalePayment->cashFlow->delete();
-                }
-
-                if ($deleteSalePayment->attachment != null) {
-                    if (file_exists(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment))) {
-                        unlink(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment));
-                    }
-                }
-
-                $deleteSalePayment->delete();
-            }
-        }
-        return response()->json('Payment deleted successfully.');
+        $this->saleUtil->deleteSaleOrReturnPayment($request, $paymentId);
     }
 
     // Add product modal view with data

@@ -68,6 +68,45 @@
     <div id="transfer_details">
         
     </div>
+
+     <!-- Send mail modal-->
+     <div class="modal fade" id="sendMailModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="product_info">Send Mail</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                        class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <!--begin::Form-->
+                    <form id="send_mail_form" action="" method="POST">
+                        @csrf
+                        <div class="form-group mt-1">
+                            <label><strong>To :</strong> </label>
+                            <select required name="user_email" class="form-control" id="user_email">
+                                <option value="">Select User</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name.' ('.$user->email.')' }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-1">
+                            <label><strong>Mail Note:</strong> </label>
+                            <textarea name="mail_note" class="form-control" cols="30" rows="4"></textarea>
+                        </div>
+
+                        <div class="form-group text-end mt-3">
+                            <button type="submit" class="c-btn btn_blue float-end me-0">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- Send mail modal End-->
+
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
@@ -130,6 +169,33 @@
                 removeInline: false, 
                 printDelay: 1000, 
                 header: null,        
+            });
+        });
+
+        // Show send mail modal 
+        $(document).on('click', '#send_mail', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#send_mail_form').attr('action', url);
+            $('#sendMailModal').modal('show');
+        });
+
+        $(document).on('submit', '#send_mail_form', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            $('.submit_button').prop('type', 'button');
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success(data);
+                    $('#send_mail_form')[0].reset();
+                    $('.loading_button').hide();
+                    $('.submit_button').prop('type', 'submit');
+                }
             });
         });
     </script>

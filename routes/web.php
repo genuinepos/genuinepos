@@ -462,6 +462,7 @@ Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Ht
         Route::get('process/{sendStockId}', 'BranchReceiveStockController@receiveProducessView')->name('transfer.stocks.to.warehouse.receive.stock.process.view');
         Route::get('receivable/stock/{sendStockId}', 'BranchReceiveStockController@receivableStock')->name('transfer.stocks.to.warehouse.receive.stock.get.receivable.stock');
         Route::post('process/save/{sendStockId}', 'BranchReceiveStockController@receiveProcessSave')->name('transfer.stocks.to.warehouse.receive.stock.process.save');
+        Route::post('mail/{sendStockId}', 'BranchReceiveStockController@receiveMail')->name('transfer.stocks.to.warehouse.receive.stock.mail');
     });
 });
 

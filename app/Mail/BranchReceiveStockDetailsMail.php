@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SaleMail extends Mailable
+class BranchReceiveStockDetailsMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,10 +16,12 @@ class SaleMail extends Mailable
      *
      * @return void
      */
-    public $sale;
-    public function __construct($sale)
+    public $transfer;
+    public $request;
+    public function __construct($request,$transfer)
     {
-        $this->sale = $sale;
+        $this->transfer = $transfer;
+        $this->request = $request;
     }
 
     /**
@@ -29,7 +31,8 @@ class SaleMail extends Mailable
      */
     public function build()
     {
-        $sale = $this->sale;
-        return $this->view('mail.demo', compact('sale'));
+        $transfer = $this->transfer;
+        $request = $this->request;
+        return $this->view('mail.branch_stock_receive_mail', compact('request', 'transfer'));
     }
 }

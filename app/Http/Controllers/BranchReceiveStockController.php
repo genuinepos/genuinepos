@@ -13,6 +13,7 @@ use App\Models\TransferStockToBranch;
 use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\TransferStockToBranchProduct;
+use App\Jobs\BranchReceiveStockDetailsMailJob;
 
 class BranchReceiveStockController extends Controller
 {
@@ -43,7 +44,7 @@ class BranchReceiveStockController extends Controller
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stocks.to.warehouse.receive.stock.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" href="' . route('transfer.stocks.to.warehouse.receive.stock.process.view', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Process To Receive</a>';
-                    $html .= '<a class="dropdown-item" href=""><i class="fas fa-envelope mr-1 text-primary"></i> Send Receive Details Via Email</a>';
+                    $html .= '<a class="dropdown-item" id="send_mail" href="' . route('transfer.stocks.to.warehouse.receive.stock.mail', $row->id) . '"><i class="fas fa-envelope mr-1 text-primary"></i> Send Receive Details Via Email</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
@@ -81,7 +82,10 @@ class BranchReceiveStockController extends Controller
                 ->rawColumns(['date', 'from', 'to', 'status', 'action'])
                 ->make(true);
         }
-        return view('transfer_stock.branch_to_warehouse.receive_stock.index');
+        $users = DB::table('admin_and_users')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->get(['id', 'prefix', 'name', 'last_name', 'email']);
+        return view('transfer_stock.branch_to_warehouse.receive_stock.index', compact('users'));
     }
 
     public function show($sendStockId)
@@ -136,8 +140,8 @@ class BranchReceiveStockController extends Controller
 
             if ($variant_ids[$index] != 'noid') {
                 $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $product_id)
-                ->where('product_variant_id', $variant_ids[$index])
-                ->first();
+                    ->where('product_variant_id', $variant_ids[$index])
+                    ->first();
 
                 $productWarehouseVariant->variant_quantity += (float)$previous_received_quantities[$index];
                 $productWarehouseVariant->save();
@@ -151,8 +155,8 @@ class BranchReceiveStockController extends Controller
 
                     if ($variant_ids[$index] != 'noid') {
                         $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)
-                        ->where('product_variant_id', $variant_ids[$index])
-                        ->first();
+                            ->where('product_variant_id', $variant_ids[$index])
+                            ->first();
 
                         if ($productBranchVariant) {
                             $productBranchVariant->variant_quantity -= (float)$previous_received_quantities[$index];
@@ -168,8 +172,8 @@ class BranchReceiveStockController extends Controller
 
                     if ($variant_ids[$index] != 'noid') {
                         $productVariant = ProductVariant::where('product_id', $product_id)
-                        ->where('id', $variant_ids[$index])
-                        ->first();
+                            ->where('id', $variant_ids[$index])
+                            ->first();
 
                         if ($productVariant) {
                             $productVariant->mb_stock -= (float)$previous_received_quantities[$index];
@@ -246,7 +250,7 @@ class BranchReceiveStockController extends Controller
 
                     if ($variant_ids[$index] != 'noid') {
                         $productVariant = ProductVariant::where('product_id', $product_id)
-                        ->where('id', $variant_ids[$index])->first();
+                            ->where('id', $variant_ids[$index])->first();
                         if ($productVariant) {
                             $productVariant->mb_stock += (float)$receive_quantities[$index];
                             $productVariant->save();
@@ -259,5 +263,23 @@ class BranchReceiveStockController extends Controller
 
         session()->flash('successMsg', 'Successfully receiving has been has been processed');
         return response()->json(['successMsg' => 'Successfully receiving has been has been processed']);
+    }
+
+    // Send Receive branch stock details via email
+    public function receiveMail(Request $request, $sendStockId)
+    {
+        $this->validate($request, [
+            'user_mail' => 'required',
+        ]);
+
+        $transfer = TransferStockToBranch::with([
+            'warehouse', 'branch', 'transfer_products',
+            'transfer_products.product', 'transfer_products.variant'
+        ])->where('id', $sendStockId)->first();
+
+        dispatch(new BranchReceiveStockDetailsMailJob($request, $transfer));
+        // BranchReceiveStockDetailsMailJob::dispatch($request, $transfer)
+        //     ->delay(now()->addSeconds(5));
+        
     }
 }

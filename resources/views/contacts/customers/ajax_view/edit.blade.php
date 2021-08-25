@@ -15,19 +15,19 @@
         <div class="col-md-3">
             <label><b>Customer ID</b> : </label>
             <input readonly type="text" name="contact_id" class="form-control"
-                placeholder="Customer ID" id="e_contact_id" />
+                placeholder="Customer ID" value="{{ $customer->contact_id }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>Business Name</b> : </label>
             <input type="text" name="business_name" class="form-control"
-                placeholder="Business name" id="e_business_name" />
+                placeholder="Business name" id="e_business_name" value="{{ $customer->business_name }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>Name</b> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control edit_input"
-                data-name="Supplier name" id="e_name" placeholder="Supplier name" />
+                data-name="Customer name" id="e_name" placeholder="Customer name" value="{{ $customer->name }}"/>
             <span class="error error_e_name"></span>
         </div>
     </div>
@@ -36,26 +36,26 @@
         <div class="col-md-3">
             <label><b>Phone</b> : <span class="text-danger">*</span></label>
             <input type="text" name="phone" class="form-control edit_input"
-                data-name="Phone number" id="e_phone" placeholder="Phone number" />
+                data-name="Phone number" placeholder="Phone number" value="{{ $customer->phone }}"/>
             <span class="error error_e_phone"></span>
         </div>
 
         <div class="col-md-3">
             <label><b>Alternative Number</b> : </label>
             <input type="text" name="alternative_phone" class="form-control"
-                placeholder="Alternative phone number" id="e_alternative_phone" />
+                placeholder="Alternative phone number" value="{{ $customer->alternative_phone }}"/>
         </div>
-
+        
         <div class="col-md-3">
             <label><b>Landline</b> : </label>
             <input type="text" name="landline" class="form-control"
-                placeholder="landline number" id="e_landline" />
+                placeholder="landline number" value="{{ $customer->landline }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>Email</b> : </label>
             <input type="text" name="email" class="form-control"
-                placeholder="Email address" id="e_email" />
+                placeholder="Email address" id="e_email" value="{{ $customer->email }}"/>
         </div>
     </div>
 
@@ -64,29 +64,28 @@
             <label><b>Date Of Birth</b> : </label>
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i
-                            class="fas fa-calendar-week input_i"></i></span>
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                 </div>
                 <input type="date" name="date_of_birth" class="form-control"
-                    autocomplete="off" id="e_date_of_birth">
+                    autocomplete="off" value="{{ $customer->email }}">
             </div>
         </div>
 
         <div class="col-md-3">
             <label><b>Tax Number</b> : </label>
             <input type="text" name="tax_number" class="form-control"
-                placeholder="Tax number" id="e_tax_number" />
+                placeholder="Tax number" value="{{ $customer->tax_number }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>Pay Term</b> : </label>
             <div class="row">
                 <input type="text" name="pay_term_number" class="form-control w-50"
-                    id="e_pay_term_number" />
-                <select name="pay_term" class="form-control w-50" id="e_pay_term">
+                    id="e_pay_term_number" value="{{ $customer->pay_term_number }}"/>
+                <select name="pay_term" class="form-control w-50">
                     <option value="">Select term</option>
-                    <option value="1">Days </option>
-                    <option value="2">Months</option>
+                    <option {{ $customer->pay_term == 1 ? 'SELECTED' : ''  }} value="1">Days </option>
+                    <option {{ $customer->pay_term == 2 ? 'SELECTED' : ''  }} value="2">Months</option>
                 </select>
             </div>
         </div>

@@ -26,19 +26,14 @@ class CustomerController extends Controller
         if (auth()->user()->permission->customers['customer_all'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        return view('contacts.customers.index');
+        $groups = DB::table('customer_groups')->get();
+        return view('contacts.customers.index', compact('groups'));
     }
 
     public function getAllCustomer()
     {
         $customers = Customer::orderBy('id', 'DESC')->get();
         return view('contacts.customers.ajax_view.customer_list', compact('customers'));
-    }
-
-    public function getAllGroup()
-    {
-        $groups =  CustomerGroup::all();
-        return response()->json($groups);
     }
 
     public function store(Request $request)

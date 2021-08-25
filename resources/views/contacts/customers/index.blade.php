@@ -195,6 +195,9 @@
                                 <select name="customer_group_id" class="form-control"
                                     id="customer_group_id">
                                     <option value="">None</option>
+                                    @foreach ($groups as $group)
+                                        <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -497,24 +500,6 @@
             });
         }
         getAllCustomer();
-
-        function setCustomerGroup() {
-            $.ajax({
-                url: "{{ route('contacts.customer.get.all.group') }}",
-                async: true,
-                type: 'get',
-                dataType: 'json',
-                success: function(groups) {
-                    $.each(groups, function(key, group) {
-                        $('#customer_group_id').append('<option value="' + group.id + '">' + group
-                            .group_name + '</option>');
-                        $('#e_customer_group_id').append('<option value="' + group.id + '">' + group
-                            .group_name + '</option>');
-                    });
-                }
-            });
-        }
-        setCustomerGroup();
 
         // Setup ajax for csrf token.
         $.ajaxSetup({

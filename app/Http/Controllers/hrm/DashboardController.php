@@ -21,12 +21,12 @@ class DashboardController extends Controller
         $users = '';
         $userCountQ = DB::table('admin_and_users');
         $usersQ = DB::table('hrm_department')
-        ->leftJoin('admin_and_users', 'hrm_department.id', 'admin_and_users.department_id')
-        ->select(
-            DB::raw('COUNT(admin_and_users.id) as total_users'),
-            'hrm_department.department_name'
-        );
-        
+            ->leftJoin('admin_and_users', 'hrm_department.id', 'admin_and_users.department_id')
+            ->select(
+                DB::raw('COUNT(admin_and_users.id) as total_users'),
+                'hrm_department.department_name'
+            );
+
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
                 $userCountQ->where('admin_and_users.branch_id', NULL);
@@ -40,14 +40,14 @@ class DashboardController extends Controller
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $userCount = $userCountQ->count();
             $users = $usersQ->groupBy('admin_and_users.department_id')
-            ->groupBy('department_name')
-            ->get();
-        }else {
+                ->groupBy('department_name')
+                ->get();
+        } else {
             $userCount = $userCountQ->where('admin_and_users.branch_id', auth()->user()->branch_id)->count();
             $users = $usersQ->groupBy('admin_and_users.department_id')
-            ->groupBy('department_name')
-            ->where('admin_and_users.branch_id', auth()->user()->branch_id)
-            ->get();
+                ->groupBy('department_name')
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)
+                ->get();
         }
         return view('hrm.dashboard.ajax_view.user_count_table', compact('userCount', 'users'));
     }
@@ -56,8 +56,8 @@ class DashboardController extends Controller
     {
         $todayAttendances = '';
         $todayAttQ = DB::table('hrm_attendances')
-        ->leftJoin('admin_and_users', 'hrm_attendances.user_id', 'admin_and_users.id')
-        ->where('hrm_attendances.at_date_ts', Carbon::today());
+            ->leftJoin('admin_and_users', 'hrm_attendances.user_id', 'admin_and_users.id')
+            ->where('hrm_attendances.at_date_ts', Carbon::today());
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {

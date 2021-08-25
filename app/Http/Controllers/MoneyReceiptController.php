@@ -81,7 +81,9 @@ class MoneyReceiptController extends Controller
         $addReceipt->is_date = isset($request->is_date) ? 1 : 0;
         $addReceipt->is_note = isset($request->is_note) ? 1 : 0;
         $addReceipt->is_invoice_id = isset($request->is_invoice_id) ? 1 : 0;
-        $addReceipt->date = date('d-m-Y', strtotime($request->date));
+        $addReceipt->is_header_less = isset($request->is_header_less) ? 1 : 0;
+        $addReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL;
+        $addReceipt->is_date = date('d-m-Y');
         $addReceipt->date_ts = date('Y-m-d', strtotime($request->date));
         $addReceipt->month = date('F');
         $addReceipt->year = date('Y');
@@ -128,7 +130,7 @@ class MoneyReceiptController extends Controller
         $customer->total_paid += $request->amount;
         $customer->total_sale_due -= $request->amount;
         $customer->save();
-        //return $request->all();
+        
         // generate invoice ID
         $i = 6;
         $a = 0;

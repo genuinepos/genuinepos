@@ -378,6 +378,7 @@
                     $('.loading_button').hide();
                     return;
                 }
+
                 $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
@@ -780,6 +781,14 @@
                         $('#receipt_deleted_form')[0].reset();
                     }
                 });
+            });
+
+            $(document).on('change', '#is_header_less', function() {
+                if ($(this).is(':CHECKED', true)) {
+                    $('.gap-from-top-add').show();
+                } else {
+                    $('.gap-from-top-add').hide();
+                }
             });
         });
     </script>

@@ -12,17 +12,17 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li class="text-navy-blue"><strong>Customer : </strong>
+                    <li><strong>Customer : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->name }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Phone : </strong>
+                    <li><strong>Phone : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->phone }}
                         </span>
                     </li>
-                    <li class="text-navy-blue">
+                    <li>
                         <strong>Business : </strong>
                         <span class="card_text customer_business">{{ $customer->business_name }}</span>
                     </li>
@@ -33,19 +33,19 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li class="text-navy-blue"><strong>Total Sale : </strong>
+                    <li><strong>Total Sale : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_sale }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Total Paid : </strong>
+                    <li><strong>Total Paid : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_paid }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Total Due : </strong>
+                    <li><strong>Total Due : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_sale_due }}
@@ -73,7 +73,7 @@
                     <span class="input-group-text" id="basic-addon1"><i
                             class="fas fa-calendar-week text-dark"></i></span>
                 </div>
-                <input type="date" name="date" class="form-control form-control-sm date-picker mr_input"
+                <input type="date" name="date" class="form-control mr_input"
                     autocomplete="off" id="mr_date" data-name="Date" value="{{ date('Y-m-d') }}">
             </div>
             <span class="error error_mr_date"></span>
@@ -81,7 +81,7 @@
 
         <div class="col-md-4">
             <label><strong>Status :</strong> </strong> <span class="text-danger">*</span> </label>
-            <select name="status" class="form-control form-control-sm mr_input" data-name="Money receipt status" id="mr_status">
+            <select name="status" class="form-control mr_input" data-name="Money receipt status" id="mr_status">
                 <option value="Pending">Pending</option>
             </select>
             <span class="error error_mr_status"></span>
@@ -91,30 +91,40 @@
     <div class="form-group row mt-2">
         <div class="col-md-12">
             <label><strong>Paper Note :</strong></label>
-            <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3"
+            <textarea name="note" class="form-control" id="note" cols="30" rows="3"
                 placeholder="Paper Note"></textarea>
         </div>
     </div>
 
     <div class="extra_label">
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-3">
-                    &nbsp;&nbsp;&nbsp;&nbsp; <h6 class="checkbox_input_wrap py-1"> <input type="checkbox" name="is_amount"  id="is_amount" value="1"> &nbsp; Receiving Amount &nbsp; </h6>
-                </div>
-                
-                <div class="col-md-3">
-                    &nbsp;&nbsp;&nbsp;&nbsp; <h6 class="checkbox_input_wrap py-1"> <input type="checkbox" name="is_invoice_id"  id="is_date" value="1"> &nbsp; Voucher No &nbsp; </h6>
-                </div>
-                
-                <div class="col-md-3">
-                    &nbsp;&nbsp;&nbsp;&nbsp; <h6 class="checkbox_input_wrap py-1"> <input type="checkbox" name="is_date" id="is_date" value="1"> &nbsp;Show Date &nbsp; </h6>
-                </div>
-                
-                <div class="col-md-3">
-                    &nbsp;&nbsp;&nbsp;&nbsp; <h6 class="checkbox_input_wrap py-1"> <input type="checkbox" name="is_note" id="is_note" value="1"> &nbsp; Paper Note &nbsp; </h6>
-                </div>
-                
+        <div class="form-group row mt-2">
+            <div class="col-md-3">
+                <p> <input type="checkbox" name="is_amount" id="is_amount" value="1"> &nbsp; <b>Receiving Amount</b> </p>
+            </div>
+            
+            <div class="col-md-2">
+                <p> <input type="checkbox" CHECKED name="is_invoice_id" id="is_date" value="1"> &nbsp; <b>Voucher No</b></p>
+            </div>
+            
+            <div class="col-md-2">
+                <p> <input type="checkbox" CHECKED name="is_date" id="is_date" value="1"> &nbsp; <b>Show Date</b></p>
+            </div>
+            
+            <div class="col-md-2">
+                <p> <input type="checkbox" name="is_note" id="is_note" value="1"> &nbsp; <b>Paper Note</b></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="extra_label">
+        <div class="form-group row mt-2">
+            <div class="col-md-3 mt-2">
+                <p> <input type="checkbox" name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>Is Header Less For Pad Print ?</b> </p>
+            </div>
+
+            <div class="col-md-4 gap-from-top-add d-none">
+                <label><b>Gap From Top :</b> </label>
+                <input type="text" name="gap_from_top" class="form-control" placeholder="Gap From Top"/>
             </div>
         </div>
     </div>

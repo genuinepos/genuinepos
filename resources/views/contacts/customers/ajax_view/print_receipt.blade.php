@@ -4,7 +4,7 @@
     <div class="print_content">
         <div class="heading_area">
             <div class="row">
-                <div class="col-md-4 col-sm-4 col-lg-4">
+                <div class="col-6">
                     @if ($receipt->logo)
                         <img style="height: 70px;width:200px;" src="{{ asset('public/uploads/branch_logo/'.$receipt->logo) }}">  
                     @else 
@@ -12,21 +12,19 @@
                     @endif
                 </div>
 
-                <div class="col-md-4 col-sm-4 col-lg-4">
-                    <div class="heading text-center">
-                        <h4>Money Receipt Voucher</h4>
-
-                        <h5 class="company_name mt-1">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-
+                <div class="col-6">
+                    <div class="heading text-end">
+                        <h3>Money Receipt Voucher</h3>
+                        <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                         @if ($receipt->branch_name)
-                            <h6 class="company_address mt-1">
+                            <h6 class="company_address">
                                 {{ $receipt->branch_name . '/' . $receipt->branch_code }} <br>
                                 {{ $receipt->city ? $receipt->city : '' }},{{ $receipt->state ? $receipt->state : '' }},{{ $receipt->zip_code ? $receipt->zip_code : '' }},{{ $receipt->country ? $receipt->country : '' }}.
                             </h6>
-                            <h6>Phone : {{ $receipt->phone }}</h6>
-                            <h6>Email : {{ $receipt->email }}</h6>
+                            <p><strong>Phone :</strong> {{ $receipt->phone }}</p>
+                            <p><strong>Email :</strong> {{ $receipt->email }}</p>
                         @else 
-                            <h6 class="company_address mt-1">{{ json_decode($generalSettings->business, true)['address'] }}</h6>
+                            <h6 class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</h6>
                             <h6>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
                             <h6>Email : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
                         @endif
@@ -50,7 +48,6 @@
         </div><br>
 
         <div class="row">
-
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">

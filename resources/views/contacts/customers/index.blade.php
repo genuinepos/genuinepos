@@ -74,7 +74,6 @@
         </div>
     </div>
 
-
     <!-- Add Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">

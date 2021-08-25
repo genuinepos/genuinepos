@@ -193,58 +193,56 @@ class CustomerController extends Controller
             return DataTables::of($sales)
                 ->addColumn('action', function ($row) {
                     $html = '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Action
-                        </button>';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i
-                                    class="far fa-eye mr-1 text-primary"></i> View</a>';
+                                    class="far fa-eye text-primary"></i> View</a>';
                    
-                    $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Packing Slip</a>';
+                    $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Packing Slip</a>';
 
                     if (auth()->user()->permission->sale['shipment_access'] == '1') {
                             $html .= '<a class="dropdown-item" id="edit_shipment"
                             href="' . route('sales.shipment.edit', [$row->id]) . '"><i
-                            class="fas fa-truck mr-1 text-primary"></i> Edit Shipping</a>';
+                            class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                     }
 
                     if (auth()->user()->branch_id == $row->branch_id) {
                         if ($row->due > 0) {
                             if (auth()->user()->permission->sale['sale_payment'] == '1') {
                                 $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '" 
-                            ><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
+                            ><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                             }
                         }
 
                         if (auth()->user()->permission->sale['sale_payment'] == '1') {
                             $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
                         data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
-                            class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
+                            class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                         }
 
                         if (auth()->user()->permission->sale['return_access'] == '1') {
-                            $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i class="fas fa-undo-alt mr-1 text-primary"></i> Sale Return</a>';
+                            $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i class="fas fa-undo-alt text-primary"></i> Sale Return</a>';
                         }
 
                         if ($row->created_by == 1) {
-                            $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                            $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                         }else {
-                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                         }
 
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i
-                        class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
+                        class="far fa-trash-alt text-primary"></i> Delete</a>';
                     }
 
                     if ($row->sale_return_due > 0) {
                         if (auth()->user()->permission->sale['sale_payment'] == '1') {
                             $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '" 
-                        ><i class="far fa-money-bill-alt mr-1 text-primary"></i> Pay Return Amount</a>';
+                        ><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                         }
                     }
 
                     $html .= '<a class="dropdown-item" id="items_notification" href=""><i
-                                    class="fas fa-envelope mr-1 text-primary"></i> New Sale Notification</a>';
+                                    class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;

@@ -25,33 +25,33 @@
                         </button>
 
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="{{ url('contacts/customers/view', $customer->id) }}"><i class="far fa-eye mr-1 text-primary"></i> View</a>
+                            <a class="dropdown-item" href="{{ url('contacts/customers/view', $customer->id) }}"><i class="far fa-eye text-primary"></i> View</a>
 
                             @if ($customer->total_sale_due > 0)
-                                <a class="dropdown-item" id="pay_button" href="{{ route('customers.payment', $customer->id) }}"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Receive Payment</a>
+                                <a class="dropdown-item" id="pay_button" href="{{ route('customers.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>
                             @endif
 
-                            <a class="dropdown-item" id="money_receipt_list" href="{{ route('money.receipt.voucher.list', $customer->id) }}"><i class="far fa-file-alt mr-1 text-primary"></i> Payment Receipt Voucher</a>
+                            <a class="dropdown-item" id="money_receipt_list" href="{{ route('money.receipt.voucher.list', $customer->id) }}"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>
                             
                             @if ($customer->total_sale_return_due > 0)
-                                <a class="dropdown-item" id="pay_return_button" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Pay Return Due</a>
+                                <a class="dropdown-item" id="pay_return_button" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Due</a>
                             @endif
 
                             @if (auth()->user()->permission->customers['customer_edit'] == '1')
-                                <a class="dropdown-item" href="#" id="edit"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>
+                                <a class="dropdown-item" href="{{ route('contacts.customer.edit', $customer->id) }}" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>
                             @endif
                             
                             @if (auth()->user()->permission->customers['customer_delete'] == '1')
-                                <a class="dropdown-item" id="delete" href="{{ route('contacts.customer.delete', $customer->id) }}"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>
+                                <a class="dropdown-item" id="delete" href="{{ route('contacts.customer.delete', $customer->id) }}"><i class="far fa-trash-alt text-primary"></i> Delete</a>
                             @endif
                             
                             @if ($customer->status == 1)
-                                <a class="dropdown-item" id="change_status" href="{{ route('contacts.customer.change.status', $customer->id) }}"><i class="far fa-thumbs-up mr-1 text-success"></i> Change Status</a>
+                                <a class="dropdown-item" id="change_status" href="{{ route('contacts.customer.change.status', $customer->id) }}"><i class="far fa-thumbs-up text-success"></i> Change Status</a>
                             @else 
-                                <a class="dropdown-item" id="change_status" href="{{ route('contacts.customer.change.status', $customer->id) }}"><i class="far fa-thumbs-down mr-1 text-danger"></i> Change Status</a>
+                                <a class="dropdown-item" id="change_status" href="{{ route('contacts.customer.change.status', $customer->id) }}"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>
                             @endif
-                            <a class="dropdown-item" href="{{ url('contacts/customers/contact/info', $customer->id) }}"><i class="far fa-file-alt mr-1 text-primary"></i> Contact Info</a>
-                            <a class="dropdown-item" href="{{ url('contacts/customers/ledger', $customer->id) }}"><i class="far fa-file-alt mr-1 text-primary"></i> Ledger</a>
+                            <a class="dropdown-item" href="{{ url('contacts/customers/contact/info', $customer->id) }}"><i class="far fa-file-alt text-primary"></i> Contact Info</a>
+                            <a class="dropdown-item" href="{{ url('contacts/customers/ledger', $customer->id) }}"><i class="far fa-file-alt text-primary"></i> Ledger</a>
                         </div>
                     </div>
                 </td>
@@ -67,9 +67,9 @@
                 <td>{{ $customer->total_sale_return_due }}</td>
                 <td>
                     @if ($customer->status == 1)
-                        <i class="far fa-thumbs-up mr-1 text-success"></i>
+                        <i class="far fa-thumbs-up text-success"></i>
                     @else 
-                        <i class="far fa-thumbs-down mr-1 text-danger"></i>
+                        <i class="far fa-thumbs-down text-danger"></i>
                     @endif
                 </td>
             </tr>

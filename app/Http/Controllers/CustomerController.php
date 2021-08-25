@@ -8,10 +8,8 @@ use App\Models\CashFlow;
 use App\Models\Customer;
 use App\Models\SalePayment;
 use Illuminate\Http\Request;
-use App\Models\CustomerGroup;
 use App\Models\CustomerLedger;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
@@ -60,8 +58,8 @@ class CustomerController extends Controller
             'business_name' => $request->business_name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'alternative_phone' => $request->phone,
-            'landline' => $request->phone,
+            'alternative_phone' => $request->alternative_phone,
+            'landline' => $request->landline,
             'date_of_birth' => $request->date_of_birth,
             'tax_number' => $request->tax_number,
             'pay_term' => $request->pay_term,
@@ -88,6 +86,13 @@ class CustomerController extends Controller
         return response()->json('Customer created successfully');
     }
 
+    public function edit($customerId)
+    {
+        $customer = DB::table('customers')->where('id', $customerId)->first();
+        $groups = DB::table('customer_groups')->get();
+        return view('contacts.customers.ajax_view.edit', compact('customer', 'groups'));
+    }
+
     public function getCustomer($customerId)
     {
         $customer = Customer::where('id', $customerId)->first();
@@ -108,7 +113,7 @@ class CustomerController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'alternative_phone' => $request->alternative_phone,
-            'landline' => $request->alternative_phone,
+            'landline' => $request->landline,
             'date_of_birth' => $request->date_of_birth,
             'tax_number' => $request->tax_number,
             'pay_term' => $request->pay_term,

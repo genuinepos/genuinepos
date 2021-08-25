@@ -1,14 +1,14 @@
 <form id="edit_customer_form" action="{{ route('contacts.customer.update') }}">
     @csrf
-    <input type="hidden" name="id" id="id">
-    <div class="form-group row mt-1">
+    <input type="hidden" name="id" value="{{ $customer->id }}">
+    <div class="form-group row">
         <div class="col-md-3">
             <label><b>Contact Type</b> : </label>
             <select name="contact_type" class="form-control" id="e_contact_type">
                 <option value="">Select contact type</option>
-                <option value="1">Customer</option>
-                <option value="2">Supplier</option>
-                <option value="3">Both (Supplier - Customer)</option>
+                <option {{ $customer->type == 1 ? 'SELECTED' : ''  }} value="1">Customer</option>
+                <option {{ $customer->type == 2 ? 'SELECTED' : ''  }} value="2">Supplier</option>
+                <option {{ $customer->type == 3 ? 'SELECTED' : ''  }} value="3">Both (Supplier - Customer)</option>
             </select>
         </div>
 
@@ -55,7 +55,7 @@
         <div class="col-md-3">
             <label><b>Email</b> : </label>
             <input type="text" name="email" class="form-control"
-                placeholder="Email address" id="e_email" value="{{ $customer->email }}"/>
+                placeholder="Email address" value="{{ $customer->email }}"/>
         </div>
     </div>
 
@@ -73,8 +73,7 @@
 
         <div class="col-md-3">
             <label><b>Tax Number</b> : </label>
-            <input type="text" name="tax_number" class="form-control"
-                placeholder="Tax number" value="{{ $customer->tax_number }}"/>
+            <input type="text" name="tax_number" class="form-control" placeholder="Tax number" value="{{ $customer->tax_number }}"/>
         </div>
 
         <div class="col-md-3">
@@ -94,50 +93,47 @@
     <div class="form-group row mt-1">
         <div class="col-md-3">
             <label><b>Customer Group</b> : </label>
-            <select name="customer_group_id" class="form-control"
-                id="e_customer_group_id">
+            <select name="customer_group_id" class="form-control">
                 <option value="">None</option>
+                @foreach ($groups as $group)
+                    <option {{ $customer->customer_group_id == $group->id ? 'SELECTED' : ''  }} value="{{ $group->id }}">{{ $group->name }}</option>
+                @endforeach
             </select>
         </div>
 
         <div class="col-md-9">
             <label><b>Address</b> : </label>
-            <input type="text" name="address" class="form-control" placeholder="Address"
-                id="e_address">
+            <input type="text" name="address" class="form-control" placeholder="Address" value="{{ $customer->address }}">
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row mt-1">
         <div class="col-md-3">
             <label><b>City</b> : </label>
-            <input type="text" name="city" class="form-control" placeholder="City"
-                id="e_city" />
+            <input type="text" name="city" class="form-control" placeholder="City" value="{{ $customer->city }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>State</b> : </label>
-            <input type="text" name="state" class="form-control" placeholder="State"
-                id="e_state" />
+            <input type="text" name="state" class="form-control" placeholder="State" value="{{ $customer->state }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>Country</b> : </label>
-            <input type="text" name="country" class="form-control" placeholder="Country"
-                id="e_country" />
+            <input type="text" name="country" class="form-control" placeholder="Country" value="{{ $customer->country }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>Zip-Code</b> : </label>
-            <input type="text" name="zip_code" class="form-control"
-                placeholder="zip_code" id="e_zip_code" />
+            <input type="text" name="zip_code" class="form-control" placeholder="zip_code" value="{{ $customer->zip_code }}"/>
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row mt-1">
         <div class="col-md-5">
             <label><b>Shipping Address</b> : </label>
             <input type="text" name="shipping_address" class="form-control"
-                placeholder="Shipping address" id="e_shipping_address" />
+                placeholder="Shipping address" value="{{ $customer->shipping_address }}"/>
         </div>
     </div>
 

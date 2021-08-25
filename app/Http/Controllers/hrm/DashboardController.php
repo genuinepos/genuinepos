@@ -134,15 +134,15 @@ class DashboardController extends Controller
                 'hrm_holidays.holiday_name',
                 'hrm_holidays.start_date',
                 'hrm_holidays.end_date',
-            )->get();
+            )->whereDate('start_date', '>', date('Y-m-d'))->get();
         } else {
             $holidays = $holidaysQuery->select(
                 'hrm_holidays.holiday_name',
                 'hrm_holidays.start_date',
                 'hrm_holidays.end_date',
-            )->get();
+            )->whereDate('start_date', '>', date('Y-m-d'))->get();
         }
 
-        return view('hrm.dashboard.ajax_view.leave_table', compact('leaves'));
+        return view('hrm.dashboard.ajax_view.upcomingHolidays', compact('holidays'));
     }
 }

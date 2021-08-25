@@ -613,10 +613,12 @@
                         $('.error_' + inputId).html(fieldName + ' is required.');
                     }
                 });
+
                 if (countErrorField > 0) {
                     $('.loading_button').hide();
                     return;
                 }
+
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -946,9 +948,7 @@
                         },
                         'No': {
                             'class': 'no btn-modal-primary',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
+                            'action': function() {console.log('Deleted canceled.');} 
                         }
                     }
                 });

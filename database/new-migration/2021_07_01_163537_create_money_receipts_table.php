@@ -28,6 +28,8 @@ class CreateMoneyReceiptsTable extends Migration {
 			$table->boolean('is_date')->default(0);
 			$table->boolean('is_note')->default(0);
 			$table->boolean('is_invoice_id')->default(0);
+			$table->boolean('is_header_less')->default(0);
+			$table->bigInteger('gap_from_top')->nullable();
 			$table->string('date')->nullable();
 			$table->string('month')->nullable();
 			$table->string('year')->nullable();

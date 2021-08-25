@@ -142,7 +142,6 @@ class DashboardController extends Controller
                 'hrm_holidays.holiday_name',
                 'hrm_holidays.start_date',
                 'hrm_holidays.end_date',
-
             )->get();
         } else {
             $leaves = $leaveQuery->select(

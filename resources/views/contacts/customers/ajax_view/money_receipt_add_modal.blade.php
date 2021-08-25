@@ -5,7 +5,7 @@
     .payment_top_card ul {padding: 6px;border: 1px solid #dcd1d1;}
     .payment_list_table {position: relative;}
     .payment_details_contant{background: azure!important;}
-    h6.checkbox_input_wrap {border: 1px solid #495677;padding: 0px 7px;}
+    h6.checkbox_input_wrap {border: 1px solid #495677; padding: 0px 7px;}
 </style>
 <div class="info_area mb-2">
     <div class="row">

@@ -112,10 +112,9 @@
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         @if ($receipt->status != 'Completed')
                                             <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}"><i class="fas fa-print text-primary"></i> Print</a>
-                                            <a class="dropdown-item" href=""><i class="fas fa-edit text-primary"></i> Edit</a>
+                                            <a class="dropdown-item" id="edit_receipt" href="{{ route('money.receipt.voucher.edit', $receipt->id) }}"><i class="fas fa-edit text-primary"></i> Edit</a>
                                             <a class="dropdown-item" id="change_receipt_status" href="{{ route('money.receipt.voucher.status.change.modal', $receipt->id) }}"><i class="far fa-file-alt mr-1 text-primary"></i> Change Status</a>
                                         @endif
-                                        
                                         <a class="dropdown-item" id="delete_receipt" href="{{ route('money.receipt.voucher.delete', $receipt->id) }}"><i class="far fa-trash-alt text-primary"></i> Delete</a>
                                     </div>
                                 </div>

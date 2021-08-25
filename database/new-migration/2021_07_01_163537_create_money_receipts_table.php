@@ -17,7 +17,7 @@ class CreateMoneyReceiptsTable extends Migration {
 		{
 			$table->bigInteger('id', true)->unsigned();
 			$table->string('invoice_id', 191)->nullable();
-			$table->decimal('amount', 22)->default(0.00);
+			$table->decimal('amount', 22)->nullable();
 			$table->decimal('received_amount', 22)->default(0.00);
 			$table->bigInteger('customer_id')->unsigned()->index('money_receipts_customer_id_foreign');
 			$table->bigInteger('branch_id')->unsigned()->nullable()->index('money_receipts_branch_id_foreign');

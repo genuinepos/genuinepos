@@ -307,7 +307,7 @@
     <!-- Money Receipt list Modal End-->
 
     <!--add money receipt Modal-->
-    <div class="modal fade" id="addReciptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+    <div class="modal fade" id="MoneyReciptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
@@ -601,7 +601,7 @@
                     type: 'get',
                     success: function(data) {
                         $('#money_receipt_modal').html(data);
-                        $('#addReciptModal').modal('show');
+                        $('#MoneyReciptModal').modal('show');
                     }
                 });
             });
@@ -621,28 +621,11 @@
                 });
             });
 
-            $(document).on('submit', '#add_money_receipt_form', function(e) {
+            $(document).on('submit', '#money_receipt_form', function(e) {
                 e.preventDefault();
                 $('.loading_button').show();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
-                var inputs = $('.mr_input');
-                $('.error').html('');
-                var countErrorField = 0;
-                $.each(inputs, function(key, val) {
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#' + inputId).val();
-                    if (idValue == '') {
-                        countErrorField += 1;
-                        var fieldName = $('#' + inputId).data('name');
-                        $('.error_' + inputId).html(fieldName + ' is required.');
-                    }
-                });
-
-                if (countErrorField > 0) {
-                    $('.loading_button').hide();
-                    return;
-                }
 
                 $.ajax({
                     url: url,
@@ -650,7 +633,7 @@
                     data: request,
                     success: function(data) {
                         toastr.success('Successfully money receipt voucher is generated.');
-                        $('#addReciptModal').modal('hide');
+                        $('#MoneyReciptModal').modal('hide');
                         $('#moneyReceiptListModal').modal('hide');
                         $('.loading_button').hide();
                         $(data).printThis({
@@ -663,6 +646,16 @@
                             header: null,
                         });
                     }
+                });
+            });
+
+            // Pass editable data to edit modal fields
+            $(document).on('click', '#edit_receipt', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $.get(url, function(data) {
+                    $('#money_receipt_modal').html(data);
+                    $('#MoneyReciptModal').modal('show');
                 });
             });
 

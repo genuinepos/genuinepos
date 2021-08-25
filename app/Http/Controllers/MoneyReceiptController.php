@@ -83,7 +83,7 @@ class MoneyReceiptController extends Controller
         $addReceipt->is_invoice_id = isset($request->is_invoice_id) ? 1 : 0;
         $addReceipt->is_header_less = isset($request->is_header_less) ? 1 : 0;
         $addReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL;
-        $addReceipt->is_date = date('d-m-Y');
+        $addReceipt->date = date('d-m-Y');
         $addReceipt->date_ts = date('Y-m-d', strtotime($request->date));
         $addReceipt->month = date('F');
         $addReceipt->year = date('Y');
@@ -108,6 +108,57 @@ class MoneyReceiptController extends Controller
         return view('contacts.customers.ajax_view.print_receipt', compact('receipt'));
     }
 
+    public function update(Request $request, $receiptId)
+    {
+        $updateReceipt = MoneyReceipt::where('id', $receiptId)->first();
+        $updateReceipt->amount = $request->amount;
+        $updateReceipt->note = $request->note;
+        $updateReceipt->status = $request->status;
+        $updateReceipt->is_amount = isset($request->is_amount) ? 1 : 0;
+        $updateReceipt->is_date = isset($request->is_date) ? 1 : 0;
+        $updateReceipt->is_note = isset($request->is_note) ? 1 : 0;
+        $updateReceipt->is_invoice_id = isset($request->is_invoice_id) ? 1 : 0;
+        $updateReceipt->is_header_less = isset($request->is_header_less) ? 1 : 0;
+        $updateReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL;
+        $updateReceipt->date = date('d-m-Y');
+        $updateReceipt->date_ts = date('Y-m-d', strtotime($request->date));
+        $updateReceipt->month = date('F');
+        $updateReceipt->year = date('Y');
+        $updateReceipt->save();
+
+        $receipt = DB::table('money_receipts')
+            ->leftJoin('customers', 'money_receipts.customer_id', 'customers.id')
+            ->leftJoin('branches', 'money_receipts.branch_id', 'branches.id')
+            ->select(
+                'money_receipts.*',
+                'customers.name as cus_name',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'branches.city',
+                'branches.state',
+                'branches.zip_code',
+                'branches.email',
+                'branches.phone',
+                'branches.country',
+                'branches.logo',
+            )->where('money_receipts.id', $receiptId)->first();
+        return view('contacts.customers.ajax_view.print_receipt', compact('receipt'));
+    }
+
+    public function edit($receiptId)
+    {
+        $receipt = DB::table('money_receipts')
+            ->leftJoin('customers', 'money_receipts.customer_id', 'customers.id')
+            ->select(
+                'money_receipts.*',
+                'customers.name as cus_name',
+                'customers.phone as cus_phone',
+                'customers.business_name as cus_business',
+            )->where('money_receipts.id', $receiptId)->first();
+
+        return view('contacts.customers.ajax_view.money_receipt_edit_modal', compact('receipt'));
+    }
+
     public function changeStatusModal($receiptId)
     {
         $receipt = DB::table('money_receipts')->where('id', $receiptId)->first();
@@ -130,7 +181,7 @@ class MoneyReceiptController extends Controller
         $customer->total_paid += $request->amount;
         $customer->total_sale_due -= $request->amount;
         $customer->save();
-        
+
         // generate invoice ID
         $i = 6;
         $a = 0;

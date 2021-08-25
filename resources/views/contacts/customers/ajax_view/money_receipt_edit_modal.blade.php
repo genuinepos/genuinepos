@@ -14,42 +14,17 @@
                 <ul class="list-unstyled">
                     <li><strong>Customer : </strong>
                         <span class="card_text customer_name">
-                            {{ $customer->name }}
+                            {{ $receipt->cus_name }} 
                         </span>
                     </li>
                     <li><strong>Phone : </strong>
                         <span class="card_text customer_name">
-                            {{ $customer->phone }}
+                            {{ $receipt->cus_phone }}
                         </span>
                     </li>
                     <li>
                         <strong>Business : </strong>
-                        <span class="card_text customer_business">{{ $customer->business_name }}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="payment_top_card">
-                <ul class="list-unstyled">
-                    <li><strong>Total Sale : </strong>
-                        <span class="card_text">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $customer->total_sale }}
-                        </span>
-                    </li>
-                    <li><strong>Total Paid : </strong>
-                        <span class="card_text">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $customer->total_paid }}
-                        </span>
-                    </li>
-                    <li><strong>Total Due : </strong>
-                        <span class="card_text">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $customer->total_sale_due }}
-                        </span>
+                        <span class="card_text customer_business">{{ $receipt->cus_business }}</span>
                     </li>
                 </ul>
             </div>
@@ -57,13 +32,12 @@
     </div>
 </div>
 
-<form id="money_receipt_form" action="{{ route('money.receipt.voucher.store', $customer->id) }}" method="POST">
+<form id="money_receipt_form" action="{{ route('money.receipt.voucher.update', $receipt->id) }}" method="POST">
     @csrf
     <div class="form-group row">
         <div class="col-md-4">
             <label><b>Receiving Amount :</b> </label>
-            <input type="text" name="amount" class="form-control form-control-sm mr_input" id="mr_amount" placeholder="Receiving Amount" data-name="Receiving amount" value=""/>
-            <span class="error error_mr_amount"></span>
+            <input type="text" name="amount" class="form-control" placeholder="Receiving Amount" value="{{ $receipt->amount }}"/>
         </div>
 
         <div class="col-md-4">
@@ -71,19 +45,18 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
-                            class="fas fa-calendar-week text-dark"></i></span>
+                            class="fas fa-calendar-week input_i"></i></span>
                 </div>
                 <input type="date" name="date" class="form-control"
-                    autocomplete="off" id="mr_date" data-name="Date" value="{{ date('Y-m-d') }}">
+                    autocomplete="off" data-name="Date" value="{{ date('Y-m-d', strtotime($receipt->date)) }}">
             </div>
         </div>
 
         <div class="col-md-4">
             <label><strong>Status :</strong> </strong> <span class="text-danger">*</span> </label>
-            <select name="status" class="form-control mr_input" data-name="Money receipt status" id="mr_status">
+            <select name="status" class="form-control">
                 <option value="Pending">Pending</option>
             </select>
-            <span class="error error_mr_status"></span>
         </div>
     </div>
 
@@ -91,26 +64,26 @@
         <div class="col-md-12">
             <label><strong>Paper Note :</strong></label>
             <textarea name="note" class="form-control" id="note" cols="30" rows="3"
-                placeholder="Paper Note"></textarea>
+                placeholder="Paper Note">{{ $receipt->note }}</textarea>
         </div>
     </div>
 
     <div class="extra_label">
         <div class="form-group row mt-2">
             <div class="col-md-3">
-                <p> <input type="checkbox" name="is_amount" id="is_amount" value="1"> &nbsp; <b>Receiving Amount</b> </p>
+                <p> <input type="checkbox" {{ $receipt->is_amount ? 'CHECKED' : '' }} name="is_amount" id="is_amount" value="1"> &nbsp; <b>Receiving Amount</b> </p>
             </div>
             
             <div class="col-md-2">
-                <p> <input type="checkbox" CHECKED name="is_invoice_id" id="is_date" value="1"> &nbsp; <b>Voucher No</b></p>
+                <p> <input type="checkbox" {{ $receipt->is_invoice_id ? 'CHECKED' : '' }} name="is_invoice_id" id="is_date" value="1"> &nbsp; <b>Voucher No</b></p>
             </div>
             
             <div class="col-md-2">
-                <p> <input type="checkbox" CHECKED name="is_date" id="is_date" value="1"> &nbsp; <b>Show Date</b></p>
+                <p> <input type="checkbox" {{ $receipt->is_date ? 'CHECKED' : '' }} name="is_date" id="is_date" value="1"> &nbsp; <b>Show Date</b></p>
             </div>
             
             <div class="col-md-2">
-                <p> <input type="checkbox" name="is_note" id="is_note" value="1"> &nbsp; <b>Paper Note</b></p>
+                <p> <input type="checkbox" {{ $receipt->is_note ? 'CHECKED' : '' }} name="is_note" id="is_note" value="1"> &nbsp; <b>Paper Note</b></p>
             </div>
         </div>
     </div>
@@ -118,12 +91,12 @@
     <div class="extra_label">
         <div class="form-group row mt-2">
             <div class="col-md-3 mt-2">
-                <p> <input type="checkbox" name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>Is Header Less For Pad Print?</b> </p>
+                <p> <input type="checkbox" {{ $receipt->is_header_less ? 'CHECKED' : '' }} name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>Is Header Less For Pad Print?</b> </p>
             </div>
 
-            <div class="col-md-4 gap-from-top-add d-none">
+            <div class="col-md-4 gap-from-top-add {{ $receipt->is_header_less == 1 ? '' : 'd-none' }}">
                 <label><b>Gap From Top :</b> </label>
-                <input type="text" name="gap_from_top" class="form-control" placeholder="Gap From Top"/>
+                <input type="text" name="gap_from_top" class="form-control" placeholder="Gap From Top" value="{{ $receipt->gap_from_top}}"/>
             </div>
         </div>
     </div>

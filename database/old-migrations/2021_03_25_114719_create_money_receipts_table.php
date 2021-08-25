@@ -15,7 +15,7 @@ class CreateMoneyReceiptsTable extends Migration
     {
         Schema::create('money_receipts', function (Blueprint $table) {
             $table->id();
-            $table->decimal('amount', 22, 2)->default(0);
+            $table->decimal('amount', 22, 2)->nullable();
             $table->unsignedBigInteger('invoice_id')->nullable();
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('branch_id')->nullable();

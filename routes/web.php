@@ -211,6 +211,8 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
             Route::get('/voucher/list/{customerId}', 'MoneyReceiptController@moneyReceiptList')->name('money.receipt.voucher.list');
             Route::get('create/{customerId}', 'MoneyReceiptController@moneyReceiptCreate')->name('money.receipt.voucher.create');
             Route::post('store/{customerId}', 'MoneyReceiptController@store')->name('money.receipt.voucher.store');
+            Route::get('edit/{receiptId}', 'MoneyReceiptController@edit')->name('money.receipt.voucher.edit');
+            Route::post('update/{receiptId}', 'MoneyReceiptController@update')->name('money.receipt.voucher.update');
             Route::get('voucher/print/{receiptId}', 'MoneyReceiptController@moneyReceiptPrint')->name('money.receipt.voucher.print');
             Route::get('voucher/print/{receiptId}', 'MoneyReceiptController@moneyReceiptPrint')->name('money.receipt.voucher.print');
             Route::get('voucher/status/change/modal/{receiptId}', 'MoneyReceiptController@changeStatusModal')->name('money.receipt.voucher.status.change.modal');

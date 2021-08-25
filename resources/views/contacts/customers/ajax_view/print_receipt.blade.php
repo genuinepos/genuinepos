@@ -2,7 +2,7 @@
  <!--Money Receipt design-->
  <div class="print_area">
     <div class="print_content">
-        @if ($receipt->is_header_less == 1)
+        @if ($receipt->is_header_less == 0)
             <div class="heading_area">
                 <div class="row">
                     <div class="col-6">
@@ -51,7 +51,7 @@
             </div>
 
             <div class="col-md-4 col-sm-4 col-lg-4 text-start">
-                <h6> <b>Date</b> : {{ $receipt->is_date ? $receipt->date : '.......................................' }}</h6>
+                <h6> <b>Date</b> : {{ $receipt->is_date ? date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($receipt->date)) : '.......................................' }}</h6>
             </div>
         </div><br>
 

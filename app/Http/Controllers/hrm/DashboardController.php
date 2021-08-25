@@ -126,25 +126,17 @@ class DashboardController extends Controller
 
     public function upcomingHolidays(Request $request)
     {
-        $leaves = '';
-        $leaveQuery = DB::table('hrm_holidays')->leftJoin('branches', 'hrm_holidays.branch_id', 'branches.id');
-
-        if ($request->branch_id) {
-            if ($request->branch_id == 'NULL') {
-                $leaveQuery->where('admin_and_users.branch_id', NULL);
-            } else {
-                $leaveQuery->where('admin_and_users.branch_id', $request->branch_id);
-            }
-        }
+        $holidays = '';
+        $holidaysQuery = DB::table('hrm_holidays')->leftJoin('branches', 'hrm_holidays.branch_id', 'branches.id');
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $leaves = $leaveQuery->select(
+            $holidays = $holidaysQuery->select(
                 'hrm_holidays.holiday_name',
                 'hrm_holidays.start_date',
                 'hrm_holidays.end_date',
             )->get();
         } else {
-            $leaves = $leaveQuery->select(
+            $holidays = $holidaysQuery->select(
                 'hrm_holidays.holiday_name',
                 'hrm_holidays.start_date',
                 'hrm_holidays.end_date',

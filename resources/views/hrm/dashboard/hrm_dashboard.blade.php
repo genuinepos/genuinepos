@@ -202,25 +202,12 @@
                                 </h6>
                             </div>
                             <div class="widget_content">
-                                <div class="px-3 pt-2">
-                                    <div class="px-1"><strong>Today:</strong></div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item list-group-item-success">Its' work day</li>
-                                    </ul>
-                                </div>
                                 <div class="px-3 pt-2 pb-2">
                                     <div class="px-1">
                                         <span><strong>Upcoming Holidays:</strong></span>
                                     </div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item list-group-item-warning">A simple warning list group item
-                                        </li>
-                                        <li class="list-group-item list-group-item-warning">A simple warning list group item
-                                        </li>
-                                        <li class="list-group-item list-group-item-warning">A simple warning list group item
-                                        <li class="list-group-item list-group-item-warning">A simple warning list group item
-                                        </li>
-
+                                    <ul class="list-group list-group-flush upcoming_holiday_list">
+                                        <li class="list-group-item list-group-item-warning">A simple warning list group item</li>
                                     </ul>
                                 </div>
                             </div>
@@ -277,6 +264,19 @@
             });
         }
         getLeaveTable();
+
+        function upcomingHolidays(){
+            $('.data_preloader').show();
+            $.ajax({
+                url:"{{ route('hrm.dashboard.upcoming.holidays') }}",
+                type:'get',
+                success:function(data){
+                    $('.upcoming_holiday_list').html(data);
+                    $('.data_preloader').hide();
+                }
+            });
+        }
+        upcomingHolidays();
 
         $(document).on('change', '.submit_able', function () {
             getUserTable();

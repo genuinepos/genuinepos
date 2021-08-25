@@ -109,6 +109,8 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
         Route::get('user/count/table', 'DashboardController@userCountTable')->name('hrm.dashboard.user.count.table');
         Route::get('today/attr/table', 'DashboardController@todayAttTable')->name('hrm.dashboard.today.attr.table');
         Route::get('leave/table', 'DashboardController@leaveTable')->name('hrm.dashboard.leave.table');
+        Route::get('upcoming/holidays', 'DashboardController@upcomingHolidays')->name('hrm.dashboard.upcoming.holidays');
+        
     });
 });
 

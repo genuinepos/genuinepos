@@ -1,12 +1,11 @@
 @if (count($holidays) > 0)
-    @foreach ($holidays as $holidays)
-    <tr>
-        <td>{{ $holidays->holiday_name }}</td>
-        <td></td>
-    </tr>
+    @foreach ($holidays as $holiday)
+        <li class="list-group-item list-group-item-warning">
+            <b>{{ $holiday->holiday_name }}</b>
+            ({{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($holiday->start_date)) }} <b>To</b>  
+            {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($holiday->end_date)) }})
+        </li>
     @endforeach
 @else
-    <tr>
-        <td colspan="2" class="text-center">No Data Found.</td>
-    </tr>
+    <li class="list-group-item list-group-item-warning">No Data Found.</li>
 @endif

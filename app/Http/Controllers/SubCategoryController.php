@@ -23,8 +23,10 @@ class SubCategoryController extends Controller
         
         $img_url = asset('public/uploads/category/');
         if ($request->ajax()) {
-          $categories = Category::join('categories as parentcat','parentcat.id','categories.parent_category_id')->select('parentcat.name as parentname','categories.*')->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC')->get();
-           return DataTables::of($categories)
+          $subCategories = DB::table('categories')->join('categories as parentcat','parentcat.id','categories.parent_category_id')
+          ->select('parentcat.name as parentname','categories.*')
+          ->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC')->get();
+           return DataTables::of($subCategories)
             ->addIndexColumn()
             ->editColumn('photo', function ($row) use($img_url) {
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="'.$img_url.'/'.$row->photo.'">';

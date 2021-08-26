@@ -24,8 +24,8 @@ class BrandController extends Controller
         
         $img_url = asset('public/uploads/brand/');
         if ($request->ajax()) {
-            $barnds = Brand::orderBy('id', 'DESC')->get();
-           return DataTables::of($barnds)
+            $brands = DB::table('brands')->orderBy('id', 'DESC')->get();
+           return DataTables::of($brands)
             ->addIndexColumn()
             ->editColumn('photo', function ($row) use($img_url) {
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="'.$img_url.'/'.$row->photo.'">';
@@ -52,13 +52,6 @@ class BrandController extends Controller
             ->make(true);
         }
         return view('product.brands.index');
-    }
-
-    // Get all Brand by ajax
-    public function getAllBrand()
-    {
-        $brands = Brand::orderBy('id', 'DESC')->get();
-        return view('product.brands.ajax_view.brand_list', compact('brands'));
     }
 
     // Add Brand method

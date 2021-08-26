@@ -124,8 +124,8 @@
             searchable: true,
             ajax: "{{ route('product.brands.index') }}",
             columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
-                {data: 'photo',name: 'category.photo'},
-                {data: 'name',name: 'category.name'},
+                {data: 'photo',name: 'photo'},
+                {data: 'name',name: 'name'},
                 {data: 'action',name: 'action'},
             ]
         });

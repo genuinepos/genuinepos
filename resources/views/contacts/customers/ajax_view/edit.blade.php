@@ -96,7 +96,7 @@
             <select name="customer_group_id" class="form-control">
                 <option value="">None</option>
                 @foreach ($groups as $group)
-                    <option {{ $customer->customer_group_id == $group->id ? 'SELECTED' : ''  }} value="{{ $group->id }}">{{ $group->name }}</option>
+                    <option {{ $customer->customer_group_id == $group->id ? 'SELECTED' : ''  }} value="{{ $group->id }}">{{ $group->group_name }}</option>
                 @endforeach
             </select>
         </div>

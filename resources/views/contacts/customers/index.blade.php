@@ -195,7 +195,7 @@
                                     id="customer_group_id">
                                     <option value="">None</option>
                                     @foreach ($groups as $group)
-                                        <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                        <option value="{{ $group->id }}">{{ $group->group_name }}</option>
                                     @endforeach
                                 </select>
                             </div>

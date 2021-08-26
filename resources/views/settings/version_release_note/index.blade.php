@@ -44,9 +44,19 @@
                                         </ul>
                                     </div>
                                 </div>
+                            </div>
 
-                              
-                                
+                            <div class="changes-log-area p-2 mt-5">
+                                <div class="release-version">
+                                    <h5 class="text-blue">Change Log</h5>
+                                </div>
+                                <div class="changes-log mt-1">
+                                    <ul class="list-styled">
+                                        <li>Date-26/08/2021 (Refactor SaleController, PosController code. Modify util class.)</li>
+                                        <li>Date-26/08/2021 (Add yajra table in customer table, Fixed customer view page design.)</li>
+                                        <li>Date-26/08/2021 (Fixed quick add product form design.)</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

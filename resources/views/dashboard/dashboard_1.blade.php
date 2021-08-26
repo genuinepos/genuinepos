@@ -508,13 +508,11 @@
 
             // Get all shortcut menus by ajax
             function allShortcutMenus() {
-                //$('.data_preloader').show();
                 $.ajax({
                     url: "{{ route('short.menus.show') }}",
                     type: 'get',
                     success: function(data) {
                         $('.switch_bar_cards').html(data);
-                        //$('.data_preloader').hide();
                     }
                 });
             }

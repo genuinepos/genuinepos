@@ -1,9 +1,8 @@
 <?php
 namespace App\Utils;
 
-use App\Models\Account;
 use App\Models\Product;
-use App\Models\CashFlow;
+use App\Models\Customer;
 use App\Models\ProductBranch;
 use App\Models\ProductOpeningStock;
 
@@ -73,5 +72,47 @@ class Util
             $addProductBranch->save();
         }
         return response()->json($addProduct);
+    }
+
+    public function addQuickCustomer($request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'phone' => 'required',
+        ]);
+
+        $addCustomer = Customer::create([
+            'type' => $request->contact_type,
+            'contact_id' => $request->contact_id,
+            'name' => $request->name,
+            'business_name' => $request->business_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'alternative_phone' => $request->alternative_phone,
+            'landline' => $request->landline,
+            'date_of_birth' => $request->date_of_birth,
+            'tax_number' => $request->tax_number,
+            'pay_term' => $request->pay_term,
+            'pay_term_number' => $request->pay_term_number,
+            'customer_group_id' => $request->customer_group_id,
+            'address' => $request->address,
+            'city' => $request->city,
+            'zip_code' => $request->zip_code,
+            'country' => $request->country,
+            'state' => $request->state,
+            'shipping_address' => $request->shipping_address,
+            'opening_balance' => $request->opening_balance ? $request->opening_balance : 0.00,
+            'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
+        ]);
+
+        if ($request->opening_balance && $request->opening_balance >= 0) {
+            $addCustomerLedger = new CustomerLedger();
+            $addCustomerLedger->customer_id = $addCustomer->id;
+            $addCustomerLedger->row_type = 3;
+            $addCustomerLedger->amount = $request->opening_balance;
+            $addCustomerLedger->save();
+        }
+
+        return response()->json($addCustomer);
     }
 }

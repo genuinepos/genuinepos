@@ -674,7 +674,7 @@ class SaleController extends Controller
     // Delete Sale
     public function delete(Request $request, $saleId)
     {
-        $this->saleUtil->deleteSale($request, $saleId);
+        return $this->saleUtil->deleteSale($request, $saleId);
     }
 
     // Sale Packing Slip
@@ -1225,6 +1225,7 @@ class SaleController extends Controller
             'sale.sale_return',
             'cashFlow'
         )->where('id', $paymentId)->first();
+
         //Update Customer due 
         if ($updateSalePayment->customer) {
             $updateSalePayment->customer->total_sale_return_due = $updateSalePayment->customer->total_sale_return_due + $updateSalePayment->paid_amount;
@@ -1346,7 +1347,7 @@ class SaleController extends Controller
     // Delete sale payment
     public function paymentDelete(Request $request, $paymentId)
     {
-        $this->saleUtil->deleteSaleOrReturnPayment($request, $paymentId);
+        return $this->saleUtil->deleteSaleOrReturnPayment($request, $paymentId);
     }
 
     // Add product modal view with data
@@ -1368,7 +1369,7 @@ class SaleController extends Controller
 
     public function addProduct(Request $request)
     {
-        $this->util->addQuickProductFromAddSale($request);
+        return $this->util->addQuickProductFromAddSale($request);
     }
 
     // Get recent added product which has been added from pos

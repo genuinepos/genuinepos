@@ -79,6 +79,10 @@ class ProductController extends Controller
                 $query->where('products.status', $request->status);
             }
 
+            // if ($request->is_for_sale) {
+            //     $query->where('products.is_for_sale', '0');
+            // }
+
             $products = $query->select(
                 [
                     'products.*',
@@ -95,7 +99,7 @@ class ProductController extends Controller
                     return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
                 })
                 ->editColumn('photo', function ($row) use ($img_url) {
-                    return '<img loading="lazy" class="rounded" style="height:40px; width:40px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
+                    return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
                 })
                 ->addColumn('action', function ($row) use ($priceGroups) {
                     $html = '<div class="btn-group" role="group">';

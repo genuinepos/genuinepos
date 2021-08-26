@@ -93,7 +93,7 @@
         </div>
         <div class="col-md-4">
             <div class="row">
-                &nbsp;&nbsp;&nbsp;&nbsp;  <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; <b>Product wil be displayed in E-Commerce.</b>  &nbsp; </p>
+                &nbsp;&nbsp;&nbsp;&nbsp; <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; <b>Product wil be displayed in E-Commerce.</b>  &nbsp; </p>
                 <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="1"> &nbsp; <b>Enable IMEI or SL NO</b>  &nbsp;</p>
             </div>
         </div>

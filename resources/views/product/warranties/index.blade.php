@@ -212,7 +212,7 @@
 
         // call jquery method 
         $(document).ready(function() {
-            // Add bank by ajax
+            // Add Customar group by ajax
             $('#add_warranty_form').on('submit', function(e) {
                 e.preventDefault();
                 $('.loading_button').show();
@@ -247,13 +247,12 @@
                         $('#add_warranty_form')[0].reset();
                         $('.loading_button').hide();
                         getAllWarranty();
-                        $('#addModal').modal('hide');
                         $('.submit_button').prop('type', 'submit');
                     }
                 });
             });
 
-            // pass editable data to edit modal fields
+            // Pass editable data to edit modal fields
             $(document).on('click', '#edit', function(e) {
                 e.preventDefault();
                 $('.error').html('');
@@ -286,10 +285,12 @@
                         $('.error_' + inputId).html(fieldName + ' is required.');
                     }
                 });
+
                 if (countErrorField > 0) {
                     $('.loading_button').hide();
                     return;
                 }
+
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -312,18 +313,8 @@
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure, you want to delete?',
                     'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-modal-primary',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-danger',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            }
-                        }
+                        'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                        'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                     }
                 });
             });

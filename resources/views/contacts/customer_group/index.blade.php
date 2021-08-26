@@ -18,23 +18,85 @@
                     </div>
                     <!-- =========================================top section button=================== -->
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card" id="add_form">
+                                <div class="section-header">
+                                    <div class="col-md-6">
+                                        <h6>Add Customer Group</h6>
+                                    </div>
+                                </div>
+
+                                <div class="form-area px-3 pb-2">
+                                    <form id="add_group_form" action="{{ route('contacts.customers.groups.store') }}">
+                                        <div class="form-group mt-2">
+                                            <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                            <input type="text" name="name" class="form-control add_input"
+                                                data-name="Group name" id="name" placeholder="Group name" />
+                                            <span class="error error_name"></span>
+                                        </div>
+                
+                                        <div class="form-group mt-2">
+                                            <label><strong>Calculation Percent :</strong></label>
+                                            <input type="amount" name="calculation_percent" class="form-control" step="any"
+                                                id="calculation_percent" placeholder="Calculation Percent" />
+                                        </div>
+                
+                                        <div class="form-group row mt-3">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+                                                <button type="reset" class="c-btn btn_orange float-end">Reset</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card d-none" id="edit_form">
+                                <div class="section-header">
+                                    <div class="col-md-6">
+                                        <h6>Edit Customer Group</h6>
+                                    </div>
+                                </div>
+
+                                <div class="form-area px-3 pb-2">
+                                    <form id="edit_group_form" action="{{ route('contacts.customers.groups.update') }}">
+                                        <input type="hidden" name="id" id="id">
+                                        <div class="form-group mt-2">
+                                            <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                            <input type="text" name="name" class="form-control form-control-sm edit_input"
+                                                data-name="Group name" id="e_name" placeholder="Group name" />
+                                            <span class="error error_e_name"></span>
+                                        </div>
+                
+                                        <div class="form-group mt-2">
+                                            <label><strong>Calculation Percent :</strong></label>
+                                            <input type="text" step="any" name="calculation_percent" class="form-control form-control-sm"
+                                                id="e_calculation_percent" placeholder="Calculation Percent" />
+                                        </div>
+                
+                                        <div class="form-group row mt-3">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn loading_button d-none"><i
+                                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+                                                <button type="button" id="close_form" class="c-btn btn_orange float-end">Close</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-6">
                                         <h6>All Customer Groups</h6>
                                     </div>
-                                    @if (auth()->user()->permission->category['category_add'] == '1')
-                                        <div class="col-md-6">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                        class="fas fa-plus-square"></i> Add</a>
-                                            </div>
-                                        </div>
-                                    @endif
                                 </div>
-
+    
                                 <div class="widget_content">
                                     <div class="data_preloader">
                                         <h6><i class="fas fa-spinner"></i> Processing...</h6>
@@ -50,12 +112,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+    
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-
+    
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -67,93 +129,10 @@
             </div>
         </div>
     </div>
-
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
-        aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Customer Group</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_group_form" action="{{ route('contacts.customers.groups.store') }}">
-                        <div class="form-group mt-2">
-                            <label><strong>Name :</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm add_input"
-                                data-name="Group name" id="name" placeholder="Group name" />
-                            <span class="error error_name"></span>
-                        </div>
-
-                        <div class="form-group mt-2">
-                            <label><strong>Calculation Percent :</strong></label>
-                            <input type="amount" name="calculation_percent" class="form-control form-control-sm" step="any"
-                                id="calculation_percent" placeholder="Calculation Percent" />
-                        </div>
-
-                        <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
-        aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Customer Group</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="edit_modal_body">
-                    <!--begin::Form-->
-                    <form id="edit_group_form" action="{{ route('contacts.customers.groups.update') }}">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group mt-2">
-                            <label><strong>Name :</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm edit_input"
-                                data-name="Group name" id="e_name" placeholder="Group name" />
-                            <span class="error error_e_name"></span>
-                        </div>
-
-                        <div class="form-group mt-2">
-                            <label><strong>Calculation Percent :</strong></label>
-                            <input type="text" step="any" name="calculation_percent" class="form-control form-control-sm"
-                                id="e_calculation_percent" placeholder="Calculation Percent" />
-                        </div>
-
-                        <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 @push('scripts')
     <script>
-        // Get all category by ajax
+        // Get all customer group by ajax
         function getAllCustomerGroup() {
             $('.data_preloader').show();
             $.ajax({
@@ -176,7 +155,7 @@
 
         // call jquery method 
         $(document).ready(function() {
-            // Add bank by ajax
+            // Add Customer Group by ajax
             $('#add_group_form').on('submit', function(e) {
                 e.preventDefault();
                 $('.loading_button').show();
@@ -219,16 +198,16 @@
             // pass editable data to edit modal fields
             $(document).on('click', '#edit', function(e) {
                 e.preventDefault();
-                $('.form-control').removeClass('is-invalid');
                 $('.error').html('');
-                var bank = $(this).closest('tr').data('info');
-                console.log(bank);
-                $('#id').val(bank.id);
-                $('#e_name').val(bank.group_name);
-                $('#e_calculation_percent').val(bank.calc_percentage);
+                var group = $(this).closest('tr').data('info');
+                $('#id').val(group.id);
+                $('#e_name').val(group.group_name);
+                $('#e_calculation_percent').val(group.calc_percentage);
+                $('#add_form').hide();
+                $('#edit_form').show();
             });
 
-            // edit bank by ajax
+            // Edit Customer by ajax
             $('#edit_group_form').on('submit', function(e) {
                 e.preventDefault();
                 $('.loading_button').show();
@@ -246,10 +225,12 @@
                         $('.error_' + inputId).html(fieldName + ' is required.');
                     }
                 });
+
                 if (countErrorField > 0) {
                     $('.loading_button').hide();
                     return;
                 }
+
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -259,53 +240,25 @@
                         toastr.success(data);
                         $('.loading_button').hide();
                         getAllCustomerGroup();
-                        $('#editModal').modal('hide');
+                        $('#add_form').show();
+                        $('#edit_form').hide();
                     }
                 });
             });
 
-            // Show sweet alert for delete
-            // $(document).on('click', '#delete', function(e) {
-            //     e.preventDefault();
-            //     var url = $(this).attr('href');
-            //     $('#deleted_form').attr('action', url);
-            //     swal({
-            //             title: "Are you sure?",
-            //             icon: "warning",
-            //             buttons: true,
-            //             dangerMode: true,
-            //         })
-            //         .then((willDelete) => {
-            //             if (willDelete) {
-            //                 $('#deleted_form').submit();
-            //             } else {
-            //                 swal("Your imaginary file is safe!");
-            //             }
-            //         });
-            // });
             $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'message': 'Are you sure?',
-                'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('#deleted_form').attr('action', url);           
+                $.confirm({
+                    'title': 'Delete Confirmation',
+                    'message': 'Are you sure?',
+                    'buttons': {
+                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                     }
-                }
+                });
             });
-        });
 
             //data delete by ajax
             $(document).on('submit', '#deleted_form', function(e) {
@@ -323,6 +276,12 @@
                         $('#deleted_form')[0].reset();
                     }
                 });
+            });
+
+            $(document).on('click', '#close_form', function() {
+                $('#add_form').show();
+                $('#edit_form').hide();
+                $('.error').html('');
             });
         });
     </script>

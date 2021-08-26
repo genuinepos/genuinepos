@@ -89,11 +89,10 @@
                                                     </select>
                                                 </div>
 
-                                               {{-- <div class="col-md-3">
-                                                   <p> <input type="checkbox"
-                                                            name="is_for_sale" class="submit_able"
-                                                            id="is_for_sale" value="">Not For Selling. </p>
-                                                </div>  --}}
+                                               <div class="col-md-3">
+                                                   <p class="mt-4"> <input type="checkbox" name="is_for_sale" class="submit_able me-1"
+                                                            id="is_for_sale" value=""><b>Not For Selling.</b></p>
+                                                </div> 
                                             </div>
                                         </form>
                                     </div>

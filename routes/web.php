@@ -182,7 +182,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
     // Customers route group
     Route::group(['prefix' => 'customers'], function () {
         Route::get('/', 'CustomerController@index')->name('contacts.customer.index');
-        Route::get('get/all/customer', 'CustomerController@getAllCustomer')->name('contacts.customer.get.all.customer');
         Route::get('add', 'CustomerController@create')->name('contacts.customer.create');
         Route::post('store', 'CustomerController@store')->name('contacts.customer.store');
         Route::get('edit/{customerId}', 'CustomerController@edit')->name('contacts.customer.edit');

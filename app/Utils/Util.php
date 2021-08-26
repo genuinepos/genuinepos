@@ -1,7 +1,9 @@
 <?php
 namespace App\Utils;
 
+use App\Models\Account;
 use App\Models\Product;
+use App\Models\CashFlow;
 use App\Models\ProductBranch;
 use App\Models\ProductOpeningStock;
 

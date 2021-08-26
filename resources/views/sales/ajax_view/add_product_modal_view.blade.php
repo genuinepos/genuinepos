@@ -88,8 +88,7 @@
     <div class="form-group row mt-1">
         <div class="col-md-8">
             <label><b>Description :</b> </label>
-            <textarea  name="product_details" class="form-control" cols="10" rows="3">
-            </textarea>
+            <textarea  name="product_details" class="form-control" cols="10" rows="3"></textarea>
         </div>
         <div class="col-md-4">
             <div class="row">

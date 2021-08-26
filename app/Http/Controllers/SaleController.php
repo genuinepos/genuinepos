@@ -51,7 +51,7 @@ class SaleController extends Controller
         if ($request->ajax()) {
             return $this->saleUtil->addSaleTable($request);
         }
-        
+
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $customers = DB::table('customers')->get(['id', 'name', 'phone']);
         return view('sales.index2', compact('branches', 'customers'));

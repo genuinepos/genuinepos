@@ -6,221 +6,209 @@
             .contract_info_area ul li strong{color:#495677}.account_summary_area .heading h4{background:#0F3057;color:white}.contract_info_area ul li strong i {color: #495b77;font-size: 13px;}
         </style>
     @endpush
-    <br><br><br>
-    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-        <div class="d-flex flex-column-fluid">
+    <div class="body-woaper">
+        <div class="container-fluid">
             <!--begin::Container-->
-            <div class="container">
-                <a href="{{ route('contacts.customer.index') }}" class="btn btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left"></i> Back</a>
-                <h3 style="color: #32325d">View Contact</h3>
-                <div class="row">
-                    <div class="col-md-12">
-                        
-                        <div class="select_customer_area float-left pb-2">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <form action="" method="get">
-                                        <select id="customer_id" class="form-control form-control-sm">
-        
-                                        </select>
-                                    </form>
-                                </div>
+            <div class="row">
+                <div class="border-class">
+                    <div class="main__content">
+                        <!-- =====================================================================BODY CONTENT================== -->
+                        <div class="sec-name">
+                            <div class="name-head">
+                                <span class="fas fa-people-arrows"></span>
+                                <h5>Customer View ({{ $customer->name.' - '.$customer->phone }})</h5>
                             </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                </div>
                 
-                <div class="card card-custom">
-                    <div class="card-body">
-                        <!--begin: Datatable-->
-                        <div class="data_preloader">
-                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                        </div>
-
-                        <div class="tab_list_area">
-                            <ul class="list-unstyled">
-                                <li><a id="tab_btn" data-show="contract_info_area" class="tab_btn tab_active" href=""><i
-                                            class="fas fa-info-circle"></i> Contract Info</a></li>
-                                <li><a id="tab_btn" data-show="ledger" class="tab_btn" href=""><i class="fas fa-scroll"></i>
-                                        Ledger</a></li>
-                                <li><a id="tab_btn" data-show="sale" class="tab_btn" href=""><i
-                                            class="fas fa-shopping-bag"></i> Sale</a></li>
-                                <li><a id="tab_btn" data-show="documents_and_note" class="tab_btn" href=""><i
-                                            class="far fa-folder-open"></i> Documents & Note</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="tab_contant contract_info_area">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <ul class="list-unstyled">
-                                        <li><strong class="name">Jamal Hosain</strong></li><br>
-                                        <li><strong><i class="fas fa-map-marker-alt"></i> Address</strong></li>
-                                        <li><span class="address">Dhaka, Bangladesh.</span></li><br>
-                                        <li><strong><i class="fas fa-briefcase"></i> Business Name</strong></li>
-                                        <li><span class="business">Premium Multi Trade</span></li>
-                                    </ul>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <ul class="list-unstyled">
-                                        <li><strong><i class="fas fa-phone-square"></i> Phone</strong></li>
-                                        <li><span class="phone">+0881087555558</span></li>
-                                    </ul>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <ul class="list-unstyled">
-                                        <li><strong><i class="fas fa-info"></i> Tax Number</strong></li>
-                                        <li><span class="tax_number">Tx0881087555558</span></li>
-                                    </ul>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <ul class="list-unstyled">
-                                        <li><strong> Total Sale :</strong></li>
-                                        <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_sale">2000000.00</span></li>
-                                        <li><strong> Total Paid :</strong></li>
-                                        <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_paid">2000000.00</span></li>
-                                        <li><strong> Total Sale Due :</strong></li>
-                                        <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_sale_due">2000000.00</span></li>
-                                    </ul>
-                                </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <!--begin: Datatable-->
+                            <div class="data_preloader">
+                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                             </div>
-                        </div>
 
-                        <div class="tab_contant ledger d-none">
-                            <div class="row">
-                                <div class="col-md-5 offset-7">
-                                    <div class="company_info text-right">
-                                        <ul class="list-unstyled">
-                                            <li><strong
-                                                    class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</strong>
-                                            </li>
-                                            <li><span class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                            <div class="tab_list_area">
+                                <ul class="list-unstyled">
+                                    <li><a id="tab_btn" data-show="contract_info_area" class="tab_btn tab_active" href=""><i
+                                                class="fas fa-info-circle"></i> Contract Info</a></li>
+                                    <li><a id="tab_btn" data-show="ledger" class="tab_btn" href=""><i class="fas fa-scroll"></i>
+                                            Ledger</a></li>
+                                    <li><a id="tab_btn" data-show="sale" class="tab_btn" href=""><i
+                                                class="fas fa-shopping-bag"></i> Sale</a></li>
+                                </ul>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12 col-lg-6">
-                                    <div class="account_summary_area">
-                                        <div class="heading py-2">
-                                            <h4 class="py-2 pl-1">To :</h4>
-                                        </div>
-                                    </div>
-                                    <div class="sand_info">
+
+                            <div class="tab_contant contract_info_area">
+                                <div class="row">
+                                    <div class="col-md-3">
                                         <ul class="list-unstyled">
                                             <li><strong class="name">Jamal Hosain</strong></li><br>
-                                            <li>Phone:<span class="phone"> 01122555545545</span></li>
+                                            <li><strong><i class="fas fa-map-marker-alt"></i> Address</strong></li>
+                                            <li><span class="address">Dhaka, Bangladesh.</span></li><br>
+                                            <li><strong><i class="fas fa-briefcase"></i> Business Name</strong></li>
+                                            <li><span class="business">Premium Multi Trade</span></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <ul class="list-unstyled">
+                                            <li><strong><i class="fas fa-phone-square"></i> Phone</strong></li>
+                                            <li><span class="phone">+0881087555558</span></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <ul class="list-unstyled">
+                                            <li><strong><i class="fas fa-info"></i> Tax Number</strong></li>
+                                            <li><span class="tax_number">Tx0881087555558</span></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <ul class="list-unstyled">
+                                            <li><strong> Total Sale :</strong></li>
+                                            <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_sale">2000000.00</span></li>
+                                            <li><strong> Total Paid :</strong></li>
+                                            <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_paid">2000000.00</span></li>
+                                            <li><strong> Total Sale Due :</strong></li>
+                                            <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_sale_due">2000000.00</span></li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12 col-lg-6">
-                                    <div class="account_summary_area">
-                                        <div class="heading py-2">
-                                            <h4 class="py-2 pl-1">Account Summary</h4>
+                            </div>
+
+                            <div class="tab_contant ledger d-none">
+                                <div class="row">
+                                    <div class="col-md-5 offset-7">
+                                        <div class="company_info text-right">
+                                            <ul class="list-unstyled">
+                                                <li><strong
+                                                        class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</strong>
+                                                </li>
+                                                <li><span class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</span>
+                                                </li>
+                                            </ul>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12 col-lg-6">
+                                        <div class="account_summary_area">
+                                            <div class="heading py-2">
+                                                <h4 class="py-2 pl-1">To :</h4>
+                                            </div>
+                                        </div>
+                                        <div class="sand_info">
+                                            <ul class="list-unstyled">
+                                                <li><strong class="name">Jamal Hosain</strong></li><br>
+                                                <li>Phone:<span class="phone"> 01122555545545</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-lg-6">
+                                        <div class="account_summary_area">
+                                            <div class="heading py-2">
+                                                <h4 class="py-2 pl-1">Account Summary</h4>
+                                            </div>
 
-                                        <div class="account_summary_table">
-                                            <table class="table modal-table table-sm">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-start"><strong>Opening Balance :</strong></td>
-                                                        <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="opening_balance">0.00</span></td>
-                                                    </tr>
+                                            <div class="account_summary_table">
+                                                <table class="table modal-table table-sm">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-start"><strong>Opening Balance :</strong></td>
+                                                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="opening_balance">0.00</span></td>
+                                                        </tr>
 
-                                                    <tr>
-                                                        <td class="text-start"><strong>Total Sale :</strong></td>
-                                                        <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_sale">100000.00</span></td>
-                                                    </tr>
+                                                        <tr>
+                                                            <td class="text-start"><strong>Total Sale :</strong></td>
+                                                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_sale">100000.00</span></td>
+                                                        </tr>
 
-                                                    <tr>
-                                                        <td class="text-start"><strong>Total Paid :</strong></td>
-                                                        <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_paid">100000.00</span></td>
-                                                    </tr>
+                                                        <tr>
+                                                            <td class="text-start"><strong>Total Paid :</strong></td>
+                                                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_paid">100000.00</span></td>
+                                                        </tr>
 
-                                                    <tr>
-                                                        <td class="text-start"><strong>Balance Due :</strong></td>
-                                                        <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="balance_due">0.00</span></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                        <tr>
+                                                            <td class="text-start"><strong>Balance Due :</strong></td>
+                                                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="balance_due">0.00</span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label> <strong>Customer Ledger</strong></label>
+                                        <div class="payment_table">
+                                            <div class="table-responsive" id="payment_list_table">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr class="bg-navey-blue">
+                                                            <th>Date</th>
+                                                            <th>Invoice ID</th>
+                                                            <th>Type</th>
+                                                            <th>Debit</th>
+                                                            <th>Credit</th>
+                                                            <th>Payment Method</th>
+                                                            <th>Others</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label> <strong>Customer Ledger</strong></label>
-                                    <div class="payment_table">
-                                        <div class="table-responsive" id="payment_list_table">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr class="bg-navey-blue">
-                                                        <th>Date</th>
-                                                        <th>Invoice ID</th>
-                                                        <th>Type</th>
-                                                        <th>Debit</th>
-                                                        <th>Credit</th>
-                                                        <th>Payment Method</th>
-                                                        <th>Others</th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
+                            <div class="tab_contant sale d-none">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table_area">
+                                            {{-- <div class="data_preloader">
+                                                <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                            </div> --}}
+                                            <div class="table-responsive">
+                                                <table class="display data_tbl data__table w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Actions</th>
+                                                            <th>Date</th>
+                                                            <th>Invoice ID</th>
+                                                            <th>Sale From</th>
+                                                            <th>Customer</th>
+                                                            <th>Total Amount</th>
+                                                            <th>Total Paid</th>
+                                                            <th>Sell Due</th>
+                                                            <th>Return Amount</th>
+                                                            <th>Return Due</th>
+                                                            <th>Payment Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
+                                        <form id="deleted_form" action="" method="post">
+                                            @method('DELETE')
+                                            @csrf
+                                        </form>
                                     </div>
                                 </div>
                             </div>
+                            <!--end: Datatable-->
                         </div>
-
-                        <div class="tab_contant sale d-none">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table_area">
-                                        {{-- <div class="data_preloader">
-                                            <h6><i class="fas fa-spinner"></i> Processing...</h6>
-                                        </div> --}}
-                                        <div class="table-responsive">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Actions</th>
-                                                        <th>Date</th>
-                                                        <th>Invoice ID</th>
-                                                        <th>Sale From</th>
-                                                        <th>Customer</th>
-                                                        <th>Total Amount</th>
-                                                        <th>Total Paid</th>
-                                                        <th>Sell Due</th>
-                                                        <th>Return Amount</th>
-                                                        <th>Return Due</th>
-                                                        <th>Payment Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!--end: Datatable-->
                     </div>
                 </div>
-                <!--end::Card-->
             </div>
-            <!--end::Container-->
         </div>
-        <!--end::Entry-->
     </div>
 
     <!-- Details Modal -->
@@ -337,24 +325,8 @@
             ],
         });
         
-        function setCustomers(){
-            $.ajax({
-                url:"{{route('sales.get.all.customer')}}",
-                async:true,
-                type:'get',
-                dataType: 'json',
-                success:function(customers){
-                    $.each(customers, function(key, val){
-                        $('#customer_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
-                    });
-                    $('#customer_id').val({{ $customerId }});
-                }
-            });
-        }
-        setCustomers();
-
-         // Set accounts in payment and payment edit form
-         function setAccount(){
+        // Set accounts in payment and payment edit form
+        function setAccount(){
             $.ajax({
                 url:"{{route('accounting.accounts.all.form.account')}}",
                 async:true,
@@ -486,22 +458,6 @@
             });
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure to delete ?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     }).then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         }
-        //     });
-        // });
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');

@@ -7,7 +7,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-people-arrows"></span>
@@ -16,8 +15,7 @@
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
-                 
+
                     <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -44,7 +42,7 @@
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
-                                            <tr class="text-center">
+                                            <tr class="text-start">
                                                 <th>Actions</th>
                                                 <th>Customer ID</th>
                                                 <th>Name</th>
@@ -52,8 +50,10 @@
                                                 <th>Phone</th>
                                                 <th>Email</th>
                                                 <th>Tax Number</th>
+                                                <th>Group</th>
                                                 <th>Opening Balance</th>
-                                                <th>Total Purchase Due</th>
+                                                <th>Sale Due</th>
+                                                <th>Return Due</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -332,19 +332,39 @@
 @endsection
 @push('scripts')
     <script>
-        // Get all customer by ajax
-        function getAllCustomer() {
-            $('.data_preloader').show();
-            $.ajax({
-                url: "{{ route('contacts.customer.get.all.customer') }}",
-                type: 'get',
-                success: function(data) {
-                    $('.table-responsive').html(data);
-                    $('.data_preloader').hide();
-                }
-            });
-        }
-        getAllCustomer();
+        var table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [ 
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+            ],
+            "processing": true,
+            "serverSide": true,
+            aaSorting: [
+                [0, 'asc']
+            ],
+            ajax: "{{ route('contacts.customer.index') }}",
+            columnDefs: [{
+                "targets": [0],
+                "orderable": false,
+                "searchable": false
+            }],
+            columns: [
+                {data: 'action',name: 'action'},
+                {data: 'contact_id',name: 'contact_id'},
+                {data: 'name',name: 'name'},
+                {data: 'business_name',name: 'business_name'},
+                {data: 'phone',name: 'phone'},
+                {data: 'email',name: 'email'},
+                {data: 'tax_number',name: 'tax_number'},
+                {data: 'group_name',name: 'category'},
+                {data: 'opening_balance',name: 'opening_balance'},
+                {data: 'total_sale_due',name: 'total_sale_due'},
+                {data: 'total_sale_return_due',name: 'total_sale_return_due'},
+                {data: 'status',name: 'status'},
+            ],
+        });
 
         // Setup ajax for csrf token.
         $.ajaxSetup({
@@ -387,7 +407,7 @@
                     success: function(data) {
                         toastr.success(data);
                         $('#add_customer_form')[0].reset();
-                        getAllCustomer();
+                        table.ajax.reload();
                         $('.loading_button').hide();
                         $('#addModal').modal('hide');
                         $('.submit_button').prop('type', 'submit');
@@ -439,7 +459,7 @@
                         console.log(data);
                         toastr.success(data);
                         $('.loading_button').hide();
-                        getAllCustomer();
+                        table.ajax.reload();
                         $('#editModal').modal('hide');
                     }
                 });
@@ -470,7 +490,7 @@
                     async: false,
                     data: request,
                     success: function(data) {
-                        getAllCustomer();
+                        table.ajax.reload();
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
                     }
@@ -491,7 +511,7 @@
                                     url: url,type: 'get',
                                     success: function(data) {
                                         toastr.success(data);
-                                        getAllCustomer();
+                                        table.ajax.reload();
                                     }
                                 });
                             }
@@ -581,7 +601,7 @@
                             $('.loading_button').hide();
                             $('#paymentModal').modal('hide');
                             toastr.success(data);
-                            getAllCustomer();
+                            table.ajax.reload();
                         }
                     }
                 });
@@ -730,7 +750,7 @@
                         toastr.success(data);
                         $('#changeReciptStatusModal').modal('hide');
                         $('#moneyReceiptListModal').modal('hide');
-                        getAllCustomer();
+                        table.ajax.reload();
                     }
                 });
             });

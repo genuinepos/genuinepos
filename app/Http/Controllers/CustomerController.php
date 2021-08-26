@@ -66,6 +66,7 @@ class CustomerController extends Controller
                     $html .= '<a class="dropdown-item" href="' . url('contacts/customers/ledger', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Ledger</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+                    return $html;
                 })
                 ->editColumn('business_name', function ($row)
                 {
@@ -99,18 +100,12 @@ class CustomerController extends Controller
                         return '<i class="far fa-thumbs-down text-danger"></i>';
                     }
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'business_name', 'tax_number', 'group_name', 'opening_balance', 'total_sale_due', 'total_sale_return_due', 'status'])
                 ->make(true);
         }
 
         $groups = DB::table('customer_groups')->get();
         return view('contacts.customers.index', compact('groups'));
-    }
-
-    public function getAllCustomer()
-    {
-        $customers = Customer::orderBy('id', 'DESC')->get();
-        return view('contacts.customers.ajax_view.customer_list', compact('customers'));
     }
 
     public function store(Request $request)
@@ -382,7 +377,8 @@ class CustomerController extends Controller
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status'])
                 ->make(true);
         }
-        return view('contacts.customers.view', compact('customerId'));
+        $customer = DB::table('customers')->where('id', $customerId)->first(['name', 'phone']);
+        return view('contacts.customers.view', compact('customerId', 'customer'));
     }
 
     // Customer all info

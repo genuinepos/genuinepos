@@ -65,7 +65,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('view/{productId}', 'ProductController@view')->name('products.view');
         Route::get('get/all/product', 'ProductController@getAllProduct')->name('products.get.all.product');
         Route::get('add', 'ProductController@create')->name('products.add.view');
-        Route::get('create', 'ProductController@create2')->name('products.create');
         Route::get('get/form/part/{type}', 'ProductController@getFormPart');
         Route::post('store', 'ProductController@store')->name('products.add.store');
         Route::get('edit/{productId}', 'ProductController@edit')->name('products.edit');
@@ -73,22 +72,17 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('combo/product/{productId}', 'ProductController@getComboProducts')->name('products.get.combo.products');
         Route::post('update/{productId}', 'ProductController@update')->name('products.update');
         Route::get('default/profit', 'ProductController@defaultProfit')->name('products.add.get.default.profit');
-
         Route::delete('delete/{productId}', 'ProductController@delete')->name('products.delete');
         Route::delete('multiple/delete', 'ProductController@multipleDelete')->name('products.multiple.delete');
         Route::get('all/sub/category/{categoryId}', 'ProductController@allFromSubCategory');
-      
         Route::get('all/form/variant', 'ProductController@getAllFormVariants')->name('products.add.get.all.from.variant');
         Route::get('search/product/{productCode}', 'ProductController@searchProduct');
         Route::get('get/product/stock/{productId}', 'ProductController@getProductStock');
         Route::get('change/status/{productId}', 'ProductController@changeStatus')->name('products.change.status');
         Route::get('check/purchase/generate/barcode/{productId}', 'ProductController@chackPurchaseAndGenerateBarcode')->name('products.check.purchase.and.generate.barcode');
-
         Route::get('get/opening/stock/{productId}', 'ProductController@openingStock')->name('products.opening.stock');
-
         Route::get('add/price/groups/{productId}/{type}', 'ProductController@addPriceGroup')->name('products.add.price.groups');
         Route::post('save/price/groups', 'ProductController@savePriceGroup')->name('products.save.price.groups');
-
         Route::post('opening/stock/update', 'ProductController@openingStockUpdate')->name('products.opening.stock.update');
         Route::post('add/category', 'ProductController@addCategory')->name('products.add.category');
         Route::post('add/brand', 'ProductController@addBrand')->name('products.add.brand');

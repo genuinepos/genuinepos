@@ -191,6 +191,7 @@ class ProductController extends Controller
         if (auth()->user()->permission->product['product_add'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+        
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
         $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'desc')->get(['id', 'name']);
         $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);

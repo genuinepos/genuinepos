@@ -119,7 +119,7 @@
         </div>
     </div>
 
-    <div class="form-group row mt-1">
+    <div class="form-group row mt-2">
         <div class="col-md-12">
             <table class="table modal-table table-sm">
                 <thead>
@@ -133,14 +133,13 @@
                     <tr>
                         <td>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 text-start">
                                     <label><b>Item Cost Exc.Tax :</b> <span class="text-danger">*</span></label>
                                     <input type="text" name="product_cost" class="form-control" autocomplete="off" id="sale_product_cost">
                                     <span class="error error_sale_product_cost"></span>
                                 </div>
-                                <div class="col-md-6">
-                                    <label><b>Item Cost (Inc.Tax) :</b><span
-                                        class="text-danger">*</span></label>
+                                <div class="col-md-6 text-start">
+                                    <label><b>Item Cost (Inc.Tax) :</b><span class="text-danger">*</span></label>
                                     <input type="text" name="product_cost_with_tax"
                                     class="form-control" autocomplete="off"
                                     id="sale_product_cost_with_tax">
@@ -149,14 +148,18 @@
                             </div>
                         </td>
                         <td>
-                            <br>
-                            <input type="text" name="profit" class="form-control mt-1" autocomplete="off" id="sale_profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] }}">
+                            <label></label>
+                            <input type="text" name="profit" class="form-control" autocomplete="off" id="sale_profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] }}">
                         </td>
-                        <td>
-                            <label><b>Price Exc.Tax :</b><span class="text-danger">*</span></label>
-                                <input type="text" name="product_price" class="form-control"
-                                    autocomplete="off" id="sale_product_price">
-                            <span class="error error_sale_product_price"></span>
+                        <td class="text-start">
+                            <div class="row">
+                                <div class="col-md-12 text-start">
+                                <label><b>Price Exc.Tax :</b><span class="text-danger">*</span></label>
+                                    <input type="text" name="product_price" class="form-control" autocomplete="off" id="sale_product_price">
+                                    <span class="error error_sale_product_price"></span>
+                                </div>
+                            </div>
+                            
                         </td>
                     </tr>
                 </tbody>

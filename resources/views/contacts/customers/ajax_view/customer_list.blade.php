@@ -17,7 +17,7 @@
     </thead>
     <tbody>
         @foreach ($customers as $customer)
-            <tr data-info="{{ $customer }}">
+            <tr>
                 <td> 
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

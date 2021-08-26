@@ -127,7 +127,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('generate/product/barcode/{productId}', 'BarcodeController@genrateProductBarcode')->name('products.generate.product.barcode');
         Route::get('get/spacific/supplier/product/{productId}', 'BarcodeController@getSpacificSupplierProduct')->name('barcode.get.spacific.supplier.product');
 
-        // Genereate barcodes on purchase.
+        // Generate bar-codes on purchase.
         Route::get('purchase/products/{purchaseId}', 'BarcodeController@onPurchaseBarcode')->name('barcode.on.purchase.barcode');
         Route::get('get/purchase/products/{purchaseId}', 'BarcodeController@getPurchaseProduct')->name('barcode.get.purchase.products');
     });

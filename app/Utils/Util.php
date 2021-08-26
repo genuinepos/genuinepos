@@ -4,6 +4,7 @@ namespace App\Utils;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\ProductBranch;
+use App\Models\CustomerLedger;
 use App\Models\ProductOpeningStock;
 
 class Util
@@ -74,7 +75,7 @@ class Util
         return response()->json($addProduct);
     }
 
-    public function addQuickCustomer($request)
+    public function storeQuickCustomer($request)
     {
         $request->validate([
             'name' => 'required',

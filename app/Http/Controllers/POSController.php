@@ -20,15 +20,18 @@ use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\CashRegisterTransaction;
+use App\Utils\Util;
 
 class POSController extends Controller
 {
     protected $saleUtil;
     protected $smsUtil;
-    public function __construct(SaleUtil $saleUtil, SmsUtil $smsUtil)
+    protected $util;
+    public function __construct(SaleUtil $saleUtil, SmsUtil $smsUtil, Util $util)
     {
         $this->saleUtil = $saleUtil;
         $this->smsUtil = $smsUtil;
+        $this->util = $util;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -774,7 +777,7 @@ class POSController extends Controller
     //Add customer from pos
     public function addCustomer(Request $request)
     {
-        
+        return $this->util->storeQuickCustomer($request);
     }
 
     // Get pos product list

@@ -318,12 +318,14 @@
         </div>
 
         <div class="row">
-            @if (env('PRINT_SD_SALE') == true)
+            
                 <div class="col-12 text-center">
                     <img style="width: 170px; height:30px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($receipt->invoice_id, $generator::TYPE_CODE_128)) }}">
-                    <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    @if (env('PRINT_SD_SALE') == true)
+                        <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    @endif
                 </div>
-            @endif
+            
         </div>
     </div>
 </div>

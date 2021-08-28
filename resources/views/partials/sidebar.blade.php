@@ -118,13 +118,15 @@
                         </a>
                     </li>
                 @endif
-                
-                <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
-                    <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">
-                        <p class="title">Reports</p>
-                    </a>
-                </li>
+
+                @if ($addons->manufacturing == 1)
+                    <li data-menu="manufacture" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
+                            <p class="title">Manufacture</p>
+                        </a>
+                    </li>
+                @endif
 
                 @if ($addons->todo == 1)
                     @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
@@ -137,6 +139,13 @@
                     @endif
                 @endif
                 
+                <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
+                    <a href="#">
+                        <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">
+                        <p class="title">Reports</p>
+                    </a>
+                </li>
+
                 @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1' || auth()->user()->permission->setup['p_settings'] == '1' || auth()->user()->permission->setup['inv_sc'] == '1' || auth()->user()->permission->setup['inv_lay'] == '1' || auth()->user()->permission->setup['barcode_settings'] == '1' || auth()->user()->permission->setup['cash_counters'] == '1')
                     <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
                         <a href="#">
@@ -1080,6 +1089,64 @@
                 </div>
             @endif
 
+            @if ($addons->manufacturing == 1)
+                @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
+                    <div class="sub-menu_t" id="manufacture">
+                        <div class="sub-menu-width">
+                            <div class="model__close bg-secondary-2">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p class="text-muted float-start mt-1"><strong>Manufacturing</strong></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><i class="fas fa-dumpster-fire"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Process</p>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><i class="fas fa-shapes"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Production</p>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Settings</p>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><i class="fas fa-file-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">Manufacturing Report</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endif
+
             <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="reports">
                 <div class="sub-menu-width">
@@ -1289,81 +1356,7 @@
                 </div>
             </div>
             <!-- ===========================================FILE SIDEBAR=================== -->
-            @if ($addons->todo == 1)
-                @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
-                    <div class="sub-menu_t" id="essentials">
-                        <div class="sub-menu-width">
-                            <div class="model__close bg-secondary-2">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <p class="text-muted float-start mt-1"><strong>Requisites</strong></p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('workspace.index') }}" class="bar-link">
-                                                <span><i class="fas fa-th-large"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">Work Spaces</p>
-                                    </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('todo.index') }}" class="bar-link">
-                                                <span><i class="fas fa-th-list"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">Todo</p>
-                                    </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="#" class="bar-link">
-                                                <span><i class="fas fa-file-medical-alt"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">Documents</p>
-                                    </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('memos.index') }}" class="bar-link">
-                                                <span><i class="fas fa-file-alt text-primary"></i> </span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">Memos</p>
-                                    </div>
-                                    
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="#" class="bar-link">
-                                                <span><i class="fas fa-stopwatch"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">Remainders</p>
-                                    </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('messages.index') }}" class="bar-link">
-                                                <span><i class="fas fa-envelope"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">Messages</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            @endif
+            
         </div>
     </div>
 </div>

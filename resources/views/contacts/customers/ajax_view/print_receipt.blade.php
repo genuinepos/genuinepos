@@ -214,7 +214,7 @@
             </div>
 
             <div class="col-md-4 col-sm-4 col-lg-4 text-end">
-                <h6><b>Date</b>  : {{ $receipt->is_date ? $receipt->date : '.......................................' }}</h6>
+                <h6><b>Date</b> : {{ $receipt->is_date ? date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($receipt->date)) : '.......................................' }}</h6>
             </div>
         </div><br>
 

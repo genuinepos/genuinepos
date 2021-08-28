@@ -120,12 +120,16 @@
                 @endif
 
                 @if ($addons->manufacturing == 1)
-                    <li data-menu="manufacture" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
-                        <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
-                            <p class="title">Manufacture</p>
-                        </a>
-                    </li>
+                    @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1')
+                        @if (auth()->user()->permission->manufacturing['menuf_view'] == '1') 
+                            <li data-menu="manufacture" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
+                                <a href="#">
+                                    <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
+                                    <p class="title">Manufacture</p>
+                                </a>
+                            </li>
+                        @endif
+                    @endif
                 @endif
 
                 @if ($addons->todo == 1)
@@ -1090,60 +1094,62 @@
             @endif
 
             @if ($addons->manufacturing == 1)
-                @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
-                    <div class="sub-menu_t" id="manufacture">
-                        <div class="sub-menu-width">
-                            <div class="model__close bg-secondary-2">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <p class="text-muted float-start mt-1"><strong>Manufacturing</strong></p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1')
+                    @if (auth()->user()->permission->manufacturing['menuf_view'] == '1') 
+                        <div class="sub-menu_t" id="manufacture">
+                            <div class="sub-menu-width">
+                                <div class="model__close bg-secondary-2">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p class="text-muted float-start mt-1"><strong>Manufacturing</strong></p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="" class="bar-link">
-                                                <span><i class="fas fa-dumpster-fire"></i></span>
-                                            </a>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                            <div class="switch_bar">
+                                                <a href="" class="bar-link">
+                                                    <span><i class="fas fa-dumpster-fire"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">Process</p>
                                         </div>
-                                        <p class="switch_text">Process</p>
-                                    </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="" class="bar-link">
-                                                <span><i class="fas fa-shapes"></i></span>
-                                            </a>
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                            <div class="switch_bar">
+                                                <a href="" class="bar-link">
+                                                    <span><i class="fas fa-shapes"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">Production</p>
                                         </div>
-                                        <p class="switch_text">Production</p>
-                                    </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="" class="bar-link">
-                                                <span><i class="fas fa-sliders-h"></i></span>
-                                            </a>
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('manufacturing.settings.index') }}" class="bar-link">
+                                                    <span><i class="fas fa-sliders-h"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">Settings</p>
                                         </div>
-                                        <p class="switch_text">Settings</p>
-                                    </div>
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                        <div class="switch_bar">
-                                            <a href="" class="bar-link">
-                                                <span><i class="fas fa-file-alt"></i></span>
-                                            </a>
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                            <div class="switch_bar">
+                                                <a href="" class="bar-link">
+                                                    <span><i class="fas fa-file-alt"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">Manufacturing Report</p>
                                         </div>
-                                        <p class="switch_text">Manufacturing Report</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endif
             @endif
 

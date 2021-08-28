@@ -37,9 +37,9 @@
                                         </div>
                 
                                         <div class="form-group mt-2">
-                                            <label><strong>Calculation Percent :</strong></label>
-                                            <input type="amount" name="calculation_percent" class="form-control" step="any"
-                                                id="calculation_percent" placeholder="Calculation Percent" />
+                                            <label><strong>Calculation Percent (%) :</strong></label>
+                                            <input type="number" step="any" name="calculation_percent" class="form-control" step="any"
+                                                id="calculation_percent" placeholder="Calculation Percent" autocomplete="off" />
                                         </div>
                 
                                         <div class="form-group row mt-3">
@@ -65,14 +65,14 @@
                                         <input type="hidden" name="id" id="id">
                                         <div class="form-group mt-2">
                                             <label><strong>Name :</strong> <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" class="form-control form-control-sm edit_input"
+                                            <input type="text" name="name" class="form-control edit_input"
                                                 data-name="Group name" id="e_name" placeholder="Group name" />
                                             <span class="error error_e_name"></span>
                                         </div>
                 
                                         <div class="form-group mt-2">
-                                            <label><strong>Calculation Percent :</strong></label>
-                                            <input type="text" step="any" name="calculation_percent" class="form-control form-control-sm"
+                                            <label><strong>Calculation Percent (%) :</strong></label>
+                                            <input type="number" step="any" name="calculation_percent" class="form-control"
                                                 id="e_calculation_percent" placeholder="Calculation Percent" />
                                         </div>
                 

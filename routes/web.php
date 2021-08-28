@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\AdminAndUser;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -920,6 +921,8 @@ Route::get('/test', function () {
     // $response = curl_exec($ch);
     // curl_close($ch);
     // dd($response);
+    // $date =  '8/25/2021';
+    // return date('Y-m-d', strtotime($date. ' -1 days'));
 });
 
 // All authenticated routes

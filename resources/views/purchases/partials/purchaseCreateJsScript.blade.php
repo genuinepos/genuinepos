@@ -579,8 +579,8 @@
         }
     }
 
-        // select variant product and add purchase table
-        function salectVariant(e){
+    // select variant product and add purchase table
+    function salectVariant(e){
         if (keyName == 13 || keyName == 1) {
             document.getElementById('search_product').focus();
         }
@@ -780,7 +780,7 @@
     });
 
     // Input discount and clculate row amount
-    $(document).on('input', '#unit_discount', function(){
+    $(document).on('input', '#unit_discount', function() {
         var unit_discount = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         //Update unit cost with discount 
@@ -871,8 +871,8 @@
 
         // Input shipment charge and clculate total amount
         $(document).on('input', '#shipment_charge', function(){
-        calculateTotalAmount();
-    });
+            calculateTotalAmount();
+        });
 
     // chane purchase tax and clculate total amount
     $(document).on('change', '#purchase_tax', function(){
@@ -890,12 +890,6 @@
         var calcDueAmount = parseFloat(total_purchase_amount) - parseFloat(payingAmount);
         $('#purchase_due').val(parseFloat(calcDueAmount).toFixed(2));
     });
-
-    // // Dispose Select area 
-    // $(document).on('click', '.remove_select_area_btn', function(e){
-    //     e.preventDefault();
-    //     $('.select_area').hide();
-    // });
 
     // Remove product form purchase product list (Table) 
     $(document).on('click', '#remove_product_btn',function(e){
@@ -959,8 +953,8 @@
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
-        // Add supplier by ajax
-        $(document).on('submit', '#add_supplier_form', function(e){
+    // Add supplier by ajax
+    $(document).on('submit', '#add_supplier_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');

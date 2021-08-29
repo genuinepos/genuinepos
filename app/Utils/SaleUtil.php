@@ -511,8 +511,7 @@ class SaleUtil
                 $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
 
                 if (auth()->user()->permission->sale['shipment_access'] == '1') {
-                    $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i
-                        class="fas fa-truck text-primary"></i> Edit Shipping</a>';
+                    $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {

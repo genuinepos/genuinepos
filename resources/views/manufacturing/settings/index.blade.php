@@ -17,7 +17,7 @@
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul >
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>Process</b></a>
+                                            <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>Process</b></a>
                                         </li>
 
                                         <li>

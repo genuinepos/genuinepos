@@ -8,6 +8,11 @@ use App\Http\Controllers\Controller;
 
 class SettingsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:admin_and_user');
+    }
+    
     public function index()
     {
         if (auth()->user()->permission->manufacturing['menuf_view'] == '0') {

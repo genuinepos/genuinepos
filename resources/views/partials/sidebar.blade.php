@@ -122,7 +122,7 @@
                 @if ($addons->manufacturing == 1)
                     @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1')
                         @if (auth()->user()->permission->manufacturing['menuf_view'] == '1') 
-                            <li data-menu="manufacture" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
+                            <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
                                 <a href="#">
                                     <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
                                     <p class="title">Manufacture</p>
@@ -134,8 +134,8 @@
 
                 @if ($addons->todo == 1)
                     @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
-                        <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
-                            <a href="#">
+                        <li class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
+                            <a href="{{ route('workspace.index') }}">
                                 <img src="{{ asset('public/backend/asset/img/icon/to-do-list.svg') }}">
                                 <p class="title">@lang('menu.essentials')</p>
                             </a>
@@ -1112,7 +1112,7 @@
                                     <div class="row">
                                         <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                             <div class="switch_bar">
-                                                <a href="" class="bar-link">
+                                                <a href="{{ route('manufacturing.process.index') }}" class="bar-link">
                                                     <span><i class="fas fa-dumpster-fire"></i></span>
                                                 </a>
                                             </div>
@@ -1121,7 +1121,7 @@
 
                                         <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                             <div class="switch_bar">
-                                                <a href="" class="bar-link">
+                                                <a href="{{ route('manufacturing.process.index') }}" class="bar-link">
                                                     <span><i class="fas fa-shapes"></i></span>
                                                 </a>
                                             </div>

@@ -55,6 +55,8 @@
                                         <li>Date-26/08/2021 (Refactor SaleController, PosController code. Modify util class.)</li>
                                         <li>Date-26/08/2021 (Add yajra table in customer table, Fixed customer view page design.)</li>
                                         <li>Date-26/08/2021 (Fixed quick add product form design.)</li>
+                                        <li>Date-28/08/2021 (Manufacturing settings is complated.)</li>
+                                        <li>Date-28/08/2021 (Manufacturing process(recipe) is going...)</li>
                                     </ul>
                                 </div>
                             </div>

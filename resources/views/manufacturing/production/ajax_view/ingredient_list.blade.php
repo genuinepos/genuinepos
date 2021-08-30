@@ -15,13 +15,13 @@
                 ->where('product_id', $ingredient->product_id)->first();
                 $stock = $productBranch ? $productBranch->product_quantity : 0;
             }
-        }else {
+        } else {
             if ($ingredient->variant_id) {
                 $mb_v_stock = DB::table('product_variants')->where('id', $ingredient->variant_id)->first();
-                    $stock = $mb_v_stock ? $mb_v_stock->mb_stock : 0;
+                $stock = $mb_v_stock ? $mb_v_stock->mb_stock : 0;
             }else {
                 $mb_p_stock = DB::table('products')->where('id', $ingredient->product_id)->first();
-                    $stock = $mb_p_stock ? $mb_p_stock->mb_stock : 0;
+                $stock = $mb_p_stock ? $mb_p_stock->mb_stock : 0;
             }
         }
     @endphp

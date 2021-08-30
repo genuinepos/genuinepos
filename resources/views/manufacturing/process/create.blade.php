@@ -137,7 +137,7 @@
 
                                         <div class="col-md-3">
                                             <label><b>Production Cost :</b></label>
-                                            <input type="number" step="any" name="product_cost" class="form-control" autocomplete="off" id="product_cost" placeholder="Production Cost" value="0">
+                                            <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="0">
                                         </div>
 
                                         <div class="col-md-3">
@@ -250,7 +250,6 @@
                                     tr += '<div class="input-group-prepend">';
                                     tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
                                     tr += '</div>';
-                                    tr += '<input type="hidden" name="ingredient_wastage_amounts[]" id="ingredient_wastage_amount">';
                                     tr += '</div>';
                                     tr += '</td>';
 
@@ -260,7 +259,7 @@
                                     tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">';
                                     tr += '</div>';
                                     tr += '<div class="col-4">';
-                                    tr += '<select name="unit_names[]" id="unit_name" class="form-control">';
+                                    tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                                         unites.forEach(function(unit) {
                                         if (product.unit.id == unit.id) {
                                             tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
@@ -361,7 +360,6 @@
                                 tr += '<div class="input-group-prepend">';
                                 tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
                                 tr += '</div>';
-                                tr += '<input type="hidden" name="ingredient_wastage_amounts[]" id="ingredient_wastage_amount">';
                                 tr += '</div>';
                                 tr += '</td>';
 
@@ -371,7 +369,7 @@
                                 tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">';
                                 tr += '</div>';
                                 tr += '<div class="col-4">';
-                                tr += '<select name="unit_names[]" id="unit_name" class="form-control">';
+                                tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                                     unites.forEach(function(unit) {
                                         if (product.unit.id == unit.id) {
                                             tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
@@ -464,7 +462,6 @@
                 tr += '<div class="input-group-prepend">';
                 tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
                 tr += '</div>';
-                tr += '<input type="hidden" name="ingredient_wastage_amounts[]" id="ingredient_wastage_amount">';
                 tr += '</div>';
                 tr += '</td>';
 
@@ -570,7 +567,6 @@
                 tr += '<div class="input-group-prepend">';
                 tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
                 tr += '</div>';
-                tr += '<input type="hidden" name="ingredient_wastage_amounts[]" id="ingredient_wastage_amount">';
                 tr += '</div>';
                 tr += '</td>';
 
@@ -629,7 +625,7 @@
             __calculateTotalAmount();
         });
 
-        $(document).on('input', '#product_cost', function(){
+        $(document).on('input', '#production_cost', function(){
             var tr = $(this).closest('tr');
             __calculateTotalAmount();
         });
@@ -651,11 +647,10 @@
                 totalIngredientCost += parseFloat(price.value);
             });
             $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
-
             var totalOutputQty = $('#total_output_qty').val() ? $('#total_output_qty').val() : 0;
-            var productionCost = $('#product_cost').val() ? $('#product_cost').val() : 0;
+            var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
             var totalCost = parseFloat(totalOutputQty) * parseFloat(parseFloat(totalIngredientCost));
-            var netTotalCostWithExtra = parseFloat(totalCostWithWastage) + parseFloat(productionCost);
+            var netTotalCostWithExtra = parseFloat(totalCost) + parseFloat(productionCost);
             $('#total_cost').val(parseFloat(netTotalCostWithExtra).toFixed(2));
         }
 

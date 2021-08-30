@@ -1,6 +1,4 @@
 <?php
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'manufacturing', 'namespace' => 'App\Http\Controllers\Manufacturing'], function ()
@@ -14,6 +12,17 @@ Route::group(['prefix' => 'manufacturing', 'namespace' => 'App\Http\Controllers\
         Route::get('edit/{processId}', 'ProcessController@edit')->name('manufacturing.process.edit');
         Route::post('update/{processId}', 'ProcessController@update')->name('manufacturing.process.update');
         Route::delete('delete/{processId}', 'ProcessController@delete')->name('manufacturing.process.delete');
+    });
+
+    Route::group(['prefix' => 'productions'], function ()
+    {
+        Route::get('/', 'ProductionController@index')->name('manufacturing.productions.index');
+        Route::get('show/{productionId}', 'ProductionController@show')->name('manufacturing.productions.show');
+        Route::get('create', 'ProductionController@create')->name('manufacturing.productions.create');
+        Route::post('store', 'ProductionController@store')->name('manufacturing.productions.store');
+        Route::get('edit/{productionId}', 'ProductionController@edit')->name('manufacturing.productions.edit');
+        Route::post('update/{productionId}', 'ProductionController@update')->name('manufacturing.productions.update');
+        Route::delete('delete/{productionId}', 'ProductionController@delete')->name('manufacturing.productions.delete');
     });
 
     Route::group(['prefix' => 'settings'], function ()

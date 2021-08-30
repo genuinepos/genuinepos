@@ -14,7 +14,7 @@
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form id="edit_process_form" action="{{ route('manufacturing.process.edit', $process->id) }}" enctype="multipart/form-data" method="POST">
+            <form id="edit_process_form" action="{{ route('manufacturing.process.update', $process->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $process->product_id }}">
                 <input type="hidden" name="variant_id" value="{{ $process->variant_id ? $process->variant_id : 'noid' }}">
@@ -89,7 +89,50 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="ingredient_list">
-                                                               
+                                                                @foreach ($processIngredients as $ingredient)
+                                                                    <tr class="text-start">
+                                                                        <td>
+                                                                            <span class="product_name">{{ $ingredient->p_name }}</span><br>
+                                                                            <span class="product_variant">{{ $ingredient->v_name }}</span>  
+                                                                            <input value="{{ $ingredient->p_id }}" type="hidden" class="productId-{{ $ingredient->p_id }}" id="product_id" name="product_ids[]">
+                                                                            <input value="{{ $ingredient->v_id ? $ingredient->v_id : 'noid' }}" type="hidden" id="variant_id" name="variant_ids[]">
+                                                                            <input value="{{ $ingredient->unit_cost_inc_tax }}" required name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">
+                                                                        </td>
+                                    
+                                                                        <td>
+                                                                            <div class="input-group p-2">
+                                                                            <input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="{{ $ingredient->wastage_percent }}">
+                                                                            <div class="input-group-prepend">
+                                                                            <span class="input-group-text"><i class="fas fa-percentage text-dark"></i></span>
+                                                                            </div>
+                                                                            </div>
+                                                                        </td>
+                                    
+                                                                        <td>
+                                                                            <div class="row">
+                                                                            <div class="col-8">
+                                                                            <input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">
+                                                                            </div>
+                                                                            <div class="col-4">
+                                                                            <select name="unit_ids[]" id="unit_id" class="form-control">
+                                                                                @foreach ($units as $unit)
+                                                                                    <option {{ $ingredient->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option> 
+                                                                                @endforeach
+                                                                            </select>
+                                                                            </div>
+                                                                            </div>
+                                                                        </td>
+                                    
+                                                                        <td>
+                                                                            <input value="{{ $ingredient->subtotal }}" type="hidden" step="any" name="prices[]" id="price">
+                                                                            <span id="span_price">{{ $ingredient->subtotal }}</span>
+                                                                        </td>
+                                    
+                                                                        <td class="text-start">
+                                                                            <a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -103,7 +146,7 @@
                     </div>
                 </section>
 
-                <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
+                <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost" value="{{ $process->total_ingredient_cost }}">
 
                 <section class="">
                     <div class="container-fluid">
@@ -133,7 +176,6 @@
                                                         @foreach ($units as $unit)
                                                             <option {{ $unit->id == $process->unit_id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
                                                         @endforeach
-                                                        
                                                     </select>
                                                 </div>
                                             </div>
@@ -141,7 +183,7 @@
 
                                         <div class="col-md-3">
                                             <label><b>Production Cost :</b></label>
-                                            <input type="number" step="any" name="product_cost" class="form-control" autocomplete="off" id="product_cost" placeholder="Production Cost" value="{{ $process->production_cost }}">
+                                            <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="{{ $process->production_cost }}">
                                         </div>
 
                                         <div class="col-md-3">
@@ -252,9 +294,8 @@
                                     tr += '<div class="input-group p-2">';
                                     tr += '<input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="0.00">';
                                     tr += '<div class="input-group-prepend">';
-                                    tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
+                                    tr += '<span class="input-group-text"><i class="fas fa-percentage text-dark"></i></span>';
                                     tr += '</div>';
-                                    tr += '<input type="hidden" name="ingredient_wastage_amounts[]" id="ingredient_wastage_amount">';
                                     tr += '</div>';
                                     tr += '</td>';
 
@@ -264,7 +305,7 @@
                                     tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">';
                                     tr += '</div>';
                                     tr += '<div class="col-4">';
-                                    tr += '<select name="unit_names[]" id="unit_name" class="form-control">';
+                                    tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                                         unites.forEach(function(unit) {
                                         if (product.unit.id == unit.id) {
                                             tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
@@ -285,7 +326,7 @@
                                     tr += '<td class="text-start">';
                                     tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>';
                                     tr += '</td>';
-                                    
+
                                     tr += '</tr>';
                                     $('#ingredient_list').prepend(tr); 
                                     __calculateTotalAmount();  
@@ -363,7 +404,7 @@
                                 tr += '<div class="input-group p-2">';
                                 tr += '<input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="0.00">';
                                 tr += '<div class="input-group-prepend">';
-                                tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
+                                tr += '<span class="input-group-text"><i class="fas fa-percentage text-dark"></i></span>';
                                 tr += '</div>';
                                 tr += '<input type="hidden" name="ingredient_wastage_amounts[]" id="ingredient_wastage_amount">';
                                 tr += '</div>';
@@ -375,7 +416,7 @@
                                 tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">';
                                 tr += '</div>';
                                 tr += '<div class="col-4">';
-                                tr += '<select name="unit_names[]" id="unit_name" class="form-control">';
+                                tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                                     unites.forEach(function(unit) {
                                         if (product.unit.id == unit.id) {
                                             tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
@@ -466,7 +507,7 @@
                 tr += '<div class="input-group p-2">';
                 tr += '<input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="0.00">';
                 tr += '<div class="input-group-prepend">';
-                tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
+                tr += '<span class="input-group-text"><i class="fas fa-percentage text-dark"></i></span>';
                 tr += '</div>';
                 tr += '<input type="hidden" name="ingredient_wastage_amounts[]" id="ingredient_wastage_amount">';
                 tr += '</div>';
@@ -572,7 +613,7 @@
                 tr += '<div class="input-group p-2">';
                 tr += '<input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="0.00">';
                 tr += '<div class="input-group-prepend">';
-                tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
+                tr += '<span class="input-group-text"><i class="fas fa-percentage text-dark"></i></span>';
                 tr += '</div>';
                 tr += '<input type="hidden" name="ingredient_wastage_amounts[]" id="ingredient_wastage_amount">';
                 tr += '</div>';
@@ -633,7 +674,7 @@
             __calculateTotalAmount();
         });
 
-        $(document).on('input', '#product_cost', function(){
+        $(document).on('input', '#production_cost', function(){
             var tr = $(this).closest('tr');
             __calculateTotalAmount();
         });
@@ -657,7 +698,7 @@
             $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
 
             var totalOutputQty = $('#total_output_qty').val() ? $('#total_output_qty').val() : 0;
-            var productionCost = $('#product_cost').val() ? $('#product_cost').val() : 0;
+            var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
             var totalCost = parseFloat(totalOutputQty) * parseFloat(parseFloat(totalIngredientCost));
             var netTotalCostWithExtra = parseFloat(totalCost) + parseFloat(productionCost);
             $('#total_cost').val(parseFloat(netTotalCostWithExtra).toFixed(2));
@@ -671,18 +712,16 @@
         });
 
         //Add process request by ajax
-        $('#add_process_form').on('submit', function(e) {
+        $('#edit_process_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
-            $('.submit_button').prop('type', 'button');
             var request = $(this).serialize();
             $.ajax({
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
-                    $('.submit_button').prop('type', 'sumbit');
                     if(!$.isEmptyObject(data.errorMsg)) {
                         toastr.error(data.errorMsg); 
                         $('.loading_button').hide();

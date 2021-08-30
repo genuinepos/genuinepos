@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Manufacturing\Process;
 use App\Models\Manufacturing\ProcessIngredient;
+use App\Utils\Manufacturing\ProcessUtil;
 
 class ProcessController extends Controller
 {
-    public function __construct()
+    public $processUtil;
+    public function __construct(ProcessUtil $processUtil)
     {
+        $this->processUtil = $processUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -35,105 +36,31 @@ class ProcessController extends Controller
             ->get();
 
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
-            $process = DB::table('processes')
-            ->leftJoin('products', 'processes.product_id', 'products.id')
-            ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
-            ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as subCate', 'products.parent_category_id', 'subCate.id')
-            ->leftJoin('units', 'processes.unit_id', 'units.id')
-            ->select(
-                'processes.*',
-                'products.name as p_name',
-                'product_variants.variant_name as v_name',
-                'categories.name as cate_name',
-                'subCate.name as sub_cate_name',
-                'subCate.name as sub_cate_name',
-                'units.name as u_name',
-            )->get();
-
-            return DataTables::of($process)
-            ->addColumn('action', function ($row) {
-                $html = '';
-                $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item" href="' . route('manufacturing.process.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-                $html .= '<a class="dropdown-item" href="' . route('manufacturing.process.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                $html .= '<a class="dropdown-item" id="delete" href="' . route('manufacturing.process.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                $html .= '</div>';
-                $html .= '</div>';
-                return $html;
-            })
-            ->editColumn('product', function ($row)
-            {
-                return $row->p_name.' '.$row->v_name;
-            })
-            ->editColumn('wastage_percent', function ($row) 
-            {
-                return $row->wastage_percent.' %';
-            })
-            ->editColumn('total_output_qty', function ($row) 
-            {
-                $wastage = $row->total_output_qty / 100 * $row->wastage_percent;
-                $qtyWithWastage = $row->total_output_qty - $wastage;
-                return bcadd($qtyWithWastage, 0, 2).' '.$row->u_name;
-            })
-            ->editColumn('total_ingredient_cost', function ($row) use ($generalSettings)
-            {
-                return json_decode($generalSettings->business, true)['currency'].' '.$row->total_ingredient_cost;
-            })
-            ->editColumn('production_cost', function ($row) use ($generalSettings)
-            {
-                return json_decode($generalSettings->business, true)['currency'].' '.$row->production_cost;
-            })
-            ->editColumn('total_cost', function ($row) use ($generalSettings)
-            {
-                return json_decode($generalSettings->business, true)['currency'].' '.$row->total_cost;
-            })
-            ->rawColumns(['action', 'product', 'wastage_percent', 'total_output_qty', 'total_ingredient_cost', 'production_cost', 'total_cost'])
-            ->make(true);
+            return $this->processUtil->processTable($request);
         }
 
         return view('manufacturing.process.index', compact('products'));
     }
 
+    public function show($processId)
+    {
+        $process = Process::with([
+            'product',
+            'variant',
+            'unit',
+            'ingredients',
+            'ingredients.product',
+            'ingredients.unit',
+            'ingredients.variant',
+        ])->where('id', $processId)->first();
+
+        return view('manufacturing.process.ajax_view.show', compact('process'));
+    }
+
     // Process index view method
     public function create(Request $request)
     {
-        $product = [];
-        $productAndVariantId = explode('-', $request->product_id);
-        $product_id = $productAndVariantId[0];
-        $variant_id = $productAndVariantId[1];
-        if ($variant_id != 'NULL') {
-            $v_product = DB::table('product_variants')->where('id', $variant_id)
-            ->leftJoin('products', 'product_variants.product_id', 'products.id')
-            ->select(
-                'product_variants.id as v_id',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-                'products.id as p_id',
-                'products.name',
-                'products.product_code',
-            )->first();
-            $product['p_id'] = $v_product->p_id;
-            $product['p_name'] = $v_product->name;
-            $product['p_code'] = $v_product->product_code;
-            $product['v_id'] = $v_product->v_id;
-            $product['v_name'] = $v_product->variant_name;
-            $product['v_code'] = $v_product->variant_code;
-        }else{
-            $s_product = Product::where('id', $product_id)
-            ->select('id', 'name', 'product_code')
-            ->first();
-            $product['p_id'] = $s_product->id;
-            $product['p_name'] = $s_product->name;
-            $product['p_code'] = $s_product->product_code;
-            $product['v_id'] = NULL;
-            $product['v_name'] = NULL;
-            $product['v_code'] = NULL;
-        }
-
+        $product = $this->processUtil->getProcessableProductForCreate($request);
         return view('manufacturing.process.create', compact('product'));
     }
 
@@ -151,7 +78,7 @@ class ProcessController extends Controller
         $addProcess->wastage_percent = $request->wastage_percent;
         $addProcess->total_output_qty = $request->total_output_qty;
         $addProcess->unit_id = $request->unit_id;
-        $addProcess->production_cost = $request->production_cost ? $request->production_cost : 0;
+        $addProcess->production_cost = $request->production_cost;
         $addProcess->total_cost = $request->total_cost;
         $addProcess->save();
 
@@ -183,23 +110,120 @@ class ProcessController extends Controller
         return response()->json('Manufacturing Process created successfully');
     }
 
+
+
+    // Edit process view with data
     public function edit($processId)
     {
         $process = DB::table('processes')->where('processes.id', $processId)
-        ->leftJoin('products', 'processes.product_id', 'products.id')
-        ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
-        ->select(
-            'processes.*',
-            'products.id as p_id',
-            'products.name as p_name',
-            'products.product_code as p_code',
-            'product_variants.id as v_id',
-            'product_variants.variant_name as v_name',
-            'product_variants.variant_code as v_code',
-        )
-        ->first();
-         $units = DB::table('units')->select('id', 'name')->get();
-        $processIngredients = DB::table('process_ingredients')->where('process_id', $processId)->get();
+            ->leftJoin('products', 'processes.product_id', 'products.id')
+            ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
+            ->select(
+                'processes.*',
+                'products.id as p_id',
+                'products.name as p_name',
+                'products.product_code as p_code',
+                'product_variants.id as v_id',
+                'product_variants.variant_name as v_name',
+                'product_variants.variant_code as v_code',
+            )
+            ->first();
+
+        $units = DB::table('units')->select('id', 'name')->get();
+        $processIngredients = DB::table('process_ingredients')
+            ->leftJoin('products', 'process_ingredients.product_id', 'products.id')
+            ->leftJoin('product_variants', 'process_ingredients.variant_id', 'product_variants.id')
+            ->where('process_id', $processId)
+            ->select(
+                'process_ingredients.*',
+                'products.id as p_id',
+                'products.name as p_name',
+                'products.product_code as p_code',
+                'product_variants.id as v_id',
+                'product_variants.variant_name as v_name',
+                'product_variants.variant_code as v_code',
+            )
+            ->get();
         return view('manufacturing.process.edit', compact('process', 'units', 'processIngredients'));
+    }
+
+    public function update(Request $request, $processId)
+    {
+        $this->validate($request, [
+            'total_cost' => 'required',
+        ]);
+
+        $updateProcess = Process::where('id', $processId)->first();
+        $updateProcess->product_id = $request->product_id;
+        $updateProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : NULL;
+        $updateProcess->total_ingredient_cost = $request->total_ingredient_cost;
+        $updateProcess->wastage_percent = $request->wastage_percent;
+        $updateProcess->total_output_qty = $request->total_output_qty;
+        $updateProcess->unit_id = $request->unit_id;
+        $updateProcess->production_cost = $request->production_cost;
+        $updateProcess->total_cost = $request->total_cost;
+        $updateProcess->save();
+
+        $existIngredients = ProcessIngredient::where('process_id', $processId)->get();
+        foreach ($existIngredients as $existIngredient) {
+            $existIngredient->is_delete_in_update = 1;
+            $existIngredient->save();
+        }
+
+        $product_ids = $request->product_ids;
+        $variant_ids = $request->variant_ids;
+        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
+        $ingredient_wastage_percents = $request->ingredient_wastage_percents;
+        $final_quantities = $request->final_quantities;
+        $unit_ids = $request->unit_ids;
+        $prices = $request->prices;
+
+        if (count($request->product_ids) > 0) {
+            $index = 0;
+            foreach ($product_ids as $product_id) {
+                $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $updateIngredient = ProcessIngredient::where('process_id', $updateProcess->id)
+                    ->where('product_id', $product_id)
+                    ->where('variant_id', $variant_id)->first();
+                if ($updateIngredient) {
+                    $updateIngredient->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
+                    $updateIngredient->wastage_percent = $ingredient_wastage_percents[$index];
+                    $updateIngredient->final_qty = $final_quantities[$index];
+                    $updateIngredient->unit_id = $unit_ids[$index];
+                    $updateIngredient->subtotal = $prices[$index];
+                    $updateIngredient->is_delete_in_update = 0;
+                    $updateIngredient->save();
+                } else {
+                    $addProcessIngredient = new ProcessIngredient();
+                    $addProcessIngredient->process_id = $updateProcess->id;
+                    $addProcessIngredient->product_id = $product_id;
+                    $addProcessIngredient->variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                    $addProcessIngredient->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
+                    $addProcessIngredient->wastage_percent = $ingredient_wastage_percents[$index];
+                    $addProcessIngredient->final_qty = $final_quantities[$index];
+                    $addProcessIngredient->unit_id = $unit_ids[$index];
+                    $addProcessIngredient->subtotal = $prices[$index];
+                    $addProcessIngredient->save();
+                }
+                $index++;
+            }
+        }
+
+        $unusedIngredients = ProcessIngredient::where('process_id', $processId)
+            ->where('is_delete_in_update', 1)->get();
+        foreach ($unusedIngredients as $unusedIngredient) {
+            $unusedIngredient->delete();
+        }
+
+        return response()->json('Manufacturing Process updated successfully');
+    }
+
+    public function delete($processId)
+    {
+        $process = Process::where('id', $processId)->first();
+        if (!is_null($process)) {
+            $process->delete();
+            return response()->json('Manufacturing Process deleted successfully');
+        }
     }
 }

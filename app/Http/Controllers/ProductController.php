@@ -997,7 +997,7 @@ class ProductController extends Controller
         }
     }
 
-    // Get product warehouse stock ** reqeusted by ajax
+    // Get product warehouse stock ** requested by ajax
     public function warehouseStock($productId)
     {
         $product = Product::with([
@@ -1094,6 +1094,6 @@ class ProductController extends Controller
 
     public function allFromSubCategory($categoryId)
     {
-        return $subCategories = DB::table('categories')->where('parent_category_id', $categoryId)->get(['id', 'name']);
+        return DB::table('categories')->where('parent_category_id', $categoryId)->get(['id', 'name']);
     }
 }

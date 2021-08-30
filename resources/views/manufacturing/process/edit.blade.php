@@ -101,25 +101,25 @@
                                     
                                                                         <td>
                                                                             <div class="input-group p-2">
-                                                                            <input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="{{ $ingredient->wastage_percent }}">
-                                                                            <div class="input-group-prepend">
-                                                                            <span class="input-group-text"><i class="fas fa-percentage text-dark"></i></span>
-                                                                            </div>
+                                                                                <input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="{{ $ingredient->wastage_percent }}">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text"><i class="fas fa-percentage text-dark"></i></span>
+                                                                                </div>
                                                                             </div>
                                                                         </td>
                                     
                                                                         <td>
                                                                             <div class="row">
-                                                                            <div class="col-8">
-                                                                            <input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">
-                                                                            </div>
-                                                                            <div class="col-4">
-                                                                            <select name="unit_ids[]" id="unit_id" class="form-control">
-                                                                                @foreach ($units as $unit)
-                                                                                    <option {{ $ingredient->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option> 
-                                                                                @endforeach
-                                                                            </select>
-                                                                            </div>
+                                                                                <div class="col-8">
+                                                                                    <input value="{{ $ingredient->final_qty }}" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">
+                                                                                </div>
+                                                                                <div class="col-4">
+                                                                                    <select name="unit_ids[]" id="unit_id" class="form-control">
+                                                                                        @foreach ($units as $unit)
+                                                                                            <option {{ $ingredient->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option> 
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div>
                                                                             </div>
                                                                         </td>
                                     
@@ -669,11 +669,6 @@
             __calculateIngredientsTableAmount(tr);
         });
 
-        $(document).on('input', '#total_output_qty', function(){
-            var tr = $(this).closest('tr');
-            __calculateTotalAmount();
-        });
-
         $(document).on('input', '#production_cost', function(){
             var tr = $(this).closest('tr');
             __calculateTotalAmount();
@@ -696,12 +691,9 @@
                 totalIngredientCost += parseFloat(price.value);
             });
             $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
-
-            var totalOutputQty = $('#total_output_qty').val() ? $('#total_output_qty').val() : 0;
             var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
-            var totalCost = parseFloat(totalOutputQty) * parseFloat(parseFloat(totalIngredientCost));
-            var netTotalCostWithExtra = parseFloat(totalCost) + parseFloat(productionCost);
-            $('#total_cost').val(parseFloat(netTotalCostWithExtra).toFixed(2));
+            var totalCost = parseFloat(productionCost) + parseFloat(parseFloat(totalIngredientCost));
+            $('#total_cost').val(parseFloat(totalCost).toFixed(2));
         }
 
         // Remove product form ingredient list (Table) 

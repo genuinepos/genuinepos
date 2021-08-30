@@ -620,11 +620,6 @@
             __calculateIngredientsTableAmount(tr);
         });
 
-        $(document).on('input', '#total_output_qty', function(){
-            var tr = $(this).closest('tr');
-            __calculateTotalAmount();
-        });
-
         $(document).on('input', '#production_cost', function(){
             var tr = $(this).closest('tr');
             __calculateTotalAmount();
@@ -647,11 +642,9 @@
                 totalIngredientCost += parseFloat(price.value);
             });
             $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
-            var totalOutputQty = $('#total_output_qty').val() ? $('#total_output_qty').val() : 0;
             var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
-            var totalCost = parseFloat(totalOutputQty) * parseFloat(parseFloat(totalIngredientCost));
-            var netTotalCostWithExtra = parseFloat(totalCost) + parseFloat(productionCost);
-            $('#total_cost').val(parseFloat(netTotalCostWithExtra).toFixed(2));
+            var totalCost = parseFloat(productionCost) + parseFloat(parseFloat(totalIngredientCost));
+            $('#total_cost').val(parseFloat(totalCost).toFixed(2));
         }
 
         // Remove product form ingredient list (Table) 

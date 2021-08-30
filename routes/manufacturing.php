@@ -23,6 +23,8 @@ Route::group(['prefix' => 'manufacturing', 'namespace' => 'App\Http\Controllers\
         Route::get('edit/{productionId}', 'ProductionController@edit')->name('manufacturing.productions.edit');
         Route::post('update/{productionId}', 'ProductionController@update')->name('manufacturing.productions.update');
         Route::delete('delete/{productionId}', 'ProductionController@delete')->name('manufacturing.productions.delete');
+        Route::get('get/process/{processId}', 'ProductionController@getProcess');
+        Route::get('get/ingredients/{processId}', 'ProductionController@getIngredients');
     });
 
     Route::group(['prefix' => 'settings'], function ()

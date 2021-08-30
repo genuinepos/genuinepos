@@ -18,7 +18,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-shapes"></i> <b>Production</b></a>
+                                            <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>Production</b></a>
                                         </li>
                                      
                                         <li>

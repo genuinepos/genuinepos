@@ -170,9 +170,6 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table_area">
-                                            {{-- <div class="data_preloader">
-                                                <h6><i class="fas fa-spinner"></i> Processing...</h6>
-                                            </div> --}}
                                             <div class="table-responsive">
                                                 <table class="display data_tbl data__table w-100">
                                                     <thead>
@@ -212,16 +209,12 @@
     </div>
 
     <!-- Details Modal -->
-    <div id="sale_details">
-        
-    </div>
+    <div id="sale_details"></div>
 
    <!-- Edit Shipping modal -->
    <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content" id="edit_shipment_modal_content">
-                
-            </div>
+            <div class="modal-content" id="edit_shipment_modal_content"> </div>
         </div>
     </div>
 
@@ -236,9 +229,7 @@
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
-                <div class="modal-body" id="payment_view_modal_body">
-                
-                </div>
+                <div class="modal-body" id="payment_view_modal_body"> </div>
             </div>
         </div>
     </div>
@@ -253,10 +244,7 @@
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
-                <div class="modal-body" id="payment-modal-body">
-                    <!--begin::Form-->
-                    
-                </div>
+                <div class="modal-body" id="payment-modal-body"> </div>
             </div>
         </div>
     </div>
@@ -412,15 +400,8 @@
             saleDetails(url);
         });
 
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:first-child, :last-child, :nth-child(8))', function(e){
-            e.preventDefault();
-            var sale = $(this).parent().data('href');
-            saleDetails(sale);
-        });
-
-         // Print Packing slip
-         $(document).on('click', '#print_packing_slip', function (e) {
+        // Print Packing slip
+        $(document).on('click', '#print_packing_slip', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');

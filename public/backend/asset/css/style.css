@@ -1353,5 +1353,5 @@ ul.add_sale_ex_btn li {display: inline-block; float: right; margin-left: 5px;}
 .menu-list-area .s-menu-icon {font-size: 14px;margin-right: 12px;}
 .menu-list-area ul li .s-menu-text {display: flex;font-size: 11px;font-weight: 500;margin-top: -20px;margin-left: 31px;}
 .menu-list-area ul li input {display: flex;margin-bottom: -15px;margin-left: -16px;}
-.active_tr {background: #113d73!important;color: white;}
+.active_tr td {background: #113d73!important;color: white;}
 .active_tr:hover {color: white!important;}

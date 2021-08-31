@@ -105,26 +105,22 @@
         "positionClass": "toast-top-center",
       }
 
-      $(document).on('click', '#logout_option',function(e){
+        $(document).on('click', '#logout_option',function(e){
             e.preventDefault();      
             $.confirm({
                 'title': 'Logout Confirmation',
                 'content': 'Are you sure, you want to logout?',
                 'buttons': {
-                    'Yes': {
-                        'btnClass': 'yes btn-modal-primary',
-                        'action': function() {
-                            $('#logout_form').submit();
-                        }
-                    },
-                    'No': {
-                        'btnClass': 'no btn-danger',
-                        'action': function() {
-                             console.log('Deleted canceled.');
-                        } 
-                    }
+                    'Yes': {'btnClass': 'yes btn-modal-primary','action': function() {$('#logout_form').submit();}},
+                    'No': {'btnClass': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
             });
+        });
+
+        $(document).on('click', '.display tbody tr', function () {
+            console.log('Clicked');
+            $('.display tbody tr').removeClass('active_tr'); 
+            $(this).addClass('active_tr');
         });
     </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>

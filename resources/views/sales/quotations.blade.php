@@ -93,16 +93,14 @@
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Quotation ID</th>
-                                                <th>Branch</th>
+                                                <th>Business Location</th>
                                                 <th>Customer</th>
                                                 <th>Total Amount</th>
                                                 <th>Created By</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -205,13 +203,6 @@
             quotationDetails(url);
         });
 
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:first-child, :last-child)', function(e){
-            e.preventDefault();
-            var quotation = $(this).parent().data('href');
-            quotationDetails(quotation);
-        });
-
         //Submit filter form by select input changing
         $(document).on('change', '.submit_able', function () {
             qutotation_table.ajax.reload();
@@ -256,18 +247,8 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });

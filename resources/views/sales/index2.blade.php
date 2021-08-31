@@ -318,13 +318,6 @@
             saleDetails(url);
         });
 
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:first-child, :last-child, :nth-child(8))', function(e){
-            e.preventDefault();
-            var sale = $(this).parent().data('href');
-            saleDetails(sale);
-        });
-
         //Show payment view modal with data
         $(document).on('click', '#view_payment', function (e) {
            e.preventDefault();

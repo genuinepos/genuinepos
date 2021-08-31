@@ -237,7 +237,7 @@ class ProductController extends Controller
         $addProduct->unit_id = $request->unit_id;
         $addProduct->alert_quantity = $request->alert_quantity;
         $addProduct->tax_id = $tax_id;
-        $addProduct->tax_type = $request->tax_type;
+        $addProduct->tax_type = isset($request->tax_type) ? $request->tax_type : 1;
         $addProduct->expire_date = $request->expired_date ? $request->expired_date : NULL;
         $addProduct->product_condition = $request->product_condition;
         $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;

@@ -289,14 +289,6 @@
         productDetails(url);
     });
 
-    // Show details modal with data by clicking the row
-    $(document).on('click', 'tr.clickable_row td:not(:first-child, :nth-child(3))', function(e) {
-        e.preventDefault();
-        var url = $(this).parent().data('href');
-        console.log(url);
-        productDetails(url);
-    });
-
     //Check purchase and generate burcode
     $(document).on('click', '#check_pur_and_gan_bar_button', function(e) {
         e.preventDefault();
@@ -324,17 +316,8 @@
             'title': 'Delete Confirmation',
             'content': 'Are you sure, you want to delete?',
             'buttons': {
-                'Yes': {
-                    'class': 'yes btn-modal-primary','action': function() {
-                        $('#deleted_form').submit();
-                    }
-                },
-                'No': {
-                    'class': 'no btn-danger',
-                    'action': function() {
-                        // alert('Deleted canceled.')
-                    } 
-                }
+                'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
             }
         });
     });
@@ -390,18 +373,8 @@
             'title': 'Deactive Confirmation',
             'content': 'Are you sure to deactive selected all?',
             'buttons': {
-                'Yes': {
-                    'class': 'yes btn-danger',
-                    'action': function() {
-                        $('#multiple_action_form').submit();
-                    }
-                },
-                'No': {
-                    'class': 'no btn-modal-primary',
-                    'action': function() {
-                        // alert('Deleted canceled.')
-                    } 
-                }
+                'Yes': {'class': 'yes btn-danger','action': function() {$('#multiple_action_form').submit();}},
+                'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
             }
         });
     });
@@ -422,7 +395,6 @@
                     product_table.ajax.reload();
                     toastr.success(data, 'Attention');
                 }
-
             }
         });
     });

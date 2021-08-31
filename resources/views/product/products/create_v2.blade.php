@@ -99,7 +99,7 @@
                                             @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Category :</b> <span class="text-danger">*</span></label>
+                                                        <label for="inputEmail3" class="col-4"><b>Category :</b> </label>
                                                         <div class="col-8">
                                                             <div class="input-group">
                                                                 <select class="form-control category" name="category_id"
@@ -137,27 +137,29 @@
                                         </div>
 
                                         <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Brand :</b> </label>
-                                                    <div class="col-8">
-                                                        <div class="input-group">
-                                                            <select class="form-control" name="brand_id" id="brand_id">
-                                                                <option value="">Select Brand</option>
-                                                                    @foreach ($brands as $brand)
-                                                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                                    @endforeach
-                                                            </select>
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text add_button" data-bs-toggle="modal"
-                                                                    data-bs-target="#addBrandModal"><i
-                                                                        class="fas fa-plus-square input_i"></i></span>
+                                            @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Brand :</b> </label>
+                                                        <div class="col-8">
+                                                            <div class="input-group">
+                                                                <select class="form-control" name="brand_id" id="brand_id">
+                                                                    <option value="">Select Brand</option>
+                                                                        @foreach ($brands as $brand)
+                                                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                                        @endforeach
+                                                                </select>
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text add_button" data-bs-toggle="modal"
+                                                                        data-bs-target="#addBrandModal"><i
+                                                                            class="fas fa-plus-square input_i"></i></span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
+                                            @endif
+                                            
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"> <b>Alert quentity  :</b> </label>
@@ -348,8 +350,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-2">
-                                            @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+                                        @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+                                            <div class="row mt-2">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
@@ -363,20 +365,20 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="tax_type" class="form-control" id="tax_type">
-                                                            <option value="1">Exclusive</option>
-                                                            <option value="2">Inclusive</option>
-                                                        </select>
+                                        
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="tax_type" class="form-control" id="tax_type">
+                                                                <option value="1">Exclusive</option>
+                                                                <option value="2">Inclusive</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
 
                                         <div class="form_part">
                                             <div class="row mt-2">

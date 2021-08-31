@@ -3,6 +3,8 @@
     <style>
         .form_element {border: 1px solid #7e0d3d;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        .dataTables_filter {width: 50%!important;}
+        .dataTables_filter input {width: 50%;}
     </style>
     <link href="{{ asset('public/backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
 @endpush
@@ -15,390 +17,262 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-8">
-                                <div class="form_element m-0 mt-4">
-                                    <div class="py-2 px-2 form-header">
-                                        <div class="row">
-                                            <div class="col-6"><h5>Add Product</h5></div> 
-                                            <div class="col-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Product Name :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" autofocus>
-                                                        <span class="error error_name"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Product code 
-                                                        <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique." class="fas fa-info-circle tp"></i> :</b> <span class="text-danger">*
-                                                    </span></label>
-                                                    <div class="col-8">
-                                                        <div class="input-group">
-                                                            <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" value="" placeholder="Product Code">
-                                                            <div class="input-group-prepend add_button">
-                                                                <span class="input-group-text code_generate_btn input_i"><i class="fas fa-sync-alt"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <span class="error error_code"></span>
-                                                    </div>
+                                <div class="col-md-12">
+                                    <div class="form_element m-0 mt-4">
+                                        <div class="py-2 px-2 form-header">
+                                            <div class="row">
+                                                <div class="col-6"><h5>Add Product</h5></div> 
+                                                <div class="col-6">
+                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Unit :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <div class="input-group">
-                                                            <select class="form-control product_unit" name="unit_id" id="unit_id">
-                                                                <option value="">Select Unit</option>
-                                                                @php
-                                                                    $defaultUnit = json_decode($generalSettings->product, true)['default_unit_id'];
-                                                                @endphp
-                                                                @foreach ($units as $unit)
-                                                                    <option {{ $defaultUnit ==  $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text add_button" data-bs-toggle="modal"
-                                                                    data-bs-target="#addUnitModal"><i class="fas fa-plus-square input_i"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <span class="error error_unit_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"> <b>Barcode Type  :</b> </label>
-                                                    <div class="col-8">
-                                                        <select class="form-control" name="barcode_type" id="barcode_type">
-                                                            <option value="CODE128">Code 128 (C128)</option>
-                                                            <option value="CODE39">Code 39 (C39)</option>
-                                                            <option value="EAN13">EAN-13</option>
-                                                            <option value="UPC">UPC</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-1">
-                                            @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
+                                        <div class="element-body">
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Category :</b> </label>
+                                                        <label for="inputEmail3" class="col-4"><b>Product Name :</b> <span class="text-danger">*</span></label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" autofocus>
+                                                            <span class="error error_name"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Product code 
+                                                            <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique." class="fas fa-info-circle tp"></i> :</b> <span class="text-danger">*
+                                                        </span></label>
                                                         <div class="col-8">
                                                             <div class="input-group">
-                                                                <select class="form-control category" name="category_id"
-                                                                    id="category_id">
-                                                                    <option value="">Select Category</option>
-                                                                    @foreach ($categories as $category)
-                                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                                <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" value="" placeholder="Product Code">
+                                                                <div class="input-group-prepend add_button">
+                                                                    <span class="input-group-text code_generate_btn input_i"><i class="fas fa-sync-alt"></i></span>
+                                                                </div>
+                                                            </div>
+                                                            <span class="error error_code"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Unit :</b> <span class="text-danger">*</span></label>
+                                                        <div class="col-8">
+                                                            <div class="input-group">
+                                                                <select class="form-control product_unit" name="unit_id" id="unit_id">
+                                                                    <option value="">Select Unit</option>
+                                                                    @php
+                                                                        $defaultUnit = json_decode($generalSettings->product, true)['default_unit_id'];
+                                                                    @endphp
+                                                                    @foreach ($units as $unit)
+                                                                        <option {{ $defaultUnit ==  $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
                                                                     @endforeach
                                                                 </select>
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text add_button" data-bs-toggle="modal"
-                                                                        data-bs-target="#addCategoryModal"><i
-                                                                            class="fas fa-plus-square input_i"></i></span>
+                                                                        data-bs-target="#addUnitModal"><i class="fas fa-plus-square input_i"></i></span>
                                                                 </div>
                                                             </div>
-                                                            <span class="error error_category_id"></span>
+                                                            <span class="error error_unit_id"></span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif
 
-                                            @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"> <b>Sub-category :</b> </label>
+                                                        <label for="inputEmail3" class="col-4"> <b>Barcode Type  :</b> </label>
                                                         <div class="col-8">
-                                                            <select class="form-control" name="child_category_id"
-                                                                id="child_category_id">
-                                                                <option value="">Select Category First</option>
+                                                            <select class="form-control" name="barcode_type" id="barcode_type">
+                                                                <option value="CODE128">Code 128 (C128)</option>
+                                                                <option value="CODE39">Code 39 (C39)</option>
+                                                                <option value="EAN13">EAN-13</option>
+                                                                <option value="UPC">UPC</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif
-                                        </div>
+                                            </div>
 
-                                        <div class="row mt-1">
-                                            @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Brand :</b> </label>
-                                                        <div class="col-8">
-                                                            <div class="input-group">
-                                                                <select class="form-control" name="brand_id" id="brand_id">
-                                                                    <option value="">Select Brand</option>
-                                                                        @foreach ($brands as $brand)
-                                                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                            <div class="row mt-1">
+                                                @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Category :</b> </label>
+                                                            <div class="col-8">
+                                                                <div class="input-group">
+                                                                    <select class="form-control category" name="category_id"
+                                                                        id="category_id">
+                                                                        <option value="">Select Category</option>
+                                                                        @foreach ($categories as $category)
+                                                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                                         @endforeach
+                                                                    </select>
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text add_button" data-bs-toggle="modal"
+                                                                            data-bs-target="#addCategoryModal"><i
+                                                                                class="fas fa-plus-square input_i"></i></span>
+                                                                    </div>
+                                                                </div>
+                                                                <span class="error error_category_id"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+
+                                                @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"> <b>Sub-category :</b> </label>
+                                                            <div class="col-8">
+                                                                <select class="form-control" name="child_category_id"
+                                                                    id="child_category_id">
+                                                                    <option value="">Select Category First</option>
                                                                 </select>
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text add_button" data-bs-toggle="modal"
-                                                                        data-bs-target="#addBrandModal"><i
-                                                                            class="fas fa-plus-square input_i"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Brand :</b> </label>
+                                                            <div class="col-8">
+                                                                <div class="input-group">
+                                                                    <select class="form-control" name="brand_id" id="brand_id">
+                                                                        <option value="">Select Brand</option>
+                                                                            @foreach ($brands as $brand)
+                                                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                                            @endforeach
+                                                                    </select>
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text add_button" data-bs-toggle="modal"
+                                                                            data-bs-target="#addBrandModal"><i
+                                                                                class="fas fa-plus-square input_i"></i></span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endif
-                                            
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"> <b>Alert quentity  :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="number" step="any" name="alert_quantity" class="form-control " autocomplete="off" id="alert_quantity" value="0">
-                                                        <span class="error error_alert_quantity"></span>
+                                                @endif
+                                                
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"> <b>Alert quentity  :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="number" step="any" name="alert_quantity" class="form-control " autocomplete="off" id="alert_quantity" value="0">
+                                                            <span class="error error_alert_quantity"></span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-1">
-                                            @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Warranty :</b> </label>
-                                                        <div class="col-8">
-                                                            <div class="input-group">
-                                                                <select class="form-control" name="warranty_id" id="warranty_id">
-                                                                    <option value="">Select Warranty</option>
-                                                                    @foreach ($warranties as $warranty)
-                                                                        <option value="{{ $warranty->id }}">{{ $warranty->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text add_button" data-bs-toggle="modal"
-                                                                        data-bs-target="#addWarrantyModal"><i
-                                                                            class="fas fa-plus-square input_i"></i></span>
+                                            <div class="row mt-1">
+                                                @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Warranty :</b> </label>
+                                                            <div class="col-8">
+                                                                <div class="input-group">
+                                                                    <select class="form-control" name="warranty_id" id="warranty_id">
+                                                                        <option value="">Select Warranty</option>
+                                                                        @foreach ($warranties as $warranty)
+                                                                            <option value="{{ $warranty->id }}">{{ $warranty->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text add_button" data-bs-toggle="modal"
+                                                                            data-bs-target="#addWarrantyModal"><i
+                                                                                class="fas fa-plus-square input_i"></i></span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endif
-                                            
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Expired Date :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="date" name="expired_date" class="form-control" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"> <b>Condition  :</b> </label>
-                                                    <div class="col-8">
-                                                        <select class="form-control" name="product_condition"
-                                                            id="product_condition">
-                                                            <option value="New">New</option>
-                                                            <option value="Used">Used</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-2"> <b>Description :</b> </label>
-                                                    <div class="col-10">
-                                                        <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-2">
-                                            <div class="col-md-12">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
-                                                    <div class="col-10">
-                                                        <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
-                                                        <span class="error error_image"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"> <b>Weight :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Custom Field1 :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-2">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Custom Field2 :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Custom Field3 :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-2">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <div class="col-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p> 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <div class="col-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p> 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <div class="col-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p> 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="type" class="form-control" id="type">
-                                                            <option value="1">General</option>
-                                                            <option value="2">Combo</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
-                                            <div class="row mt-2">
+                                                @endif
+                                                
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
+                                                        <label for="inputEmail3" class="col-4"><b>Expired Date :</b> </label>
                                                         <div class="col-8">
-                                                            <select class="form-control" name="tax_id" id="tax_id">
-                                                                <option value="">NoTax</option>
-                                                                @foreach ($taxes as $tax)
-                                                                    <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
-                                                                @endforeach
-                                                            </select>
+                                                            <input type="date" name="expired_date" class="form-control" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
-                                        
+                                            </div>
+
+                                            <div class="row mt-1">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
+                                                        <label for="inputEmail3" class="col-4"> <b>Condition  :</b> </label>
                                                         <div class="col-8">
-                                                            <select name="tax_type" class="form-control" id="tax_type">
-                                                                <option value="1">Exclusive</option>
-                                                                <option value="2">Inclusive</option>
+                                                            <select class="form-control" name="product_condition"
+                                                                id="product_condition">
+                                                                <option value="New">New</option>
+                                                                <option value="Used">Used</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                        </div>
+                                    </div>
+                                </div>
 
-                                        <div class="form_part">
-                                            <div class="row mt-2">
-                                                <div class="col-md-6">
+                                <div class="col-md-12">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
-                                                        <div class="col-8">
-                                                            <input type="number" step="any" name="product_cost" class="form-control"
-                                                            autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
-                                                            <span class="error error_product_cost"></span>
+                                                        <label for="inputEmail3" class="col-2"> <b>Description :</b> </label>
+                                                        <div class="col-10">
+                                                            <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
-                                    
-                                                <div class="col-md-6">                
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                                        <label for="inputEmail3" class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
+                                                        <div class="col-10">
+                                                            <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
+                                                            <span class="error error_image"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"> <b>Weight :</b> </label>
                                                         <div class="col-8">
-                                                            <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="0.00">
-                                                            <span class="error error_product_cost_with_tax"></span>
+                                                            <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Custom Field1 :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -407,31 +281,31 @@
                                             <div class="row mt-2">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
+                                                        <label for="inputEmail3" class="col-4"><b>Custom Field2 :</b> </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
+                                                            <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2">
                                                         </div>
                                                     </div>
                                                 </div>
-                                    
-                                                <div class="col-md-6">    
+
+                                                <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                                        <label for="inputEmail3" class="col-4"><b>Custom Field3 :</b> </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax" value="0.00">
-                                                        <span class="error error_product_price"></span>    
+                                                            <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="row mt-2">                  
+                                            <div class="row mt-2">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Thumbnail Photo :</b> </label>
-                                                        <div class="col-8">
-                                                            <input type="file" name="photo" class="form-control" id="photo">
-                                                            <span class="error error_photo"></span>
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <p class="checkbox_input_wrap"> 
+                                                                <input type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p> 
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -441,79 +315,18 @@
                                                         <div class="col-12">
                                                             <div class="row">
                                                                 <p class="checkbox_input_wrap"> 
-                                                                <input type="checkbox" name="is_variant" id="is_variant"> &nbsp; <b>This product has varient.</b> </p> 
+                                                                <input type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p> 
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="row mt-2">                  
-                                                <div class="dynamic_variant_create_area d-none">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="add_more_btn">
-                                                                <a id="add_more_variant_btn" class="btn btn-sm btn-primary float-end" href="">Add More</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <div class="table-responsive mt-1">
-                                                                <table class="table modal-table table-sm">
-                                                                    <thead>
-                                                                        <tr class="text-center bg-primary variant_header">
-                                                                            <th class="text-white text-start">Select Variant</th>
-                                                                            <th class="text-white text-start">Varient code <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Variant code(SKU) must be unique." class="fas fa-info-circle tp"></i>
-                                                                            </th>
-                                                                            <th colspan="2" class="text-white text-start">Default Cost</th>
-                                                                            <th class="text-white text-start">Profit(%)</th>
-                                                                            <th class="text-white text-start">Default Price (Exc.Tax)</th>
-                                                                            <th class="text-white text-start">Variant Image</th>
-                                                                            <th><i class="fas fa-trash-alt text-white"></i></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody class="dynamic_variant_body">
-                                                                        <tr>
-                                                                            <td class="text-start">
-                                                                                <select class="form-control form-control" name=""
-                                                                                    id="variants">
-                        
-                                                                                </select>
-                                                                                <input type="text" name="variant_combinations[]"
-                                                                                    id="variant_combination" class="form-control"
-                                                                                    placeholder="Variant Combination">
-                                                                            </td>
-            
-                                                                            <td class="text-start">
-                                                                                <input type="text" name="variant_codes[]" id="variant_code" class="form-control"
-                                                                                    placeholder="Variant Code">
-                                                                            </td>
-            
-                                                                            <td class="text-start">
-                                                                                <input type="number" name="variant_costings[]" step="any" class="form-control" placeholder="Cost" id="variant_costing">
-                                                                            </td>
-            
-                                                                            <td class="text-start">
-                                                                                <input type="number" step="any" name="variant_costings_with_tax[]"class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax">
-                                                                            </td>
-            
-                                                                            <td class="text-start">
-                                                                                <input type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="0.00" id="variant_profit">
-                                                                            </td>
-                        
-                                                                            <td class="text-start">
-                                                                                <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax">
-                                                                            </td>
-                        
-                                                                            <td class="text-start">
-                                                                                <input type="file" name="variant_image[]" class="form-control" id="variant_image">
-                                                                            </td>
-            
-                                                                            <td class="text-start">
-                                                                                <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <p class="checkbox_input_wrap"> 
+                                                                <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p> 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -522,14 +335,232 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-12">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="type" class="form-control" id="type">
+                                                                <option value="1">General</option>
+                                                                <option value="2">Combo</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+                                                <div class="row mt-2">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
+                                                            <div class="col-8">
+                                                                <select class="form-control" name="tax_id" id="tax_id">
+                                                                    <option value="">NoTax</option>
+                                                                    @foreach ($taxes as $tax)
+                                                                        <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
+                                                            <div class="col-8">
+                                                                <select name="tax_type" class="form-control" id="tax_type">
+                                                                    <option value="1">Exclusive</option>
+                                                                    <option value="2">Inclusive</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            <div class="form_part">
+                                                <div class="row mt-2">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" name="product_cost" class="form-control"
+                                                                autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
+                                                                <span class="error error_product_cost"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                                    <div class="col-md-6">                
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="0.00">
+                                                                <span class="error error_product_cost_with_tax"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-2">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
+                                                                <span class="error error_profit"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                                    <div class="col-md-6">    
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax" value="">
+                                                            <span class="error error_product_price"></span>    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-2">                  
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Thumbnail Photo :</b> </label>
+                                                            <div class="col-8">
+                                                                <input type="file" name="photo" class="form-control" id="photo">
+                                                                <span class="error error_photo"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <div class="col-12">
+                                                                <div class="row">
+                                                                    <p class="checkbox_input_wrap"> 
+                                                                    <input type="checkbox" name="is_variant" id="is_variant"> &nbsp; <b>This product has varient.</b> </p> 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-2">                  
+                                                    <div class="dynamic_variant_create_area d-none">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="add_more_btn">
+                                                                    <a id="add_more_variant_btn" class="btn btn-sm btn-primary float-end" href="">Add More</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="table-responsive mt-1">
+                                                                    <table class="table modal-table table-sm">
+                                                                        <thead>
+                                                                            <tr class="text-center bg-primary variant_header">
+                                                                                <th class="text-white text-start">Select Variant</th>
+                                                                                <th class="text-white text-start">Varient code <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Variant code(SKU) must be unique." class="fas fa-info-circle tp"></i>
+                                                                                </th>
+                                                                                <th colspan="2" class="text-white text-start">Default Cost</th>
+                                                                                <th class="text-white text-start">Profit(%)</th>
+                                                                                <th class="text-white text-start">Default Price (Exc.Tax)</th>
+                                                                                <th class="text-white text-start">Variant Image</th>
+                                                                                <th><i class="fas fa-trash-alt text-white"></i></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="dynamic_variant_body">
+                                                                            <tr>
+                                                                                <td class="text-start">
+                                                                                    <select class="form-control form-control" name=""
+                                                                                        id="variants">
+                            
+                                                                                    </select>
+                                                                                    <input type="text" name="variant_combinations[]"
+                                                                                        id="variant_combination" class="form-control"
+                                                                                        placeholder="Variant Combination">
+                                                                                </td>
+                
+                                                                                <td class="text-start">
+                                                                                    <input type="text" name="variant_codes[]" id="variant_code" class="form-control"
+                                                                                        placeholder="Variant Code">
+                                                                                </td>
+                
+                                                                                <td class="text-start">
+                                                                                    <input type="number" name="variant_costings[]" step="any" class="form-control" placeholder="Cost" id="variant_costing">
+                                                                                </td>
+                
+                                                                                <td class="text-start">
+                                                                                    <input type="number" step="any" name="variant_costings_with_tax[]"class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax">
+                                                                                </td>
+                
+                                                                                <td class="text-start">
+                                                                                    <input type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="0.00" id="variant_profit">
+                                                                                </td>
+                            
+                                                                                <td class="text-start">
+                                                                                    <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax">
+                                                                                </td>
+                            
+                                                                                <td class="text-start">
+                                                                                    <input type="file" name="variant_image[]" class="form-control" id="variant_image">
+                                                                                </td>
+                
+                                                                                <td class="text-start">
+                                                                                    <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 text-end mt-1">
+                                    <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
+                                    <button type="submit" name="action" value="save_and_new"
+                                        class="btn btn-primary submit_button btn-sm">Save And Add Another</button>
+                                    <button type="submit" name="action" value="save"
+                                        class="btn btn-primary submit_button btn-sm">Save</button>
+                                </div>
                             </div>
 
-                            <div class="col-md-8 text-end mt-1">
-                                <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
-                                <button type="submit" name="action" value="save_and_new"
-                                    class="btn btn-primary submit_button btn-sm">Save And Add Another</button>
-                                <button type="submit" name="action" value="save"
-                                    class="btn btn-primary submit_button btn-sm">Save</button>
+                            <div class="col-md-4">
+                                <div class="card mt-4">
+                                    <div class="section-header">
+                                        <div class="col-md-6">
+                                            <h6>All Product</h6>
+                                        </div>
+                                    </div>
+        
+                                    <div class="widget_content">
+                                        <div class="table-responsive" id="data_list">
+                                            <table class="display table-hover data_tbl data__table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th>Unit Cost</th>
+                                                        <th>Unit Price</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -538,223 +569,26 @@
         </div>
     </div>
 
-    <!-- Select modal  -->
-    <div class="modal fade" id="VairantChildModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog select_variant_modal_dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Select variant Child</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="modal_variant_list_area">
-                                <ul class="modal_variant_child">
-                                    <li class="modal_variant_child_list">
-                                        <a class="select_variant_product" data-child="" href="#">X</a>
-                                    </li>
-
-                                    <li class="modal_variant_child_list">
-                                        <a class="select_variant_product" data-child="" href="#">X</a>
-                                    </li>
-
-                                    <li class="modal_variant_child_list">
-                                        <a class="select_variant_product" data-child="" href="#">X</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Select variant modal -->
-
-    <!-- Add Unit Modal -->
-    <div class="modal fade" id="addUnitModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Unit</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_unit_form" action="{{ route('products.add.unit') }}">
-                        <div class="form-group">
-                            <label><b>Name :</b></label> <span class="text-danger">*</span>
-                            <input type="text" name="name" class="form-control add_unit_input"
-                                data-name="Unit name" id="add_unit_name" placeholder="Unit name" />
-                            <span class="error error_add_unit_name"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                           <label><b>Unit Code :</b></label>  <span class="text-danger">*</span>
-                            <input type="text" name="code" class="form-control add_unit_input"
-                                data-name="Unit code" id="add_unit_code" placeholder="Unit code" />
-                            <span class="error error_add_unit_code"></span>
-                        </div>
-
-                        <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Add Unit Modal End -->
-
-    <!-- Add Category Modal -->
-    <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Category</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_category_form" action="{{ route('products.add.category') }}">
-                        <div class="form-group">
-                            <b>Name :</b> <span class="text-danger">*</span>
-                            <input type="text" name="name" class="form-control add_cate_input"
-                                data-name="Category name" id="add_cate_name" placeholder="Category name" />
-                            <span class="error error_add_cate_name"></span>
-                        </div>
-
-                        <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Add Category Modal End -->
-
-     <!-- Add Brand Modal -->
-    <div class="modal fade" id="addBrandModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-     aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Brand</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_brand_form" action="{{ route('products.add.brand') }}">
-                        <div class="form-group">
-                            <b>Name :</b> <span class="text-danger">*</span>
-                            <input type="text" name="name" class="form-control add_brand_input"
-                                data-name="Brand name" id="add_brand_name" placeholder="Brand name" />
-                            <span class="error error_add_brand_name"></span>
-                        </div>
-
-                        <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Add Brand Modal End -->
-
-    <!-- Add Warranty Modal -->
-    <div class="modal fade" id="addWarrantyModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-    aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Warranty</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_warranty_form" action="{{ route('products.add.warranty') }}">
-                        <div class="form-group">
-                            <label><b>Name :</b> </label> <span class="text-danger">*</span>
-                            <input type="text" name="name" class="form-control add_warranty_input" id="add_warranty_name" data-name="Warranty name" placeholder="Warranty name"/>
-                            <span class="error error_add_warranty_name"></span>
-                        </div>
-
-                        <div class="row mt-1">
-                            <div class="col-lg-4">
-                                <label><b>Type : </b> </label> <span class="text-danger">*</span>
-                                <select name="type" class="form-control" id="type">
-                                    <option value="1">Warranty</option>
-                                    <option value="2">Guaranty</option>
-                                </select>
-                            </div>
-                            
-                            <div class="col-lg-8">
-                                <label><b>Duration :</b> </label> <span class="text-danger">*</span>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <input type="number" step="any" name="duration" class="form-control w-50 add_warranty_input" data-name="Warranty duration" id="add_warranty_duration" placeholder="Warranty duration">
-                                            <select name="duration_type" class="form-control w-50" id="duration_type">
-                                                <option value="Months">Months</option>
-                                                <option value="Days">Days</option>
-                                                <option value="Years">Years</option>
-                                            </select>
-                                        </div> 
-                                        <span class="error error_add_warranty_duration"></span>
-                                    </div>
-                                </div>
-                            </div>  
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><b>Description :</b></label> 
-                            <textarea name="description" id="description" class="form-control" cols="10" rows="3" placeholder="Warranty description"></textarea>
-                        </div>
-
-                        <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-<!-- Add Warranty Modal End -->
+    @include('product.products.partials.all-modals')
+ 
 @endsection
 @push('scripts')
 <script src="{{asset('public/backend/asset/js/jquery.cleditor.js')}}"></script>
 <script>
+    var table = $('.data_tbl').DataTable({
+        processing: true,
+        serverSide: true,
+        searchable: true,
+        "lengthMenu" : [20, 100,500, 1000,2000],
+        ajax: "{{ route('products.add.view') }}",
+        columns: [
+            {data: 'name',name: 'name'},
+            {data: 'product_cost',name: 'product_cost'},
+            {data: 'product_price',name: 'product_price'},
+            {data: 'action',name: 'action'},
+        ],
+    });
+
     var myEditorObj = $('#myEditor').cleditor();
     function clearEditor() {
         $("#myEditor").cleditor({width:800, height:300, updateTextArea:function (){}})[0].clear();
@@ -788,10 +622,13 @@
         var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
         $('#product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
         var profit = $('#profit').val() ? $('#profit').val() : 0;
-        var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
-        var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
-        $('#product_price').val(parseFloat(product_price).toFixed(2));
 
+        if (parseFloat(profit) > 0) {
+            var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
+            var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
+            $('#product_price').val(parseFloat(product_price).toFixed(2));
+        }
+        
         // calc package product profit
         var netTotalComboPrice = $('#total_combo_price').val() ? $('#total_combo_price').val() : 0;
         var calcTotalComboPrice = parseFloat(netTotalComboPrice) / 100 * parseFloat(profit) + parseFloat(netTotalComboPrice);
@@ -803,7 +640,7 @@
     });
 
     $(document).on('input', '#product_price',function() {
-        var selling_price = $(this).val();
+        var selling_price = $(this).val() ? $(this).val() : 0;
         var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
         var calcProfit = parseFloat(profitAmount) / parseFloat(product_cost) * 100;

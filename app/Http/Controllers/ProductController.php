@@ -8,13 +8,14 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Warranty;
 use App\Models\BulkVariant;
+use Illuminate\Support\Str;
 use App\Models\ComboProduct;
-use App\Models\PriceGroupProduct;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\ProductVariant;
 use App\Models\SupplierProduct;
+use App\Models\PriceGroupProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
@@ -35,7 +36,6 @@ class ProductController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        //return $request->status;
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->select('business')->first();
             $priceGroups = DB::table('price_groups')->where('status', 'Active')->get();
@@ -105,11 +105,8 @@ class ProductController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-
                     $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode mr-1 text-primary"></i> Barcode</a>';
-
                     $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye text-primary"></i> View</a>';
-
                     if (auth()->user()->permission->product['product_edit']  == '1') {
                         $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
@@ -190,10 +187,25 @@ class ProductController extends Controller
     }
 
     // Add product view
-    public function create()
+    public function create(Request $request)
     {
         if (auth()->user()->permission->product['product_add'] == '0') {
             abort(403, 'Access Forbidden.');
+        }
+
+        if ($request->ajax()) {
+            $products = DB::table('products')
+            ->select('id', 'name', 'product_cost', 'product_price')
+            ->get();
+
+            return DataTables::of($products)
+            ->addColumn('action', function ($row) {
+                return '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>';
+            })
+            ->editColumn('name', function ($row) {
+                return Str::limit($row->name, 17);
+            })
+            ->rawColumns(['action'])->make(true);
         }
         
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
@@ -206,7 +218,6 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        ///return $request->all();
         $addProduct = new Product();
         $tax_id = NULL;
         if ($request->tax_id) {
@@ -276,6 +287,7 @@ class ProductController extends Controller
             $this->validate(
                 $request,
                 [
+                    'profit' => 'required',
                     'product_price' => 'required',
                     'product_cost' => 'required',
                     'product_cost_with_tax' => 'required',

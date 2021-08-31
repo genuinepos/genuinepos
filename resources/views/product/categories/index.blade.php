@@ -186,6 +186,7 @@
                         $('#add_form').hide();
                         $('#edit_form').show();
                         $('.data_preloader').hide();
+                        document.getElementById('e_name').focus();
                     }
                 });
             });
@@ -233,7 +234,6 @@
                 }); 
             });
             
-
             $(document).on('click', '#delete',function(e){
                 e.preventDefault(); 
                 var url = $(this).attr('href');

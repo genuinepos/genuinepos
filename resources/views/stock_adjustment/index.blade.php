@@ -211,13 +211,6 @@
             adjustmentDetails(url);
         });
 
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:first-child, :last-child)', function(e){
-            e.preventDefault();
-            var url = $(this).parent().data('href');
-            adjustmentDetails(url);
-        });
-        
         $(document).on('click', '#delete',function(e){
             e.preventDefault(); 
             var url = $(this).attr('href');
@@ -226,18 +219,8 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });

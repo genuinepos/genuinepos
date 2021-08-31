@@ -67,7 +67,6 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="row mt-2">
                         <div class="card">
                             <div class="section-header">
@@ -179,7 +178,6 @@
                         <div class="col-md-6 text-end">
                             <ul class="list-unstyled">
                                 <li class="mt-1">
-                                    {{-- <a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a> --}}
                                     <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
                                     <button type="submit" id="print_payment" class="c-btn btn_blue">Print</button>
                                 </li>
@@ -399,18 +397,8 @@
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#payment_deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#payment_deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
@@ -457,18 +445,8 @@
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
@@ -488,7 +466,7 @@
                         table.ajax.reload();
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
-                    }else{
+                    } else {
                         toastr.error(data.errorMsg);
                     }
                 }

@@ -205,6 +205,7 @@
                 $('#e_calculation_percent').val(group.calc_percentage);
                 $('#add_form').hide();
                 $('#edit_form').show();
+                document.getElementById('e_name').focus();
             });
 
             // Edit Customer by ajax

@@ -265,6 +265,7 @@
                 $('#e_description').val(warranty.description);
                 $('#add_form').hide();
                 $('#edit_form').show();
+                document.getElementById('e_name').focus();
             });
 
             // edit bank by ajax

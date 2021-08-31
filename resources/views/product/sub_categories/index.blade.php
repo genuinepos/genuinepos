@@ -7,7 +7,6 @@
             <div class="row">
                 <div class=" border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-cubes"></span>
@@ -15,8 +14,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
-                  
+                    
                     <div class="row mt-1">
                         @if (auth()->user()->permission->category['category_add'] == '1')
                             <div class="col-md-4">
@@ -142,14 +140,10 @@
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        $.ajaxSetup({ headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
         $(document).ready(function() {
-            // Add category by ajax
+            // Add Subcategory by ajax
             $('#add_sub_category_form').on('submit', function(e) {
                 e.preventDefault();
                 $('.loading_button').show();
@@ -190,6 +184,7 @@
                     $('#add_form').hide();
                     $('#edit_form').show();
                     $('.data_preloader').hide();
+                    document.getElementById('e_name').focus();
                 })
             });
 
@@ -233,18 +228,8 @@
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure, you want to delete?',
                     'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-modal-primary',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-danger',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
-                        }
+                        'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                        'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                     }
                 });
             });
@@ -272,6 +257,5 @@
                 $('#edit_form').hide();
             });
         });
-
     </script>
 @endpush

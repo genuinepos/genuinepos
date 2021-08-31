@@ -152,11 +152,7 @@
     getAllCateogry();
 
     // Setup ajax for csrf token.
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
     // call jquery method 
     $(document).ready(function(){
@@ -207,6 +203,7 @@
             $('#e_code').val(categoryInfo.code);
             $('#add_form').hide();
             $('#edit_form').show();
+            document.getElementById('e_name').focus();
         });
 
         // edit category by ajax
@@ -256,18 +253,8 @@
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });

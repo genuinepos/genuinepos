@@ -17,8 +17,7 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
-
+                   
                     <div class="row mt-1">
                         <div class="col-md-4">
                             <div class="card" id="add_form">
@@ -281,6 +280,7 @@
             });
             $('#add_form').hide();
             $('#edit_form').show();
+            document.getElementById('e_variant_name').focus();
         });
 
         $('.add_more_for_edit').on('click', function(e) {

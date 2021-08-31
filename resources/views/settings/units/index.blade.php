@@ -7,7 +7,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-sort-amount-up"></span>
@@ -17,24 +16,77 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
+                    
+                    <div class="row mt-1">
+                        <div class="col-md-4">
+                            <div class="card" id="add_form">
+                                <div class="section-header">
+                                    <div class="col-md-6">
+                                        <h6>Add Unit</h6>
+                                    </div>
+                                </div>
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
+                                <form id="add_unit_form" class="p-2" action="{{ route('settings.units.store') }}">
+                                    <div class="form-group">
+                                        <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
+                                        <input type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Unit Name"/>
+                                        <span class="error error_name"></span>
+                                    </div>
+            
+                                    <div class="form-group mt-1">
+                                        <label><b>Short Name :</b> <span class="text-danger">*</span></label>
+                                        <input type="text" name="code" class="form-control" data-name="Code name" id="code" placeholder="Short name"/>
+                                        <span class="error error_code"></span>
+                                    </div>
+            
+                                    <div class="form-group text-end mt-3">
+                                        <button type="button" class="btn loading_button d-none"><i
+                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                        <button type="submit" class="me-0 c-btn btn_blue float-end">Save</button>
+                                        <button type="reset" class="c-btn btn_orange float-end">Reset</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="card d-none" id="edit_form">
+                                <div class="section-header">
+                                    <div class="col-md-6">
+                                        <h6>Edit Unit</h6>
+                                    </div>
+                                </div>
+
+                                <form id="edit_unit_form" class="p-2" action="{{ route('settings.units.update') }}">
+                                    <input type="hidden" name="id" id="id">
+                                    <div class="form-group">
+                                        <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
+                                        <input type="text" name="name" class="form-control" data-name="Name" id="e_name" placeholder="Unit Name"/>
+                                        <span class="error error_e_name"></span>
+                                    </div>
+            
+                                    <div class="form-group mt-1">
+                                        <label><b>Short Name :</b> <span class="text-danger">*</span></label>
+                                        <input type="text" name="code" class="form-control" data-name="Code name" id="e_code" placeholder="Short Name"/>
+                                        <span class="error error_e_code"></span>
+                                    </div>
+            
+                                    <div class="form-group text-end mt-3">
+                                        <button type="button" class="btn loading_button d-none"><i
+                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                        <button type="submit" class="me-0 c-btn btn_blue float-end">Save</button>
+                                        <button type="button" id="close_form" class="c-btn btn_orange float-end">Close</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-6">
                                         <h6>All Units</h6>
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
                                 </div>
-
+    
                                 <div class="widget_content">
                                     <div class="data_preloader">
                                         <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
@@ -44,18 +96,18 @@
                                             <thead>
                                                 <tr>
                                                     <th>Serial</th>
-                                                    <th>Unit Name</th>
+                                                    <th>Short Name</th>
                                                     <th>Code Name</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+    
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-
+    
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -67,93 +119,16 @@
             </div>
         </div>
     </div>
-
-    
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Unit</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_unit_form" action="{{ route('settings.units.store') }}">
-                        <div class="form-group">
-                            <label><b>Unit Name :</b><span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm" data-name="Name" id="name" placeholder="Unit Name"/>
-                            <span class="error error_name"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><b>Code Name :</b><span class="text-danger">*</span></label>
-                            <input type="text" name="code" class="form-control form-control-sm" data-name="Code name" id="code" placeholder="Code name"/>
-                            <span class="error error_code"></span>
-                        </div>
-
-                        <div class="form-group text-end mt-3">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="me-0 c-btn btn_blue float-end">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> 
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Unit</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="edit_unit_form" action="{{ route('settings.units.update') }}">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group">
-                            <label><b>Unit Name :</b><span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm" data-name="Name" id="e_name" placeholder="Unit Name"/>
-                            <span class="error error_e_name"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><b>Code Name :</b><span class="text-danger">*</span></label>
-                            <input type="text" name="code" class="form-control form-control-sm" data-name="Code name" id="e_code" placeholder="Branch Name"/>
-                            <span class="error error_e_code"></span>
-                        </div>
-
-                        <div class="form-group text-end mt-3">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="me-0 c-btn btn_blue float-end">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> 
-    <!-- Modal--> 
-
 @endsection
 @push('scripts')
 <script>
-    // Get all branch by ajax
+    // Get all units by ajax
     function getAllUnit(){
         $('.data_preloader').show();
         $.ajax({
             url:"{{ route('settings.units.get.all.unit') }}",
             type:'get',
             success:function(data){
-                console.log(data);
                 $('#data-list').html(data);
                 $('.data_preloader').hide();
             }
@@ -162,15 +137,11 @@
     getAllUnit();
 
     // insert branch by ajax
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
     // call jquery method 
     $(document).ready(function(){
-        // Add branch by ajax
+        // Add Unit by ajax
         $(document).on('submit', '#add_unit_form', function(e) {
             e.preventDefault();
             $('.loading_button').show();
@@ -204,15 +175,15 @@
             $('.form-control').removeClass('is-invalid');
             $('.error').html('');
             var unitInfo = $(this).closest('tr').data('info');
-            console.log(unitInfo);
             $('#id').val(unitInfo.id);
             $('#e_name').val(unitInfo.name);
             $('#e_code').val(unitInfo.code_name);
-            $('#editModal').modal('show');
+            $('#add_form').hide();
+            $('#edit_form').show();
+            document.getElementById('e_name').focus();
         });
 
-        // edit branch by ajax
-        // edit category by ajax
+        // edit Unit by ajax
         $(document).on('submit', '#edit_unit_form', function(e) {
             e.preventDefault();
             $('.loading_button').show();
@@ -225,8 +196,9 @@
                 success: function(data) {
                     toastr.success(data);
                     $('.loading_button').hide();
-                    $('#editModal').modal('hide');
                     getAllUnit();
+                    $('#add_form').show();
+                    $('#edit_form').hide();
                 },
                 error: function(err) {
                     $('.loading_button').hide();
@@ -238,23 +210,6 @@
             });
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     })
-        //     .then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         }
-        //     });
-        // });
         $(document).on('click', '#delete',function(e){
             e.preventDefault(); 
             var url = $(this).attr('href');
@@ -263,18 +218,8 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
@@ -297,6 +242,12 @@
                     }
                 }
             });
+        });
+
+        $(document).on('click', '#close_form', function() {
+            $('#add_form').show();
+            $('#edit_form').hide();
+            $('.error').html('');
         });
     });
 </script>

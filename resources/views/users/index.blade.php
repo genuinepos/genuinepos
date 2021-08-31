@@ -26,7 +26,7 @@
                                                 <div class="form-group row">
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-4">
-                                                            <label><strong>Branch :</strong></label>
+                                                            <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id">
                                                                 <option value="">All</option>
                                                                 <option value="NULL"> {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>

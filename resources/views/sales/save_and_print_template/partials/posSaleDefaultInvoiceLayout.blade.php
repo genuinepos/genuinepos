@@ -123,7 +123,8 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-4">
+
+                    <div class="col-lg-4 text-center">
                         @if ($defaultLayout->is_header_less == 1)
                             <div class="middle_header_text text-center">
                                 <h5>{{ $defaultLayout->invoice_heading }}</h5>
@@ -142,7 +143,7 @@
                                 </h6>
                             </div>
                         @endif
-                        <img style="width: 170px; height:40px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                        <img style="width: 170px; height:35px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">

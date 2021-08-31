@@ -96,7 +96,7 @@
                             @endif
                         </ul>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 text-center">
                         @if ($sale->branch->pos_sale_invoice_layout->is_header_less == 1)
                             <div class="middle_header_text text-center">
                                 <h5>{{ $sale->branch->pos_sale_invoice_layout->invoice_heading }}</h5>

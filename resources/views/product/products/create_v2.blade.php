@@ -720,7 +720,7 @@
                                             <select name="duration_type" class="form-control w-50" id="duration_type">
                                                 <option value="Months">Months</option>
                                                 <option value="Days">Days</option>
-                                                <option value="Year">Year</option>
+                                                <option value="Years">Years</option>
                                             </select>
                                         </div> 
                                         <span class="error error_add_warranty_duration"></span>

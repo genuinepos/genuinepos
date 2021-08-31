@@ -43,6 +43,7 @@
                                                     class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input type="number" step="any" data-name="Quantity" class="form-control add_input" name="quantity" id="quantity" value="1.00">
+                                                    <input type="hidden" step="any" id="parameter_quantity" value="0.00">
                                                     <span class="error error_quantity"></span>
                                                 </div>
                                             </div>
@@ -209,6 +210,7 @@
                 $('#product_id').val(data.product_id);
                 $('#variant_id').val(data.variant_id);
                 $('#quantity').val(data.total_output_qty);
+                $('#parameter_quantity').val(data.total_output_qty);
                 $('#unit_id').val(data.unit_id);
                 $('#wasted_quantity').val(data.wastage_percent);
                 $('#production_cost').val(data.production_cost);
@@ -221,8 +223,24 @@
             });
         });
 
+        $(document).on('input', '#quantity', function () {
+            var presentQty = $(this).val() ? $(this).val() : 0;
+            var parameterQty = $('#parameter_quantity').val() ? $('#parameter_quantity').val() : 0;
+            console.log(meltipilerQty);
+            var meltipilerQty = parseFloat(presentQty) / parseFloat(parameterQty);
+            var allTr = $('#ingredient_list').find('tr');
+            allTr.each(function () {
+                var parameterInputQty = $(this).find('#parameter_input_quantity').val();
+                var updateInputQty = parseFloat(meltipilerQty) * parseFloat(parameterInputQty);
+                $(this).find('#input_quantity').val(parseFloat(updateInputQty).toFixed(2));
+                __calculateIngredientsTableAmount($(this));
+            });
+        });
+
         $(document).on('input', '#input_quantity', function () {
+            var value = $(this).val() ? $(this).val() : 0;
             var tr = $(this).closest('tr');
+            tr.find('#parameter_input_quantity').val(parseFloat(value).toFixed(2));
             __calculateIngredientsTableAmount(tr);
         });
 
@@ -231,20 +249,31 @@
             __calculateIngredientsTableAmount(tr);
         });
 
+        var errorCount = 0;
         function __calculateIngredientsTableAmount(tr) {
             var wastePercent = tr.find('#ingredient_wastage_percent').val() ? tr.find('#ingredient_wastage_percent').val() : 0;
             var inputQty = tr.find('#input_quantity').val() ? tr.find('#input_quantity').val() : 0;
+            var unitCostIncTax = tr.find('#unit_cost_inc_tax').val();
+            var limitQty = tr.find('#qty_limit').val();
+            var unitName = tr.find('#qty_limit').data('unit');
             var regexp = /^\d+\.\d{0,2}$/;
             tr.find('#input_qty_error').html('');
             if (regexp.test(parseFloat(inputQty)) == true) {
                 tr.find('#input_qty_error').html('Deciaml value is not allowed.');
-            }else{
+                errorCount++;
+            } else if(parseFloat(inputQty) > parseFloat(limitQty)){
+                tr.find('#input_qty_error').html('Only '+limitQty+' '+unitName+' is available.');
+                errorCount++;
+            } else {
+                errorCount = 0;
                 var calsWastage = parseFloat(inputQty) / 100 * parseFloat(wastePercent);
                 var wastedQuantity = parseFloat(inputQty) - parseFloat(calsWastage);
                 tr.find('#final_quantity').val(parseFloat(wastedQuantity).toFixed(2));
                 tr.find('#span_final_quantity').html(parseFloat(wastedQuantity).toFixed(2));
+                var totalPrice = parseFloat(inputQty) * parseFloat(unitCostIncTax);
+                tr.find('#price').val(parseFloat(totalPrice).toFixed(2));
+                tr.find('#span_price').html(parseFloat(totalPrice).toFixed(2));
             }
-            
         }
     </script>
 @endpush

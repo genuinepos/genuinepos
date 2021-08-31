@@ -33,12 +33,13 @@
             <input value="{{ $ingredient->v_id ? $ingredient->v_id : 'noid' }}" type="hidden" id="variant_id" name="variant_ids[]">
             <input value="{{ $ingredient->unit_cost_inc_tax }}" required name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">
             <input value="{{ $ingredient->u_id }}" name="unit_ids[]" type="hidden" step="any" id="unit_id">
-            <input value="{{ bcadd($stock, 0 ,2) }}" type="hidden" step="any" id="qty_limit">
+            <input value="{{ bcadd($stock, 0 ,2) }}" type="hidden" step="any" data-unit="{{ $ingredient->u_name }}" id="qty_limit">
         </td>
 
         <td>
             <div class="input-group p-2">
                 <input value="{{ $ingredient->final_qty }}" required name="input_quantities[]" type="number" class="form-control" id="input_quantity">
+                <input value="{{ $ingredient->final_qty }}" type="hidden" id="parameter_input_quantity">
                 <div class="input-group-prepend">
                     <span class="input-group-text input-group-text-custom">{{ $ingredient->u_name }}</span>
                 </div>

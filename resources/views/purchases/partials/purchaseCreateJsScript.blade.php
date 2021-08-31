@@ -937,7 +937,8 @@
                 }else{
                     $('.loading_button').hide();
                     toastr.success(data); 
-                    window.location = "{{route('purchases.index_v2')}}";
+                    $('#add_purchase_form')[0].reset();
+                    $('#purchase_list').empty();
                 }
             }
         });

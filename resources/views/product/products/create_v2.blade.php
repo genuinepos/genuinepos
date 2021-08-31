@@ -1381,6 +1381,7 @@
                             $('#add_product_form')[0].reset();
                             get_form_part(1);
                             $('#profit').val(parseFloat(defaultProfit).toFixed(2));
+                            document.getElementById('name').focus();
                         }
                     } else {
                         toastr.error(data.errorMsg);
@@ -1531,7 +1532,7 @@
     // Add warranty from create product by ajax
     $(document).on('submit', '#add_warranty_form', function(e) {
         e.preventDefault();
-         $('.loading_button').removeClass('d-none');
+        $('.loading_button').removeClass('d-none');
         var url = $(this).attr('action');
         var request = $(this).serialize();
         var inputs = $('.add_warranty_input');
@@ -1561,7 +1562,7 @@
                 toastr.success('Successfully warranty is added.');
                 $('#warranty_id').append('<option value="' + data.id + '">' + data.name + '</option>');
                 $('#warranty_id').val(data.id);
-                $('#add_warranty_form').modal('hide');
+                $('#addWarrantyModal').modal('hide');
                 $('#add_warranty_form')[0].reset();
             }
         });

@@ -56,7 +56,13 @@
                                         <li>Date-26/08/2021 (Add yajra table in customer table, Fixed customer view page design.)</li>
                                         <li>Date-26/08/2021 (Fixed quick add product form design.)</li>
                                         <li>Date-28/08/2021 (Manufacturing settings is complated.)</li>
-                                        <li>Date-28/08/2021 (Manufacturing process(recipe) is going...)</li>
+                                        <li>Date-28/08/2021 (Manufacturing process(recipe) section is going...)</li>
+                                        <li>Date-31/08/2021 (Manufacturing product section- properly calculate ingredients input qty by output qty...)</li>
+                                        <li>Date-31/08/2021 (changes add product form desing...)</li>
+                                        <li>Date-31/08/2021 (Fixed some major problems...)</li>
+                                        <li>Date-31/08/2021 (select table row...)</li>
+                                        <li>Date-31/08/2021 (focus first field when user click edit button...)</li>
+                                        <li>Date-31/08/2021 (added a colums in addons table --column=e_commerce...)</li>
                                     </ul>
                                 </div>
                             </div>

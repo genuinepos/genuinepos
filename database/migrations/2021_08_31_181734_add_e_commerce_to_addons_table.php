@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnToAddonsTable extends Migration
+class AddECommerceToAddonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddColumnToAddonsTable extends Migration
     public function up()
     {
         Schema::table('addons', function (Blueprint $table) {
-            //
+            $table->boolean('e_commerce')->after('manufacturing')->default(0);
         });
     }
 

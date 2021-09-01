@@ -1,11 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-
-    <style>
-        .list-styled{
-            list-style: inside!important;
-        }
-    </style>
+    <style>.list-styled{list-style: inside!important;}</style>
 @endpush
 @section('title', 'All Sale - ')
 @section('content')
@@ -63,6 +58,10 @@
                                         <li>Date-31/08/2021 (select table row...)</li>
                                         <li>Date-31/08/2021 (focus first field when user click edit button...)</li>
                                         <li>Date-31/08/2021 (added a colums in addons table --column=e_commerce...)</li>
+                                        <li>Date-1/08/2021 (Categories and SubCategories in one index page...)</li>
+                                        <li>Date-1/08/2021 (Now product code (SKU) is not required, generate automatically...)</li>
+                                        <li>Date-1/08/2021 (Datatable default row length is 25 (previous was 10)...)</li>
+                                        <li>Date-1/08/2021 (Refactor ProductController Code...)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -73,6 +72,4 @@
         </div>
     </div>
 @endsection
-@push('scripts')
-
-@endpush
+@push('scripts') @endpush

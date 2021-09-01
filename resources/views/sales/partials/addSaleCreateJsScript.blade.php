@@ -623,7 +623,6 @@
                         tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                         tr += '</td>';
                         tr += '<td>';
-                        
                         tr += '<input name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
 
                         var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(tax_percent) + parseFloat(price);

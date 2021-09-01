@@ -267,6 +267,7 @@ table.display td input {
 
 .sorting {
     background: url('../images/tbl-img/sort_both.png') no-repeat center right;
+    background-size: 9px 15px;
 }
 
 .sorting_asc_disabled {

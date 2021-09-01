@@ -228,11 +228,7 @@
                 d.is_for_sale = $('#is_for_sale').val();
             }
         },
-        columnDefs: [{
-            "targets": [0, 1, 2],
-            "orderable": false,
-            "searchable": false
-        }],
+        columnDefs: [{"targets": [0, 1, 2],"orderable": false,"searchable": false}],
         columns: [
             {data: 'multiple_delete',},
             {data: 'photo',name: 'photo'},

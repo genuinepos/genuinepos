@@ -527,10 +527,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="add_customer_modal_body">
-                    <!--begin::Form-->
-                    
-                </div>
+                <div class="modal-body" id="add_customer_modal_body"></div>
             </div>
         </div>
     </div> 

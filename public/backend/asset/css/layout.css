@@ -665,7 +665,7 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
-    height: 45px;
+    height: 33px;
     background: linear-gradient(#820334 ,#2a0c1b);
 }
 
@@ -674,7 +674,7 @@ footer .logo_wrapper {
 }
 
 footer img.logo {
-    max-height: 35px;
+    max-height: 30px;
     width: auto;
     position: absolute;
     left: 50%;

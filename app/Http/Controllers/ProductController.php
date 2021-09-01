@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Product;
 use App\Models\BulkVariant;
 use Illuminate\Support\Str;
@@ -56,8 +55,7 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
             $products = DB::table('products')
-            ->select('id', 'name', 'product_cost', 'product_price')
-            ->get();
+            ->select('id', 'name', 'product_cost', 'product_price')->orderBy('products.id', 'desc')->get();
 
             return DataTables::of($products)
             ->addColumn('action', function ($row) {
@@ -87,20 +85,19 @@ class ProductController extends Controller
             $request,
             [
                 'name' => 'required',
-                'code' => 'required|min:3|max:40|unique:products,product_code',
+                'code' => 'sometimes|unique:products,product_code',
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
                 'image.*' => 'sometimes|image|max:2048',
             ],
             [
                 'unit_id.required' => 'Product unit field is required.',
-                'code.required' => 'Product code field is required.',
             ]
         );
 
         $addProduct->type = $request->type;
         $addProduct->name = $request->name;
-        $addProduct->product_code = $request->code;
+        $addProduct->product_code = $request->code ? $request->code : $request->auto_generated_code;
         $addProduct->category_id = $request->category_id;
         $addProduct->parent_category_id = $request->child_category_id;
         $addProduct->brand_id = $request->brand_id;
@@ -172,8 +169,7 @@ class ProductController extends Controller
                 }
 
                 $this->validate(
-                    $request,
-                    [
+                    $request,[
                         'variant_image.*' => 'sometimes|image|max:2048',
                     ],
                 );
@@ -426,8 +422,7 @@ class ProductController extends Controller
                 'product_variants.variant_name as v_name',
                 'product_variants.variant_cost as v_cost',
                 'product_variants.variant_cost_with_tax as v_cost_inc_tax',
-            )
-            ->get();
+            )->get();
         return view('product.products.ajax_view.opening_stock_modal_view', compact('products'));
     }
 
@@ -454,7 +449,6 @@ class ProductController extends Controller
 
     public function savePriceGroup(Request $request)
     {
-        //return $request->all();
         $variant_ids = $request->variant_ids;
         $index = 0;
         foreach ($request->product_ids as $product_id) {
@@ -525,19 +519,17 @@ class ProductController extends Controller
             $request,
             [
                 'name' => 'required',
-                'code' => 'required',
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
                 'image.*' => 'sometimes|image|max:2048',
             ],
             [
                 'unit_id.required' => 'Product unit field is required.',
-                'code.required' => 'Product code field is required.',
             ]
         );
 
         $updateProduct->name = $request->name;
-        $updateProduct->product_code = $request->code;
+        $updateProduct->product_code = $request->code ? $request->code : $request->auto_generated_code;
         $updateProduct->category_id = $request->category_id;
         $updateProduct->parent_category_id = $request->child_category_id;
         $updateProduct->brand_id = $request->brand_id;
@@ -911,6 +903,7 @@ class ProductController extends Controller
         return $this->productUtil->addQuickUnit($request);
     }
 
+    // Add warranty from add product
     public function addWarranty(Request $request)
     {
         return $this->productUtil->addQuickWarranty($request);

@@ -175,15 +175,10 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [
-                [0, 'asc']
-            ],
+            aaSorting: [[0, 'asc']],
+            "lengthMenu" : [25, 100, 500, 1000, 2000],
             ajax: "{{ route('manufacturing.process.index') }}",
-            columnDefs: [{
-                "targets": [0],
-                "orderable": false,
-                "searchable": false
-            }],
+            columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'multiple_update',name: 'multiple_update'},
                 {data: 'action',name: 'action'},

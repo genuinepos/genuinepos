@@ -189,17 +189,6 @@
                                     </div>
                                     <p class="switch_text">@lang('menu.categories')</p>
                                 </div>
-
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('product.subcategories.index') }}" class="bar-link">
-                                            <span>
-                                                <i class="fas fa-code-branch"></i>
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <p class="switch_text">@lang('menu.sub_categories')</p>
-                                </div>
                             @endif
 
                             @if (auth()->user()->permission->brand['brand_all'] == '1')

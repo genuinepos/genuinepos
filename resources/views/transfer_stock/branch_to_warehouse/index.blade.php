@@ -79,6 +79,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[3, 'asc']],
+            "lengthMenu" : [25, 100, 500, 1000,2000],
             ajax: "{{ route('transfer.stock.to.warehouse.index') }}",
             columns: [
                 {data: 'date', name: 'date'},

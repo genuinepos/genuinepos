@@ -238,6 +238,7 @@
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
             aaSorting: [[0, 'desc']],
+            "lengthMenu" : [25, 100, 500, 1000,2000],
             "ajax": {
                 "url": "{{ route('sales.pos.list') }}",
                 "data": function(d) {

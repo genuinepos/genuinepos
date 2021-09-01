@@ -439,7 +439,7 @@ a.dashboard_icon {padding: 3px 0px!important;border-radius: 4px;}
 label{font-size: 12px;}
 .t {padding-bottom: 41px!important;}
 
-select {height: 26px;}
+select {height: 26px;border: 1px solid #D8D8D8;}
 
 .widget_content .table-responsive {
     margin-top: -15px; 

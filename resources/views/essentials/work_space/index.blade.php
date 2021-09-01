@@ -285,10 +285,7 @@
                   <h6 class="modal-title" id="exampleModalLabel">Edit Work Space</h6>
                   <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
               </div>
-              <div class="modal-body" id="edit_modal_body">
-                <!--begin::Form-->
-                
-              </div>
+              <div class="modal-body" id="edit_modal_body"></div>
           </div>
       </div>
     </div>
@@ -303,10 +300,7 @@
                   <h6 class="modal-title" id="exampleModalLabel">Uploaded Documents</h6>
                   <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
               </div>
-              <div class="modal-body" id="document-list-modal">
-                  <!--begin::Form-->
-            
-              </div>
+              <div class="modal-body" id="document-list-modal"></div>
           </div>
       </div>
   </div>
@@ -328,6 +322,7 @@
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         aaSorting: [[0, 'desc']],
+        "lengthMenu" : [25, 100, 500, 1000, 2000],
         "ajax": {
             "url": "{{ route('workspace.index') }}",
             "data": function(d) {

@@ -341,15 +341,10 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [
-                [0, 'asc']
-            ],
+            aaSorting: [[0, 'asc']],
             ajax: "{{ route('contacts.customer.index') }}",
-            columnDefs: [{
-                "targets": [0],
-                "orderable": false,
-                "searchable": false
-            }],
+            "lengthMenu" : [25, 100, 500, 1000, 2000],
+            columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action',name: 'action'},
                 {data: 'contact_id',name: 'contact_id'},

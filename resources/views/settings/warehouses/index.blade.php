@@ -162,15 +162,12 @@
             {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         aaSorting: [[2, 'desc']],
+        "lengthMenu" : [25, 100, 500, 1000, 2000]
         "ajax": {
             "url": "{{ route('settings.warehouses.index') }}",
             "data": function(d) {d.branch_id = $('#branch_id').val();}
         },
-        columnDefs: [{
-            "targets": [6],
-            "orderable": false,
-            "searchable": false
-        }],
+        columnDefs: [{"targets": [6],"orderable": false,"searchable": false}],
         columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
             {data: 'name',name: 'name'},
             {data: 'branch',name: 'branch'},

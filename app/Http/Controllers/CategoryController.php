@@ -51,13 +51,16 @@ class CategoryController extends Controller
             ->rawColumns(['photo', 'action'])
             ->make(true);
         }
-        return view('product.categories.index');
+
+        $categories = DB::table('categories')->where('parent_category_id',NULL)->get();
+        return view('product.categories.index', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:categories,name',
+            'name' => 'required',
+            // 'name' => 'required|unique:categories,name',
             'photo' => 'sometimes|image|max:2048',
         ]);
 

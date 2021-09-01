@@ -214,9 +214,8 @@
         ],
         "processing": true,
         "serverSide": true,
-        aaSorting: [
-            [0, 'asc']
-        ],
+        aaSorting: [[0, 'asc']],
+        "lengthMenu" : [25, 100, 500, 1000,2000],
         "ajax": {
             "url": "{{ route('products.all.product') }}",
             "data": function(d) {

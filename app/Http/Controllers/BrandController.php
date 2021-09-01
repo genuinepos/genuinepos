@@ -73,7 +73,7 @@ class BrandController extends Controller
             ]);
         }else {
             Brand::insert([
-            'name' => $request->name,
+                'name' => $request->name,
             ]);
         }
         

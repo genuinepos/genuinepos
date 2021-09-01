@@ -146,6 +146,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[3, 'asc']],
+            "lengthMenu" : [25, 100, 500, 1000,2000],
             "ajax": {
                 "url": "{{ route('sales.quotations') }}",
                 "data": function(d) {

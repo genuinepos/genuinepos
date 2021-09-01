@@ -337,6 +337,7 @@
         processing: true,
         serverSide: true,
         searchable: true,
+        "lengthMenu" : [25, 100, 500, 1000, 2000],
         ajax: "{{ route('accounting.assets.index') }}",
         columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
             {data: 'asset_type_name',name: 'asset_type_name'},
@@ -425,18 +426,8 @@
             'title': 'Delete Confirmation',
             'content': 'Are you sure?',
             'buttons': {
-                'Yes': {
-                    'class': 'yes btn-danger',
-                    'action': function() {
-                        $('#deleted_asset_type_form').submit();
-                    }
-                },
-                'No': {
-                    'class': 'no btn-modal-primary',
-                    'action': function() {
-                        // alert('Deleted canceled.')
-                    } 
-                }
+                'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_asset_type_form').submit();}},
+                'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
             }
         });
     });
@@ -489,6 +480,7 @@
         processing: true,
         serverSide: true,
         searchable: true,
+        "lengthMenu" : [25, 100, 500, 1000, 2000],
         "ajax": {
             "url": "{{ route('accounting.assets.all') }}",
             "data": function(d) {
@@ -590,18 +582,8 @@
             'title': 'Delete Confirmation',
             'content': 'Are you sure?',
             'buttons': {
-                'Yes': {
-                    'class': 'yes btn-danger',
-                    'action': function() {
-                        $('#deleted_asset_form').submit();
-                    }
-                },
-                'No': {
-                    'class': 'no btn-modal-primary',
-                    'action': function() {
-                        // alert('Deleted canceled.')
-                    } 
-                }
+                'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_asset_form').submit();}},
+                'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
             }
         });
     });

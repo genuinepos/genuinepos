@@ -138,7 +138,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 @push('scripts')
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
@@ -154,6 +153,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[3, 'asc']],
+            "lengthMenu" : [25, 100, 500, 1000,2000],
             "ajax": {
                 "url": "{{ route('sales.shipments') }}",
                 "data": function(d) {

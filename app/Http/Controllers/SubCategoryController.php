@@ -17,10 +17,6 @@ class SubCategoryController extends Controller
     // Category main page/index page
     public function index(Request $request)
     {
-         if (auth()->user()->permission->category['category_all'] == '0') {
-            abort(403, 'Access Forbidden.');
-        }
-        
         $img_url = asset('public/uploads/category/');
         if ($request->ajax()) {
           $subCategories = DB::table('categories')->join('categories as parentcat','parentcat.id','categories.parent_category_id')
@@ -35,11 +31,11 @@ class SubCategoryController extends Controller
                 // return $action_btn;
                 $html = '<div class="dropdown table-dropdown">';
                 if (auth()->user()->permission->category['category_edit'] == '1'){
-                    $html .= '<a href="javascript:;" class="action-btn c-edit edit" data-id="'.$row->id.'"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="javascript:;" class="action-btn c-edit edit_sub_cate" data-id="'.$row->id.'"><span class="fas fa-edit"></span></a>';
                 }
 
                 if (auth()->user()->permission->category['category_delete'] == '1'){
-                    $html .= '<a href="' . route('product.subcategories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="' . route('product.subcategories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete_sub_cate" title="Delete"><span class="fas fa-trash "></span></a>';
                 }
                 $html .= '</div>';
                 return $html;
@@ -47,13 +43,6 @@ class SubCategoryController extends Controller
             ->rawColumns(['photo', 'action'])
             ->make(true);
         }
-        $category=DB::table('categories')->where('parent_category_id',NULL)->get();
-        return view('product.sub_categories.index',compact('category'));
-
-        // if (auth()->user()->permission->category['category_all'] == '0') {
-        //     abort(403, 'Access Forbidden.');
-        // }
-        // return view('product.sub_categories.index');
     }
 
     // Get all category by ajax
@@ -84,7 +73,7 @@ class SubCategoryController extends Controller
             'name' => 'required|unique:categories,name',
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
-        ], ['parent_category_id.required' => 'Parent cateogry field is required']);
+        ], ['parent_category_id.required' => 'Parent category field is required']);
 
         if ($request->file('photo')) {
             $categoryPhoto = $request->file('photo');
@@ -107,7 +96,6 @@ class SubCategoryController extends Controller
 
     public function update(Request $request)
     {
-        //return $request->all();
         $this->validate($request, [
             'name' => 'required|unique:categories,name,'.$request->id,
             'parent_category_id' => 'required',
@@ -141,7 +129,6 @@ class SubCategoryController extends Controller
 
     public function delete(Request $request, $categoryId)
     {
-        //return $categoryId;
         $deleteCategory = Category::find($categoryId);
         if ($deleteCategory->photo !== 'default.png') {
             if (file_exists(public_path('uploads/category/' . $deleteCategory->photo))) {

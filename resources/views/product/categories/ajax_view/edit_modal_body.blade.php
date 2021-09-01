@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
             <button type="submit" class="c-btn btn_blue me-0 float-end" id="update_btn">Save Changes</button>
-            <button type="button" class="c-btn btn_orange float-end" id="close_form">Close</button>
+            <button type="button" class="c-btn btn_orange float-end" id="close_cate_form">Close</button>
         </div>
     </div>
 </form>

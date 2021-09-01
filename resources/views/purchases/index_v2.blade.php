@@ -237,9 +237,8 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [
-                [0, 'asc']
-            ],
+            aaSorting: [[0, 'asc']],
+            "lengthMenu" : [25, 100, 500, 1000,2000],
             "ajax": {
                 "url": "{{ route('purchases.index_v2') }}",
                 "data": function(d) {
@@ -308,13 +307,6 @@
             var url = $(this).attr('href');
             console.log(url);
             purchaseDetails(url);
-        });
-
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:first-child, :last-child, :nth-child(8))', function(e) {
-            e.preventDefault();
-            var purchase = $(this).parent().data('href');
-            purchaseDetails(purchase);
         });
 
         // Show change status modal and pass actual link in the change status form

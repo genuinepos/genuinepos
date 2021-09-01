@@ -4,8 +4,8 @@
     <input type="hidden" name="id" id="id" value="{{ $data->id }}">
     <div class="form-group">
         <label><b>Name :</b> <span class="text-danger">*</span></label> 
-        <input type="text" name="name" class="form-control " value="{{ $data->name }}" id="e_name" placeholder="Sub category name"/>
-        <span class="error error_e_name"></span>
+        <input type="text" name="name" class="form-control " value="{{ $data->name }}" id="e_sub_name" placeholder="Sub category name"/>
+        <span class="error error_sub_e_name"></span>
     </div>
 
     <div class="form-group mt-2">
@@ -15,20 +15,20 @@
              <option value="{{ $row->id }}" @if($data->parent_category_id==$row->id) selected @endif>{{ $row->name }}</option>
             @endforeach
         </select>
-        <span class="error error_e_parent_category_id"></span>
+        <span class="error error_sub_e_parent_category_id"></span>
     </div>
 
     <div class="form-group editable_cate_img_field mt-2">
         <label><b>Sub Category photo :</b></label> 
         <input type="file" name="photo" class="form-control" id="e_photo" accept=".jpg, .jpeg, .png, .gif">
-        <span class="error error_e_photo"></span>
+        <span class="error error_sub_e_photo"></span>
     </div>
 
     <div class="form-group row mt-2">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
             <button type="submit" class="c-btn btn_blue float-end me-0">Save Changes</button>
-            <button type="button" class="c-btn btn_orange float-end" id="close_form">Close</button>
+            <button type="button" class="c-btn btn_orange float-end" id="close_sub_cate_form">Close</button>
         </div>
     </div>
 </form>

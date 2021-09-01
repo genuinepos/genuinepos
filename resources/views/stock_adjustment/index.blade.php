@@ -143,6 +143,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[0, 'desc']],
+            "lengthMenu" : [25, 100, 500, 1000,2000],
             "ajax": {
                 "url": "{{ route('stock.adjustments.index') }}",
                 "data": function(d) {
@@ -151,11 +152,7 @@
                     d.date_range = $('#date_range').val();
                 }
             },
-            columnDefs: [{
-                "targets": [0],
-                "orderable": false,
-                "searchable": false
-            }],
+            columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'date'},

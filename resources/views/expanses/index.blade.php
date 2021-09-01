@@ -205,6 +205,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[0, 'asc']],
+            "lengthMenu" : [25, 100, 500, 1000, 2000],
             "ajax": {
                 "url": "{{ route('expanses.index') }}",
                 "data": function(d) {
@@ -213,11 +214,7 @@
                     d.date_range = $('#date_range').val();
                 }
             },
-            columnDefs: [{
-                "targets": [0],
-                "orderable": false,
-                "searchable": false
-            }],
+            columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
             columns: [
                 { data: 'action', },
                 { data: 'date', name: 'date' },

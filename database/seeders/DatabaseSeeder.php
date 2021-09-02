@@ -16,9 +16,16 @@ class DatabaseSeeder extends Seeder
     {
         try {
             echo "Seeding Default Data" . PHP_EOL;
-            $this->call(AddonsSeeder::class);
-            $this->call(ShortMenusSeeder::class);
-            $this->call(PosShortMenusSeeder::class);
+
+
+            
+            // $this->call(GeneralSettingsSeeder::class);
+
+            // $this->call(AddonsSeeder::class);
+            // $this->call(ShortMenusSeeder::class);
+            // $this->call(PosShortMenusSeeder::class);
+
+
         } catch (Exception $e) {
             dd($e->getMessage());
         } finally {

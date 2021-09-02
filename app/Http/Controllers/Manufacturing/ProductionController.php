@@ -37,7 +37,10 @@ class ProductionController extends Controller
 
     public function getProcess($processId)
     {
-        $process = DB::table('processes')->where('id', $processId)->first();
+        $process = DB::table('processes')
+        ->leftJoin('units', 'processes.unit_id', 'units.id')
+        ->select('processes.*', 'units.name as u_name')
+        ->where('processes.id', $processId)->first();
         return response()->json($process);
     }
 

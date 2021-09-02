@@ -371,15 +371,12 @@
                                             <p class="switch_text">@lang('menu.customer_groups')</p>
                                         </div>
                                     @endif
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endif
             @endif
-            <!-- ===========================================CALENDER SIDEBAR=================== -->
-
             <!-- ===========================================CONACT SIDEBAR=================== -->
             @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -418,7 +415,6 @@
                                     <div
                                         class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
-                                            {{-- <span class="notify-grin">30</span> --}}
                                             <a href="{{ route('purchases.returns.index') }}" class="bar-link">
                                                 <span><i class="fas fa-undo"></i></span>
                                             </a>

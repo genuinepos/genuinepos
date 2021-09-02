@@ -18,10 +18,7 @@
                             <div class="form_element">
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
-                                        <div class="col-6">
-                                            <h5>Production</h5>
-                                        </div>
-
+                                        <div class="col-6"><h5>Production</h5></div>
                                         <div class="col-6">
                                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
@@ -144,9 +141,7 @@
                         </div>
                     </div>
                 </section>
-
                 <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
-
                 <section class="">
                     <div class="container-fluid">
                         <div class="row">
@@ -218,7 +213,6 @@
                 var product_id = data.product_id;
                 var variantId = data.variant_id ? data.variant_id : null;
                 var url = "{{ url('manufacturing/productions/get/ingredients') }}"+"/"+processId;
-
                 $.get(url, function(data) {$('#ingredient_list').html(data);});
             });
         });

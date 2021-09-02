@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
@@ -59,8 +60,9 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            // 'name' => 'required|unique:categories,name',
+            'name' => ['required', Rule::unique('categories')->where(function ($query) {
+                return $query->where('parent_category_id', 'NULL');
+            })],
             'photo' => 'sometimes|image|max:2048',
         ]);
 
@@ -89,7 +91,9 @@ class CategoryController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:categories,name,'.$request->id,
+            'name' => ['required', Rule::unique('categories')->where(function ($query) use ($request) {
+                return $query->where('parent_category_id', 'NULL')->where('id', '!=', $request->id);
+            })],
             'photo' => 'sometimes|image|max:2048',
         ]);
 

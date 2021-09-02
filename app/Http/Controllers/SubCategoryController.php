@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
+
 
 class SubCategoryController extends Controller
 {
@@ -57,7 +59,9 @@ class SubCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:categories,name',
+            'name' => ['required', Rule::unique('categories')->where(function ($query) {
+                return $query->where('parent_category_id', '!=', 'NULL');
+            })],
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
         ], ['parent_category_id.required' => 'Parent category field is required']);
@@ -84,7 +88,9 @@ class SubCategoryController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:categories,name,'.$request->id,
+            'name' => ['required', Rule::unique('categories')->where(function ($query) use ($request) {
+                return $query->where('parent_category_id', '!=', 'NULL')->where('id', '!=', $request->id);
+            })],
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
         ], ['parent_category_id.required' => 'Parent cateogry field is required']);

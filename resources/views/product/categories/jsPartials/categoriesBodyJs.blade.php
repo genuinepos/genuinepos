@@ -104,6 +104,7 @@
                     $('.loading_button').hide();
                     $('#add_cate_form').show();
                     $('#edit_cate_form').hide();
+                    $('.error').html('');
                 },
                 error: function(err) {
                     $('.loading_button').hide();

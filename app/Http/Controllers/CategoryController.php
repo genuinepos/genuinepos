@@ -48,9 +48,7 @@ class CategoryController extends Controller
                 'data-href' => function ($row) {
                     return route('product.categories.edit', $row->id);
                 }
-            ])
-            ->rawColumns(['photo', 'action'])
-            ->make(true);
+            ])->rawColumns(['photo', 'action'])->make(true);
         }
 
         $categories = DB::table('categories')->where('parent_category_id',NULL)->get();
@@ -61,7 +59,7 @@ class CategoryController extends Controller
     {
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) {
-                return $query->where('parent_category_id', 'NULL');
+                return $query->where('parent_category_id', NULL);
             })],
             'photo' => 'sometimes|image|max:2048',
         ]);
@@ -92,7 +90,7 @@ class CategoryController extends Controller
     {
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) use ($request) {
-                return $query->where('parent_category_id', 'NULL')->where('id', '!=', $request->id);
+                return $query->where('parent_category_id', NULL)->where('id', '!=', $request->id);
             })],
             'photo' => 'sometimes|image|max:2048',
         ]);

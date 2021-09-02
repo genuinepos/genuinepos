@@ -60,7 +60,7 @@ class SubCategoryController extends Controller
     {
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) {
-                return $query->where('parent_category_id', '!=', 'NULL');
+                return $query->where('parent_category_id', '!=', NULL);
             })],
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
@@ -89,7 +89,7 @@ class SubCategoryController extends Controller
     {
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) use ($request) {
-                return $query->where('parent_category_id', '!=', 'NULL')->where('id', '!=', $request->id);
+                return $query->where('parent_category_id', '!=', NULL)->where('id', '!=', $request->id);
             })],
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',

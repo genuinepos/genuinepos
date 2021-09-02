@@ -8,7 +8,7 @@
        processing: true,
        serverSide: true,
        searchable: true,
-       "lengthMenu" : [25, 100, 500, 1000,2000],
+       "lengthMenu" : [25, 100, 500, 1000, 2000],
        ajax: "{{ route('product.subcategories.index') }}",
        columns: [{data: 'DT_RowIndex', name: 'DT_RowIndex'},
            { data: 'photo',name: 'category.photo'},

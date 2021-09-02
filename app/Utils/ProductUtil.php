@@ -79,8 +79,8 @@ class ProductUtil
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye text-primary"></i> View</a>';
-                $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode mr-1 text-primary"></i> Barcode</a>';
+                $html .= '<a class="dropdown-item details_button" href="'.route('products.view', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
                 if (auth()->user()->permission->product['product_edit']  == '1') {
                     $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
@@ -130,11 +130,7 @@ class ProductUtil
                 return $row->tax_name ? $row->tax_name : '...';
             })->editColumn('expire_date', function ($row) use ($generalSettings) {
                 return $row->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->expire_date)) : '...';
-            })->setRowAttr([
-                'data-href' => function ($row) {
-                    return route('products.view', [$row->id]);
-                }
-            ])->setRowClass('clickable_row')->rawColumns([
+            })->rawColumns([
                 'multiple_delete',
                 'photo', 'action',
                 'type', 'category',
@@ -142,7 +138,7 @@ class ProductUtil
                 'expire_date',
                 'tax_name',
                 'brand_name',
-            ])->make(true);
+            ])->smart(true)->make(true);
     }
 
     public function addQuickCategory($request)

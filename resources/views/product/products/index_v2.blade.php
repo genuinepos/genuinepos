@@ -265,7 +265,9 @@
         }
     });
 
-    function productDetails(url) {
+    $(document).on('click', '.details_button', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
         $('.data_preloader').show();
         $.ajax({
             url: url,
@@ -276,12 +278,6 @@
                 $('#detailsModal').modal('show');
             }
         });
-    }
-
-    $(document).on('click', '.details_button', function(e) {
-        e.preventDefault();
-        var url = $(this).closest('tr').data('href');
-        productDetails(url);
     });
 
     //Check purchase and generate burcode
@@ -297,7 +293,6 @@
                     toastr.error(data.errorMsg);
                 } else {
                     window.location = data;
-                    console.log(data);
                 }
             }
         });

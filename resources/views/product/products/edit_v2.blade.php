@@ -854,10 +854,11 @@
         var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
         $('#product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
         var profit = $('#profit').val() ? $('#profit').val() : 0;
-        var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
-        var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
-        $('#product_price').val(parseFloat(product_price).toFixed(2));
-
+        if (parseFloat(profit) > 0) {
+            var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
+            var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
+            $('#product_price').val(parseFloat(product_price).toFixed(2));
+        }
         // calc package product profit
         var netTotalComboPrice = $('#total_combo_price').val() ? $('#total_combo_price').val() : 0;
         var calcTotalComboPrice = parseFloat(netTotalComboPrice) / 100 * parseFloat(profit) + parseFloat(netTotalComboPrice);
@@ -1426,7 +1427,8 @@
                     $('.loading_button').hide();
                     if ($.isEmptyObject(data.errorMsg)) {
                         toastr.success(data);
-                        window.location = "{{ route('products.all.product') }}";
+                        //window.location = "{{ route('products.all.product') }}";
+                        window.location = "{{ url()->previous() }}";
                     } else {
                         toastr.error(data.errorMsg);
                         $('.error').html('');

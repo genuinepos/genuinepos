@@ -48,7 +48,7 @@ class CategoryController extends Controller
                 'data-href' => function ($row) {
                     return route('product.categories.edit', $row->id);
                 }
-            ])->rawColumns(['photo', 'action'])->make(true);
+            ])->rawColumns(['photo', 'action'])->smart(true)->make(true);
         }
 
         $categories = DB::table('categories')->where('parent_category_id',NULL)->get();

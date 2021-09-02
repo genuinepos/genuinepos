@@ -17,7 +17,6 @@ class CreateProcessIngredientsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('process_id');
             $table->unsignedBigInteger('product_id');
-            $table->decimal('unit_cost_inc_tax', 22)->default(0);
             $table->unsignedBigInteger('variant_id')->nullable();
             $table->decimal('wastage_percent', 22)->default(0);
             $table->decimal('final_qty', 22)->default(0);

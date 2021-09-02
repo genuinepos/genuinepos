@@ -175,8 +175,7 @@
     </div>
 
     <!-- Details Modal -->
-    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    </div>
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
     <!-- Details Modal End-->
 
     <!-- Opening stock Modal -->
@@ -269,14 +268,10 @@
         e.preventDefault();
         var url = $(this).attr('href');
         $('.data_preloader').show();
-        $.ajax({
-            url: url,
-            type: 'get',
-            success: function(data) {
-                $('#detailsModal').html(data);
-                $('.data_preloader').hide();
-                $('#detailsModal').modal('show');
-            }
+        $.get(url, function (data){
+            $('#detailsModal').html(data);
+            $('.data_preloader').hide();
+            $('#detailsModal').modal('show');
         });
     });
 

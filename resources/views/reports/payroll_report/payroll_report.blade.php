@@ -139,24 +139,14 @@
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [ 
-            {
-                extend: 'excel',
-                text: 'Export To Excel',
-                className: 'btn btn-primary',
-            },
-            {
-                extend: 'pdf',
-                text: 'Export To Pdf',
-                className: 'btn btn-primary',
-            },
+            {extend: 'excel', text: 'Export To Excel', className: 'btn btn-primary'},
+            {extend: 'pdf', text: 'Export To Pdf', className: 'btn btn-primary'},
         ],
         "processing": true,
         "serverSide": true,
         "searching" : true,
-        
-        aaSorting: [
-            [1, 'asc']
-        ],
+        aaSorting: [[1, 'asc']],
+        "lengthMenu" : [50, 100, 500, 1000, 2000],
         "ajax": {
             "url": "{{ route('reports.payroll') }}",
             "data": function(d) {

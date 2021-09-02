@@ -134,6 +134,7 @@
             {extend: 'pdf',text: 'Export To Pdf',className: 'btn btn-primary',},
         ],
         aaSorting: [[1, 'asc']],
+        "lengthMenu" : [50, 100, 500, 1000, 2000],
         "ajax": {
             "url": "{{ route('reports.attendance') }}",
             "data": function(d) {

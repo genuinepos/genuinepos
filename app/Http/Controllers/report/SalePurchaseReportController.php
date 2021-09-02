@@ -56,7 +56,6 @@ class SalePurchaseReportController extends Controller
 
         if ($request->date_range) {
             $date_range = explode('-', $request->date_range);
-            //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
             $form_date = date('Y-m-d', strtotime($date_range[0]));
             $to_date = date('Y-m-d', strtotime($date_range[1]));
 

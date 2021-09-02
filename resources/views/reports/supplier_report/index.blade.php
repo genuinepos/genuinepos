@@ -110,6 +110,7 @@
         "processing": true,
         "serverSide": true,
         aaSorting: [[3, 'asc']],
+        "lengthMenu" : [50, 100, 500, 1000, 2000],
         "ajax": {
             "url": "{{ route('reports.supplier.index') }}",
             "data": function(d) {

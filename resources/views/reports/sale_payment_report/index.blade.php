@@ -139,7 +139,8 @@
         ],
         "processing": true,
         "serverSide": true,
-        aaSorting: [[2, 'desc']],
+        aaSorting: [[1, 'desc']],
+        "lengthMenu" : [50, 100, 500, 1000, 2000],
         "ajax": {
             "url": "{{ route('reports.sale.payments.index') }}",
             "data": function(d) {

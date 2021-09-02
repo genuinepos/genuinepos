@@ -26,15 +26,6 @@ class ProductSaleReportController extends Controller
                 ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
                 ->leftJoin('units', 'products.unit_id', 'units.id');
-            // ->where('purchases.branch_id', $request->branch_id)
-            // ->where('purchases.supplier_id', $request->supplier_id)
-            // ->where('purchases.warehouse_id', $request->warehouse_id)
-            // ->select('purchases.*', 'products.name', 'product_variants.variant_name', 'suppliers.name as sup_name')
-            // ->get();
-
-            // if ($request->product_id) {
-            //     $query->where('product_id', $request->product_id);
-            // }
 
             if ($request->product_id) {
                 $query->where('sale_products.product_id', $request->product_id);
@@ -62,9 +53,8 @@ class ProductSaleReportController extends Controller
 
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
-                //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
             } else {
                 $query->where('sales.year', date('Y'));
@@ -85,13 +75,12 @@ class ProductSaleReportController extends Controller
                     'product_variants.variant_name',
                     'product_variants.variant_code',
                     'customers.name as customer_name'
-                )
-                ->get();
-            
-                return DataTables::of($saleProducts)
+                )->get();
+
+            return DataTables::of($saleProducts)
                 ->editColumn('product', function ($row) {
-                    $variant = $row->variant_name ?' - '.$row->variant_name : '';
-                    return $row->name .$variant;
+                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
+                    return $row->name . $variant;
                 })
                 ->editColumn('sku', function ($row) {
                     return $row->variant_code ? $row->variant_code : $row->product_code;
@@ -103,16 +92,15 @@ class ProductSaleReportController extends Controller
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
                 ->editColumn('qty', function ($row) {
-                    return $row->quantity.' (<span class="qty" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>)';
+                    return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
                 })
                 ->editColumn('unit_price_inc_tax',  function ($row) use ($generalSettings) {
-                    return '<b><span class="unit_price_inc_tax" data-value="'.$row->unit_price_inc_tax.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->unit_price_inc_tax . '</span></b>';
+                    return '<b><span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->unit_price_inc_tax . '</span></b>';
                 })
                 ->editColumn('subtotal', function ($row) use ($generalSettings) {
-                    return '<b><span class="subtotal" data-value="'.$row->subtotal.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->subtotal . '</span></b>';
+                    return '<b><span class="subtotal" data-value="' . $row->subtotal . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->subtotal . '</span></b>';
                 })
-                ->rawColumns(['product', 'sku', 'date', 'qty', 'branch', 'unit_price_inc_tax', 'subtotal'])
-                ->make(true);
+                ->rawColumns(['product', 'sku', 'date', 'qty', 'branch', 'unit_price_inc_tax', 'subtotal'])->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('reports.product_sale_report.index', compact('branches'));

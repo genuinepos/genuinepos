@@ -1355,3 +1355,11 @@ ul.add_sale_ex_btn li {display: inline-block; float: right; margin-left: 5px;}
 .menu-list-area ul li input {display: flex;margin-bottom: -15px;margin-left: -16px;}
 .active_tr td {background: #113d73!important;color: white;}
 .active_tr:hover {color: white!important;}
+
+
+
+
+table.display tbody tr:hover {
+    background: #3b79c5de !IMPORTANT;
+    COLOR: #fff;
+}

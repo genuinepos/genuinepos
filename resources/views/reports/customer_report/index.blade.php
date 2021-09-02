@@ -110,11 +110,10 @@
         "processing": true,
         "serverSide": true,
         aaSorting: [[3, 'asc']],
+        "lengthMenu" : [50, 100, 500, 1000, 2000],
         "ajax": {
             "url": "{{ route('reports.customer.index') }}",
-            "data": function(d) {
-                d.customer_id = $('#customer_id').val();
-            }
+            "data": function(d) {d.customer_id = $('#customer_id').val();}
         },
         columnDefs: [{
             "targets": [0],

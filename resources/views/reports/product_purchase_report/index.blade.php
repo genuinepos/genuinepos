@@ -164,7 +164,8 @@
         ],
         "processing": true,
         "serverSide": true,
-        aaSorting: [[3, 'asc']],
+        aaSorting: [[5, 'asc']],
+        "lengthMenu" : [50, 100, 500, 1000, 2000],
         "ajax": {
             "url": "{{ route('reports.product.purchases.index') }}",
             "data": function(d) {

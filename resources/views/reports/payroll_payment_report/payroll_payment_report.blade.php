@@ -135,9 +135,8 @@
         "processing": true,
         "serverSide": true,
         "searching" : true,
-        aaSorting: [
-            [0, 'asc']
-        ],
+        aaSorting: [[0, 'asc']],
+        "lengthMenu" : [50, 100, 500, 1000, 2000],
         "ajax": {
             "url": "{{ route('reports.payroll.payment') }}",
             "data": function(d) {

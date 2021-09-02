@@ -15,6 +15,7 @@ class CreateProductionsTable extends Migration
     {
         Schema::create('productions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('unit_id')->nullable();
             $table->string('reference_no')->nullable();
             $table->string('date')->nullable();
             $table->string('report_date')->nullable();

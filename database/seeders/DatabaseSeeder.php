@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Exception;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        try {
+            echo "Seeding Default Data" . PHP_EOL;
+            $this->call(AddonsSeeder::class);
+            $this->call(ShortMenusSeeder::class);
+            $this->call(PosShortMenusSeeder::class);
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        } finally {
+            echo "Operation finished." . PHP_EOL;
+        }
     }
 }

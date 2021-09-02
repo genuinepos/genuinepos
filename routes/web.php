@@ -42,8 +42,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     Route::group(['prefix' => 'sub-categories'], function () {
         Route::get('/', 'SubCategoryController@index')->name('product.subcategories.index');
-        Route::get('all', 'SubCategoryController@getAllSubCategory')->name('product.subcategories.all.subcategory');
-        Route::get('form/category', 'SubCategoryController@getAllFormCategory')->name('product.subcategories.all.category.form');
         Route::post('store', 'SubCategoryController@store')->name('product.subcategories.store');
         Route::post('update', 'SubCategoryController@update')->name('product.subcategories.update');
         Route::delete('delete/{categoryId}', 'SubCategoryController@delete')->name('product.subcategories.delete');

@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use DB;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
-use DB;
+
 class SubCategoryController extends Controller
 {
     public function __construct()
@@ -14,7 +15,7 @@ class SubCategoryController extends Controller
         $this->middleware('auth:admin_and_user');
     }
 
-    // Category main page/index page
+    // Get all sub-categories by index page
     public function index(Request $request)
     {
         $img_url = asset('public/uploads/category/');
@@ -45,30 +46,16 @@ class SubCategoryController extends Controller
         }
     }
 
-    // Get all category by ajax
-    public function getAllSubCategory()
-    {
-        $sub_categories = Category::with('parent_category')->where('parent_category_id', '!=', NULL)->orderBy('id', 'DESC')->get();
-        return view('product.sub_categories.ajax_view.sub_category_list', compact('sub_categories'));
-    }
-
-    public function getAllFormCategory()
-    {
-        $categories = Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
-        return response()->json($categories);
-    }
-
     //edit
     public function edit($id)
     {
         $data = DB::table('categories')->where('id',$id)->first();
         $category = DB::table('categories')->where('parent_category_id',NULL)->get();
-        return view('product.sub_categories.ajax_view.edit',compact('category','data'));
+        return view('product.categories.ajax_view.edit_sub_category',compact('category','data'));
     }
 
     public function store(Request $request)
     {
-        // return $request->all();
         $this->validate($request, [
             'name' => 'required|unique:categories,name',
             'parent_category_id' => 'required',

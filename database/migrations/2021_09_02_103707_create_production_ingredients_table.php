@@ -25,7 +25,6 @@ class CreateProductionIngredientsTable extends Migration
             $table->decimal('unit_cost_inc_tax')->default(0);
             $table->decimal('subtotal', 22)->default(0);
             $table->boolean('is_delete_in_update')->default(0);
-            $table->timestamps();
             $table->foreign('production_id')->references('id')->on('processes')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('variant_id')->references('id')->on('product_variants')->onDelete('cascade');

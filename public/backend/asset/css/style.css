@@ -1068,20 +1068,8 @@ span.menu-title-t {
     .main-woaper_t {
         width: 100%;
     }
-    .navigation_t {
-        width: 100%;
-        height: 120px;
-    }
-    .main__nav_t {
-        background: #7e0d3d;
-        height: 100vh;
-        position: fixed;
-        overflow-y: scroll;
-        width: 25%;
-        z-index: 2;
-        padding: 11px;
-        top: 15.5%;
-    }
+    .navigation_t {width: 100%; height: 120px;}
+    .main__nav_t {background: #7e0d3d;height: 100vh;position: fixed;overflow-y: scroll;width: 25%; z-index: 2;padding: 11px;top: 15.5%;}
     .sub-menu_t {
         position: absolute;
         width: 86%;
@@ -1119,8 +1107,6 @@ span.menu-title-t {
 .left-side-L {
     overflow: hidden;
 }
-
-
 /* =========================================================== */
 @media (min-width: 551px) and (max-width: 768px) {
     .main__nav_t ul li a {
@@ -1355,9 +1341,6 @@ ul.add_sale_ex_btn li {display: inline-block; float: right; margin-left: 5px;}
 .menu-list-area ul li input {display: flex;margin-bottom: -15px;margin-left: -16px;}
 .active_tr td {background: #113d73!important;color: white;}
 .active_tr:hover {color: white!important;}
-
-
-
 
 table.display tbody tr:hover {
     background: #3b79c5de !IMPORTANT;

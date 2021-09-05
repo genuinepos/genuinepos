@@ -1,4 +1,5 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
     $('#payment_method').on('change', function () {
         var value = $(this).val();
@@ -106,9 +107,7 @@
         var shipment_charge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
         
         var calcTotalPurchaseAmount = parseFloat(netTotalAmount) - parseFloat(order_discount_amount) + parseFloat(purchaseTaxAmount) + parseFloat(shipment_charge);
-
         $('#total_purchase_amount').val(parseFloat(calcTotalPurchaseAmount).toFixed(2));
-        $('#paying_amount').val(parseFloat(calcTotalPurchaseAmount).toFixed(2));
         // Update purchase due
         var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
         var calcPurchaseDue = parseFloat(calcTotalPurchaseAmount) - parseFloat(payingAmount);
@@ -1112,4 +1111,10 @@
     });
 
     document.getElementById('search_product').focus();
+
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+
+    $('#datepicker').datepicker({
+        format: 'D-M-Y',
+    });
 </script>

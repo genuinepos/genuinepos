@@ -783,7 +783,7 @@ class PurchaseController extends Controller
         return response()->json('Successfully purchase is updated');
     }
 
-    // Product edti view
+    // Product edit view
     public function edit($purchaseId)
     {
         $purchaseId = $purchaseId;
@@ -863,8 +863,22 @@ class PurchaseController extends Controller
         $supplier = Supplier::where('id', $deletePurchase->supplier_id)->first();
         $supplier->total_purchase_due -= $deletePurchase->due > 0 ? $deletePurchase->due : 0;
         $supplier->total_purchase_return_due -= $deletePurchase->purchase_return_due;
+        $supplier->total_paid -= $deletePurchase->paid;
+        $supplier->total_purchase -= $deletePurchase->total_purchase_amount;
         $supplier->save();
 
+        //purchase payments
+        if (count($deletePurchase->purchase_payments) > 0) {
+            foreach ($deletePurchase->purchase_payments as $payment) {
+                $account = Account::where('id', $payment->account_id)->first();
+                if ($account) {
+                    $account->debit -= $payment->paid_amount;
+                    $account->balance += $payment->paid_amount;
+                    $account->save();
+                }
+            }    
+        }
+        
         foreach ($deletePurchase->purchase_products as $purchase_product) {
             $updateProductQty = Product::where('id', $purchase_product->product_id)->first();
             $updateProductQty->quantity -= $purchase_product->quantity;
@@ -1085,8 +1099,8 @@ class PurchaseController extends Controller
         $purchase = Purchase::where('id', $purchaseId)->first();
         //Update Supplier due 
         $supplier = Supplier::where('id', $purchase->supplier_id)->first();
-        $supplier->total_paid = $supplier->total_paid + $request->amount;
-        $supplier->total_purchase_due = $supplier->total_purchase_due - $request->amount;
+        $supplier->total_paid += $request->amount;
+        $supplier->total_purchase_due -= $request->amount;
         $supplier->save();
 
         // Update purchase
@@ -1187,17 +1201,19 @@ class PurchaseController extends Controller
         $updatePurchasePayment = PurchasePayment::with('account', 'supplier', 'purchase', 'purchase.purchase_return', 'cashFlow')->where('id', $paymentId)->first();
 
         //Update Supplier due 
-        $updatePurchasePayment->supplier->total_paid = $updatePurchasePayment->supplier->total_paid - $updatePurchasePayment->paid_amount;
-        $updatePurchasePayment->supplier->total_paid = $updatePurchasePayment->supplier->total_paid + $request->amount;
-        $updatePurchasePayment->supplier->total_purchase_due = $updatePurchasePayment->supplier->total_purchase_due + $updatePurchasePayment->paid_amount;
-        $updatePurchasePayment->supplier->total_purchase_due = $updatePurchasePayment->supplier->total_purchase_due - $request->amount;
-        $updatePurchasePayment->supplier->save();
+        $supplier = Supplier::where('id', $updatePurchasePayment->purchase->supplier_id)->first();
+        $supplier->total_paid -= $updatePurchasePayment->paid_amount;
+        $supplier->total_paid += $request->amount;
+        $supplier->total_purchase_due += $updatePurchasePayment->paid_amount;
+        $supplier->total_purchase_due -= $request->amount;
+        $supplier->save();
 
         // Update previous account and delete previous cashflow.
-        if ($updatePurchasePayment->account) {
-            $updatePurchasePayment->account->debit = $updatePurchasePayment->account->debit - $updatePurchasePayment->paid_amount;
-            $updatePurchasePayment->account->balance = $updatePurchasePayment->account->balance + $updatePurchasePayment->paid_amount;
-            $updatePurchasePayment->account->save();
+        $account = Account::where('id', $updatePurchasePayment->account_id)->first();
+        if ($account) {
+            $account->debit -= $updatePurchasePayment->paid_amount;
+            $account->balance += $updatePurchasePayment->paid_amount;
+            $account->save();
             //$updatePurchasePayment->cashFlow->delete();
         }
 
@@ -1542,18 +1558,20 @@ class PurchaseController extends Controller
 
         if (!is_null($deletePurchasePayment)) {
             //Update Supplier due 
-            $deletePurchasePayment->supplier->total_purchase_due += $deletePurchasePayment->paid_amount;
-            $deletePurchasePayment->supplier->save();
+            $supplier = Supplier::where('id', $deletePurchasePayment->purchase->supplier_id)->first();
+            $supplier->total_purchase_due += $deletePurchasePayment->paid_amount;
+            $supplier->total_paid -= $deletePurchasePayment->paid_amount;
+            $supplier->save();
 
             // Update purchase 
-            $deletePurchasePayment->purchase->paid = $deletePurchasePayment->purchase->paid - $deletePurchasePayment->paid_amount;
-            $deletePurchasePayment->purchase->due = $deletePurchasePayment->purchase->due + $deletePurchasePayment->paid_amount;
+            $deletePurchasePayment->purchase->paid -= $deletePurchasePayment->paid_amount;
+            $deletePurchasePayment->purchase->due += $deletePurchasePayment->paid_amount;
             $deletePurchasePayment->purchase->save();
 
-            // Update previoues account and delete previous cashflow.
+            // Update previous account and delete previous cashflow.
             if ($deletePurchasePayment->account) {
-                $deletePurchasePayment->account->debit -= $deletePurchasePayment->account->debit - $deletePurchasePayment->paid_amount;
-                $deletePurchasePayment->account->balance = $deletePurchasePayment->account->balance + $deletePurchasePayment->paid_amount;
+                $deletePurchasePayment->account->debit -= $deletePurchasePayment->paid_amount;
+                $deletePurchasePayment->account->balance += $deletePurchasePayment->paid_amount;
                 $deletePurchasePayment->account->save();
                 $deletePurchasePayment->cashFlow->delete();
             }

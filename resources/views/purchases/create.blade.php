@@ -9,6 +9,7 @@
         .selectProduct{background-color: #ab1c59; color: #fff!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -112,8 +113,8 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
                                                 <div class="col-8">
-                                                    <input type="date" name="date" class="form-control changeable"
-                                                        value="{{ date('Y-m-d') }}" id="date">
+                                                    <input type="text" name="date" class="form-control changeable"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker" placeholder="dd-mm-yyyy">
                                                 </div>
                                             </div>
 

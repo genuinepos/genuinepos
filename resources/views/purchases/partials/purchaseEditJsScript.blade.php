@@ -1150,7 +1150,7 @@
                             tr += '</td>';
                         
                             tr += '<td>';
-                            tr += '<input value="'+product.selling_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price">
+                            tr += '<input value="'+product.selling_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price">';
                             tr += '</td>';
                         @endif 
 

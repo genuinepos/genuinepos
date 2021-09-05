@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Expanse;
 use App\Models\CashFlow;
+use App\Utils\ExpenseUtil;
 use App\Models\AdminAndUser;
 use Illuminate\Http\Request;
 use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
+use Illuminate\Validation\Rule;
 use App\Models\ExpenseDescription;
-use App\Utils\ExpenseUtil;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -163,6 +164,10 @@ class ExpanseController extends Controller
         $this->validate($request, [
             'date' => 'required',
             'total_amount' => 'required',
+            'loan_amount' => [Rule::where($request->is_loan, ['required'])],
+            'company_id' => [Rule::where($request->is_loan, ['required'])],
+            'paying_amount' => [Rule::where($request->is_loan, ['required'])],
+            'account_id' => [Rule::where($request->is_loan, ['required'])],
         ]);
 
         // generate invoice ID

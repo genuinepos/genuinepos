@@ -839,33 +839,6 @@ class PurchaseController extends Controller
             $namedProducts = $nameSearch;
         }
 
-        $priceSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('product_price', 'like', "$product_code%")
-            ->where('status', 1)
-            ->get();
-
-        if (count($priceSearch) > 0) {
-            $namedProducts = $priceSearch;
-        }
-
-        $unitCostSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('product_cost', 'like', "$product_code%")
-            ->where('status', 1)
-            ->get();
-
-        if (count($unitCostSearch) > 0) {
-            $namedProducts = $unitCostSearch;
-        }
-
-        $unitCostIncTaxSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('product_cost_with_tax', 'like', "$product_code%")
-            ->where('status', 1)
-            ->get();
-
-        if (count($unitCostIncTaxSearch) > 0) {
-            $namedProducts = $unitCostIncTaxSearch;
-        }
-
         if ($namedProducts && $namedProducts->count() > 0) {
             return response()->json(['namedProducts' => $namedProducts]);
         }

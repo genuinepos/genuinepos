@@ -10,14 +10,17 @@ use Illuminate\Http\Request;
 use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
 use App\Models\ExpenseDescription;
+use App\Utils\ExpenseUtil;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 
 class ExpanseController extends Controller
 {
-    public function __construct()
+    protected $expenseUtil;
+    public function __construct(ExpenseUtil $expenseUtil)
     {
+        $this->expenseUtil = $expenseUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -131,9 +134,7 @@ class ExpanseController extends Controller
                 })
                 ->editColumn('due', function ($row) use ($generalSettings) {
                     $html = "";
-                    $html .= '<span class="text-danger"><strong>' .
-                            json_decode($generalSettings->business, true)['currency'] . $row->due .
-                            '</strong></span>';
+                    $html .= '<span class="text-danger"><strong>' .json_decode($generalSettings->business, true)['currency'] . $row->due .'</strong></span>';
                     
                     return $html;
                 })
@@ -149,7 +150,8 @@ class ExpanseController extends Controller
     // Create expanse view
     public function create()
     {
-        return view('expanses.create');
+        $companies = DB::table('loan_companies')->select('id', 'name')->get();
+        return view('expanses.create', compact('companies'));
     }
 
     // Store Expanse
@@ -269,6 +271,10 @@ class ExpanseController extends Controller
             }
         }
 
+        if (isset($request->is_loan)) {
+            $this->expenseUtil->addLoanByExpense($request, $addExpanse->id);
+        }
+
         $expense = Expanse::with(['expense_descriptions', 'expense_descriptions.category', 'admin'])
         ->where('id', $addExpanse->id)->first();
         return view('expanses.ajax_view.expense_print', compact('expense'));
@@ -310,7 +316,6 @@ class ExpanseController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['expenses'];
-        //return $request->all();
         $this->validate($request, [
             'date' => 'required',
             'total_amount' => 'required',

@@ -24,6 +24,7 @@ class CreateLoansTable extends Migration
             $table->decimal('total_paid', 22)->default(0);
             $table->timestamp('report_date')->nullable();
             $table->text('loan_reason')->nullable();
+            $table->string('loan_by')->nullable();
             $table->unsignedBigInteger('created_user_id')->nullable();
             $table->timestamps();
             $table->foreign('loan_company_id')->references('id')->on('loan_companies')->onDelete('cascade');

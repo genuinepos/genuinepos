@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\AdminAndUser;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +21,7 @@ Route::get('route-list', function () {
         Artisan::call('route:list --columns=Method,URI,Name,Action');
         return '<pre>' . Artisan::output() . '</pre>';
     } else {
-        echo '<h1>Sorry! It works only in debug mode</h1>';
+        echo '<h1>Access Denied</h1>';
         return null;
     }
 });
@@ -568,7 +567,6 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
             Route::post('update/{companyId}', 'LoanCompanyController@update')->name('accounting.loan.companies.update');
             Route::delete('delete/{companyId}', 'LoanCompanyController@delete')->name('accounting.loan.companies.delete');
         });
-        
     });
 });
 

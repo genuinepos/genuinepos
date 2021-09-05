@@ -181,6 +181,11 @@ class AccountingRelatedSectionController extends Controller
 
     public function filterCashflows(Request $request)
     {
+        // if ($request->ajax()) {
+        //     $query = DB::table('cash_flows')
+        //     ->leftJoin('accounts', 'cash_flows.account_id', 'accounts.id');
+        // }
+        
         $filterCashFlows = '';
         $query = CashFlow::with(
             [

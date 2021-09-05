@@ -1113,8 +1113,15 @@
     document.getElementById('search_product').focus();
 
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    
+    var _expectedDateFormat = '' ;
+    
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+ 
 
     $('#datepicker').datepicker({
-        format: 'D-M-Y',
+        format: _expectedDateFormat
     });
 </script>

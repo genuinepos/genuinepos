@@ -1,0 +1,141 @@
+<script>
+    $('.loans').hide();
+    var companies_table = $('.data_tbl').DataTable({
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',autoPrint: true,exportOptions: {columns: ':visible'}}
+        ],
+        "lengthMenu" : [25, 100, 500, 1000,2000],
+        processing: true,
+        serverSide: true,
+        searchable: true,
+        ajax: "{{ route('accounting.loan.companies.index') }}",
+        columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
+            {data: 'name',name: 'name'},
+            {data: 'pay_loan_amount',name: 'pay_loan_amount'},
+            {data: 'total_pay',name: 'total_pay'},
+            {data: 'get_loan_amount',name: 'get_loan_amount'},
+            {data: 'total_receive',name: 'total_receive'},
+            {data: 'action',name: 'action'},
+        ],
+    });
+
+    // Add company by ajax
+    $(document).on('submit', '#add_company_form', function(e) {
+        e.preventDefault();
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $('.submit_button').prop('type', 'button');
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+                $('.error').html('');
+                toastr.success(data);
+                $('#add_company_form')[0].reset();
+                $('.loading_button').hide();
+                $('.submit_button').prop('type', 'submit');
+                companies_table.ajax.reload();
+            },
+            error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_' + key + '').html(error[0]);
+                });
+                $('.submit_button').prop('type', 'submit');
+            }
+        });
+    });
+
+    // pass editable data to edit modal fields
+    $(document).on('click', '#edit_company', function(e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $.get(url, function (data) {
+            $('#edit_com_form_body').html(data);
+            $('#add_com_form').hide();
+            $('#edit_com_form').show();
+            $('.data_preloader').hide();
+            document.getElementById('e_name').focus();
+        });
+    });
+
+    // Edit company by ajax
+    $(document).on('submit', '#edit_company_form', function(e) {
+        e.preventDefault();
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+                toastr.success(data);
+                companies_table.ajax.reload();
+                $('.loading_button').hide();
+                $('#add_com_form').show();
+                $('#edit_com_form').hide();
+                $('.error').html('');
+            },
+            error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_e_' + key + '').html(error[0]);
+                });
+            }
+        }); 
+    });
+
+    $(document).on('click', '#delete_company',function(e){
+        e.preventDefault(); 
+        var url = $(this).attr('href');
+        $('#delete_companies_form').attr('action', url);       
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'content': 'Are you sure?',
+            'buttons': {
+                'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#delete_companies_form').submit();}},
+                'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+            }
+        });
+    });
+
+    //data delete by ajax
+    $(document).on('submit', '#delete_companies_form', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+                toastr.error(data);
+                companies_table.ajax.reload();
+                loans_table.ajax.reload();
+                $('#delete_companies_form')[0].reset();
+            }
+        });
+    });
+
+    $(document).on('click', '#close_com_edit_form', function() {
+        $('#add_com_form').show();
+        $('#edit_com_form').hide();
+    });
+
+    $(document).on('click', '#tab_btn', function(e) {
+        e.preventDefault();
+        $('.tab_btn').removeClass('tab_active');
+        $('.tab_contant').hide();
+        var show_content = $(this).data('show');
+        $('.' + show_content).show();
+        $(this).addClass('tab_active');
+    });
+</script>

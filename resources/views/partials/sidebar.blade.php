@@ -163,7 +163,6 @@
     </div>
     <div class="category-bar">
         <div id="sidebar_t">
-            <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="product">
                 <div class="sub-menu-width">
                     <div class="model__close bg-secondary-2">
@@ -192,8 +191,7 @@
                             @endif
 
                             @if (auth()->user()->permission->brand['brand_all'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.brands.index') }}" class="bar-link">
                                             <span>
@@ -377,7 +375,7 @@
                     </div>
                 @endif
             @endif
-            <!-- ===========================================CONACT SIDEBAR=================== -->
+
             @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                     <div class="sub-menu_t" id="purchases">
@@ -454,8 +452,7 @@
                                                 </div>
                                             @endif
 
-                                            <div
-                                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                                 <div class="switch_bar">
                                                     <a href="{{ route('purchases.index_v2') }}" class="bar-link">
                                                         <span><i class="fas fa-list"></i></span>
@@ -485,8 +482,7 @@
                     @endif
                 @endif
             @endif
-            <!-- ===========================================CANTACT SIDEBAR=================== -->
-            <!-- ===========================================FOLDER SIDEBAR=================== -->
+   
             <div class="sub-menu_t" id="sales">
                 <div class="sub-menu-width">
                     <div class="model__close bg-secondary-2">
@@ -598,8 +594,7 @@
                     </div>
                 </div>
             </div>
-            <!-- ===========================================FOLDER SIDEBAR=================== -->
-            <!-- ===========================================SETTING SIDEBAR=================== -->
+
             @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
                 <div class="sub-menu_t" id="transfer">
                     <div class="sub-menu-width">
@@ -683,7 +678,7 @@
                     </div>
                 </div>
             @endif
-            <!-- ===========================================SETTING SIDEBAR=================== -->
+
             @if (json_decode($generalSettings->modules, true)['stock_adjustment'] == '1')
                 @if (auth()->user()->permission->s_adjust['adjustment_all'] == '1')
                     <div class="sub-menu_t" id="adjustment">
@@ -834,6 +829,15 @@
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.assets')</p>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('accounting.loan.index') }}" class="bar-link">
+                                                <span><i class="fas fa-hand-holding-usd"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.loans')</p>
                                     </div>
 
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">

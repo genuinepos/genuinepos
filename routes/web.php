@@ -549,6 +549,26 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::post('asset/update/{assetId}', 'AssetController@assetUpdate')->name('accounting.assets.update');
         Route::delete('asset/delete/{assetId}', 'AssetController@assetDelete')->name('accounting.assets.delete');
     });
+
+    Route::group(['prefix' => 'loans'], function () {
+        Route::group(['prefix' => '/'], function () {
+            Route::get('/', 'LoanController@index')->name('accounting.loan.index');
+            Route::post('store', 'LoanController@store')->name('accounting.loan.store');
+            Route::get('show', 'LoanController@show')->name('accounting.loan.show');
+            Route::get('edit/{loanId}', 'LoanController@edit')->name('accounting.loan.edit');
+            Route::post('update/{loanId}', 'LoanController@update')->name('accounting.loan.update');
+            Route::delete('delete/{loanId}', 'LoanController@delete')->name('accounting.loan.delete');
+        });
+
+        Route::group(['prefix' => 'companies'], function () {
+            Route::get('/', 'LoanCompanyController@index')->name('accounting.loan.companies.index');
+            Route::post('store', 'LoanCompanyController@store')->name('accounting.loan.companies.store');
+            Route::get('edit/{companyId}', 'LoanCompanyController@edit')->name('accounting.loan.companies.edit');
+            Route::post('update/{companyId}', 'LoanCompanyController@update')->name('accounting.loan.companies.update');
+            Route::delete('delete/{companyId}', 'LoanCompanyController@delete')->name('accounting.loan.companies.delete');
+        });
+        
+    });
 });
 
 Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], function () {

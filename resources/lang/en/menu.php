@@ -66,6 +66,7 @@ return [
   'account_types' => 'Account Types',
   'accounts' => 'Accounts',
   'assets' => 'Assets',
+  'loans' => 'Loans',
   'balance_sheet' => 'Balance Sheet',
   'trial_balance' => 'Trial Balance',
   'cash_flow' => 'Cash Flow',

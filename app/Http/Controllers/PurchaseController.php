@@ -146,18 +146,14 @@ class PurchaseController extends Controller
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
-                })
-                ->editColumn('date', function ($row) use ($generalSettings) {
+                })->editColumn('date', function ($row) use ($generalSettings) {
                     return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
-                })
-                ->editColumn('invoice_id', function ($row) {
+                })->editColumn('invoice_id', function ($row) {
                     $html = '';
-                    // $html .= $row->is_return_available ? '<br>' : '';
                     $html .= $row->invoice_id;
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
-                })
-                ->editColumn('from',  function ($row) use ($generalSettings) {
+                })->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->warehouse_name) {
                         return $row->warehouse_name . '<b>(WH)</b>';
                     } elseif ($row->branch_name) {
@@ -165,23 +161,17 @@ class PurchaseController extends Controller
                     } else {
                         return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
                     }
-                })
-                ->editColumn('total_purchase_amount', function ($row) use ($generalSettings) {
+                })->editColumn('total_purchase_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_purchase_amount . '</b>';
-                })
-                ->editColumn('paid', function ($row) use ($generalSettings) {
+                })->editColumn('paid', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid . '</b>';
-                })
-                ->editColumn('due', function ($row) use ($generalSettings) {
+                })->editColumn('due', function ($row) use ($generalSettings) {
                     return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ($row->due >= 0 ? $row->due :   0.00) . '</span></b>';
-                })
-                ->editColumn('return_amount', function ($row) use ($generalSettings) {
+                })->editColumn('return_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_amount . '</b>';
-                })
-                ->editColumn('return_due', function ($row) use ($generalSettings) {
+                })->editColumn('return_due', function ($row) use ($generalSettings) {
                     return '<b><span class="text-success">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_due . '</span></b>';
-                })
-                ->editColumn('status', function ($row) {
+                })->editColumn('status', function ($row) {
                     $html = '';
                     if ($row->purchase_status == 1) {
                         $html .= '<span class="text-success"><b>Received</b></span>';
@@ -191,8 +181,7 @@ class PurchaseController extends Controller
                         $html .= '<span class="text-warning"><b>Ordered</b></span>';
                     }
                     return $html;
-                })
-                ->editColumn('payment_status', function ($row) {
+                })->editColumn('payment_status', function ($row) {
                     $html = '';
                     $payable = $row->total_purchase_amount - $row->purchase_return_amount;
                     if ($row->due <= 0) {
@@ -203,16 +192,13 @@ class PurchaseController extends Controller
                         $html .= '<span class="text-danger"><b>Due</b></span>';
                     }
                     return $html;
-                })
-                ->editColumn('created_by', function ($row) {
+                })->editColumn('created_by', function ($row) {
                     return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
-                })
-                ->setRowAttr([
+                })->setRowAttr([
                     'data-href' => function ($row) {
                         return route('purchases.show', [$row->id]);
                     }
-                ])
-                ->setRowClass('clickable_row')
+                ])->setRowClass('clickable_row')
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'return_amount', 'return_due', 'payment_status', 'status', 'created_by'])
                 ->make(true);
         }
@@ -518,7 +504,6 @@ class PurchaseController extends Controller
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
         $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
 
-        //return $request->all();
         if (isset($request->warehouse_id)) {
             $this->validate($request, [
                 'warehouse_id' => 'required',
@@ -990,7 +975,7 @@ class PurchaseController extends Controller
     // Add product modal view with data
     public function addProductModalVeiw()
     {
-        $units =  DB::table('units')->select('id', 'name')->get();
+        $units =  DB::table('units')->select('id', 'name', 'code_name')->get();
         $warranties = DB::table('warranties')->select('id', 'name', 'type')->get();
         $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
         $categories =  DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
@@ -1012,14 +997,12 @@ class PurchaseController extends Controller
             [
                 'name' => 'required',
                 'product_code' => 'required',
-                'category_id' => 'required',
                 'unit_id' => 'required',
                 'product_price' => 'required',
                 'product_cost' => 'required',
                 'product_cost_with_tax' => 'required',
             ],
             [
-                'category_id.required' => 'Category field is required.',
                 'unit_id.required' => 'Product unit field is required.',
             ]
         );

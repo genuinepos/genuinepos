@@ -206,7 +206,7 @@ class SaleController extends Controller
         }
 
         // generate invoice ID
-        $i = 4;
+        $i = 5;
         $a = 0;
         $invoiceId = '';
         while ($a < $i) {

@@ -129,9 +129,7 @@
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
-
-                                                        </tbody>
+                                                        <tbody></tbody>
                                                     </table>
                                                     <form id="deleted_asset_form" action="" method="post">
                                                         @method('DELETE')

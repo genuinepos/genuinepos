@@ -62,6 +62,11 @@ class CashFlow extends Model
         return $this->belongsTo(MoneyReceipt::class, 'money_receipt_id');
     }
 
+    public function loan()
+    {
+        return $this->belongsTo(Loan::class, 'loan_id');
+    }
+
     public function admin()
     {
         return $this->belongsTo(AdminAndUser::class, 'admin_id');

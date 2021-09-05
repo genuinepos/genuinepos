@@ -39,6 +39,7 @@
                 $('.loading_button').hide();
                 $('.submit_button').prop('type', 'submit');
                 companies_table.ajax.reload();
+                allCompanies();
             },
             error: function(err) {
                 $('.loading_button').hide();
@@ -78,6 +79,7 @@
             success: function(data) {
                 toastr.success(data);
                 companies_table.ajax.reload();
+                allCompanies();
                 $('.loading_button').hide();
                 $('#add_com_form').show();
                 $('#edit_com_form').hide();
@@ -120,6 +122,7 @@
                 toastr.error(data);
                 companies_table.ajax.reload();
                 loans_table.ajax.reload();
+                allCompanies();
                 $('#delete_companies_form')[0].reset();
             }
         });

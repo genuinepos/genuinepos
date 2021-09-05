@@ -172,10 +172,10 @@ class AccountingRelatedSectionController extends Controller
                 'money_receipt.customer',
                 'payroll',
                 'payroll_payment',
+                'loan',
+                'loan.company',
             ]
-        )
-            ->orderBy('id', 'desc')
-            ->get();
+        )->orderBy('id', 'desc')->get();
         return view('accounting.related_sections.ajax_view.cash_flows_list', compact('CashFlows'));
     }
 
@@ -199,6 +199,8 @@ class AccountingRelatedSectionController extends Controller
                 'money_receipt.customer',
                 'payroll',
                 'payroll_payment',
+                'loan',
+                'loan.company',
             ]
         );
 

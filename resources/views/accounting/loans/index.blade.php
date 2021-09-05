@@ -1,6 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
 <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
 @endpush
 @section('title', 'Loans - ')
 @section('content')
@@ -18,31 +19,6 @@
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_tax_report_form" action="" method="get">
-                                            @csrf
-                                            <div class="form-group row">
-                                                <div class="col-md-3">
-                                                    <label><strong>Company :</strong></label>
-                                                    <select name="company_id" class="form-control submit_able" id="company_id" autofocus>
-                                                        <option value="">All</option>
-                                                    </select>
-                                                </div>
-                                    
-                                                <div class="col-md-3">
-                                                    <label><strong>Date range :</strong></label>
-                                                    <input type="text" class="form-control" id="date_range">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="sec-name mt-1">
@@ -65,6 +41,44 @@
                         @include('accounting.loans.bodyPartials.companyBody')
 
                         <div class="row tab_contant loans mt-1">
+                            <div class="col-md-12">
+                                <div class="sec-name">
+                                    <div class="col-md-12">
+                                        <form id="filter_tax_report_form" action="" method="get">
+                                            @csrf
+                                            <div class="form-group row">
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-3">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                                                <option value="">All</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $br)
+                                                                    <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                                
+                                                <div class="col-md-3">
+                                                    <label><strong>Company :</strong></label>
+                                                    <select name="company_id" class="form-control submit_able" id="f_company_id" autofocus>
+                                                        <option value="">All</option>
+                                                    </select>
+                                                </div>
+                                    
+                                                <div class="col-md-3">
+                                                    <label><strong>Date range :</strong></label>
+                                                    <input type="text" class="form-control daterange submit_able_input" id="date_range">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                           
                             <div class="col-md-4">
                                 <div class="card" id="add_loan_form">
                                     <div class="section-header">
@@ -81,9 +95,6 @@
                                                     <label><strong>Company : <span class="text-danger">*</span></strong></label>
                                                     <select name="company_id" class="form-control" id="company_id">
                                                         <option value="">Select Company</option>
-                                                        @foreach ($companies as $company)
-                                                            <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                                        @endforeach
                                                     </select>
                                                     <span class="error error_company_id"></span>
                                                 </div>
@@ -194,6 +205,8 @@
     </div>
 @endsection
 @push('scripts')
+    <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
+    <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
     @include('accounting.loans.jsPartials.companyBodyJs')
     <script>
         var loans_table = $('.data_tbl2').DataTable({
@@ -206,7 +219,14 @@
             processing: true,
             serverSide: true,
             searchable: true,
-            ajax: "{{ route('accounting.loan.index') }}",
+            "ajax": {
+                "url": "{{ route('accounting.loan.index') }}",
+                "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
+                    d.company_id = $('#f_company_id').val();
+                    d.date_range = $('#date_range').val();
+                }
+            },
             columns: [
                 {data: 'action', name: 'action'},
                 {data: 'report_date',name: 'report_date'},
@@ -334,9 +354,73 @@
             });
         });
 
+        function allCompanies() {
+            var url = "{{ route('accounting.loan.all.companies.for.form') }}";
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(companies) {
+                    console.log(companies);
+                    $('#company_id').empty();
+                    $('#f_company_id').empty();
+                    $('#company_id').append('<option value="">Select Company</option>');
+                    $('#f_company_id').append('<option value="">All</option>');
+                    $.each(companies, function (key, com) {
+                        $('#company_id').append('<option value="'+com.id +'">'+com.name+'</option>');
+                        $('#f_company_id').append('<option value="'+com.id +'">'+com.name+'</option>');
+                    })
+                }
+            });
+        }
+        allCompanies();
+
         $(document).on('click', '#close_loan_edit_form', function() {
             $('#add_loan_form').show();
             $('#edit_loan_form').hide();
+        });
+
+        //Submit filter form by select input changing
+        $(document).on('change', '.submit_able', function () {
+            loans_table.ajax.reload();
+        });
+
+        //Submit filter form by date-range field blur 
+        $(document).on('blur', '.submit_able_input', function () {
+            setTimeout(function() {
+                loans_table.ajax.reload();
+            }, 500);
+        });
+
+        //Submit filter form by date-range apply button
+        $(document).on('click', '.applyBtn', function () {
+            setTimeout(function() {
+                $('.submit_able_input').addClass('.form-control:focus');
+                $('.submit_able_input').blur();
+            }, 500);
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function() {
+            var start = moment().startOf('year');
+            var end = moment().endOf('year');
+            $('.daterange').daterangepicker({
+                buttonClasses: ' btn',
+                applyClass: 'btn-primary',
+                cancelClass: 'btn-secondary',
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
+                    'This Year': [moment().startOf('year'), moment().endOf('year')],
+                    'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
+                }
+            });
         });
     </script>
 @endpush

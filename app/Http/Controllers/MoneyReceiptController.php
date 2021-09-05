@@ -21,7 +21,8 @@ class MoneyReceiptController extends Controller
 
     public function moneyReceiptList($customerId)
     {
-        $customer = Customer::with('receipts', 'receipts.branch')->where('id', $customerId)
+        $customer = Customer::with('receipts', 'receipts.branch')
+            ->where('id', $customerId)
             ->first();
         return view('contacts.customers.ajax_view.money_receipt_list', compact('customer'));
     }
@@ -229,7 +230,7 @@ class MoneyReceiptController extends Controller
                         $addCashFlow->account_id = $request->account_id;
                         $addCashFlow->credit = $request->amount;
                         $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addSalePayment->id;
+                        $addCashFlow->sale_payment_id = $addSalePayment->id;
                         $addCashFlow->transaction_type = 2;
                         $addCashFlow->cash_type = 2;
                         $addCashFlow->date = date('d-m-Y', strtotime($request->date));
@@ -285,7 +286,7 @@ class MoneyReceiptController extends Controller
                         $addCashFlow->account_id = $request->account_id;
                         $addCashFlow->credit = $request->amount;
                         $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addSalePayment->id;
+                        $addCashFlow->sale_payment_id = $addSalePayment->id;
                         $addCashFlow->transaction_type = 2;
                         $addCashFlow->cash_type = 2;
                         $addCashFlow->date = date('d-m-Y', strtotime($request->date));
@@ -364,67 +365,6 @@ class MoneyReceiptController extends Controller
                 }
                 $index++;
             }
-            if ($request->amount > 0) {
-                if ($request->account_id) {
-                    // update account
-                    $account = Account::where('id', $request->account_id)->first();
-                    $account->credit += $request->amount;
-                    $account->balance += $request->amount;
-                    $account->save();
-    
-                    //Add cash flow
-                    $addCashFlow = new CashFlow();
-                    $addCashFlow->account_id = $request->account_id;
-                    $addCashFlow->credit = $request->amount;
-                    $addCashFlow->balance = $account->balance;
-                    $addCashFlow->money_receipt_id = $receipt->id;
-                    $addCashFlow->transaction_type = 9;
-                    $addCashFlow->cash_type = 2;
-                    $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                    $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                    $addCashFlow->month = date('F');
-                    $addCashFlow->year = date('Y');
-                    $addCashFlow->admin_id = auth()->user()->id;
-                    $addCashFlow->save();
-                }
-            }
-            
-            $addCustomerLedger = new CustomerLedger();
-            $addCustomerLedger->customer_id = $receipt->customer_id;
-            $addCustomerLedger->row_type = 4;
-            $addCustomerLedger->money_receipt_id = $receipt->id;
-            $addCustomerLedger->amount = $request->amount;
-            $addCustomerLedger->save();
-        } else {
-            if ($request->account_id) {
-                // update account
-                $account = Account::where('id', $request->account_id)->first();
-                $account->credit += $request->amount;
-                $account->balance += $request->amount;
-                $account->save();
-
-                //Add cash flow
-                $addCashFlow = new CashFlow();
-                $addCashFlow->account_id = $request->account_id;
-                $addCashFlow->credit = $request->amount;
-                $addCashFlow->balance = $account->balance;
-                $addCashFlow->money_receipt_id = $receipt->id;
-                $addCashFlow->transaction_type = 9;
-                $addCashFlow->cash_type = 2;
-                $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                $addCashFlow->month = date('F');
-                $addCashFlow->year = date('Y');
-                $addCashFlow->admin_id = auth()->user()->id;
-                $addCashFlow->save();
-            }
-
-            $addCustomerLedger = new CustomerLedger();
-            $addCustomerLedger->customer_id = $receipt->customer_id;
-            $addCustomerLedger->row_type = 4;
-            $addCustomerLedger->money_receipt_id = $receipt->id;
-            $addCustomerLedger->amount = $request->amount;
-            $addCustomerLedger->save();
         }
         return response()->json('Successfully money receipt voucher is completed.');
     }

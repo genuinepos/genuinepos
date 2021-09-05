@@ -62,9 +62,9 @@
                                 <th>S/L</th>
                                 <th>Name</th>
                                 <th>Pay loan amount</th>
-                                <th>Total Pay</th>
-                                <th>Get Loan Amount</th>
                                 <th>Total Receive</th>
+                                <th>Get Loan Amount</th>
+                                <th>Total Pay</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

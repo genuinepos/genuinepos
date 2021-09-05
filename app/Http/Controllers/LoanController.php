@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Loan;
 use App\Models\Account;
+use App\Models\CashFlow;
 use App\Models\LoanCompany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,12 +20,35 @@ class LoanController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
-            $loans = DB::table('loans')
+            $loans = '';
+            $query = DB::table('loans')
                 ->leftJoin('branches', 'loans.branch_id', 'branches.id')
                 ->leftJoin('loan_companies', 'loans.loan_company_id', 'loan_companies.id')
-                ->leftJoin('accounts', 'loans.account_id', 'accounts.id')
-                ->select(
+                ->leftJoin('accounts', 'loans.account_id', 'accounts.id');
+
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('loans.branch_id', NULL);
+                } else {
+                    $query->where('loans.branch_id', $request->branch_id);
+                }
+            }
+
+            if ($request->company_id) {
+                $query->where('loans.loan_company_id', $request->company_id);
+            }
+
+            if ($request->date_range) {
+                $date_range = explode('-', $request->date_range);
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                $to_date = date('Y-m-d', strtotime($date_range[1]));
+                $query->whereBetween('loans.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            }
+
+            $generalSettings = DB::table('general_settings')->first();
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+                $loans = $query->select(
                     'loans.*',
                     'loan_companies.name as c_name',
                     'accounts.name as ac_name',
@@ -32,6 +56,16 @@ class LoanController extends Controller
                     'branches.name as b_name',
                     'branches.branch_code as b_code',
                 )->get();
+            }else {
+                $loans = $query->select(
+                    'loans.*',
+                    'loan_companies.name as c_name',
+                    'accounts.name as ac_name',
+                    'accounts.account_number as ac_number',
+                    'branches.name as b_name',
+                    'branches.branch_code as b_code',
+                )->where('loans.branch_id', auth()->user()->branch_id)->get();
+            }
             
             return DataTables::of($loans)
                 ->addColumn('action', function ($row) {
@@ -44,10 +78,10 @@ class LoanController extends Controller
 
                     if ($row->type == 1) {
                         $html .= '<a class="dropdown-item" id="receive_due_loan" href="#"><i class="far fa-money-bill-alt text-primary"></i> Receive Amount</a>';
-                    }else {
+                    } else {
                         $html .= '<a class="dropdown-item" id="pay_due_loan" href="#"><i class="far fa-money-bill-alt text-primary"></i> Pay Amount</a>';
                     }
-                    
+
                     $html .= '<a class="dropdown-item" id="delete_loan" href="' . route('accounting.loan.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
@@ -63,20 +97,20 @@ class LoanController extends Controller
                 })->editColumn('type', function ($row) {
                     if ($row->type == 1) {
                         return '<span class="text-success"><strong>Pay Loan</strong></span>';
-                    }else {
+                    } else {
                         return '<span class="text-danger"><strong>Get Loan</strong></span>';
                     }
                 })->editColumn('loan_amount', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'].' '. $row->loan_amount;
+                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->loan_amount;
                 })->editColumn('due', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'].' '. $row->due;
+                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
                 })->editColumn('total_paid', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'].' '. $row->total_paid;
+                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_paid;
                 })->rawColumns(['report_date', 'branch', 'type', 'loan_amount', 'due', 'total_paid', 'action'])->smart(true)->make(true);
         }
-        $companies = DB::table('loan_companies')->select('id', 'name')->get();
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
-        return view('accounting.loans.index', compact('companies', 'accounts'));
+        return view('accounting.loans.index', compact('branches', 'accounts'));
     }
 
     public function store(Request $request)
@@ -107,7 +141,7 @@ class LoanController extends Controller
         $addLoan->loan_company_id = $request->company_id;
         $addLoan->type = $request->type;
         $addLoan->loan_amount = $request->loan_amount;
-        $addLoan->due = $request->due;
+        $addLoan->due = $request->loan_amount;
         $addLoan->account_id = $request->account_id;
         $addLoan->loan_reason = $request->loan_reason;
         $addLoan->created_user_id = auth()->id();
@@ -136,7 +170,26 @@ class LoanController extends Controller
                 $account->save();
             }
 
-            // Cashflow will be go here.
+            // Add cash flow
+            $addCashFlow = new CashFlow();
+            $addCashFlow->account_id = $request->account_id;
+            if ($request->type == 1) {
+                $addCashFlow->debit = $request->loan_amount;
+                $addCashFlow->cash_type = 1;
+            } else {
+                $addCashFlow->credit = $request->loan_amount;
+                $addCashFlow->cash_type = 2;
+            }
+
+            $addCashFlow->balance = $account->balance;
+            $addCashFlow->loan_id = $addLoan->id;
+            $addCashFlow->transaction_type = 10;
+            $addCashFlow->date = date('d-m-Y');
+            $addCashFlow->report_date = date('Y-m-d');
+            $addCashFlow->month = date('F');
+            $addCashFlow->year = date('Y');
+            $addCashFlow->admin_id = auth()->id();
+            $addCashFlow->save();
         }
 
         return response()->json('Loan created Successfully');
@@ -167,8 +220,6 @@ class LoanController extends Controller
         ]);
 
         $updateLoan =  Loan::where('id', $loanId)->first();
-    
-
         $previousCompany = LoanCompany::where('id', $updateLoan->loan_company_id)->first();
         if ($previousCompany) {
             if ($updateLoan->type == 1) {
@@ -192,7 +243,7 @@ class LoanController extends Controller
             $addCompanyLoanAmount->get_loan_due = $addCompanyLoanAmount->get_loan_amount + $request->loan_amount;
             $addCompanyLoanAmount->save();
         }
-        
+
         $previousAccount = Account::where('id', $updateLoan->account_id)->first();
         if ($previousAccount) {
             if ($updateLoan->type == 1) {
@@ -217,7 +268,23 @@ class LoanController extends Controller
                 $presentAccount->credit += (float)$request->loan_amount;
                 $presentAccount->save();
             }
-            // Cashflow will be go here.
+
+            $addCashFlow = CashFlow::where('loan_id', $updateLoan->id)->where('loan_payment_id', NULL)->first();
+            $addCashFlow->account_id = $request->account_id;
+            if ($request->type == 1) {
+                $addCashFlow->debit = $request->loan_amount;
+                $addCashFlow->credit = NULL;
+                $addCashFlow->cash_type = 1;
+            } else {
+                $addCashFlow->credit = $request->loan_amount;
+                $addCashFlow->debit = NULL;
+                $addCashFlow->cash_type = 2;
+            }
+
+            $addCashFlow->balance = $presentAccount->balance;
+            $addCashFlow->loan_id = $updateLoan->id;
+            $addCashFlow->transaction_type = 10;
+            $addCashFlow->save();
         }
 
         $updateLoan->loan_company_id = $request->company_id;
@@ -268,5 +335,10 @@ class LoanController extends Controller
 
         $loan->delete();
         return response()->json('Loan deleted Successfully');
+    }
+
+    public function allCompaniesForForm()
+    {
+        return DB::table('loan_companies')->select('id', 'name')->get();
     }
 }

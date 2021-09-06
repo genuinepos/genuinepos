@@ -28,8 +28,8 @@ class CustomerController extends Controller
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
             $customers = DB::table('customers')
-            ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
-            ->select('customers.*', 'customer_groups.group_name')->get();
+                ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
+                ->select('customers.*', 'customer_groups.group_name')->get();
             return DataTables::of($customers)
                 ->addColumn('action', function ($row) {
                     $html = '';
@@ -68,35 +68,28 @@ class CustomerController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('business_name', function ($row)
-                {
+                ->editColumn('business_name', function ($row) {
                     return $row->business_name ? $row->business_name : '...';
                 })
-                ->editColumn('tax_number', function ($row)
-                {
+                ->editColumn('tax_number', function ($row) {
                     return $row->tax_number ? $row->tax_number : '...';
                 })
-                ->editColumn('group_name', function ($row)
-                {
+                ->editColumn('group_name', function ($row) {
                     return $row->group_name ? $row->group_name : '...';
                 })
-                ->editColumn('opening_balance', function ($row) use ($generalSettings)
-                {
-                    return json_decode($generalSettings->business, true)['currency'].' '.$row->opening_balance;
+                ->editColumn('opening_balance', function ($row) use ($generalSettings) {
+                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->opening_balance;
                 })
-                ->editColumn('total_sale_due', function ($row) use ($generalSettings)
-                {
-                    return '<span class="'. ($row->total_sale_due < 0 ? 'text-danger' : '') .'">'.json_decode($generalSettings->business, true)['currency'].' '.$row->total_sale_due.'</span>';
+                ->editColumn('total_sale_due', function ($row) use ($generalSettings) {
+                    return '<span class="' . ($row->total_sale_due < 0 ? 'text-danger' : '') . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_due . '</span>';
                 })
-                ->editColumn('total_sale_return_due', function ($row) use ($generalSettings)
-                {
-                    return json_decode($generalSettings->business, true)['currency'].' '.$row->total_sale_return_due;
+                ->editColumn('total_sale_return_due', function ($row) use ($generalSettings) {
+                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_return_due;
                 })
-                ->editColumn('status', function ($row) 
-                {
-                    if ($row->status == 1){
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 1) {
                         return '<i class="far fa-thumbs-up text-success"></i>';
-                    }else { 
+                    } else {
                         return '<i class="far fa-thumbs-down text-danger"></i>';
                     }
                 })
@@ -391,8 +384,11 @@ class CustomerController extends Controller
     // Customer ledger list
     public function ledgerList($customerId)
     {
-        $ledgers = CustomerLedger::with(['sale', 'sale_payment', 'sale_payment.sale', 'money_receipt'])->where('customer_id', $customerId)->orderBy('id', 'desc')->get();
-        return view('contacts.customers.ajax_view.ledger_list', compact('ledgers'));
+        $ledgers = CustomerLedger::with(['sale', 'sale_payment', 'sale_payment.sale', 'money_receipt'])
+            ->where('customer_id', $customerId)
+            ->orderBy('id', 'desc')->get();
+        $customer = DB::table('customers')->where('id', $customerId)->select('id', 'contact_id', 'name')->first();
+        return view('contacts.customers.ajax_view.ledger_list', compact('ledgers', 'customer'));
     }
 
     // Customer ledger 

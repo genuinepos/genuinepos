@@ -46,8 +46,6 @@
                                         Ledger</a></li>
                                 <li><a id="tab_btn" data-show="purchases" class="tab_btn" href=""><i
                                             class="fas fa-shopping-bag"></i> Purchases</a></li>
-                                <li><a id="tab_btn" data-show="documents_and_note" class="tab_btn" href=""><i
-                                            class="far fa-folder-open"></i> Documents & Note</a></li>
                             </ul>
                         </div>
                         <div class="tab_contant contract_info_area">

@@ -39,33 +39,6 @@
 
                         <div class="ledger">
                             <div class="row">
-                                <div class="col-md-5 offset-7">
-                                    <div class="company_info text-end">
-                                        <ul class="list-unstyled">
-                                            <li><strong
-                                                    class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</strong>
-                                            </li>
-                                            <li><span
-                                                    class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12 col-lg-6">
-                                    <div class="account_summary_area">
-                                        <div class="heading py-2">
-                                            <h4 class="py-2 pl-1">To :</h4>
-                                        </div>
-                                    </div>
-                                    <div class="sand_info">
-                                        <ul class="list-unstyled">
-                                            <li><strong class="name">Jamal Hosain</strong></li><br>
-                                            <li>Phone:<span class="phone"> 01122555545545</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
                                 <div class="col-md-6 col-sm-12 col-lg-6">
                                     <div class="account_summary_area">
                                         <div class="heading py-2">
@@ -198,6 +171,5 @@
             });
         }
         getCustomerAllInformations();
-
     </script>
 @endpush

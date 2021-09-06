@@ -4,6 +4,7 @@
         .top-menu-area ul li {display: inline-block;margin-right: 3px;}
         .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
     </style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('title', 'HRM Leaves - ')
 @section('content')
@@ -165,12 +166,12 @@
                         <div class="form-group row mt-1">
                             <div class="form-group col-6">
                                 <label><b>Start Date :</b> <span class="text-danger">*</span></label>
-                                <input type="date" name="start_date" required="" class="form-control">
+                                <input type="text" name="start_date" required class="form-control datepicker" autocomplete="off" placeholder="Start Date">
                             </div>
 
                             <div class="form-group col-6">
                               <label><b>End Date :</b> <span class="text-danger">*</span></label>
-                              <input type="date" name="end_date" required class="form-control">
+                              <input type="text" name="end_date" required class="form-control datepicker" autocomplete="off" placeholder="End Date">
                             </div>
                         </div>
 
@@ -246,12 +247,12 @@
                         <div class="form-group row mt-1">
                             <div class="form-group col-6">
                                 <label><b>Start Date :</b> <span class="text-danger">*</span></label>
-                                <input type="date" name="start_date" id="e_start_date" required="" class="form-control">
+                                <input required type="text" name="start_date" id="e_start_date" class="form-control datepicker" placeholder="Start Date" autocomplete="off">
                             </div>
 
                             <div class="form-group col-6">
                               <label><b>End Date :</b> <span class="text-danger">*</span></label>
-                              <input type="date" name="end_date" id="e_end_date" required="" class="form-control">
+                              <input required type="text" name="end_date" id="e_end_date" class="form-control datepicker" placeholder="End Date" autocomplete="off">
                             </div>
                         </div>
 
@@ -275,7 +276,7 @@
     </div>
 @endsection
 @push('scripts')
-
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
     // Get all category by ajax
     function getAllLeave(){
@@ -406,5 +407,12 @@
             });
         });
     });
+
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
 </script>
 @endpush

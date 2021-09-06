@@ -12,7 +12,6 @@ class NameSearchUtil
             ->where('status', 1)->orderBy('id', 'desc')
             ->get();
 
-      
         if ($namedProducts && count($namedProducts) > 0) {
             return response()->json(['namedProducts' => $namedProducts]);
         } else {

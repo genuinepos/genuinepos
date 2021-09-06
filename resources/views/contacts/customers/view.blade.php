@@ -81,32 +81,6 @@
 
                             <div class="tab_contant ledger d-none">
                                 <div class="row">
-                                    <div class="col-md-5 offset-7">
-                                        <div class="company_info text-right">
-                                            <ul class="list-unstyled">
-                                                <li><strong
-                                                        class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</strong>
-                                                </li>
-                                                <li><span class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12 col-lg-6">
-                                        <div class="account_summary_area">
-                                            <div class="heading py-2">
-                                                <h4 class="py-2 pl-1">To :</h4>
-                                            </div>
-                                        </div>
-                                        <div class="sand_info">
-                                            <ul class="list-unstyled">
-                                                <li><strong class="name">Jamal Hosain</strong></li><br>
-                                                <li>Phone:<span class="phone"> 01122555545545</span></li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                     <div class="col-md-6 col-sm-12 col-lg-6">
                                         <div class="account_summary_area">
                                             <div class="heading py-2">
@@ -292,6 +266,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[3, 'asc']],
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax:"{{ url('contacts/customers/view', $customerId) }}",
             columnDefs: [{
                 "targets": [0],
@@ -447,18 +422,8 @@
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() { console.log('Deleted canceled.');}}
                 }
             });
         });

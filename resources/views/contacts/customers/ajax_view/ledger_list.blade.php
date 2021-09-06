@@ -1,12 +1,8 @@
     <style>
-    .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #cbe4ee }
-    .table-striped tbody tr:nth-of-type(odd) {
-    /* background-color: #EBEDF3;*/
-        background-color: #cbe4ee;
-    } 
+        .table-striped tbody tr:nth-of-type(odd) {background-color: #cbe4ee }
+        .table-striped tbody tr:nth-of-type(odd) {background-color: #cbe4ee;} 
     </style>
-<table class="display data_tbl data__table table-striped table-bordered">
+<table class="display data_tbl2 data__table table-striped">
     <thead>
         <tr>
             <th>Date</th>
@@ -20,7 +16,7 @@
         </tr>
     </thead>
 
-    <thead>
+    <tbody>
         @foreach ($ledgers as $ledger)
             <tr>
                 @if ($ledger->row_type == 1)
@@ -85,5 +81,18 @@
                 @endif
             </tr>
         @endforeach
-    </thead>
+    </tbody>
 </table>
+
+<script>
+    $('.data_tbl2').DataTable({
+        dom: "lBfrtip",
+        buttons: [ 
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary', title : "Customer Ledger Of {{$customer->name.' (ID:'.$customer->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary', title : "Customer Ledger Of {{$customer->name.' (ID:'.$customer->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary', title : "Customer Ledger Of {{$customer->name.' (ID:'.$customer->contact_id.')'}}",exportOptions: {columns: 'th:not(:first-child)'}},
+        ],
+        aaSorting: [[0, 'desc']],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+    });
+</script>

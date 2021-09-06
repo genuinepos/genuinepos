@@ -5,6 +5,7 @@
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
     <link href="{{ asset('public/backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -199,7 +200,7 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Expired Date :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="date" name="expired_date" class="form-control" autocomplete="off" value="{{$product->expire_date ? date('Y-m-d', strtotime($product->expire_date)) : '' }}">
+                                                        <input type="text" name="expired_date" class="form-control datepicker" autocomplete="off" value="{{ $product->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($product->expire_date)) : '' }}" placeholder="Expired Date">
                                                     </div>
                                                 </div>
                                             </div>
@@ -825,6 +826,7 @@
 @endsection
 @push('scripts')
 <script src="{{asset('public/backend/asset/js/jquery.cleditor.js')}}"></script>
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
     // Set parent category in parent category form field
     $('.combo_price').hide();
@@ -1666,5 +1668,12 @@
         getProductVariants();
     @endif
     $('#myEditor').cleditor();
+
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
 </script>
 @endpush

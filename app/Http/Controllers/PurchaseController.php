@@ -11,6 +11,7 @@ use App\Models\Supplier;
 use App\Utils\PurchaseUtil;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
+use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
 use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
@@ -25,8 +26,10 @@ use Yajra\DataTables\Facades\DataTables;
 class PurchaseController extends Controller
 {
     protected $purchaseUtil;
-    public function __construct(PurchaseUtil $purchaseUtil)
+    protected $nameSearchUtil;
+    public function __construct(NameSearchUtil $nameSearchUtil, PurchaseUtil $purchaseUtil)
     {
+        $this->nameSearchUtil = $nameSearchUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->middleware('auth:admin_and_user');
     }
@@ -829,21 +832,8 @@ class PurchaseController extends Controller
     // Search product by code
     public function searchProduct($product_code)
     {
-        $namedProducts = '';
-        $nameSearch = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', $product_code . '%')
-            ->where('status', 1)
-            ->get();
-
-        if (count($nameSearch) > 0) {
-            $namedProducts = $nameSearch;
-        }
-
-        if ($namedProducts && $namedProducts->count() > 0) {
-            return response()->json(['namedProducts' => $namedProducts]);
-        }
-
-        $product = Product::with(['product_variants', 'tax', 'unit'])->where('type', 1)
+        $product = Product::with(['product_variants', 'tax', 'unit'])
+            ->where('type', 1)
             ->where('product_code', $product_code)
             ->where('status', 1)->first();
 
@@ -851,8 +841,12 @@ class PurchaseController extends Controller
             return response()->json(['product' => $product]);
         } else {
             $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $product_code)->first();
-            return response()->json(['variant_product' => $variant_product]);
+            if ($variant_product) {
+                return response()->json(['variant_product' => $variant_product]);
+            }
         }
+
+        return $this->nameSearchUtil->nameSearching($product_code);
     }
 
     // delete purchase method
@@ -876,9 +870,9 @@ class PurchaseController extends Controller
                     $account->balance += $payment->paid_amount;
                     $account->save();
                 }
-            }    
+            }
         }
-        
+
         foreach ($deletePurchase->purchase_products as $purchase_product) {
             $updateProductQty = Product::where('id', $purchase_product->product_id)->first();
             $updateProductQty->quantity -= $purchase_product->quantity;

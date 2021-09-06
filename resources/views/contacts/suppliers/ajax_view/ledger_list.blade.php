@@ -12,7 +12,7 @@
         </tr>
     </thead>
 
-    <thead>
+    <tbody>
         @foreach ($ledgers as $ledger)
             <tr>
                 @if ($ledger->row_type == 1)
@@ -62,5 +62,5 @@
                 @endif
             </tr>
         @endforeach
-    </thead>
+    </tbody>
 </table>

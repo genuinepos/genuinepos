@@ -127,15 +127,7 @@
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<div class="input-group">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                tr += '</div>';
                                 tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                tr += '</div>';
-                                tr += '</div>';
                                 tr += '</td>';
                                 tr += '<td class="text">';
                                 tr += '<b><span class="span_unit">'+product.unit.name+'</span></b>'; 
@@ -267,15 +259,7 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<div class="input-group">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                            tr += '</div>';
                             tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text increase_qty_btn input-group-text-sale"><i class="fas fa-plus text-success "></i></a>';
-                            tr += '</div>';
-                            tr += '</div>';
                             tr += '</td>';
                             tr += '<td class="text">';
                             tr += '<b><span class="span_unit">'+variant_product.product.unit.name+'</span></b>'; 
@@ -461,19 +445,10 @@
                         tr += '<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
                         tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+product_cost_inc_tax+'">';
                         tr += '<input type="hidden" id="qty_limit" value="'+singleProductQty+'">';
-
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<div class="input-group">';
-                        tr += '<div class="input-group-prepend">';
-                        tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                        tr += '</div>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                        tr += '<div class="input-group-prepend">';
-                        tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                        tr += '</div>';
-                        tr += '</div>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
@@ -609,15 +584,7 @@
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<div class="input-group">';
-                        tr += '<div class="input-group-prepend">';
-                        tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                        tr += '</div>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                        tr += '<div class="input-group-prepend">';
-                        tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                        tr += '</div>';
-                        tr += '</div>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
@@ -794,30 +761,6 @@
             tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
             tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
             calculateTotalAmount();  
-        }
-    });
-
-    $(document).on('blur', '#quantity', function(){
-        var qty = $(this).val() ? $(this).val() : 0;
-        if (parseFloat(qty) >= 0) {
-            var tr = $(this).closest('tr');
-            var qty_limit = tr.find('#qty_limit').val();
-            var unit = tr.find('#unit').val();
-            if(parseInt(qty) > parseInt(qty_limit)){
-                toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
-                $(this).val(qty_limit);
-                var unitPrice = tr.find('#unit_price').val();
-                var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
-                tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-                tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount();  
-                return;
-            }
-            var unitPrice = tr.find('#unit_price').val();
-            var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
-            tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-            tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-            calculateTotalAmount(); 
         }
     });
 
@@ -1088,31 +1031,6 @@
             }
         });
     });
-
-    // Decrease qty
-    $(document).on('click', '.decrease_qty_btn', function (e) {
-        e.preventDefault();
-        var tr = $(this).closest('tr');
-        var presentQty = tr.find('#quantity').val();
-        var updateQty = parseFloat(presentQty) - 1;
-        if (updateQty < 0) {
-            updateQty = parseFloat(0).toFixed(2);
-        }
-        tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-        tr.find('#quantity').addClass('.form-control:focus');
-        tr.find('#quantity').blur();
-    });
-
-    // Iecrease qty
-    $(document).on('click', '.increase_qty_btn', function (e) {
-        e.preventDefault();
-        var tr = $(this).closest('tr');
-        var presentQty = tr.find('#quantity').val();
-        var updateQty = parseFloat(presentQty) + 1;
-        tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-        tr.find('#quantity').addClass('.form-control:focus');
-        tr.find('#quantity').blur();
-    })
 
     // Automatic remove searching product is found signal 
     setInterval(function(){

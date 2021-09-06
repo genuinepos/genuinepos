@@ -11,6 +11,8 @@
         .input-group-text-sale {font-size: 7px !important;}
         b{font-weight: 500; font-family: Arial, Helvetica, sans-serif;}
         #display_pre_due{font-weight: 800;}
+        input[type=number]#quantity::-webkit-inner-spin-button, 
+        input[type=number]#quantity::-webkit-outer-spin-button {opacity: 1;margin: 0;}
     </style>
     <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush

@@ -186,15 +186,7 @@
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<div class="input-group">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                tr += '</div>';
                                 tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                tr += '</div>';
-                                tr += '</div>';
                                 tr += '</td>';
                                 tr += '<td class="text">';
                                 tr += '<span class="span_unit">'+ product.unit.name +'</span>'; 
@@ -317,15 +309,7 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<div class="input-group">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                            tr += '</div>';
                             tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center form-control-sm" id="quantity">';
-                            tr += '<div class="input-group-prepend">';
-                            tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                            tr += '</div>';
-                            tr += '</div>';
                             tr += '</td>';
                             tr += '<td class="text">';
                             tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
@@ -497,15 +481,7 @@
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<div class="input-group">';
-                        tr += '<div class="input-group-prepend">';
-                        tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                        tr += '</div>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                        tr += '<div class="input-group-prepend">';
-                        tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                        tr += '</div>';
-                        tr += '</div>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
@@ -650,15 +626,7 @@
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<div class="input-group">';
-                        tr += '<div class="input-group-prepend">';
-                        tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                        tr += '</div>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                        tr += '<div class="input-group-prepend">';
-                        tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                        tr += '</div>';
-                        tr += '</div>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<span class="span_unit">'+product_unit+'</span>'; 
@@ -701,34 +669,6 @@
     // Quantity increase or dicrease and clculate row amount
     $(document).on('input', '#quantity', function(){
         var qty = $(this).val() ? $(this).val() : 0;
-        if (parseFloat(qty) >= 0) {
-            var tr = $(this).closest('tr');
-            var previousQty = tr.find('#previous_quantity').val();
-            var limit = tr.find('#qty_limit').val()
-            var qty_limit = parseFloat(previousQty) + parseFloat(limit);
-            if(parseInt(qty) > parseInt(qty_limit)){
-                alert('Quantity exceeds stock quantity!');
-                $(this).val(parseFloat(qty_limit).toFixed(2));
-                var unitPrice = tr.find('#unit_price').val();
-                var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
-                tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-                tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount();  
-                return;
-            }
-            var unitPrice = tr.find('#unit_price').val();
-            var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
-            tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-            tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-            calculateTotalAmount(); 
-        }
-    });
-
-    $(document).on('blur', '#quantity', function(){
-        var qty = $(this).val() ? $(this).val() : 0;
-        if (qty < 0) {
-            $(this).val(0);
-        }
         if (parseFloat(qty) >= 0) {
             var tr = $(this).closest('tr');
             var previousQty = tr.find('#previous_quantity').val();
@@ -992,32 +932,7 @@
         });
     });
 
-    // Decrease qty
-    $(document).on('click', '.decrease_qty_btn', function (e) {
-        e.preventDefault();
-        var tr = $(this).closest('tr');
-        var presentQty = tr.find('#quantity').val();
-        var updateQty = parseFloat(presentQty) - 1;
-        if (updateQty < 0) {
-            updateQty = parseFloat(0).toFixed(2);
-        }
-        tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-        tr.find('#quantity').addClass('.form-control:focus');
-        tr.find('#quantity').blur();
-    });
-
-        // Iecrease qty
-        $(document).on('click', '.increase_qty_btn', function (e) {
-        e.preventDefault();
-        var tr = $(this).closest('tr');
-        var presentQty = tr.find('#quantity').val();
-        var updateQty = parseFloat(presentQty) + 1;
-        tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-        tr.find('#quantity').addClass('.form-control:focus');
-        tr.find('#quantity').blur();
-    })
     // Automatic remove searching product is found signal 
-
     setInterval(function(){
         $('#search_product').removeClass('is-invalid');
     }, 500); 
@@ -1092,15 +1007,7 @@
                     tr += '</td>';
 
                     tr += '<td>';
-                    tr += '<div class="input-group">';
-                    tr += '<div class="input-group-prepend">';
-                    tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                    tr += '</div>';
                     tr += '<input value="'+product.quantity+'" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                    tr += '<div class="input-group-prepend">';
-                    tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                    tr += '</div>';
-                    tr += '</div>';
                     tr += '</td>';
                     tr += '<td class="text">';
                     tr += '<span class="span_unit">'+product.unit+'</span>'; 

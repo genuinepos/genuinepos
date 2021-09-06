@@ -138,10 +138,9 @@
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                 var tax_amount = parseFloat(product.tax != null ? product.product_cost/100 * product.tax.tax_percent : 0);
                                 var tr = '';
-                                tr += '<tr class="text-center">';
+                                tr += '<tr class="text-start>';
                                 tr += '<td>';
-                                tr += '<span class="product_name">'+product.name+'</span><br>';
-                                tr += '<span class="product_code">('+product.product_code+')</span><br>';
+                                tr += '<span class="product_name">'+product.name+'</span> ';
                                 tr += '<span class="product_variant"></span>';  
                                 tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
@@ -301,10 +300,9 @@
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                             var tax_amount = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * variant_product.product.tax.tax_percent : 0);
                             var tr = '';
-                            tr += '<tr class="text-center">';
+                            tr += '<tr class="text-start">';
                             tr += '<td>';
-                            tr += '<span class="product_name">'+variant_product.product.name+'</span><br>';
-                            tr += '<span class="product_code">('+variant_product.variant_code+')</span><br>';
+                            tr += '<span class="product_name">'+variant_product.product.name+'</span> ';
                             tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
@@ -446,10 +444,9 @@
 
         if(sameProduct == 0){
             var tr = '';
-            tr += '<tr class="text-center">';
+            tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<span class="product_name">'+product_name+'</span><br>';
-            tr += '<span class="product_code">('+product_code+')</span><br>';
+            tr += '<span class="product_name">'+product_name+'</span> ';
             tr += '<span class="product_variant"></span>';  
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
@@ -594,10 +591,9 @@
 
         if(sameVariant == 0){
             var tr = '';
-            tr += '<tr class="text-center">';
+            tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<span class="product_name">'+product_name+'</span><br>';
-            tr += '<span class="product_code">('+variant_code+')</span><br>';
+            tr += '<span class="product_name">'+product_name+'</span> ';
             tr += '<span class="product_variant">('+variant_name+')</span>';  
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
@@ -1080,10 +1076,9 @@
                 $('#paid').val(purchase.paid);
                 $.each(purchase.purchase_products,function (key, product) {
                     var tr = '';
-                    tr += '<tr class="text-center">';
+                    tr += '<tr class="text-start">';
                     tr += '<td>';
-                        tr += '<span class="product_name">'+product.product.name+'</span><br>';
-                        tr += '<span class="product_code">('+product.product.product_code+')</span><br>';
+                        tr += '<span class="product_name">'+product.product.name+'</span> ';
                         if (product.product_variant_id != null) {
                             tr += '<span class="product_variant">'+product.variant.variant_name+'</span>'; 
                         }else{

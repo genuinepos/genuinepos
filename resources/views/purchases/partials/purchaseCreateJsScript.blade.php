@@ -189,7 +189,7 @@
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                 var tax_amount = parseFloat(product.tax != null ? product.product_cost/100 * product.tax.tax_percent : 0);
                                 var tr = '';
-                                tr += '<tr class="text-center">';
+                                tr += '<tr class="text-start">';
                                 tr += '<td>';
                                 tr += '<span class="product_name">'+product.name+'</span>';
                                 tr += '<span class="product_variant"></span>';  
@@ -352,7 +352,7 @@
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                             var tax_amount = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * variant_product.product.tax.tax_percent : 0);
                             var tr = '';
-                            tr += '<tr class="text-center">';
+                            tr += '<tr class="text-start">';
                             tr += '<td>';
                             tr += '<span class="product_name">'+variant_product.product.name+'</span>';
                             tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
@@ -496,7 +496,7 @@
 
         if(sameProduct == 0){
             var tr = '';
-            tr += '<tr class="text-center">';
+            tr += '<tr class="text-start">';
             tr += '<td>';
             tr += '<span class="product_name">'+product_name+'</span><br>';
             tr += '<span class="product_variant"></span>';  
@@ -642,7 +642,7 @@
 
         if(sameVariant == 0){
             var tr = '';
-            tr += '<tr class="text-center">';
+            tr += '<tr class="text-start">';
             tr += '<td>';
             tr += '<span class="product_name">'+product_name+'</span>';
             tr += '<span class="product_variant">('+variant_name+')</span>';  

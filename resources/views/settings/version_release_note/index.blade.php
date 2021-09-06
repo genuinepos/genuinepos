@@ -59,6 +59,8 @@
                                         <li>Date-1/08/2021 (Now product code (SKU) is not required, generate automatically...)</li>
                                         <li>Date-1/08/2021 (Datatable default row length is 25 (previous was 10)...)</li>
                                         <li>Date-1/08/2021 (Refactor ProductController Code...)</li>
+                                        <li>Date-6/09/2021 (Formatted datepicker has been added in everywhere (Accouding to purpas)...)</li>
+                                        <li>Date-6/09/2021 (Add Printing system to profit/loss, sala purchase report)...</li>
                                     </ul>
                                 </div>
                             </div>

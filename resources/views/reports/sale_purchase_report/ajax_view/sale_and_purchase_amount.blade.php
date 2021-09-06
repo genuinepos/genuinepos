@@ -106,7 +106,7 @@
                             </tr>
     
                             <tr>
-                                <th> Sale Due: </th>
+                                <th> Sale Due : </th>
                                 <td>{{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ number_format((float)$total_sale_due, 2, '.', '') }}</td>
                             </tr>
@@ -133,7 +133,7 @@
                             {{ number_format((float)$saleMinusPurchase, 2, '.', '') }}
                         </span>
                     </h5>
-                    <h5 class="text-muted">Due amount : 
+                    <h5 class="text-muted">Due amount (Sale Due - Purchase Due) : 
                         <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
                             {{ number_format((float)$saleDueMinusPurchaseDue, 2, '.', '') }}

@@ -19,8 +19,8 @@
     foreach ($sales as $sale) {
         $total_sale += $sale->total_payable_amount - $sale->order_tax_amount;
         $total_sale_inc_tax += $sale->total_payable_amount;
-        $total_sale_due += $sale->due;
-        $total_sale_return += $sale->sale_return_amount;
+        $total_sale_due += $sale->due > 0 ? $sale->due : 0;
+        $total_sale_return += $sale->sale_return_amount > 0 ? $sale->sale_return_amount : 0;
     }
 
     $saleMinusPurchase = $total_sale_inc_tax - $total_sale_return - $total_purchase_inc_tax - $total_purchase_return;
@@ -138,7 +138,7 @@
                             {{ number_format((float)$saleMinusPurchase, 2, '.', '') }}
                         </span>
                     </h5>
-                    <h5 class="text-muted">Due amount : 
+                    <h5 class="text-muted">Due amount (Sale Due - Purchase Due) :
                         <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
                             {{ number_format((float)$saleDueMinusPurchaseDue, 2, '.', '') }}

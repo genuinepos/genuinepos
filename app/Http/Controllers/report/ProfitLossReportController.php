@@ -102,9 +102,8 @@ class ProfitLossReportController extends Controller
 
         if ($request->date_range) {
             $date_range = explode('-', $request->date_range);
-            //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
             $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+            $to_date = date('Y-m-d', strtotime($date_range[1]));
 
             $opening_stocks_query->whereBetween('created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
             $stock_adjustments_query->whereBetween('report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
@@ -187,5 +186,92 @@ class ProfitLossReportController extends Controller
                 return view('reports.profit_loss_report.ajax_view.profit_by_invoice', compact('invoices'));
             }
         }
+    }
+
+    // Print Profit Loss method
+    public function printProfitLoss(Request $request)
+    {
+        $opening_stocks = '';
+        $stock_adjustments = '';
+        $purchases = '';
+        $sales = '';
+        $expanses = '';
+        $transfer_to_branchs = '';
+        $transfer_to_warehouses = '';
+        $fromDate = '';
+        $toDate = '';
+        $branch_id = $request->branch_id;
+
+        $opening_stocks_query = DB::table('product_opening_stocks');
+        $stock_adjustments_query = DB::table('stock_adjustments');
+        $purchases_query = DB::table('purchases');
+        $sales_query = DB::table('sales');
+        $products = DB::table('products')->join('taxes', 'products.tax_id', 'taxes.id')
+            ->select(['products.*', 'taxes.tax_percent'])
+            ->get();
+        $expanses_query = DB::table('expanses');
+        $transfer_to_branchs_query = DB::table('transfer_stock_to_branches');
+        $transfer_to_warehouses_query = DB::table('transfer_stock_to_warehouses');
+
+        if ($request->branch_id) {
+            if ($request->branch_id == 'NULL') {
+                $opening_stocks_query->where('branch_id', NULL);
+                $stock_adjustments_query->where('branch_id', NULL);
+                $purchases_query->where('branch_id', NULL);
+                $sales_query->where('branch_id', NULL);
+                $expanses_query->where('branch_id', NULL);
+                $transfer_to_branchs_query->where('branch_id', NULL);
+                $transfer_to_warehouses_query->where('branch_id', NULL);
+            } else {
+                $opening_stocks_query->where('branch_id', $request->branch_id);
+                $stock_adjustments_query->where('branch_id', $request->branch_id);
+                $purchases_query->where('branch_id', $request->branch_id);
+                $sales_query->where('branch_id', $request->branch_id);
+                $expanses_query->where('branch_id', $request->branch_id);
+                $transfer_to_branchs_query->where('branch_id', $request->branch_id);
+                $transfer_to_warehouses_query->where('branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->date_range) {
+            $date_range = explode('-', $request->date_range);
+            $form_date = date('Y-m-d', strtotime($date_range[0]));
+            $to_date = date('Y-m-d', strtotime($date_range[1]));
+
+            $fromDate = date('Y-m-d', strtotime($date_range[0]));
+            $toDate = date('Y-m-d', strtotime($date_range[1]));
+
+            $opening_stocks_query->whereBetween('created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $stock_adjustments_query->whereBetween('report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $purchases_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $sales_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $expanses_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $transfer_to_branchs_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $transfer_to_warehouses_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+        }
+
+        $opening_stocks = $opening_stocks_query->select('id', 'unit_cost_inc_tax', 'subtotal')->get();
+        $stock_adjustments =  $stock_adjustments_query->get();
+        $purchases = $purchases_query->get();
+        $sales = $sales_query->get();
+        $expanses = $expanses_query->get();
+        $transfer_to_branchs = $transfer_to_branchs_query->get();
+        $transfer_to_warehouses = $transfer_to_warehouses_query->get();
+        return view(
+            'reports.profit_loss_report.ajax_view.printProfitLoss',
+            compact(
+                'opening_stocks',
+                'stock_adjustments',
+                'purchases',
+                'sales',
+                'products',
+                'expanses',
+                'transfer_to_branchs',
+                'transfer_to_warehouses',
+                'branch_id',
+                'fromDate',
+                'toDate',
+            )
+        );
     }
 }

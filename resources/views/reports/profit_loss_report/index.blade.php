@@ -30,12 +30,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
-                                    <div class="col-md-12">
+                                    <div class="col-md-8">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3 offset-md-6">
+                                                        <div class="col-md-4">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
@@ -52,20 +52,24 @@
                                                     @endif
                                                 @endif
                                                 
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
-                                                            autocomplete="off">
+                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label></label>
+                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -359,6 +363,30 @@
         }); 
     });
 
+    //Print Profit/Loss 
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('reports.profit.loss.print') }}";
+        var branch_id = $('#branch_id').val();
+        var date_range = $('#date_range').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {branch_id, date_range},
+            success:function(data){
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 700, 
+                    header: null,        
+                });
+            }
+        }); 
+    });
+
     function by_profit_data() {
         $('#by_profit_preloader').show();
         var profit_by = $('#profit_by').val();
@@ -375,8 +403,7 @@
             url:"{{url('reports/profit/loss/by')}}",
             type:'get',
             data:{profit_by: profit_by, by_profit_range : by_profit_range},
-            success:function(data){
-                console.log(data);
+            success:function(data) {
                 $('#by_profit_list').html(data);
                 $('#by_profit_preloader').hide();
             }

@@ -712,12 +712,14 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
         Route::get('sale/purchase/profit', 'ProfitLossReportController@salePurchaseProfit')->name('reports.profit.sale.purchase.profit');
         Route::get('filter/sale/purchase/profit/filter', 'ProfitLossReportController@filterSalePurchaseProfit')->name('reports.profit.filter.sale.purchase.profit');
         Route::get('by', 'ProfitLossReportController@profitBy');
+        Route::get('print', 'ProfitLossReportController@printProfitLoss')->name('reports.profit.loss.print');
     });
 
     Route::group(['prefix' => 'sales/purchase'], function () {
         Route::get('/', 'SalePurchaseReportController@index')->name('reports.sales.purchases.index');
         Route::get('sale/purchase/amounts', 'SalePurchaseReportController@salePurchaseAmounts')->name('reports.profit.sales.purchases.amounts');
         Route::get('filter/sale/purchase/amounts', 'SalePurchaseReportController@filterSalePurchaseAmounts')->name('reports.profit.sales.filter.purchases.amounts');
+        Route::get('print', 'SalePurchaseReportController@printSalePurchase')->name('reports.sales.purchases.print');
     });
 
     Route::group(['prefix' => 'suppliers'], function () {

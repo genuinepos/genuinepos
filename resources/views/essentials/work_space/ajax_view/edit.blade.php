@@ -49,12 +49,12 @@
     <div class="form-group row mt-1">
         <div class="col-md-6">
             <label><b>Start Date : </b></label>
-            <input required type="date" name="start_date" class="form-control" id="start_date" value="{{ date('Y-m-d', strtotime($ws->start_date)) }}">
+            <input required type="text" name="start_date" class="form-control datepicker" id="start_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ws->start_date)) }}">
         </div>
 
         <div class="col-md-6">
             <label><b>End Date : </b></label>
-            <input required type="date" name="end_date" class="form-control" id="end_date" value="{{ date('Y-m-d', strtotime($ws->end_date)) }}">
+            <input required type="text" name="end_date" class="form-control datepicker" id="end_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ws->end_date)) }}">
         </div>
     </div>
 
@@ -87,5 +87,11 @@
     </div>
 </form>
 <script>
-     $('.select2').select2();
+    $('.select2').select2();
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
 </script>

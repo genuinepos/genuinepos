@@ -144,7 +144,7 @@
                     var tr = '';
                     tr += '<tr>';
                     tr += '<td class="text">';
-                    tr += '<a href="#" class="text-success" id="edit_product">';
+                    tr += '<a href="#" id="edit_product">';
                     tr += '<span class="product_name">'+sendProduct.product.name+'</span>';
                     var variant = sendProduct.product_variant_id != null ? ' -'+sendProduct.variant.variant_name+'- ' : '';
                     tr += '<span class="product_variant">'+variant+'</span>'; 

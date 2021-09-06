@@ -3,8 +3,8 @@
     <style>
         .form_element {border: 1px solid #7e0d3d;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
-        /* .expense_description_table table tbody tr td {width: 25%;} */
     </style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -45,8 +45,8 @@
                                                 <div class="input-group mt-1">
                                                     <label for="inputEmail3" class=" col-4"><b>Date :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="date" name="date" class="form-control changeable"
-                                                            value="{{ date('Y-m-d', strtotime( $expense->date)) }}" id="date">
+                                                        <input required type="text" name="date" class="form-control datepicker changeable"
+                                                            value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime( $expense->date)) }}" id="date">
                                                     </div>
                                                 </div>
                                             </div>
@@ -83,7 +83,6 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-8">
-                                
                                 <div class="form_element m-0">
                                     <div class="heading_area">
                                         <p class="text-primary m-0 p-0 ps-1"><b>Descriptions</b></p>
@@ -202,6 +201,7 @@
 
 @endsection
 @push('scripts')
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
     <script>
         // Set accounts in payment and payment edit form
         var ex_categories = '';
@@ -376,5 +376,12 @@
             calculateAmount();
             index++;
         });
+
+        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var _expectedDateFormat = '';
+        _expectedDateFormat = dateFormat.replace('d', 'dd');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+        $('.datepicker').datepicker({format: _expectedDateFormat});
     </script>
 @endpush

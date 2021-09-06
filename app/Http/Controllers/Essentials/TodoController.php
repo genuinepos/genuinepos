@@ -165,7 +165,7 @@ class TodoController extends Controller
             'task' => $request->task,
             'priority' => $request->priority,
             'status' => $request->status,
-            'due_date' => $request->due_date,
+            'due_date' => date('Y-m-d', strtotime($request->due_date)),
             'description' => $request->description,
             'admin_id' => auth()->user()->id,
             'created_at' => date('Y-m-d'),
@@ -221,7 +221,7 @@ class TodoController extends Controller
             'task' => $request->task,
             'priority' => $request->priority,
             'status' => $request->status,
-            'due_date' => $request->due_date,
+            'due_date' => date('Y-m-d', strtotime($request->due_date)),
             'description' => $request->description,
             'admin_id' => auth()->user()->id,
         ]);

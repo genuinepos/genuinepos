@@ -10,6 +10,7 @@
         .selectProduct{background-color: #ab1c59; color: #fff!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -23,7 +24,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Edit Transfer Stock</h5>
+                                            <h5>Edit Transfer Stock ff</h5>
                                         </div>
 
                                         <div class="col-6">
@@ -73,8 +74,8 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-2"><b>Date :</b></label>
                                                 <div class="col-8">
-                                                    <input type="date" name="date" class="form-control changeable"
-                                                        value="{{ date('Y-m-d', strtotime($transfer->date)) }}" id="date">
+                                                    <input type="text" name="date" class="form-control datepicker changeable" autocomplete="off"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}" id="date">
                                                 </div>
                                             </div>
                                         </div>
@@ -114,12 +115,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="select_area">
-                                                        {{-- <div class="remove_select_area_btn">X</div> --}}
-                                                        <ul id="list" class="variant_list_area">
-                                                            {{-- <li>
-                                                                <a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="" data-v_id="" data-p_name="" data-p_tax_id="" data-unit="" data-tax_percent="" data-tax_amount="" data-v_code="" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:30px; height:30px;" src=""> Samsung A30 (4GB, 64Gb) Price-510000 </a>
-                                                            </li> --}}
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div> 
                                             </div>
@@ -220,6 +216,7 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
     <script>
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
@@ -947,11 +944,9 @@
                 type:'get',
                 dataType: 'json',
                 success:function(transfer){
-                    console.log(transfer);
                     var qty_limits = transfer.qty_limits;
                     var transfer = transfer.transfer;
                     $('#invoice_id').val(transfer.invoice_id);
-                    $('#date').val(transfer.date);
                     $('#shipping_charge').val(transfer.shipping_charge);
                     $('#additional_note').val(transfer.additional_note);
 
@@ -1011,5 +1006,12 @@
             });
         }
         getEditableTransfer();
+
+        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var _expectedDateFormat = '' ;
+        _expectedDateFormat = dateFormat.replace('d', 'dd');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+        $('.datepicker').datepicker({format: _expectedDateFormat});
     </script>
 @endpush

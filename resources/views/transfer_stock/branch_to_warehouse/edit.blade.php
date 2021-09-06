@@ -10,6 +10,7 @@
         .selectProduct{background-color: #ab1c59; color: #fff!important;}b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -38,7 +39,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-3"><b>Branch :</b><span class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}">
+                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                     <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
                                                 </div>
                                             </div>
@@ -65,8 +66,8 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-2"><b>Date :</b></label>
                                                 <div class="col-8">
-                                                    <input type="date" name="date" class="form-control changeable"
-                                                        value="{{ date('Y-m-d') }}" id="date">
+                                                    <input required type="text" name="date" class="form-control datepicker changeable"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}" id="date">
                                                 </div>
                                             </div>
                                         </div>
@@ -206,6 +207,7 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
     <script>
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
@@ -246,7 +248,7 @@
             var branch_id = $('#branch_id').val();
             if(branch_id == ""){
                 $('#search_product').val("");
-                alert('Branch field must not be empty.');
+                alert('Business Location field must not be empty.');
                 return;
             }
             delay(function() { searchProduct(product_code, branch_id); }, 200); //sendAjaxical is the name of remote-command
@@ -901,7 +903,6 @@
                     var qty_limits = transfer.qty_limits;
                     var transfer = transfer.transfer;
                     $('#invoice_id').val(transfer.invoice_id);
-                    $('#date').val(transfer.date);
                     $('#shipping_charge').val(transfer.shipping_charge);
                     $('#additional_note').val(transfer.additional_note);
 
@@ -909,7 +910,7 @@
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td colspan="2" class="text-start">';
-                        tr += '<a href="#" class="text-success" id="edit_product">';
+                        tr += '<a href="#" class="text-dark" id="edit_product">';
                         tr += '<span class="product_name">'+transferProduct.product.name+'</span>';
                         var variant = transferProduct.product_variant_id != null ? ' -'+transferProduct.variant.variant_name+'- ' : '';
                         tr += '<span class="product_variant">'+variant+'</span>'; 
@@ -961,5 +962,12 @@
             });
         }
         getEditableTransfer();
+
+        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var _expectedDateFormat = '' ;
+        _expectedDateFormat = dateFormat.replace('d', 'dd');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+        $('.datepicker').datepicker({format: _expectedDateFormat});
     </script>
 @endpush

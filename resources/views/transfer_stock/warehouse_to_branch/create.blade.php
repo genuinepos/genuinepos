@@ -10,6 +10,7 @@
         .selectProduct{background-color: #ab1c59; color: #fff!important;}b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -69,8 +70,8 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-4"><b>Date :</b></label>
                                                 <div class="col-8">
-                                                    <input type="date" name="date" class="form-control changeable"
-                                                        value="{{ date('Y-m-d') }}" id="date">
+                                                    <input required type="text" name="date" class="form-control datepicker changeable"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="date" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -107,9 +108,7 @@
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
                                                     </div>
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                          
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div> 
                                             </div>
@@ -149,7 +148,6 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
-                            
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -207,10 +205,10 @@
             </form>
         </div>
     </div>
-
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
     <script>
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
@@ -841,29 +839,6 @@
             });
         });
 
-        // // Decrease qty
-        // $(document).on('click', '.decrease_qty_btn', function (e) {
-        //     e.preventDefault();
-        //     var tr = $(this).closest('tr');
-        //     var presentQty = tr.find('#quantity').val();
-        //     var updateQty = parseFloat(presentQty) - 1;
-        //     tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-        //     tr.find('#quantity').addClass('.form-control:focus');
-        //     tr.find('#quantity').blur();
-        // });
-
-        //  // Iecrease qty
-        //  $(document).on('click', '.increase_qty_btn', function (e) {
-        //     e.preventDefault();
-        //     var tr = $(this).closest('tr');
-        //     var presentQty = tr.find('#quantity').val();
-        //     var updateQty = parseFloat(presentQty) + 1;
-        //     tr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-        //     tr.find('#quantity').addClass('.form-control:focus');
-        //     tr.find('#quantity').blur();
-        // })
-        // // Automatic remove searching product is found signal 
-
         setInterval(function(){
             $('#search_product').removeClass('is-invalid');
         }, 500); 
@@ -916,7 +891,13 @@
         $(document).on('change', '.add_input', function () {
             document.getElementById('search_product').focus();
         });
-
         document.getElementById('search_product').focus();
+
+        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var _expectedDateFormat = '' ;
+        _expectedDateFormat = dateFormat.replace('d', 'dd');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+        $('.datepicker').datepicker({format: _expectedDateFormat});
     </script>
 @endpush

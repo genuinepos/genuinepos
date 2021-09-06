@@ -7,6 +7,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('title', 'Essentials - ')
 @section('content')
@@ -179,7 +180,7 @@
                                         <div class="form-group mt-1">
                                             <div class="col-md-12">
                                                 <label><b>Due Date : </b></label>
-                                                <input required type="date" name="due_date" class="form-control" id="due_date" value="">
+                                                <input required type="text" name="due_date" class="form-control datepicker" id="due_date" placeholder="{{ json_decode($generalSettings->business, true)['date_format'] }}">
                                             </div>
                                         </div>
                 
@@ -293,6 +294,7 @@
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
     var table = $('.data_tbl').DataTable({
         "processing": true,
@@ -513,5 +515,12 @@
         });
     });
     $('.select2').select2();
+
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
 </script>
 @endpush

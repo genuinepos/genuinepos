@@ -52,7 +52,7 @@
     <div class="form-group mt-1">
         <div class="col-md-12">
             <label><b>Due Date : </b></label>
-            <input required type="date" name="due_date" class="form-control" id="due_date" value="{{ date('Y-m-d', strtotime($todo->due_date)) }}">
+            <input required type="text" name="due_date" class="form-control datepicker" id="due_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($todo->due_date)) }}">
         </div>
     </div>
 
@@ -73,4 +73,10 @@
 </form>
 <script>
     $('.select2').select2();
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
 </script>

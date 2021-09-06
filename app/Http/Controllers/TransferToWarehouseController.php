@@ -189,16 +189,26 @@ class TransferToWarehouseController extends Controller
         $transfer = TransferStockToWarehouse::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $transferId)->first();
         $qty_limits = [];
         foreach ($transfer->Transfer_products as $transfer_product) {
-            $productBranch = ProductBranch::where('branch_id', $transfer->branch_id)
+            if (auth()->user()->branch_id) {
+                $productBranch = ProductBranch::where('branch_id', $transfer->branch_id)
                 ->where('product_id', $transfer_product->product_id)->first();
-            if ($transfer_product->product_variant_id) {
-                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                    ->where('product_id', $transfer_product->product_id)
-                    ->where('product_variant_id', $transfer_product->product_variant_id)
-                    ->first();
-                $qty_limits[] = $productBranchVariant->variant_quantity;
-            } else {
-                $qty_limits[] = $productBranch->product_quantity;
+                if ($transfer_product->product_variant_id) {
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
+                        ->where('product_id', $transfer_product->product_id)
+                        ->where('product_variant_id', $transfer_product->product_variant_id)
+                        ->first();
+                    $qty_limits[] = $productBranchVariant->variant_quantity;
+                } else {
+                    $qty_limits[] = $productBranch->product_quantity;
+                }
+            }else {
+                if ($transfer_product->product_variant_id) {
+                    $product_v = DB::table('product_variants')->where('id', $transfer_product->product_variant_id)->first();
+                    $qty_limits[] = $product_v->mb_stock;
+                }else {
+                    $product = DB::table('products')->where('id', $transfer_product->product_id)->first();
+                    $qty_limits[] = $product->mb_stock;
+                }
             }
         }
 

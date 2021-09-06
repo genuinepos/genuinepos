@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/image-previewer/jquery.magnify.min.css"/>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('title', 'Essentials - ')
 @section('content')
@@ -233,12 +234,12 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><b>Start Date : </b></label>
-                                <input required type="date" name="start_date" class="form-control" value="{{date('Y-m-d')}}">
+                                <input required type="text" name="start_date" class="form-control datepicker" value="{{date(json_decode($generalSettings->business, true)['date_format'])}}" autocomplete="off">
                             </div>
 
                             <div class="col-md-6">
                                 <label><b>End Date : </b></label>
-                                <input required type="date" name="end_date" class="form-control">
+                                <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ json_decode($generalSettings->business, true)['date_format'] }}" autocomplete="off">
                             </div>
                         </div>
 
@@ -311,6 +312,7 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/image-previewer/jquery.magnify.min.js"></script>
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
     var table = $('.data_tbl').DataTable({
         "processing": true,
@@ -332,7 +334,7 @@
                 d.date_range = $('#date_range').val();
             }
         },
-        columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
+        columnDefs: [{"targets": [0], "orderable": false, "searchable": false}],
         columns: [
             {data: 'date', name: 'date'},
             {data: 'name', name: 'name'},
@@ -553,5 +555,12 @@
     });
     $('.select2').select2();
     $('[data-magnify=gallery]').magnify();
+
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
 </script>
 @endpush

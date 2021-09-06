@@ -67,7 +67,7 @@
                                 <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark"></i></span>
                             </div>
                             <input type="hidden" id="p_available_amount" value="{{ $payment->purchase->purchase_return_due + $payment->paid_amount }}">
-                            <input type="number" name="amount" class="form-control form-control-sm p_input" step="any" data-name="Amount" id="p_amount" value="{{ $payment->paid_amount }}"/>
+                            <input type="number" name="amount" class="form-control p_input" step="any" data-name="Amount" id="p_amount" value="{{ $payment->paid_amount }}"/>
                         </div>
                         <span class="error error_p_amount"></span>
                     </div>
@@ -78,7 +78,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark"></i></span>
                             </div>
-                            <input type="date" name="date" class="form-control form-control-sm date-picker p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date("Y-m-d", strtotime($payment->date)) }}">
+                            <input type="text" name="date" class="form-control datepicker p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
@@ -89,7 +89,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                             </div>
-                            <select name="payment_method" class="form-control form-control-sm"  id="payment_method">
+                            <select name="payment_method" class="form-control form-control-sm" id="payment_method">
                                 <option {{ $payment->pay_mode == 'Cash' ? 'SELECTED' : '' }} value="Cash">Cash</option>  
                                 <option {{ $payment->pay_mode == 'Advanced' ? 'SELECTED' : '' }} value="Advanced">Advanced</option> 
                                 <option {{ $payment->pay_mode == 'Card' ? 'SELECTED' : '' }} value="Card">Card</option> 
@@ -121,7 +121,7 @@
 
                     <div class="col-md-5">
                         <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
-                        <input type="file" name="attachment" class="form-control form-control-sm" id="attachment" data-name="Date" >
+                        <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
                 </div>
 
@@ -130,22 +130,22 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label><strong>Card Number :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="card_no" id="p_card_no" placeholder="Card number" value="{{ $payment->card_no }}">
+                                <input type="text" class="form-control" name="card_no" id="p_card_no" placeholder="Card number" value="{{ $payment->card_no }}">
                             </div>
 
                             <div class="col-md-3">
                                 <label><strong>Card Holder Name :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="card_holder_name" id="p_card_holder_name" placeholder="Card holder name" value="{{ $payment->card_holder }}">
+                                <input type="text" class="form-control" name="card_holder_name" id="p_card_holder_name" placeholder="Card holder name" value="{{ $payment->card_holder }}">
                             </div>
 
                             <div class="col-md-3">
                                 <label><strong>Card Transaction No :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="card_transaction_no" id="p_card_transaction_no" placeholder="Card transaction no" value="{{ $payment->card_transaction_no }}">
+                                <input type="text" class="form-control" name="card_transaction_no" id="p_card_transaction_no" placeholder="Card transaction no" value="{{ $payment->card_transaction_no }}">
                             </div>
 
                             <div class="col-md-3">
                                 <label><strong>Card Type :</strong> </label>
-                                <select name="card_type" class="form-control form-control-sm"  id="p_card_type">
+                                <select name="card_type" class="form-control"  id="p_card_type">
                                     <option {{ $payment->card_type == 'Credit-Card' ? 'SELECTED' : '' }} value="Credit-Card">Credit Card</option>  
                                     <option {{ $payment->card_type == 'Debit-Card' ? 'SELECTED' : '' }} value="Debit-Card">Debit Card</option> 
                                     <option {{ $payment->card_type == 'Visa' ? 'SELECTED' : '' }} value="Visa">Visa Card</option> 
@@ -157,17 +157,17 @@
                         <div class="row mt-2">
                             <div class="col-md-3">
                                 <label><strong>Month :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="month" id="p_month" placeholder="Month" value="{{ $payment->card_month }}">
+                                <input type="text" class="form-control " name="month" id="p_month" placeholder="Month" value="{{ $payment->card_month }}">
                             </div>
 
                             <div class="col-md-3">
                                 <label><strong>Year :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="year" id="p_year" placeholder="Year" value="{{ $payment->card_year }}">
+                                <input type="text" class="form-control " name="year" id="p_year" placeholder="Year" value="{{ $payment->card_year }}">
                             </div>
 
                             <div class="col-md-3">
                                 <label><strong>Secure Code :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="secure_code" id="p_secure_code" placeholder="Secure code" value="{{ $payment->card_secure_code }}">
+                                <input type="text" class="form-control " name="secure_code" id="p_secure_code" placeholder="Secure code" value="{{ $payment->card_secure_code }}">
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label><strong>Cheque Number :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="cheque_no" id="p_cheque_no" placeholder="Cheque number" value="{{ $payment->cheque_no }}">
+                                <input type="text" class="form-control " name="cheque_no" id="p_cheque_no" placeholder="Cheque number" value="{{ $payment->cheque_no }}">
                             </div>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label><strong>Account Number :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="account_no" id="p_account_no" placeholder="Account number" value="{{ $payment->account_no }}">
+                                <input type="text" class="form-control" name="account_no" id="p_account_no" placeholder="Account number" value="{{ $payment->account_no }}">
                             </div>
                         </div>
                     </div>
@@ -194,7 +194,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label><strong>Transaction No :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="transaction_no" id="p_transaction_no" placeholder="Transaction number" value="{{ $payment->transaction_no }}">
+                                <input type="text" class="form-control" name="transaction_no" id="p_transaction_no" placeholder="Transaction number" value="{{ $payment->transaction_no }}">
                             </div>
                         </div>
                     </div>
@@ -202,7 +202,7 @@
 
                 <div class="form-group mt-2">
                     <label><strong> Payment Note :</strong></label>
-                    <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note">{{ $payment->note }}</textarea>
+                    <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note">{{ $payment->note }}</textarea>
                 </div>
 
                 <div class="form-group row mt-3">
@@ -216,3 +216,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '';
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({ format: _expectedDateFormat })
+</script>

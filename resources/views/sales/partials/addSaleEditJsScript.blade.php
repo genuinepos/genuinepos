@@ -1,4 +1,5 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
     // Get all price group
     var price_groups = '';
@@ -1277,4 +1278,11 @@
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
     });
+
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
 </script>

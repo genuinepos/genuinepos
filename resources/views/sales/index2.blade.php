@@ -1,6 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('title', 'All Sale - ')
 @section('content')
@@ -138,9 +139,7 @@
         </div>
     </div>
 
-    <div id="sale_details">
-        
-    </div>
+    <div id="sale_details"></div>
 
     <!-- Edit Shipping modal -->
     <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -237,6 +236,7 @@
 @push('scripts')
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
     <script>
         // Show session message by toster alert.
         @if (Session::has('successMsg'))

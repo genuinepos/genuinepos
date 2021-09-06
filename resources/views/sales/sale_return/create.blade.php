@@ -1,10 +1,9 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .input-group-text {
-            font-size: 12px !important;
-        }
+        .input-group-text {font-size: 12px !important;}
     </style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -46,7 +45,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Reference ID:<span
+                                                <label for="inputEmail3" class=" col-4"><b>Reference ID :</b> <span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" class="form-control" id="invoice_id">
@@ -56,9 +55,9 @@
 
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2">Date:</label>
+                                                <label for="inputEmail3" class=" col-2"><b>Date :</b> </label>
                                                 <div class="col-8">
-                                                    <input type="date" name="date" class="form-control" autocomplete="off" value="{{ date('Y-m-d') }}">
+                                                    <input required type="text" name="date" class="form-control datepicker" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -172,6 +171,7 @@
 @endsection
 @push('scripts')
 <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
     function getSaleReturn() {
         $.ajax({
@@ -423,5 +423,12 @@
             }
         });
     });
+
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
 </script>
 @endpush

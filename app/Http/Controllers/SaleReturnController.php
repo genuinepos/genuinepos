@@ -83,11 +83,8 @@ class SaleReturnController extends Controller
                     $html .= '<a class="dropdown-item details_button" href="' . route('sales.returns.show', $row->id) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
                     if (auth()->user()->branch_id == $row->branch_id) {
-
                         $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', $row->sale_id) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.returns.delete', $row->id) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
-
                         $html .= '<a class="dropdown-item" id="view_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
                         if ($row->total_return_due > 0) {
                             $html .= '<a class="dropdown-item" id="add_purchase_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
@@ -102,7 +99,7 @@ class SaleReturnController extends Controller
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) {
-                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BRANCH)</b>' : ($row->warehouse_name . '/' . $row->warehouse_code) . '<b>(WAREHOUSE)</b>';
+                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BL)</b>' : ($row->warehouse_name . '/' . $row->warehouse_code) . '<b>(WH)</b>';
                 })
                 ->editColumn('total_return_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_return_amount . '</b>';
@@ -155,7 +152,7 @@ class SaleReturnController extends Controller
     // Get sale requested by ajax
     public function getSale($saleId)
     {
-        $sale = Sale::with(['warehouse', 'branch', 'customer', 'sale_products', 'sale_products.product', 'sale_products.variant', 'sale_return', 'sale_return.sale_return_products', 'sale_return.sale_return_products.sale_product', 'sale_return.sale_return_products.sale_product.product', 'sale_return.sale_return_products.sale_product.variant'])->where('id', $saleId)->first();
+        $sale = Sale::with(['branch', 'customer', 'sale_products', 'sale_products.product', 'sale_products.variant', 'sale_return', 'sale_return.sale_return_products', 'sale_return.sale_return_products.sale_product', 'sale_return.sale_return_products.sale_product.product', 'sale_return.sale_return_products.sale_product.variant'])->where('id', $saleId)->first();
         return response()->json($sale);
     }
 

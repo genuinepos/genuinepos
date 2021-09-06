@@ -12,6 +12,7 @@
         b{font-weight: 500; font-family: Arial, Helvetica, sans-serif;}
         #display_pre_due{font-weight: 800;}
     </style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -98,8 +99,9 @@
                                             <div class="input-group mt-1">
                                                 <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
                                                 <div class="col-8">
-                                                    <input type="date" name="date" class="form-control"
-                                                        value="{{ date('Y-m-d') }}" id="dt">
+                                                    <input type="text" name="date" class="form-control datepicker"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="dt" autocomplete="off">
+                                                        <span class="error error_date"></span>
                                                 </div>
                                             </div>
                                         </div>

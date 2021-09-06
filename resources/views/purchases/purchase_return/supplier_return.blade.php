@@ -8,6 +8,7 @@
         .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
         .selectProduct{background-color: #ab1c59; color: #fff!important;}
     </style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -34,7 +35,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Supplier:<span
+                                                <label for="inputEmail3" class=" col-4"><b>Supplier :</b><span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <select name="supplier_id" class="form-control add_input"
@@ -51,7 +52,7 @@
 
                                             @if (count($warehouses) > 0)
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4">Warehouse:<span
+                                                    <label for="inputEmail3" class="col-4"><b>Warehouse :</b><span
                                                         class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <select class="form-control changeable add_input"
@@ -66,7 +67,7 @@
                                                 </div>
                                             @else 
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4">Location :</label>
+                                                    <label for="inputEmail3" class="col-4"><b>Location :</b> </label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
                                                     </div>
@@ -76,7 +77,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Invoice ID:</label>
+                                                <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b> </label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID">
                                                 </div>
@@ -85,17 +86,19 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Date:</label>
+                                                <label for="inputEmail3" class="col-4"><b>Date :</b> <span
+                                                    class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input type="date" name="date" class="form-control changeable"
-                                                        value="{{ date('Y-m-d') }}" id="date">
+                                                    <input required type="text" name="date" class="form-control datepicker changeable"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="date">
+                                                     <span class="error error_date"></span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Attachment:</label>
+                                                <label for="inputEmail3" class="col-4"><b>Attachment :</b></label>
                                                 <div class="col-8">
                                                     <input type="file" class="form-control" name="attachment">
                                                 </div>
@@ -217,6 +220,7 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
     <script>
         function getTaxes(){
             $.ajax({
@@ -645,5 +649,12 @@
         setInterval(function(){
             $('#search_product').removeClass('is-valid');
         }, 1000);
+
+        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var _expectedDateFormat = '' ;
+        _expectedDateFormat = dateFormat.replace('d', 'dd');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+        $('.datepicker').datepicker({format: _expectedDateFormat});
     </script>
 @endpush

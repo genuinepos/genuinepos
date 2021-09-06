@@ -1,8 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
-    <style>
-        .input-group-text {font-size: 12px !important;}
-    </style>
+    <style>.input-group-text {font-size: 12px !important;}</style>
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -67,7 +66,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-2">Date:</label>
                                                 <div class="col-8">
-                                                    <input type="date" name="date" id="date" class="form-control" autocomplete="off" value="{{ date('Y-m-d') }}">
+                                                    <input type="text" name="date" id="date" class="form-control datepicker" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -151,6 +150,7 @@
 @endsection
 @push('scripts')
 <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
     function getPurchaseReturn() {
         $.ajax({
@@ -205,7 +205,7 @@
                         $('#purchase_return_list').append(tr);
                     });
                     calculateTotalAmount();
-                }else{
+                } else {
                     $.each(purchase.purchase_products, function (key, purchase_product) {
                         var tr = "";
                         tr += '<tr>';
@@ -345,5 +345,12 @@
             }
         });
     });
+
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
 </script>
 @endpush

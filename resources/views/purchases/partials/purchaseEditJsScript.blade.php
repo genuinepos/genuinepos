@@ -1,4 +1,5 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
     $('#payment_method').on('change', function () {
         var value = $(this).val();
@@ -1098,7 +1099,7 @@
                         
                         tr += '</td>';
                         tr += '<td>';
-                        tr += '<input value="'+product.quantity+'" required name="quantities[]" type="number" class="form-control form-control-sm" id="quantity">';
+                        tr += '<input value="'+product.quantity+'" required name="quantities[]" type="number" class="form-control" id="quantity">';
                         tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
                         unites.forEach(function(unit) {
                             if (product.unit == unit) {
@@ -1163,25 +1164,27 @@
                 });
 
                 $('#total_item').val(purchase.total_item);
-
                 $('#net_total_amount').val(purchase.net_total_amount);
-                
                 $('#order_discount_type').val(purchase.order_discount_type);
                 $('#order_discount').val(purchase.order_discount);
                 $('#order_discount_amount').val(purchase.order_discount_amount);
-                
                 $('#purchase_tax').val(purchase.purchase_tax_percent);
                 $('#purchase_tax_amount').val(purchase.purchase_tax_amount);
-
                 $('#shipment_details').val(purchase.shipment_details);
-
                 $('#shipment_charge').val(purchase.shipment_charge);
                 $('#purchase_note').val(purchase.purchase_note);
-
                 $('#total_purchase_amount').val(purchase.total_purchase_amount);
                 $('.label_total_purchase_amount').html(purchase.total_purchase_amount);
             }
         });
     }
     getEditablePurchase();
+
+    
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('#datepicker').datepicker({format: _expectedDateFormat});
 </script>

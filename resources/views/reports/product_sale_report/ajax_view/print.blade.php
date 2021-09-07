@@ -56,14 +56,6 @@
                     </tr>
                 @endforeach
             </tbody>
-            {{-- <tfoot>
-                <tr>
-                    <th colspan="4" class="text-end">Total :</th>
-                    <th class="text-start">{{ bcadd($totalQty, 0, 2) }}</th>
-                    <th class="text-start">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalUnitPrice, 0, 2) }}</th>
-                    <th class="text-start">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalSubTotal, 0, 2) }}</th>
-                </tr>
-            </tfoot> --}}
         </table>
     </div>
 </div>

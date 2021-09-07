@@ -26,5 +26,5 @@
 </table>
 
 <script>
-    $('.data_tbl').DataTable({"lengthMenu" : [25, 100, 500, 1000,2000]});
+    $('.data_tbl').DataTable({"lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]]});
 </script>

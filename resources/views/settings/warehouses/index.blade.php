@@ -162,7 +162,7 @@
             {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         aaSorting: [[2, 'desc']],
-        "lengthMenu" : [25, 100, 500, 1000, 2000]
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('settings.warehouses.index') }}",
             "data": function(d) {d.branch_id = $('#branch_id').val();}

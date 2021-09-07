@@ -84,7 +84,7 @@
             "serverSide": true,
             aaSorting: [[3, 'asc']],
             ajax: "{{ route('sales.returns.index') }}",
-         
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'date'},

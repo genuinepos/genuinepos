@@ -143,7 +143,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[0, 'desc']],
-            "lengthMenu" : [25, 100, 500, 1000,2000],
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('stock.adjustments.index') }}",
                 "data": function(d) {

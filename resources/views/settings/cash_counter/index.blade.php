@@ -142,6 +142,7 @@
             serverSide: true,
             searchable: true,
             ajax: "{{ route('settings.cash.counter.index') }}",
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
                 {data: 'counter_name',name: 'counter_name'},
                 {data: 'short_name',name: 'short_name'},

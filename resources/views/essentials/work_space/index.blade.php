@@ -324,7 +324,7 @@
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         aaSorting: [[0, 'desc']],
-        "lengthMenu" : [25, 100, 500, 1000, 2000],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('workspace.index') }}",
             "data": function(d) {

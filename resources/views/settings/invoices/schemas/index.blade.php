@@ -153,7 +153,7 @@
             processing: true,
             serverSide: true,
             aaSorting: [[3, 'asc']],
-            "lengthMenu" : [25, 100, 500, 1000, 2000]
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax: "{{ route('invoices.schemas.index') }}",
             columns: [
                 {data: 'name', name: 'name'},

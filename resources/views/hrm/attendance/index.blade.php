@@ -267,9 +267,8 @@
         "processing": true,
         "serverSide": true,
         "searching" : false,
-        aaSorting: [
-            [1, 'asc']
-        ],
+        aaSorting: [[1, 'asc']],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('hrm.attendance') }}",
             "data": function(d) {

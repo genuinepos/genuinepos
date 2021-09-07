@@ -159,6 +159,7 @@
         serverSide: true,
         searchable: true,
         ajax: "{{ route('settings.payment.card.types.index') }}",
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
             {data: 'card_type_name',name: 'asset_type_name'},
             {data: 'account',name: 'account'},

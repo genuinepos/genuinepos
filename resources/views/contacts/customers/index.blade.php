@@ -343,7 +343,7 @@
             "serverSide": true,
             aaSorting: [[0, 'asc']],
             ajax: "{{ route('contacts.customer.index') }}",
-            "lengthMenu" : [25, 100, 500, 1000, 2000],
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action',name: 'action'},

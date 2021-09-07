@@ -80,7 +80,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[0, 'asc']],
-            "lengthMenu" : [25, 100, 500, 1000,2000],
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax: "{{ route('transfer.stock.to.branch.index') }}",
             columns: [
                 {data: 'date', name: 'date'},

@@ -748,11 +748,12 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     Route::group(['prefix' => 'product/purchases'], function () {
         Route::get('/', 'ProductPurchaseReportController@index')->name('reports.product.purchases.index');
         Route::get('search/product/{product_name}', 'ProductPurchaseReportController@searchProduct');
-        Route::post('print', 'ProductPurchaseReportController@print')->name('reports.product.purchases.print');
+        Route::get('print', 'ProductPurchaseReportController@print')->name('reports.product.purchases.print');
     });
 
     Route::group(['prefix' => 'product/sales'], function () {
         Route::get('/', 'ProductSaleReportController@index')->name('reports.product.sales.index');
+        Route::get('print', 'ProductSaleReportController@print')->name('reports.product.sales.print');
         Route::get('search/product/{product_name}', 'ProductSaleReportController@searchProduct');
     });
 

@@ -17,7 +17,7 @@
             {{ $branch->name.' '.$branch->branch_code }}
         @endif
         <p><b>Date :</b> {{ $fromDate }} <b>To</b> {{ $toDate }} </p> 
-        <p><b>Stock Adjustment Report </b></p> 
+        <p><b>Product Purchase Report </b></p> 
     </div>
 </div>
 <br>
@@ -27,7 +27,7 @@
             <thead>
                 <tr>
                     <th class="text-start">Product</th>
-                    <th class="text-start">P.Code</th>
+                    <th class="text-start">P.Code(SKU)</th>
                     <th class="text-start">Supplier</th>
                     <th class="text-start">P.Invoice ID</th>
                     <th class="text-start">Qty</th>
@@ -41,10 +41,13 @@
                         <td class="text-start">
                             @php
                                 $variant = $pProduct->variant_name ? ' - ' . $pProduct->variant_name : '';
+                                $totalQty += $pProduct->quantity;
+                                $totalUnitCost += $pProduct->net_unit_cost;
+                                $totalSubTotal += $pProduct->line_total;
                             @endphp
                            {{ $pProduct->name . $variant }}
                         </td>
-                        <td class="text-start">{{ $pProduct->variant_code ? $pProduct->variant_code : $pProduct->product_code; }}</td>
+                        <td class="text-start">{{ $pProduct->variant_code ? $pProduct->variant_code : $pProduct->product_code}}</td>
                         <td class="text-start">{{ $pProduct->supplier_name }}</td>
                         <td class="text-start">{{ $pProduct->invoice_id }}</td>
                         <td class="text-start">{!! $pProduct->quantity . ' (<span class="qty" data-value="' . $pProduct->quantity . '">' . $pProduct->unit_code . '</span>)' !!}</td>
@@ -55,7 +58,10 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="4">Total :</th>
+                    <th colspan="4" class="text-end">Total :</th>
+                    <th class="text-start">{{ bcadd($totalQty, 0, 2) }}</th>
+                    <th class="text-start">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalUnitCost, 0, 2) }}</th>
+                    <th class="text-start">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalSubTotal, 0, 2) }}</th>
                 </tr>
             </tfoot>
         </table>

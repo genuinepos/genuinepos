@@ -119,8 +119,10 @@ class ProductPurchaseReportController extends Controller
 
     public function print(Request $request)
     {
-        $generalSettings = DB::table('general_settings')->first();
         $purchaseProducts = '';
+        $fromDate = '';
+        $toDate = '';
+        $branch_id = $request->branch_id;
         $query = DB::table('purchase_products')
             ->leftJoin('purchases', 'purchase_products.purchase_id', '=', 'purchases.id')
             ->leftJoin('products', 'purchase_products.product_id', 'products.id')
@@ -152,6 +154,8 @@ class ProductPurchaseReportController extends Controller
             $date_range = explode('-', $request->date_range);
             $form_date = date('Y-m-d', strtotime($date_range[0]));
             $to_date = date('Y-m-d', strtotime($date_range[1]));
+            $fromDate = date('Y-m-d', strtotime($date_range[0]));
+            $toDate = date('Y-m-d', strtotime($date_range[1]));
             $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
         }
 
@@ -189,7 +193,7 @@ class ProductPurchaseReportController extends Controller
             )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchase_products.id', 'desc')->get();
         }
 
-        return view('reports.product_purchase_report.ajax_view.print', compact('purchaseProducts'));
+        return view('reports.product_purchase_report.ajax_view.print', compact('purchaseProducts', 'fromDate', 'toDate', 'branch_id'));
     }
 
     // Search product 

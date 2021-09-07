@@ -40,7 +40,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
-                                    <div class="col-md-12">
+                                    <div class="col-md-8">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
                                                 <div class="col-md-3 search_area">
@@ -95,6 +95,13 @@
                                             </div>
                                         </form>
                                     </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label></label>
+                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -112,7 +119,7 @@
                                                     <th>Invoice ID</th>
                                                     <th>Date</th>
                                                     <th>Quantity</th>
-                                                    <th>Unit Cost</th>
+                                                    <th>Unit Price</th>
                                                     <th>Subtotal</th>
                                                 </tr>
                                             </thead>
@@ -165,7 +172,7 @@
         ],
         "processing": true,
         "serverSide": true,
-        "lengthMenu" : [50, 100, 500, 1000, 2000],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         aaSorting: [[5, 'desc']],
         "ajax": {
             "url": "{{ route('reports.product.sales.index') }}",
@@ -290,6 +297,33 @@
     $(document).on('mouseenter', '#list>li>a',function () {
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
+    });
+
+    //Print purchase report
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('reports.product.sales.print') }}";
+        var branch_id = $('#branch_id').val();
+        var product_id = $('#product_id').val();
+        var variant_id = $('#variant_id').val();
+        var customer_id = $('#customer_id').val();
+        var date_range = $('#date_range').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {branch_id, product_id, customer_id, variant_id, date_range},
+            success:function(data){
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 700, 
+                    header: null,        
+                });
+            }
+        }); 
     });
 </script>
 

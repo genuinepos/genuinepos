@@ -172,7 +172,7 @@
         "processing": true,
         "serverSide": true,
         aaSorting: [[5, 'asc']],
-        "lengthMenu" : [50, 100, 500, 1000, 2000],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.product.purchases.index') }}",
             "data": function(d) {
@@ -304,12 +304,14 @@
         e.preventDefault();
         var url = "{{ route('reports.product.purchases.print') }}";
         var branch_id = $('#branch_id').val();
-        var admin_id = $('#admin_id').val();
+        var product_id = $('#product_id').val();
+        var variant_id = $('#variant_id').val();
+        var supplier_id = $('#supplier_id').val();
         var date_range = $('#date_range').val();
         $.ajax({
             url:url,
             type:'get',
-            data: {branch_id, admin_id, date_range},
+            data: {branch_id, product_id, supplier_id, variant_id, date_range},
             success:function(data){
                 $(data).printThis({
                     debug: false,                   

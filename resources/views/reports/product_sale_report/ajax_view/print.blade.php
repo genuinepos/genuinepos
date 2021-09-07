@@ -1,0 +1,102 @@
+@php
+    $totalQty = 0;
+    $totalUnitPrice = 0;
+    $totalSubTotal = 0;
+@endphp
+<div class="row">
+    <div class="col-md-12 text-center">
+        @if ($branch_id == '')
+            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+            <p><b>All Business Location.</b></p> 
+        @elseif ($branch_id == 'NULL')
+            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+        @else 
+            @php
+                $branch = DB::table('branches')->where('id', $branch_id)->select('name', 'branch_code')->first();
+            @endphp
+            {{ $branch->name.' '.$branch->branch_code }}
+        @endif
+        <p><b>Date :</b> {{ $fromDate }} <b>To</b> {{ $toDate }} </p> 
+        <p><b>Product Sale Report </b></p> 
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-12">
+        <table class="table modal-table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-start">Product</th>
+                    <th class="text-start">P.Code(SKU)</th>
+                    <th class="text-start">Customer</th>
+                    <th class="text-start">Invoice ID</th>
+                    <th class="text-start">Qty</th>
+                    <th class="text-start">Unit Price</th>
+                    <th class="text-start">SubTotal</th>
+                </tr>
+            </thead>
+            <tbody class="sale_print_product_list">
+                @foreach ($saleProducts as $sProduct)
+                    <tr>
+                        <td class="text-start">
+                            @php
+                                $variant = $sProduct->variant_name ? ' - ' . $sProduct->variant_name : '';
+                                $totalQty += $sProduct->quantity;
+                                $totalUnitPrice += $sProduct->unit_price_inc_tax;
+                                $totalSubTotal += $sProduct->subtotal;
+                            @endphp
+                           {{ $sProduct->name . $variant }}
+                        </td>
+                        <td class="text-start">{{ $sProduct->variant_code ? $pProduct->variant_code : $sProduct->product_code}}</td>
+                        <td class="text-start">{{ $sProduct->customer_name ? $sProduct->customer_name : 'Walk-In-Customer' }}</td>
+                        <td class="text-start">{{ $sProduct->invoice_id }}</td>
+                        <td class="text-start">{!! $sProduct->quantity . ' (<span class="qty" data-value="' . $sProduct->quantity . '">' . $sProduct->unit_code . '</span>)' !!}</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $sProduct->unit_price_inc_tax }}</td>
+                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $sProduct->subtotal }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+            {{-- <tfoot>
+                <tr>
+                    <th colspan="4" class="text-end">Total :</th>
+                    <th class="text-start">{{ bcadd($totalQty, 0, 2) }}</th>
+                    <th class="text-start">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalUnitPrice, 0, 2) }}</th>
+                    <th class="text-start">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalSubTotal, 0, 2) }}</th>
+                </tr>
+            </tfoot> --}}
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6"></div>
+    <div class="col-6">
+        <table class="table modal-table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-end">Total Quantity</th>
+                    <th class="text-end">{{ bcadd($totalQty, 0, 2) }}</th>
+                </tr>
+
+                <tr>
+                    <th class="text-end">Total Price:</th>
+                    <th class="text-end">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalUnitPrice, 0, 2) }}</th>
+                </tr>
+
+                <tr>
+                    <th class="text-end">Net Total Amount:</th>
+                    <th class="text-end">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalSubTotal, 0, 2) }}</th>
+                </tr>
+           
+            </thead>
+        </table>
+    </div>
+</div>
+
+@if (env('PRINT_SD_OTHERS') == 'true')
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small> 
+        </div>
+    </div>
+@endif

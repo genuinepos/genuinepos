@@ -724,10 +724,12 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'suppliers'], function () {
         Route::get('/', 'SupplierReportController@index')->name('reports.supplier.index');
+        Route::get('print', 'SupplierReportController@print')->name('reports.supplier.print');
     });
 
     Route::group(['prefix' => 'customers'], function () {
         Route::get('/', 'CustomerReportController@index')->name('reports.customer.index');
+        Route::get('print', 'CustomerReportController@print')->name('reports.customer.print');
     });
 
     Route::group(['prefix' => 'stock'], function () {
@@ -740,11 +742,13 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     Route::group(['prefix' => 'stock/adjustments'], function () {
         Route::get('/', 'StockAdjustmentReportController@index')->name('reports.stock.adjustments.index');
         Route::get('all/adjustments', 'StockAdjustmentReportController@allAdjustments')->name('reports.stock.adjustments.all');
+        Route::get('print', 'StockAdjustmentReportController@print')->name('reports.stock.adjustments.print');
     });
 
     Route::group(['prefix' => 'product/purchases'], function () {
         Route::get('/', 'ProductPurchaseReportController@index')->name('reports.product.purchases.index');
         Route::get('search/product/{product_name}', 'ProductPurchaseReportController@searchProduct');
+        Route::post('print', 'ProductPurchaseReportController@print')->name('reports.product.purchases.print');
     });
 
     Route::group(['prefix' => 'product/sales'], function () {

@@ -22,7 +22,6 @@ class CustomerReportController extends Controller
             $generalSettings = DB::table('general_settings')->first();
             $customers = '';
             $query = DB::table('customers')->where('status', 1);
-
             if ($request->customer_id) {
                 $query->where('customers.id', $request->customer_id);
             }
@@ -34,30 +33,48 @@ class CustomerReportController extends Controller
                 'customers.total_sale',
                 'customers.total_sale_due',
                 'customers.total_sale_return_due'
-            )
-            ->get();
+            )->get();
 
             return DataTables::of($customers)
                 ->editColumn('opening_balance', function ($row) use ($generalSettings) {
-                    return '<b><span class="opening_balance" data-value="'.$row->opening_balance.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->opening_balance . '</span></b>';
+                    return '<b><span class="opening_balance" data-value="' . $row->opening_balance . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->opening_balance . '</span></b>';
                 })
                 ->editColumn('total_paid', function ($row) use ($generalSettings) {
-                    return '<b><span class="total_paid" data-value="'.$row->total_paid.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_paid . '</span></b>';
+                    return '<b><span class="total_paid" data-value="' . $row->total_paid . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_paid . '</span></b>';
                 })
                 ->editColumn('total_sale_due', function ($row) use ($generalSettings) {
-                    return '<b><span class="total_purchase_due" data-value="'.$row->total_sale_due.'">' . json_decode($generalSettings->business, true)['currency'] .$row->total_sale_due. '</span></b>';
+                    return '<b><span class="total_purchase_due" data-value="' . $row->total_sale_due . '">' . json_decode($generalSettings->business, true)['currency'] . $row->total_sale_due . '</span></b>';
                 })
                 ->editColumn('total_sale', function ($row) use ($generalSettings) {
-                    return '<b><span class="total_sale" data-value="'.$row->total_sale.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale . '</span></b>';
+                    return '<b><span class="total_sale" data-value="' . $row->total_sale . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale . '</span></b>';
                 })
                 ->editColumn('total_sale_return_due', function ($row) use ($generalSettings) {
-                    return '<b><span class="total_sale_return_due" data-value="'.$row->total_sale_return_due.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_return_due . '</span></b>';
+                    return '<b><span class="total_sale_return_due" data-value="' . $row->total_sale_return_due . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_return_due . '</span></b>';
                 })
                 ->rawColumns(['opening_balance', 'total_paid', 'total_sale', 'total_sale_due', 'total_due', 'total_sale_return_due'])
                 ->make(true);
         }
 
-        $customers = DB::table('customers')->select('id','name', 'phone')->get();
+        $customers = DB::table('customers')->select('id', 'name', 'phone')->get();
         return view('reports.customer_report.index', compact('customers'));
+    }
+
+    public function print(Request $request)
+    {
+        $customerReports = '';
+        $query = DB::table('customers')->where('status', 1);
+        if ($request->customer_id) {
+            $query->where('customers.id', $request->customer_id);
+        }
+
+        $customerReports = $query->select(
+            'customers.name',
+            'customers.opening_balance',
+            'customers.total_paid',
+            'customers.total_sale',
+            'customers.total_sale_due',
+            'customers.total_sale_return_due'
+        )->get();
+        return view('reports.customer_report.ajax_view.print', compact('customerReports'));
     }
 }

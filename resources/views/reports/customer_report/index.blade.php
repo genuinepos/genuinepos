@@ -29,11 +29,11 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
-                                    <div class="col-md-12">
+                                    <div class="col-md-8">
                                         <form id="filter_tax_report_form" action="" method="get">
                                             @csrf
                                             <div class="form-group row">
-                                                <div class="col-md-5 offset-md-7">
+                                                <div class="col-md-4">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                         <option value="">All</option>
@@ -44,6 +44,13 @@
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label></label>
+                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +117,7 @@
         "processing": true,
         "serverSide": true,
         aaSorting: [[3, 'asc']],
-        "lengthMenu" : [50, 100, 500, 1000, 2000],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.customer.index') }}",
             "data": function(d) {d.customer_id = $('#customer_id').val();}
@@ -157,5 +164,28 @@
         });
         return sum;
     }
+
+    //Print supplier report
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('reports.customer.print') }}";
+        var supplier_id = $('#branch_id').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {supplier_id},
+            success:function(data){
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 700, 
+                    header: null,        
+                });
+            }
+        }); 
+    });
 </script>
 @endpush

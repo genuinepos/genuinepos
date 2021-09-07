@@ -60,4 +60,26 @@ class SupplierReportController extends Controller
         $suppliers = DB::table('suppliers')->select('id','name', 'phone')->get();
         return view('reports.supplier_report.index', compact('suppliers'));
     }
+
+    public function print(Request $request)
+    {
+        $supplierReports = '';
+        $supplierId = $request->supplier_id;
+        $query = DB::table('suppliers')->where('status', 1);
+
+        if ($request->supplier_id) {
+            $query->where('suppliers.id', $request->supplier_id);
+        }
+
+        $supplierReports = $query->select(
+            'suppliers.name',
+            'suppliers.opening_balance',
+            'suppliers.total_paid',
+            'suppliers.total_purchase',
+            'suppliers.total_purchase_due',
+            'suppliers.total_purchase_return_due'
+        )->get();
+
+        return view('reports.supplier_report.ajax_view.print', compact('supplierReports', 'supplierId'));
+    }
 }

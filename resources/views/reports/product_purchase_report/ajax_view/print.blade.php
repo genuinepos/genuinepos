@@ -56,14 +56,31 @@
                     </tr>
                 @endforeach
             </tbody>
-            <tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6"></div>
+    <div class="col-6">
+        <table class="table modal-table table-sm table-bordered">
+            <thead>
                 <tr>
-                    <th colspan="4" class="text-end">Total :</th>
-                    <th class="text-start">{{ bcadd($totalQty, 0, 2) }}</th>
-                    <th class="text-start">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalUnitCost, 0, 2) }}</th>
-                    <th class="text-start">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalSubTotal, 0, 2) }}</th>
+                    <th class="text-end">Total Quantity :</th>
+                    <th class="text-end">{{ bcadd($totalQty, 0, 2) }}</th>
                 </tr>
-            </tfoot>
+
+                <tr>
+                    <th class="text-end">Total Price :</th>
+                    <th class="text-end">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalUnitCost, 0, 2) }}</th>
+                </tr>
+
+                <tr>
+                    <th class="text-end">Net Total Amount :</th>
+                    <th class="text-end">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalSubTotal, 0, 2) }}</th>
+                </tr>
+           
+            </thead>
         </table>
     </div>
 </div>

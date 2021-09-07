@@ -66,17 +66,17 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Quantity</th>
+                    <th class="text-end">Total Quantity :</th>
                     <th class="text-end">{{ bcadd($totalQty, 0, 2) }}</th>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Price:</th>
+                    <th class="text-end">Total Price :</th>
                     <th class="text-end">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalUnitPrice, 0, 2) }}</th>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Net Total Amount:</th>
+                    <th class="text-end">Net Total Amount :</th>
                     <th class="text-end">{{json_decode($generalSettings->business, true)['currency'] .' '. bcadd($totalSubTotal, 0, 2) }}</th>
                 </tr>
            

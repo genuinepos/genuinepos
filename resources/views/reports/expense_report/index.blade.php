@@ -31,12 +31,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
-                                    <div class="col-md-12">
+                                    <div class="col-md-8">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3 offset-md-3">
+                                                        <div class="col-md-4">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
@@ -53,14 +53,14 @@
                                                     @endif
                                                 @endif
 
-                                                <div class="col-md-2">
+                                                <div class="col-md-4">
                                                     <label><strong>Expense For :</strong></label>
                                                     <select name="admin_id" class="form-control submit_able" id="admin_id" autofocus>
                                                         <option value="">All</option>
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -74,6 +74,13 @@
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label></label>
+                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -168,7 +175,7 @@
         "processing": true,
         "serverSide": true,
         aaSorting: [[0, 'asc']],
-        "lengthMenu" : [50, 100, 500, 1000, 2000],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.expenses.index') }}",
             "data": function(d) {
@@ -237,6 +244,31 @@
             $('.submit_able_input').addClass('.form-control:focus');
             $('.submit_able_input').blur();
         }, 500);
+    });
+
+    //Print purchase Payment report
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('reports.expenses.print') }}";
+        var branch_id = $('#branch_id').val();
+        var customer_id = $('#customer_id').val();
+        var date_range = $('#date_range').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {branch_id, customer_id, date_range},
+            success:function(data){
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 700, 
+                    header: null,        
+                });
+            }
+        }); 
     });
 </script>
 

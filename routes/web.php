@@ -769,6 +769,7 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'expenses'], function () {
         Route::get('/', 'ExpanseReportController@index')->name('reports.expenses.index');
+        Route::get('print', 'ExpanseReportController@print')->name('reports.expenses.print');
     });
 
     Route::group(['prefix' => 'cash/registers'], function () {

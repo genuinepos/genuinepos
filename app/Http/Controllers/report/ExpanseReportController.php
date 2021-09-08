@@ -121,6 +121,60 @@ class ExpanseReportController extends Controller
         return view('reports.expense_report.index', compact('branches'));
     }
 
+    public function print(Request $request)
+    {
+        $expenses = '';
+        $query = DB::table('expanses')
+            ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
+            ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
+
+        if ($request->branch_id) {
+            if ($request->branch_id == 'NULL') {
+                $query->where('expanses.branch_id', NULL);
+            } else {
+                $query->where('expanses.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->admin_id) {
+            $query->where('expanses.admin_id', $request->admin_id);
+        }
+
+        if ($request->date_range) {
+            $date_range = explode('-', $request->date_range);
+            $form_date = date('Y-m-d', strtotime($date_range[0]));
+            $to_date = date('Y-m-d', strtotime($date_range[1]));
+            $query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $expenses = $query->select(
+                'expanses.*',
+                'branches.id as branch_id',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'admin_and_users.prefix as cr_prefix',
+                'admin_and_users.name as cr_name',
+                'admin_and_users.last_name as cr_last_name',
+            )->orderBy('id', 'desc')
+                ->get();
+        } else {
+            $expenses = $query->select(
+                'expanses.*',
+                'branches.id as branch_id',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'admin_and_users.prefix as cr_prefix',
+                'admin_and_users.name as cr_name',
+                'admin_and_users.last_name as cr_last_name',
+            )->where('expanses.branch_id', auth()->user()->branch_id)
+                ->orderBy('id', 'desc')
+                ->get();
+        }
+
+        return view('reports.expense_report.ajax_view.print', compact('expenses'));
+    }
+
     public function getFilteredExpenseReport(Request $request)
     {
         if ($request->ex_category_id && $request->branch_id && $request->date_range) {

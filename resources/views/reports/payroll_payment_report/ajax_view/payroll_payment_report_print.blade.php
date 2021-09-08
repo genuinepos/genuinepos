@@ -8,7 +8,7 @@
                         @php
                             $branch = DB::table('branches')->where('id', $branch_id)->first(['id', 'name', 'branch_code']);
                         @endphp
-                        <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b>(BR) </h5>
+                        <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b>(BL) </h5>
                     @elseif($branch_id == '')
                         <h5><b>All Branch</b></h5> 
                     @endif

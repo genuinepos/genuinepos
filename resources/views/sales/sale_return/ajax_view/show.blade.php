@@ -17,7 +17,7 @@
                             <li><strong>Invoice ID : </strong> {{ $saleReturn->invoice_id }}</li>
                             <li><strong>Return Date : </strong> {{ $saleReturn->date }}</li>
                             <li><strong>Customer Name : </strong> {{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
-                            <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code.'(BR)' : $saleReturn->warehouse->warehouse_name.'/'.$saleReturn->warehouse->warehouse_code.'(WH)' }} </li>
+                            <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code.'(BL)' : $saleReturn->warehouse->warehouse_name.'/'.$saleReturn->warehouse->warehouse_code.'(WH)' }} </li>
                         </ul>
                     </div>
                     <div class="col-md-4 text-left">

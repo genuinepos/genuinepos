@@ -119,7 +119,7 @@ class PurchaseReturnController extends Controller
                 })
                 ->editColumn('location',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '<b>(BR)</b>';
+                        return $row->branch_name . '/' . $row->branch_code . '<b>(BL)</b>';
                     } else {
                         return json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>';
                     }
@@ -128,7 +128,7 @@ class PurchaseReturnController extends Controller
                     if ($row->warehouse_name ) {
                         return ($row->warehouse_name . '/' . $row->warehouse_code) . '<b>(WH)</b>';
                     } elseif($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '<b>(BR)</b>';
+                        return $row->branch_name . '/' . $row->branch_code . '<b>(BL)</b>';
                     }else {
                         return json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>';
                     }

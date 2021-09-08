@@ -294,7 +294,7 @@
                             <li>
                                 <strong>Business Location : </strong> 
                                 @if ($purchase->branch)
-                                    {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BR)</b>' !!}
+                                    {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
                                         Office</b>)

@@ -160,7 +160,7 @@ class PurchaseController extends Controller
                     if ($row->warehouse_name) {
                         return $row->warehouse_name . '<b>(WH)</b>';
                     } elseif ($row->branch_name) {
-                        return $row->branch_name . '<b>(BR)</b>';
+                        return $row->branch_name . '<b>(BL)</b>';
                     } else {
                         return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
                     }

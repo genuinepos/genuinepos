@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\Branch;
-use App\Models\Warehouse;
 use App\Models\Customer;
 use App\Models\SaleReturn;
+use App\Models\SalePayment;
 use App\Models\SaleProduct;
 use App\Models\AdminAndUser;
 use Illuminate\Database\Eloquent\Model;

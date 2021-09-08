@@ -273,8 +273,9 @@ class AccountController extends Controller
             'money_receipt.customer',
             'payroll',
             'payroll_payment',
-        ])
-            ->where('account_id', $accountId)->orderBy('id', 'desc')->get();
+            'loan',
+            'loan.company',
+        ])->where('account_id', $accountId)->orderBy('id', 'desc')->get();
         return view('accounting.accounts.ajax_view.account_cash_flow_list', compact('accountCashFlows'));
     }
 
@@ -296,15 +297,15 @@ class AccountController extends Controller
             'money_receipt.customer',
             'payroll',
             'payroll_payment',
+            'loan',
+            'loan.company',
         ])->where('account_id', $accountId);
 
         if ($request->date_range) {
             $date_range = explode('-', $request->date_range);
             $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-            //date_sub($date,date_interval_create_from_date_string("2 days"));
+            $to_date = date('Y-m-d', strtotime($date_range[1]));
             $query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-            //$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
         }
 
         if ($request->transaction_type) {

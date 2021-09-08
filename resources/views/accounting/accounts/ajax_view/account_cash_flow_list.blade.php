@@ -61,6 +61,10 @@
                         <b>Payroll Payment</b><br>
                         <b>Reference No : </b> {{ $cashFlow->payroll->reference_no }}<br>
                         <span class="mt-1"><b>Payment Voucher No :</b> {!! '<span class="text-primary">'.$cashFlow->payroll_payment->reference_no.'</span>'  !!}</span>  
+                    @elseif($cashFlow->transaction_type == 10)  
+                        <b>{{ $cashFlow->loan->type == 1 ? 'Pay Loan' : 'Get Loan' }}</b><br>
+                        <b>{{ $cashFlow->loan->company->name }}</b><br>
+                        <b>Reference No : </b> {{ $cashFlow->loan->reference_no }}
                     @endif
                 </td> 
                 <td class="text-start">{{ $cashFlow->admin ? $cashFlow->admin->prefix.' '.$cashFlow->admin->name.' '.$cashFlow->admin->last_name : '' }}</td>
@@ -87,7 +91,8 @@
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
-        "order": [[ 1, "desc" ]]
+        "order": [[ 0, "desc"]],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
     });
 </script>
 

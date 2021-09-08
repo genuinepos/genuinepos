@@ -80,4 +80,60 @@ class PurchasePaymentReportController extends Controller
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('reports.purchase_payment_report.index', compact('branches'));
     }
+
+    public function print(Request $request)
+    {
+        $payments = '';
+        $branch_id = $request->branch_id;
+        $fromDate = '';
+        $toDate = '';
+        $query = DB::table('purchase_payments')
+            ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+            ->join('suppliers', 'purchases.supplier_id', 'suppliers.id');
+
+        if ($request->supplier_id) {
+            $query->where('purchases.supplier_id', $request->supplier_id);
+        }
+
+        if ($request->branch_id) {
+            if ($request->branch_id == 'NULL') {
+                $query->where('purchases.branch_id', NULL);
+            } else {
+                $query->where('purchases.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->date_range) {
+            $date_range = explode('-', $request->date_range);
+            $form_date = date('Y-m-d', strtotime($date_range[0]));
+            $to_date = date('Y-m-d', strtotime($date_range[1]));
+            $fromDate = date('Y-m-d', strtotime($date_range[0]));
+            $toDate = date('Y-m-d', strtotime($date_range[0]));
+            $query->whereBetween('purchase_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+        } 
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $payments = $query->select(
+                'purchase_payments.id as payment_id',
+                'purchase_payments.invoice_id as payment_invoice',
+                'purchase_payments.paid_amount',
+                'purchase_payments.pay_mode',
+                'purchase_payments.date',
+                'purchases.invoice_id as purchase_invoice',
+                'suppliers.name as supplier_name',
+            )->get();
+        }else {
+            $payments = $query->select(
+                'purchase_payments.id as payment_id',
+                'purchase_payments.invoice_id as payment_invoice',
+                'purchase_payments.paid_amount',
+                'purchase_payments.pay_mode',
+                'purchase_payments.date',
+                'purchases.invoice_id as purchase_invoice',
+                'suppliers.name as supplier_name',
+            )->where('purchases.branch_id', auth()->user()->branch_id)->get();
+        }
+
+        return view('reports.purchase_payment_report.ajax_view.print', compact('payments', 'fromDate', 'toDate', 'branch_id'));
+    }
 }

@@ -16,7 +16,7 @@
             @endphp
             {{ $branch->name.' '.$branch->branch_code }}
         @endif
-        <p><b>Date :</b> {{ $fromDate }} <b>To</b> {{ $toDate }} </p> 
+        <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
         <p><b>Product Sale Report </b></p> 
     </div>
 </div>

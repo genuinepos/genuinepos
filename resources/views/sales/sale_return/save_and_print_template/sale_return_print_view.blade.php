@@ -33,7 +33,7 @@
                         <li><strong>Invoice ID : </strong>{{ $saleReturn->invoice }}</li>
                         <li><strong>Return Date : </strong>{{ $saleReturn->date }}</li>
                         <li><strong>Customer Name : </strong>{{ $saleReturn->sale->customer ? $saleReturn->sale->customer->name : 'Walk-In-Customer' }}</li>
-                        <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : $saleReturn->warehouse->warehouse_name.'/'.$saleReturn->warehouse->warehouse_code }}</li>
+                        <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}</li>
                     </ul>
                 </div>
                 <div class="col-lg-4">

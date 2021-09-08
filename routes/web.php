@@ -759,11 +759,12 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'purchase/payments'], function () {
         Route::get('/', 'PurchasePaymentReportController@index')->name('reports.purchase.payments.index');
+        Route::get('print', 'PurchasePaymentReportController@print')->name('reports.purchase.payments.print');
     });
 
     Route::group(['prefix' => 'sale/payments'], function () {
         Route::get('/', 'SalePaymentReportController@index')->name('reports.sale.payments.index');
-        Route::get('get', 'SalePaymentReportController@getSalePaymentReport')->name('reports.get.sale.payments');
+        Route::get('print', 'SalePaymentReportController@print')->name('reports.sale.payments.print');
     });
 
     Route::group(['prefix' => 'expenses'], function () {

@@ -1,5 +1,7 @@
 @extends('layout.master')
-@push('stylesheets')@endpush
+@push('stylesheets')
+    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+@endpush
 @section('title', 'Customer List - ')
 @section('content')
     <div class="body-woaper">
@@ -331,6 +333,7 @@
     <!--add money receipt Modal End-->
 @endsection
 @push('scripts')
+    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",

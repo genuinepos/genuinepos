@@ -1,6 +1,7 @@
 @php
     $totalExpense = 0;
     $totalPaid = 0;
+    $totalDue = 0;
 @endphp
 <div class="row">
     <div class="col-md-12 text-center">
@@ -29,24 +30,48 @@
                     <th class="text-start">Reference No</th>
                     <th class="text-start">B.Location</th>
                     <th class="text-start">Expense For</th>
-                    <th class="text-start">Payment Status</th>
                     <th class="text-start">Amount</th>
                     <th class="text-start">Paid</th>
+                    <th class="text-start">Due</th>
                     <th class="text-start">Payment Status</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
                 @foreach ($expenses as $ex)
                 @php
-                    $totalPaid += $ex->net_total;
+                    $totalExpense += $ex->net_total_amount;
+                    $totalPaid += $ex->paid;
+                    $totalDue += $ex->due;
                 @endphp
                     <tr>
-                        <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date)) }}</td>
-                        <td class="text-start">{{ $row->invoice_id }}</td>
-                        <td class="text-start">{{ $payment->customer_name ? $payment->customer_name : 'Walk-In-Customer' }}</td>
-                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b> {{ $payment->paid_amount }}</td>
-                        <td class="text-start">{{ $payment->pay_mode }}</td>
-                        <td class="text-start">{{ $payment->sale_invoice }}</td>
+                        <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ex->date)) }}</td>
+                        <td class="text-start">{{ $ex->invoice_id }}</td>
+                        <td class="text-start">
+                            @if ($ex->branch_name) 
+                                {!! $ex->branch_name . '/' . $ex->branch_code . '(<b>BR</b>)' !!}
+                            @else 
+                                {!! json_decode($generalSettings->business, true)['shop_name'].'(<b>HO</b>)' !!}
+                            @endif
+                        </td>
+
+                        <td>{{ $ex->cr_prefix . ' ' . $ex->cr_name . ' ' . $ex->cr_last_name }}</td>
+                      
+                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $ex->net_total_amount }}</td>
+                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $ex->paid }}</td>
+                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $ex->due }}</td>
+                        <td>
+                            @php
+                                $payable = $ex->net_total_amount;
+                            @endphp
+                            
+                            @if ($ex->due <= 0) 
+                                Paid
+                            @elseif ($ex->due > 0 && $ex->due < $payable) 
+                                Partial
+                            @elseif ($payable == $ex->due) 
+                                Due
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -60,13 +85,18 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
+                    <th class="text-end">Total Expense :</th>
+                    <th class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.bcadd($totalExpense, 0, 2) }}</th>
+                </tr>
+
+                <tr>
                     <th class="text-end">Total Paid :</th>
                     <th class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.bcadd($totalPaid, 0, 2) }}</th>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Expense :</th>
-                    <th class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.bcadd($totalExpense, 0, 2) }}</th>
+                    <th class="text-end">Total Paid :</th>
+                    <th class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.bcadd($totalDue, 0, 2) }}</th>
                 </tr>
             </thead>
         </table>

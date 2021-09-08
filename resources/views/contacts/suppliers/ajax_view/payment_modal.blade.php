@@ -73,8 +73,8 @@
                     <span class="input-group-text" id="basic-addon1"><i
                             class="fas fa-calendar-week text-dark"></i></span>
                 </div>
-                <input type="date" name="date" class="form-control form-control-sm date-picker p_input"
-                    autocomplete="off" id="p_date" data-name="Date" >
+                <input type="text" name="date" class="form-control form-control-sm datepicker p_input"
+                    autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
             </div>
             <span class="error error_p_date"></span>
         </div>
@@ -219,3 +219,12 @@
         </div>
     </div>
 </form>
+
+<script>
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({format: _expectedDateFormat});
+</script>

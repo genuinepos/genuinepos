@@ -117,7 +117,7 @@ class SalePaymentReportController extends Controller
             $form_date = date('Y-m-d', strtotime($date_range[0]));
             $to_date = date('Y-m-d', strtotime($date_range[1]));
             $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[0]));
+            $toDate = date('Y-m-d', strtotime($date_range[1]));
             $query->whereBetween('sale_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
         }
 

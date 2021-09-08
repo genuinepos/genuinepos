@@ -124,6 +124,9 @@ class ExpanseReportController extends Controller
     public function print(Request $request)
     {
         $expenses = '';
+        $branch_id = $request->branch_id;
+        $fromDate = '';
+        $toDate = '';
         $query = DB::table('expanses')
             ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
             ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
@@ -144,6 +147,8 @@ class ExpanseReportController extends Controller
             $date_range = explode('-', $request->date_range);
             $form_date = date('Y-m-d', strtotime($date_range[0]));
             $to_date = date('Y-m-d', strtotime($date_range[1]));
+            $fromDate = date('Y-m-d', strtotime($date_range[0]));
+            $toDate = date('Y-m-d', strtotime($date_range[1]));
             $query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
         }
 
@@ -172,7 +177,7 @@ class ExpanseReportController extends Controller
                 ->get();
         }
 
-        return view('reports.expense_report.ajax_view.print', compact('expenses'));
+        return view('reports.expense_report.ajax_view.print', compact('expenses', 'fromDate', 'toDate', 'branch_id'));
     }
 
     public function getFilteredExpenseReport(Request $request)

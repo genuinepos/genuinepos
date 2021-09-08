@@ -7,9 +7,9 @@
                         <div class="col-md-12">
                             <div class="header_text text-center">
                                 <p>{{ $sale->branch->add_sale_invoice_layout->header_text }}</p>
-                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_1 }}<p/>
-                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_2 }}<p/>
-                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_3 }}<p/>
+                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_1 }}<p>
+                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_2 }}<p>
+                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_3 }}<p>
                             </div>
                         </div>
                     </div>

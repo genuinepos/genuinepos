@@ -204,11 +204,11 @@ class SaleUtil
     public function deleteSale($request, $saleId)
     {
         $deleteSale = Sale::with([
+            'sale_payments',
             'sale_products',
             'sale_products.product',
             'sale_products.variant',
             'sale_products.product.comboProducts',
-            'sale_products.sale_payments'
         ])->where('id', $saleId)->first();
 
         if ($deleteSale->status == 1) {
@@ -223,7 +223,7 @@ class SaleUtil
 
         if (count($deleteSale->sale_payments) > 0) {
             foreach ($deleteSale->sale_payments as $payment) {
-                if ($$payment->attachment) {
+                if ($payment->attachment) {
                     if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
                         unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                     }
@@ -278,7 +278,6 @@ class SaleUtil
 
                         if ($sale_product->product_variant_id) {
                             $productVariant = ProductVariant::where('id', $sale_product->product_variant_id)
-                                ->where('id', $sale_product->product_id)
                                 ->first();
                             $productVariant->mb_stock += $sale_product->quantity;
                             $productVariant->save();

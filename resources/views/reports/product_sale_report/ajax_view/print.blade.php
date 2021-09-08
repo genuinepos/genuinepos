@@ -30,6 +30,7 @@
                     <th class="text-start">P.Code(SKU)</th>
                     <th class="text-start">Customer</th>
                     <th class="text-start">Invoice ID</th>
+                    <th class="text-start">Date</th>
                     <th class="text-start">Qty</th>
                     <th class="text-start">Unit Price</th>
                     <th class="text-start">SubTotal</th>
@@ -47,9 +48,10 @@
                             @endphp
                            {{ $sProduct->name . $variant }}
                         </td>
-                        <td class="text-start">{{ $sProduct->variant_code ? $pProduct->variant_code : $sProduct->product_code}}</td>
+                        <td class="text-start">{{ $sProduct->variant_code ? $sProduct->variant_code : $sProduct->product_code}}</td>
                         <td class="text-start">{{ $sProduct->customer_name ? $sProduct->customer_name : 'Walk-In-Customer' }}</td>
                         <td class="text-start">{{ $sProduct->invoice_id }}</td>
+                        <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sProduct->report_date)) }}</td>
                         <td class="text-start">{!! $sProduct->quantity . ' (<span class="qty" data-value="' . $sProduct->quantity . '">' . $sProduct->unit_code . '</span>)' !!}</td>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $sProduct->unit_price_inc_tax }}</td>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $sProduct->subtotal }}</td>

@@ -207,15 +207,36 @@ class SaleUtil
             'sale_products',
             'sale_products.product',
             'sale_products.variant',
-            'sale_products.product.comboProducts'
+            'sale_products.product.comboProducts',
+            'sale_products.sale_payments'
         ])->where('id', $saleId)->first();
 
         if ($deleteSale->status == 1) {
-            $customer = Customer::where('id', $deleteSale->customer_id)->first();
-            if ($customer) {
-                $customer->total_sale_due = $customer->total_sale_due - ($deleteSale->due > 0 ? $deleteSale->due : 0);
-                $customer->total_sale_return_due = $customer->total_sale_return_due - $deleteSale->sale_return_due;
+            if ($deleteSale->customer_id) {
+                $customer = Customer::where('id', $deleteSale->customer_id)->first();
+                $customer->total_sale_due -= ($deleteSale->due > 0 ? $deleteSale->due : 0);
+                $customer->total_sale_return_due -= ($deleteSale->sale_return_due > 0 ? $deleteSale->sale_return_due : 0);
+                $customer->total_sale -= $deleteSale->total_payable_amount;
                 $customer->save();
+            }
+        }
+
+        if (count($deleteSale->sale_payments) > 0) {
+            foreach ($deleteSale->sale_payments as $payment) {
+                if ($$payment->attachment) {
+                    if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                        unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                    }
+                }
+                
+                if ($payment->account_id) {
+                    $account = Account::where('id', $payment->account)->first();
+                    if ($account) {
+                        $account->credit -= $payment->paid_amount;
+                        $account->balance -= $payment->paid_amount;
+                        $account->save();
+                    }
+                }
             }
         }
 
@@ -223,13 +244,15 @@ class SaleUtil
         if ($deleteSale->status == 1) {
             foreach ($deleteSale->sale_products as $sale_product) {
                 if ($sale_product->product->type == 1) {
-                    $sale_product->product->quantity += $sale_product->quantity;
-                    $sale_product->product->number_of_sale -= $sale_product->quantity;
-                    $sale_product->product->save();
+                    $product = Product::where('id', $sale_product->product_id)->first();
+                    $product->quantity += $sale_product->quantity;
+                    $product->number_of_sale -= $sale_product->quantity;
+                    $product->save();
                     if ($sale_product->product_variant_id) {
-                        $sale_product->variant->variant_quantity += $sale_product->quantity;
-                        $sale_product->variant->number_of_sale -= $sale_product->quantity;
-                        $sale_product->variant->save();
+                        $variant = ProductVariant::where('id', $sale_product->product_variant_id)->first();
+                        $variant->variant_quantity += $sale_product->quantity;
+                        $variant->number_of_sale -= $sale_product->quantity;
+                        $variant->save();
                     }
 
                     if ($deleteSale->branch_id) {
@@ -277,9 +300,10 @@ class SaleUtil
         if (!is_null($deleteSalePayment)) {
             //Update customer due 
             if ($deleteSalePayment->payment_type == 1) {
-                if ($deleteSalePayment->customer) {
-                    $deleteSalePayment->customer->total_sale_due = $deleteSalePayment->customer->total_sale_due + $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->customer->save();
+                if ($deleteSalePayment->customer_id) {
+                    $customer = Customer::where('id', $deleteSalePayment->customer_id)->first();
+                    $customer->total_sale_due += $deleteSalePayment->paid_amount;
+                    $customer->save();
                 }
 
                 // Update sale 

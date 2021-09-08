@@ -102,7 +102,7 @@
                                                 <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control datepicker"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="dt" autocomplete="off">
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off">
                                                         <span class="error error_date"></span>
                                                 </div>
                                             </div>

@@ -21,16 +21,19 @@ use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\ProductWarehouseVariant;
+use App\Utils\Util;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseController extends Controller
 {
     protected $purchaseUtil;
     protected $nameSearchUtil;
-    public function __construct(NameSearchUtil $nameSearchUtil, PurchaseUtil $purchaseUtil)
+    protected $util;
+    public function __construct(NameSearchUtil $nameSearchUtil, PurchaseUtil $purchaseUtil, Util $util)
     {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->purchaseUtil = $purchaseUtil;
+        $this->util = $util;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -1030,43 +1033,7 @@ class PurchaseController extends Controller
     // Change purchase status
     public function addSupplier(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'phone' => 'required',
-        ]);
-
-        $addSupplier = Supplier::create([
-            'type' => $request->contact_type,
-            'contact_id' => $request->contact_id,
-            'name' => $request->name,
-            'business_name' => $request->business_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'alternative_phone' => $request->phone,
-            'landline' => $request->phone,
-            'date_of_birth' => $request->date_of_birth,
-            'tax_number' => $request->tax_number,
-            'pay_term' => $request->pay_term,
-            'pay_term_number' => $request->pay_term_number,
-            'address' => $request->address,
-            'city' => $request->city,
-            'zip_code' => $request->zip_code,
-            'country' => $request->country,
-            'state' => $request->state,
-            'shipping_address' => $request->shipping_address,
-            'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
-            'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
-        ]);
-
-        if ($request->opening_balance && $request->opening_balance >= 0) {
-            $addSupplierLedger = new SupplierLedger();
-            $addSupplierLedger->supplier_id = $addSupplier->id;
-            $addSupplierLedger->row_type = 3;
-            $addSupplierLedger->amount = $request->opening_balance;
-            $addSupplierLedger->save();
-        }
-
-        return response()->json($addSupplier);
+        return $this->util->storeQuickSupplier($request);
     }
 
     // Change purchase status
@@ -1193,7 +1160,6 @@ class PurchaseController extends Controller
     public function paymentUpdate(Request $request, $paymentId)
     {
         $updatePurchasePayment = PurchasePayment::with('account', 'supplier', 'purchase', 'purchase.purchase_return', 'cashFlow')->where('id', $paymentId)->first();
-
         //Update Supplier due 
         $supplier = Supplier::where('id', $updatePurchasePayment->purchase->supplier_id)->first();
         $supplier->total_paid -= $updatePurchasePayment->paid_amount;

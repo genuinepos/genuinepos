@@ -139,7 +139,7 @@
     <div class="row">
         <div class="col-12">
             <div class="heading_area">
-                <p><b>DESTIBUTION OF DUE PURCHSES:</b></p>
+                <p><b>DESTIBUTION OF DUE PURCHASES:</b></p>
             </div>
         </div>
         <div class="col-12">

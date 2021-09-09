@@ -21,63 +21,61 @@
                 </div>
                 <!-- =========================================top section button=================== -->
 
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="form_element">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>All Supplier</h6>
+                <div class="row">
+                    <div class="card">
+                        <div class="section-header">
+                            <div class="col-md-6">
+                                <h6>All Supplier</h6>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="btn_30_blue float-end">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                 </div>
-                               
-                                <div class="col-md-6">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                    </div>
 
-                                    <div class="btn_30_blue float-end">
-                                        <a href="{{ route('contacts.suppliers.import.create') }}"><i class="fas fa-plus-square"></i> Import Suppliers</a>
-                                    </div>
+                                <div class="btn_30_blue float-end">
+                                    <a href="{{ route('contacts.suppliers.import.create') }}"><i class="fas fa-plus-square"></i> Import Suppliers</a>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
+                                <div class="table-responsive" id="data-list">
+                                    
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Supplier ID</th>
+                                                <th>Name</th>
+                                                <th>Business Name</th>
+                                                <th>Phone</th>
+                                                <th>Email</th>
+                                                <th>Tax Number</th>
+                                                <th>Opening Balance</th>
+                                                <th>Total Purchase Due</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
-                                    <div class="table-responsive" id="data-list">
-                                        
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Supplier ID</th>
-                                                    <th>Name</th>
-                                                    <th>Business Name</th>
-                                                    <th>Phone</th>
-                                                    <th>Email</th>
-                                                    <th>Tax Number</th>
-                                                    <th>Opening Balance</th>
-                                                    <th>Total Purchase Due</th>
-                                                    <th>Status</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
-                            </div>
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
+              
             </div>
         </div>
     </div>
-</div>
 
     <!-- Add Modal ---->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -149,7 +147,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                     </div>
-                                    <input type="date" name="date_of_birth" class="form-control " autocomplete="off">
+                                    <input type="text" name="date_of_birth" class="form-control date-of-birth-picker" autocomplete="off"  placeholder="yyyy-mm-dd">
                                 </div>
                             </div>
 
@@ -240,142 +238,7 @@
                     <h6 class="modal-title" id="exampleModalLabel">Edit Supplier</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="edit_supplier_form" action="{{ route('contacts.supplier.update') }}">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <b>Contact Type :</b>
-                                <select name="contact_type" class="form-control " id="e_contact_type">
-                                    <option value="">Select contact type</option>
-                                    <option value="1">Supplier</option>
-                                    <option value="2">Customer</option>
-                                    <option value="3">Both (Supplier - Customer)</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Supplier ID :</b>
-                                <input readonly type="text" name="contact_id" class="form-control"  placeholder="Contact ID" id="e_contact_id"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Business Name :</b>
-                                <input type="text" name="business_name" class="form-control" placeholder="Business name" id="e_business_name"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Name :</b>  <span class="text-danger">*</span>
-                                <input type="text" name="name" class="form-control edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier name" />
-                                <span class="error error_e_name"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <b>Phone :</b><span class="text-danger">*</span>
-                                <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number"/>
-                                <span class="error error_e_phone"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Alternative Number :</b>
-                                <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number" id="e_alternative_phone"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Landline :</b>
-                                <input type="text" name="landline" class="form-control " placeholder="landline number" id="e_landline"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Email :</b>
-                                <input type="text" name="email" class="form-control " placeholder="Email address" id="e_email"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <b>Date Of Birth :</b> 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
-                                    </div>
-                                    <input type="date" name="date_of_birth" class="form-control" autocomplete="off" id="e_date_of_birth">
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Tax Number :</b>
-                                <input type="text" name="tax_number" class="form-control " placeholder="Tax number" id="e_tax_number"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Pay Term :</b>
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <input type="text" name="pay_term_number" class="form-control  w-50" id="e_pay_term_number"/>
-                                        <select name="pay_term" class="form-control  w-50" id="e_pay_term">
-                                            <option value="">Select term</option>
-                                            <option value="1">Days </option>
-                                            <option value="2">Months</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-9">
-                                <b>Address :</b>
-                                <input type="text" name="address" class="form-control "  placeholder="Address" id="e_address">
-                            </div>
-
-                            <div class="col-md-3">
-                               <b>Prefix <i data-bs-toggle="tooltip" data-bs-placement="right" title="This prefix for barcode." class="fas fa-info-circle tp"></i> :</b> 
-                                <input type="text" name="prefix" id="e_prefix" class="form-control " placeholder="prefix"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                               <b>City :</b>  
-                                <input type="text" name="city" class="form-control " placeholder="City" id="e_city"/>
-                            </div>
-
-                            <div class="col-md-3">
-                               <b>State :</b>
-                                <input type="text" name="state" class="form-control " placeholder="State" id="e_state"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Country :</b> 
-                                <input type="text" name="country" class="form-control " placeholder="Country" id="e_country"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Zip-Code :</b> 
-                                <input type="text" name="zip_code" class="form-control " placeholder="zip_code" id="e_zip_code"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-5">
-                                <b>Shipping Address :</b> 
-                                <input type="text" name="shipping_address" class="form-control " placeholder="Shipping address" id="e_shipping_address"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end">Save Change</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                <div class="modal-body" id="edit_modal_body"></div>
             </div>
         </div>
     </div> 
@@ -389,9 +252,7 @@
                     <h6 class="modal-title" id="exampleModalLabel">Add Payment</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="payment_modal_body">
-                    
-                </div>
+                <div class="modal-body" id="payment_modal_body"></div>
             </div>
         </div>
     </div>
@@ -405,9 +266,7 @@
                     <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="payment_list">
-                    
-                </div>
+                <div class="modal-body" id="payment_list"></div>
             </div>
         </div>
     </div>
@@ -422,9 +281,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
-                    <div id="payment_details_body">
-
-                    </div>
+                    <div id="payment_details_body"></div>
                     
                     <div class="row">
                         <div class="col-md-6 text-right">
@@ -492,38 +349,19 @@
         });
 
         // pass editable data to edit modal fields
-        $(document).on('click', '#edit', function(e){
+        $(document).on('click', '#edit', function(e) {
             e.preventDefault();
-            $('.form-control').removeClass('is-invalid');
-            $('.error').html('');
-            var supplier = $(this).closest('tr').data('info');
-            console.log(supplier);
-            $('#id').val(supplier.id);
-            $('#e_contact_type').val(supplier.type);
-            $('#e_contact_id').val(supplier.contact_id);
-            $('#e_name').val(supplier.name);
-            $('#e_business_name').val(supplier.business_name);
-            $('#e_phone').val(supplier.phone);
-            $('#e_alternative_phone').val(supplier.alternative_phone);
-            $('#e_landline').val(supplier.landline);
-            $('#e_email').val(supplier.email);
-            $('#e_address').val(supplier.address);
-            $('#e_date_of_birth').val(supplier.date_of_birth);
-            $('#e_tax_number').val(supplier.tax_number);
-            $('#e_city').val(supplier.city);
-            $('#e_state').val(supplier.state);
-            $('#e_country').val(supplier.country);
-            $('#e_zip_code').val(supplier.zip_code);
-            $('#e_opening_balance').val(supplier.opening_balance);
-            $('#e_pay_term').val(supplier.pay_term);
-            $('#e_pay_term_number').val(supplier.pay_term_number);
-            $('#e_shipping_address').val(supplier.shipping_address);
-            $('#e_prefix').val(supplier.prefix);
-            $('#editModal').modal('show');
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $.get(url, function(data) {
+                $('#edit_modal_body').html(data);
+                $('#editModal').modal('show');
+                $('.data_preloader').hide();
+            });
         });
 
         // edit category by ajax
-        $('#edit_supplier_form').on('submit', function(e){
+        $(document).on('submit', '#edit_supplier_form', function(e){
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
@@ -768,6 +606,41 @@
                 footer: footer
             });
         });
+
+        $(document).on('click', '#delete_payment',function(e){
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_payment_form').attr('action', url);           
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'message': 'Are you sure?',
+                'buttons': {
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_payment_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+                }
+            });
+        });
+
+        //data delete by ajax
+        $(document).on('submit', '#deleted_payment_form',function(e) {
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url:url,
+                type:'post',
+                async:false,
+                data:request,
+                success:function(data){
+                    getAllSupplier();
+                    toastr.error(data);
+                    $('#deleted_payment_form')[0].reset();
+                    $('#viewPaymentModal').modal('hide');
+                }
+            });
+        });
     });
+
+    $('.date-of-birth-picker').datepicker({format: 'yyyy-mm-dd'});
 </script>
  @endpush 

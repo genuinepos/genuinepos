@@ -93,6 +93,12 @@ class SupplierController extends Controller
         return response()->json($supplier);
     }
 
+    public function edit($supplierId)
+    {
+        $supplier = DB::table('suppliers')->where('id', $supplierId)->select('suppliers.*')->first();
+        return view('contacts.suppliers.ajax_view.edit', compact('supplier'));
+    }
+
     public function update(Request $request)
     {
         $this->validate($request, [
@@ -231,7 +237,6 @@ class SupplierController extends Controller
                 })
                 ->editColumn('invoice_id', function ($row) {
                     $html = '';
-                    // $html .= $row->is_return_available ? '<br>' : '';
                     $html .= $row->invoice_id;
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
@@ -966,6 +971,7 @@ class SupplierController extends Controller
         return view('contacts.suppliers.ajax_view.view_payment_list', compact('supplier'));
     }
 
+    // Supplier Payment Details
     public function paymentDetails($paymentId)
     {
         $supplierPayment = SupplierPayment::with(
@@ -976,5 +982,39 @@ class SupplierController extends Controller
             'supplier_payment_invoices.purchase:id,invoice_id,date'
         )->where('id', $paymentId)->first();
         return view('contacts.suppliers.ajax_view.payment_details', compact('supplierPayment'));
+    }
+
+    // Supplier Payment Delete
+    public function paymentDelete(Request $request, $paymentId)
+    {
+        $deleteSupplierPayment = SupplierPayment::with('supplier_payment_invoices')->where('id', $paymentId)->first();
+        if ($deleteSupplierPayment->attachment != null) {
+            if (file_exists(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment))) {
+                unlink(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment));
+            }
+        }
+        
+        //Update supplier info
+        $supplier = Supplier::where('id', $deleteSupplierPayment->supplier_id)->first();
+        if ($deleteSupplierPayment->type == 1) {
+            $supplier->total_paid -= $deleteSupplierPayment->paid_amount;
+            $supplier->total_purchase_due += $deleteSupplierPayment->paid_amount;
+        }else {
+            $supplier->total_purchase_return_due += $deleteSupplierPayment->paid_amount;
+        }
+        $supplier->save();
+
+        // Update supplier payment invoices
+        if (count($deleteSupplierPayment->supplier_payment_invoices) > 0) {
+            foreach ($deleteSupplierPayment->supplier_payment_invoices as $pInvoice) {
+                $updatePurchase = Purchase::where('id', $pInvoice->purchase_id)->first();
+                $updatePurchase->paid -= $pInvoice->paid_amount;
+                $updatePurchase->due += $pInvoice->paid_amount;
+                $updatePurchase->save();
+            }
+        }
+
+        $deleteSupplierPayment->delete();
+        return response()->json('Payment deleted successfully.');
     }
 }

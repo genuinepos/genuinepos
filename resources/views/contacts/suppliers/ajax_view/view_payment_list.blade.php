@@ -67,7 +67,7 @@
                             <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
                             <td>
                                 <a href="{{ route('suppliers.view.details', $payment->id) }}" id="payment_details" class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
-                                <a href="{{ route('suppliers.payment.delete', $payment->) }}" id="delete_payment" class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
+                                <a href="{{ route('suppliers.payment.delete', $payment->id) }}" id="delete_payment" class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
                             </td>
                         </tr>
                     @endforeach

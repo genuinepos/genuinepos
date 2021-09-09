@@ -154,6 +154,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('get/all/suppliers', 'SupplierController@getAllSupplier')->name('contacts.supplier.get.all.supplier');
         Route::get('add', 'SupplierController@create')->name('contacts.supplier.create');
         Route::post('store', 'SupplierController@store')->name('contacts.supplier.store');
+        Route::get('edit/{supplierId}', 'SupplierController@edit')->name('contacts.supplier.edit');
         Route::post('update', 'SupplierController@update')->name('contacts.supplier.update');
         Route::get('get/supplier/{supplierId}', 'SupplierController@getSupplier')->name('contacts.supplier.get.supplier');
         Route::delete('delete/{supplierId}', 'SupplierController@delete')->name('contacts.supplier.delete');
@@ -173,7 +174,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 
         Route::get('view/payment/{supplierId}', 'SupplierController@viewPayment')->name('suppliers.view.payment'); 
         Route::get('payment/details/{paymentId}', 'SupplierController@paymentDetails')->name('suppliers.view.details'); 
-        Route::get('payment/delete/{paymentId}', 'SupplierController@paymentDelete')->name('suppliers.payment.delete');
+        Route::delete('payment/delete/{paymentId}', 'SupplierController@paymentDelete')->name('suppliers.payment.delete');
 
         Route::group(['prefix' => 'import'], function () {
             Route::get('/', 'SupplierImportController@create')->name('contacts.suppliers.import.create');

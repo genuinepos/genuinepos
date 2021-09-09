@@ -17,8 +17,7 @@
     </thead>
     <tbody>
         @foreach ($suppliers as $supplier)
-            <tr data-info="{{ $supplier }}">
-                 
+            <tr>
                 <td> 
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -38,7 +37,7 @@
                             <a class="dropdown-item" id="view_payment" href="{{ route('suppliers.view.payment', $supplier->id) }}"><i class="far fa-trash-alt text-primary"></i> View Payments</a>
                             
                             @if (auth()->user()->permission->supplier['supplier_edit'] == '1')
-                                <a class="dropdown-item" href="#" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>
+                                <a class="dropdown-item" href="{{ route('contacts.supplier.edit', $supplier->id) }}" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>
                             @endif
 
                             @if (auth()->user()->permission->supplier['supplier_delete'] == '1')

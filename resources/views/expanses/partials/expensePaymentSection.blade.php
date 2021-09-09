@@ -17,6 +17,7 @@
                                     <label for="inputEmail3" class=" col-4"><b>Loan Amt: ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
                                     <div class="col-8">
                                         <input name="loan_amount" class="form-control" id="loan_amount" value="0.00">
+                                        <span class="error error_loan_amount"></span>
                                     </div>
                                 </div>
                             </div>
@@ -31,6 +32,7 @@
                                                 <option value="{{ $com->id }}">{{ $com->name }}</option>
                                             @endforeach
                                         </select>
+                                        <span class="error error_company_id"></span>
                                     </div>
                                 </div>
                             </div>
@@ -42,6 +44,7 @@
                                     <label for="inputEmail3" class=" col-4"><b>Paying : ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
                                     <div class="col-8">
                                         <input name="paying_amount" class="form-control" id="paying_amount" value="0.00">
+                                        <span class="error error_paying_amount"></span>
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +75,7 @@
                                         <select name="account_id" class="form-control" id="account_id">
                                             <option value="">None</option>
                                         </select>
+                                        <span class="error error_account_id"></span>
                                     </div>
                                 </div>
                             </div>

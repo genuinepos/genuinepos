@@ -60,6 +60,7 @@
                 cancelClass: 'btn-secondary',
                 startDate: start,
                 endDate: end,
+                locale: {cancelLabel: 'Clear'},
                 ranges: {
                     'Today': [moment(), moment()],
                     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -71,6 +72,11 @@
                     'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
                 }
             });
+            $('.daterange').val('');
+        });
+
+        $(document).on('click', '.cancelBtn ', function () {
+           $('.daterange').val('');
         });
     </script>
 @endpush

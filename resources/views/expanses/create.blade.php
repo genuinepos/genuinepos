@@ -76,7 +76,6 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-8">
-                                
                                 <div class="form_element m-0">
                                     <div class="heading_area">
                                         <p class="text-primary m-0 p-0 ps-1"><b>Descriptions</b></p>
@@ -321,10 +320,6 @@
                 success:function(data){
                     $('.loading_button').hide();
                     $('.submit_button').prop('type', 'submit');
-                    if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
-                    }
-
                     if(!$.isEmptyObject(data)){
                         toastr.success('Expense created successfully.'); 
                         $('.extra_category').remove();
@@ -341,6 +336,15 @@
                             footer: null,
                         });
                     }
+                },error: function(err) {
+                    $('.loading_button').hide();
+                    $('.submit_button').prop('type', 'submit');
+                    toastr.error('Please check again all form fields.',
+                        'Some thing want wrong.');
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
@@ -348,7 +352,6 @@
         var index = 1;
         $(document).on('click', '#addMore', function (e) {
            e.preventDefault();
-
            var html = '';
            html += '<tr class="extra_category">';
             html += '<td>';

@@ -164,11 +164,16 @@ class ExpanseController extends Controller
         $this->validate($request, [
             'date' => 'required',
             'total_amount' => 'required',
-            'loan_amount' => [Rule::where($request->is_loan, ['required'])],
-            'company_id' => [Rule::where($request->is_loan, ['required'])],
-            'paying_amount' => [Rule::where($request->is_loan, ['required'])],
-            'account_id' => [Rule::where($request->is_loan, ['required'])],
         ]);
+
+        if ($request->is_loan) {
+            $this->validate($request, [
+                'loan_amount' => 'required',
+                'company_id' => 'required',
+                'paying_amount' => 'required',
+                'account_id' => 'required',
+            ]);
+        }
 
         // generate invoice ID
         $i = 6;

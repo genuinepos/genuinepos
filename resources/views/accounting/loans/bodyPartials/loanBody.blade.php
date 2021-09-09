@@ -29,7 +29,7 @@
             
                         <div class="col-md-3">
                             <label><strong>Date range :</strong></label>
-                            <input type="text" class="form-control daterange submit_able_input" id="date_range">
+                            <input readonly type="text" class="form-control daterange submit_able_input" id="date_range">
                         </div>
                     </div>
                 </form>

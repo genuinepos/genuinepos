@@ -28,7 +28,7 @@
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-3">
-                                                            <label><strong>Branch :</strong></label>
+                                                            <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
@@ -638,6 +638,7 @@
                 cancelClass: 'btn-secondary',
                 startDate: start,
                 endDate: end,
+                locale: {cancelLabel: 'Clear'},
                 ranges: {
                     'Today': [moment(), moment()],
                     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -649,6 +650,11 @@
                     'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
                 }
             });
+            $('.daterange').val('');
+        });
+
+        $(document).on('click', '.cancelBtn ', function () {
+           $('.daterange').val('');
         });
 
         $(document).on('change', '#payment_method', function () {

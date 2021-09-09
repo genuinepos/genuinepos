@@ -12,6 +12,7 @@
     function getUnites(){
         $.ajax({
             url:"{{route('purchases.get.all.unites')}}",
+            async : false,
             success:function(units){
                 $.each(units, function(key, unit){
                     unites.push(unit.name); 

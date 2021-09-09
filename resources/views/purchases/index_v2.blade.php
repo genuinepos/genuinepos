@@ -293,22 +293,16 @@
         }
         setSuppliers();
 
-        // Pass sale details in the details modal
-        function purchaseDetails(url) {
+        // Show details modal with data
+        $(document).on('click', '.details_button', function(e) {
+            e.preventDefault();
             $('.data_preloader').show();
+            var url = $(this).attr('href');
             $.get(url,  function(data) {
                 $('#purchase_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
             })
-        }
-
-        // Show details modal with data
-        $(document).on('click', '.details_button', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            console.log(url);
-            purchaseDetails(url);
         });
 
         // Show change status modal and pass actual link in the change status form
@@ -534,18 +528,8 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            $('#payment_deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#payment_deleted_form').submit();}},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });

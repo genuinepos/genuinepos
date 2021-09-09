@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddColumnsToSupplierLedgersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('supplier_ledgers', function (Blueprint $table) {
+            $table->unsignedBigInteger('supplier_payment_id')->after('purchase_payment_id')->nullable();
+            $table->timestamp('report_date')->after('amount')->nullable();
+            $table->foreign('supplier_payment_id')->references('id')->on('supplier_payments')->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('supplier_ledgers', function (Blueprint $table) {
+            //
+        });
+    }
+}

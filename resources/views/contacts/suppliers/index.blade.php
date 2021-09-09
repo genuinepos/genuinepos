@@ -396,6 +396,55 @@
         </div>
     </div>
     <!-- Supplier payment Modal End-->
+
+    <!-- Supplier payment view Modal--> 
+    <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="payment_list">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Supplier payment view Modal End-->
+
+    <!-- Supplier payment details Modal--> 
+    <div class="modal fade" id="paymentDatailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <div id="payment_details_body">
+
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <ul class="list-unstyled">
+                                <li class="mt-3" id="payment_attachment"></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <ul class="list-unstyled">
+                                {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li> --}}
+                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                                <button type="submit" id="print_payment" class="c-btn btn_blue">Print</button>
+                            </ul>
+                        </div>
+                    </div>   
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Supplier payment details Modal End-->
 @endsection
 @push('scripts')
 <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
@@ -415,15 +464,11 @@
     getAllSupplier();
 
     // Setup ajax for csrf token.
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    $.ajaxSetup({ headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
     // call jquery method 
     $(document).ready(function(){
-        // Add category by ajax
+        // Add Supplier by ajax
         $('#add_supplier_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
@@ -507,24 +552,14 @@
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
 
         //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
+        $(document).on('submit', '#deleted_form',function(e) {
             e.preventDefault();
             var url = $(this).attr('action');
             var request = $(this).serialize();
@@ -692,6 +727,46 @@
 
         $(document).on('input', '.edit_input', function () {
             editValidation();
+        });
+
+        $(document).on('click', '#view_payment', function(e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $.get(url, function(data) {
+                $('#payment_list').html(data);
+                $('#viewPaymentModal').modal('show');
+                $('.data_preloader').hide();
+            });
+        });
+
+        $(document).on('click', '#payment_details', function(e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $.get(url, function(data) {
+                $('#payment_details_body').html(data);
+                $('#paymentDatailsModal').modal('show');
+                $('.data_preloader').hide();
+            });
+        });
+
+        // Print single payment details
+        $('#print_payment').on('click', function (e) {
+           e.preventDefault(); 
+            var body = $('.sale_payment_print_area').html();
+            var header = $('.header_area').html();
+            var footer = $('.signature_area').html();
+            $(body).printThis({
+                debug: false,                   
+                importCSS: true,                
+                importStyle: true,          
+                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
+                removeInline: true, 
+                printDelay: 500, 
+                header: header,  
+                footer: footer
+            });
         });
     });
 </script>

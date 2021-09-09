@@ -88,33 +88,8 @@
                         </div>
 
                         <div class="tab_contant ledger d-none">
+                        
                             <div class="row">
-                                <div class="col-md-5 offset-7">
-                                    <div class="company_info text-right">
-                                        <ul class="list-unstyled">
-                                            <li><strong
-                                                    class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</strong>
-                                            </li>
-                                            <li><span class="company_address">Motijeel, Arambagh, Road-144, Dhaka</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12 col-lg-6">
-                                    <div class="account_summary_area">
-                                        <div class="heading py-2">
-                                            <h4 class="py-2 pl-1">To :</h4>
-                                        </div>
-                                    </div>
-                                    <div class="sand_info">
-                                        <ul class="list-unstyled">
-                                            <li><strong class="name">Jamal Hosain</strong></li><br>
-                                            <li>Phone:<span class="phone"> 01122555545545</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
                                 <div class="col-md-6 col-sm-12 col-lg-6">
                                     <div class="account_summary_area">
                                         <div class="heading py-2">
@@ -122,26 +97,26 @@
                                         </div>
 
                                         <div class="account_summary_table">
-                                            <table class="table table-sm">
+                                            <table class="table modal-table table-sm">
                                                 <tbody>
                                                     <tr>
-                                                        <td><strong>Opening Balance :</strong></td>
-                                                        <td><span class="opening_balance">0.00</span></td>
+                                                        <td class="text-start"><strong>Opening Balance :</strong></td>
+                                                        <td class="text-start"><span class="opening_balance">0.00</span></td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td><strong>Total Purchase :</strong></td>
-                                                        <td><span class="total_purchase">100000.00</span></td>
+                                                        <td class="text-start"><strong>Total Purchase :</strong></td>
+                                                        <td class="text-start"><span class="total_purchase">100000.00</span></td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td><strong>Total Paid :</strong></td>
-                                                        <td><span class="total_paid">100000.00</span></td>
+                                                        <td class="text-start"><strong>Total Paid :</strong></td>
+                                                        <td class="text-start"><span class="total_paid">100000.00</span></td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td><strong>Balance Due :</strong></td>
-                                                        <td><span class="balance_due">0.00</span></td>
+                                                        <td class="text-start"><strong>Balance Due :</strong></td>
+                                                        <td class="text-start"><span class="balance_due">0.00</span></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -152,8 +127,8 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label> <strong>Supplier Ledger</strong></label>
                                     <div class="payment_table">
+                                        <label> <strong>Supplier Ledger</strong></label>
                                         <div class="table-responsive" id="payment_list_table">
                                             <table class="table">
                                                 <thead>

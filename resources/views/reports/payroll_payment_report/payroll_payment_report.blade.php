@@ -190,7 +190,6 @@
         }, 1000);
     });
 
-
     $(document).on('click', '#print_report',function (e) {
         e.preventDefault(); 
         $('.data_preloader').show();

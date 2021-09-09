@@ -171,6 +171,9 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('return/payment/{supplierId}', 'SupplierController@returnPayment')->name('suppliers.return.payment');
         Route::post('return/payment/{supplierId}', 'SupplierController@returnPaymentAdd')->name('suppliers.return.payment.add');
 
+        Route::get('view/payment/{supplierId}', 'SupplierController@viewPayment')->name('suppliers.view.payment'); 
+        Route::get('payment/details/{paymentId}', 'SupplierController@paymentDetails')->name('suppliers.view.details'); 
+
         Route::group(['prefix' => 'import'], function () {
             Route::get('/', 'SupplierImportController@create')->name('contacts.suppliers.import.create');
             Route::post('store', 'SupplierImportController@store')->name('contacts.suppliers.import.store');

@@ -25,33 +25,33 @@
                           Action
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="{{ url('contacts/suppliers/view', $supplier->id) }}"><i class="far fa-eye text-primary"></i> View</a>
+                            
                             @if ($supplier->total_purchase_due > 0)
-                                <a class="dropdown-item" id="pay_button" href="{{ route('suppliers.payment', $supplier->id) }}"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Pay</a>
+                                <a class="dropdown-item" id="pay_button" href="{{ route('suppliers.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-primary"></i> Pay</a>
                             @endif
 
                             @if ($supplier->total_purchase_return_due > 0)
-                                <a class="dropdown-item" id="pay_receive_button" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Receive Purchase Return Amount</a> 
+                                <a class="dropdown-item" id="pay_receive_button" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-primary"></i> Receive Purchase Return Amount</a> 
                             @endif
-                            
-                            <a class="dropdown-item" href="{{ url('contacts/suppliers/view', $supplier->id) }}"><i class="far fa-eye mr-1 text-primary"></i> View</a>
 
+                            <a class="dropdown-item" id="view_payment" href="{{ route('suppliers.view.payment', $supplier->id) }}"><i class="far fa-trash-alt text-primary"></i> View Payments</a>
+                            
                             @if (auth()->user()->permission->supplier['supplier_edit'] == '1')
-                                <a class="dropdown-item" href="#" id="edit"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>
+                                <a class="dropdown-item" href="#" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>
                             @endif
 
                             @if (auth()->user()->permission->supplier['supplier_delete'] == '1')
-                                <a class="dropdown-item" id="delete" href="{{ route('contacts.supplier.delete', $supplier->id) }}"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>
+                                <a class="dropdown-item" id="delete" href="{{ route('contacts.supplier.delete', $supplier->id) }}"><i class="far fa-trash-alt text-primary"></i> Delete</a>
                             @endif
 
                             @if ($supplier->status == 1)
-                                <a class="dropdown-item" id="change_status" href="{{ route('contacts.supplier.change.status', $supplier->id) }}"><i class="far fa-thumbs-up mr-1 text-success"></i> Change Status</a>
+                                <a class="dropdown-item" id="change_status" href="{{ route('contacts.supplier.change.status', $supplier->id) }}"><i class="far fa-thumbs-up text-success"></i> Change Status</a>
                             @else 
-                                <a class="dropdown-item" id="change_status" href="{{ route('contacts.supplier.change.status', $supplier->id) }}"><i class="far fa-thumbs-down mr-1 text-danger"></i> Change Status</a>
+                                <a class="dropdown-item" id="change_status" href="{{ route('contacts.supplier.change.status', $supplier->id) }}"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>
                             @endif
-
-                            <a class="dropdown-item" href="{{ url('contacts/suppliers/contact/info', $supplier->id) }}"> <i class="fas fa-info-circle mr-1 text-primary"></i> Contact Info</a>
-
-                            <a class="dropdown-item" href="{{ url('contacts/suppliers/ledger', $supplier->id) }}"><i class="far fa-file-alt mr-1 text-primary"></i> Ledger</a>
+                            <a class="dropdown-item" href="{{ url('contacts/suppliers/contact/info', $supplier->id) }}"> <i class="fas fa-info-circle text-primary"></i> Contact Info</a>
+                            <a class="dropdown-item" href="{{ url('contacts/suppliers/ledger', $supplier->id) }}"><i class="far fa-file-alt text-primary"></i> Ledger</a>
                         </div>
                     </div>
                 </td>

@@ -423,7 +423,7 @@
                     if(!$.isEmptyObject(data.errorMsg)){
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();
-                    }else{
+                    } else {
                         $('.payment_method').hide();
                         $('.loading_button').hide();
                         $('#paymentModal').modal('hide');

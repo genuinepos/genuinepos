@@ -433,6 +433,7 @@ class PurchaseController extends Controller
         $addSupplierLedger = new SupplierLedger();
         $addSupplierLedger->supplier_id = $request->supplier_id;
         $addSupplierLedger->purchase_id = $addPurchase->id;
+        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
         $addSupplierLedger->save();
 
         // Add purchase payment
@@ -496,6 +497,7 @@ class PurchaseController extends Controller
             $addSupplierLedger->supplier_id = $request->supplier_id;
             $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
             $addSupplierLedger->row_type = 2;
+            $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
             $addSupplierLedger->save();
         }
 
@@ -1145,6 +1147,7 @@ class PurchaseController extends Controller
         $addSupplierLedger->supplier_id = $supplier->id;
         $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
         $addSupplierLedger->row_type = 2;
+        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
         $addSupplierLedger->save();
         return response()->json('Successfully payment is added.');
     }
@@ -1368,6 +1371,7 @@ class PurchaseController extends Controller
         $addSupplierLedger->supplier_id = $supplier->id;
         $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
         $addSupplierLedger->row_type = 2;
+        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
         $addSupplierLedger->save();
 
         return response()->json('Successfully payment is added.');

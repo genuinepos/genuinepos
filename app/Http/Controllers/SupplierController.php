@@ -9,6 +9,8 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
+use App\Models\SupplierPayment;
+use App\Models\SupplierPaymentInvoice;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -306,10 +308,11 @@ class SupplierController extends Controller
     // Supplier payment list
     public function paymentList($supplierId)
     {
-        $ledgers = SupplierLedger::with(['purchase', 'purchase_payment', 'purchase_payment.purchase'])
+        $supplier = DB::table('suppliers')->where('id', $supplierId)->select('name', 'contact_id')->first();
+        $ledgers = SupplierLedger::with(['purchase', 'purchase_payment', 'purchase_payment.purchase', 'supplier_payment'])
             ->where('supplier_id', $supplierId)
-            ->whereYear('created_at', date('Y'))->get();;
-        return view('contacts.suppliers.ajax_view.ledger_list', compact('ledgers'));
+            ->whereYear('created_at', date('Y'))->get();
+        return view('contacts.suppliers.ajax_view.ledger_list', compact('ledgers', 'supplier'));
     }
 
     // Supplier ledger 
@@ -347,10 +350,64 @@ class SupplierController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
 
+        // Update Supplier Amount
         $supplier = Supplier::where('id', $supplierId)->first();
         $supplier->total_paid += $request->amount;
         $supplier->total_purchase_due -= $request->amount;
         $supplier->save();
+
+        // generate invoice ID
+        $l = 6;
+        $sv = 0;
+        $voucherNo = '';
+        while ($sv < $l) { $voucherNo .= rand(1, 9);$sv++; }
+
+        // Add Supplier Payment Record
+        $supplierPayment = new SupplierPayment();
+        $supplierPayment->voucher_no = 'SPV'.$voucherNo;
+        $supplierPayment->branch_id = auth()->user()->branch_id;
+        $supplierPayment->supplier_id = $supplierId;
+        $supplierPayment->account_id = $request->account_id;
+        $supplierPayment->paid_amount = $request->amount;
+        $supplierPayment->pay_mode = $request->payment_method;
+        $supplierPayment->date = $request->date;
+        $supplierPayment->time = date('h:i:s a');
+        $supplierPayment->month = date('F');
+        $supplierPayment->year = date('Y');
+
+        if ($request->payment_method == 'Card') {
+            $supplierPayment->card_no = $request->card_no;
+            $supplierPayment->card_holder = $request->card_holder_name;
+            $supplierPayment->card_transaction_no = $request->card_transaction_no;
+            $supplierPayment->card_type = $request->card_type;
+            $supplierPayment->card_month = $request->month;
+            $supplierPayment->card_year = $request->year;
+            $supplierPayment->card_secure_code = $request->secure_code;
+        } elseif ($request->payment_method == 'Cheque') {
+            $supplierPayment->cheque_no = $request->cheque_no;
+        } elseif ($request->payment_method == 'Bank-Transfer') {
+            $supplierPayment->account_no = $request->account_no;
+        } elseif ($request->payment_method == 'Custom') {
+            $supplierPayment->transaction_no = $request->transaction_no;
+        }
+
+        if ($request->hasFile('attachment')) {
+            $PaymentAttachment = $request->file('attachment');
+            $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
+            $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
+            $supplierPayment->attachment = $paymentAttachmentName;
+        }
+
+        $supplierPayment->note = $request->note;
+        $supplierPayment->save();
+
+        // Add supplier payment for direct payment
+        $addSupplierLedger = new SupplierLedger();
+        $addSupplierLedger->supplier_id = $supplierId;
+        $addSupplierLedger->row_type = 4;
+        $addSupplierLedger->supplier_payment_id = $supplierPayment->id;
+        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
+        $addSupplierLedger->save();
 
         // generate invoice ID
         $i = 6;
@@ -399,13 +456,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->transaction_no = $request->transaction_no;
                     }
 
-                    if ($request->hasFile('attachment')) {
-                        $purchasePaymentAttachment = $request->file('attachment');
-                        $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
-                        $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
-                        $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
-                    }
-
                     $addPurchasePayment->admin_id = auth()->user()->id;
                     $addPurchasePayment->payment_on = 1;
                     $addPurchasePayment->save();
@@ -433,11 +483,19 @@ class SupplierController extends Controller
                         $addCashFlow->save();
                     }
 
-                    $addSupplierLedger = new SupplierLedger();
-                    $addSupplierLedger->supplier_id = $supplierId;
-                    $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-                    $addSupplierLedger->row_type = 2;
-                    $addSupplierLedger->save();
+                    // $addSupplierLedger = new SupplierLedger();
+                    // $addSupplierLedger->supplier_id = $supplierId;
+                    // $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
+                    // $addSupplierLedger->row_type = 2;
+                    // $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
+                    // $addSupplierLedger->save();
+
+                    // Add Supplier Payment invoice
+                    $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
+                    $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
+                    $addSupplierPaymentInvoice->purchase_id = $dueInvoice->id;
+                    $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                    $addSupplierPaymentInvoice->save();
 
                     //$dueAmounts -= $dueAmounts; 
                     if ($index == 1) {
@@ -475,13 +533,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->transaction_no = $request->transaction_no;
                     }
 
-                    if ($request->hasFile('attachment')) {
-                        $purchasePaymentAttachment = $request->file('attachment');
-                        $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
-                        $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
-                        $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
-                    }
-
                     $addPurchasePayment->admin_id = auth()->user()->id;
                     $addPurchasePayment->payment_on = 1;
                     $addPurchasePayment->save();
@@ -509,11 +560,20 @@ class SupplierController extends Controller
                         $addCashFlow->save();
                     }
 
-                    $addSupplierLedger = new SupplierLedger();
-                    $addSupplierLedger->supplier_id = $supplierId;
-                    $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-                    $addSupplierLedger->row_type = 2;
-                    $addSupplierLedger->save();
+                    // // Add Supplier Ledger
+                    // $addSupplierLedger = new SupplierLedger();
+                    // $addSupplierLedger->supplier_id = $supplierId;
+                    // $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
+                    // $addSupplierLedger->row_type = 2;
+                    // $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
+                    // $addSupplierLedger->save();
+
+                    // Add Supplier Payment invoice
+                    $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
+                    $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
+                    $addSupplierPaymentInvoice->purchase_id = $dueInvoice->id;
+                    $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                    $addSupplierPaymentInvoice->save();
 
                     if ($index == 1) {
                         break;
@@ -547,13 +607,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->transaction_no = $request->transaction_no;
                     }
 
-                    if ($request->hasFile('attachment')) {
-                        $purchasePaymentAttachment = $request->file('attachment');
-                        $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
-                        $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
-                        $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
-                    }
-
                     $addPurchasePayment->admin_id = auth()->user()->id;
                     $addPurchasePayment->payment_on = 1;
                     $addPurchasePayment->save();
@@ -581,12 +634,21 @@ class SupplierController extends Controller
                         $addCashFlow->save();
                     }
 
-                    $addSupplierLedger = new SupplierLedger();
-                    $addSupplierLedger->supplier_id = $supplierId;
-                    $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-                    $addSupplierLedger->row_type = 2;
-                    $addSupplierLedger->save();
+                    // $addSupplierLedger = new SupplierLedger();
+                    // $addSupplierLedger->supplier_id = $supplierId;
+                    // $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
+                    // $addSupplierLedger->row_type = 2;
+                    // $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
+                    // $addSupplierLedger->save();
 
+                    // Add Supplier Payment invoice
+                    $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
+                    $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
+                    $addSupplierPaymentInvoice->purchase_id = $dueInvoice->id;
+                    $addSupplierPaymentInvoice->paid_amount = $dueInvoice->due;
+                    $addSupplierPaymentInvoice->save();
+
+                    // Calculate next payment amount
                     $request->amount -= $dueInvoice->due;
                     $dueInvoice->paid += $dueInvoice->due;
                     $dueInvoice->due -= $dueInvoice->due;
@@ -893,5 +955,26 @@ class SupplierController extends Controller
         }
 
         return response()->json('Return amount received successfully.');
+    }
+
+    public function viewPayment($supplierId)
+    {
+        $supplier = Supplier::with(
+            'supplier_payments',
+            'supplier_payments.account:id,name'
+        )->where('id', $supplierId)->first();
+        return view('contacts.suppliers.ajax_view.view_payment_list', compact('supplier'));
+    }
+
+    public function paymentDetails($paymentId)
+    {
+        $supplierPayment = SupplierPayment::with(
+            'branch',
+            'supplier',
+            'account',
+            'supplier_payment_invoices',
+            'supplier_payment_invoices.purchase:id,invoice_id,date'
+        )->where('id', $paymentId)->first();
+        return view('contacts.suppliers.ajax_view.payment_details', compact('supplierPayment'));
     }
 }

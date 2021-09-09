@@ -1,0 +1,191 @@
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+<div class="sale_payment_print_area">
+    <div class="header_area d-none">
+        <div class="company_name text-center">
+            <h3>
+                <b>
+                    @if ($supplierPayment->branch)
+                        {{ $supplierPayment->sale->branch->name . '/' . $supplierPayment->sale->branch->branch_code }}
+                    @else
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                    @endif
+                </b>
+            </h3>
+            <h6>
+                @if ($supplierPayment->branch)
+                    {{ $supplierPayment->branch->city . ', ' . $supplierPayment->branch->state . ', ' . $supplierPayment->branch->zip_code . ', ' . $supplierPayment->branch->country }}
+                @else
+                    {{ json_decode($generalSettings->business, true)['address'] }}
+                @endif
+            </h6>
+            <h6>Payment Details</h6>
+        </div>
+    </div>
+
+    <div class="reference_area">
+        <p><b>Title :</b>
+            {{ $supplierPayment->type == 1 ? 'Supplier Payment' : 'Supplier Return Payment' }} 
+        </p>
+        <p><b>Supplier :</b> {{ $supplierPayment->supplier->name }}</p>
+        <p><b>Phone :</b> {{ $supplierPayment->supplier->phone }}</p>
+        <p><b>Address :</b> {{ $supplierPayment->supplier->address }}</p>
+    </div>
+
+    <div class="total_amount_table_area">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-sm table-md">
+                    <tbody>
+                        <tr>
+                            <th width="50%" class="text-start">Paid Amount :</th>
+                            <td width="50%">
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ $supplierPayment->paid_amount }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th width="50%" class="text-start">Payment Account :</th>
+                            <td width="50%">{{ $supplierPayment->account ? $supplierPayment->account->name : '' }}</td>
+                        </tr>
+
+                        <tr>
+                            <th width="50%" class="text-start">Payment Method :</th>
+                            <td width="50%">{{ $supplierPayment->pay_mode }}</td>
+                        </tr>
+
+                        @if ($supplierPayment->pay_mode == 'Card')
+                            <tr>
+                                <th width="50%" class="text-start">Card Number :</th>
+                                <td width="50%">{{ $supplierPayment->card_no }}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="50%" class="text-start">Card Holder :</th>
+                                <td width="50%">{{ $supplierPayment->card_holder }}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="50%" class="text-start">Card Type :</th>
+                                <td width="50%">{{ $supplierPayment->card_type }}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="50%" class="text-start">Transaction No :</th>
+                                <td width="50%">{{ $supplierPayment->card_transaction_no }}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="50%" class="text-start">Month :</th>
+                                <td width="50%">{{ $supplierPayment->card_month }}</td>
+                            </tr>
+
+                            <tr>
+                                <th width="50%" class="text-start">Year :</th>
+                                <td width="50%">{{ $supplierPayment->card_year }}</td>
+                            </tr>
+                        @elseif($supplierPayment->pay_mode == 'Cheque')
+                            <tr>
+                                <th width="50%" class="text-start">Chaque No :</th>
+                                <td width="50%">{{ $supplierPayment->cheque_no }}</td>
+                            </tr>
+                        @elseif($supplierPayment->pay_mode == 'Bank-Transfer')
+                            <tr>
+                                <th width="50%" class="text-start">Account No :</th>
+                                <td width="50%">{{ $supplierPayment->account_no }}</td>
+                            </tr>
+                        @elseif($supplierPayment->pay_mode == 'Custom')
+                            <tr>
+                                <th width="50%" class="text-start">Transaction No :</th>
+                                <td width="50%">{{ $supplierPayment->transaction_no }}</td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <th width="50%" class="text-start">Voucher No :</th>
+                            <td width="50%">
+                                {{ $supplierPayment->voucher_no }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th width="50%" class="text-start">Paid On :</th>
+                            <td width="50%">
+                                @php
+                                    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+                                @endphp
+                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($supplierPayment->date)) . ' ' . date($timeFormat, strtotime($supplierPayment->time)) }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th width="50%" class="text-start">Payment Note :</th>
+                            <td width="50%">
+                                {{ $supplierPayment->note }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="heading_area">
+                <p><b>DESTIBUTION OF DUE PURCHSES:</b></p>
+            </div>
+        </div>
+        <div class="col-12">
+            <table class="table modal-table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-start">Date</th>
+                        <th class="text-start">P.Invoice ID</th>
+                        <th class="text-start">Paid Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($supplierPayment->supplier_payment_invoices as $pi)
+                        <tr>
+                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->purchase->date)) }}</td>
+                            <td class="text-start">{{ $pi->purchase->invoice_id }}</h6></td>
+                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="signature_area pt-5 mt-5 d-none">
+        <br>
+        <table class="w-100 pt-5">
+            <tbody>
+                <tr>
+                    <th width="50%">Signature Of Authority</th>
+                    <th width="50%" class="text-end">Signature Of Receiver</th>
+                </tr>
+
+                <tr>
+                    <td colspan="2" class="text-center">
+                        <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($supplierPayment->voucher_no, $generator::TYPE_CODE_128)) }}">
+                        <p>{{ $supplierPayment->voucher_no }}</p>
+                    </td>
+                </tr>
+
+                @if (env('PRINT_SD_PAYMENT') == true)
+                    <tr>
+                        <td colspan="2" class="text-center">Software by SpeedDigit Pvt. Ltd.</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+    </div>
+</div>

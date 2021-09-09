@@ -3,6 +3,7 @@
 namespace App\Models;
 use App\Models\Purchase;
 use App\Models\PurchasePayment;
+use App\Models\SupplierPayment;
 use Illuminate\Database\Eloquent\Model;
 
 class SupplierLedger extends Model
@@ -18,5 +19,10 @@ class SupplierLedger extends Model
     public function purchase_payment()
     {
         return $this->belongsTo(PurchasePayment::class, 'purchase_payment_id');
+    }
+
+    public function supplier_payment()
+    {
+        return $this->belongsTo(SupplierPayment::class, 'supplier_payment_id');
     }
 }

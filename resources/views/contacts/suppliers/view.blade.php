@@ -298,11 +298,11 @@
         purchase_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
-            aaSorting: [[3, 'asc']],
+            aaSorting: [[0, 'asc']],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax:"{{ url('contacts/suppliers/view', $supplierId) }}",
             columnDefs: [{
-                "targets": [0],
+                "targets": [0, 5, 6],
                 "orderable": false,
                 "searchable": false
             }],
@@ -310,16 +310,16 @@
                 {data: 'action'},
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id', name: 'invoice_id'},
-                {data: 'from', name: 'from'},
-                {data: 'supplier_name', name: 'supplier_name'},
+                {data: 'from', name: 'branches.name'},
+                {data: 'supplier_name', name: 'suppliers.name'},
                 {data: 'status', name: 'status'},
                 {data: 'payment_status', name: 'payment_status'},
                 {data: 'total_purchase_amount', name: 'total_purchase_amount'},
                 {data: 'paid', name: 'paid'},
                 {data: 'due', name: 'due'},
-                {data: 'return_amount', name: 'return_amount'},
-                {data: 'return_due', name: 'return_due'},
-                {data: 'created_by', name: 'created_by'},
+                {data: 'return_amount', name: 'purchase_return_amount'},
+                {data: 'return_due', name: 'purchase_return_due'},
+                {data: 'created_by', name: 'created_by.name'},
             ],
         });
 

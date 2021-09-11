@@ -179,7 +179,6 @@ class SupplierController extends Controller
 
             $purchases = $query->select(
                 'purchases.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'warehouses.warehouse_name',
@@ -188,7 +187,8 @@ class SupplierController extends Controller
                 'created_by.prefix as created_prefix',
                 'created_by.name as created_name',
                 'created_by.last_name as created_last_name',
-            )->where('purchases.branch_id', auth()->user()->branch_id)->where('supplier_id', $supplierId)->get();
+            )->where('purchases.branch_id', auth()->user()->branch_id)->where('supplier_id', $supplierId)
+                ->orderBy('id', 'desc');
 
 
             return DataTables::of($purchases)
@@ -365,11 +365,14 @@ class SupplierController extends Controller
         $l = 6;
         $sv = 0;
         $voucherNo = '';
-        while ($sv < $l) { $voucherNo .= rand(1, 9);$sv++; }
+        while ($sv < $l) {
+            $voucherNo .= rand(1, 9);
+            $sv++;
+        }
 
         // Add Supplier Payment Record
         $supplierPayment = new SupplierPayment();
-        $supplierPayment->voucher_no = 'SPV'.$voucherNo;
+        $supplierPayment->voucher_no = 'SPV' . $voucherNo;
         $supplierPayment->branch_id = auth()->user()->branch_id;
         $supplierPayment->supplier_id = $supplierId;
         $supplierPayment->account_id = $request->account_id;
@@ -928,13 +931,13 @@ class SupplierController extends Controller
                 unlink(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment));
             }
         }
-        
+
         //Update supplier info
         $supplier = Supplier::where('id', $deleteSupplierPayment->supplier_id)->first();
         if ($deleteSupplierPayment->type == 1) {
             $supplier->total_paid -= $deleteSupplierPayment->paid_amount;
             $supplier->total_purchase_due += $deleteSupplierPayment->paid_amount;
-        }else {
+        } else {
             $supplier->total_purchase_return_due += $deleteSupplierPayment->paid_amount;
         }
         $supplier->save();

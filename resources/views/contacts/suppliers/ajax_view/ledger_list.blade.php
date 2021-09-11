@@ -16,7 +16,7 @@
         @foreach ($ledgers as $ledger)
             <tr>
                 @if ($ledger->row_type == 1)
-                    <td>{{ date('d/m/Y', strtotime($ledger->purchase->date)) }}</td> 
+                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->purchase->date)) }}</td> 
                     <td>{{ $ledger->purchase->invoice_id }}</td>
                     <td>Purchase</td>
                     <td> 

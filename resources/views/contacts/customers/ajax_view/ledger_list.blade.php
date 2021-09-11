@@ -20,7 +20,7 @@
         @foreach ($ledgers as $ledger)
             <tr>
                 @if ($ledger->row_type == 1)
-                    <td>{{ date('d/m/Y', strtotime($ledger->sale->date)) }}</td> 
+                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale->date)) }}</td> 
                     <td>{{ $ledger->sale->invoice_id }}</td>
                     <td>Sale</td>
                     <td>
@@ -32,7 +32,7 @@
                     <td>---</td>
                     <td>---</td>
                 @elseif($ledger->row_type == 2)
-                    <td>{{ date('d/m/Y', strtotime($ledger->sale_payment->date)) }}</td> 
+                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale_payment->date)) }}</td> 
                     <td>{{ $ledger->sale_payment->invoice_id }}</td>
                     <td>{{ $ledger->sale_payment->payment_type == 1 ? 'Sale Payment' : 'Sale Return Payment' }}</td>
                     <td>---</td>
@@ -52,7 +52,7 @@
                     <td>{{ $ledger->sale_payment->pay_mode }}</td>
                     <td>Payment For : {{ $ledger->sale_payment->sale->invoice_id }}</td>
                 @elseif ($ledger->row_type == 4)
-                    <td>{{ date('d/m/Y', strtotime($ledger->created_at)) }}</td> 
+                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->created_at)) }}</td> 
                     <td>---</td>
                     <td>
                         Receive Payment By Money Receipt<br>
@@ -87,7 +87,7 @@
                     <td>{{ $ledger->customer_payment->pay_mode }}</td>
                     <td>{{ $ledger->customer_payment->type == 1 ? 'Direct Received From Customer' : 'Direct Paid To Customer' }}</td>
                 @else 
-                    <td>{{ date('d/m/Y', strtotime($ledger->created_at)) }}</td> 
+                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->created_at)) }}</td> 
                     <td>---</td>
                     <td>Opening Balance</td>
                     <td>

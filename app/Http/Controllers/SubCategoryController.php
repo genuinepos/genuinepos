@@ -24,7 +24,7 @@ class SubCategoryController extends Controller
         if ($request->ajax()) {
           $subCategories = DB::table('categories')->join('categories as parentcat','parentcat.id','categories.parent_category_id')
           ->select('parentcat.name as parentname','categories.*')
-          ->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC')->get();
+          ->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC');
            return DataTables::of($subCategories)
             ->addIndexColumn()
             ->editColumn('photo', function ($row) use($img_url) {

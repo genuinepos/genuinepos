@@ -123,12 +123,11 @@
                     d.branch_id = $('#branch_id').val();
                 }
             },
-         
             columns: [
                 {data: 'username', name: 'username'},
                 {data: 'name', name: 'name'},
                 {data: 'branch', name: 'branch'},
-                {data: 'role', name: 'role'},
+                {data: 'role_name', name: 'role_name'},
                 {data: 'dep_name', name: 'dep_name'},
                 {data: 'des_name', name: 'des_name'},
                 {data: 'email', name: 'email'},

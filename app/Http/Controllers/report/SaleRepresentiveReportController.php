@@ -59,7 +59,7 @@ class SaleRepresentiveReportController extends Controller
                     'customers.name as customer_name',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                )->get();
+                );
             } else {
                 $sales = $sale_query->select(
                     'sales.date',
@@ -74,7 +74,7 @@ class SaleRepresentiveReportController extends Controller
                     'customers.name as customer_name',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                )->where('sales.branch_id', auth()->user()->branch_id)->get();
+                )->where('sales.branch_id', auth()->user()->branch_id);
             }
 
             return DataTables::of($sales)

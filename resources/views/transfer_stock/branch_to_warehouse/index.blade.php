@@ -85,7 +85,7 @@
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id',name: 'invoice_id'},
                 {data: 'from',name: 'from'},
-                {data: 'to',name: 'to'},
+                {data: 'to_name',name: 'to_name'},
                 {data: 'shipping_charge',name: 'shipping_charge'},
                 {data: 'net_total_amount',name: 'net_total_amount'},
                 {data: 'status',name: 'status'},

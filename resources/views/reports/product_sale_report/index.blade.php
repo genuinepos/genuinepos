@@ -195,7 +195,7 @@
             {data: 'customer', name: 'customer'},
             {data: 'invoice_id', name: 'invoice_id'},
             {data: 'date', name: 'date'},
-            {data: 'qty', name: 'qty'},
+            {data: 'quantity', name: 'quantity'},
             {data: 'unit_price_inc_tax', name: 'unit_price_inc_tax'},
             {data: 'subtotal', name: 'subtotal'},
         ],

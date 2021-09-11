@@ -69,8 +69,7 @@ class ProductPurchaseReportController extends Controller
                     'product_variants.variant_name',
                     'product_variants.variant_code',
                     'suppliers.name as supplier_name'
-                )->orderBy('purchase_products.id', 'desc')
-                    ->get();
+                )->orderBy('purchase_products.id', 'desc');
             } else {
                 $purchaseProducts = $query->select(
                     'purchase_products.purchase_id',
@@ -86,8 +85,7 @@ class ProductPurchaseReportController extends Controller
                     'product_variants.variant_name',
                     'product_variants.variant_code',
                     'suppliers.name as supplier_name'
-                )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchase_products.id', 'desc')
-                    ->get();
+                )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchase_products.id', 'desc');
             }
 
             return DataTables::of($purchaseProducts)
@@ -101,7 +99,7 @@ class ProductPurchaseReportController extends Controller
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('qty', function ($row) {
+                ->editColumn('quantity', function ($row) {
                     return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
                 })
                 ->editColumn('net_unit_cost',  function ($row) use ($generalSettings) {
@@ -110,7 +108,7 @@ class ProductPurchaseReportController extends Controller
                 ->editColumn('subtotal', function ($row) use ($generalSettings) {
                     return '<b><span class="subtotal" data-value="' . $row->line_total . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->line_total . '</span></b>';
                 })
-                ->rawColumns(['product', 'sku', 'date', 'qty', 'branch', 'net_unit_cost', 'subtotal'])
+                ->rawColumns(['product', 'sku', 'date', 'quantity', 'branch', 'net_unit_cost', 'subtotal'])
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);

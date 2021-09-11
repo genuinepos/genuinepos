@@ -73,8 +73,7 @@ class PurchaseReturnController extends Controller
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
                     'suppliers.name as sup_name',
-                )->orderBy('id', 'desc')
-                    ->get();
+                )->orderBy('id', 'desc');
             } else {
                 $returns = $query->select(
                     'purchase_returns.*',
@@ -84,9 +83,7 @@ class PurchaseReturnController extends Controller
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
                     'suppliers.name as sup_name',
-                )->where('purchase_returns.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc')
-                    ->get();
+                )->where('purchase_returns.branch_id', auth()->user()->branch_id)->orderBy('id', 'desc');
             }
 
             return DataTables::of($returns)

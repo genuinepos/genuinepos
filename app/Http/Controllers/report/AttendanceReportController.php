@@ -47,7 +47,7 @@ class AttendanceReportController extends Controller
                     'admin_and_users.name',
                     'admin_and_users.last_name',
                     'admin_and_users.emp_id',
-                )->orderBy('hrm_attendances.id', 'desc')->get();
+                )->orderBy('hrm_attendances.id', 'desc');
             } else {
                 $attendances = $query->select(
                     'hrm_attendances.*',
@@ -57,7 +57,7 @@ class AttendanceReportController extends Controller
                     'admin_and_users.name',
                     'admin_and_users.last_name',
                     'admin_and_users.emp_id',
-                )->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc')->get();
+                )->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc');
             }
 
             return DataTables::of($attendances)
@@ -134,7 +134,7 @@ class AttendanceReportController extends Controller
                 'admin_and_users.name',
                 'admin_and_users.last_name',
                 'admin_and_users.emp_id',
-            )->orderBy('hrm_attendances.id', 'desc')->get();
+            )->orderBy('hrm_attendances.id', 'desc');
         } else {
             $attendances = $query->select(
                 'hrm_attendances.*',
@@ -144,7 +144,7 @@ class AttendanceReportController extends Controller
                 'admin_and_users.name',
                 'admin_and_users.last_name',
                 'admin_and_users.emp_id',
-            )->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc')->get();
+            )->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc');
         }
 
         return view('reports.attendance_report.ajax_view.attendance_report_print', compact('attendances', 'branch_id', 's_date', 'e_date'));

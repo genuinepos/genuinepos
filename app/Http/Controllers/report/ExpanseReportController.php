@@ -48,26 +48,22 @@ class ExpanseReportController extends Controller
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $expenses = $query->select(
                     'expanses.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'admin_and_users.prefix as cr_prefix',
                     'admin_and_users.name as cr_name',
                     'admin_and_users.last_name as cr_last_name',
-                )->orderBy('id', 'desc')
-                    ->get();
+                )->orderBy('id', 'desc');
             } else {
                 $expenses = $query->select(
                     'expanses.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'admin_and_users.prefix as cr_prefix',
                     'admin_and_users.name as cr_name',
                     'admin_and_users.last_name as cr_last_name',
                 )->where('expanses.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc')
-                    ->get();
+                    ->orderBy('id', 'desc');
             }
 
             return DataTables::of($expenses)

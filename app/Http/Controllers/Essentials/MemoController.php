@@ -33,7 +33,7 @@ class MemoController extends Controller
                     'shared_by.name',
                     'shared_by.last_name',
                 )
-                ->orderBy('id', 'desc')->get();
+                ->orderBy('id', 'desc');
             return DataTables::of($memos)
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
@@ -56,10 +56,10 @@ class MemoController extends Controller
                         return $row->heading.'<br><b>Shared By : </b><span class="text-muted">'.$row->prefix.' '.$row->name.' '.$row->last_name.'</span>';
                     }
                 })
-                ->editColumn('date', function ($row) {
+                ->editColumn('created_at', function ($row) {
                     return date('d/m/Y', strtotime($row->created_at));
                 })
-                ->rawColumns(['action', 'date', 'heading'])
+                ->rawColumns(['action', 'created_at', 'heading'])
                 ->make(true);
         }
         return view('essentials.memos.index');

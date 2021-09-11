@@ -206,7 +206,7 @@
         columns: [
             {data: 'heading', name: 'heading'},
             {data: 'description', name: 'description'},
-            {data: 'date', name: 'date'},
+            {data: 'created_at', name: 'created_at'},
             {data: 'action', name: 'action'},
         ]
     });

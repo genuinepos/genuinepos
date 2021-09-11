@@ -75,7 +75,7 @@ class ProductSaleReportController extends Controller
                     'product_variants.variant_name',
                     'product_variants.variant_code',
                     'customers.name as customer_name'
-                )->get();
+                );
 
             return DataTables::of($saleProducts)
                 ->editColumn('product', function ($row) {
@@ -87,13 +87,13 @@ class ProductSaleReportController extends Controller
                     return date('d/m/Y', strtotime($row->date));
                 })->editColumn('customer', function ($row) {
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
-                })->editColumn('qty', function ($row) {
+                })->editColumn('quantity', function ($row) {
                     return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
                 })->editColumn('unit_price_inc_tax',  function ($row) use ($generalSettings) {
                     return '<b><span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->unit_price_inc_tax . '</span></b>';
                 })->editColumn('subtotal', function ($row) use ($generalSettings) {
                     return '<b><span class="subtotal" data-value="' . $row->subtotal . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->subtotal . '</span></b>';
-                })->rawColumns(['product', 'sku', 'date', 'qty', 'branch', 'unit_price_inc_tax', 'subtotal'])->make(true);
+                })->rawColumns(['product', 'sku', 'date', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('reports.product_sale_report.index', compact('branches'));

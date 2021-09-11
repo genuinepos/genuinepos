@@ -53,7 +53,6 @@ class PayrollController extends Controller
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
                 $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('hrm_payrolls.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-                //$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
@@ -68,7 +67,7 @@ class PayrollController extends Controller
                     'created_by.prefix as user_prefix',
                     'created_by.name as user_name',
                     'created_by.last_name as user_last_name',
-                )->get();
+                );
             } else {
                 $payrolls = $query->select(
                     'hrm_payrolls.*',
@@ -81,7 +80,7 @@ class PayrollController extends Controller
                     'created_by.prefix as user_prefix',
                     'created_by.name as user_name',
                     'created_by.last_name as user_last_name',
-                )->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                )->where('admin_and_users.branch_id', auth()->user()->branch_id);
             }
 
 

@@ -59,8 +59,7 @@ class SaleReturnController extends Controller
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
                     'customers.name as cus_name',
-                )->orderBy('id', 'desc')
-                    ->get();
+                )->orderBy('id', 'desc');
             } else {
                 $returns = $query->select(
                     'sale_returns.*',
@@ -71,8 +70,7 @@ class SaleReturnController extends Controller
                     'warehouses.warehouse_code',
                     'customers.name as cus_name',
                 )->where('sale_returns.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc')
-                    ->get();
+                    ->orderBy('id', 'desc');
             }
 
             return DataTables::of($returns)

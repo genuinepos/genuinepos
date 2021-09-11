@@ -83,22 +83,18 @@ class PurchaseController extends Controller
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $purchases = $query->select(
                     'purchases.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'warehouses.id as warehouse_id',
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
                     'suppliers.name as supplier_name',
                     'created_by.prefix as created_prefix',
                     'created_by.name as created_name',
                     'created_by.last_name as created_last_name',
-                )->orderBy('id', 'desc')
-                    ->get();
+                )->orderBy('purchases.id', 'desc');
             } else {
                 $purchases = $query->select(
                     'purchases.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'warehouses.warehouse_name',
@@ -107,9 +103,7 @@ class PurchaseController extends Controller
                     'created_by.prefix as created_prefix',
                     'created_by.name as created_name',
                     'created_by.last_name as created_last_name',
-                )->where('purchases.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc')
-                    ->get();
+                )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchases.id', 'desc');
             }
 
             return DataTables::of($purchases)

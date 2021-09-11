@@ -44,26 +44,22 @@ class UserController extends Controller
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $users = $query->select(
                     'admin_and_users.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'roles.name as role_name',
                     'hrm_department.department_name as dep_name',
                     'hrm_designations.designation_name as des_name',
-                )->orderBy('id', 'desc')
-                    ->get();
+                )->orderBy('id', 'desc');
             } else {
                 $users = $query->select(
                     'admin_and_users.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'roles.name as role_name',
                     'hrm_department.department_name as dep_name',
                     'hrm_designations.designation_name as des_name',
                 )->where('admin_and_users.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc')
-                    ->get();
+                    ->orderBy('id', 'desc');
             }
 
             return DataTables::of($users)
@@ -85,7 +81,7 @@ class UserController extends Controller
                         return '(<b>Head Office</b>)';
                     }
                 })
-                ->editColumn('role',  function ($row) {
+                ->editColumn('role_name',  function ($row) {
                     if ($row->role_type == 1){
                        return 'Super-Admin';
                     }elseif($row->role_type == 2)   {
@@ -104,7 +100,7 @@ class UserController extends Controller
                     }  
                 })
                 ->setRowClass('text-start')
-                ->rawColumns(['action', 'branch', 'role', 'username'])
+                ->rawColumns(['action', 'branch', 'role_name', 'username'])
                 ->make(true);
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();

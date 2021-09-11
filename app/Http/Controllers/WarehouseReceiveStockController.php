@@ -34,7 +34,7 @@ class WarehouseReceiveStockController extends Controller
                     'warehouses.warehouse_code',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                )->orderBy('id', 'desc')->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)->get();;
+                )->orderBy('id', 'desc')->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id);
 
             return DataTables::of($transfers)
                 ->addColumn('action', function ($row) {

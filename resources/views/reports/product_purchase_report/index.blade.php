@@ -194,7 +194,7 @@
             {data: 'supplier_name', name: 'supplier_name'},
             {data: 'invoice_id', name: 'invoice_id'},
             {data: 'date', name: 'date'},
-            {data: 'qty', name: 'qty'},
+            {data: 'quantity', name: 'quantity'},
             {data: 'net_unit_cost', name: 'net_unit_cost'},
             {data: 'subtotal', name: 'subtotal'},
         ],

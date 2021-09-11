@@ -51,26 +51,22 @@ class TodoController extends Controller
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $todos = $query->select(
                     'todos.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'admin_and_users.prefix',
                     'admin_and_users.name as a_name',
                     'admin_and_users.last_name',
-                )->orderBy('todos.id', 'desc')
-                    ->get();
+                )->orderBy('todos.id', 'desc');
             } else {
                 $todos = $query->select(
                     'todos.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'admin_and_users.prefix',
                     'admin_and_users.name as a_name',
                     'admin_and_users.last_name',
                 )->where('todos.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc')
-                    ->get();
+                    ->orderBy('id', 'desc');
             }
 
             return DataTables::of($todos)

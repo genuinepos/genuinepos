@@ -34,12 +34,12 @@ class TransferToWarehouseController extends Controller
                 ->leftJoin('warehouses', 'transfer_stock_to_warehouses.warehouse_id', 'warehouses.id')
                 ->leftJoin('branches', 'transfer_stock_to_warehouses.branch_id', 'branches.id')->select(
                     'transfer_stock_to_warehouses.*',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
+                    'warehouses.warehouse_name as to_name',
+                    'warehouses.warehouse_code as to_code',
                     'branches.name as branch_name',
                     'branches.branch_code',
                 )->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)
-                ->orderBy('id', 'desc')->get();
+                ->orderBy('transfer_stock_to_warehouses.id', 'desc');
 
             return DataTables::of($transfers)
                 ->addColumn('action', function ($row) {
@@ -63,8 +63,8 @@ class TransferToWarehouseController extends Controller
                         return json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>';
                     }
                 })
-                ->editColumn('to',  function ($row) {
-                    return  $row->warehouse_name . '/' . $row->warehouse_code;
+                ->editColumn('to_name',  function ($row) {
+                    return  $row->to_name . '/' . $row->to_code;
                 })
                 ->editColumn('shipping_charge', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->shipping_charge . '</b>';
@@ -89,7 +89,7 @@ class TransferToWarehouseController extends Controller
                     }
                 ])
                 ->setRowClass('clickable_row text-start')
-                ->rawColumns(['date', 'from', 'to', 'shipping_charge', 'net_total_amount', 'status', 'action'])
+                ->rawColumns(['action', 'date', 'from', 'to_name', 'shipping_charge', 'net_total_amount', 'status'])
                 ->make(true);
         }
         return view('transfer_stock.branch_to_warehouse.index');

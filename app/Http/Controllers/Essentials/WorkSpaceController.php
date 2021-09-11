@@ -52,26 +52,22 @@ class WorkSpaceController extends Controller
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $workspaces = $query->select(
                     'workspaces.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'admin_and_users.prefix',
                     'admin_and_users.name as a_name',
                     'admin_and_users.last_name',
-                )->orderBy('id', 'desc')
-                    ->get();
+                )->orderBy('id', 'desc');
             } else {
                 $workspaces = $query->select(
                     'workspaces.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'admin_and_users.prefix',
                     'admin_and_users.name as a_name',
                     'admin_and_users.last_name',
                 )->where('workspaces.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc')
-                    ->get();
+                    ->orderBy('id', 'desc');
             }
 
             return DataTables::of($workspaces)
@@ -132,7 +128,7 @@ class WorkSpaceController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'start_date' => 'required',
-            'start_date' => 'required',
+            'end_date' => 'required',
         ]);
 
         // generate invoice ID

@@ -68,7 +68,7 @@ class ProductUtil
                 'sub_cate.name as sub_cate_name',
                 'brands.name as brand_name',
             ]
-        )->orderBy('id', 'desc')->get();
+        )->orderBy('id', 'desc');
 
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {

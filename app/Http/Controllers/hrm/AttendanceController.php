@@ -62,7 +62,7 @@ class AttendanceController extends Controller
                     'admin_and_users.prefix',
                     'admin_and_users.name',
                     'admin_and_users.last_name',
-                )->get();
+                );
             }else {
                 $attendances = $query->select(
                     'hrm_attendances.*',
@@ -70,7 +70,7 @@ class AttendanceController extends Controller
                     'admin_and_users.prefix',
                     'admin_and_users.name',
                     'admin_and_users.last_name',
-                )->where('branch_id', auth()->user()->branch_id)->get();
+                )->where('branch_id', auth()->user()->branch_id);
             }
 			
 

@@ -34,8 +34,7 @@ class SupplierReportController extends Controller
                 'suppliers.total_purchase',
                 'suppliers.total_purchase_due',
                 'suppliers.total_purchase_return_due'
-            )
-            ->get();
+            );
 
             return DataTables::of($suppliers)
                 ->editColumn('opening_balance', function ($row) use ($generalSettings) {

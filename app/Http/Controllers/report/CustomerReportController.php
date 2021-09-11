@@ -33,7 +33,7 @@ class CustomerReportController extends Controller
                 'customers.total_sale',
                 'customers.total_sale_due',
                 'customers.total_sale_return_due'
-            )->get();
+            );
 
             return DataTables::of($customers)
                 ->editColumn('opening_balance', function ($row) use ($generalSettings) {

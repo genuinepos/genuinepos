@@ -42,7 +42,7 @@ class WarehouseController extends Controller
                     'warehouses.warehouse_code as code',
                     'branches.name as b_name',
                     'branches.branch_code as b_code',
-                )->orderBy('warehouses.id', 'desc')->get();
+                )->orderBy('warehouses.id', 'desc');
             } else {
                 $warehouses = $query->select(
                     'warehouses.id',
@@ -53,7 +53,7 @@ class WarehouseController extends Controller
                     'warehouses.warehouse_code as code',
                     'branches.name as b_name',
                     'branches.branch_code as b_code',
-                )->where('branch_id', auth()->user()->branch_id)->orderBy('warehouses.id', 'desc')->get();
+                )->where('branch_id', auth()->user()->branch_id)->orderBy('warehouses.id', 'desc');
             }
 
             return DataTables::of($warehouses)

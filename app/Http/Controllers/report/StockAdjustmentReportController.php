@@ -78,7 +78,6 @@ class StockAdjustmentReportController extends Controller
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $adjustments = $query->select(
                     'stock_adjustments.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'warehouses.warehouse_name',
@@ -86,11 +85,10 @@ class StockAdjustmentReportController extends Controller
                     'admin_and_users.prefix',
                     'admin_and_users.name',
                     'admin_and_users.last_name',
-                )->orderBy('id', 'desc')->get();
+                )->orderBy('id', 'desc');
             } else {
                 $adjustments = $query->select(
                     'stock_adjustments.*',
-                    'branches.id as branch_id',
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'warehouses.warehouse_name',
@@ -98,8 +96,7 @@ class StockAdjustmentReportController extends Controller
                     'admin_and_users.prefix',
                     'admin_and_users.name as cr_name',
                     'admin_and_users.last_name',
-                )->where('stock_adjustments.branch_id', auth()->user()->branch_id)
-                    ->get();
+                )->where('stock_adjustments.branch_id', auth()->user()->branch_id);
             }
 
             return DataTables::of($adjustments)

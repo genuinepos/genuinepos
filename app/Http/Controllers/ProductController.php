@@ -55,7 +55,7 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
             $products = DB::table('products')
-            ->select('id', 'name', 'product_cost', 'product_price')->orderBy('products.id', 'desc')->get();
+            ->select('id', 'name', 'product_cost', 'product_price')->orderBy('products.id', 'desc');
 
             return DataTables::of($products)
             ->addColumn('action', function ($row) {

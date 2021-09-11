@@ -371,24 +371,18 @@ class SaleUtil
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $sales = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'customers.name as customer_name',
-            )->where('sales.status', 1)->where('created_by', 1)
-                ->orderBy('id', 'desc')
-                ->get();
+            )->where('sales.status', 1)->where('sales.created_by', 1)->orderBy('id', 'desc');
         } else {
             $sales = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'customers.name as customer_name',
-            )->where('branch_id', auth()->user()->branch_id)
-                ->where('sales.status', 1)->where('created_by', 1)
-                ->orderBy('id', 'desc')
-                ->get();
+            )->where('sales.branch_id', auth()->user()->branch_id)
+                ->where('sales.status', 1)->where('created_by', 1)->orderBy('id', 'desc');
         }
 
         return DataTables::of($sales)
@@ -502,24 +496,20 @@ class SaleUtil
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $sales = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'customers.name as customer_name',
             )->where('sales.status', 1)->where('created_by', 2)
-                ->orderBy('id', 'desc')
-                ->get();
+                ->orderBy('id', 'desc');
         } else {
             $sales = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'customers.name as customer_name',
             )->where('sales.branch_id', auth()->user()->branch_id)->where('created_by', 2)
                 ->where('sales.status', 1)
-                ->orderBy('id', 'desc')
-                ->get();
+                ->orderBy('id', 'desc');
         }
 
         return DataTables::of($sales)
@@ -637,30 +627,26 @@ class SaleUtil
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $drafts = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'customers.name as customer_name',
+                'customers.name as customer',
                 'admin_and_users.prefix as u_prefix',
                 'admin_and_users.name as u_name',
                 'admin_and_users.last_name as u_last_name',
             )->where('sales.status', 2)
-                ->orderBy('id', 'desc')
-                ->get();
+                ->orderBy('id', 'desc');
         } else {
             $drafts = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'customers.name as customer_name',
+                'customers.name as customer',
                 'admin_and_users.prefix as u_prefix',
                 'admin_and_users.name as u_name',
                 'admin_and_users.last_name as u_last_name',
             )->where('branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 2)
-                ->orderBy('id', 'desc')
-                ->get();
+                ->orderBy('id', 'desc');
         }
 
         return DataTables::of($drafts)
@@ -695,7 +681,7 @@ class SaleUtil
                 }
             })
             ->editColumn('customer',  function ($row) {
-                return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
+                return $row->customer ? $row->customer : 'Walk-In-Customer';
             })
             ->editColumn('total_payable_amount', function ($row) use ($generalSettings) {
                 return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_payable_amount . '</b>';
@@ -725,30 +711,24 @@ class SaleUtil
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $quotations = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'customers.name as customer_name',
+                'customers.name as customer',
                 'admin_and_users.prefix as u_prefix',
                 'admin_and_users.name as u_name',
                 'admin_and_users.last_name as u_last_name',
-            )->where('sales.status', 4)
-                ->orderBy('id', 'desc')
-                ->get();
+            )->where('sales.status', 4)->orderBy('sales.id', 'desc');
         } else {
             $quotations = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'customers.name as customer_name',
+                'customers.name as customer',
                 'admin_and_users.prefix as u_prefix',
                 'admin_and_users.name as u_name',
                 'admin_and_users.last_name as u_last_name',
             )->where('sales.branch_id', auth()->user()->branch_id)
-                ->where('sales.status', 4)
-                ->orderBy('id', 'desc')
-                ->get();
+                ->where('sales.status', 4)->orderBy('sales.id', 'desc');
         }
 
         return DataTables::of($quotations)
@@ -783,7 +763,7 @@ class SaleUtil
                 }
             })
             ->editColumn('customer',  function ($row) {
-                return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
+                return $row->customer ? $row->customer : 'Walk-In-Customer';
             })
             ->editColumn('total_payable_amount', function ($row) use ($generalSettings) {
                 return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_payable_amount . '</b>';
@@ -812,32 +792,28 @@ class SaleUtil
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $sales = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'customers.name as customer_name',
+                'customers.name as customer',
                 'admin_and_users.prefix as cr_prefix',
                 'admin_and_users.name as cr_name',
                 'admin_and_users.last_name as cr_last_name',
             )->where('sales.created_by', 1)->orderBy('id', 'desc')->where('sales.status', 1)
                 ->where('shipment_status', '!=', 'NULL')
-                ->orderBy('id', 'desc')
-                ->get();
+                ->orderBy('sales.id', 'desc');
         } else {
             $sales = $this->filteredQuery($request, $query)->select(
                 'sales.*',
-                'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'customers.name as customer_name',
+                'customers.name as customer',
                 'admin_and_users.prefix as cr_prefix',
                 'admin_and_users.name as cr_name',
                 'admin_and_users.last_name as cr_last_name',
             )->where('sales.created_by', 1)->where('branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 1)
                 ->where('shipment_status', '!=', 'NULL')
-                ->orderBy('id', 'desc')
-                ->get();
+                ->orderBy('sales.id', 'desc');
         }
 
         return DataTables::of($sales)
@@ -863,7 +839,7 @@ class SaleUtil
                 }
             })
             ->editColumn('customer',  function ($row) {
-                return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
+                return $row->customer ? $row->customer : 'Walk-In-Customer';
             })
             ->editColumn('created_by',  function ($row) {
                 return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;

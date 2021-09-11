@@ -29,7 +29,7 @@ class CustomerController extends Controller
             $generalSettings = DB::table('general_settings')->first();
             $customers = DB::table('customers')
                 ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
-                ->select('customers.*', 'customer_groups.group_name')->get();
+                ->select('customers.*', 'customer_groups.group_name');
             return DataTables::of($customers)
                 ->addColumn('action', function ($row) {
                     $html = '';

@@ -52,7 +52,7 @@ class PurchasePaymentReportController extends Controller
                     'purchase_payments.date',
                     'purchases.invoice_id as purchase_invoice',
                     'suppliers.name as supplier_name',
-                )->get();
+                );
             }else {
                 $payments = $query->select(
                     'purchase_payments.id as payment_id',
@@ -62,7 +62,7 @@ class PurchasePaymentReportController extends Controller
                     'purchase_payments.date',
                     'purchases.invoice_id as purchase_invoice',
                     'suppliers.name as supplier_name',
-                )->where('purchases.branch_id', auth()->user()->branch_id)->get();
+                )->where('purchases.branch_id', auth()->user()->branch_id);
             }
          
 

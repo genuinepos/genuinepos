@@ -161,18 +161,18 @@
                 }
             },
             columnDefs: [{
-                "targets": [0],
+                "targets": [2, 3, 5, 6],
                 "orderable": false,
                 "searchable": false
             }],
             columns: [
                 { data: 'date', name: 'date'},
                 { data: 'invoice_id', name: 'invoice_id'},
-                {data: 'from', name: 'from'},
-                {data: 'customer', name: 'customer'},
-                {data: 'total_payable_amount', name: 'total_payable_amount'},
-                {data: 'user', name: 'user'},
-                {data: 'action',},
+                { data: 'from', name: 'from' },
+                { data: 'customer', name: 'customer' },
+                { data: 'total_payable_amount', name: 'total_payable_amount' },
+                { data: 'user', name: 'user' },
+                { data: 'action' },
             ],
         });
 

@@ -155,16 +155,17 @@
                 d.date_range = $('#date_range').val();
             }
         },
+        columnDefs: [{"targets": [2, 7],"orderable": false,"searchable": false}],
         columns: [
-            {data: 'employee', name: 'employee'},
-            {data: 'department_name', name: 'department_name'},
+            {data: 'employee', name: 'admin_and_users.name'},
+            {data: 'department_name', name: 'hrm_department.department_name'},
             {data: 'month_year', name: 'month_year'},
             {data: 'reference_no', name: 'reference_no'},
             {data: 'gross_amount', name: 'gross_amount'},
             {data: 'paid', name: 'paid'},
             {data: 'due', name: 'due'},
             {data: 'payment_status', name: 'payment_status'},
-            {data: 'created_by', name: 'created_by'},
+            {data: 'created_by', name: 'created_by.name'},
         ],
         fnDrawCallback: function() {
             var gross_amount = sum_table_col($('.data_tbl'), 'gross_amount');

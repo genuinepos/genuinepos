@@ -183,17 +183,12 @@
                 d.date_range = $('#date_range').val();
             }
         },
-        columnDefs: [{
-            "targets": [0],
-            "orderable": false,
-            "searchable": false
-        }],
         columns: [
-            {data: 'product', name: 'product'},
-            {data: 'sku', name: 'sku'},
-            {data: 'supplier_name', name: 'supplier_name'},
-            {data: 'invoice_id', name: 'invoice_id'},
-            {data: 'date', name: 'date'},
+            {data: 'product', name: 'products.name'},
+            {data: 'product_code', name: 'products.name'},
+            {data: 'supplier_name', name: 'suppliers.name as supplier_name'},
+            {data: 'invoice_id', name: 'purchases.invoice_id'},
+            {data: 'date', name: 'purchases.date'},
             {data: 'quantity', name: 'quantity'},
             {data: 'net_unit_cost', name: 'net_unit_cost'},
             {data: 'subtotal', name: 'subtotal'},

@@ -251,20 +251,20 @@
                     d.date_range = $('#date_range').val();
                 }
             },
-            columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
+            columnDefs: [{"targets": [0, 5, 6,  12],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id',name: 'invoice_id'},
-                {data: 'from',name: 'from'},
-                {data: 'supplier_name',name: 'supplier_name'},
+                {data: 'from',name: 'branches.name'},
+                {data: 'supplier_name', name: 'suppliers.name'},
                 {data: 'status',name: 'status'},
                 {data: 'payment_status',name: 'payment_status'},
                 {data: 'total_purchase_amount',name: 'total_purchase_amount'},
                 {data: 'paid',name: 'paid'},
                 {data: 'due',name: 'due'},
-                {data: 'return_amount',name: 'return_amount'},
-                {data: 'return_due',name: 'return_due'},
+                {data: 'purchase_return_amount',name: 'purchase_return_amount'},
+                {data: 'purchase_return_due',name: 'purchase_return_due'},
                 {data: 'created_by',name: 'created_by'},
             ],
         });

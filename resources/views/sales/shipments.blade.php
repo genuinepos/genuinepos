@@ -164,7 +164,7 @@
                 }
             },
             columnDefs: [{
-                "targets": [0],
+                "targets": [2, 3, 4, 6, 7],
                 "orderable": false,
                 "searchable": false
             }],

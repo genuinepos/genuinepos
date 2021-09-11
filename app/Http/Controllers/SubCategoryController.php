@@ -22,7 +22,8 @@ class SubCategoryController extends Controller
     {
         $img_url = asset('public/uploads/category/');
         if ($request->ajax()) {
-          $subCategories = DB::table('categories')->join('categories as parentcat','parentcat.id','categories.parent_category_id')
+          $subCategories = DB::table('categories')
+          ->join('categories as parentcat','parentcat.id','categories.parent_category_id')
           ->select('parentcat.name as parentname','categories.*')
           ->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC');
            return DataTables::of($subCategories)

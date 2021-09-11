@@ -156,7 +156,7 @@
                 }
             },
             columnDefs: [{
-                "targets": [0],
+                "targets": [2, 3, 5, 6],
                 "orderable": false,
                 "searchable": false
             }],
@@ -167,7 +167,7 @@
                 {data: 'customer', name: 'customer'},
                 {data: 'total_payable_amount', name: 'total_payable_amount'},
                 {data: 'user', name: 'user'},
-                {data: 'action',},
+                {data: 'action'},
             ],
         });
 

@@ -227,7 +227,7 @@
                 d.is_for_sale = $('#is_for_sale').val();
             }
         },
-        columnDefs: [{"targets": [0, 1, 2],"orderable": false,"searchable": false}],
+        columnDefs: [{"targets": [0, 1, 2, 10], "orderable": false, "searchable": false}],
         columns: [
             {data: 'multiple_delete',},
             {data: 'photo',name: 'photo'},
@@ -237,8 +237,8 @@
             {data: 'product_price',name: 'product_price'},
             {data: 'quantity',name: 'quantity'},
             {data: 'type',name: 'type'},
-            {data: 'category',name: 'category'},
-            {data: 'brand_name',name: 'brand_name'},
+            {data: 'cate_name',name: 'categories.name'},
+            {data: 'brand_name',name: 'brands.name'},
             {data: 'tax_name',name: 'tax_name'},
             {data: 'expire_date',name: 'expire_date'},
             {data: 'status',name: 'status'},

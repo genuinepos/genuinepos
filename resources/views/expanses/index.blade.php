@@ -215,15 +215,15 @@
                     d.date_range = $('#date_range').val();
                 }
             },
-            columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
+            columnDefs: [{"targets": [0, 4, 5, 8],"orderable": false,"searchable": false}],
             columns: [
                 { data: 'action', },
                 { data: 'date', name: 'date' },
                 { data: 'invoice_id', name: 'invoice_id'},
-                { data: 'from', name: 'from' },
+                { data: 'from', name: 'branches.name' },
                 { data: 'payment_status', name: 'payment_status' },
                 { data: 'tax_percent', name: 'tax_percent' },
-                { data: 'net_total', name: 'net_total' },
+                { data: 'net_total_amount', name: 'net_total_amount' },
                 { data: 'due', name: 'due' },
                 { data: 'user_name', name: 'user_name' },
             ],

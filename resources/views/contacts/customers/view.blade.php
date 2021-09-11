@@ -269,7 +269,7 @@
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax:"{{ url('contacts/customers/view', $customerId) }}",
             columnDefs: [{
-                "targets": [0],
+                "targets": [0, 10],
                 "orderable": false,
                 "searchable": false
             }],
@@ -277,8 +277,8 @@
                 {data: 'action',},
                 { data: 'date', name: 'date'},
                 { data: 'invoice_id', name: 'invoice_id'},
-                {data: 'from', name: 'from'},
-                {data: 'customer', name: 'customer'},
+                {data: 'from', name: 'branches.name'},
+                {data: 'customer', name: 'customers.name'},
                 {data: 'total_payable_amount', name: 'total_payable_amount'},
                 {data: 'paid', name: 'paid'},
                 {data: 'due', name: 'due'},

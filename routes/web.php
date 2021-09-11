@@ -203,6 +203,10 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('return/payment/{customerId}', 'CustomerController@returnPayment')->name('customers.return.payment');
         Route::post('return/payment/{customerId}', 'CustomerController@returnPaymentAdd')->name('customers.return.payment.add');
 
+        Route::get('view/payment/{customerId}', 'CustomerController@viewPayment')->name('customers.view.payment'); 
+        Route::get('payment/details/{paymentId}', 'CustomerController@paymentDetails')->name('customers.view.details'); 
+        Route::delete('payment/delete/{paymentId}', 'CustomerController@paymentDelete')->name('customers.payment.delete');
+
         Route::group(['prefix' => 'money/receipt'], function () {
             Route::get('/voucher/list/{customerId}', 'MoneyReceiptController@moneyReceiptList')->name('money.receipt.voucher.list');
             Route::get('create/{customerId}', 'MoneyReceiptController@moneyReceiptCreate')->name('money.receipt.voucher.create');

@@ -320,11 +320,11 @@
         columns: [
             {data: 'todo_id', name: 'todo_id'},
             {data: 'task', name: 'task'},
-            {data: 'from', name: 'from'},
+            {data: 'from', name: 'branches.name'},
             {data: 'priority', name: 'priority'},
             {data: 'status', name: 'status'},
             {data: 'due_date', name: 'due_date'},
-            {data: 'assigned_by', name: 'assigned_by'},
+            {data: 'assigned_by', name: 'admin_and_users.name'},
             {data: 'action'},
         ],
     });

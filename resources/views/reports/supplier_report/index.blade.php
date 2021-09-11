@@ -124,11 +124,6 @@
                 d.supplier_id = $('#supplier_id').val();
             }
         },
-        columnDefs: [{
-            "targets": [0],
-            "orderable": false,
-            "searchable": false
-        }],
         columns: [
             { data: 'name', name: 'name'},
             { data: 'total_purchase', name: 'total_purchase'},

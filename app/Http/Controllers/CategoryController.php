@@ -26,7 +26,9 @@ class CategoryController extends Controller
         
         $img_url = asset('public/uploads/category/');
         if ($request->ajax()) {
-            $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
+            $categories = DB::table('categories')
+            ->where('parent_category_id', NULL)
+            ->orderBy('id', 'DESC')->get();
            return DataTables::of($categories)
             ->addIndexColumn()
             ->editColumn('photo', function ($row) use($img_url) {

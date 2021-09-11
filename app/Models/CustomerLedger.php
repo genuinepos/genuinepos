@@ -26,4 +26,9 @@ class CustomerLedger extends Model
     {
         return $this->belongsTo(MoneyReceipt::class, 'money_receipt_id');
     }
+
+    public function customer_payment()
+    {
+        return $this->belongsTo(CustomerPayment::class, 'customer_payment_id');
+    }
 }

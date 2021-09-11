@@ -146,11 +146,11 @@
         },
         columns: [
             {data: 'date', name: 'date'},
-            {data: 'employee', name: 'employee'},
-            {data: 'voucher_no', name: 'voucher_no'},
+            {data: 'employee', name: 'admin_and_users.name'},
+            {data: 'voucher_no', name: 'hrm_payrolls.reference_no'},
             {data: 'paid', name: 'paid'},
             {data: 'reference_no', name: 'reference_no'},
-            {data: 'paid_by', name: 'paid_by'},
+            {data: 'paid_by', name: 'paid_by.name'},
         ],
         fnDrawCallback: function() {
             var paid = sum_table_col($('.data_tbl'), 'paid');

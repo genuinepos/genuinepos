@@ -116,7 +116,7 @@ class ProductUtil
                 } elseif ($row->type == 3) {
                     return '<span class="text-info">Digital</span>';
                 }
-            })->editColumn('category', function ($row) {
+            })->editColumn('cate_name', function ($row) {
                 return '<span>' . ($row->cate_name ? $row->cate_name : '...') . ($row->sub_cate_name ? '<br>--' . $row->sub_cate_name : '') . '</span>';
             })->editColumn('status', function ($row) {
                 if ($row->status == 1) {
@@ -132,8 +132,10 @@ class ProductUtil
                 return $row->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->expire_date)) : '...';
             })->rawColumns([
                 'multiple_delete',
-                'photo', 'action',
-                'type', 'category',
+                'photo', 
+                'action',
+                'type', 
+                'cate_name',
                 'status',
                 'expire_date',
                 'tax_name',

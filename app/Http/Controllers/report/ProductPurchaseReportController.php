@@ -93,7 +93,7 @@ class ProductPurchaseReportController extends Controller
                     $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
                     return $row->name . $variant;
                 })
-                ->editColumn('sku', function ($row) {
+                ->editColumn('product_code', function ($row) {
                     return $row->variant_code ? $row->variant_code : $row->product_code;
                 })
                 ->editColumn('date', function ($row) {
@@ -108,7 +108,7 @@ class ProductPurchaseReportController extends Controller
                 ->editColumn('subtotal', function ($row) use ($generalSettings) {
                     return '<b><span class="subtotal" data-value="' . $row->line_total . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->line_total . '</span></b>';
                 })
-                ->rawColumns(['product', 'sku', 'date', 'quantity', 'branch', 'net_unit_cost', 'subtotal'])
+                ->rawColumns(['product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'subtotal'])
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);

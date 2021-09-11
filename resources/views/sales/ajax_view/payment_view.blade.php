@@ -91,8 +91,10 @@
 
                                 <a href="{{ route('sales.payment.details', $payment->id) }}" id="payment_details"
                                     class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
-                                <a href="{{ route('sales.payment.delete', $payment->id) }}" id="delete_payment"
+                                @if ($payment->customer_payment_id == null)
+                                    <a href="{{ route('sales.payment.delete', $payment->id) }}" id="delete_payment"
                                     class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

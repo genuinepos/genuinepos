@@ -67,6 +67,16 @@ class CashFlow extends Model
         return $this->belongsTo(Loan::class, 'loan_id');
     }
 
+    public function supplier_payment()
+    {
+        return $this->belongsTo(SupplierPayment::class, 'supplier_payment_id');
+    }
+
+    public function customer_payment()
+    {
+        return $this->belongsTo(CustomerPayment::class, 'customer_payment_id');
+    }
+
     public function admin()
     {
         return $this->belongsTo(AdminAndUser::class, 'admin_id');

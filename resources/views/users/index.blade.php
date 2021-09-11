@@ -126,10 +126,10 @@
             columns: [
                 {data: 'username', name: 'username'},
                 {data: 'name', name: 'name'},
-                {data: 'branch', name: 'branch'},
-                {data: 'role_name', name: 'role_name'},
-                {data: 'dep_name', name: 'dep_name'},
-                {data: 'des_name', name: 'des_name'},
+                {data: 'branch', name: 'branches.name'},
+                {data: 'role_name', name: 'roles.name'},
+                {data: 'dep_name', name: 'hrm_department.department_name'},
+                {data: 'des_name', name: 'hrm_designations.designation_name'},
                 {data: 'email', name: 'email'},
                 {data: 'salary', name: 'salary'},
                 {data: 'action'},
@@ -157,9 +157,7 @@
                     },
                     'No': {
                         'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
+                        'action': function() {console.log('Deleted canceled.');} 
                     }
                 }
             });

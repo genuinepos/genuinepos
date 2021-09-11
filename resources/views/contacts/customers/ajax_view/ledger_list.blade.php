@@ -55,7 +55,7 @@
                     <td>{{ date('d/m/Y', strtotime($ledger->created_at)) }}</td> 
                     <td>---</td>
                     <td>
-                        {{ $ledger->is_advanced == 1 ? 'Advance From Money Receipt' : 'Get By Money Receipt(OP Due)' }}<br>
+                        Receive Payment By Money Receipt<br>
                         Voucher No: {{ $ledger->money_receipt->invoice_id }}
                     </td>
                     <td>---</td>
@@ -66,6 +66,26 @@
                         {{ $ledger->money_receipt->payment_method }}
                     </td>   
                     <td>---</td> 
+                @elseif($ledger->row_type == 5)
+                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->customer_payment->date)) }}</td> 
+                    <td>{{ $ledger->customer_payment->voucher_no }}</td>
+                    <td>{{ $ledger->customer_payment->type == 1 ? 'Customer Payment(Sale Due)' : 'Customer Payment(Sale Return Due)' }}</td>
+                    <td>---</td>
+                    @if ($ledger->customer_payment->type == 1)
+                        <td>---</td>
+                        <td>
+                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $ledger->customer_payment->paid_amount }}
+                        </td>
+                    @else   
+                        <td>
+                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $ledger->customer_payment->paid_amount }}
+                        </td>
+                        <td>---</td>
+                    @endif
+                    <td>{{ $ledger->customer_payment->pay_mode }}</td>
+                    <td>{{ $ledger->customer_payment->type == 1 ? 'Direct Received From Customer' : 'Direct Paid To Customer' }}</td>
                 @else 
                     <td>{{ date('d/m/Y', strtotime($ledger->created_at)) }}</td> 
                     <td>---</td>
@@ -92,7 +112,7 @@
             {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary', title : "Customer Ledger Of {{$customer->name.' (ID:'.$customer->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary', title : "Customer Ledger Of {{$customer->name.' (ID:'.$customer->contact_id.')'}}",exportOptions: {columns: 'th:not(:first-child)'}},
         ],
-        aaSorting: [[0, 'desc']],
+        aaSorting: [[0, 'asc']],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
     });
 </script>

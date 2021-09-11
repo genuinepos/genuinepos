@@ -120,7 +120,7 @@ class StockAdjustmentController extends Controller
                 ->editColumn('type',  function ($row) {
                     return $row->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>';
                 })
-                ->editColumn('net_total', function ($row) use ($generalSettings) {
+                ->editColumn('net_total_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_total_amount . '</b>';
                 })
                 ->editColumn('recovered_amount', function ($row) use ($generalSettings) {
@@ -135,7 +135,7 @@ class StockAdjustmentController extends Controller
                     }
                 ])
                 ->setRowClass('clickable_row')
-                ->rawColumns(['action', 'date', 'invoice_id', 'business_location', 'adjustment_location', 'type', 'net_total', 'recovered_amount', 'created_by'])
+                ->rawColumns(['action', 'date', 'invoice_id', 'business_location', 'adjustment_location', 'type', 'net_total_amount', 'recovered_amount', 'created_by'])
                 ->make(true);
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();

@@ -10,7 +10,9 @@
         serverSide: true,
         searchable: true,
         ajax: "{{ route('product.categories.index') }}",
-        columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
+        columnDefs: [{"targets": [0, 1, 3], "orderable": false, "searchable": false}],
+        columns: [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'photo',name: 'photo'},
             {data: 'name',name: 'name'},
             {data: 'action',name: 'action'},

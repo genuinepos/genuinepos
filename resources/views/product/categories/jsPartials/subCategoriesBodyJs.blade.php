@@ -10,10 +10,12 @@
        searchable: true,
        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
        ajax: "{{ route('product.subcategories.index') }}",
-       columns: [{data: 'DT_RowIndex', name: 'DT_RowIndex'},
-           { data: 'photo',name: 'category.photo'},
-           {data: 'name',name: 'category.name'},
-           {data: 'parentname',name: 'category.parentname'},
+       columnDefs: [{"targets": [0, 1, 3, 4], "orderable": false, "searchable": false}],
+       columns: [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+           { data: 'photo',name: 'photo'},
+           {data: 'name',name: 'name'},
+           {data: 'parentname',name: 'parentname'},
            {data: 'action',name: 'action'},
        ]
    });

@@ -185,18 +185,18 @@
             }
         },
         columnDefs: [{
-            "targets": [0],
+            "targets": [4, 5,  ],
             "orderable": false,
             "searchable": false
         }],
         columns: [
             { data: 'date', name: 'date' },
             { data: 'invoice_id', name: 'invoice_id'},
-            { data: 'from', name: 'from'},
-            { data: 'user_name', name: 'user_name' },
+            { data: 'from', name: 'branches.name'},
+            { data: 'user_name', name: 'admin_and_users.name' },
             { data: 'payment_status', name: 'payment_status' },
             { data: 'tax_percent', name: 'tax_percent' },
-            { data: 'net_total', name: 'net_total' },
+            { data: 'net_total', name: 'net_total_amount' },
             { data: 'paid', name: 'paid' },
             { data: 'due', name: 'due' },
         ],

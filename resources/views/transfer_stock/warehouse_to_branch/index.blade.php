@@ -82,6 +82,7 @@
             aaSorting: [[0, 'asc']],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax: "{{ route('transfer.stock.to.branch.index') }}",
+            columnDefs: [{"targets": [2, 3, 4, 7],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id',name: 'invoice_id'},

@@ -155,18 +155,13 @@
                 d.date_range = $('#date_range').val();
             }
         },
-        columnDefs: [{
-            "targets": [0],
-            "orderable": false,
-            "searchable": false
-        }],
         columns: [
-            {data: 'payment_invoice', name: 'payment_invoice'},
+            {data: 'payment_invoice', name: 'invoice_id'},
             {data: 'date', name: 'date'},
             {data: 'paid_amount', name: 'paid_amount'},
-            {data: 'supplier_name', name: 'supplier_name'},
+            {data: 'supplier_name', name: 'suppliers.name'},
             {data: 'pay_mode', name: 'pay_mode'},
-            {data: 'purchase_invoice', name: 'purchase_invoice'},
+            {data: 'purchase_invoice', name: 'purchases.invoice_id'},
         ],
         fnDrawCallback: function() {
             var paid_amount = sum_table_col($('.data_tbl'), 'paid_amount');

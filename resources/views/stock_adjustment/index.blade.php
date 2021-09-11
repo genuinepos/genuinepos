@@ -29,7 +29,7 @@
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-3">
-                                                            <label><strong>Branch :</strong></label>
+                                                            <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
@@ -152,18 +152,18 @@
                     d.date_range = $('#date_range').val();
                 }
             },
-            columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
+            columnDefs: [{"targets": [0, 3, 4, 9],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id', name: 'invoice_id'},
                 {data: 'adjustment_location', name: 'adjustment_location'},
-                {data: 'business_location', name: 'business_location'},
+                {data: 'business_location', name: 'branches.name'},
                 {data: 'type', name: 'type'},
-                {data: 'net_total', name: 'net_total'},
+                {data: 'net_total_amount', name: 'net_total_amount'},
                 {data: 'recovered_amount', name: 'recovered_amount'},
                 {data: 'reason', name: 'reason'},
-                {data: 'created_by', name: 'created_by'},
+                {data: 'created_by', name: 'admin_and_users.name'},
             ],
         });
 

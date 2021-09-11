@@ -146,7 +146,7 @@
         ],
         "processing": true,
         "serverSide": true,
-        aaSorting: [[1, 'desc']],
+        aaSorting: [[1, 'asc']],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.sale.payments.index') }}",
@@ -162,12 +162,12 @@
             "searchable": false
         }],
         columns: [
-            {data: 'payment_invoice', name: 'payment_invoice'},
+            {data: 'payment_invoice', name: 'invoice_id'},
             {data: 'date', name: 'date'},
             {data: 'paid_amount', name: 'paid_amount'},
-            {data: 'customer_name', name: 'customer_name'},
+            {data: 'customer_name', name: 'customers.name'},
             {data: 'pay_mode', name: 'pay_mode'},
-            {data: 'sale_invoice', name: 'sale_invoice'},
+            {data: 'sale_invoice', name: 'sales.invoice_id'},
         ],
         fnDrawCallback: function() {
             var paid_amount = sum_table_col($('.data_tbl'), 'paid_amount');

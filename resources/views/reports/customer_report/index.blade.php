@@ -122,11 +122,6 @@
             "url": "{{ route('reports.customer.index') }}",
             "data": function(d) {d.customer_id = $('#customer_id').val();}
         },
-        columnDefs: [{
-            "targets": [0],
-            "orderable": false,
-            "searchable": false
-        }],
         columns: [
             { data: 'name', name: 'name'},
             { data: 'total_sale', name: 'total_sale'},

@@ -4,16 +4,16 @@
         <div class="company_name text-center">
             <h3>
                 <b>
-                    @if ($supplierPayment->branch)
-                        {{ $supplierPayment->branch->name . '/' . $supplierPayment->branch->branch_code }}
+                    @if ($customerPayment->branch)
+                        {{ $customerPayment->branch->name . '/' . $customerPayment->branch->branch_code }}
                     @else
                         {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
                     @endif
                 </b>
             </h3>
             <h6>
-                @if ($supplierPayment->branch)
-                    {{ $supplierPayment->branch->city . ', ' . $supplierPayment->branch->state . ', ' . $supplierPayment->branch->zip_code . ', ' . $supplierPayment->branch->country }}
+                @if ($customerPayment->branch)
+                    {{ $customerPayment->branch->city . ', ' . $customerPayment->branch->state . ', ' . $customerPayment->branch->zip_code . ', ' . $customerPayment->branch->country }}
                 @else
                     {{ json_decode($generalSettings->business, true)['address'] }}
                 @endif
@@ -24,11 +24,11 @@
 
     <div class="reference_area">
         <p><b>Title :</b>
-            {{ $supplierPayment->type == 1 ? 'Supplier Payment' : 'Supplier Return Payment' }} 
+            {{ $customerPayment->type == 1 ? 'Customer Payment' : 'Customer Return Payment' }} 
         </p>
-        <p><b>Supplier :</b> {{ $supplierPayment->supplier->name }}</p>
-        <p><b>Phone :</b> {{ $supplierPayment->supplier->phone }}</p>
-        <p><b>Address :</b> {{ $supplierPayment->supplier->address }}</p>
+        <p><b>Customer :</b> {{ $customerPayment->customer->name }}</p>
+        <p><b>Phone :</b> {{ $customerPayment->customer->phone }}</p>
+        <p><b>Address :</b> {{ $customerPayment->customer->address }}</p>
     </div>
 
     <div class="total_amount_table_area">
@@ -40,64 +40,64 @@
                             <th width="50%" class="text-start">Paid Amount :</th>
                             <td width="50%">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $supplierPayment->paid_amount }}
+                                {{ $customerPayment->paid_amount }}
                             </td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">Payment Account :</th>
-                            <td width="50%">{{ $supplierPayment->account ? $supplierPayment->account->name : '' }}</td>
+                            <td width="50%">{{ $customerPayment->account ? $customerPayment->account->name : '' }}</td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">Payment Method :</th>
-                            <td width="50%">{{ $supplierPayment->pay_mode }}</td>
+                            <td width="50%">{{ $customerPayment->pay_mode }}</td>
                         </tr>
 
-                        @if ($supplierPayment->pay_mode == 'Card')
+                        @if ($customerPayment->pay_mode == 'Card')
                             <tr>
                                 <th width="50%" class="text-start">Card Number :</th>
-                                <td width="50%">{{ $supplierPayment->card_no }}</td>
+                                <td width="50%">{{ $customerPayment->card_no }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Card Holder :</th>
-                                <td width="50%">{{ $supplierPayment->card_holder }}</td>
+                                <td width="50%">{{ $customerPayment->card_holder }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Card Type :</th>
-                                <td width="50%">{{ $supplierPayment->card_type }}</td>
+                                <td width="50%">{{ $customerPayment->card_type }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%">{{ $supplierPayment->card_transaction_no }}</td>
+                                <td width="50%">{{ $customerPayment->card_transaction_no }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Month :</th>
-                                <td width="50%">{{ $supplierPayment->card_month }}</td>
+                                <td width="50%">{{ $customerPayment->card_month }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Year :</th>
-                                <td width="50%">{{ $supplierPayment->card_year }}</td>
+                                <td width="50%">{{ $customerPayment->card_year }}</td>
                             </tr>
-                        @elseif($supplierPayment->pay_mode == 'Cheque')
+                        @elseif($customerPayment->pay_mode == 'Cheque')
                             <tr>
                                 <th width="50%" class="text-start">Chaque No :</th>
-                                <td width="50%">{{ $supplierPayment->cheque_no }}</td>
+                                <td width="50%">{{ $customerPayment->cheque_no }}</td>
                             </tr>
-                        @elseif($supplierPayment->pay_mode == 'Bank-Transfer')
+                        @elseif($customerPayment->pay_mode == 'Bank-Transfer')
                             <tr>
                                 <th width="50%" class="text-start">Account No :</th>
-                                <td width="50%">{{ $supplierPayment->account_no }}</td>
+                                <td width="50%">{{ $customerPayment->account_no }}</td>
                             </tr>
-                        @elseif($supplierPayment->pay_mode == 'Custom')
+                        @elseif($customerPayment->pay_mode == 'Custom')
                             <tr>
                                 <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%">{{ $supplierPayment->transaction_no }}</td>
+                                <td width="50%">{{ $customerPayment->transaction_no }}</td>
                             </tr>
                         @endif
                     </tbody>
@@ -110,7 +110,7 @@
                         <tr>
                             <th width="50%" class="text-start">Voucher No :</th>
                             <td width="50%">
-                                {{ $supplierPayment->voucher_no }}
+                                {{ $customerPayment->voucher_no }}
                             </td>
                         </tr>
 
@@ -120,14 +120,14 @@
                                 @php
                                     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
                                 @endphp
-                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($supplierPayment->date)) . ' ' . date($timeFormat, strtotime($supplierPayment->time)) }}
+                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($customerPayment->date)) . ' ' . date($timeFormat, strtotime($customerPayment->time)) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">Payment Note :</th>
                             <td width="50%">
-                                {{ $supplierPayment->note }}
+                                {{ $customerPayment->note }}
                             </td>
                         </tr>
                     </tbody>
@@ -147,15 +147,15 @@
                 <thead>
                     <tr>
                         <th class="text-start">Date</th>
-                        <th class="text-start">Purchase Invoice ID</th>
+                        <th class="text-start">Sale Invoice ID</th>
                         <th class="text-start">Paid Amount</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($supplierPayment->supplier_payment_invoices as $pi)
+                    @foreach ($customerPayment->customer_payment_invoices as $pi)
                         <tr>
-                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->purchase->date)) }}</td>
-                            <td class="text-start">{{ $pi->purchase->invoice_id }}</h6></td>
+                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale->date)) }}</td>
+                            <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
                             <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
                         </tr>
                     @endforeach
@@ -175,8 +175,8 @@
 
                 <tr>
                     <td colspan="2" class="text-center">
-                        <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($supplierPayment->voucher_no, $generator::TYPE_CODE_128)) }}">
-                        <p>{{ $supplierPayment->voucher_no }}</p>
+                        <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($customerPayment->voucher_no, $generator::TYPE_CODE_128)) }}">
+                        <p>{{ $customerPayment->voucher_no }}</p>
                     </td>
                 </tr>
 

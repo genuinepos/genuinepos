@@ -203,20 +203,15 @@
                 d.date_range = $('#date_range').val();
             }
         },
-        columnDefs: [{
-            "targets": [0],
-            "orderable": false,
-            "searchable": false
-        }],
         columns: [
             {data: 'date', name: 'date'},
             {data: 'invoice_id', name: 'invoice_id'},
-            {data: 'from', name: 'from'},
+            {data: 'from', name: 'branches.name'},
             {data: 'type', name: 'type'},
-            {data: 'net_total', name: 'net_total'},
+            {data: 'net_total', name: 'net_total_amount'},
             {data: 'recovered_amount', name: 'recovered_amount'},
             {data: 'reason', name: 'reason'},
-            {data: 'created_by', name: 'created_by'},
+            {data: 'created_by', name: 'admin_and_users.name'},
         ],
     });
 

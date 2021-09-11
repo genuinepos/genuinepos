@@ -13,7 +13,10 @@
                         <h5><b>All Branch</b></h5> 
                     @endif
                     <h6><b>Payroll Report</b></h6>
-                    <h6>Payroll Of {{ $s_date .' To '. $e_date }}</h6>
+
+                    @if ($s_date && $s_date)
+                        <p><b>Payroll Of :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($s_date)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($s_date)) }} </p> 
+                    @endif
                 </div>
             </div>
         </div>

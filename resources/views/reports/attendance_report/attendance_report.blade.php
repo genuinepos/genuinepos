@@ -144,10 +144,10 @@
             }
         },
         columns: [{data: 'date', name: 'date'},
-            {data: 'name', name: 'name'},
+            {data: 'name', name: 'admin_and_users.name'},
             {data: 'clock_in_out', name: 'clock_in_out'},
             {data: 'work_duration', name: 'work_duration'},
-            {data: 'shift_name', name: 'shift_name'},
+            {data: 'shift_name', name: 'hrm_shifts.shift_name'},
         ],
     });
 

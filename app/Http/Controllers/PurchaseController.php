@@ -129,9 +129,9 @@ class PurchaseController extends Controller
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid . '</b>';
                 })->editColumn('due', function ($row) use ($generalSettings) {
                     return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ($row->due >= 0 ? $row->due :   0.00) . '</span></b>';
-                })->editColumn('return_amount', function ($row) use ($generalSettings) {
+                })->editColumn('purchase_return_amount', function ($row) use ($generalSettings) {
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_amount . '</b>';
-                })->editColumn('return_due', function ($row) use ($generalSettings) {
+                })->editColumn('purchase_return_due', function ($row) use ($generalSettings) {
                     return '<b><span class="text-success">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_due . '</span></b>';
                 })->editColumn('status', function ($row) {
                     $html = '';
@@ -157,7 +157,7 @@ class PurchaseController extends Controller
                 })->editColumn('created_by', function ($row) {
                     return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
                 })
-                ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'return_amount', 'return_due', 'payment_status', 'status', 'created_by'])
+                ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'status', 'created_by'])
                 ->make(true);
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();

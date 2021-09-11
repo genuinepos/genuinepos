@@ -406,6 +406,29 @@ class SupplierController extends Controller
         $supplierPayment->note = $request->note;
         $supplierPayment->save();
 
+        if ($request->account_id) {
+            // update account
+            $account = Account::where('id', $request->account_id)->first();
+            $account->debit += $request->amount;
+            $account->balance -= $request->amount;
+            $account->save();
+
+            // Add cash flow
+            $addCashFlow = new CashFlow();
+            $addCashFlow->account_id = $request->account_id;
+            $addCashFlow->debit = $request->amount;
+            $addCashFlow->balance = $account->balance;
+            $addCashFlow->supplier_payment_id = $supplierPayment->id;
+            $addCashFlow->transaction_type = 12;
+            $addCashFlow->cash_type = 1;
+            $addCashFlow->date = date('d-m-Y', strtotime($request->date));
+            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+            $addCashFlow->month = date('F');
+            $addCashFlow->year = date('Y');
+            $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
+        }
+
         // Add supplier payment for direct payment
         $addSupplierLedger = new SupplierLedger();
         $addSupplierLedger->supplier_id = $supplierId;
@@ -437,6 +460,7 @@ class SupplierController extends Controller
                     $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPI') . date('ymd') . $invoiceId;
                     $addPurchasePayment->purchase_id = $dueInvoice->id;
                     $addPurchasePayment->supplier_id = $supplierId;
+                    $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                     $addPurchasePayment->account_id = $request->account_id;
                     $addPurchasePayment->paid_amount = $request->amount;
                     $addPurchasePayment->date = date('d-m-Y', strtotime($request->date));
@@ -464,36 +488,6 @@ class SupplierController extends Controller
                     $addPurchasePayment->admin_id = auth()->user()->id;
                     $addPurchasePayment->payment_on = 1;
                     $addPurchasePayment->save();
-
-                    if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->debit += $request->amount;
-                        $account->balance -= $request->amount;
-                        $account->save();
-
-                        // Add cash flow
-                        $addCashFlow = new CashFlow();
-                        $addCashFlow->account_id = $request->account_id;
-                        $addCashFlow->debit = $request->amount;
-                        $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
-                        $addCashFlow->transaction_type = 3;
-                        $addCashFlow->cash_type = 1;
-                        $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                        $addCashFlow->month = date('F');
-                        $addCashFlow->year = date('Y');
-                        $addCashFlow->admin_id = auth()->user()->id;
-                        $addCashFlow->save();
-                    }
-
-                    // $addSupplierLedger = new SupplierLedger();
-                    // $addSupplierLedger->supplier_id = $supplierId;
-                    // $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-                    // $addSupplierLedger->row_type = 2;
-                    // $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
-                    // $addSupplierLedger->save();
 
                     // Add Supplier Payment invoice
                     $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
@@ -514,6 +508,7 @@ class SupplierController extends Controller
                     $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPI') . date('ymd') . $invoiceId;
                     $addPurchasePayment->purchase_id = $dueInvoice->id;
                     $addPurchasePayment->supplier_id = $supplierId;
+                    $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                     $addPurchasePayment->account_id = $request->account_id;
                     $addPurchasePayment->paid_amount = $request->amount;
                     $addPurchasePayment->date = date('d-m-Y', strtotime($request->date));
@@ -542,37 +537,6 @@ class SupplierController extends Controller
                     $addPurchasePayment->payment_on = 1;
                     $addPurchasePayment->save();
 
-                    if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->debit += $request->amount;
-                        $account->balance -= $request->amount;
-                        $account->save();
-
-                        // Add cash flow
-                        $addCashFlow = new CashFlow();
-                        $addCashFlow->account_id = $request->account_id;
-                        $addCashFlow->debit = $request->amount;
-                        $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
-                        $addCashFlow->transaction_type = 3;
-                        $addCashFlow->cash_type = 1;
-                        $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                        $addCashFlow->month = date('F');
-                        $addCashFlow->year = date('Y');
-                        $addCashFlow->admin_id = auth()->user()->id;
-                        $addCashFlow->save();
-                    }
-
-                    // // Add Supplier Ledger
-                    // $addSupplierLedger = new SupplierLedger();
-                    // $addSupplierLedger->supplier_id = $supplierId;
-                    // $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-                    // $addSupplierLedger->row_type = 2;
-                    // $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
-                    // $addSupplierLedger->save();
-
                     // Add Supplier Payment invoice
                     $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
                     $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
@@ -588,6 +552,7 @@ class SupplierController extends Controller
                     $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
                     $addPurchasePayment->purchase_id = $dueInvoice->id;
                     $addPurchasePayment->supplier_id = $supplierId;
+                    $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                     $addPurchasePayment->account_id = $request->account_id;
                     $addPurchasePayment->paid_amount = $dueInvoice->due;
                     $addPurchasePayment->date = date('d-m-Y', strtotime($request->date));
@@ -615,36 +580,6 @@ class SupplierController extends Controller
                     $addPurchasePayment->admin_id = auth()->user()->id;
                     $addPurchasePayment->payment_on = 1;
                     $addPurchasePayment->save();
-
-                    if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->debit += $dueInvoice->due;
-                        $account->balance -= $dueInvoice->due;
-                        $account->save();
-
-                        // Add cash flow
-                        $addCashFlow = new CashFlow();
-                        $addCashFlow->account_id = $request->account_id;
-                        $addCashFlow->debit = $dueInvoice->due;
-                        $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
-                        $addCashFlow->transaction_type = 3;
-                        $addCashFlow->cash_type = 1;
-                        $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                        $addCashFlow->month = date('F');
-                        $addCashFlow->year = date('Y');
-                        $addCashFlow->admin_id = auth()->user()->id;
-                        $addCashFlow->save();
-                    }
-
-                    // $addSupplierLedger = new SupplierLedger();
-                    // $addSupplierLedger->supplier_id = $supplierId;
-                    // $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-                    // $addSupplierLedger->row_type = 2;
-                    // $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
-                    // $addSupplierLedger->save();
 
                     // Add Supplier Payment invoice
                     $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
@@ -1004,13 +939,29 @@ class SupplierController extends Controller
         }
         $supplier->save();
 
+        if ($deleteSupplierPayment->account_id) {
+            if ($deleteSupplierPayment->type == 1) {
+                $account = Account::where('id', $deleteSupplierPayment->account_id)->first();
+                $account->debit -= $deleteSupplierPayment->paid_amount;
+                $account->balance += $deleteSupplierPayment->paid_amount;
+                $account->save();
+            } else {
+                $account = Account::where('id', $deleteSupplierPayment->account_id)->first();
+                $account->credit -= $deleteSupplierPayment->paid_amount;
+                $account->balance -= $deleteSupplierPayment->paid_amount;
+                $account->save();
+            }
+        }
+
         // Update supplier payment invoices
         if (count($deleteSupplierPayment->supplier_payment_invoices) > 0) {
             foreach ($deleteSupplierPayment->supplier_payment_invoices as $pInvoice) {
-                $updatePurchase = Purchase::where('id', $pInvoice->purchase_id)->first();
-                $updatePurchase->paid -= $pInvoice->paid_amount;
-                $updatePurchase->due += $pInvoice->paid_amount;
-                $updatePurchase->save();
+                if ($deleteSupplierPayment->type == 1) {
+                    $updatePurchase = Purchase::where('id', $pInvoice->purchase_id)->first();
+                    $updatePurchase->paid -= $pInvoice->paid_amount;
+                    $updatePurchase->due += $pInvoice->paid_amount;
+                    $updatePurchase->save();
+                }
             }
         }
 

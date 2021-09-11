@@ -56,7 +56,7 @@ class SalePaymentReportController extends Controller
                     'sale_payments.date',
                     'sales.invoice_id as sale_invoice',
                     'customers.name as customer_name',
-                );
+                )->orderBy('sale_payments.id', 'desc');
             }else {
                 $payments = $query->select(
                     'sale_payments.id as payment_id',
@@ -66,7 +66,7 @@ class SalePaymentReportController extends Controller
                     'sale_payments.date',
                     'sales.invoice_id as sale_invoice',
                     'customers.name as customer_name',
-                )->where('sales.branch_id', auth()->user()->branch_id);
+                )->where('sales.branch_id', auth()->user()->branch_id)->orderBy('sale_payments.id', 'desc');
             }
             
             return DataTables::of($payments)

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\MoneyReceipt;
 use App\Models\CustomerGroup;
 use App\Models\CustomerLedger;
+use App\Models\CustomerPayment;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
@@ -29,5 +30,10 @@ class Customer extends Model
     public function receipts()
     {
         return $this->hasMany(MoneyReceipt::class)->where('branch_id', auth()->user()->branch_id);
+    }
+
+    public function customer_payments()
+    {
+        return $this->hasMany(CustomerPayment::class)->orderBy('id', 'DESC');
     }
 }

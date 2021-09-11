@@ -63,6 +63,14 @@
                         <b>{{ $cashFlow->loan->type == 1 ? 'Pay Loan' : 'Get Loan' }}</b><br>
                         <b>{{ $cashFlow->loan->company->name }}</b><br>
                         <b>Reference No : </b> {{ $cashFlow->loan->reference_no }}
+                    @elseif($cashFlow->transaction_type == 12)  
+                        <b>{{ $cashFlow->supplier_payment->type == 1 ? 'Paid To Supplier(Purchase Due)' : 'Receive From Supplier(Return Due)' }}</b><br>
+                        <b>Supplier : </b>{{ $cashFlow->supplier_payment->supplier->name }}<br>
+                        <b>Payment Voucher No : </b> {{ $cashFlow->supplier_payment->voucher_no }}
+                    @elseif($cashFlow->transaction_type == 13)  
+                        <b>{{ $cashFlow->customer_payment->type == 1 ? 'Receive From Customer(Sale Due)' : 'Paid To Customer(Return Due)' }}</b><br>
+                        <b>Customer :</b> {{ $cashFlow->customer_payment->customer->name }}<br>
+                        <b>Payment Voucher No : </b> {{ $cashFlow->customer_payment->voucher_no }}
                     @endif
                 </td> 
                 <td class="text-start">{{ $cashFlow->admin ? $cashFlow->admin->prefix.' '.$cashFlow->admin->name.' '.$cashFlow->admin->last_name : '' }}</td>

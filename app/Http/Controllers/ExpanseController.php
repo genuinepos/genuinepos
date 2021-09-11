@@ -124,7 +124,7 @@ class ExpanseController extends Controller
                 ->editColumn('tax_percent',  function ($row) {
                     return '<b>'.$row->tax_percent . '%</b>';
                 })
-                ->editColumn('net_total', function ($row) use ($generalSettings) {
+                ->editColumn('net_total_amount', function ($row) use ($generalSettings) {
                     return '<b>'.json_decode($generalSettings->business, true)['currency'] . $row->net_total_amount .
                         '</b></span>';
                 })
@@ -135,7 +135,7 @@ class ExpanseController extends Controller
                     return $html;
                 })
                 ->setRowClass('text-start')
-                ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'due', 'net_total'])
+                ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'due', 'net_total_amount'])
                 ->make(true);
         }
         

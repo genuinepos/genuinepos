@@ -156,11 +156,6 @@
                 d.date_range = $('#date_range').val();
             }
         },
-        columnDefs: [{
-            "targets": [0],
-            "orderable": false,
-            "searchable": false
-        }],
         columns: [
             {data: 'payment_invoice', name: 'invoice_id'},
             {data: 'date', name: 'date'},

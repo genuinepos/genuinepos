@@ -940,6 +940,11 @@
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
                 }
+            },error: function(err) {
+                $('.submit_button').prop('type', 'sumbit');
+                $('.loading_button').hide();
+                $('.error').html('');
+                toastr.error('Net Connetion Error. Reload This Page.'); 
             }
         });
     });

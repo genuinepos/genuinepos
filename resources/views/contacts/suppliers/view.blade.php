@@ -123,6 +123,33 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                    <div class="account_summary_area">
+                                        <div class="heading py-2">
+                                            <h4 class="py-2 pl-1">Filter Area</h4>
+                                        </div>
+
+                                        <div class="account_summary_table">
+                                            <table class="table modal-table table-sm">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1"><i
+                                                                            class="fas fa-calendar-week input_i"></i></span>
+                                                                </div>
+                                                                <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
+                                                            </div>
+                                                        </td>
+                                                        <td><a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row">
@@ -754,6 +781,27 @@
                     toastr.error(data);
                 }
             });
+        });
+
+        //Print Ledger
+        $(document).on('click', '#print_report', function (e) {
+            e.preventDefault();
+            var url = "{{ route('contacts.supplier.ledger.print', $supplierId) }}";
+            $.ajax({
+                url:url,
+                type:'get',
+                success:function(data){
+                    $(data).printThis({
+                        debug: false,                   
+                        importCSS: true,                
+                        importStyle: true,          
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                        removeInline: false, 
+                        printDelay: 700, 
+                        header: null,        
+                    });
+                }
+            }); 
         });
 
     </script>

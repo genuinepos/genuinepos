@@ -320,6 +320,23 @@ class SupplierController extends Controller
         return view('contacts.suppliers.ajax_view.ledger_list', compact('ledgers', 'supplier'));
     }
 
+    public function ledgerPrint($supplierId)
+    {
+        $supplier = DB::table('suppliers')->where('id', $supplierId)->select(
+            'name', 
+            'contact_id', 
+            'phone', 
+            'address', 
+            'opening_balance', 
+            'total_paid', 
+            'total_purchase',  
+            'total_purchase_due')->first();
+        $ledgers = SupplierLedger::with(['purchase', 'purchase_payment', 'purchase_payment.purchase', 'supplier_payment'])
+            ->where('supplier_id', $supplierId)
+            ->whereYear('created_at', date('Y'))->get();
+        return view('contacts.suppliers.ajax_view.print_ledger', compact('ledgers', 'supplier'));
+    }
+
     // Supplier ledger 
     public function ledger($supplierId)
     {

@@ -1028,6 +1028,11 @@
                     });
                     afterCreateSale();
                 }
+            },error: function(err) {
+                $('.submit_button').prop('type', 'sumbit');
+                $('.loading_button').hide();
+                $('.error').html('');
+                toastr.error('Net Connetion Error. Reload This Page.'); 
             }
         });
     });

@@ -372,7 +372,7 @@ class CustomerController extends Controller
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status'])
                 ->make(true);
         }
-        $customer = DB::table('customers')->where('id', $customerId)->first(['name', 'phone']);
+        $customer = DB::table('customers')->where('id', $customerId)->first(['name', 'contact_id']);
         return view('contacts.customers.view', compact('customerId', 'customer'));
     }
 
@@ -392,6 +392,28 @@ class CustomerController extends Controller
         $customer = DB::table('customers')->where('id', $customerId)->select('id', 'contact_id', 'name')->first();
         return view('contacts.customers.ajax_view.ledger_list', compact('ledgers', 'customer'));
     }
+
+    // Customer ledger list
+    public function ledgerPrint($customerId)
+    {
+        $ledgers = CustomerLedger::with(['sale', 'sale_payment', 'sale_payment.sale', 'money_receipt', 'customer_payment'])
+            ->where('customer_id', $customerId)
+            ->orderBy('id', 'desc')->get();
+        $customer = DB::table('customers')->where('id', $customerId)->select(
+            'id',
+            'contact_id',
+            'name',
+            'phone',
+            'address',
+            'opening_balance',
+            'total_sale',
+            'total_paid',
+            'total_sale_due',
+            'total_sale_return_due',
+        )->first();
+        return view('contacts.customers.ajax_view.print_ledger', compact('ledgers', 'customer'));
+    }
+
 
     // Customer ledger 
     public function ledger($customerId)
@@ -508,7 +530,10 @@ class CustomerController extends Controller
         $i = 6;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) {$invoiceId .= rand(1, 9);$a++;}
+        while ($a < $i) {
+            $invoiceId .= rand(1, 9);
+            $a++;
+        }
 
         $dueInvoices = Sale::where('customer_id', $customerId)->where('due', '>', 0)->get();
         if (count($dueInvoices) > 0) {
@@ -985,54 +1010,53 @@ class CustomerController extends Controller
         return view('contacts.customers.ajax_view.payment_details', compact('customerPayment'));
     }
 
-     // Customer Payment Delete
-     public function paymentDelete(Request $request, $paymentId)
-     {
+    // Customer Payment Delete
+    public function paymentDelete(Request $request, $paymentId)
+    {
         $deleteCustomerPayment = CustomerPayment::with('customer_payment_invoices')->where('id', $paymentId)->first();
         if ($deleteCustomerPayment->attachment != null) {
             if (file_exists(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment))) {
                 unlink(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment));
             }
         }
-         
-         //Update customer info
-         $customer = Customer::where('id', $deleteCustomerPayment->customer_id)->first();
-         if ($deleteCustomerPayment->type == 1) {
-             $customer->total_paid -= $deleteCustomerPayment->paid_amount;
-             $customer->total_sale_due += $deleteCustomerPayment->paid_amount;
-         }else {
-             $customer->total_sale_return_due += $deleteCustomerPayment->paid_amount;
-         }
-         $customer->save();
- 
-         if ($deleteCustomerPayment->account_id) {
-             if ($deleteCustomerPayment->type == 1) {
-                 $account = Account::where('id', $deleteCustomerPayment->account_id)->first();
-                 $account->credit -= $deleteCustomerPayment->paid_amount;
-                 $account->balance -= $deleteCustomerPayment->paid_amount;
-                 $account->save();
-             } else {
-                 $account = Account::where('id', $deleteCustomerPayment->account_id)->first();
-                 $account->debit -= $deleteCustomerPayment->paid_amount;
-                 $account->balance += $deleteCustomerPayment->paid_amount;
-                 $account->save();
-             }
-         }
- 
-         // Update Customer payment invoices
-         if (count($deleteCustomerPayment->customer_payment_invoices) > 0) {
-             foreach ($deleteCustomerPayment->customer_payment_invoices as $sInvoice) {
-                 if ($deleteCustomerPayment->type == 1) {
-                     $updateSale = Sale::where('id', $sInvoice->sale_id)->first();
-                     $updateSale->paid -= $sInvoice->paid_amount;
-                     $updateSale->due += $sInvoice->paid_amount;
-                     $updateSale->save();
-                 }
-             }
-         }
- 
-         $deleteCustomerPayment->delete();
-         return response()->json('Payment deleted successfully.');
-     }
 
+        //Update customer info
+        $customer = Customer::where('id', $deleteCustomerPayment->customer_id)->first();
+        if ($deleteCustomerPayment->type == 1) {
+            $customer->total_paid -= $deleteCustomerPayment->paid_amount;
+            $customer->total_sale_due += $deleteCustomerPayment->paid_amount;
+        } else {
+            $customer->total_sale_return_due += $deleteCustomerPayment->paid_amount;
+        }
+        $customer->save();
+
+        if ($deleteCustomerPayment->account_id) {
+            if ($deleteCustomerPayment->type == 1) {
+                $account = Account::where('id', $deleteCustomerPayment->account_id)->first();
+                $account->credit -= $deleteCustomerPayment->paid_amount;
+                $account->balance -= $deleteCustomerPayment->paid_amount;
+                $account->save();
+            } else {
+                $account = Account::where('id', $deleteCustomerPayment->account_id)->first();
+                $account->debit -= $deleteCustomerPayment->paid_amount;
+                $account->balance += $deleteCustomerPayment->paid_amount;
+                $account->save();
+            }
+        }
+
+        // Update Customer payment invoices
+        if (count($deleteCustomerPayment->customer_payment_invoices) > 0) {
+            foreach ($deleteCustomerPayment->customer_payment_invoices as $sInvoice) {
+                if ($deleteCustomerPayment->type == 1) {
+                    $updateSale = Sale::where('id', $sInvoice->sale_id)->first();
+                    $updateSale->paid -= $sInvoice->paid_amount;
+                    $updateSale->due += $sInvoice->paid_amount;
+                    $updateSale->save();
+                }
+            }
+        }
+
+        $deleteCustomerPayment->delete();
+        return response()->json('Payment deleted successfully.');
+    }
 }

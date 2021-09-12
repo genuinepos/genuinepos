@@ -71,7 +71,7 @@
                                             <tr>
                                                 <th class="text-start">Username</th>
                                                 <th class="text-start">Name</th>
-                                                <th class="text-start">Branch</th>
+                                                <th class="text-start">B.Location</th>
                                                 <th class="text-start">Role</th>
                                                 <th class="text-start">Department</th>
                                                 <th class="text-start">Designation</th>
@@ -115,7 +115,7 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[3, 'asc']],
+            aaSorting: [[8, 'asc']],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('users.index') }}",

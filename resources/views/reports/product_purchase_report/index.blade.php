@@ -119,6 +119,7 @@
                                                     <th>Date</th>
                                                     <th>Quantity</th>
                                                     <th>Unit Cost</th>
+                                                    <th>Unit Price</th>
                                                     <th>Subtotal</th>
                                                 </tr>
                                             </thead>
@@ -130,6 +131,7 @@
                                                     <th colspan="5" class="text-end">Total :</th>
                                                     <th><span id="total_qty"></span></th>
                                                     <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_unit_cost"></span></th>
+                                                    <th>---</th>
                                                     <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_subtotal"></span></th>
                                                 </tr>
                                             </tfoot>
@@ -191,6 +193,7 @@
             {data: 'date', name: 'purchases.date'},
             {data: 'quantity', name: 'quantity'},
             {data: 'net_unit_cost', name: 'net_unit_cost'},
+            {data: 'price', name: 'purchase_products.selling_price'},
             {data: 'subtotal', name: 'subtotal'},
         ],
         fnDrawCallback: function() {

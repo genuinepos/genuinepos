@@ -63,11 +63,14 @@ class ProductPurchaseReportController extends Controller
                     'purchase_products.quantity',
                     'units.code_name as unit_code',
                     'purchase_products.line_total',
+                    'purchase_products.selling_price',
                     'purchases.*',
                     'products.name',
                     'products.product_code',
+                    'products.product_price',
                     'product_variants.variant_name',
                     'product_variants.variant_code',
+                    'product_variants.variant_price',
                     'suppliers.name as supplier_name'
                 )->orderBy('purchase_products.id', 'desc');
             } else {
@@ -79,11 +82,14 @@ class ProductPurchaseReportController extends Controller
                     'purchase_products.quantity',
                     'units.code_name as unit_code',
                     'purchase_products.line_total',
+                    'purchase_products.selling_price',
                     'purchases.*',
                     'products.name',
                     'products.product_code',
+                    'products.product_price',
                     'product_variants.variant_name',
                     'product_variants.variant_code',
+                    'product_variants.variant_price',
                     'suppliers.name as supplier_name'
                 )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchase_products.id', 'desc');
             }
@@ -105,10 +111,23 @@ class ProductPurchaseReportController extends Controller
                 ->editColumn('net_unit_cost',  function ($row) use ($generalSettings) {
                     return '<b><span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_unit_cost . '</span></b>';
                 })
+                ->editColumn('price',  function ($row) use ($generalSettings) {
+                    if ($row->selling_price > 0) {
+                        return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->selling_price . '</b>';
+                    }else {
+                        if ($row->variant_name) {
+                            return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->variant_price . '</b>';
+                        }else {
+                            return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->product_price . '</b>';
+                        }
+                    }
+                    return '<b><span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_unit_cost . '</span></b>';
+                })
                 ->editColumn('subtotal', function ($row) use ($generalSettings) {
+
                     return '<b><span class="subtotal" data-value="' . $row->line_total . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->line_total . '</span></b>';
                 })
-                ->rawColumns(['product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'subtotal'])
+                ->rawColumns(['product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'price', 'subtotal'])
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);

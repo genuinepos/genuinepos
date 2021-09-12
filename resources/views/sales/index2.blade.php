@@ -674,5 +674,7 @@
                 $('#paymentViewModal').modal('show');
             });
         });
+
+        $('input[name=daterangepicker_start]').datepicker({format: 'mm-dd-yyyy'});
     </script>
 @endpush

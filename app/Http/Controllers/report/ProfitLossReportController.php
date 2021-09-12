@@ -30,29 +30,84 @@ class ProfitLossReportController extends Controller
     // Sale purchase and profit
     public function salePurchaseProfit()
     {
-        $opening_stocks = DB::table('product_opening_stocks')->whereYear('created_at', date('Y'))
-            ->select('id', 'unit_cost_inc_tax', 'subtotal')
-            ->get();
-        $stock_adjustments = DB::table('stock_adjustments')->whereYear('report_date_ts', date('Y'))->get();
-        $purchases = DB::table('purchases')->whereYear('report_date', date('Y'))->get();
-        $sales = DB::table('sales')->whereYear('report_date', date('Y'))->get();
-        $products = DB::table('products')->join('taxes', 'products.tax_id', 'taxes.id')
-            ->select(['products.*', 'taxes.tax_percent'])
-            ->get();
-        $expanses = DB::table('expanses')->whereYear('report_date', date('Y'))->get();
-        $transfer_to_branchs = DB::table('transfer_stock_to_branches')->whereYear('report_date', date('Y'))->get();
-        $transfer_to_warehouses = DB::table('transfer_stock_to_warehouses')->whereYear('report_date', date('Y'))->get();
+        //return  $request->date_range;
+        $stock_adjustments = '';
+        $sales = '';
+        $saleProducts = '';
+        $expanses = '';
+        $payrolls = '';
+        $saleProducts = '';
+        $transferStBranch = '';
+        $transferStWarehouse = '';
+
+        $transferStBranchQuery = DB::table('transfer_stock_to_branches')
+        ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
+
+        $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
+        ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
+
+        $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+        ->select(DB::raw('sum(unit_cost_inc_tax) as total_unit_cost'));
+
+        $adjustmentQuery = DB::table('stock_adjustments')->select(
+            DB::raw('sum(net_total_amount) as total_adjustment'),
+            DB::raw('sum(recovered_amount) as total_recovered')
+        );
+        
+        $saleQuery = DB::table('sales')->select( 
+            DB::raw('sum(total_payable_amount) as total_sale'),
+            DB::raw('sum(sale_return_amount) as total_return'),
+            DB::raw('sum(order_tax_amount) as total_order_tax'),
+        );
+
+        $payrollQuery = DB::table('hrm_payroll_payments')
+        ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
+        ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+        ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
+
+        $expenseQuery = DB::table('expanses')->select(DB::raw('sum(net_total_amount) as total_expense'));
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
+            $sales = $saleQuery->groupBy('sales.id')->get();
+            $expense = $expenseQuery->groupBy('expanses.id')->get();
+            $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')->get();
+            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->get();
+            $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->get();
+            $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->get();
+        } else {
+            $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $sales = $saleQuery->groupBy('sales.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $expense = $expenseQuery->groupBy('expanses.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
+            ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+        }
+
+        $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');
+        $totalStockAdjustmentRecovered =  $stock_adjustments->sum('total_recovered');
+        $totalSale = $sales->sum('total_sale');
+        $totalReturn = $sales->sum('total_return');
+        $totalOrderTax = $sales->sum('total_order_tax');
+        $totalExpense = $expense->sum('total_expense');
+        $totalPayroll = $payrolls->sum('total_payroll');
+        $totalTotalUnitCost = $saleProducts->sum('total_unit_cost');
+        $totalTransferShipmentCost = $transferStBranch->sum('b_total_shipment_charge') + $transferStWarehouse->sum('w_total_shipment_charge');
+        
         return view(
             'reports.profit_loss_report.ajax_view.sale_purchase_and_profit_view',
             compact(
-                'opening_stocks',
-                'stock_adjustments',
-                'purchases',
-                'sales',
-                'products',
-                'expanses',
-                'transfer_to_branchs',
-                'transfer_to_warehouses'
+                'totalStockAdjustmentAmount',
+                'totalStockAdjustmentRecovered',
+                'totalSale',
+                'totalExpense',
+                'totalReturn',
+                'totalOrderTax',
+                'totalPayroll',
+                'totalTotalUnitCost',
+                'totalTransferShipmentCost',
             )
         );
     }
@@ -60,43 +115,59 @@ class ProfitLossReportController extends Controller
     // Filter sale purchase and profit
     public function filterSalePurchaseProfit(Request $request)
     {
-        //return  $request->date_range;
-        $opening_stocks = '';
         $stock_adjustments = '';
-        $purchases = '';
         $sales = '';
+        $saleProducts = '';
         $expanses = '';
-        $transfer_to_branchs = '';
-        $transfer_to_warehouses = '';
+        $payrolls = '';
+        $saleProducts = '';
+        $transferStBranch = '';
+        $transferStWarehouse = '';
 
-        $opening_stocks_query = DB::table('product_opening_stocks');
-        $stock_adjustments_query = DB::table('stock_adjustments');
-        $purchases_query = DB::table('purchases');
-        $sales_query = DB::table('sales');
-        $products = DB::table('products')->join('taxes', 'products.tax_id', 'taxes.id')
-            ->select(['products.*', 'taxes.tax_percent'])
-            ->get();
-        $expanses_query = DB::table('expanses');
-        $transfer_to_branchs_query = DB::table('transfer_stock_to_branches');
-        $transfer_to_warehouses_query = DB::table('transfer_stock_to_warehouses');
+        $transferStBranchQuery = DB::table('transfer_stock_to_branches')
+        ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
+
+        $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
+        ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
+
+        $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+        ->select(DB::raw('sum(unit_cost_inc_tax) as total_unit_cost'));
+
+        $adjustmentQuery = DB::table('stock_adjustments')->select(
+            DB::raw('sum(net_total_amount) as total_adjustment'),
+            DB::raw('sum(recovered_amount) as total_recovered')
+        );
+        
+        $saleQuery = DB::table('sales')->select( 
+            DB::raw('sum(total_payable_amount) as total_sale'),
+            DB::raw('sum(sale_return_amount) as total_return'),
+            DB::raw('sum(order_tax_amount) as total_order_tax'),
+        );
+
+        $expenseQuery = DB::table('expanses')->select(DB::raw('sum(net_total_amount) as total_expense'));
+
+        $payrollQuery = DB::table('hrm_payroll_payments')
+        ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
+        ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+        ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $opening_stocks_query->where('branch_id', NULL);
-                $stock_adjustments_query->where('branch_id', NULL);
-                $purchases_query->where('branch_id', NULL);
-                $sales_query->where('branch_id', NULL);
-                $expanses_query->where('branch_id', NULL);
-                $transfer_to_branchs_query->where('branch_id', NULL);
-                $transfer_to_warehouses_query->where('branch_id', NULL);
+                $adjustmentQuery->where('branch_id', NULL);
+                $saleQuery->where('sales.branch_id', NULL);
+                $expenseQuery->where('expanses.branch_id', NULL);
+                $payrollQuery->where('admin_and_users.branch_id', NULL);
+                $saleProductQuery->where('sales.branch_id', NULL);
+                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', NULL);
+                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
             } else {
-                $opening_stocks_query->where('branch_id', $request->branch_id);
-                $stock_adjustments_query->where('branch_id', $request->branch_id);
-                $purchases_query->where('branch_id', $request->branch_id);
-                $sales_query->where('branch_id', $request->branch_id);
-                $expanses_query->where('branch_id', $request->branch_id);
-                $transfer_to_branchs_query->where('branch_id', $request->branch_id);
-                $transfer_to_warehouses_query->where('branch_id', $request->branch_id);
+                $adjustmentQuery->where('branch_id', $request->branch_id);
+                $expenseQuery->where('expanses.branch_id', $request->branch_id);
+                $saleQuery->where('sales.branch_id', $request->branch_id);
+                $payrollQuery->where('admin_and_users.branch_id', $request->branch_id);
+                $saleProductQuery->where('sales.branch_id', $request->branch_id);
+                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', $request->branch_id);
+                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', $request->branch_id);
             }
         }
 
@@ -104,35 +175,57 @@ class ProfitLossReportController extends Controller
             $date_range = explode('-', $request->date_range);
             $form_date = date('Y-m-d', strtotime($date_range[0]));
             $to_date = date('Y-m-d', strtotime($date_range[1]));
-
-            $opening_stocks_query->whereBetween('created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $stock_adjustments_query->whereBetween('report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $purchases_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $sales_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $expanses_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $transfer_to_branchs_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $transfer_to_warehouses_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $saleQuery->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $expenseQuery->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $payrollQuery->whereBetween('hrm_payroll_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $saleProductQuery->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $transferStBranchQuery->whereBetween('transfer_stock_to_branches.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $transferStWarehouseQuery->whereBetween('transfer_stock_to_warehouses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
         }
 
-        $opening_stocks = $opening_stocks_query->select('id', 'unit_cost_inc_tax', 'subtotal')->get();
-        $stock_adjustments =  $stock_adjustments_query->get();
-        $purchases = $purchases_query->get();
-        $sales = $sales_query->get();
-        $expanses = $expanses_query->get();
-        $transfer_to_branchs = $transfer_to_branchs_query->get();
-        $transfer_to_warehouses = $transfer_to_warehouses_query->get();
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
+            $sales = $saleQuery->groupBy('sales.id')->get();
+            $expense = $expenseQuery->groupBy('expanses.id')->get();
+            $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')->get();
+            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->get();
+            $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->get();
+            $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->get();
+        } else {
+            $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')
+                ->where('branch_id', auth()->user()->branch_id)->get();
+            $sales = $saleQuery->groupBy('sales.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $expense = $expenseQuery->groupBy('expanses.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
+            ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+        }
+
+        $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');
+        $totalStockAdjustmentRecovered =  $stock_adjustments->sum('total_recovered');
+        $totalSale = $sales->sum('total_sale');
+        $totalReturn = $sales->sum('total_return');
+        $totalOrderTax = $sales->sum('total_order_tax');
+        $totalExpense = $expense->sum('total_expense');
+        $totalPayroll = $payrolls->sum('total_payroll');
+        $totalTotalUnitCost = $saleProducts->sum('total_unit_cost');
+        $totalTransferShipmentCost = $transferStBranch->sum('b_total_shipment_charge') + $transferStWarehouse->sum('w_total_shipment_charge');
 
         return view(
             'reports.profit_loss_report.ajax_view.filtered_sale_purchase_and_profit_view',
             compact(
-                'opening_stocks',
-                'stock_adjustments',
-                'purchases',
-                'sales',
-                'products',
-                'expanses',
-                'transfer_to_branchs',
-                'transfer_to_warehouses'
+                'totalStockAdjustmentAmount',
+                'totalStockAdjustmentRecovered',
+                'totalSale',
+                'totalExpense',
+                'totalReturn',
+                'totalOrderTax',
+                'totalPayroll',
+                'totalTotalUnitCost',
+                'totalTransferShipmentCost',
             )
         );
     }
@@ -180,7 +273,7 @@ class ProfitLossReportController extends Controller
                 $invoices = Sale::with(['sale_products'])->where('status', 1)
                     ->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00'])->get();
                 return view('reports.profit_loss_report.ajax_view.profit_by_invoice', compact('invoices'));
-            }else {
+            } else {
                 $invoices = Sale::with(['sale_products'])->where('status', 1)
                     ->whereYear('report_date', date('Y'))->get();
                 return view('reports.profit_loss_report.ajax_view.profit_by_invoice', compact('invoices'));
@@ -191,45 +284,62 @@ class ProfitLossReportController extends Controller
     // Print Profit Loss method
     public function printProfitLoss(Request $request)
     {
-        $opening_stocks = '';
         $stock_adjustments = '';
-        $purchases = '';
         $sales = '';
+        $saleProducts = '';
         $expanses = '';
-        $transfer_to_branchs = '';
-        $transfer_to_warehouses = '';
+        $payrolls = '';
+        $saleProducts = '';
+        $transferStBranch = '';
+        $transferStWarehouse = '';
         $fromDate = '';
         $toDate = '';
         $branch_id = $request->branch_id;
 
-        $opening_stocks_query = DB::table('product_opening_stocks');
-        $stock_adjustments_query = DB::table('stock_adjustments');
-        $purchases_query = DB::table('purchases');
-        $sales_query = DB::table('sales');
-        $products = DB::table('products')->join('taxes', 'products.tax_id', 'taxes.id')
-            ->select(['products.*', 'taxes.tax_percent'])
-            ->get();
-        $expanses_query = DB::table('expanses');
-        $transfer_to_branchs_query = DB::table('transfer_stock_to_branches');
-        $transfer_to_warehouses_query = DB::table('transfer_stock_to_warehouses');
+        $transferStBranchQuery = DB::table('transfer_stock_to_branches')
+        ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
+
+        $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
+        ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
+
+        $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+        ->select(DB::raw('sum(unit_cost_inc_tax) as total_unit_cost'));
+
+        $adjustmentQuery = DB::table('stock_adjustments')->select(
+            DB::raw('sum(net_total_amount) as total_adjustment'),
+            DB::raw('sum(recovered_amount) as total_recovered')
+        );
+        
+        $saleQuery = DB::table('sales')->select( 
+            DB::raw('sum(total_payable_amount) as total_sale'),
+            DB::raw('sum(sale_return_amount) as total_return'),
+            DB::raw('sum(order_tax_amount) as total_order_tax'),
+        );
+
+        $expenseQuery = DB::table('expanses')->select(DB::raw('sum(net_total_amount) as total_expense'));
+
+        $payrollQuery = DB::table('hrm_payroll_payments')
+        ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
+        ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+        ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $opening_stocks_query->where('branch_id', NULL);
-                $stock_adjustments_query->where('branch_id', NULL);
-                $purchases_query->where('branch_id', NULL);
-                $sales_query->where('branch_id', NULL);
-                $expanses_query->where('branch_id', NULL);
-                $transfer_to_branchs_query->where('branch_id', NULL);
-                $transfer_to_warehouses_query->where('branch_id', NULL);
+                $adjustmentQuery->where('branch_id', NULL);
+                $saleQuery->where('sales.branch_id', NULL);
+                $expenseQuery->where('expanses.branch_id', NULL);
+                $payrollQuery->where('admin_and_users.branch_id', NULL);
+                $saleProductQuery->where('sales.branch_id', NULL);
+                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', NULL);
+                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
             } else {
-                $opening_stocks_query->where('branch_id', $request->branch_id);
-                $stock_adjustments_query->where('branch_id', $request->branch_id);
-                $purchases_query->where('branch_id', $request->branch_id);
-                $sales_query->where('branch_id', $request->branch_id);
-                $expanses_query->where('branch_id', $request->branch_id);
-                $transfer_to_branchs_query->where('branch_id', $request->branch_id);
-                $transfer_to_warehouses_query->where('branch_id', $request->branch_id);
+                $adjustmentQuery->where('branch_id', $request->branch_id);
+                $expenseQuery->where('expanses.branch_id', $request->branch_id);
+                $saleQuery->where('sales.branch_id', $request->branch_id);
+                $payrollQuery->where('admin_and_users.branch_id', $request->branch_id);
+                $saleProductQuery->where('sales.branch_id', $request->branch_id);
+                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', $request->branch_id);
+                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', $request->branch_id);
             }
         }
 
@@ -237,41 +347,64 @@ class ProfitLossReportController extends Controller
             $date_range = explode('-', $request->date_range);
             $form_date = date('Y-m-d', strtotime($date_range[0]));
             $to_date = date('Y-m-d', strtotime($date_range[1]));
-
             $fromDate = date('Y-m-d', strtotime($date_range[0]));
             $toDate = date('Y-m-d', strtotime($date_range[1]));
-
-            $opening_stocks_query->whereBetween('created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $stock_adjustments_query->whereBetween('report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $purchases_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $sales_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $expanses_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $transfer_to_branchs_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $transfer_to_warehouses_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $saleQuery->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $expenseQuery->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $payrollQuery->whereBetween('hrm_payroll_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $saleProductQuery->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $transferStBranchQuery->whereBetween('transfer_stock_to_branches.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $transferStWarehouseQuery->whereBetween('transfer_stock_to_warehouses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
         }
 
-        $opening_stocks = $opening_stocks_query->select('id', 'unit_cost_inc_tax', 'subtotal')->get();
-        $stock_adjustments =  $stock_adjustments_query->get();
-        $purchases = $purchases_query->get();
-        $sales = $sales_query->get();
-        $expanses = $expanses_query->get();
-        $transfer_to_branchs = $transfer_to_branchs_query->get();
-        $transfer_to_warehouses = $transfer_to_warehouses_query->get();
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
+            $sales = $saleQuery->groupBy('sales.id')->get();
+            $expense = $expenseQuery->groupBy('expanses.id')->get();
+            $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')->get();
+            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->get();
+            $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->get();
+            $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->get();
+        } else {
+            $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')
+                ->where('branch_id', auth()->user()->branch_id)->get();
+            $sales = $saleQuery->groupBy('sales.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $expense = $expenseQuery->groupBy('expanses.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
+            ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+        }
+
+        $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');
+        $totalStockAdjustmentRecovered =  $stock_adjustments->sum('total_recovered');
+        $totalSale = $sales->sum('total_sale');
+        $totalReturn = $sales->sum('total_return');
+        $totalOrderTax = $sales->sum('total_order_tax');
+        $totalExpense = $expense->sum('total_expense');
+        $totalPayroll = $payrolls->sum('total_payroll');
+        $totalTotalUnitCost = $saleProducts->sum('total_unit_cost');
+        $totalTransferShipmentCost = $transferStBranch->sum('b_total_shipment_charge') + $transferStWarehouse->sum('w_total_shipment_charge');
+
         return view(
             'reports.profit_loss_report.ajax_view.printProfitLoss',
             compact(
-                'opening_stocks',
-                'stock_adjustments',
-                'purchases',
-                'sales',
-                'products',
-                'expanses',
-                'transfer_to_branchs',
-                'transfer_to_warehouses',
-                'branch_id',
+                'totalStockAdjustmentAmount',
+                'totalStockAdjustmentRecovered',
+                'totalSale',
+                'totalExpense',
+                'totalReturn',
+                'totalOrderTax',
+                'totalPayroll',
+                'totalTotalUnitCost',
+                'totalTransferShipmentCost',
                 'fromDate',
                 'toDate',
+                'branch_id',
             )
         );
+       
     }
 }

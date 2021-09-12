@@ -87,33 +87,12 @@
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th class="text-start">
-                                                                        Opening Stock : <br>
-                                                                        <small class="text-muted">(By purchase price) </small>
-                                                                    </th>
-                                                                    <td class="text-start"> 700.00</td>
-                                                                </tr>
-                        
-                                                                <tr>
-                                                                    <th class="text-start">
-                                                                        Total purchase : <br>
-                                                                        <small class="text-muted">(Exc. tax, Discount) </small>
-                                                                    </th>
-                                                                    <td class="text-start"> 700.00</td>
-                                                                </tr>
-                        
-                                                                <tr>
                                                                     <th class="text-start"> Total Stock Adjustment : </th>
                                                                     <td class="text-start"> 0.00</td>
                                                                 </tr>
                         
                                                                 <tr>
                                                                     <th class="text-start"> Total Expense : </th>
-                                                                    <td class="text-start"> 0.00</td>
-                                                                </tr>
-                        
-                                                                <tr>
-                                                                    <th class="text-start"> Total purchase shipping charge : </th>
                                                                     <td class="text-start"> 0.00</td>
                                                                 </tr>
                         
@@ -159,22 +138,6 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th class="text-start">
-                                                                        Closing stock <br>
-                                                                        <small>(By purchase price)</small>
-                                                                    </th class="text-start">
-                                                                    <td class="text-start"> 0.00</td>
-                                                                </tr>
-                        
-                                                                <tr>
-                                                                    <th class="text-start">
-                                                                        Closing stock : <br>
-                                                                        <small>(By sale price)</small>
-                                                                    </th>
-                                                                    <td class="text-start"> 0.0</td>
-                                                                </tr>
-                        
-                                                                <tr>
-                                                                    <th class="text-start">
                                                                         Total Sales : <br>
                                                                         <small>((Exc. tax, Discount))</small>
                                                                     </th>
@@ -191,15 +154,6 @@
                                                                     <td class="text-start"> 0.0</td>
                                                                 </tr>
                         
-                                                                <tr>
-                                                                    <th class="text-start">Total Purchase Return : </th>
-                                                                    <td class="text-start"> 0.0</td>
-                                                                </tr>
-                        
-                                                                <tr>
-                                                                    <th class="text-start">Total Purchase discount : </th>
-                                                                    <td class="text-start"> 0.0</td>
-                                                                </tr>
                         
                                                                 <tr>
                                                                     <th class="text-start">Total sell round off : </th>

@@ -463,15 +463,13 @@ class DashboardController extends Controller
             $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')->whereDate('created_at', Carbon::today())->get();
             $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')->whereDate('created_at', Carbon::today())->get();
             $branchTransfer = $branchTransferQuery->groupBy('transfer_stock_to_branches.id')->whereDate('report_date', Carbon::today())->get();
-
             $warehouseTransfer = $warehouseTransferQuery->groupBy('transfer_stock_to_warehouses.id')->whereDate('report_date', Carbon::today())->get();
-
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
             ->whereDate('hrm_payroll_payments.created_at', Carbon::today())->get();
         } else {
             $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
             ->groupBy('sales.id')->whereDate('created_at', Carbon::today())->get();
-
+            
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)
             ->groupBy('purchases.id')->whereDate('created_at', Carbon::today())->get();
 

@@ -187,14 +187,9 @@ class MoneyReceiptController extends Controller
         $i = 6;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
+        while ($a < $i) { $invoiceId .= rand(1, 9);$a++; }
 
-        $dueInvoices = Sale::where('customer_id', $receipt->customer_id)
-            ->where('due', '>', 0)
-            ->get();
+        $dueInvoices = Sale::where('customer_id', $receipt->customer_id)->where('due', '>', 0)->get();
         if (count($dueInvoices) > 0) {
             $index = 0;
             foreach ($dueInvoices as $dueInvoice) {

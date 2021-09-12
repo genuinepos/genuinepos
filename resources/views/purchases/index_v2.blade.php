@@ -251,7 +251,7 @@
                     d.date_range = $('#date_range').val();
                 }
             },
-            columnDefs: [{"targets": [0, 5, 6,  12],"orderable": false,"searchable": false}],
+            columnDefs: [{"targets": [0, 5, 6],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'date'},
@@ -265,7 +265,7 @@
                 {data: 'due',name: 'due'},
                 {data: 'purchase_return_amount',name: 'purchase_return_amount'},
                 {data: 'purchase_return_due',name: 'purchase_return_due'},
-                {data: 'created_by',name: 'created_by'},
+                {data: 'created_by',name: 'created_by.name'},
             ],
         });
 

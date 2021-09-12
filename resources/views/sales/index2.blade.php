@@ -312,25 +312,16 @@
            $('.daterange').val('');
         });
 
-        // Pass sale details in the details modal
-        function saleDetails(url) {
-            $('.data_preloader').show();
-            $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
-                    $('#sale_details').html(data);
-                    $('.data_preloader').hide();
-                    $('#detailsModal').modal('show');
-                }
-            });
-        }
-        
         // Show details modal with data
         $(document).on('click', '.details_button', function (e) {
             e.preventDefault();
+            $('.data_preloader').show();
             var url = $(this).attr('href');
-            saleDetails(url);
+            $.get(url, function(data) {
+                $('#sale_details').html(data);
+                $('.data_preloader').hide();
+                $('#detailsModal').modal('show');
+            });
         });
 
         //Show payment view modal with data

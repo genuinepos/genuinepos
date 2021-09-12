@@ -102,7 +102,7 @@
                             <tr>
                                 <th class="text-start">
                                     Total Sales : <br>
-                                    <small>((Inc.Tax))</small>
+                                    <small>(Inc.Tax)</small>
                                 </th>
 
                                 <td class="text-start">
@@ -146,11 +146,19 @@
                         <h6 class="text-muted m-0">Net Profit : 
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
                             <span class="{{ $netProfit < 0 ? 'text-danger' : '' }}">{{ number_format((float)$netProfit, 2, '.', '') }}</span></h6>
-                        <p class="text-muted m-0">Net Profit (Total Sale + Total Stock Adjustment Recovered)
-                            - <br>( Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
+                        <p class="text-muted m-0"><b>Calculate Net Profit :</b> (Total Sale + Total Stock Adjustment Recovered)
+                            - <br>( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@if (env('PRINT_SD_OTHERS') == 'true')
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small> 
+        </div>
+    </div>
+@endif

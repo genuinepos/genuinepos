@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
 use App\Models\Product;
 use App\Models\CashFlow;
-use App\Models\Customer;
-use App\Models\Supplier;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -181,11 +179,6 @@ class AccountingRelatedSectionController extends Controller
 
     public function filterCashflows(Request $request)
     {
-        // if ($request->ajax()) {
-        //     $query = DB::table('cash_flows')
-        //     ->leftJoin('accounts', 'cash_flows.account_id', 'accounts.id');
-        // }
-        
         $filterCashFlows = '';
         $query = CashFlow::with(
             [
@@ -222,5 +215,49 @@ class AccountingRelatedSectionController extends Controller
         
         $filterCashFlows = $query->orderBy('id', 'desc')->get();
         return view('accounting.related_sections.ajax_view.filtered_cash_flow', compact('filterCashFlows'));
+    }
+
+    public function printCashflow(Request $request)
+    {
+        $filterCashFlows = '';
+        $fromDate = '';
+        $toDate = '';
+        $query = CashFlow::with(
+            [
+                'account',
+                'sender_account',
+                'receiver_account',
+                'sale_payment',
+                'sale_payment.sale',
+                'sale_payment.customer',
+                'purchase_payment',
+                'purchase_payment.purchase',
+                'purchase_payment.supplier',
+                'expanse_payment',
+                'expanse_payment.expense',
+                'money_receipt',
+                'money_receipt.customer',
+                'payroll',
+                'payroll_payment',
+                'loan',
+                'loan.company',
+            ]
+        );
+
+        if ($request->date_range) {
+            $date_range = explode('-', $request->date_range);
+            $form_date = date('Y-m-d', strtotime($date_range[0]));
+            $to_date = date('Y-m-d', strtotime($date_range[1]));
+            $fromDate = date('Y-m-d', strtotime($date_range[0]));
+            $toDate = date('Y-m-d', strtotime($date_range[1]));
+            $query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        }
+
+        if ($request->transaction_type) {
+            $query->where('cash_type', $request->transaction_type);
+        }
+        
+        $filterCashFlows = $query->orderBy('id', 'desc')->get();
+        return view('accounting.related_sections.ajax_view.print_cash_flow', compact('filterCashFlows', 'fromDate', 'toDate'));
     }
 }

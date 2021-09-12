@@ -466,22 +466,14 @@ class SaleUtil
             })
             ->editColumn('paid_status', function ($row) {
                 $payable = $row->total_payable_amount - $row->sale_return_amount;
-                $html = '';
                 if ($row->due <= 0) {
-                    $html .= '<span class="text-success"><b>Paid</b></span>';
+                    return '<span class="text-success"><b>Paid</b></span>';
                 } elseif ($row->due > 0 && $row->due < $payable) {
-                    $html .= '<span class="text-primary"><b>Partial</b></span>';
+                    return '<span class="text-primary"><b>Partial</b></span>';
                 } elseif ($payable == $row->due) {
-                    $html .= '<span class="text-danger"><b>Due</b></span>';
+                    return '<span class="text-danger"><b>Due</b></span>';
                 }
-                return $html;
             })
-            ->setRowAttr([
-                'data-href' => function ($row) {
-                    return route('sales.show', [$row->id]);
-                }
-            ])
-            ->setRowClass('clickable_row')
             ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status'])
             ->make(true);
     }

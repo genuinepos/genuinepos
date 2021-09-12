@@ -134,26 +134,22 @@ class PurchaseController extends Controller
                 })->editColumn('purchase_return_due', function ($row) use ($generalSettings) {
                     return '<b><span class="text-success">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_due . '</span></b>';
                 })->editColumn('status', function ($row) {
-                    $html = '';
                     if ($row->purchase_status == 1) {
-                        $html .= '<span class="text-success"><b>Received</b></span>';
+                        return '<span class="text-success"><b>Received</b></span>';
                     } elseif ($row->purchase_status == 2) {
-                        $html .= '<span class="text-primary"><b>Pending</b></span>';
+                        return '<span class="text-primary"><b>Pending</b></span>';
                     } elseif ($row->purchase_status == 3) {
-                        $html .= '<span class="text-warning"><b>Ordered</b></span>';
+                        return '<span class="text-warning"><b>Ordered</b></span>';
                     }
-                    return $html;
                 })->editColumn('payment_status', function ($row) {
-                    $html = '';
                     $payable = $row->total_purchase_amount - $row->purchase_return_amount;
                     if ($row->due <= 0) {
-                        $html .= '<span class="text-success"><b>Paid</b></span>';
+                        return '<span class="text-success"><b>Paid</b></span>';
                     } elseif ($row->due > 0 && $row->due < $payable) {
-                        $html .= '<span class="text-primary"><b>Partial</b></span>';
+                        return '<span class="text-primary"><b>Partial</b></span>';
                     } elseif ($payable == $row->due) {
-                        $html .= '<span class="text-danger"><b>Due</b></span>';
+                        return '<span class="text-danger"><b>Due</b></span>';
                     }
-                    return $html;
                 })->editColumn('created_by', function ($row) {
                     return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
                 })

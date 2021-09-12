@@ -85,9 +85,16 @@ class Util
             'phone' => 'required',
         ]);
 
+        // generate Customer ID
+        $l = 5;
+        $b = 0;
+        $id = '';
+        while ($b < $l) { $id .= rand(1, 9); $b++; }
+        $generalSettings = DB::table('general_settings')->first('prefix');
+        $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
         $addCustomer = Customer::create([
             'type' => $request->contact_type,
-            'contact_id' => $request->contact_id,
+            'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . $id,
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,

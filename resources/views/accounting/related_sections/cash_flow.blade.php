@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name mt-1">
-                                    <div class="col-md-12">
+                                    <div class="col-md-8">
                                         <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
                                         <form id="filter_cash_flow" action="{{ route('accounting.filter.cash.flow') }}" method="get" class="px-2">
                                             <div class="form-group row">
@@ -40,18 +40,24 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                                                         </div>
-                                                        <input type="text" name="date_range" class="form-control daterange submit_able_input" autocomplete="off">
+                                                        <input type="text" name="date_range" class="form-control daterange submit_able_input" autocomplete="off" id="date_range">
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label></label>
+                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
@@ -101,13 +107,9 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script>
     // Setup ajax for csrf token.
-    $.ajaxSetup({
-       headers: {
-           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-       }
-   });
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-   function getCashFlows() {
+    function getCashFlows() {
        $('.data_preloader').show();
        $.ajax({
            url:"{{ route('accounting.all.cash.flow') }}",
@@ -117,54 +119,25 @@
                $('.data_preloader').hide();
            }
        });
-   }
-   getCashFlows();
+    }
+    getCashFlows();
   
-   // Show sweet alert for delete
-//    $(document).on('click', '#delete',function(e){
-//        e.preventDefault();
-//        var url = $(this).attr('href');
-//        $('#deleted_form').attr('action', url);
-//        swal({
-//            title: "Are you sure?",
-//            icon: "warning",
-//            buttons: true,
-//            dangerMode: true,
-//        })
-//        .then((willDelete) => {
-//            if (willDelete) { 
-//                $('#deleted_form').submit();
-//            } else {
-//                swal("Your imaginary file is safe!");
-//            }
-//        });
-//    });
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'message': 'Are you sure?',
-                'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
-                }
-            });
+    $(document).on('click', '#delete',function(e){
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $('#deleted_form').attr('action', url);           
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'message': 'Are you sure?',
+            'buttons': {
+                'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+            }
         });
+    });
        
-   //data delete by ajax
-   $(document).on('submit', '#deleted_form',function(e){
+    //data delete by ajax
+    $(document).on('submit', '#deleted_form',function(e){
        e.preventDefault();
        var url = $(this).attr('action');
        var request = $(this).serialize();
@@ -178,46 +151,69 @@
                $('#deleted_form')[0].reset();
            }
        });
-   });
+    });
 
-   //Submit filter form by select input changing
-   $(document).on('change', '.submit_able', function () {
-       $('#filter_cash_flow').submit();
-   });
+    //Submit filter form by select input changing
+    $(document).on('change', '.submit_able', function () {
+        $('#filter_cash_flow').submit();
+    });
 
-   //Submit filter form by date-range field blur 
-   $(document).on('blur', '.submit_able_input', function () {
-       setTimeout(function() {
-           $('#filter_cash_flow').submit();
-       }, 800);
-   });
+    //Submit filter form by date-range field blur 
+    $(document).on('blur', '.submit_able_input', function () {
+        setTimeout(function() {
+            $('#filter_cash_flow').submit();
+        }, 800);
+    });
 
-   //Submit filter form by date-range apply button
-   $(document).on('click', '.applyBtn', function () {
-       setTimeout(function() {
-           $('.submit_able_input').addClass('.form-control:focus');
-           $('.submit_able_input').blur();
-       }, 1000);
-   });
+    //Submit filter form by date-range apply button
+    $(document).on('click', '.applyBtn', function () {
+        setTimeout(function() {
+            $('.submit_able_input').addClass('.form-control:focus');
+            $('.submit_able_input').blur();
+        }, 1000);
+    });
 
-   //Send account filter request
-   $('#filter_cash_flow').on('submit', function (e) {
-       e.preventDefault();
-       $('.data_preloader').show();
-       var url = $(this).attr('action');
-       var request = $(this).serialize();
-       console.log(request);
-       $.ajax({
-           url:url,
-           type:'get',
-           data: request,
-           success:function(data){
-               $('#data-list').html(data);
-               $('.data_preloader').hide();
-           }
-       }); 
-   });
+    //Send account filter request
+    $('#filter_cash_flow').on('submit', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        console.log(request);
+        $.ajax({
+            url:url,
+            type:'get',
+            data: request,
+            success:function(data){
+                $('#data-list').html(data);
+                $('.data_preloader').hide();
+            }
+        }); 
+    });
 
+    //Print purchase Payment report
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('accounting.print.cash.flow') }}";
+        var transaction_type = $('#transaction_type').val();
+        var date_range = $('#date_range').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {transaction_type, date_range},
+            success:function(data) {
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 700, 
+                    header: null,        
+                });
+            }
+        }); 
+    });
 </script>
 
 <script type="text/javascript">

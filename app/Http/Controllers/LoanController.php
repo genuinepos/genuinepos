@@ -143,6 +143,7 @@ class LoanController extends Controller
         $addLoan->loan_amount = $request->loan_amount;
         $addLoan->due = $request->loan_amount;
         $addLoan->account_id = $request->account_id;
+        $addLoan->loan_by = 'Cash';
         $addLoan->loan_reason = $request->loan_reason;
         $addLoan->created_user_id = auth()->id();
         $addLoan->report_date = date('Y-m-d');

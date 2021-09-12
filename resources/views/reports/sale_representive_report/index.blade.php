@@ -250,18 +250,18 @@
             }
         },
         columnDefs: [{
-            "targets": [0],
+            "targets": [4],
             "orderable": false,
             "searchable": false
         }],
         columns: [
             {data: 'date', name: 'date'},
             {data: 'invoice_id', name: 'invoice_id'},
-            {data: 'customer', name: 'customer'},
-            {data: 'branch', name: 'branch'},
+            {data: 'customer', name: 'customers.name'},
+            {data: 'branch', name: 'branches.name'},
             {data: 'payment_status', name: 'payment_status'},
-            {data: 'total_amount', name: 'total_amount'},
-            {data: 'total_return', name: 'total_return'},
+            {data: 'total_amount', name: 'total_payable_amount'},
+            {data: 'total_return', name: 'sale_return_amount'},
             {data: 'paid', name: 'paid'},
             {data: 'due', name: 'due'},
         ],
@@ -289,7 +289,7 @@
         ],
         "processing": true,
         "serverSide": true,
-        aaSorting: [[3, 'desc']],
+        aaSorting: [[0, 'desc']],
         "ajax": {
             "url": "{{ route('reports.sale.representive.expenses') }}",
             "data": function(d) {
@@ -299,17 +299,17 @@
             }
         },
         columnDefs: [{
-            "targets": [0],
+            "targets": [4],
             "orderable": false,
             "searchable": false
         }],
         columns: [
             {data: 'date', name: 'date'},
             {data: 'invoice_id', name: 'invoice_id'},
-            {data: 'branch', name: 'branch'},
-            {data: 'user', name: 'user'},
+            {data: 'branch', name: 'branches.name'},
+            {data: 'user', name: 'admin_and_users.name'},
             {data: 'payment_status', name: 'payment_status'},
-            {data: 'total_amount', name: 'total_amount'},
+            {data: 'total_amount', name: 'net_total_amount'},
             {data: 'paid', name: 'paid'},
             {data: 'due', name: 'due'},
         ],

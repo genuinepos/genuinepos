@@ -1,6 +1,10 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
 <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
 <script>
+    $('.collapse_table').on('click', function () {
+        $('.last_p_product_list').toggle(500);
+    });
+    
     $('#payment_method').on('change', function () {
         var value = $(this).val();
         $('.payment_method').hide();

@@ -8,6 +8,7 @@
         .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
         .selectProduct{background-color: #ab1c59; color: #fff!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        h6.collapse_table:hover {background: lightgray; padding: 3px; cursor: pointer;}
     </style>
     <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
@@ -502,6 +503,43 @@
         </div>
     </div>
 
+    <section class="">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="section-header">
+                    <div class="col-md-10">
+                        <h6 class="collapse_table">Last Purchase Products</h6>
+                    </div>
+                </div>
+
+                <div class="card m-0 last_p_product_list">
+                    <div class="element-body">
+                        <div class="table-responsive" id="data-list">
+                            <table class="display data_tbl data__table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>P.Code</th>
+                                        <th>Supplier</th>
+                                        <th>P.Invoice ID</th>
+                                        <th>Date</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Cost</th>
+                                        <th>Unit Price</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Add Supplier Modal -->
     <div class="modal fade" id="addSupplierModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
@@ -512,7 +550,7 @@
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_supplier_modal_body">
-                    <!--begin::Form-->
+
                 </div>
             </div>
         </div>

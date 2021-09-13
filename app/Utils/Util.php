@@ -116,14 +116,12 @@ class Util
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);
 
-        if ($request->opening_balance && $request->opening_balance >= 0) {
-            $addCustomerLedger = new CustomerLedger();
-            $addCustomerLedger->customer_id = $addCustomer->id;
-            $addCustomerLedger->row_type = 3;
-            $addCustomerLedger->amount = $request->opening_balance;
-            $addCustomerLedger->save();
-        }
-
+        $addCustomerLedger = new CustomerLedger();
+        $addCustomerLedger->customer_id = $addCustomer->id;
+        $addCustomerLedger->row_type = 3;
+        $addCustomerLedger->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+        $addCustomerLedger->save();
+        
         return response()->json($addCustomer);
     }
 

@@ -95,7 +95,7 @@
                                                 <tr>
                                                     <th class="text-start">Date</th>
                                                     <th class="text-start">Reference ID</th>
-                                                    <th class="text-start">Branch</th>
+                                                    <th class="text-start">B.Location</th>
                                                     <th class="text-start">Expanse For</th>
                                                     <th class="text-start">Payment Status</th>
                                                     <th class="text-start">Tax</th>

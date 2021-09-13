@@ -1,3 +1,4 @@
+
 <div class="row">
     <div class="col-md-12 text-center">
 
@@ -11,7 +12,6 @@
     </div>
 </div>
 <br>
-
 <div class="customer_details_area">
     <div class="row">
         <div class="col-4">
@@ -24,16 +24,19 @@
     </div>
 </div>
 <br>
-
-<div class="row">
-    <div class="col-12">
-        <table class="table modal-table table-sm table-bordered">
+@php
+$index = 0;
+$pageBreak = 1;
+@endphp
+<div class="row" >
+    <div class="col-12" >
+        <table class="table modal-table table-sm table-bordered" >
             <thead>
                 <tr>
                     <th class="text-start">Date</th>
                     <th class="text-start">Invoice/Voucher No</th>
                     <th class="text-start">Type</th>
-                    <th class="text-start">Total</th>
+                    <th class="text-start">Trans. Amount</th>
                     <th class="text-start">Debit</th>
                     <th class="text-start">Credit</th>
                     <th class="text-start">Payment Method</th>
@@ -42,7 +45,13 @@
             </thead>
             
             <tbody>
+                @php
+                    $totalSale = 0;
+                    $totalDebit = 0;
+                    $totalCredit = 0;
+                @endphp
                 @foreach ($ledgers as $ledger)
+                    @php $index++; @endphp
                     <tr>
                         @if ($ledger->row_type == 1)
                             <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale->date)) }}</td> 
@@ -51,6 +60,7 @@
                             <td class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $ledger->sale->total_payable_amount }}
+                                @php $totalSale += $ledger->sale->total_payable_amount; @endphp
                             </td>
                             <td class="text-start">---</td>
                             <td class="text-start">---</td>
@@ -66,11 +76,13 @@
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $ledger->sale_payment->paid_amount }}
+                                    @php $totalCredit += $ledger->sale_payment->paid_amount; @endphp
                                 </td>
                             @else   
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $ledger->sale_payment->paid_amount }}
+                                    @php $totalDebit += $ledger->sale_payment->paid_amount; @endphp
                                 </td>
                                 <td class="text-start">---</td>  
                             @endif
@@ -87,6 +99,7 @@
                             <td class="text-start">---</td>
                             <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $ledger->amount }}</td>
+                                @php $totalCredit += $ledger->amount; @endphp
                             <td>
                                 {{ $ledger->money_receipt->payment_method }}
                             </td>   
@@ -101,11 +114,13 @@
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $ledger->customer_payment->paid_amount }}
+                                    @php $totalCredit += $ledger->customer_payment->paid_amount; @endphp
                                 </td>
                             @else   
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $ledger->customer_payment->paid_amount }}
+                                    @php $totalDebit += $ledger->customer_payment->paid_amount; @endphp
                                 </td>
                                 <td>---</td>
                             @endif
@@ -118,6 +133,7 @@
                             <td class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $ledger->amount }}
+                                @php $totalSale += $ledger->amount; @endphp
                             </td>
                             <td class="text-start">---</td>
                             <td class="text-start">---</td>
@@ -127,6 +143,16 @@
                     </tr>
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" class="text-start">Total :</th>
+                    <th class="text-start">{{ json_decode($generalSettings->business, true)['currency']. bcadd($totalSale, 0, 2) }}</th>
+                    <th class="text-start">{{ json_decode($generalSettings->business, true)['currency']. bcadd($totalDebit, 0, 2) }}</th>
+                    <th class="text-start">{{ json_decode($generalSettings->business, true)['currency']. bcadd($totalCredit, 0, 2) }}</th>
+                    <th class="text-start">---</th>
+                    <th class="text-start">---</th>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>

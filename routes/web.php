@@ -239,10 +239,12 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 // Purchase route group
 Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('v2', 'PurchaseController@index_v2')->name('purchases.index_v2');
+    Route::get('product/list', 'PurchaseController@purchaseProductList')->name('purchases.product.list');
     Route::get('show/{purchaseId}', 'PurchaseController@show')->name('purchases.show');
     Route::get('create', 'PurchaseController@create')->name('purchases.create');
     Route::post('store', 'PurchaseController@store')->name('purchases.store');
     Route::get('edit/{purchaseId}', 'PurchaseController@edit')->name('purchases.edit');
+    Route::get('edit/purchase/product/{purchaseId}/{productId}/{variantId}', 'PurchaseController@editPurchasedProduct')->name('purchases.product.edit');
     Route::get('editable/purchase/{purchaseId}', 'PurchaseController@editablePurchase')->name('purchases.get.editable.purchase');
     Route::post('update', 'PurchaseController@update')->name('purchases.update');
     Route::get('get/all/supplier', 'PurchaseController@getAllSupplier')->name('purchases.get.all.supplier');

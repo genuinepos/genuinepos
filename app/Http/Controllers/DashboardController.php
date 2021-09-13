@@ -456,38 +456,38 @@ class DashboardController extends Controller
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $sales = $saleQuery->groupBy('sales.id')->whereDate('created_at', Carbon::today())->get();
-            $purchases = $purchaseQuery->groupBy('purchases.id')->whereDate('created_at', Carbon::today())->get();
-            $expenses = $expenseQuery->groupBy('expanses.id')->whereDate('created_at', Carbon::today())->get();
-            $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->whereDate('created_at', Carbon::today())->get();
-            $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')->whereDate('created_at', Carbon::today())->get();
-            $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')->whereDate('created_at', Carbon::today())->get();
+            $sales = $saleQuery->groupBy('sales.id')->whereDate('report_date', Carbon::today())->get();
+            $purchases = $purchaseQuery->groupBy('purchases.id')->whereDate('report_date', Carbon::today())->get();
+            $expenses = $expenseQuery->groupBy('expanses.id')->whereDate('report_date', Carbon::today())->get();
+            $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->whereDate('report_date_ts', Carbon::today())->get();
+            $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')->whereDate('report_date', Carbon::today())->get();
+            $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')->whereDate('report_date', Carbon::today())->get();
             $branchTransfer = $branchTransferQuery->groupBy('transfer_stock_to_branches.id')->whereDate('report_date', Carbon::today())->get();
             $warehouseTransfer = $warehouseTransferQuery->groupBy('transfer_stock_to_warehouses.id')->whereDate('report_date', Carbon::today())->get();
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
-            ->whereDate('hrm_payroll_payments.created_at', Carbon::today())->get();
+            ->whereDate('hrm_payroll_payments.report_date', Carbon::today())->get();
         } else {
             $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
-            ->groupBy('sales.id')->whereDate('created_at', Carbon::today())->get();
+            ->groupBy('sales.id')->whereDate('report_date', Carbon::today())->get();
             
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)
-            ->groupBy('purchases.id')->whereDate('created_at', Carbon::today())->get();
+            ->groupBy('purchases.id')->whereDate('report_date', Carbon::today())->get();
 
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)
             ->groupBy('expanses.id')
-            ->whereDate('created_at', Carbon::today())->get();
+            ->whereDate('report_date', Carbon::today())->get();
 
             $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)
             ->groupBy('stock_adjustments.id')
-            ->whereDate('created_at', Carbon::today())->get();
+            ->whereDate('report_date_ts', Carbon::today())->get();
 
             $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')
             ->where('purchase_returns.branch_id', auth()->user()->branch_id)
-            ->whereDate('created_at', Carbon::today())->get();
+            ->whereDate('report_date', Carbon::today())->get();
 
             $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')
             ->where('sale_returns.branch_id', auth()->user()->branch_id)
-            ->whereDate('created_at', Carbon::today())->get();
+            ->whereDate('report_date', Carbon::today())->get();
 
             $branchTransfer = $branchTransferQuery->groupBy('transfer_stock_to_branches.id')
             ->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)
@@ -498,7 +498,7 @@ class DashboardController extends Controller
             ->whereDate('report_date', Carbon::today())->get();
 
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
-            ->whereDate('hrm_payroll_payments.created_at', Carbon::today())
+            ->whereDate('hrm_payroll_payments.report_date', Carbon::today())
             ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
         }
 
@@ -535,7 +535,7 @@ class DashboardController extends Controller
             'branch_id',
         ));
     }
-
+    
     public function changeLang($lang)
     {
         session(['lang' => $lang]);

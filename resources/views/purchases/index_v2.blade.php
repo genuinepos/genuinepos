@@ -269,12 +269,6 @@
             ],
         });
 
-        // Filter toggle
-        $('.filter_btn').on('click', function(e) {
-            e.preventDefault();
-            $('.filter_body').toggle(500);
-        });
-
         // Get all supplier for filter form
         function setSuppliers() {
             $.ajax({

@@ -203,6 +203,15 @@
                                 </div>
                             @endif
 
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('settings.units.index') }}" class="bar-link">
+                                        <span><i class="fas fa-weight-hanging"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.units')</p>
+                            </div>
+
                             @if (auth()->user()->permission->product['product_all'] == '1')
                                 <div
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -231,8 +240,7 @@
                                 </div>
                             @endif
 
-                            <div
-                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('product.variants.index') }}" class="bar-link">
                                         <span>
@@ -350,8 +358,7 @@
                                         <div
                                             class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                             <div class="switch_bar">
-                                                <a href="{{ route('contacts.customers.import.create') }}"
-                                                    class="bar-link">
+                                                <a href="{{ route('contacts.customers.import.create') }}" class="bar-link">
                                                     <span><i class="fas fa-file-upload"></i></span>
                                                 </a>
                                             </div>
@@ -361,8 +368,7 @@
                                         <div
                                             class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                             <div class="switch_bar">
-                                                <a href="{{ route('contacts.customers.groups.index') }}"
-                                                    class="bar-link">
+                                                <a href="{{ route('contacts.customers.groups.index') }}" class="bar-link">
                                                     <span><i class="fas fa-users"></i></span>
                                                 </a>
                                             </div>
@@ -390,10 +396,10 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('purchases.create') }}" class="bar-link">
                                                 <span><i class="fas fa-shopping-cart"></i></span>
@@ -401,8 +407,7 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.add_purchase')</p>
                                     </div>
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('purchases.index_v2') }}" class="bar-link">
                                                 <span><i class="fas fa-list"></i></span>
@@ -410,8 +415,17 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.purchase_list')</p>
                                     </div>
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('purchases.product.list') }}" class="bar-link">
+                                                <span><i class="fas fa-shopping-cart"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.purchase_product_list')</p>
+                                    </div> 
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('purchases.returns.index') }}" class="bar-link">
                                                 <span><i class="fas fa-undo"></i></span>
@@ -991,15 +1005,6 @@
                                         <p class="switch_text">@lang('menu.warehouses') </p>
                                     </div>
                                 @endif
-
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('settings.units.index') }}" class="bar-link">
-                                            <span><i class="fas fa-weight-hanging"></i></span>
-                                        </a>
-                                    </div>
-                                    <p class="switch_text">@lang('menu.units')</p>
-                                </div>
 
                                 @if (auth()->user()->permission->setup['tax'] == '1')
                                     <div

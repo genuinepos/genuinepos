@@ -23,6 +23,7 @@ use App\Models\ProductBranchVariant;
 use App\Models\ProductWarehouseVariant;
 use App\Utils\Util;
 use DataTables;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class PurchaseController extends Controller
 {
@@ -107,7 +108,7 @@ class PurchaseController extends Controller
             }
 
             return DataTables::of($purchases)
-                ->addColumn('action', fn($row) => $this->createAction($row))
+                ->addColumn('action', fn ($row) => $this->createAction($row))
                 ->editColumn('date', function ($row) use ($generalSettings) {
                     return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
                 })->editColumn('invoice_id', function ($row) {
@@ -158,6 +159,129 @@ class PurchaseController extends Controller
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         return view('purchases.index_v2', compact('branches'));
+    }
+
+    public function purchaseProductList(Request $request)
+    {
+        if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
+            $purchaseProducts = '';
+            $query = DB::table('purchase_products')
+                ->leftJoin('purchases', 'purchase_products.purchase_id', '=', 'purchases.id')
+                ->leftJoin('products', 'purchase_products.product_id', 'products.id')
+                ->leftJoin('product_variants', 'purchase_products.product_variant_id', 'product_variants.id')
+                ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
+                ->leftJoin('units', 'products.unit_id', 'units.id');
+
+            if ($request->product_id) {
+                $query->where('purchase_products.product_id', $request->product_id);
+            }
+
+            if ($request->variant_id) {
+                $query->where('purchase_products.product_variant_id', $request->variant_id);
+            }
+
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('purchases.branch_id', NULL);
+                } else {
+                    $query->where('purchases.branch_id', $request->branch_id);
+                }
+            }
+
+            if ($request->supplier_id) {
+                $query->where('purchases.supplier_id', $request->supplier_id);
+            }
+
+            if ($request->date_range) {
+                $date_range = explode('-', $request->date_range);
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                $to_date = date('Y-m-d', strtotime($date_range[1]));
+                $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            }
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+                $purchaseProducts = $query->select(
+                    'purchase_products.purchase_id',
+                    'purchase_products.product_id',
+                    'purchase_products.product_variant_id',
+                    'purchase_products.net_unit_cost',
+                    'purchase_products.quantity',
+                    'units.code_name as unit_code',
+                    'purchase_products.line_total',
+                    'purchase_products.selling_price',
+                    'purchases.*',
+                    'products.name',
+                    'products.product_code',
+                    'products.product_price',
+                    'product_variants.variant_name',
+                    'product_variants.variant_code',
+                    'product_variants.variant_price',
+                    'suppliers.name as supplier_name'
+                )->orderBy('purchase_products.id', 'desc');
+            } else {
+                $purchaseProducts = $query->select(
+                    'purchase_products.purchase_id',
+                    'purchase_products.product_id',
+                    'purchase_products.product_variant_id',
+                    'purchase_products.net_unit_cost',
+                    'purchase_products.quantity',
+                    'units.code_name as unit_code',
+                    'purchase_products.line_total',
+                    'purchase_products.selling_price',
+                    'purchases.*',
+                    'products.name',
+                    'products.product_code',
+                    'products.product_price',
+                    'product_variants.variant_name',
+                    'product_variants.variant_code',
+                    'product_variants.variant_price',
+                    'suppliers.name as supplier_name'
+                )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchase_products.id', 'desc');
+            }
+
+            return DataTables::of($purchaseProducts)
+                ->addColumn('action', function ($row) {
+                    $html = '<div class="dropdown table-dropdown">';
+                    if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
+                        $html .= '<a href="' . route('purchases.product.edit', [$row->purchase_id, $row->product_id, ($row->product_variant_id ? $row->product_variant_id : 'NULL')]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    }
+
+                    if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
+                        $html .= '<a href="#" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    }
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->editColumn('product', function ($row) {
+                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
+                    return $row->name . $variant;
+                })->editColumn('product_code', function ($row) {
+                    return $row->variant_code ? $row->variant_code : $row->product_code;
+                })->editColumn('date', function ($row) {
+                    return date('d/m/Y', strtotime($row->date));
+                })->editColumn('quantity', function ($row) {
+                    return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
+                })->editColumn('net_unit_cost',  function ($row) use ($generalSettings) {
+                    return '<b><span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_unit_cost . '</span></b>';
+                })->editColumn('price',  function ($row) use ($generalSettings) {
+                    if ($row->selling_price > 0) {
+                        return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->selling_price . '</b>';
+                    } else {
+                        if ($row->variant_name) {
+                            return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->variant_price . '</b>';
+                        } else {
+                            return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->product_price . '</b>';
+                        }
+                    }
+                    return '<b><span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_unit_cost . '</span></b>';
+                })->editColumn('subtotal', function ($row) use ($generalSettings) {
+                    return '<b><span class="subtotal" data-value="' . $row->line_total . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->line_total . '</span></b>';
+                })->rawColumns(['action', 'product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'price', 'subtotal'])
+                ->make(true);
+        }
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('purchases.purchase_product_list', compact('branches'));
     }
 
     // show purchase details
@@ -759,6 +883,36 @@ class PurchaseController extends Controller
             'purchase_products.variant'
         ])->where('id', $purchaseId)->first();
         return response()->json($purchase);
+    }
+
+    public function editPurchasedProduct($purchaseId, $productId, $variantId)
+    {
+        $purchase = DB::table('purchases')->where('purchases.id', $purchaseId)
+            ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
+            ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
+            ->select(
+                'purchases.*',
+                'suppliers.name as s_name',
+                'warehouses.warehouse_name as w_name',
+                'warehouses.warehouse_code as w_code',
+            )
+            ->first();
+
+        $product = DB::table('purchase_products')
+            ->leftJoin('products', 'purchase_products.product_id', 'products.id')
+            ->leftJoin('product_variants', 'purchase_products.product_variant_id', 'product_variants.id')
+            ->where('purchase_products.purchase_id', $purchaseId)
+            ->where('purchase_products.product_id', $productId)
+            ->where('purchase_products.product_variant_id', $variantId)
+            ->select(
+                'purchase_products.*',
+                'products.id as p_id',
+                'products.name as p_name',
+                'products.product_code as p_code',
+                'product_variants.variant_name as v_name',
+                'product_variants.variant_code as v_code',
+            )->first();
+        return view('purchases.edit_purchased_product', compact('purchase', 'product'));
     }
 
     // Get all supplier requested by ajax

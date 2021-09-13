@@ -47,7 +47,7 @@ class ProfitLossReportController extends Controller
         ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
 
         $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-        ->select(DB::raw('sum(unit_cost_inc_tax) as total_unit_cost'));
+        ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
 
         $adjustmentQuery = DB::table('stock_adjustments')->select(
             DB::raw('sum(net_total_amount) as total_adjustment'),
@@ -131,7 +131,7 @@ class ProfitLossReportController extends Controller
         ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
 
         $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-        ->select(DB::raw('sum(unit_cost_inc_tax) as total_unit_cost'));
+        ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
 
         $adjustmentQuery = DB::table('stock_adjustments')->select(
             DB::raw('sum(net_total_amount) as total_adjustment'),
@@ -303,7 +303,7 @@ class ProfitLossReportController extends Controller
         ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
 
         $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-        ->select(DB::raw('sum(unit_cost_inc_tax) as total_unit_cost'));
+        ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
 
         $adjustmentQuery = DB::table('stock_adjustments')->select(
             DB::raw('sum(net_total_amount) as total_adjustment'),

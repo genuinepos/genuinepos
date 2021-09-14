@@ -24,21 +24,21 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong>Total Purchase : </strong>
-                        <span class="card_text invoice_no">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $supplier->total_purchase }}
+                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <span class="card_text">
+                            <b>{{ $supplier->total_purchase }}</b>
                         </span>
                     </li>
                     <li><strong>Total Paid : </strong>
-                        <span class="card_text branch">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $supplier->total_paid }}
+                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <span class="card_text text-success">
+                            <b>{{ $supplier->total_paid }}</b>
                         </span>
                     </li>
                     <li><strong>Total Due : </strong>
-                        <span class="card_text branch">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $supplier->total_purchase_due }}
+                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <span class="card_text text-danger">
+                            <b>{{ $supplier->total_purchase_due }}</b> 
                         </span>
                     </li>
                 </ul>
@@ -50,7 +50,6 @@
 <!--begin::Form-->
 <form id="supplier_payment_form" action="{{ route('suppliers.payment.add', $supplier->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
-    <input type="hidden" name="sale_id" id="sale_id" value="">
     <div class="form-group row mt-2">
         <div class="col-md-4">
            <strong>Amount :</strong> <span class="text-danger">*</span>
@@ -61,7 +60,7 @@
                 </div>
                 <input type="hidden" id="p_available_amount" value="{{ $supplier->total_purchase_due }}">
                 <input type="number" name="amount" class="form-control form-control-sm p_input" step="any"
-                    data-name="Amount" id="p_amount" value="{{ $supplier->total_purchase_due }}" />
+                    data-name="Amount" id="p_amount" value="" />
             </div>
             <span class="error error_p_amount"></span>
         </div>
@@ -214,7 +213,9 @@
     <div class="form-group row mt-4">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn btn_blue submit_button float-end">Save</button>
+            <button name="action" type="button" value="save" class="c-btn btn_blue float-end" id="add_payment">Save</button>
+            <button name="action" value="save_and_print" type="button" class="c-btn btn_blue float-end" id="add_payment">Save & Print</button>
+            
             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
         </div>
     </div>

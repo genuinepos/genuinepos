@@ -26,19 +26,19 @@
                     <li><strong>Total Sale : </strong>
                         <span class="card_text invoice_no">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $customer->total_sale }}
+                           <b>{{ $customer->total_sale }}</b> 
                         </span>
                     </li>
                     <li><strong>Total Paid : </strong>
-                        <span class="card_text branch">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $customer->total_paid }}
+                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <span class="card_text text-success">
+                            <b>{{ $customer->total_paid }}</b> 
                         </span>
                     </li>
                     <li><strong>Total Due : </strong>
-                        <span class="card_text branch">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $customer->total_sale_due }}
+                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <span class="card_text text-danger">
+                            <b>{{ $customer->total_sale_due }}</b> 
                         </span>
                     </li>
                 </ul>
@@ -60,7 +60,7 @@
                 </div>
                 <input type="hidden" id="p_available_amount" value="{{ $customer->total_sale_due }}">
                 <input type="number" name="amount" class="form-control form-control-sm p_input" step="any"
-                    data-name="Amount" id="p_amount" value="{{ $customer->total_sale_due }}" />
+                    data-name="Amount" id="p_amount" value=""/>
             </div>
             <span class="error error_p_amount"></span>
         </div>
@@ -213,7 +213,9 @@
     <div class="form-group row mt-3">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn btn_blue submit_button float-end">Save</button>
+            <button name="action" value="save" type="button" class="c-btn btn_blue float-end" id="add_payment">Save</button>
+            <button name="action" value="save_and_print" type="button" class="c-btn btn_blue float-end" id="add_payment">Save & Print</button>
+           
             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
         </div>
     </div>

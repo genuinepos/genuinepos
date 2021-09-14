@@ -599,7 +599,6 @@
             //Add Customer payment request by ajax
             $(document).on('submit', '#customer_payment_form', function(e) {
                 e.preventDefault();
-                $('.submit_button').prop('type', 'button');
                 $('.loading_button').show();
                 var available_amount = $('#p_available_amount').val();
                 var paying_amount = $('#p_amount').val();
@@ -625,9 +624,8 @@
                 });
 
                 if (countErrorField > 0) {
-                    $('.submit_button').prop('type', 'submit');
+                    toastr.error('Please chack all form fields', 'SOMETHING WANG WRONG'); 
                     $('.loading_button').hide();
-                    toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                     return;
                 }
 
@@ -639,7 +637,6 @@
                     cache: false,
                     processData: false,
                     success: function(data) {
-                        $('.submit_button').prop('type', 'submit');
                         if (!$.isEmptyObject(data.errorMsg)) {
                             toastr.error(data.errorMsg, 'ERROR');
                             $('.loading_button').hide();
@@ -649,6 +646,20 @@
                             toastr.success(data);
                             table.ajax.reload();
                         }
+                    }
+                });
+            });
+
+            $(document).on('click', '#add_payment',function(e){
+                e.preventDefault(); 
+                var url = $(this).attr('href');
+                $('#deleted_form').attr('action', url);       
+                $.confirm({
+                    'title': 'Payment Confirmation',
+                    'content': 'Are you sure to receive this payment?',
+                    'buttons': {
+                        'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#customer_payment_form').submit();}},
+                        'No': {'class': 'no btn-danger','action': function() {console.log('Edit canceled.');}}
                     }
                 });
             });

@@ -718,6 +718,7 @@ class PurchaseController extends Controller
         foreach ($product_ids as $productId) {
             $updateProductQty = Product::where('id', $productId)->first();
             $updateProductQty->quantity = $updateProductQty->quantity + $quantities[$productIndex];
+            
             if ($updatePurchase->is_last_created == 1) {
                 if ($updateProductQty->is_variant == 0) {
                     $updateProductQty->product_cost = $unit_costs_with_discount[$productIndex];
@@ -728,8 +729,7 @@ class PurchaseController extends Controller
                     }
                 }
             }
-            $updateProductQty->save();
-
+            
             if ($variant_ids[$productIndex] != 'noid') {
                 $updateVariantQty = ProductVariant::where('id', $variant_ids[$productIndex])->where('product_id', $productId)->first();
                 $updateVariantQty->variant_quantity += (float)$quantities[$productIndex];
@@ -745,7 +745,7 @@ class PurchaseController extends Controller
             }
             $productIndex++;
         }
-
+        
         $updatePurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
 
         // generate invoice ID
@@ -887,6 +887,7 @@ class PurchaseController extends Controller
 
     public function editPurchasedProduct($purchaseId, $productId, $variantId)
     {
+        $variantId = $variantId != 'NULL' ? $variantId : NULL;
         $purchase = DB::table('purchases')->where('purchases.id', $purchaseId)
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
             ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
@@ -895,24 +896,150 @@ class PurchaseController extends Controller
                 'suppliers.name as s_name',
                 'warehouses.warehouse_name as w_name',
                 'warehouses.warehouse_code as w_code',
-            )
+            )->first();
+
+            $purchaseProduct = PurchaseProduct::with('product:id,name,product_code', 'variant:id,variant_name,variant_code')
+            ->where('purchase_id', $purchaseId)
+            ->where('product_id', $productId)
+            ->where('product_variant_id', $variantId)->first();
+        
+            return view('purchases.edit_purchased_product', compact('purchase', 'purchaseProduct'));
+    }
+
+    public function PurchasedProductUpdate(Request $request, $purchaseId)
+    {
+        $prefixSettings = DB::table('general_settings')->select(['id', 'purchase'])->first();
+        $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
+
+        $variantId = $request->variant_id != 'noid' ? $request->variant_id : NULL;
+
+        $updatePurchaseProduct = PurchaseProduct::where('purchase_id', $purchaseId )
+        ->where('product_id', $request->product_id)
+        ->where('product_variant_id', $variantId)->first();
+
+        $updatePurchase = Purchase::where('id', $purchaseId)->first();
+        $updatePurchase->total_purchase_amount -= $updatePurchaseProduct->line_total;
+        $updatePurchase->total_purchase_amount += $request->line_total;
+        $updatePurchase->save();
+
+        // update product and variant quantity for adjustment
+        $updateProductQty = Product::where('id', $updatePurchaseProduct->product_id)->first();
+        $updateProductQty->quantity -= (float)$updatePurchaseProduct->quantity;
+        $updateProductQty->save();
+
+        if ($updatePurchaseProduct->product_variant_id) {
+            $updateVariantQty = ProductVariant::where('id', $updatePurchaseProduct->product_variant_id)
+            ->where('product_id', $updatePurchaseProduct->product_id)->first();
+            $updateVariantQty->variant_quantity -= (float)$updatePurchaseProduct->quantity;
+            $updateVariantQty->save();
+        }
+
+        $SupplierProduct = SupplierProduct::where('supplier_id', $updatePurchase->supplier_id)
+            ->where('product_id', $updatePurchaseProduct->product_id)
+            ->where('product_variant_id', $updatePurchaseProduct->product_variant_id)
             ->first();
 
-        $product = DB::table('purchase_products')
-            ->leftJoin('products', 'purchase_products.product_id', 'products.id')
-            ->leftJoin('product_variants', 'purchase_products.product_variant_id', 'product_variants.id')
-            ->where('purchase_products.purchase_id', $purchaseId)
-            ->where('purchase_products.product_id', $productId)
-            ->where('purchase_products.product_variant_id', $variantId)
-            ->select(
-                'purchase_products.*',
-                'products.id as p_id',
-                'products.name as p_name',
-                'products.product_code as p_code',
-                'product_variants.variant_name as v_name',
-                'product_variants.variant_code as v_code',
-            )->first();
-        return view('purchases.edit_purchased_product', compact('purchase', 'product'));
+        if ($SupplierProduct) {
+            $SupplierProduct->label_qty -= (float)$updatePurchaseProduct->quantity;
+            $SupplierProduct->label_qty += (float)$request->quantity;
+            $SupplierProduct->save();
+        }
+        // update product and variant quantity for adjustment End
+
+        // update product and variant quantity
+        $updateProductQty = Product::where('id', $request->product_id)->first();
+        $updateProductQty->quantity += (float)$request->quantity;
+        if ($updatePurchase->is_last_created == 1) {
+            if ($updateProductQty->is_variant == 0) {
+                $updateProductQty->product_cost = $request->unit_cost_with_discount;
+                $updateProductQty->product_cost_with_tax = $request->net_unit_cost;
+                if ($isEditProductPrice == '1') {
+                    $updateProductQty->profit = $request->profit;
+                    $updateProductQty->product_price = $request->selling_price;
+                }
+            }
+        }
+        $updateProductQty->save();
+
+        if ($variantId != NULL) {
+            $updateVariantQty = ProductVariant::where('id', $variantId)->where('product_id', $request->product_id)->first();
+            $updateVariantQty->variant_quantity += (float)$request->quantity;
+            if ($updatePurchase->is_last_created == 1) {
+                $updateVariantQty->variant_cost = $request->unit_cost_with_discount;
+                $updateVariantQty->variant_cost_with_tax = $request->net_unit_cost;
+                if ($isEditProductPrice == '1') {
+                    $updateVariantQty->variant_profit = $request->profit;
+                    $updateProductQty->variant_price = $request->selling_price;
+                }
+            }
+            $updateVariantQty->save();
+        }
+        
+        // update Business location or Warehouse product and variant quantity for adjustment
+        if ($updatePurchase->warehouse_id) {
+            $updateProductWarehouse = ProductWarehouse::where('warehouse_id', $updatePurchase->warehouse_id)
+                ->where('product_id', $updatePurchaseProduct->product_id)->first();
+            $updateProductWarehouse->product_quantity -= (float)$updatePurchaseProduct->quantity;
+            $updateProductWarehouse->product_quantity += (float)$request->quantity;
+            $updateProductWarehouse->save();
+            if ($updatePurchaseProduct->product_variant_id) {
+                $updateProductWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $updateProductWarehouse->id)->where('product_id', $updatePurchaseProduct->product_id)
+                    ->where('product_variant_id', $updatePurchaseProduct->product_variant_id)->first();
+                $updateProductWarehouseVariant->variant_quantity -= $updatePurchaseProduct->quantity;
+                $updateProductWarehouseVariant->variant_quantity += (float)$request->quantity;
+                $updateProductWarehouseVariant->save();
+            }
+        } elseif ($updatePurchase->branch_id) {
+            $updateProductBranch = ProductBranch::where('branch_id', $updatePurchase->branch_id)->where('product_id', $updatePurchaseProduct->product_id)->first();
+            $updateProductBranch->product_quantity -= $updatePurchaseProduct->quantity;
+            $updateProductBranch->product_quantity += (float)$request->quantity;
+            $updateProductBranch->save();
+
+            if ($updatePurchaseProduct->product_variant_id) {
+                $updateProductBranchVariant =  ProductBranchVariant::where('product_branch_id', $updateProductBranch->id)->where('product_id', $updatePurchaseProduct->product_id)->where('product_variant_id', $updatePurchaseProduct->product_variant_id)->first();
+                $updateProductBranchVariant->variant_quantity -= $updatePurchaseProduct->quantity;
+                $updateProductBranchVariant->variant_quantity += (float)$request->quantity;
+                $updateProductBranchVariant->save();
+            }
+        } else {
+            $MbStock = Product::where('id', $updatePurchaseProduct->product_id)->first();
+            $MbStock->mb_stock -= $updatePurchaseProduct->quantity;
+            $MbStock->mb_stock += $MbStock->mb_stock + (float)$request->quantity;
+            $MbStock->save();
+
+            if ($updatePurchaseProduct->product_variant_id) {
+                $updateProVariantMbStock = ProductVariant::where('id', $updatePurchaseProduct->product_variant_id)
+                    ->where('product_id', $updatePurchaseProduct->product_id)->first();
+                $updateProVariantMbStock->mb_stock -= $updatePurchaseProduct->quantity;
+                $updateProVariantMbStock->mb_stock += (float)$request->quantity;
+                $updateProVariantMbStock->save();
+            }
+        }
+        
+        $updatePurchaseProduct->product_id = $request->product_id;
+        $updatePurchaseProduct->product_variant_id = $variantId;
+        $updatePurchaseProduct->quantity = $request->quantity;
+        $updatePurchaseProduct->unit_cost = $request->unit_cost;
+        $updatePurchaseProduct->unit_discount = $request->unit_discount;
+        $updatePurchaseProduct->unit_cost_with_discount = $request->unit_cost_with_discount;
+        $updatePurchaseProduct->subtotal = $request->subtotal;
+        $updatePurchaseProduct->unit_tax_percent = $request->tax_percent;
+        $updatePurchaseProduct->unit_tax = $request->unit_tax;
+        $updatePurchaseProduct->net_unit_cost = $request->net_unit_cost;
+        $updatePurchaseProduct->line_total = $request->linetotal;
+
+        if ($isEditProductPrice == '1') {
+            $updatePurchaseProduct->profit_margin = $request->profit;
+            $updatePurchaseProduct->selling_price = $request->selling_price;
+        }
+
+        if (isset($request->lot_number)) {
+            $updatePurchaseProduct->lot_no = $request->lot_number;
+        }
+        $updatePurchaseProduct->save();
+
+        session()->flash('successMsg', 'Successfully purchased Product is updated');
+        return response()->json('Successfully purchased Product is updated');
     }
 
     // Get all supplier requested by ajax
@@ -1006,14 +1133,14 @@ class PurchaseController extends Controller
             foreach ($deletePurchase->purchase_products as $purchase_product) {
                 $updateProductWarehouse = ProductWarehouse::where('warehouse_id', $deletePurchase->warehouse_id)->where('product_id', $purchase_product->product_id)->first();
                 if ($updateProductWarehouse) {
-                    $updateProductWarehouse->product_quantity -= $purchase_product->quantity;
+                    $updateProductWarehouse->product_quantity = $updateProductWarehouse->product_quantity - $purchase_product->quantity;
                     $updateProductWarehouse->save();
                     if ($purchase_product->product_variant_id) {
                         $updateProductWarehouseVariant =  ProductWarehouseVariant::where('product_warehouse_id', $updateProductWarehouse->id)
                             ->where('product_id', $purchase_product->product_id)
                             ->where('product_variant_id', $purchase_product->product_variant_id)->first();
 
-                        $updateProductWarehouseVariant->variant_quantity -= $purchase_product->quantity;
+                        $updateProductWarehouseVariant->variant_quantity = $updateProductWarehouseVariant->variant_quantity - $purchase_product->quantity;
                         $updateProductWarehouseVariant->save();
                     }
                 }
@@ -1025,30 +1152,29 @@ class PurchaseController extends Controller
                     $updateProductBranch = ProductBranch::where('branch_id', $deletePurchase->branch_id)
                         ->where('product_id', $purchase_product->product_id)->first();
                     if ($updateProductBranch) {
-                        $updateProductBranch->product_quantity -= $purchase_product->quantity;
+                        $updateProductBranch->product_quantity = $updateProductBranch->product_quantity - $purchase_product->quantity;
                         $updateProductBranch->save();
                         if ($purchase_product->product_variant_id) {
                             $updateProductBranchVariant =  ProductBranchVariant::where('product_branch_id', $updateProductBranch->id)
                                 ->where('product_id', $purchase_product->product_id)
                                 ->where('product_variant_id', $purchase_product->product_variant_id)
                                 ->first();
-                            $updateProductBranchVariant->variant_quantity -= $purchase_product->quantity;
+                            $updateProductBranchVariant->variant_quantity = $updateProductBranchVariant->variant_quantity - $purchase_product->quantity;
                             $updateProductBranchVariant->save();
                         }
                     }
                 }
             } else {
                 foreach ($deletePurchase->purchase_products as $purchase_product) {
-                    $updateProductBranch = Product::where('id', $purchase_product->product_id)
-                        ->first();
+                    $updateProductBranch = Product::where('id', $purchase_product->product_id)->first();
                     if ($updateProductBranch) {
-                        $updateProductBranch->mb_stock -= $purchase_product->quantity;
+                        $updateProductBranch->mb_stock = $updateProductBranch->mb_stock - $purchase_product->quantity;
                         $updateProductBranch->save();
                         if ($purchase_product->product_variant_id) {
                             $updateProductVariant = ProductVariant::where('product_id', $purchase_product->product_id)
                                 ->where('id', $purchase_product->product_variant_id)
                                 ->first();
-                            $updateProductVariant->mb_stock -= $purchase_product->quantity;
+                            $updateProductVariant->mb_stock = $updateProductVariant->mb_stock - $purchase_product->quantity;
                             $updateProductVariant->save();
                         }
                     }

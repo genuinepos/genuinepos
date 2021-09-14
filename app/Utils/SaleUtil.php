@@ -36,28 +36,37 @@ class SaleUtil
                             $index = 0;
                             foreach ($dueInvoices as $dueInvoice) {
                                 if ($dueInvoice->due > $dueAmounts) {
-                                    $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
-                                    $dueInvoice->due = $dueInvoice->due - $dueAmounts;
-                                    $dueInvoice->save();
-                                    $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
-                                    //$dueAmounts -= $dueAmounts; 
-                                    if ($index == 1) {
-                                        break;
+                                    if ($dueAmounts > 0) {
+                                        $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
+                                        $dueInvoice->due = $dueInvoice->due - $dueAmounts;
+                                        $dueInvoice->save();
+                                        $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
+                                        $dueAmounts -= $dueAmounts;
                                     }
+                                   
+                                    // //$dueAmounts -= $dueAmounts; 
+                                    // if ($index == 1) {
+                                    //     break;
+                                    // }
                                 } elseif ($dueInvoice->due == $dueAmounts) {
-                                    $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
-                                    $dueInvoice->due = $dueInvoice->due - $dueAmounts;
-                                    $dueInvoice->save();
-                                    $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
-                                    if ($index == 1) {
-                                        break;
+                                    if($dueAmounts > 0){
+                                        $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
+                                        $dueInvoice->due = $dueInvoice->due - $dueAmounts;
+                                        $dueInvoice->save();
+                                        $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
+                                        $dueAmounts -= $dueAmounts;
                                     }
+                                    // if ($index == 1) {
+                                    //     break;
+                                    // }
                                 } elseif ($dueInvoice->due < $dueAmounts) {
-                                    $this->addPayment($paymentInvoicePrefix, $request, $dueInvoice->due, $invoiceId, $dueInvoice->id);
-                                    $dueAmounts = $dueAmounts - $dueInvoice->due;
-                                    $dueInvoice->paid = $dueInvoice->paid + $dueInvoice->due;
-                                    $dueInvoice->due = $dueInvoice->due - $dueInvoice->due;
-                                    $dueInvoice->save();
+                                    if ($dueInvoice->due > 0) {
+                                        $this->addPayment($paymentInvoicePrefix, $request, $dueInvoice->due, $invoiceId, $dueInvoice->id);
+                                        $dueAmounts = $dueAmounts - $dueInvoice->due;
+                                        $dueInvoice->paid = $dueInvoice->paid + $dueInvoice->due;
+                                        $dueInvoice->due = $dueInvoice->due - $dueInvoice->due;
+                                        $dueInvoice->save();
+                                    }
                                 }
                                 $index++;
                             }

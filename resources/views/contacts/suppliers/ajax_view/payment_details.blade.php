@@ -146,7 +146,7 @@
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-start">Date</th>
+                        <th class="text-start">Purchase Date</th>
                         <th class="text-start">Purchase Invoice ID</th>
                         <th class="text-start">Paid Amount</th>
                     </tr>

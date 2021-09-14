@@ -769,11 +769,22 @@
         var tr = $(this).closest('tr');
         
         // Update selling price
-        var unit_cost = tr.find('#unit_cost').val();
-        var unitCostWithDiscount = parseFloat(unit_cost) - parseFloat(profit);
-        var calcProfit = parseFloat(unitCostWithDiscount)  /100 * parseFloat(profit) + parseFloat(unitCostWithDiscount);
+        var unit_cost_with_discount = tr.find('#unit_cost_with_discount').val();
+        var calcProfit = parseFloat(unit_cost_with_discount)  /100 * parseFloat(profit) + parseFloat(unit_cost_with_discount);
         var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
         calculateTotalAmount();
+    });
+
+     // Input profit margin and clculate row amount
+     $(document).on('input', '#selling_price', function(){
+        var price = $(this).val() ? $(this).val() : 0;
+        var tr = $(this).closest('tr');
+        
+        // Update selling price
+        var unit_cost_with_discount = tr.find('#unit_cost_with_discount').val();
+        var profitAmount = parseFloat(price) - parseFloat(unit_cost_with_discount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(unit_cost_with_discount) * 100;
+        var sellingPrice = tr.find('#profit').val(parseFloat(calcProfit).toFixed(2));
     });
 
     $(document).on('blur', '#profit', function(){
@@ -898,7 +909,7 @@
     }, 1000);
 
         // Add supplier by ajax
-        $(document).on('submit', '#add_supplier_form', function(e){
+    $(document).on('submit', '#add_supplier_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
@@ -1176,7 +1187,6 @@
     }
     getEditablePurchase();
 
-    
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'dd');

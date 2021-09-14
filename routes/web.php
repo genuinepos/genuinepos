@@ -245,6 +245,7 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::post('store', 'PurchaseController@store')->name('purchases.store');
     Route::get('edit/{purchaseId}', 'PurchaseController@edit')->name('purchases.edit');
     Route::get('edit/purchase/product/{purchaseId}/{productId}/{variantId}', 'PurchaseController@editPurchasedProduct')->name('purchases.product.edit');
+    Route::post('update/purchase/product/{purchaseId}', 'PurchaseController@PurchasedProductUpdate')->name('purchases.product.update');
     Route::get('editable/purchase/{purchaseId}', 'PurchaseController@editablePurchase')->name('purchases.get.editable.purchase');
     Route::post('update', 'PurchaseController@update')->name('purchases.update');
     Route::get('get/all/supplier', 'PurchaseController@getAllSupplier')->name('purchases.get.all.supplier');

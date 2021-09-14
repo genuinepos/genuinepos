@@ -1004,7 +1004,7 @@ class PurchaseController extends Controller
         } else {
             $MbStock = Product::where('id', $updatePurchaseProduct->product_id)->first();
             $MbStock->mb_stock -= $updatePurchaseProduct->quantity;
-            $MbStock->mb_stock += $MbStock->mb_stock + (float)$request->quantity;
+            $MbStock->mb_stock += (float)$request->quantity;
             $MbStock->save();
 
             if ($updatePurchaseProduct->product_variant_id) {

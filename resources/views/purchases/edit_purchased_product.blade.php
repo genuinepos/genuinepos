@@ -364,7 +364,7 @@
                     }else{
                         $('.loading_button').hide();
                         toastr.success(data); 
-                        //window.location = "{{route('purchases.index_v2')}}";
+                        window.location = "{{route('purchases.product.list')}}";
                     }
                 }
             });

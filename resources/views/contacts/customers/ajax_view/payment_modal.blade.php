@@ -60,7 +60,7 @@
                 </div>
                 <input type="hidden" id="p_available_amount" value="{{ $customer->total_sale_due }}">
                 <input type="number" name="amount" class="form-control form-control-sm p_input" step="any"
-                    data-name="Amount" id="p_amount" value=""/>
+                    data-name="Amount" id="p_amount" value="" autocomplete="off" autofocus/>
             </div>
             <span class="error error_p_amount"></span>
         </div>

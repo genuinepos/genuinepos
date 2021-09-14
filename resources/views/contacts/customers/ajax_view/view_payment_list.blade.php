@@ -44,10 +44,10 @@
                 <tr class="bg-primary">
                     <th class="text-white">Date</th>
                     <th class="text-white">Voucher No</th>
-                    <th class="text-white">Amount</th>
                     <th class="text-white">Type</th>
                     <th class="text-white">Method</th>
                     <th class="text-white">Account</th>
+                    <th class="text-white">Amount</th>
                     <th class="text-white">Action</th>
                 </tr>
             </thead>
@@ -59,12 +59,12 @@
                                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
                             </td>
                             <td>{{ $payment->voucher_no }}</td>
-                            <td>
-                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
-                            </td>
                             <td>{{ $payment->type == 1 ? 'Sale Due' : 'Return due' }}</td>
                             <td>{{ $payment->pay_mode }}</td>
                             <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
+                            <td>
+                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
+                            </td>
                             <td>
                                 <a href="{{ route('customers.view.details', $payment->id) }}" id="payment_details" class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
                                 <a href="{{ route('customers.payment.delete', $payment->id) }}" id="delete_payment" class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>

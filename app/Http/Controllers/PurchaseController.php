@@ -23,7 +23,6 @@ use App\Models\ProductBranchVariant;
 use App\Models\ProductWarehouseVariant;
 use App\Utils\Util;
 use DataTables;
-use Illuminate\Support\Facades\DB as FacadesDB;
 
 class PurchaseController extends Controller
 {
@@ -245,10 +244,6 @@ class PurchaseController extends Controller
                     $html = '<div class="dropdown table-dropdown">';
                     if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
                         $html .= '<a href="' . route('purchases.product.edit', [$row->purchase_id, $row->product_id, ($row->product_variant_id ? $row->product_variant_id : 'NULL')]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    }
-
-                    if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
-                        $html .= '<a href="#" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                     }
                     $html .= '</div>';
                     return $html;
@@ -613,13 +608,16 @@ class PurchaseController extends Controller
         $updatePurchase = purchase::with('purchase_products')->where('id', $request->id)->first();
 
         // Update supplier total purchase due
-        $presentDue = $request->total_purchase_amount - $updatePurchase->paid - $updatePurchase->purchase_return_amount;
-        $previouseDue = $updatePurchase->due;
-        $supplierDue =  $presentDue - $previouseDue;
+        $presentDue = $request->total_purchase_amount
+            - $updatePurchase->paid
+            - $updatePurchase->purchase_return_amount;
+
+        $previousDue = $updatePurchase->due;
+        $supplierDue =  $presentDue - $previousDue;
         $supplier = Supplier::where('id', $updatePurchase->supplier_id)->first();
-        $supplier->total_purchase_due = $supplier->total_purchase_due + $supplierDue;
-        $supplier->total_purchase = $supplier->total_purchase + $updatePurchase->total_purchase_amount;
-        $supplier->total_purchase = $supplier->total_purchase + $request->total_purchase_amount;
+        $supplier->total_purchase_due += $supplierDue;
+        $supplier->total_purchase -= $updatePurchase->total_purchase_amount;
+        $supplier->total_purchase += $request->total_purchase_amount;
         $supplier->save();
 
         // update product and variant quantity for adjustment
@@ -718,7 +716,7 @@ class PurchaseController extends Controller
         foreach ($product_ids as $productId) {
             $updateProductQty = Product::where('id', $productId)->first();
             $updateProductQty->quantity = $updateProductQty->quantity + $quantities[$productIndex];
-            
+
             if ($updatePurchase->is_last_created == 1) {
                 if ($updateProductQty->is_variant == 0) {
                     $updateProductQty->product_cost = $unit_costs_with_discount[$productIndex];
@@ -729,7 +727,7 @@ class PurchaseController extends Controller
                     }
                 }
             }
-            
+
             if ($variant_ids[$productIndex] != 'noid') {
                 $updateVariantQty = ProductVariant::where('id', $variant_ids[$productIndex])->where('product_id', $productId)->first();
                 $updateVariantQty->variant_quantity += (float)$quantities[$productIndex];
@@ -745,7 +743,7 @@ class PurchaseController extends Controller
             }
             $productIndex++;
         }
-        
+
         $updatePurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
 
         // generate invoice ID
@@ -790,7 +788,6 @@ class PurchaseController extends Controller
             $purchaseAttachment->move(public_path('uploads/purchase_attachment/'), $purchaseAttachmentName);
             $updatePurchase->attachment = $purchaseAttachmentName;
         }
-
         $updatePurchase->save();
 
         // add purchase product
@@ -898,12 +895,12 @@ class PurchaseController extends Controller
                 'warehouses.warehouse_code as w_code',
             )->first();
 
-            $purchaseProduct = PurchaseProduct::with('product:id,name,product_code', 'variant:id,variant_name,variant_code')
+        $purchaseProduct = PurchaseProduct::with('product:id,name,product_code', 'variant:id,variant_name,variant_code')
             ->where('purchase_id', $purchaseId)
             ->where('product_id', $productId)
             ->where('product_variant_id', $variantId)->first();
-        
-            return view('purchases.edit_purchased_product', compact('purchase', 'purchaseProduct'));
+
+        return view('purchases.edit_purchased_product', compact('purchase', 'purchaseProduct'));
     }
 
     public function PurchasedProductUpdate(Request $request, $purchaseId)
@@ -913,13 +910,15 @@ class PurchaseController extends Controller
 
         $variantId = $request->variant_id != 'noid' ? $request->variant_id : NULL;
 
-        $updatePurchaseProduct = PurchaseProduct::where('purchase_id', $purchaseId )
-        ->where('product_id', $request->product_id)
-        ->where('product_variant_id', $variantId)->first();
+        $updatePurchaseProduct = PurchaseProduct::where('purchase_id', $purchaseId)
+            ->where('product_id', $request->product_id)
+            ->where('product_variant_id', $variantId)->first();
 
         $updatePurchase = Purchase::where('id', $purchaseId)->first();
         $updatePurchase->total_purchase_amount -= $updatePurchaseProduct->line_total;
-        $updatePurchase->total_purchase_amount += $request->line_total;
+        $updatePurchase->total_purchase_amount += $request->linetotal;
+        $updatePurchase->due -= $updatePurchaseProduct->line_total;
+        $updatePurchase->due += $request->linetotal;
         $updatePurchase->save();
 
         // update product and variant quantity for adjustment
@@ -929,7 +928,7 @@ class PurchaseController extends Controller
 
         if ($updatePurchaseProduct->product_variant_id) {
             $updateVariantQty = ProductVariant::where('id', $updatePurchaseProduct->product_variant_id)
-            ->where('product_id', $updatePurchaseProduct->product_id)->first();
+                ->where('product_id', $updatePurchaseProduct->product_id)->first();
             $updateVariantQty->variant_quantity -= (float)$updatePurchaseProduct->quantity;
             $updateVariantQty->save();
         }
@@ -974,7 +973,7 @@ class PurchaseController extends Controller
             }
             $updateVariantQty->save();
         }
-        
+
         // update Business location or Warehouse product and variant quantity for adjustment
         if ($updatePurchase->warehouse_id) {
             $updateProductWarehouse = ProductWarehouse::where('warehouse_id', $updatePurchase->warehouse_id)
@@ -1015,7 +1014,7 @@ class PurchaseController extends Controller
                 $updateProVariantMbStock->save();
             }
         }
-        
+
         $updatePurchaseProduct->product_id = $request->product_id;
         $updatePurchaseProduct->product_variant_id = $variantId;
         $updatePurchaseProduct->quantity = $request->quantity;

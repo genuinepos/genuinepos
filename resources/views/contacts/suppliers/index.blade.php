@@ -441,6 +441,7 @@
                     $('#payment_modal_body').html(data);
                     $('#paymentModal').modal('show');
                     $('.data_preloader').hide();
+                    document.getElementById('p_amount').focus();
                 }
             });
         });

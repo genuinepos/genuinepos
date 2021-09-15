@@ -71,8 +71,6 @@ class CustomerController extends Controller
                         $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
                     }
 
-                    $html .= '<a class="dropdown-item" href="' . url('contacts/customers/contact/info', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Contact Info</a>';
-                    $html .= '<a class="dropdown-item" href="' . url('contacts/customers/ledger', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Ledger</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
@@ -88,9 +86,13 @@ class CustomerController extends Controller
                 })
                 ->editColumn('opening_balance', function ($row) use ($generalSettings) {
                     return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->opening_balance;
+                })->editColumn('total_sale', function ($row) use ($generalSettings) {
+                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale;
+                })->editColumn('total_paid', function ($row) use ($generalSettings) {
+                    return '<span class="text-success">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_paid . '</span>';
                 })
                 ->editColumn('total_sale_due', function ($row) use ($generalSettings) {
-                    return '<span class="' . ($row->total_sale_due < 0 ? 'text-danger' : '') . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_due . '</span>';
+                    return '<span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_due . '</span>';
                 })
                 ->editColumn('total_sale_return_due', function ($row) use ($generalSettings) {
                     return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_return_due;
@@ -102,7 +104,7 @@ class CustomerController extends Controller
                         return '<i class="far fa-thumbs-down text-danger"></i>';
                     }
                 })
-                ->rawColumns(['action', 'business_name', 'tax_number', 'group_name', 'opening_balance', 'total_sale_due', 'total_sale_return_due', 'status'])
+                ->rawColumns(['action', 'business_name', 'tax_number', 'group_name', 'opening_balance', 'total_sale', 'total_paid', 'total_sale_due', 'total_sale_return_due', 'status'])
                 ->make(true);
         }
 
@@ -389,9 +391,20 @@ class CustomerController extends Controller
     // Customer ledger list
     public function ledgerList($customerId)
     {
-        $ledgers = CustomerLedger::with(['sale', 'sale_payment', 'sale_payment.sale', 'money_receipt', 'customer_payment'])
-            ->where('customer_id', $customerId)
-            ->orderBy('id', 'desc')->get();
+        $ledgers = CustomerLedger::with(
+            [
+                'sale', 
+                'sale.sale_products',
+                'sale.sale_products.product',
+                'sale.sale_products.variant',
+                'sale_payment',
+                'sale_payment.account',
+                'sale_payment.sale',
+                'money_receipt',
+                'customer_payment'
+            ]
+        )->where('customer_id', $customerId)->orderBy('id', 'desc')->get();
+
         $customer = DB::table('customers')->where('id', $customerId)->select('id', 'contact_id', 'name')->first();
         return view('contacts.customers.ajax_view.ledger_list', compact('ledgers', 'customer'));
     }
@@ -399,9 +412,20 @@ class CustomerController extends Controller
     // Customer ledger list
     public function ledgerPrint($customerId)
     {
-        $ledgers = CustomerLedger::with(['sale', 'sale_payment', 'sale_payment.sale', 'money_receipt', 'customer_payment'])
-            ->where('customer_id', $customerId)
-            ->orderBy('id', 'desc')->get();
+        $ledgers = CustomerLedger::with(
+            [
+                'sale', 
+                'sale.sale_products',
+                'sale.sale_products.product',
+                'sale.sale_products.variant',
+                'sale_payment',
+                'sale_payment.account',
+                'sale_payment.sale',
+                'money_receipt',
+                'customer_payment'
+            ]
+        )->where('customer_id', $customerId)->orderBy('id', 'desc')->get();
+
         $customer = DB::table('customers')->where('id', $customerId)->select(
             'id',
             'contact_id',
@@ -417,21 +441,6 @@ class CustomerController extends Controller
         return view('contacts.customers.ajax_view.print_ledger', compact('ledgers', 'customer'));
     }
 
-
-    // Customer ledger 
-    public function ledger($customerId)
-    {
-        $customerId = $customerId;
-        return view('contacts.customers.ledger', compact('customerId'));
-    }
-
-    // Customer  contactInfo sales
-    public function contactInfo($customerId)
-    {
-        $customerId = $customerId;
-        return view('contacts.customers.contact_info', compact('customerId'));
-    }
-
     // Customer payment view
     public function payment($customerId)
     {
@@ -444,11 +453,6 @@ class CustomerController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
-
-        // $customer = Customer::where('id', $customerId)->first();
-        // $customer->total_paid += $request->amount;
-        // $customer->total_sale_due -= $request->amount;
-        // $customer->save();
 
         // generate invoice ID
         $l = 6;
@@ -560,7 +564,7 @@ class CustomerController extends Controller
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->pay_mode = $request->payment_method;
-    
+
                         if ($request->payment_method == 'Card') {
                             $addSalePayment->card_no = $request->card_no;
                             $addSalePayment->card_holder = $request->card_holder_name;
@@ -576,11 +580,11 @@ class CustomerController extends Controller
                         } elseif ($request->payment_method == 'Custom') {
                             $addSalePayment->transaction_no = $request->transaction_no;
                         }
-    
+
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->payment_on = 1;
                         $addSalePayment->save();
-    
+
                         // Add Customer Payment invoice
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
@@ -607,7 +611,7 @@ class CustomerController extends Controller
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->pay_mode = $request->payment_method;
-    
+
                         if ($request->payment_method == 'Card') {
                             $addSalePayment->card_no = $request->card_no;
                             $addSalePayment->card_holder = $request->card_holder_name;
@@ -623,11 +627,11 @@ class CustomerController extends Controller
                         } elseif ($request->payment_method == 'Custom') {
                             $addSalePayment->transaction_no = $request->transaction_no;
                         }
-    
+
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->payment_on = 1;
                         $addSalePayment->save();
-    
+
                         // Add Customer Payment invoice
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
@@ -651,7 +655,7 @@ class CustomerController extends Controller
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->pay_mode = $request->payment_method;
-    
+
                         if ($request->payment_method == 'Card') {
                             $addSalePayment->card_no = $request->card_no;
                             $addSalePayment->card_holder = $request->card_holder_name;
@@ -667,18 +671,18 @@ class CustomerController extends Controller
                         } elseif ($request->payment_method == 'Custom') {
                             $addSalePayment->transaction_no = $request->transaction_no;
                         }
-    
+
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->payment_on = 1;
                         $addSalePayment->save();
-    
+
                         // Add Customer Payment invoice
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
                         $addCustomerPaymentInvoice->sale_id = $dueInvoice->id;
                         $addCustomerPaymentInvoice->paid_amount = $dueInvoice->due;
                         $addCustomerPaymentInvoice->save();
-    
+
                         $request->amount -= $dueInvoice->due;
                         $dueInvoice->paid += $dueInvoice->due;
                         $dueInvoice->due -= $dueInvoice->due;
@@ -1024,16 +1028,6 @@ class CustomerController extends Controller
             }
         }
 
-        //Update customer info
-        $customer = Customer::where('id', $deleteCustomerPayment->customer_id)->first();
-        if ($deleteCustomerPayment->type == 1) {
-            $customer->total_paid -= $deleteCustomerPayment->paid_amount;
-            $customer->total_sale_due += $deleteCustomerPayment->paid_amount;
-        } else {
-            $customer->total_sale_return_due += $deleteCustomerPayment->paid_amount;
-        }
-        $customer->save();
-
         if ($deleteCustomerPayment->account_id) {
             if ($deleteCustomerPayment->type == 1) {
                 $account = Account::where('id', $deleteCustomerPayment->account_id)->first();
@@ -1061,6 +1055,17 @@ class CustomerController extends Controller
         }
 
         $deleteCustomerPayment->delete();
+
+        //Update customer info
+        $customer = Customer::where('id', $deleteCustomerPayment->customer_id)->first();
+        if ($deleteCustomerPayment->type == 1) {
+            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($deleteCustomerPayment->customer_id);
+        } else {
+            if ($customer) {
+                $customer->total_sale_return_due += $deleteCustomerPayment->paid_amount;
+                $customer->save();
+            }
+        }
         return response()->json('Payment deleted successfully.');
     }
 }

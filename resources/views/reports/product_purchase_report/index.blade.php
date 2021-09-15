@@ -112,11 +112,11 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
+                                                    <th>Date</th>
                                                     <th>Product</th>
                                                     <th>P.Code</th>
                                                     <th>Supplier</th>
                                                     <th>P.Invoice ID</th>
-                                                    <th>Date</th>
                                                     <th>Quantity</th>
                                                     <th>Unit Cost</th>
                                                     <th>Unit Price</th>
@@ -173,7 +173,7 @@
         ],
         "processing": true,
         "serverSide": true,
-        aaSorting: [[5, 'asc']],
+        aaSorting: [[0, 'asc']],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.product.purchases.index') }}",
@@ -186,11 +186,11 @@
             }
         },
         columns: [
+            {data: 'date', name: 'purchases.date'},
             {data: 'product', name: 'products.name'},
             {data: 'product_code', name: 'products.name'},
             {data: 'supplier_name', name: 'suppliers.name as supplier_name'},
             {data: 'invoice_id', name: 'purchases.invoice_id'},
-            {data: 'date', name: 'purchases.date'},
             {data: 'quantity', name: 'quantity'},
             {data: 'net_unit_cost', name: 'net_unit_cost'},
             {data: 'price', name: 'purchase_products.selling_price'},

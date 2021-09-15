@@ -8,8 +8,9 @@
             <th>Business Name</th>
             <th>Phone</th>
             <th>Email</th>
-            <th>Tax ID</th>
             <th>Opening Balance</th>
+            <th>Total Purchase</th>
+            <th>Total Paid</th>
             <th>Purchase Due</th>
             <th>Return Due</th>
             <th>Status</th>
@@ -49,8 +50,6 @@
                             @else 
                                 <a class="dropdown-item" id="change_status" href="{{ route('contacts.supplier.change.status', $supplier->id) }}"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>
                             @endif
-                            <a class="dropdown-item" href="{{ url('contacts/suppliers/contact/info', $supplier->id) }}"> <i class="fas fa-info-circle text-primary"></i> Contact Info</a>
-                            <a class="dropdown-item" href="{{ url('contacts/suppliers/ledger', $supplier->id) }}"><i class="far fa-file-alt text-primary"></i> Ledger</a>
                         </div>
                     </div>
                 </td>
@@ -60,9 +59,20 @@
                 <td>{{ $supplier->business_name ? $supplier->business_name : 'N/A' }}</td> 
                 <td>{{ $supplier->phone }}</td>
                 <td>{{ $supplier->email }}</td>
-                <td>{{ $supplier->tax_number ? $supplier->tax_number : 'N/A' }}</td> 
                 <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->opening_balance }}</b></td>
-                <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_purchase_due }}</b></td>
+                <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_purchase }}</b></td>
+                <td>
+                    <b>
+                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                       <span class="text-success">{{ $supplier->total_paid }}</span> 
+                    </b>
+                </td>
+                <td>
+                    <b>
+                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                        <span class="text-danger">{{ $supplier->total_purchase_due }}</span>
+                    </b>
+                </td>
                 <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_purchase_return_due }}</b></td>
                 <td>
                     @if ($supplier->status == 1)
@@ -71,7 +81,6 @@
                         <span class="text-danger"><b>Deactivated</b></span>
                     @endif
                 </td>
-                 
             </tr>
         @endforeach
     </tbody>

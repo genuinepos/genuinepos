@@ -51,9 +51,10 @@
                                                 <th>Business Name</th>
                                                 <th>Phone</th>
                                                 <th>Email</th>
-                                                <th>Tax Number</th>
                                                 <th>Group</th>
                                                 <th>Opening Balance</th>
+                                                <th>Total Sale</th>
+                                                <th>Total Paid</th>
                                                 <th>Sale Due</th>
                                                 <th>Return Due</th>
                                                 <th>Status</th>
@@ -400,9 +401,10 @@
                 {data: 'business_name',name: 'business_name'},
                 {data: 'phone',name: 'phone'},
                 {data: 'email',name: 'email'},
-                {data: 'tax_number', name: 'tax_number'},
                 {data: 'group_name', name: 'customer_groups.name'},
                 {data: 'opening_balance',name: 'opening_balance'},
+                {data: 'total_sale',name: 'total_sale'},
+                {data: 'total_paid',name: 'total_paid'},
                 {data: 'total_sale_due',name: 'total_sale_due'},
                 {data: 'total_sale_return_due',name: 'total_sale_return_due'},
                 {data: 'status',name: 'status'},

@@ -77,13 +77,12 @@ class SupplierController extends Controller
             'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
 
-        if ($request->opening_balance && $request->opening_balance >= 0) {
-            $addSupplierLedger = new SupplierLedger();
-            $addSupplierLedger->supplier_id = $addSupplier->id;
-            $addSupplierLedger->row_type = 3;
-            $addSupplierLedger->amount = $request->opening_balance;
-            $addSupplierLedger->save();
-        }
+        $addSupplierLedger = new SupplierLedger();
+        $addSupplierLedger->supplier_id = $addSupplier->id;
+        $addSupplierLedger->row_type = 3;
+        $addSupplierLedger->amount = $request->opening_balance ? $request->opening_balance : 0;
+        $addSupplierLedger->save();
+        
         return response()->json('Supplier created successfully');
     }
 
@@ -336,20 +335,6 @@ class SupplierController extends Controller
             ->where('supplier_id', $supplierId)
             ->whereYear('created_at', date('Y'))->get();
         return view('contacts.suppliers.ajax_view.print_ledger', compact('ledgers', 'supplier'));
-    }
-
-    // Supplier ledger 
-    public function ledger($supplierId)
-    {
-        $supplierId = $supplierId;
-        return view('contacts.suppliers.ledger', compact('supplierId'));
-    }
-
-    // Supplier  contactInfo purchases
-    public function contactInfo($supplierId)
-    {
-        $supplierId = $supplierId;
-        return view('contacts.suppliers.contact_info', compact('supplierId'));
     }
 
     // Supplier  purchases

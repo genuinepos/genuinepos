@@ -46,7 +46,11 @@
                         @if ($ledger->row_type == 1)
                             <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale->date)) }}</td> 
                             <td class="text-start">Cr</td>
-                            <td class="text-start">Sale</td>
+                            <td class="text-start"><b>Sale :</b>  
+                                @foreach ($ledger->sale->sale_products as $item)
+                                    {{ Str::limit($item->product->name, 15)  }} {{$item->variant ? $item->variant->variant_name : ''}}, 
+                                @endforeach
+                            </td>
                             <td class="text-start">{{ $ledger->sale->invoice_id }}</td>
                             <td class="text-start">---</td>
                             <td class="text-start">---</td>
@@ -61,10 +65,13 @@
                             <td class="text-start">{{ $ledger->sale_payment->payment_type == 1 ? 'Dr' : 'Cr' }}</td>
                             <td class="text-start">
                                 {{ $ledger->sale_payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }}<br>
+                                {{ $ledger->sale_payment->account ? $ledger->sale_payment->account->name : '' }}
+                                {{ $ledger->sale_payment->account ? ' A/C '.$ledger->sale_payment->account->account_number : '' }} 
                                 Payment For Sale : (Invoice ID {{ $ledger->sale_payment->sale->invoice_id }})
                             </td>
                             <td class="text-start">---</td>
                             <td class="text-start">{{ $ledger->sale_payment->invoice_id }}</td>
+                        
                             <td class="text-start">{{ $ledger->sale_payment->pay_mode }}</td>
                             @if ($ledger->sale_payment->payment_type == 1)
                                 <td class="text-start">---</td>
@@ -82,7 +89,9 @@
                         @elseif ($ledger->row_type == 4)
                             <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->created_at)) }}</td> 
                             <td class="text-start">Dr</td>
-                            <td class="text-start">Receive Payment By Money Receipt</td>
+                            <td class="text-start">
+                                Receive Payment By Money Receipt
+                            </td>
                             <td class="text-start">---</td>
                             <td class="text-start"> {{ $ledger->money_receipt->invoice_id }}</td>
                             <td class="text-start">{{ $ledger->money_receipt->payment_method }}</td>
@@ -91,7 +100,11 @@
                         @elseif($ledger->row_type == 5)
                             <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->customer_payment->date)) }}</td> 
                             <td class="text-start">{{ $ledger->customer_payment->type == 1 ? 'Dr' : 'Cr' }}</td>
-                            <td class="text-start">{{ $ledger->customer_payment->type == 1 ? 'Direct Received From Customer(Sale Due)' : 'Paid To Customer (Sale Return Due)' }}</td>
+                            <td class="text-start">
+                                {{ $ledger->customer_payment->type == 1 ? 'Direct Received From Customer(Sale Due)' : 'Paid To Customer (Sale Return Due)' }}
+                                <b>{!! $ledger->customer_payment->account ? '<br>'.$ledger->customer_payment->account->name : '' !!}
+                                {!! $ledger->customer_payment->account ? 'A/C '.$ledger->customer_payment->account->account_number: '' !!}</b>
+                            </td>
                             <td class="text-start">---</td>
                             <td class="text-start">{{ $ledger->customer_payment->voucher_no }}</td>
                             <td class="text-start">{{ $ledger->customer_payment->pay_mode }}</td>
@@ -122,7 +135,7 @@
                             <td class="text-start">---</td>   
                         @endif
                     </tr>
-               @endforeach
+                @endforeach
             </tbody>
         </table>
     </div>

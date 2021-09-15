@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Models\Supplier;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -164,8 +165,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('payment/list/{supplierId}', 'SupplierController@paymentList')->name('contacts.supplier.payment.list');
         Route::get('purchase/list/{supplierId}', 'SupplierController@purchaseList')->name('contacts.supplier.purchase.list');
         Route::get('print/ledger/{supplierId}', 'SupplierController@ledgerPrint')->name('contacts.supplier.ledger.print');
-        Route::get('ledger/{supplierId}', 'SupplierController@ledger');
-        Route::get('contact/info/{supplierId}', 'SupplierController@contactInfo');
         Route::get('purchases/{supplierId}', 'SupplierController@purchases');
         Route::get('payment/{supplierId}', 'SupplierController@payment')->name('suppliers.payment');
         Route::post('payment/{supplierId}', 'SupplierController@paymentAdd')->name('suppliers.payment.add');
@@ -197,8 +196,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('all/info/{customerId}', 'CustomerController@cutomerAllInfo')->name('contacts.customer.all.info');
         Route::get('ledger/list/{customerId}', 'CustomerController@ledgerList')->name('contacts.customer.ledger.list');
         Route::get('print/ledger/{customerId}', 'CustomerController@ledgerPrint')->name('contacts.customer.ledger.print');
-        Route::get('ledger/{customerId}', 'CustomerController@ledger');
-        Route::get('contact/info/{customerId}', 'CustomerController@contactInfo');
         Route::get('payment/{customerId}', 'CustomerController@payment')->name('customers.payment');
         Route::post('payment/{customerId}', 'CustomerController@paymentAdd')->name('customers.payment.add');
 
@@ -961,6 +958,31 @@ Route::get('/test', function () {
     // dd($response);
     // $date =  '8/25/2021';
     // return date('Y-m-d', strtotime($date. ' -1 days'));
+    $supplier = Supplier::where('id', 52)->first();
+    $totalSupplierPurchase = DB::table('purchases')
+        ->where('supplier_id', 52)
+        ->select(DB::raw('sum(total_purchase_amount) as total_purchase'))
+        ->groupBy('supplier_id')->get();
+
+    $totalSupplierPayment = DB::table('supplier_payments')
+        ->select(DB::raw('sum(paid_amount) as s_paid'))
+        ->groupBy('supplier_id')->get();
+
+    $totalPurchasePayment = DB::table('purchase_payments')
+        ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+        ->where('purchase_payments.supplier_payment_id', NULL)
+        ->where('purchases.supplier_id', 52)
+        ->select(DB::raw('sum(paid_amount) as p_paid'))
+        ->groupBy('purchases.supplier_id')->get();
+
+    $totalPurchase = $totalSupplierPurchase->sum('total_purchase');
+    $totalPaid = $totalSupplierPayment->sum('s_paid') + $totalPurchasePayment->sum('p_paid');
+    $totalDue = ($totalPurchase + $supplier->opening_balance) - $totalPaid;
+
+    $supplier->total_sale = $totalPurchase;
+    $supplier->total_paid = $totalPaid;
+    $supplier->total_sale_due = $totalDue;
+    $supplier->save();
 });
 
 // All authenticated routes

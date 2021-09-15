@@ -113,11 +113,11 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
+                                                    <th>Date</th>
                                                     <th>Product</th>
                                                     <th>P.Code</th>
                                                     <th>Customer</th>
                                                     <th>Invoice ID</th>
-                                                    <th>Date</th>
                                                     <th>Quantity</th>
                                                     <th>Unit Price</th>
                                                     <th>Subtotal</th>
@@ -173,7 +173,7 @@
         "processing": true,
         "serverSide": true,
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-        aaSorting: [[5, 'desc']],
+        aaSorting: [[0, 'desc']],
         "ajax": {
             "url": "{{ route('reports.product.sales.index') }}",
             "data": function(d) {
@@ -185,11 +185,11 @@
             }
         },
         columns: [
+            {data: 'date', name: 'sales.date'},
             {data: 'product', name: 'products.name'},
             {data: 'sku', name: 'products.product_code'},
             {data: 'customer', name: 'customers.name'},
             {data: 'invoice_id', name: 'sales.invoice_id'},
-            {data: 'date', name: 'sales.date'},
             {data: 'quantity', name: 'quantity'},
             {data: 'unit_price_inc_tax', name: 'unit_price_inc_tax'},
             {data: 'subtotal', name: 'subtotal'},

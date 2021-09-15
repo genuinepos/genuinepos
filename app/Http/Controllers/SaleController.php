@@ -285,25 +285,13 @@ class SaleController extends Controller
             }
             $addSale->save();
 
-            // if ($customer) {
-            //     $customer->total_sale = $customer->total_sale + $request->total_payable_amount - $request->previous_due;
-            //     $customer->total_paid = $customer->total_paid + ($request->paying_amount ? $request->paying_amount : 0);
-            //     if ($request->paying_amount <= 0) {
-            //         $customer->total_sale_due = $request->total_payable_amount;
-            //     } else {
-            //         if ($request->total_due > 0) {
-            //             $customer->total_sale_due = $request->total_due;
-            //         } else {
-            //             $customer->total_sale_due = 0;
-            //         }
-            //     }
-
-            //     $customer->save();
-            //     $addCustomerLedger = new CustomerLedger();
-            //     $addCustomerLedger->customer_id = $request->customer_id;
-            //     $addCustomerLedger->sale_id = $addSale->id;
-            //     $addCustomerLedger->save();
-            // }
+            if ($customer) {
+                $customer->save();
+                $addCustomerLedger = new CustomerLedger();
+                $addCustomerLedger->customer_id = $request->customer_id;
+                $addCustomerLedger->sale_id = $addSale->id;
+                $addCustomerLedger->save();
+            }
         } else {
             $addSale->total_payable_amount = $request->total_invoice_payable;
             $addSale->save();
@@ -1354,12 +1342,6 @@ class SaleController extends Controller
         if (!is_null($deleteSalePayment)) {
             //Update customer due 
             if ($deleteSalePayment->payment_type == 1) {
-                // if ($deleteSalePayment->customer_id) {
-                //     $customer = Customer::where('id', $deleteSalePayment->customer_id)->first();
-                //     $customer->total_sale_due += $deleteSalePayment->paid_amount;
-                //     $customer->save();
-                // }
-
                 // Update sale 
                 $deleteSalePayment->sale->paid = $deleteSalePayment->sale->paid - $deleteSalePayment->paid_amount;
                 $deleteSalePayment->sale->due = $deleteSalePayment->sale->due + $deleteSalePayment->paid_amount;

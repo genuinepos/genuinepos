@@ -12,12 +12,15 @@ use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerPaymentInvoice;
+use App\Utils\CustomerUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
 {
-    public function __construct()
+    public $customerUtil;
+    public function __construct(CustomerUtil $customerUtil)
     {
+        $this->customerUtil = $customerUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -442,10 +445,10 @@ class CustomerController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
-        $customer = Customer::where('id', $customerId)->first();
-        $customer->total_paid += $request->amount;
-        $customer->total_sale_due -= $request->amount;
-        $customer->save();
+        // $customer = Customer::where('id', $customerId)->first();
+        // $customer->total_paid += $request->amount;
+        // $customer->total_sale_due -= $request->amount;
+        // $customer->save();
 
         // generate invoice ID
         $l = 6;
@@ -685,6 +688,8 @@ class CustomerController extends Controller
                 $index++;
             }
         }
+
+        $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customerId);
         return response()->json('payment added successfully.');
     }
 

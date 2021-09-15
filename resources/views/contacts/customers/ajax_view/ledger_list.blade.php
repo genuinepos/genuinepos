@@ -6,13 +6,13 @@
     <thead>
         <tr>
             <th>Date</th>
+            <th></th>
+            <th>Description</th>
             <th>Invoice ID</th>
-            <th>Type</th>
-            <th>Total</th>
+            <th>Voucher No</th>
+            <th>Payment Method</th>
             <th>Debit</th>
             <th>Credit</th>
-            <th>Payment Method</th>
-            <th>Others</th>
         </tr>
     </thead>
 
@@ -20,84 +20,82 @@
         @foreach ($ledgers as $ledger)
             <tr>
                 @if ($ledger->row_type == 1)
-                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale->date)) }}</td> 
-                    <td>{{ $ledger->sale->invoice_id }}</td>
-                    <td>Sale</td>
-                    <td>
+                    <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale->date)) }}</td> 
+                    <td class="text-start">Cr</td>
+                    <td class="text-start">Sale</td>
+                    <td class="text-start">{{ $ledger->sale->invoice_id }}</td>
+                    <td class="text-start">---</td>
+                    <td class="text-start">---</td>
+                    
+                    <td class="text-start">
                         {{ json_decode($generalSettings->business, true)['currency'] }}
                         {{ $ledger->sale->total_payable_amount }}
                     </td>
                     <td>---</td>
-                    <td>---</td>
-                    <td>---</td>
-                    <td>---</td>
                 @elseif($ledger->row_type == 2)
-                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale_payment->date)) }}</td> 
-                    <td>{{ $ledger->sale_payment->invoice_id }}</td>
-                    <td>{{ $ledger->sale_payment->payment_type == 1 ? 'Sale Payment' : 'Sale Return Payment' }}</td>
-                    <td>---</td>
+                    <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale_payment->date)) }}</td> 
+                    <td class="text-start">{{ $ledger->sale_payment->payment_type == 1 ? 'Dr' : 'Cr' }}</td>
+                    <td class="text-start">
+                        {{ $ledger->sale_payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }}<br>
+                        Payment For Sale : (Invoice ID {{ $ledger->sale_payment->sale->invoice_id }})
+                    </td>
+                    <td class="text-start">---</td>
+                    <td class="text-start">{{ $ledger->sale_payment->invoice_id }}</td>
+                    <td class="text-start">{{ $ledger->sale_payment->pay_mode }}</td>
                     @if ($ledger->sale_payment->payment_type == 1)
-                        <td>---</td>
-                        <td>
+                        <td class="text-start">---</td>
+                        <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $ledger->sale_payment->paid_amount }}
                         </td>
                     @else   
-                        <td>
+                        <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $ledger->sale_payment->paid_amount }}
                         </td>
                         <td>---</td>  
                     @endif
-                    <td>{{ $ledger->sale_payment->pay_mode }}</td>
-                    <td>Payment For : {{ $ledger->sale_payment->sale->invoice_id }}</td>
                 @elseif ($ledger->row_type == 4)
-                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->created_at)) }}</td> 
-                    <td>---</td>
-                    <td>
-                        Receive Payment By Money Receipt<br>
-                        Voucher No: {{ $ledger->money_receipt->invoice_id }}
-                    </td>
-                    <td>---</td>
-                    <td>---</td>
-                    <td>{{ json_decode($generalSettings->business, true)['currency'] }}
-                        {{ $ledger->amount }}</td>
-                    <td>
-                        {{ $ledger->money_receipt->payment_method }}
-                    </td>   
-                    <td>---</td> 
+                    <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->created_at)) }}</td> 
+                    <td class="text-start">Dr</td>
+                    <td class="text-start">Receive Payment By Money Receipt</td>
+                    <td class="text-start">---</td>
+                    <td class="text-start"> {{ $ledger->money_receipt->invoice_id }}</td>
+                    <td class="text-start">{{ $ledger->money_receipt->payment_method }}</td>
+                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $ledger->amount }}</td>
+                    <td class="text-start">---</td> 
                 @elseif($ledger->row_type == 5)
-                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->customer_payment->date)) }}</td> 
-                    <td>{{ $ledger->customer_payment->voucher_no }}</td>
-                    <td>{{ $ledger->customer_payment->type == 1 ? 'Customer Payment(Sale Due)' : 'Customer Payment(Sale Return Due)' }}</td>
-                    <td>---</td>
+                    <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->customer_payment->date)) }}</td> 
+                    <td class="text-start">{{ $ledger->customer_payment->type == 1 ? 'Dr' : 'Cr' }}</td>
+                    <td class="text-start">{{ $ledger->customer_payment->type == 1 ? 'Direct Received From Customer(Sale Due)' : 'Paid To Customer (Sale Return Due)' }}</td>
+                    <td class="text-start">---</td>
+                    <td class="text-start">{{ $ledger->customer_payment->voucher_no }}</td>
+                    <td class="text-start">{{ $ledger->customer_payment->pay_mode }}</td>
                     @if ($ledger->customer_payment->type == 1)
-                        <td>---</td>
-                        <td>
+                        <td class="text-start">---</td>
+                        <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $ledger->customer_payment->paid_amount }}
                         </td>
                     @else   
-                        <td>
+                        <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $ledger->customer_payment->paid_amount }}
                         </td>
-                        <td>---</td>
+                        <td class="text-start">---</td>
                     @endif
-                    <td>{{ $ledger->customer_payment->pay_mode }}</td>
-                    <td>{{ $ledger->customer_payment->type == 1 ? 'Direct Received From Customer' : 'Direct Paid To Customer' }}</td>
                 @else 
-                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->created_at)) }}</td> 
-                    <td>---</td>
-                    <td>Opening Balance</td>
-                    <td>
+                    <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->created_at)) }}</td> 
+                    <td class="text-start">Cr</td>
+                    <td class="text-start">Opening Balance</td>
+                    <td class="text-start">---</td>
+                    <td class="text-start">---</td>
+                    <td class="text-start">---</td>   
+                    <td class="text-start">
                         {{ json_decode($generalSettings->business, true)['currency'] }}
                         {{ $ledger->amount }}
                     </td>
-                    <td>---</td>
-                    <td>---</td>
-                    <td>---</td>   
-                    <td>---</td> 
+                    <td class="text-start">---</td>   
                 @endif
             </tr>
         @endforeach

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\AdminAndUser;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -87,8 +88,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::post('add/unit', 'ProductController@addUnit')->name('products.add.unit');
         Route::post('add/warranty', 'ProductController@addWarranty')->name('products.add.warranty');
 
-        Route::group(['prefix' => 'import/price/group/products'], function ()
-        {
+        Route::group(['prefix' => 'import/price/group/products'], function () {
             Route::get('export', 'ImportPriceGroupProductController@export')->name('products.export.price.group.products');
         });
     });
@@ -173,8 +173,8 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('return/payment/{supplierId}', 'SupplierController@returnPayment')->name('suppliers.return.payment');
         Route::post('return/payment/{supplierId}', 'SupplierController@returnPaymentAdd')->name('suppliers.return.payment.add');
 
-        Route::get('view/payment/{supplierId}', 'SupplierController@viewPayment')->name('suppliers.view.payment'); 
-        Route::get('payment/details/{paymentId}', 'SupplierController@paymentDetails')->name('suppliers.view.details'); 
+        Route::get('view/payment/{supplierId}', 'SupplierController@viewPayment')->name('suppliers.view.payment');
+        Route::get('payment/details/{paymentId}', 'SupplierController@paymentDetails')->name('suppliers.view.details');
         Route::delete('payment/delete/{paymentId}', 'SupplierController@paymentDelete')->name('suppliers.payment.delete');
 
         Route::group(['prefix' => 'import'], function () {
@@ -205,8 +205,8 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('return/payment/{customerId}', 'CustomerController@returnPayment')->name('customers.return.payment');
         Route::post('return/payment/{customerId}', 'CustomerController@returnPaymentAdd')->name('customers.return.payment.add');
 
-        Route::get('view/payment/{customerId}', 'CustomerController@viewPayment')->name('customers.view.payment'); 
-        Route::get('payment/details/{paymentId}', 'CustomerController@paymentDetails')->name('customers.view.details'); 
+        Route::get('view/payment/{customerId}', 'CustomerController@viewPayment')->name('customers.view.payment');
+        Route::get('payment/details/{paymentId}', 'CustomerController@paymentDetails')->name('customers.view.details');
         Route::delete('payment/delete/{paymentId}', 'CustomerController@paymentDelete')->name('customers.payment.delete');
 
         Route::group(['prefix' => 'money/receipt'], function () {
@@ -414,7 +414,7 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
     Route::get('sarach/product/{product_code}/{warehouse_id}', 'TransferToBranchController@productSearch');
     Route::get('check/warehouse/variant/qty/{product_id}/{variant_id}/{warehouse_id}', 'TransferToBranchController@checkWarehouseProductVariant');
     Route::get('check/warehouse/qty/{product_id}/{warehouse_id}', 'TransferToBranchController@checkWarehouseSingleProduct');
-    
+
     // Receive stock from warehouse **route group**
     Route::group(['prefix' => 'receive'], function () {
         Route::get('/', 'WarehouseReceiveStockController@index')->name('transfer.stocks.to.branch.receive.stock.index');
@@ -457,7 +457,7 @@ Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Ht
     Route::get('sarach/product/{product_code}', 'TransferToWarehouseController@productSearch');
     Route::get('check/single/product/stock/{product_id}', 'TransferToWarehouseController@checkBranchSingleProduct');
     Route::get('check/branch/variant/qty/{product_id}/{variant_id}', 'TransferToWarehouseController@checkBranchProductVariant');
-    
+
 
     // Receive stock from branch **route group**
     Route::group(['prefix' => 'receive'], function () {
@@ -819,15 +819,13 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     });
 });
 
-Route::group(['prefix' => 'short-menus', 'namespace' => 'App\Http\Controllers'], function ()
-{
+Route::group(['prefix' => 'short-menus', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('modal/form', 'ShortMenuController@showModalForm')->name('short.menus.modal.form');
     Route::get('show', 'ShortMenuController@show')->name('short.menus.show');
     Route::post('store', 'ShortMenuController@store')->name('short.menus.store');
 });
 
-Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controllers'], function ()
-{
+Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('modal/form', 'PosShortMenuController@showModalForm')->name('pos.short.menus.modal.form');
     Route::get('show', 'PosShortMenuController@show')->name('pos.short.menus.show');
     Route::get('edit/page/show', 'PosShortMenuController@editPageShow')->name('pos.short.menus.edit.page.show');
@@ -851,8 +849,7 @@ Route::get('add-user', function () {
     //1=super_admin;2=admin;3=Other;
 });
 
-Route::get('pin_login', function ()
-{
+Route::get('pin_login', function () {
     return view('auth.pin_login');
 });
 
@@ -873,10 +870,10 @@ Route::get('/test', function () {
     //return date('h:i:s a');
     //return bcadd(100.2, 0, 2);
     //return Hash::make('12345');
-    
+
     // DB::statement('create database new_inventory_2');
     // Artisan::call('migrate');
- 
+
     // return $products = DB::table('product_branches')
     //     ->join('products', 'product_branches.product_id', 'products.id')
     //     ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
@@ -914,7 +911,7 @@ Route::get('/test', function () {
     //     }
     //     $export_date[] = $temp;
     // }
-    
+
     // //return $export_date;
     // if (ob_get_contents()) ob_end_clean();ob_start();
     // return collect($export_date)->downloadExcel(

@@ -279,7 +279,7 @@ class SaleController extends Controller
                 }
             } else {
                 $addSale->total_payable_amount = $request->total_payable_amount;
-                $addSale->paid = $request->paying_amount ? $request->paying_amount : 0;
+                $addSale->paid = $request->change_amount > 0 ? $request->total_invoice_payable : $request->paying_amount ;
                 $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
                 $addSale->due = $request->total_due > 0 ? $request->total_due : 0.00;
             }

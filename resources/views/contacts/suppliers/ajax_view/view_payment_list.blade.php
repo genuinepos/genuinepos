@@ -52,7 +52,11 @@
                 </tr>
             </thead>
             <tbody id="payment_list_body">
+                @php
+                    $total = 0;
+                @endphp
                 @if (count($supplier->supplier_payments) > 0)
+                   
                     @foreach ($supplier->supplier_payments as $payment)
                         <tr>
                             <td>
@@ -64,6 +68,9 @@
                             <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
                             <td>
                                 {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
+                                @php
+                                    $total += $payment->paid_amount;
+                                @endphp
                             </td>
                             <td>
                                 <a href="{{ route('suppliers.view.details', $payment->id) }}" id="payment_details" class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
@@ -77,6 +84,13 @@
                     </tr>
                 @endif
             </tbody>
+            <tfoot>
+                <tr class="bg-secondary">
+                    <th colspan="5" class="text-white text-end"> <b>Total :</b> </th>
+                    <th class="text-white"><b>{{json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($total, 0, 2) }}</b></th>
+                    <th></th>
+                </tr>
+            </tfoot>
         </table>
 
         <form id="deleted_payment_form" action="" method="post">

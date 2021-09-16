@@ -199,6 +199,7 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
     <script>
         // Quantity increase or dicrease and clculate row amount
         $(document).on('input', '#quantity', function(){
@@ -375,6 +376,6 @@
         _expectedDateFormat = dateFormat.replace('d', 'dd');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
         _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-        $('#datepicker').datepicker({format: _expectedDateFormat});
+        $('.datepicker').datepicker({format: _expectedDateFormat});
     </script>
 @endpush

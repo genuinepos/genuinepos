@@ -15,11 +15,14 @@ class CustomerUtil
 
         $totalCustomerPayment = DB::table('customer_payments')
             ->select(DB::raw('sum(paid_amount) as c_paid'))
-            ->where('customer_id', $customerId)->groupBy('customer_id')->get();
+            ->where('customer_id', $customerId)
+            ->where('type', 1)
+            ->groupBy('customer_id')->get();
 
         $totalSalePayment = DB::table('sale_payments')
             ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
             ->where('sale_payments.customer_payment_id', NULL)
+            ->where('sale_payments.payment_type', 1)
             ->where('sales.customer_id', $customerId)->select(DB::raw('sum(paid_amount) as s_paid'))
             ->groupBy('sales.customer_id')->get();
 

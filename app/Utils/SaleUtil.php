@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\CashFlow;
 use App\Models\Customer;
 use App\Models\SalePayment;
+use App\Utils\CustomerUtil;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\ProductVariant;
@@ -18,6 +19,11 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SaleUtil
 {
+    public $customerUtil;
+    public function __construct(CustomerUtil $customerUtil)
+    {
+        $this->customerUtil = $customerUtil;
+    }
     public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId)
     {
         if ($request->paying_amount > 0) {
@@ -292,17 +298,8 @@ class SaleUtil
             'sale_products.product.comboProducts',
         ])->where('id', $saleId)->first();
 
-        if ($deleteSale->status == 1) {
-            if ($deleteSale->customer_id) {
-                $customer = Customer::where('id', $deleteSale->customer_id)->first();
-                $customer->total_sale_due -= ($deleteSale->due > 0 ? $deleteSale->due : 0);
-                $customer->total_sale_return_due -= ($deleteSale->sale_return_due > 0 ? $deleteSale->sale_return_due : 0);
-                $customer->total_paid -= $deleteSale->paid;
-                $customer->total_sale -= $deleteSale->total_payable_amount;
-                $customer->save();
-            }
-        }
-
+        $customer = Customer::where('id', $deleteSale->customer_id)->first();
+ 
         if (count($deleteSale->sale_payments) > 0) {
             foreach ($deleteSale->sale_payments as $payment) {
                 if ($payment->attachment) {
@@ -368,8 +365,12 @@ class SaleUtil
                 }
             }
         }
-
+        
         $deleteSale->delete();
+
+        if ($customer) {
+            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
+        }
     }
 
     public function addSaleTable($request)

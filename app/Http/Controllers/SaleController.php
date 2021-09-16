@@ -668,10 +668,6 @@ class SaleController extends Controller
     public function delete(Request $request, $saleId)
     {
         $this->saleUtil->deleteSale($request, $saleId);
-        $sale = DB::table('sales')->where('id', $saleId)->first();
-        if ($sale->customer_id) {
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
-        }
         return response()->json('Sale deleted successfully');
     }
 
@@ -1343,6 +1339,7 @@ class SaleController extends Controller
             //Update customer due 
             if ($deleteSalePayment->payment_type == 1) {
                 // Update sale 
+                $customer = DB::table('customers')->where('id', $deleteSalePayment->sale->customer_id)->first();
                 $deleteSalePayment->sale->paid = $deleteSalePayment->sale->paid - $deleteSalePayment->paid_amount;
                 $deleteSalePayment->sale->due = $deleteSalePayment->sale->due + $deleteSalePayment->paid_amount;
                 $deleteSalePayment->sale->save();
@@ -1363,8 +1360,8 @@ class SaleController extends Controller
 
                 $deleteSalePayment->delete();
 
-                if ($deleteSalePayment->sale->customer_id) {
-                    $this->customerUtil->adjustCustomerAmountForSalePaymentDue($deleteSalePayment->sale->customer_id);
+                if ($customer) {
+                    $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
                 }
             } elseif ($deleteSalePayment->payment_type == 2) {
                 if ($deleteSalePayment->customer) {

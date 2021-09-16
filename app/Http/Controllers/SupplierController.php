@@ -11,13 +11,16 @@ use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
 use App\Models\SupplierPayment;
 use App\Models\SupplierPaymentInvoice;
+use App\Utils\SupplierUtil;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class SupplierController extends Controller
 {
-    public function __construct()
+    public $supplierUtil;
+    public function __construct(SupplierUtil $supplierUtil)
     {
+        $this->supplierUtil = $supplierUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -358,11 +361,11 @@ class SupplierController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
 
-        // Update Supplier Amount
-        $supplier = Supplier::where('id', $supplierId)->first();
-        $supplier->total_paid += $request->amount;
-        $supplier->total_purchase_due -= $request->amount;
-        $supplier->save();
+        // // Update Supplier Amount
+        // $supplier = Supplier::where('id', $supplierId)->first();
+        // $supplier->total_paid += $request->amount;
+        // $supplier->total_purchase_due -= $request->amount;
+        // $supplier->save();
 
         // generate invoice ID
         $l = 6;
@@ -604,6 +607,8 @@ class SupplierController extends Controller
                 $index++;
             }
         }
+
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($supplierId);
         return response()->json('Payment added successfully.');
     }
 
@@ -936,16 +941,6 @@ class SupplierController extends Controller
             }
         }
 
-        //Update supplier info
-        $supplier = Supplier::where('id', $deleteSupplierPayment->supplier_id)->first();
-        if ($deleteSupplierPayment->type == 1) {
-            $supplier->total_paid -= $deleteSupplierPayment->paid_amount;
-            $supplier->total_purchase_due += $deleteSupplierPayment->paid_amount;
-        } else {
-            $supplier->total_purchase_return_due += $deleteSupplierPayment->paid_amount;
-        }
-        $supplier->save();
-
         if ($deleteSupplierPayment->account_id) {
             if ($deleteSupplierPayment->type == 1) {
                 $account = Account::where('id', $deleteSupplierPayment->account_id)->first();
@@ -973,6 +968,8 @@ class SupplierController extends Controller
         }
 
         $deleteSupplierPayment->delete();
+
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($deleteSupplierPayment->supplier_id);
         return response()->json('Payment deleted successfully.');
     }
 }

@@ -80,6 +80,15 @@ class SaleController extends Controller
         return view('sales.pos.index', compact('branches', 'customers'));
     }
 
+    public function soldProductList(Request $request)
+    {
+        if ($request->ajax()) {
+            return $this->saleUtil->soldProductListTable($request);
+        }
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        return view('sales.sold_product_list', compact('branches'));
+    }
+
     public function show($saleId)
     {
         $sale = Sale::with([
@@ -279,7 +288,7 @@ class SaleController extends Controller
                 }
             } else {
                 $addSale->total_payable_amount = $request->total_payable_amount;
-                $addSale->paid = $request->change_amount > 0 ? $request->total_invoice_payable : $request->paying_amount ;
+                $addSale->paid = $request->change_amount > 0 ? $request->total_invoice_payable : $request->paying_amount;
                 $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
                 $addSale->due = $request->total_due > 0 ? $request->total_due : 0.00;
             }

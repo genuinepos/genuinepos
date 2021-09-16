@@ -296,6 +296,7 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
 Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('v2', 'SaleController@index2')->name('sales.index2');
     Route::get('pos/list', 'SaleController@posList')->name('sales.pos.list');
+    Route::get('product/list', 'SaleController@soldProductList')->name('sales.product.list');
     Route::get('show/{saleId}', 'SaleController@show')->name('sales.show');
     Route::get('pos/show/{saleId}', 'SaleController@posShow')->name('sales.pos.show');
     Route::get('print/{saleId}', 'SaleController@print')->name('sales.print');

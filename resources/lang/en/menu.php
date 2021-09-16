@@ -40,6 +40,7 @@ return [
   // Menu childs of sales module
   'add_sale' => 'Add Sale',
   'add_sale_list' => 'Manage Add Sale',
+  'sold_product_list' => 'Sold Product List',
   'pos_sale_list' => 'Manage POS Sale',
   'pos' => 'POS',
   'pos_list' => 'POS List',

@@ -47,6 +47,7 @@ return [
     'quotation_list' => 'উদ্ধৃতি তালিকা',
     'challan_list' => 'চালান তালিকা',
     'sale_return_list' => 'বিক্রয় রিটার্ন তালিকা',
+    'sold_product_list' => 'বিক্রিত পণ্যের তালিকা',
     'shipments' => 'চালান',
     // Menu child of Transfer module 
     'add_transfer' => 'পণ্য স্থানান্তর করুন',

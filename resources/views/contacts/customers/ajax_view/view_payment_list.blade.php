@@ -11,10 +11,12 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Supplier : </strong>
+                    <li>
+                        <strong>Supplier : </strong>
                         {{ $customer->name  }}
                     </li>
-                    <li><strong>Business : </strong>
+                    <li>
+                        <strong>Business : </strong>
                         {{ $customer->business_name }}
                     </li>
                 </ul>
@@ -24,10 +26,24 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Total Sale Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                        </strong>{{ $customer->total_sale_due > 0 ?  $customer->total_sale_due : bcadd(0, 0, 2) }}</li>
-                    <li><strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                        </strong>{{ $customer->total_sale_return_due > 0 ? $customer->total_sale_return_due : bcadd(0, 0, 2) }}</li>
+                    <li> 
+                        <h6>
+                            Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }} 
+                            <b class="text-success">{{ $customer->total_paid }}</b> 
+                        </h6>
+                    </li>
+                    <li>
+                        <h6>
+                            Total Sale Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-danger">{{ $customer->total_sale_due }}</b> 
+                        </h6>
+                    </li>
+                    <li>
+                        <h6>
+                            Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-danger"> {{ $customer->total_sale_return_due }}</b> 
+                        </h6>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -52,9 +68,7 @@
                 </tr>
             </thead>
             <tbody id="payment_list_body">
-                @php
-                    $total = 0;
-                @endphp
+                @php $total = 0; @endphp
                 @if (count($customer->customer_payments) > 0)
                     @foreach ($customer->customer_payments as $payment)
                         <tr>
@@ -79,7 +93,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <th colspan="7" class="text-center"> No Data Found</th>
                     </tr>
                 @endif
             </tbody>

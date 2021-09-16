@@ -390,19 +390,6 @@ class PurchaseController extends Controller
         // get updatable purchase row
         $updatePurchase = purchase::with('purchase_products')->where('id', $request->id)->first();
 
-        // // Update supplier total purchase due
-        // $presentDue = $request->total_purchase_amount
-        //     - $updatePurchase->paid
-        //     - $updatePurchase->purchase_return_amount;
-
-        // $previousDue = $updatePurchase->due;
-        // $supplierDue =  $presentDue - $previousDue;
-        // $supplier = Supplier::where('id', $updatePurchase->supplier_id)->first();
-        // $supplier->total_purchase_due += $supplierDue;
-        // $supplier->total_purchase -= $updatePurchase->total_purchase_amount;
-        // $supplier->total_purchase += $request->total_purchase_amount;
-        // $supplier->save();
-
         // update product and variant quantity for adjustment
         foreach ($updatePurchase->purchase_products as $purchase_product) {
             $updateProductQty = Product::where('id', $purchase_product->product_id)->first();

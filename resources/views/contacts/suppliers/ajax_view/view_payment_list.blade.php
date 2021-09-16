@@ -24,10 +24,16 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
+                    <li>
+                        <h6>
+                            Total Purchase Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-success">{{ $supplier->total_paid }}</b>
+                        </h6>
+                    </li>
                     <li><strong>Total Purchase Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                        </strong>{{ $supplier->total_purchase_due > 0 ?  $supplier->total_purchase_due : bcadd(0, 0, 2) }}</li>
+                        </strong>{{ $supplier->total_purchase_due }}</li>
                     <li><strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                        </strong>{{ $supplier->total_purchase_return_due > 0 ? $supplier->total_purchase_return_due : bcadd(0, 0, 2) }}</li>
+                        </strong>{{ $supplier->total_purchase_return_due }}</li>
                 </ul>
             </div>
         </div>
@@ -80,7 +86,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <th colspan="7" class="text-center">No Data Found</th>
                     </tr>
                 @endif
             </tbody>

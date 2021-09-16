@@ -20,10 +20,10 @@ class DashboardController extends Controller
     // Admin dashboard
     public function index()
     {
-        $thisWeek = Carbon::now()->startOfWeek() . '~' . Carbon::now()->endOfWeek();
-        $thisYear = Carbon::now()->startOfYear() . '~' . Carbon::now()->endOfYear();
-        $thisMonth = Carbon::now()->startOfMonth() . '~' . Carbon::now()->endOfMonth();
-        $toDay = Carbon::now() . '~' . Carbon::now();
+        $thisWeek = Carbon::now()->startOfWeek()->format('Y-m-d 00:00:00') . '~' . Carbon::now()->endOfWeek()->format('Y-m-d 00:00:00');
+        $thisYear = Carbon::now()->startOfYear()->format('Y-m-d 00:00:00') . '~' . Carbon::now()->endOfYear()->format('Y-m-d 00:00:00');
+        $thisMonth = Carbon::now()->startOfMonth()->format('Y-m-d 00:00:00') . '~' . Carbon::now()->endOfMonth()->format('Y-m-d 00:00:00');
+        $toDay = Carbon::now()->format('Y-m-d 00:00:00') . '~' . Carbon::now()->format('Y-m-d 00:00:00');
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('dashboard.dashboard_1', compact('branches', 'thisWeek', 'thisYear', 'thisMonth', 'toDay'));
     }
@@ -86,11 +86,11 @@ class DashboardController extends Controller
         if ($request->date_range) {
             $date_range = explode('~', $request->date_range);
             $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-            $saleQuery->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-            $purchaseQuery->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $expenseQuery->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $to_date = date('Y-m-d', strtotime($date_range[1]));
+            $saleQuery->whereBetween('sales.report_date', [$form_date, $to_date]); // Final
+            $purchaseQuery->whereBetween('purchases.report_date', [$form_date, $to_date]);
+            $expenseQuery->whereBetween('expanses.report_date', [$form_date, $to_date]);
+            $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date, $to_date]);
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -117,8 +117,7 @@ class DashboardController extends Controller
         $totalPurchaseDue = $purchases->sum('total_due');
 
         $totalExpense = $expenses->sum('total_expense');
-
-        $products = $productQuery->count();
+        $products = DB::table('products')->count();
         $total_adjustment = $adjustments->sum('total_adjustment');
       
         return response()->json([

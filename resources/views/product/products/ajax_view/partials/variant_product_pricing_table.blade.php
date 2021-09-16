@@ -3,6 +3,7 @@
         <tr class="bg-primary">
             <th class="text-white text-start">Variations</th>
             <th class="text-white text-start">Variant Code (SKU)</th>
+            <th class="text-white text-start">Stock</th>
             <th class="text-white text-start">Default Purchase Price (Exc. tax)</th>
             <th class="text-white text-start">Default Purchase Price (Inc. tax)</th>
             <th class="text-white text-start">x Margin(%)</th>
@@ -28,6 +29,7 @@
             <tr>
                 <td class="text-start">{{ $variant->variant_name }}</td>
                 <td class="text-start">{{ $variant->variant_code }}</td>
+                <td class="text-start">{{ $variant->variant_quantity }}</td>
                 <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $variant->variant_cost }}</td>
                 <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $variant->variant_cost_with_tax }}</td>
                 <td class="text-start"> {{ $variant->variant_profit }}</td>

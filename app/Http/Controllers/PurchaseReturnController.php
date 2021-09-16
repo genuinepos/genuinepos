@@ -184,10 +184,7 @@ class PurchaseReturnController extends Controller
         $i = 5;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
+        while ($a < $i) { $invoiceId .= rand(1, 9);$a++; }
 
         $purchase_product_ids = $request->purchase_product_ids;
         $return_quantities = $request->return_quantities;

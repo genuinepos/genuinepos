@@ -46,7 +46,6 @@ class DashboardController extends Controller
         $adjustments = '';
 
         $userQuery = DB::table('admin_and_users');
-        $productQuery = DB::table('product_branches');
         $purchaseQuery = DB::table('purchases')
         ->select(
             DB::raw('sum(total_purchase_amount) as total_purchase'),

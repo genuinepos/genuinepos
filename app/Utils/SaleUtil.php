@@ -13,6 +13,7 @@ use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\ProductVariant;
 use App\Models\CustomerPayment;
+use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use Yajra\DataTables\Facades\DataTables;
@@ -20,9 +21,11 @@ use Yajra\DataTables\Facades\DataTables;
 class SaleUtil
 {
     public $customerUtil;
-    public function __construct(CustomerUtil $customerUtil)
+    public $productStockUtil;
+    public function __construct(CustomerUtil $customerUtil, ProductStockUtil $productStockUtil)
     {
         $this->customerUtil = $customerUtil;
+        $this->productStockUtil = $productStockUtil;
     }
     public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId)
     {
@@ -170,22 +173,12 @@ class SaleUtil
             if ($branch_id) {
                 $updateProductQty = Product::where('id', $product_id)->first();
                 if ($updateProductQty->type == 1) {
-                    $updateProductQty->quantity -= (float)$quantities[$index];
-                    $updateProductQty->number_of_sale -= (float)$quantities[$index];
-                    $updateProductQty->save();
-
                     $updateBranchProductQty = ProductBranch::where('branch_id', $branch_id)
                         ->where('product_id', $product_id)->first();
                     $updateBranchProductQty->product_quantity -= (float)$quantities[$index];
                     $updateBranchProductQty->save();
 
                     if ($variant_ids[$index] != 'noid') {
-                        $updateProductVariant = ProductVariant::where('id', $variant_ids[$index])
-                            ->where('product_id', $product_id)->first();
-                        $updateProductVariant->variant_quantity -= (float)$quantities[$index];
-                        $updateProductVariant->number_of_sale += (float)$quantities[$index];
-                        $updateProductVariant->save();
-
                         $updateProductBranchVariant = ProductBranchVariant::where('product_branch_id', $updateBranchProductQty->id)
                             ->where('product_id', $product_id)
                             ->where('product_variant_id', $variant_ids[$index])
@@ -197,8 +190,6 @@ class SaleUtil
             } else {
                 $updateProductQty = Product::where('id', $product_id)->first();
                 if ($updateProductQty->type == 1) {
-                    $updateProductQty->quantity -= (float)$quantities[$index];
-                    $updateProductQty->number_of_sale += (float)$quantities[$index];
                     $updateProductQty->mb_stock -= (float)$quantities[$index];
                     $updateProductQty->save();
 
@@ -206,9 +197,6 @@ class SaleUtil
                         $updateProductVariant = ProductVariant::where('id', $variant_ids[$index])
                             ->where('product_id', $product_id)
                             ->first();
-
-                        $updateProductVariant->variant_quantity -= (float)$quantities[$index];
-                        $updateProductVariant->number_of_sale += (float)$quantities[$index];
 
                         $updateProductVariant->mb_stock -= (float)$quantities[$index];
                         $updateProductVariant->save();
@@ -320,20 +308,11 @@ class SaleUtil
         }
 
         // Add product quantity for adjustment
+        $storedSaleProducts = $deleteSale->sale_products;
+        $storeStatus = $deleteSale->status;
         if ($deleteSale->status == 1) {
             foreach ($deleteSale->sale_products as $sale_product) {
                 if ($sale_product->product->type == 1) {
-                    $product = Product::where('id', $sale_product->product_id)->first();
-                    $product->quantity += $sale_product->quantity;
-                    $product->number_of_sale -= $sale_product->quantity;
-                    $product->save();
-                    if ($sale_product->product_variant_id) {
-                        $variant = ProductVariant::where('id', $sale_product->product_variant_id)->first();
-                        $variant->variant_quantity += $sale_product->quantity;
-                        $variant->number_of_sale -= $sale_product->quantity;
-                        $variant->save();
-                    }
-
                     if ($deleteSale->branch_id) {
                         $productBranch = ProductBranch::where('branch_id', $deleteSale->branch_id)
                             ->where('product_id', $sale_product->product_id)
@@ -365,9 +344,15 @@ class SaleUtil
                 }
             }
         }
-        
         $deleteSale->delete();
 
+        if ($storeStatus == 1) {
+            foreach ($storedSaleProducts as $saleProduct) {
+                $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
+                $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
+            }
+        }
+        
         if ($customer) {
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
         }

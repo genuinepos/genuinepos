@@ -960,33 +960,10 @@ Route::get('/test', function () {
     // $date =  '8/25/2021';
     // return date('Y-m-d', strtotime($date. ' -1 days'));
 
-    $supplier = Supplier::where('id', 53)->first();
-    $totalSupplierPurchase = DB::table('purchases')
-        ->where('supplier_id', 53)
-        ->select(DB::raw('sum(total_purchase_amount) as total_purchase'))
-        ->groupBy('supplier_id')->get();
-
-    $totalSupplierPayment = DB::table('supplier_payments')
-        ->select(DB::raw('sum(paid_amount) as s_paid'))
-        ->groupBy('supplier_id')->get();
-
-    $totalPurchasePayment = DB::table('purchase_payments')
-        ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
-        ->where('purchase_payments.supplier_payment_id', NULL)
-        ->where('purchases.supplier_id', 53)
-        ->select(DB::raw('sum(paid_amount) as p_paid'))
-        ->groupBy('purchases.supplier_id')->get();
-
-    // $totalPurchaseInvReturn = DB::table('purchase_returns')->leftJoin('purchases')
-
-    $totalPurchase = $totalSupplierPurchase->sum('total_purchase');
-    $totalPaid = $totalSupplierPayment->sum('s_paid') + $totalPurchasePayment->sum('p_paid');
-    $totalDue = ($totalPurchase + $supplier->opening_balance) - $totalPaid;
-
-    $supplier->total_purchase = $totalPurchase;
-    $supplier->total_paid = $totalPaid;
-    $supplier->total_purchase_due = $totalDue;
-    $supplier->save();
+    return $productOpeningStock = DB::table('product_opening_stocks')
+        ->where('product_id', 233)
+        ->select(DB::raw('sum(quantity) as po_stock'))
+        ->groupBy('product_id')->get();
 });
 
 // All authenticated routes

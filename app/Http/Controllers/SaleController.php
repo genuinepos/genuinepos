@@ -27,6 +27,7 @@ use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Utils\CustomerUtil;
+use App\Utils\ProductStockUtil;
 
 class SaleController extends Controller
 {
@@ -35,18 +36,21 @@ class SaleController extends Controller
     protected $smsUtil;
     protected $util;
     protected $customerUtil;
+    protected $productStockUtil;
     public function __construct(
         NameSearchUtil $nameSearchUtil,
         SaleUtil $saleUtil,
         SmsUtil $smsUtil,
         Util $util,
-        CustomerUtil $customerUtil
+        CustomerUtil $customerUtil,
+        ProductStockUtil $productStockUtil
     ) {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->saleUtil = $saleUtil;
         $this->smsUtil = $smsUtil;
         $this->util = $util;
         $this->customerUtil = $customerUtil;
+        $this->productStockUtil = $productStockUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -356,6 +360,13 @@ class SaleController extends Controller
             if ($customer) {
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
             }
+
+            $__index = 0;
+            foreach ($product_ids as $product_id) {
+                $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+                $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+                $__index++;
+            }
         }
 
         $previous_due = $request->previous_due;
@@ -506,20 +517,12 @@ class SaleController extends Controller
         ])->where('id', $saleId)->first();
 
         // update product quantity for adjustment
+        $storedSaleProducts = $updateSale->sale_products;
         foreach ($updateSale->sale_products as $sale_product) {
             $sale_product->delete_in_update = 1;
             $sale_product->save();
             if ($updateSale->status == 1) {
                 if ($sale_product->product->type == 1) {
-                    $sale_product->product->quantity += $sale_product->quantity;
-                    $sale_product->product->number_of_sale -= $sale_product->quantity;
-                    $sale_product->product->save();
-                    if ($sale_product->product_variant_id) {
-                        $sale_product->variant->variant_quantity += $sale_product->quantity;
-                        $sale_product->variant->number_of_sale -= $sale_product->quantity;
-                        $sale_product->variant->save();
-                    }
-
                     if ($updateSale->branch_id) {
                         $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
                             ->where('product_id', $sale_product->product_id)
@@ -647,18 +650,23 @@ class SaleController extends Controller
             $__index++;
         }
 
+        $deleteNotFoundSaleProducts = SaleProduct::where('sale_id', $updateSale->id)
+            ->where('delete_in_update', 1)->get();
+        foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
+            $deleteNotFoundSaleProduct->delete();
+        }
+
         // Update customer total sale due
         if ($request->status == 1) {
             $customer = Customer::where('id', $updateSale->customer_id)->first();
             if ($customer) {
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
             }
-        }
 
-        $deleteNotFoundSaleProducts = SaleProduct::where('sale_id', $updateSale->id)
-            ->where('delete_in_update', 1)->get();
-        foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
-            $deleteNotFoundSaleProduct->delete();
+            foreach ($storedSaleProducts as $saleProduct) {
+                $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
+                $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
+            }
         }
 
         if ($request->status == 1) {

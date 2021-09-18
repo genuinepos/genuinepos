@@ -257,7 +257,10 @@ class PurchaseUtil
             ->leftJoin('products', 'purchase_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'purchase_products.product_variant_id', 'product_variants.id')
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id');
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->leftJoin('categories', 'products.category_id', 'categories.id')
+            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
+            ;
 
         if ($request->product_id) {
             $query->where('purchase_products.product_id', $request->product_id);
@@ -277,6 +280,14 @@ class PurchaseUtil
 
         if ($request->supplier_id) {
             $query->where('purchases.supplier_id', $request->supplier_id);
+        }
+
+        if ($request->category_id) {
+            $query->where('products.category_id', $request->category_id);
+        }
+
+        if ($request->sub_category_id) {
+            $query->where('products.parent_category_id', $request->sub_category_id);
         }
 
         if ($request->date_range) {

@@ -13,6 +13,7 @@ use App\Models\ProductWarehouse;
 use App\Models\ProductBranchVariant;
 use App\Models\PurchaseReturnProduct;
 use App\Models\ProductWarehouseVariant;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseReturnUtil
 {
@@ -152,19 +153,12 @@ class PurchaseReturnUtil
         $units = $request->units;
 
         $purchase = Purchase::where('id', $purchaseId)->first();
-        $supplier = Supplier::where('id', $purchase->supplier_id)->first();
-        $supplier->total_purchase_due = $supplier->total_purchase_due - $purchase->due;
-        $supplier->total_purchase_return_due = $supplier->total_purchase_return_due - $purchase->purchase_return_due;
-        $supplier->save();
-
         //Update purchase and supplier purchase return due
         $purchaseDue = $purchase->total_purchase_amount - $purchase->paid;
         $purchaseReturnDue = $request->total_return_amount - $purchaseDue;
         if ($purchaseReturnDue >= 0) {
             $acReturnDue = $purchaseReturnDue - $purchaseReturn->total_return_due_received;
             $purchase->purchase_return_due = $acReturnDue;
-            $supplier->total_purchase_return_due = $supplier->total_purchase_return_due + $acReturnDue;
-            $supplier->save();
         } else {
             $purchase->purchase_return_due = 0.00;
         }
@@ -174,11 +168,7 @@ class PurchaseReturnUtil
         $purchase->is_return_available = 1;
         $purchase->save();
 
-        if ($purchase->due >= 0) {
-            $supplier->total_purchase_due = $supplier->total_purchase_due + $purchase->due;
-            $supplier->save();
-        }
-
+ 
         //Adjust Quantity 
         foreach ($purchaseReturn->purchase_return_products as $purchase_return_product) {
             // Addition purchase product for adjustment
@@ -352,7 +342,7 @@ class PurchaseReturnUtil
         $purchase->save();
 
         if ($purchase->due >= 0) {
-            $supplier->total_purchase_due =  $supplier->total_purchase_due + $purchase->due;
+            $supplier->total_purchase_due = $supplier->total_purchase_due + $purchase->due;
             $supplier->save();
         }
 
@@ -442,5 +432,13 @@ class PurchaseReturnUtil
             $addReturnProduct->save();
             $index++;
         }
+    }
+
+    public function adjustPurchaseInvoiceAmounts($purchaseId)
+    {
+        // $purchase = Purchase::where('id', $purchaseId)->first();
+        // $totalPaid = DB::table('purchase_payments')
+        // ->where('purchase_id', $purchaseId)
+        // ->select(DB::table(''))
     }
 }

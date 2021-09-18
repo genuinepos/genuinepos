@@ -7,11 +7,11 @@
             <th>Name</th>
             <th>Business Name</th>
             <th>Phone</th>
-            <th>Email</th>
             <th>Opening Balance</th>
             <th>Total Purchase</th>
             <th>Total Paid</th>
             <th>Purchase Due</th>
+            <th>Total Return</th>
             <th>Return Due</th>
             <th>Status</th>
         </tr>
@@ -58,7 +58,6 @@
                 <td>{{ $supplier->name }}</td> 
                 <td>{{ $supplier->business_name ? $supplier->business_name : 'N/A' }}</td> 
                 <td>{{ $supplier->phone }}</td>
-                <td>{{ $supplier->email }}</td>
                 <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->opening_balance }}</b></td>
                 <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_purchase }}</b></td>
                 <td>
@@ -73,6 +72,7 @@
                         <span class="text-danger">{{ $supplier->total_purchase_due }}</span>
                     </b>
                 </td>
+                <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_return }}</b></td>
                 <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_purchase_return_due }}</b></td>
                 <td>
                     @if ($supplier->status == 1)

@@ -68,7 +68,9 @@ class PurchaseController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        return view('purchases.purchase_product_list', compact('branches'));
+        $suppliers = DB::table('suppliers')->get(['id', 'name', 'phone']);
+        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
+        return view('purchases.purchase_product_list', compact('branches', 'suppliers', 'categories'));
     }
 
     // show purchase details
@@ -1140,7 +1142,13 @@ class PurchaseController extends Controller
 
     public function paymentUpdate(Request $request, $paymentId)
     {
-        $updatePurchasePayment = PurchasePayment::with('account', 'supplier', 'purchase', 'purchase.purchase_return', 'cashFlow')->where('id', $paymentId)->first();
+        $updatePurchasePayment = PurchasePayment::with(
+            'account',
+            'supplier',
+            'purchase',
+            'purchase.purchase_return',
+            'cashFlow'
+        )->where('id', $paymentId)->first();
 
         // Update previous account and delete previous cashflow.
         $account = Account::where('id', $updatePurchasePayment->account_id)->first();

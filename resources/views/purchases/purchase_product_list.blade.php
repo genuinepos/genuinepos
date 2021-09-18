@@ -35,7 +35,7 @@
                                     <div class="col-md-12">
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
-                                                <div class="col-md-3 search_area">
+                                                <div class="col-md-2 search_area">
                                                     <label><strong>Search Product :</strong></label>
                                                     <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus>
                                                     <input type="hidden" name="product_id" id="product_id" value="">
@@ -49,7 +49,7 @@
 
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able" id="branch_id" autofocus>
@@ -65,14 +65,36 @@
                                                     @endif
                                                 @endif
                                                 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Supplier :</strong></label>
                                                     <select name="supplier_id" class="form-control submit_able"
-                                                        id="supplier_id" autofocus>
+                                                        id="supplier_id">
+                                                        <option value="">All</option>
+                                                        @foreach ($suppliers as $supplier)
+                                                            <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
+                                                    <label><strong>Category :</strong></label>
+                                                    <select name="category_id" class="form-control submit_able"
+                                                        id="category_id">
+                                                        <option value="">All</option>
+                                                        @foreach ($categories as $category)
+                                                            <option value="{{ $category->id }}">{{$category->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>Sub-Category :</strong></label>
+                                                    <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
+                                                        <option value="">All</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -169,6 +191,8 @@
                     d.variant_id = $('#variant_id').val();
                     d.branch_id = $('#branch_id').val();
                     d.supplier_id = $('#supplier_id').val();
+                    d.category_id = $('#category_id').val();
+                    d.sub_category_id = $('#sub_category_id').val();
                     d.date_range = $('#date_range').val();
                 }
             },
@@ -186,23 +210,16 @@
             ]
         });
 
-        // Get all supplier for filter form
-        function setSuppliers() {
-            $.ajax({
-                url: "{{ route('purchases.get.all.supplier') }}",
-                type: 'get',
-                dataType: 'json',
-                success: function(suppliers) {
-                    $('#supplier_id').append('<option value="">All</option>');
-                    $.each(suppliers, function(key, val) {
-                        $('#supplier_id').append('<option value="' + val.id + '">' + val.name + ' (' +
-                            val.phone + ')' + '</option>');
-                    });
-                    $('#supplier_id').val('');
-                }
+        $('#category_id').on('change', function() {
+            var category_id = $(this).val();
+            $.get("{{ url('product/all/sub/category/') }}"+"/"+category_id, function(subCategories) {
+                $('#sub_category_id').empty();
+                $('#sub_category_id').append('<option value="">Select Sub-Category</option>');
+                $.each(subCategories, function(key, val) {
+                    $('#sub_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
+                });
             });
-        }
-        setSuppliers();
+        });
 
         $(document).on('click', '#delete',function(e) {
             e.preventDefault(); 

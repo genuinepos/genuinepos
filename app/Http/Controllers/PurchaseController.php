@@ -689,6 +689,8 @@ class PurchaseController extends Controller
             ->where('product_variant_id', $variantId)->first();
 
         $updatePurchase = Purchase::where('id', $purchaseId)->first();
+        $updatePurchase->date = date('d-m-Y', strtotime($request->date));
+        $updatePurchase->report_date = date('Y-m-d', strtotime($request->date));
         $updatePurchase->total_purchase_amount -= $updatePurchaseProduct->line_total;
         $updatePurchase->total_purchase_amount += $request->linetotal;
         $updatePurchase->due -= $updatePurchaseProduct->line_total;

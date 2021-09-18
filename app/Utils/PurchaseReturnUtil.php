@@ -319,32 +319,20 @@ class PurchaseReturnUtil
         $return_quantities = $request->return_quantities;
         $return_subtotals = $request->return_subtotals;
         $units = $request->units;
-
         $purchase = Purchase::where('id', $purchaseId)->first();
-        $supplier = Supplier::where('id', $purchase->supplier_id)->first();
-        $supplier->total_purchase_due = $supplier->total_purchase_due - $purchase->due;
-        $supplier->save();
-
         //Update purchase and supplier return due
         $purchaseDue = $purchase->total_purchase_amount - $purchase->paid;
         $purchaseReturnDue = $request->total_return_amount - $purchaseDue;
-        if ($purchaseReturnDue >= 0) {
-            $purchase->purchase_return_due = $purchaseReturnDue;
-            $supplier->total_purchase_return_due = $supplier->total_purchase_return_due + $purchaseReturnDue;
-            $supplier->save();
-        } else {
-            $purchase->purchase_return_due = 0.00;
-        }
+        // if ($purchaseReturnDue >= 0) {
+        //     $purchase->purchase_return_due = $purchaseReturnDue;
+        // } else {
+        //     $purchase->purchase_return_due = 0.00;
+        // }
 
-        $purchase->due = $purchaseDue - $request->total_return_amount;
-        $purchase->purchase_return_amount = $request->total_return_amount;
-        $purchase->is_return_available = 1;
-        $purchase->save();
-
-        if ($purchase->due >= 0) {
-            $supplier->total_purchase_due = $supplier->total_purchase_due + $purchase->due;
-            $supplier->save();
-        }
+        // $purchase->due = $purchaseDue - $request->total_return_amount;
+        // $purchase->purchase_return_amount = $request->total_return_amount;
+        // $purchase->is_return_available = 1;
+        // $purchase->save();
 
         $addPurchaseReturn = new PurchaseReturn();
         $addPurchaseReturn->purchase_id = $purchase->id;
@@ -434,11 +422,25 @@ class PurchaseReturnUtil
         }
     }
 
-    public function adjustPurchaseInvoiceAmounts($purchaseId)
+    public function adjustPurchaseInvoiceAmounts($purchase)
     {
-        // $purchase = Purchase::where('id', $purchaseId)->first();
+        
         // $totalPaid = DB::table('purchase_payments')
-        // ->where('purchase_id', $purchaseId)
-        // ->select(DB::table(''))
+        // ->where('purchase_payments.purchase_id', $purchase->id)
+        // ->where('payment_type', 1)
+        // ->select(DB::table('sum(paid_amount) as total_paid'))
+        // ->groupBy('purchase_payments.purchase_id')
+        // ->get();
+
+        // $purchaseReturn = DB::table('purchase_returns')->where('purchase_id', $purchase->id)->get(['total_return_amount'])->first();
+        // $returnAmount = $purchaseReturn ? $purchaseReturn->total_return_amount : 0;
+
+        // $totalDue = $purchase->total_purchase_amount - $totalPaid - $returnAmount;
+        // $returnDue = $returnAmount - $purchase->total_purchase_amount - $totalPaid;
+        // $purchase->paid = $totalPaid;
+        // $purchase->due = $totalDue;
+        // $purchase->purchase_return_amount = $returnAmount;
+        // $purchase->purchase_return_due = $returnDue > 0 ? $returnDue : 0;
+
     }
 }

@@ -40,10 +40,10 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
-                                    <div class="col-md-8">
+                                    <div class="col-md-10">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
-                                                <div class="col-md-3 search_area">
+                                                <div class="col-md-2 search_area">
                                                     <label><strong>Search Product :</strong></label>
                                                     <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus>
                                                     <input type="hidden" name="product_id" id="product_id" value="">
@@ -57,7 +57,7 @@
 
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
@@ -74,15 +74,36 @@
                                                     @endif
                                                 @endif
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                         <option value="">All</option>
                                                         <option value="NULL">Walk-In-Customer</option>
+                                                        @foreach ($customers as $customer)
+                                                            <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
+                                                    <label><strong>Category :</strong></label>
+                                                    <select name="category_id" class="form-control submit_able"
+                                                        id="category_id">
+                                                        <option value="">All</option>
+                                                        @foreach ($categories as $category)
+                                                            <option value="{{ $category->id }}">{{$category->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>Sub-Category :</strong></label>
+                                                    <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
+                                                        <option value="">All</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -96,7 +117,7 @@
                                         </form>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label></label>
                                             <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
@@ -152,19 +173,6 @@
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script>
-    function setCustomers(){
-        $.ajax({
-            url:"{{route('sales.get.all.customer')}}",
-            type:'get',
-            success:function(customers){
-                $.each(customers, function(key, val){
-                    $('#customer_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
-                });
-            }
-        });
-    }
-    setCustomers();
-
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [ 
@@ -182,6 +190,8 @@
                 d.product_id = $('#product_id').val();
                 d.variant_id = $('#variant_id').val();
                 d.branch_id = $('#branch_id').val();
+                d.category_id = $('#category_id').val();
+                d.sub_category_id = $('#sub_category_id').val();
                 d.customer_id = $('#customer_id').val();
                 d.date_range = $('#date_range').val();
             }
@@ -218,6 +228,17 @@
         });
         return sum;
     }
+
+    $('#category_id').on('change', function() {
+        var category_id = $(this).val();
+        $.get("{{ url('product/all/sub/category/') }}"+"/"+category_id, function(subCategories) {
+            $('#sub_category_id').empty();
+            $('#sub_category_id').append('<option value="">Select Sub-Category</option>');
+            $.each(subCategories, function(key, val) {
+                $('#sub_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
+            });
+        });
+    });
 
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function () {

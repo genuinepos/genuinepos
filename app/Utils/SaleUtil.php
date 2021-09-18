@@ -613,7 +613,9 @@ class SaleUtil
             ->leftJoin('products', 'sale_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id');
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->leftJoin('categories', 'products.category_id', 'categories.id')
+            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id');
 
         if ($request->product_id) {
             $query->where('sale_products.product_id', $request->product_id);
@@ -637,6 +639,14 @@ class SaleUtil
             } else {
                 $query->where('sales.customer_id', $request->customer_id);
             }
+        }
+
+        if ($request->category_id) {
+            $query->where('products.category_id', $request->category_id);
+        }
+
+        if ($request->sub_category_id) {
+            $query->where('products.parent_category_id', $request->sub_category_id);
         }
 
         if ($request->date_range) {

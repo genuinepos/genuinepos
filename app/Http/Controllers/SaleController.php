@@ -89,8 +89,10 @@ class SaleController extends Controller
         if ($request->ajax()) {
             return $this->saleUtil->soldProductListTable($request);
         }
+        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        return view('sales.sold_product_list', compact('branches'));
+        $customers = DB::table('customers')->get(['id', 'name', 'phone']);
+        return view('sales.sold_product_list', compact('branches', 'categories', 'customers'));
     }
 
     public function show($saleId)

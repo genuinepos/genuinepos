@@ -29,7 +29,6 @@ class SupplierUtil
             ->select(DB::raw('sum(paid_amount) as p_paid'))
             ->groupBy('purchases.supplier_id')->get();
 
-
         $totalInvoiceReturn = DB::table('purchase_returns')
         ->leftJoin('purchases', 'purchase_returns.purchase_id', 'purchases.id')
         ->where('purchases.supplier_id', $supplierId)
@@ -67,7 +66,7 @@ class SupplierUtil
         $supplier->total_purchase = $totalPurchase;
         $supplier->total_paid = $totalPaid;
         $supplier->total_purchase_due = $totalDue;
-        $supplier->total_return = $totalReturn;
+        $supplier->total_return = $totalReturn > 0 ? $totalReturn : 0;
         $supplier->total_purchase_return_due = $returnDue;
         $supplier->save();
     }

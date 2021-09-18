@@ -118,6 +118,11 @@
                                                         <td class="text-start"><strong>Balance Due :</strong></td>
                                                         <td class="text-start"><span class="balance_due">0.00</span></td>
                                                     </tr>
+
+                                                    <tr>
+                                                        <td class="text-start"><strong>Total Returnable/Refundable Amount :</strong></td>
+                                                        <td class="text-start"><span class="total_purchase_return_due">0.00</span></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -417,6 +422,7 @@
                     $('.balance_due').html(supplier.total_purchase_due);
                     $('.opening_balance').html(supplier.opening_balance);
                     $('#supplier_id').val(supplier.id);
+                    $('.total_purchase_return_due').html(supplier.total_purchase_return_due);
                     $('.data_preloader').hide();
                 }
             });
@@ -489,22 +495,6 @@
             });
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete', function(e) {
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure to delete ?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     }).then((willDelete) => {
-        //         if (willDelete) {
-        //             $('#deleted_form').submit();
-        //         }
-        //     });
-        // });
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');

@@ -437,7 +437,7 @@
             $.ajax({
                 url:url,
                 type:'get',
-                success:function(data){
+                success:function(data) {
                     $('#payment_modal_body').html(data);
                     $('#paymentModal').modal('show');
                     $('.data_preloader').hide();

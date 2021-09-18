@@ -225,7 +225,8 @@
                 <div class="submit-area py-3 mb-4">
                     <button type="button" class="btn loading_button d-none"><i
                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                    <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                    <button data-action="save" class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                    <button data-action="sale_and_print" class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>
                 </div>
             </div>
         </div>

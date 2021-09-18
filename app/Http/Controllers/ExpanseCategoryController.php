@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ExpanseCategory;
+use Illuminate\Support\Facades\DB;
 
 class ExpanseCategoryController extends Controller
 {
@@ -32,18 +33,21 @@ class ExpanseCategoryController extends Controller
             'name' => 'required',
         ]);
 
-        $codePrefix = ''; 
-        if (!$request->code) {
-            $name = explode(' ', $request->name);
-            for ($i= 0; $i < count($name); $i++) {
-                $prefix = str_split($name[$i])[0];
-                $codePrefix .= $prefix;
-            }
+
+        // generate invoice ID
+      
+
+        $lastExpenseCategory = DB::table('expanse_categories')->orderBy('id', 'desc')->first();
+        $code = 0;
+        if ($lastExpenseCategory) {
+            $code = ++$lastExpenseCategory->id;
+        }else {
+            $code = 1;
         }
-        
+
         ExpanseCategory::insert([
             'name' => $request->name,
-            'code' => $request->code ? $request->code : $codePrefix,
+            'code' => $request->code ? $request->code : $code,
         ]);
 
         return response()->json('Expanse category created successfully');
@@ -57,10 +61,10 @@ class ExpanseCategoryController extends Controller
             'name' => 'required',
         ]);
 
-        $codePrefix = ''; 
+        $codePrefix = '';
         if (!$request->code) {
             $name = explode(' ', $request->name);
-            for ($i= 0; $i < count($name); $i++) {
+            for ($i = 0; $i < count($name); $i++) {
                 $prefix = str_split($name[$i])[0];
                 $codePrefix .= $prefix;
             }

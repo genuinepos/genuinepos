@@ -286,6 +286,7 @@
             calculateAmount();
         });
 
+        var action = '';
         //Add purchase request by ajax
         $('#add_expanse_form').on('submit', function(e){
             e.preventDefault();
@@ -325,16 +326,18 @@
                         $('.extra_category').remove();
                         $('#add_expanse_form')[0].reset();
                         calculateAmount();
-                        $(data).printThis({
-                            debug: false,                   
-                            importCSS: true,                
-                            importStyle: true,          
-                            loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                            removeInline: false, 
-                            printDelay: 500, 
-                            header: null,  
-                            footer: null,
-                        });
+                        if (action == 'sale_and_print') {
+                            $(data).printThis({
+                                debug: false,                   
+                                importCSS: true,                
+                                importStyle: true,          
+                                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
+                                removeInline: false, 
+                                printDelay: 500, 
+                                header: null,  
+                                footer: null,
+                            }); 
+                        }
                     }
                 },error: function(err) {
                     $('.loading_button').hide();
@@ -392,6 +395,10 @@
             } else {
                 $('.loan_amount_field').hide();
             }
+        });
+
+        $(document).on('click', '.submit_button',function () {
+            action = $(this).data('action');
         });
 
         var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";

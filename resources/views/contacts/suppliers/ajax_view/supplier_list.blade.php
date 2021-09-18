@@ -11,8 +11,8 @@
             <th>Total Purchase</th>
             <th>Total Paid</th>
             <th>Purchase Due</th>
-            <th>Total Return</th>
-            <th>Return Due</th>
+            <th>Total Return Item Amt.</th>
+            <th>Returnable Due Amt.</th>
             <th>Status</th>
         </tr>
     </thead>

@@ -414,4 +414,17 @@ class PurchaseUtil
         $html .= '</div>';
         return $html;
     }
+
+    public function adjustPurchaseInvoiceAmounts($purchase)
+    {
+        // $totalPurchasePaid = DB::table('purchase_payments')
+        // ->where('purchase_id', $purchase->id)->where('payment_type', 1)
+        // ->select(DB::raw('sum(paid_amount) as total_paid'))->get();
+
+        // $return = DB::table('purchase_returns')->where('purchase_id', $purchase)->first();
+        // $returnAmount = $return ? $return->total_return_amount : 0;
+
+
+
+    }
 }

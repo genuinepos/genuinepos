@@ -66,8 +66,8 @@ class SupplierUtil
         $supplier->total_purchase = $totalPurchase;
         $supplier->total_paid = $totalPaid;
         $supplier->total_purchase_due = $totalDue;
-        $supplier->total_return = $totalReturn > 0 ? $totalReturn : 0;
-        $supplier->total_purchase_return_due = $returnDue;
+        $supplier->total_return = $totalReturn;
+        $supplier->total_purchase_return_due = $returnDue > 0 ? $returnDue : 0;
         $supplier->save();
     }
 }

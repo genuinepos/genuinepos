@@ -250,6 +250,7 @@ class PurchaseReturnController extends Controller
     public function show($returnId)
     {
         $return = PurchaseReturn::with([
+            'purchase',
             'warehouse',
             'branch',
             'supplier',
@@ -465,18 +466,18 @@ class PurchaseReturnController extends Controller
                         if ($productBranch->product_quantity > 0) {
                             return response()->json(['product' => $product, 'qty_limit' => $productBranch->product_quantity]);
                         } else {
-                            return response()->json(['errorMsg' => 'Stock is out of this product from this branch']);
+                            return response()->json(['errorMsg' => 'Stock is out of this product from this business location']);
                         }
                     }
                 } else {
-                    return response()->json(['errorMsg' => 'This product is not available in this branch.']);
+                    return response()->json(['errorMsg' => 'This product is not available in this business location.']);
                 }
             } else {
                 if ($product->type == 1) {
                     if ($product->mb_stock > 0) {
                         return response()->json(['product' => $product, 'qty_limit' => $product->mb_stock]);
                     } else {
-                        return response()->json(['errorMsg' => 'Stock is out of this product from this shop/branch']);
+                        return response()->json(['errorMsg' => 'Stock is out of this product from this shop/business location']);
                     }
                 }
             }
@@ -488,7 +489,7 @@ class PurchaseReturnController extends Controller
                         ->where('product_id', $variant_product->product_id)->first();
 
                     if (is_null($productBranch)) {
-                        return response()->json(['errorMsg' => 'This product is not available in this branch']);
+                        return response()->json(['errorMsg' => 'This product is not available in this business location']);
                     }
 
                     $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
@@ -496,7 +497,7 @@ class PurchaseReturnController extends Controller
                         ->where('product_variant_id', $variant_product->id)->first();
 
                     if (is_null($productBranchVariant)) {
-                        return response()->json(['errorMsg' => 'This variant is not available in this branch']);
+                        return response()->json(['errorMsg' => 'This variant is not available in this business location']);
                     }
 
                     if ($productBranch && $productBranchVariant) {
@@ -506,10 +507,10 @@ class PurchaseReturnController extends Controller
                                 'qty_limit' => $productBranchVariant->variant_quantity
                             ]);
                         } else {
-                            return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this branch']);
+                            return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this business location']);
                         }
                     } else {
-                        return response()->json(['errorMsg' => 'This product is not available in this branch.']);
+                        return response()->json(['errorMsg' => 'This product is not available in this business location.']);
                     }
                 } else {
                     if ($variant_product->mb_stock > 0) {
@@ -518,7 +519,7 @@ class PurchaseReturnController extends Controller
                             'qty_limit' => $variant_product->mb_stock
                         ]);
                     } else {
-                        return response()->json(['errorMsg' => 'Stock is not available of this variant in this shop/branch']);
+                        return response()->json(['errorMsg' => 'Stock is not available of this variant in this shop/business location']);
                     }
                 }
             }

@@ -23,22 +23,23 @@
                                 <strong>Return Date : </strong> {{ $return->date }}
                             </li>
                             <li>
-                                <strong>supplier Name : </strong> {{ $return->supplier->name }}</span>
+                                <strong>supplier Name : </strong> 
+                                {{ $return->purchase ? $return->purchase->supplier->name.' (ID'.$return->purchase->supplier->contact_id.')' : $return->supplier->name.' (ID'.$return->supplier->contact_id.')' }}</span>
                             </li>
                             <li class="warehouse"><strong>Business Location : </strong> 
                                 @if($return->branch) 
-                                    {{ $return->branch->name.'/'.$return->branch->branch_code }}<b>(BRANCH)</b>
+                                    {{ $return->branch->name.'/'.$return->branch->branch_code }}<b>(BL)</b>
                                 @else 
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
                                 @endif
                             </li>
                             <li class="warehouse"><strong>Return Stock Location : </strong> 
                                 @if ($return->warehouse)
-                                    {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WAREHOUSE)</b>
+                                    {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WH)</b>
                                 @elseif($return->branch)
-                                    {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(BRANCH)</b>
+                                    {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(BL)</b>
                                 @else 
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b> 
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b> 
                                 @endif
                             </li>
                         </ul>
@@ -60,7 +61,6 @@
                             </li>
                         </ul>
                     </div>
-
                 </div><br>
                 <div class="row">
                     <div class="table-responsive">
@@ -117,14 +117,17 @@
                         </table>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-6 offset-6">
-                        <table class="table">
-                            <tr>
-                                <th class="text-start">Total Return Amount : </th>
-                                <td class="total_return_amount text-start">{{ $return->total_return_amount }}</td>
-                            </tr>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th class="text-start">Total Return Amount : </th>
+                                    <td class="total_return_amount text-start">{{ $return->total_return_amount }}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -173,14 +176,16 @@
                         <li><strong>Return Details : </strong> </li>
                         <li><strong>PR.Invoice ID : </strong> <span class="return_invoice_id">{{ $return->invoice_id }}</span></li>
                         <li><strong>Return Date : </strong> <span class="return_date">{{ $return->date }}</span></li>
-                        <li><strong>Supplier Name : </strong> {{ $return->supplier->name }}</li>
+                        <li><strong>Supplier Name : </strong> 
+                            {{ $return->purchase ? $return->purchase->supplier->name.' (ID'.$return->purchase->supplier->contact_id.')' : $return->supplier->name.' (ID'.$return->supplier->contact_id.')' }}</span>
+                        </li>
                         <li><strong>Return Stock Loction : </strong> 
                             @if ($return->warehouse)
                                 {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WAREHOUSE)</b>
                             @elseif($return->branch)
-                                {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(BRANCH)</b>
+                                {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(BL)</b>
                             @else 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}(Head Office)
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }}(HO)
                             @endif
                         </li>
                     </ul>

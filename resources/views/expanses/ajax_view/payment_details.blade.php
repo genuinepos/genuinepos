@@ -81,29 +81,14 @@
                             <th class="text-start">Method :</th>
                             <td class="text-end">{{ $payment->pay_mode }}</td>
                         </tr>
+
+                        <tr>
+                            <th class="text-start">Note :</th>
+                            <td class="text-end">{{ $payment->note }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            {{-- <div class="col-md-6">
-                <table class="table table-sm">
-                    <tbody>
-
-                        <tr>
-                            <th width="50%" class="text-start">Paid On :</th>
-                            <td width="50%" class="text-navy-blue">
-                                {{ $payment->date . ' ' . $payment->time }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th width="50%" class="text-start">Payment Note :</th>
-                            <td width="50%" class="text-navy-blue">
-                                {{ $payment->note }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> --}}
         </div>
     </div>
 

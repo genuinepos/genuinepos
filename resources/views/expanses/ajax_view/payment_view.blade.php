@@ -52,6 +52,7 @@
                 <tr>
                     <th class="text-start">Date</th>
                     <th class="text-start">Voucher No</th>
+                    <th class="text-start">Note</th>
                     <th class="text-start">Amount</th>
                     <th class="text-start">Method</th>
                     <th class="text-start">Type</th>
@@ -65,6 +66,7 @@
                         <tr data-info="{{ $payment }}">
                             <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
                             <td class="text-start">{{ $payment->invoice_id }}</td>
+                            <td class="text-start">{{ $payment->note }}</td>
                             <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'].' '.$payment->paid_amount }}</td>
                             <td class="text-start">{{ $payment->pay_mode }}</td>
                             <td class="text-start">{{ 'Expanse due'  }}</td>

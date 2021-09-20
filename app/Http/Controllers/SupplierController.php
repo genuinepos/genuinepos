@@ -679,7 +679,7 @@ class SupplierController extends Controller
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->credit = $request->amount;
             $addCashFlow->balance = $account->balance;
-            $addCashFlow->purchase_payment_id = $supplierPayment->id;
+            $addCashFlow->supplier_payment_id = $supplierPayment->id;
             $addCashFlow->transaction_type = 12;
             $addCashFlow->cash_type = 2;
             $addCashFlow->date = date('d-m-y', strtotime($request->date));
@@ -704,9 +704,6 @@ class SupplierController extends Controller
                 $purchaseReturnInv = PurchaseReturn::where('id', $dueReturnInvoice->id)->first();
                 if ($purchaseReturnInv->total_return_due > $request->amount) {
                     if ($request->amount > 0) {
-                        $purchaseReturnInv->total_return_due -= $request->amount;
-                        $purchaseReturnInv->total_return_due_received += $request->amount;
-                        $purchaseReturnInv->save();
                         $purchase = Purchase::where('id', $purchaseReturnInv->purchase_id)->first();
                         // generate invoice ID
                         $i = 5;
@@ -766,15 +763,14 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice->paid_amount = $request->amount;
                         $addSupplierPaymentInvoice->type = 2;
                         $addSupplierPaymentInvoice->save();
-    
+                        $purchaseReturnInv->total_return_due -= $request->amount;
+                        $purchaseReturnInv->total_return_due_received += $request->amount;
+                        $purchaseReturnInv->save();
                         $request->amount -= $request->amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                     }
                 } elseif ($purchaseReturnInv->total_return_due == $request->amount) {
                     if ($request->amount > 0) {
-                        $purchaseReturnInv->total_return_due -= $request->amount;
-                        $purchaseReturnInv->total_return_due_received += $request->amount;
-                        $purchaseReturnInv->save();
                         $purchase = Purchase::where('id', $purchaseReturnInv->purchase_id)->first();
                         // generate invoice ID
                         $i = 5;
@@ -834,14 +830,14 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice->type = 2;
                         $addSupplierPaymentInvoice->save();
     
+                        $purchaseReturnInv->total_return_due -= $request->amount;
+                        $purchaseReturnInv->total_return_due_received += $request->amount;
+                        $purchaseReturnInv->save();
                         $request->amount -= $request->amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                     }
                 } elseif ($purchaseReturnInv->total_return_due < $request->amount) {
                     if ($request->amount > 0) {
-                        $purchaseReturnInv->total_return_due -= $purchaseReturnInv->purchase_return_due;
-                        $purchaseReturnInv->total_return_due_received += $purchaseReturnInv->purchase_return_due;
-                        $purchaseReturnInv->save();
                         $purchase = Purchase::where('id', $purchaseReturnInv->purchase_id)->first();
                         // generate invoice ID
                         $i = 5;
@@ -900,6 +896,10 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice->paid_amount = $dueReturnInvoice->total_return_due;
                         $addSupplierPaymentInvoice->type = 2;
                         $addSupplierPaymentInvoice->save();
+
+                        $purchaseReturnInv->total_return_due -= $purchaseReturnInv->purchase_return_due;
+                        $purchaseReturnInv->total_return_due_received += $purchaseReturnInv->purchase_return_due;
+                        $purchaseReturnInv->save();
     
                         $request->amount -= $dueReturnInvoice->total_return_due;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
@@ -1143,6 +1143,7 @@ class SupplierController extends Controller
     public function paymentDelete(Request $request, $paymentId)
     {
         $deleteSupplierPayment = SupplierPayment::with('supplier_payment_invoices')->where('id', $paymentId)->first();
+        $storedSupplierPayment = SupplierPayment::with('supplier_payment_invoices')->where('id', $paymentId)->first();
         $storeSupplierPaymentInvoices = $deleteSupplierPayment->supplier_payment_invoices;
         if ($deleteSupplierPayment->attachment != null) {
             if (file_exists(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment))) {
@@ -1168,9 +1169,26 @@ class SupplierController extends Controller
 
         // Update supplier payment invoices
         if (count($storeSupplierPaymentInvoices) > 0) {
-            foreach ($storeSupplierPaymentInvoices as $pInvoice) {
-                $purchase = Purchase::where('id', $pInvoice->purchase_id)->first();
-                $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
+            if ($storedSupplierPayment->type == 1) {
+                foreach ($storeSupplierPaymentInvoices as $pInvoice) {
+                    $purchase = Purchase::where('id', $pInvoice->purchase_id)->first();
+                    $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
+                }
+            }else {
+                foreach ($storeSupplierPaymentInvoices as $pInvoice) {
+                    if ($pInvoice->purchase_id) {
+                        $purchase = Purchase::with('purchase_return')->where('id', $pInvoice->purchase_id)->first();
+                        $purchase->purchase_return->total_return_due += $pInvoice->paid_amount;
+                        $purchase->purchase_return->total_return_due_received -= $pInvoice->paid_amount;
+                        $purchase->purchase_return->save();
+                        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
+                    }elseif($pInvoice->supplier_return_id){
+                        $supplierReturn = PurchaseReturn::where('id', $pInvoice->supplier_return_id)->first();
+                        $supplierReturn->total_return_due += $pInvoice->paid_amount;
+                        $supplierReturn->total_return_due_received -= $pInvoice->paid_amount;
+                        $supplierReturn->save();
+                    }
+                }
             }
         }
 

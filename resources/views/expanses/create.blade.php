@@ -310,6 +310,7 @@
                 toastr.error('Please check again all form fields.'); 
                 return;
             }
+            
             $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,

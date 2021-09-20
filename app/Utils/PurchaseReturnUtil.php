@@ -41,17 +41,6 @@ class PurchaseReturnUtil
         foreach ($product_ids as $product_id) {
             //update product qty
             $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $product = Product::where('id', $product_id)->first();
-            $product->quantity -= (float)$return_quantities[$index];
-            $product->save();
-
-            // update product variant qty
-            $productVariant = ProductVariant::where('id', $variant_id)->first();
-            if ($productVariant) {
-                $productVariant->variant_quantity -= (float)$return_quantities[$index];
-                $productVariant->save();
-            }
-
             if (isset($request->warehouse_id)) {
                 //update product warehouse qty
                 $productWarehouse = ProductWarehouse::where('warehouse_id', $request->warehouse_id)
@@ -106,19 +95,6 @@ class PurchaseReturnUtil
         foreach ($updatePurchaseReturn->purchase_return_products as $purchase_return_product) {
             $purchase_return_product->is_delete_in_update = 1;
             $purchase_return_product->save();
-
-            // Update product qty for adjustment 
-            $product = Product::where('id', $purchase_return_product->product_id)->first();
-            $product->quantity += $purchase_return_product->return_qty;
-            $product->save();
-
-            if ($updatePurchaseReturn->product_variant_id) {
-                // Update product variant qty for adjustment 
-                $productVariant = ProductVariant::where('id', $updatePurchaseReturn->product_variant_id)->first();
-                $productVariant->variant_quantity += $purchase_return_product->return_qty;
-                $productVariant->save();
-            }
-
             if ($updatePurchaseReturn->warehouse_id) {
                 // Update product warehouse qty for adjustment 
                 $productWarehouse = ProductWarehouse::where('warehouse_id', $updatePurchaseReturn->warehouse_id)->where('product_id', $purchase_return_product->product_id)->first();

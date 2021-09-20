@@ -571,7 +571,6 @@ class PurchaseReturnController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
-        //return $request->all();
 
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'Product return table is empty']);
@@ -588,11 +587,9 @@ class PurchaseReturnController extends Controller
 
         $addPurchaseReturn = new PurchaseReturn();
         $addPurchaseReturn->supplier_id = $request->supplier_id;
-
         $addPurchaseReturn->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $addPurchaseReturn->branch_id = auth()->user()->branch_id;
-
-        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PRI') . date('ymd') . $invoiceId;
+        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PR') . date('Y') . $invoiceId;
         $addPurchaseReturn->purchase_tax_percent = $request->purchase_tax ? $request->purchase_tax : 0.00;
         $addPurchaseReturn->purchase_tax_amount = $request->purchase_tax_amount;
         $addPurchaseReturn->total_return_amount = $request->total_return_amount;
@@ -634,6 +631,14 @@ class PurchaseReturnController extends Controller
             $__index++;
         }
 
+        $__index2 = 0;
+        foreach ($product_ids as $product_id) {
+            $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+            $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+            $__index2++;
+        }
+
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($request->supplier_id);
         return response()->json('Successfully purchase return is added.');
     }
 
@@ -669,7 +674,7 @@ class PurchaseReturnController extends Controller
                     $qty_limits[] = $productWarehouse->product_quantity;
                 }
             }
-        } else {
+        } elseif ($purchaseReturn->branch_id) {
             foreach ($purchaseReturn->purchase_return_products as $purchase_return_product) {
                 $productBranch = ProductBranch::where('branch_id', $purchaseReturn->branch_id)
                     ->where('product_id', $purchase_return_product->product_id)->first();
@@ -682,6 +687,17 @@ class PurchaseReturnController extends Controller
                     $qty_limits[] = $productBranch->product_quantity;
                 }
             }
+        } else {
+            foreach ($purchaseReturn->purchase_return_products as $purchase_return_product) {
+                $product = Product::where('id', $purchase_return_product->product_id)->first();
+                if ($purchase_return_product->product_variant_id) {
+                    $productVariant = ProductVariant::where('id', $purchase_return_product->product_variant_id)
+                        ->where('product_id', $purchase_return_product->product_id)->first();
+                    $qty_limits[] = $productVariant->mb_stock;
+                } else {
+                    $qty_limits[] = $product->mb_stock;
+                }
+            }
         }
 
         return response()->json(['purchaseReturn' => $purchaseReturn, 'qty_limits' => $qty_limits]);
@@ -692,6 +708,7 @@ class PurchaseReturnController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
         $updatePurchaseReturn = PurchaseReturn::with('purchase_return_products')->where('id', $purchaseReturnId)->first();
+        $storeReturnProducts = $updatePurchaseReturn->purchase_return_products;
 
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
@@ -705,18 +722,7 @@ class PurchaseReturnController extends Controller
         $i = 5;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
-
-        //update supplier return due
-        $supplier = Supplier::where('id', $updatePurchaseReturn->supplier_id)->first();
-        $presentDue = $request->total_return_amount - $updatePurchaseReturn->total_return_due_received;
-        $previousDue = $updatePurchaseReturn->total_return_due;
-        $supplierReturnDue = $presentDue - $previousDue;
-        $supplier->total_purchase_return_due += (float)$supplierReturnDue;
-        $supplier->save();
+        while ($a < $i) {$invoiceId .= rand(1, 9);$a++;}
 
         $updatePurchaseReturn->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $updatePurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PRI') . date('ymd') . $invoiceId;
@@ -739,7 +745,9 @@ class PurchaseReturnController extends Controller
         foreach ($product_ids as $product_id) {
             $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
             $purchaseReturnProduct = PurchaseReturnProduct::where('purchase_return_id')
-                ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
+                ->where('product_id', $product_id)
+                ->where('product_variant_id', $variant_id)
+                ->first();
 
             if ($purchaseReturnProduct) {
                 $purchaseReturnProduct->return_qty = $return_quantities[$__index];
@@ -765,6 +773,12 @@ class PurchaseReturnController extends Controller
         foreach ($purchaseReturnProducts as $purchaseReturnProduct) {
             $purchaseReturnProduct->delete();
         }
+
+        foreach ($storeReturnProducts as $return_product) {
+            $this->productStockUtil->adjustMainProductAndVariantStock($return_product->product_id, $return_product->product_variant_id);
+        }
+
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchaseReturn->supplier_id);
 
         session()->flash('successMsg', 'Purchase return created successfully.');
         return response()->json('Purchase return created successfully.');

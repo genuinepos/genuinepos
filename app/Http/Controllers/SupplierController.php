@@ -926,10 +926,7 @@ class SupplierController extends Controller
                             $i = 5;
                             $a = 0;
                             $invoiceId = '';
-                            while ($a < $i) {
-                                $invoiceId .= rand(1, 9);
-                                $a++;
-                            }
+                            while ($a < $i) {$invoiceId .= rand(1, 9);$a++;}
 
                             // Add purchase payment
                             $addPurchasePayment = new PurchasePayment();
@@ -1046,8 +1043,8 @@ class SupplierController extends Controller
                         }
                     } elseif ($dueSupplierReturnInvoice->total_return_due < $request->amount) {
                         if ($request->amount > 0) {
-                            $dueSupplierReturnInvoice->total_return_due -= $purchaseReturnInv->purchase_return_due;
-                            $dueSupplierReturnInvoice->total_return_due_received += $purchaseReturnInv->purchase_return_due;
+                            $dueSupplierReturnInvoice->total_return_due -=  $dueSupplierReturnInvoice->total_return_due;
+                            $dueSupplierReturnInvoice->total_return_due_received +=  $dueSupplierReturnInvoice->total_return_due;
                             $dueSupplierReturnInvoice->save();
                             // generate invoice ID
                             $i = 5;
@@ -1065,7 +1062,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                             $addPurchasePayment->account_id = $request->account_id;
                             $addPurchasePayment->pay_mode = $request->payment_method;
-                            $addPurchasePayment->paid_amount = $dueReturnInvoice->total_return_due;
+                            $addPurchasePayment->paid_amount = $dueSupplierReturnInvoice->total_return_due;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
                             $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));

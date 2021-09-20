@@ -100,7 +100,7 @@
                                             <tr>
                                                 <th>Date</th>
                                                 <th>PR.Invoice ID</th>
-                                                <th>Parent Sale</th>
+                                                <th>Parent Purchase</th>
                                                 <th>Supplier Name</th>
                                                 <th>Location</th>
                                                 <th>Return From</th>

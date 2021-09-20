@@ -610,8 +610,6 @@ class PurchaseController extends Controller
 
         // update product stock branch or warehouse wise
         $this->purchaseUtil->updateStockForPurchaseStore($request);
-        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchase->supplier_id);
         // deleted not getting previous product
         $deletedPurchaseProducts = PurchaseProduct::where('purchase_id', $request->id)->where('delete_in_update', 1)->get();
         foreach ($deletedPurchaseProducts as $deletedPurchaseProduct) {
@@ -623,6 +621,9 @@ class PurchaseController extends Controller
             $variant_id = $PurchaseProduct->product_variant_id ? $PurchaseProduct->product_variant_id : NULL;
             $this->productStockUtil->adjustMainProductAndVariantStock($PurchaseProduct->product_id, $variant_id);
         }
+
+        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchase->supplier_id);
         
         session()->flash('successMsg', 'Successfully purchase is updated');
         return response()->json('Successfully purchase is updated');

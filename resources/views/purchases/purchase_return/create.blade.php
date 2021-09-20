@@ -8,6 +8,7 @@
         <div class="container-fluid">
             <form id="add_purchase_return_form" action="{{ route('purchases.returns.store', $purchaseId) }}" method="POST">
                 @csrf
+                <input type="hidden" name="action" id="action" value="">
                 <section class="mt-5">
                     <div class="container-fluid">
                         <div class="row">
@@ -140,7 +141,8 @@
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary float-end">Save</button>
+                            <button data-action="save" class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                            <button data-action="save_and_print" class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>
                         </div>
                     </div>
                 </div>
@@ -329,9 +331,11 @@
                 if(!$.isEmptyObject(data.errorMsg)){
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
+                }else if(!$.isEmptyObject(data.seccessMsg)) {
+                    toastr.success(data.seccessMsg); 
                 }else {
                     $('.loading_button').hide();
-                    toastr.success('Successfully purchase return is addedd.'); 
+                    toastr.success('Successfully purchase return is added.'); 
                     $(data).printThis({
                         debug: false,                   
                         importCSS: true,                
@@ -344,6 +348,11 @@
                 }
             }
         });
+    });
+
+    $(document).on('click', '.submit_button', function () {
+        var action = $(this).data('action');
+        $('#action').val(action);
     });
 
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";

@@ -74,13 +74,6 @@
                                             </div>
                                         </div>
                 
-                                        <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <label><strong>Code :</strong> </label>
-                                                <input type="text" name="code" class="form-control" id="e_code" placeholder="Code"/>
-                                            </div>
-                                        </div>
-                
                                         <div class="form-group row text-right mt-2">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -200,7 +193,6 @@
             var categoryInfo = $(this).closest('tr').data('info');
             $('#id').val(categoryInfo.id);
             $('#e_name').val(categoryInfo.name);
-            $('#e_code').val(categoryInfo.code);
             $('#add_form').hide();
             $('#edit_form').show();
             document.getElementById('e_name').focus();

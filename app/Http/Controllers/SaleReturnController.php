@@ -432,6 +432,8 @@ class SaleReturnController extends Controller
                 $addReturnProduct = new SaleReturnProduct();
                 $addReturnProduct->sale_return_id = $addSaleReturn->id;
                 $addReturnProduct->sale_product_id = $sale_product_id;
+                $addReturnProduct->product_id = $saleProduct->product_id;
+                $addReturnProduct->product_variant_id = $saleProduct->product_variant_id;
                 $addReturnProduct->return_qty = $return_quantities[$index];
                 $addReturnProduct->unit = $units[$index];
                 $addReturnProduct->return_subtotal = $return_subtotals[$index];

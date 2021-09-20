@@ -72,7 +72,7 @@
                                 <div class="input-group">
                                     <label for="inputEmail3" class="col-4"><b>Account :</b></label>
                                     <div class="col-8">
-                                        <select name="account_id" class="form-control" id="account_id">
+                                        <select required name="account_id" class="form-control" id="account_id">
                                             <option value="">None</option>
                                         </select>
                                         <span class="error error_account_id"></span>

@@ -17,16 +17,31 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\PurchaseReturnProduct;
 use App\Models\ProductWarehouseVariant;
+use App\Utils\ProductStockUtil;
+use App\Utils\PurchaseUtil;
+use App\Utils\SupplierUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseReturnController extends Controller
 {
     protected $purchaseReturnUtil;
     protected $nameSearch;
-    public function __construct(PurchaseReturnUtil $purchaseReturnUtil, NameSearchUtil $nameSearch)
-    {
+    protected $productStockUtil;
+    protected $supplierUtil;
+    protected $purchaseUtil;
+    public function __construct(
+        PurchaseReturnUtil $purchaseReturnUtil,
+        NameSearchUtil $nameSearch,
+        ProductStockUtil $productStockUtil,
+        SupplierUtil $supplierUtil,
+        PurchaseUtil $purchaseUtil,
+    ) {
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->nameSearch = $nameSearch;
+        $this->productStockUtil = $productStockUtil;
+        $this->supplierUtil = $supplierUtil;
+        $this->purchaseUtil = $purchaseUtil;
+
         $this->middleware('auth:admin_and_user');
     }
     // Sale return index view
@@ -118,16 +133,16 @@ class PurchaseReturnController extends Controller
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '<b>(BL)</b>';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('return_from',  function ($row) use ($generalSettings) {
-                    if ($row->warehouse_name ) {
+                    if ($row->warehouse_name) {
                         return ($row->warehouse_name . '/' . $row->warehouse_code) . '<b>(WH)</b>';
-                    } elseif($row->branch_name) {
+                    } elseif ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '<b>(BL)</b>';
-                    }else {
-                        return json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>';
+                    } else {
+                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('total_return_amount', function ($row) use ($generalSettings) {
@@ -146,7 +161,6 @@ class PurchaseReturnController extends Controller
                         $html .= '<span class="text-danger"><b>Due</b></span>';
                     } else {
                         $html .= '<span class="text-success"><b>Paid</b></span>';
-                        
                     }
                     return $html;
                 })
@@ -184,7 +198,10 @@ class PurchaseReturnController extends Controller
         $i = 5;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) { $invoiceId .= rand(1, 9);$a++; }
+        while ($a < $i) {
+            $invoiceId .= rand(1, 9);
+            $a++;
+        }
 
         $purchase_product_ids = $request->purchase_product_ids;
         $return_quantities = $request->return_quantities;
@@ -209,18 +226,23 @@ class PurchaseReturnController extends Controller
             $this->purchaseReturnUtil->storePurchaseInvoiceWiseReturn($purchaseId, $request, $invoicePrefix, $invoiceId);
         }
 
-        $purchaseReturn = PurchaseReturn::with([
-            'purchase',
-            'branch',
-            'supplier',
-            'warehouse',
-            'purchase.supplier',
-            'purchase_return_products',
-            'purchase_return_products.product',
-            'purchase_return_products.purchase_product'
-        ])->where('purchase_id', $purchaseId)->first();
-        if ($purchaseReturn) {
-            return view('purchases.purchase_return.save_and_print_template.purchase_return_print_view', compact('purchaseReturn'));
+        if ($request->action == 'save_and_print') {
+            $purchaseReturn = PurchaseReturn::with([
+                'purchase',
+                'branch',
+                'supplier',
+                'warehouse',
+                'purchase.supplier',
+                'purchase_return_products',
+                'purchase_return_products.product',
+                'purchase_return_products.purchase_product'
+            ])->where('purchase_id', $purchaseId)->first();
+
+            if ($purchaseReturn) {
+                return view('purchases.purchase_return.save_and_print_template.purchase_return_print_view', compact('purchaseReturn'));
+            }
+        } else {
+            return response()->json(['successMsg' => 'Purchase Return Added Successfully.']);
         }
     }
 
@@ -260,46 +282,55 @@ class PurchaseReturnController extends Controller
     public function delete($purchaseReturnId)
     {
         $purchaseReturn = PurchaseReturn::with(['purchase', 'purchase.supplier', 'supplier', 'purchase_return_products'])->where('id', $purchaseReturnId)->first();
+        $purchaseReturn->purchase->is_return_available = 0;
+        $storeReturnProducts = $purchaseReturn->purchase_return_products;
+        $storePurchase = $purchaseReturn->purchase;
+        $storeSupplierId = $purchaseReturn->purchase ? $purchaseReturn->purchase->supplier_id : $purchaseReturn->supplier_id;
         if ($purchaseReturn->return_type == 1) {
             if ($purchaseReturn->total_return_due_received > 0) {
                 return response()->json(['errorMsg' => "You can not delete this, casuse your have received some or full amount on this return."]);
             }
-            $purchaseReturn->purchase->due += $purchaseReturn->purchase->purchase_return_amount;
-            if ($purchaseReturn->purchase->supplier) {
-                $purchaseReturn->purchase->supplier->total_purchase_return_due -= $purchaseReturn->purchase->purchase_return_due;
-                $purchaseReturn->purchase->supplier->total_purchase_due += $purchaseReturn->purchase->purchase_return_due;
-                $purchaseReturn->purchase->supplier->save();
-            }
-            $purchaseReturn->purchase->is_return_available = 0;
-            $purchaseReturn->purchase->purchase_return_amount = 0.00;
-            $purchaseReturn->purchase->purchase_return_due = 0.00;
-            $purchaseReturn->purchase->save();
+
             foreach ($purchaseReturn->purchase_return_products as $purchase_return_product) {
                 // Get purchase product
                 $purchaseProduct = PurchaseProduct::where('id', $purchase_return_product->purchase_product_id)->first();
 
-                //Addition product qty for adjustment
-                $product = Product::where('id', $purchaseProduct->product_id)->first();
-                $product->quantity += $purchase_return_product->return_qty;
-                $product->save();
+                if ($purchaseReturn->purchase->warehouse_id) {
+                    // Addition product warehouse qty for adjustment
+                    $productWarehouse = ProductWarehouse::where('warehouse_id', $purchaseReturn->warehouse_id)->where('product_id', $purchaseProduct->product_id)->first();
+                    $productWarehouse->product_quantity += $purchase_return_product->return_qty;
+                    $productWarehouse->save();
 
-                //Addition product variant qty for adjustment
-                if ($purchaseProduct->product_variant_id) {
-                    $productVariant = ProductVariant::where('id', $purchaseProduct->product_variant_id)->first();
-                    $productVariant->variant_quantity += $purchase_return_product->return_qty;
-                    $productVariant->save();
-                }
+                    // Addition product warehouse variant qty for adjustment
+                    if ($purchaseProduct->product_variant_id) {
+                        $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $purchaseProduct->product_id)->where('product_variant_id', $purchaseProduct->product_variant_id)->first();
+                        $productWarehouseVariant->variant_quantity += $purchase_return_product->return_qty;
+                        $productWarehouseVariant->save();
+                    }
+                } elseif ($purchaseReturn->purchase->branch_id) {
+                    // Addition product branch qty for adjustment
+                    $productBranch = ProductBranch::where('branch_id', $purchaseReturn->purchase->branch_id)->where('product_id', $purchaseProduct->product_id)->first();
+                    $productBranch->product_quantity += $purchase_return_product->return_qty;
+                    $productBranch->save();
 
-                // Addition product warehouse qty for adjustment
-                $productWarehouse = ProductWarehouse::where('warehouse_id', $purchaseReturn->warehouse_id)->where('product_id', $purchaseProduct->product_id)->first();
-                $productWarehouse->product_quantity += $purchase_return_product->return_qty;
-                $productWarehouse->save();
+                    // Addition product warehouse variant qty for adjustment
+                    if ($purchaseProduct->product_variant_id) {
+                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $purchaseReturn->purchase->branch_id)->where('product_id', $purchaseProduct->product_id)->where('product_variant_id', $purchaseProduct->product_variant_id)->first();
+                        $productBranchVariant->variant_quantity += $purchase_return_product->return_qty;
+                        $productBranchVariant->save();
+                    }
+                } else {
+                    $MbStock = Product::where('id', $purchaseProduct->product_id)->first();
+                    $MbStock->mb_stock += $purchase_return_product->return_qty;
+                    $MbStock->save();
 
-                // Addition product warehouse variant qty for adjustment
-                if ($purchaseProduct->product_variant_id) {
-                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $purchaseProduct->product_id)->where('product_variant_id', $purchaseProduct->product_variant_id)->first();
-                    $productWarehouseVariant->variant_quantity += $purchase_return_product->return_qty;
-                    $productWarehouseVariant->save();
+                    if ($purchaseProduct->product_variant_id) {
+                        $updateProVariantMbStock = ProductVariant::where('id', $purchaseProduct->product_variant_id)
+                            ->where('product_id', $purchaseProduct->product_id)
+                            ->first();
+                        $updateProVariantMbStock->mb_stock += $purchase_return_product->return_qty;
+                        $updateProVariantMbStock->save();
+                    }
                 }
             }
         } else {
@@ -307,36 +338,60 @@ class PurchaseReturnController extends Controller
                 return response()->json(['errorMsg' => "You can not delete this, casuse your have received some or full amount on this return."]);
             }
 
-            $purchaseReturn->supplier->total_purchase_return_due -= $purchaseReturn->total_return_due;
-            $purchaseReturn->supplier->save();
             foreach ($purchaseReturn->purchase_return_products as $purchase_return_product) {
-                //Addition product qty for adjustment
-                $product = Product::where('id', $purchase_return_product->product_id)->first();
-                $product->quantity += $purchase_return_product->return_qty;
-                $product->save();
-
-                //Addition product variant qty for adjustment
-                if ($purchase_return_product->product_variant_id) {
-                    $productVariant = ProductVariant::where('id', $purchase_return_product->product_variant_id)->first();
-                    $productVariant->variant_quantity += $purchase_return_product->return_qty;
-                    $productVariant->save();
-                }
-
                 // Addition product warehouse qty for adjustment
-                $productWarehouse = ProductWarehouse::where('warehouse_id', $purchaseReturn->warehouse_id)->where('product_id', $purchase_return_product->product_id)->first();
-                $productWarehouse->product_quantity += $purchase_return_product->return_qty;
-                $productWarehouse->save();
+                if ($purchaseReturn->warehouse_id) {
+                    // Addition product warehouse qty for adjustment
+                    $productWarehouse = ProductWarehouse::where('warehouse_id', $purchaseReturn->warehouse_id)->where('product_id', $purchaseProduct->product_id)->first();
+                    $productWarehouse->product_quantity += $purchase_return_product->return_qty;
+                    $productWarehouse->save();
 
-                // Addition product warehouse variant qty for adjustment
-                if ($purchase_return_product->product_variant_id) {
-                    $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $purchase_return_product->product_id)->where('product_variant_id', $purchase_return_product->product_variant_id)->first();
-                    $productWarehouseVariant->variant_quantity += $purchase_return_product->return_qty;
-                    $productWarehouseVariant->save();
+                    // Addition product warehouse variant qty for adjustment
+                    if ($purchase_return_product->product_variant_id) {
+                        $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $purchaseProduct->product_id)->where('product_variant_id', $purchaseProduct->product_variant_id)->first();
+                        $productWarehouseVariant->variant_quantity += $purchase_return_product->return_qty;
+                        $productWarehouseVariant->save();
+                    }
+                } elseif ($purchaseReturn->purchase->branch_id) {
+                    // Addition product branch qty for adjustment
+                    $productBranch = ProductBranch::where('branch_id', $purchaseReturn->purchase->branch_id)->where('product_id', $purchaseProduct->product_id)->first();
+                    $productBranch->product_quantity += $purchase_return_product->return_qty;
+                    $productBranch->save();
+
+                    // Addition product warehouse variant qty for adjustment
+                    if ($purchase_return_product->product_variant_id) {
+                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $purchaseReturn->purchase->branch_id)->where('product_id', $purchaseProduct->product_id)->where('product_variant_id', $purchaseProduct->product_variant_id)->first();
+                        $productBranchVariant->variant_quantity += $purchase_return_product->return_qty;
+                        $productBranchVariant->save();
+                    }
+                } else {
+                    $MbStock = Product::where('id', $purchase_return_product->product_id)->first();
+                    $MbStock->mb_stock += $purchase_return_product->return_qty;
+                    $MbStock->save();
+
+                    if ($purchase_return_product->product_variant_id) {
+                        $updateProVariantMbStock = ProductVariant::where('id', $purchase_return_product->product_variant_id)
+                            ->where('product_id', $purchase_return_product->product_id)
+                            ->first();
+                        $updateProVariantMbStock->mb_stock += $purchase_return_product->return_qty;
+                        $updateProVariantMbStock->save();
+                    }
                 }
             }
         }
 
         $purchaseReturn->delete();
+
+        foreach ($storeReturnProducts as $return_product) {
+            $this->productStockUtil->adjustMainProductAndVariantStock($return_product->product_id, $return_product->product_variant_id);
+        }
+
+        if ($storePurchase) {
+            $this->purchaseUtil->adjustPurchaseInvoiceAmounts($storePurchase);
+        }
+
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($storeSupplierId);
+
         return response()->json('Successfully purchase return is deleted');
     }
 
@@ -447,7 +502,7 @@ class PurchaseReturnController extends Controller
                     if ($productBranch && $productBranchVariant) {
                         if ($productBranchVariant->variant_quantity > 0) {
                             return response()->json([
-                                'variant_product' =>$variant_product, 
+                                'variant_product' => $variant_product,
                                 'qty_limit' => $productBranchVariant->variant_quantity
                             ]);
                         } else {
@@ -456,10 +511,10 @@ class PurchaseReturnController extends Controller
                     } else {
                         return response()->json(['errorMsg' => 'This product is not available in this branch.']);
                     }
-                }else {
+                } else {
                     if ($variant_product->mb_stock > 0) {
                         return response()->json([
-                            'variant_product' =>$variant_product, 
+                            'variant_product' => $variant_product,
                             'qty_limit' => $variant_product->mb_stock
                         ]);
                     } else {
@@ -502,7 +557,7 @@ class PurchaseReturnController extends Controller
             } else {
                 return response()->json(['errorMsg' => 'This variant is not available in this branch.']);
             }
-        }else {
+        } else {
             $variant_product = DB::table('product_variants')->where('id', $variantId)->first();
             if ($variant_product->mb_stock > 0) {
                 return response()->json($variant_product->mb_stock);

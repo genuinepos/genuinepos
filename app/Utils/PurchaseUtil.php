@@ -11,6 +11,7 @@ use App\Models\ProductBranchVariant;
 use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
 
+
 class PurchaseUtil
 {
     public function purchaseListTable($request)
@@ -98,7 +99,7 @@ class PurchaseUtil
             })->editColumn('paid', function ($row) use ($generalSettings) {
                 return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid . '</b>';
             })->editColumn('due', function ($row) use ($generalSettings) {
-                return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ($row->due >= 0 ? $row->due :   0.00) . '</span></b>';
+                return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'].' '. $row->due . '</span></b>';
             })->editColumn('purchase_return_amount', function ($row) use ($generalSettings) {
                 return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_amount . '</b>';
             })->editColumn('purchase_return_due', function ($row) use ($generalSettings) {
@@ -417,14 +418,31 @@ class PurchaseUtil
 
     public function adjustPurchaseInvoiceAmounts($purchase)
     {
-        // $totalPurchasePaid = DB::table('purchase_payments')
-        // ->where('purchase_id', $purchase->id)->where('payment_type', 1)
-        // ->select(DB::raw('sum(paid_amount) as total_paid'))->get();
+        $totalPurchasePaid = DB::table('purchase_payments')
+        ->where('purchase_payments.purchase_id', $purchase->id)->where('payment_type', 1)
+        ->select(DB::raw('sum(paid_amount) as total_paid'))
+        ->groupBy('purchase_payments.purchase_id')
+        ->get();
 
-        // $return = DB::table('purchase_returns')->where('purchase_id', $purchase)->first();
-        // $returnAmount = $return ? $return->total_return_amount : 0;
+        $totalReturnPaid = DB::table('purchase_payments')
+        ->where('purchase_payments.purchase_id', $purchase->id)->where('payment_type', 2)
+        ->select(DB::raw('sum(paid_amount) as total_paid'))
+        ->groupBy('purchase_payments.purchase_id')
+        ->get();
 
+        $return = DB::table('purchase_returns')->where('purchase_id', $purchase->id)->first();
+        $returnAmount = $return ? $return->total_return_amount : 0;
 
+        $due = $purchase->total_purchase_amount - $totalPurchasePaid->sum('total_paid') - $returnAmount + $totalReturnPaid->sum('total_paid')  ;
 
+        $returnDue = $returnAmount 
+                    - ($purchase->total_purchase_amount - $totalPurchasePaid->sum('total_paid'))
+                    - $totalReturnPaid->sum('total_paid');
+
+        $purchase->paid = $totalPurchasePaid->sum('total_paid');
+        $purchase->due = $due;
+        $purchase->purchase_return_amount = $returnAmount;
+        $purchase->purchase_return_due = $returnDue > 0 ? $returnDue : 0;
+        $purchase->save();
     }
 }

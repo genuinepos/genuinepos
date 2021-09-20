@@ -200,11 +200,14 @@
             placeholder="Note"></textarea>
     </div>
 
-    <div class="form-group text-right">
-        <button type="button" class="btn btn-sm btn-light-danger font-weight-bold" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-sm btn-primary font-weight-bold submit_button">Submit</button>
-        <button type="button" class="btn loading_button font-weight-bold"><i class="fas fa-spinner"></i>
-            <strong>Loading</strong></button>
+    
+    <div class="form-group row mt-4">
+        <div class="col-md-12">
+            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+            <button name="action" type="button" value="save" class="c-btn btn_blue float-end" id="add_payment">Save</button>
+            <button name="action" value="save_and_print" type="button" class="c-btn btn_blue float-end" id="add_payment">Save & Print</button>
+            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        </div>
     </div>
 </form>
 

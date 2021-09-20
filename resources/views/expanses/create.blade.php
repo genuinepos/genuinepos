@@ -323,6 +323,7 @@
                     $('.submit_button').prop('type', 'submit');
                     if(!$.isEmptyObject(data)){
                         toastr.success('Expense created successfully.'); 
+                        $('.loan_amount_field').hide();
                         $('.extra_category').remove();
                         $('#add_expanse_form')[0].reset();
                         calculateAmount();

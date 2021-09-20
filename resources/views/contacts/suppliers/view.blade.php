@@ -110,6 +110,11 @@
                                                     </tr>
 
                                                     <tr>
+                                                        <td class="text-start"><strong>Total Return :</strong></td>
+                                                        <td class="text-start"><span class="total_return">100000.00</span></td>
+                                                    </tr>
+
+                                                    <tr>
                                                         <td class="text-start"><strong>Total Paid :</strong></td>
                                                         <td class="text-start"><span class="total_paid">100000.00</span></td>
                                                     </tr>
@@ -230,9 +235,7 @@
         <!--end::Entry-->
     </div>
 
-    <div id="purchase_details">
-        
-    </div>
+    <div id="purchase_details"></div>
 
      <!-- Change purchase status modal-->
      <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -411,14 +414,16 @@
                 type: 'get',
                 dataType: 'json',
                 success: function(supplier) {
+                    
                     $('.name').html(supplier.name);
                     $('.address').html(supplier.address);
                     $('.business').html(supplier.business_name);
                     $('.phone').html(supplier.phone);
                     $('.tax_number').html(supplier.tax_number);
                     $('.total_purchase').html(supplier.total_purchase);
+                    $('.total_purchase').html(supplier.total_purchase);
                     $('.total_paid').html(supplier.total_paid);
-                    $('.total_purchase_due').html(supplier.total_purchase_due);
+                    $('.total_return').html(supplier.total_return);
                     $('.balance_due').html(supplier.total_purchase_due);
                     $('.opening_balance').html(supplier.opening_balance);
                     $('#supplier_id').val(supplier.id);

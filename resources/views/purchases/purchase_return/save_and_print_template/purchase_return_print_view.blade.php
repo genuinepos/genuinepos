@@ -34,12 +34,12 @@
                         <li><strong>Return Details : </strong> </li>
                         <li><strong>PR.Invoice ID : </strong> <span class="return_invoice_id">{{ $purchaseReturn->invoice_id }}</span></li>
                         <li><strong>Return Date : </strong> <span class="return_date">{{ $purchaseReturn->date }}</span></li>
-                        <li><strong>Supplier Name : </strong> {{ $purchaseReturn->supplier->name }}</li>
+                        <li><strong>Supplier Name : </strong> {{ $purchaseReturn->supplier ? $purchaseReturn->supplier->name : $purchaseReturn->purchase->supplier->name }}</li>
                         <li><strong>Return Stock Loction : </strong> 
                             @if ($purchaseReturn->warehouse)
                                 {{ $purchaseReturn->warehouse->warehouse_name.'/'.$purchaseReturn->warehouse->warehouse_code }}<b>(WAREHOUSE)</b>
                             @elseif($purchaseReturn->branch)
-                                {{ $purchaseReturn->branch->name.'/'.$purchaseReturn->branch->branch_code }} <b>(BRANCH)</b>
+                                {{ $purchaseReturn->branch->name.'/'.$purchaseReturn->branch->branch_code }} <b>(B.Location)</b>
                             @else 
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b> 
                             @endif
@@ -49,7 +49,7 @@
                 
                 <div class="col-6">
                     <ul class="list-unstyled float-right">
-                        <li><strong>Purchase Details : </li>
+                        <li><strong>Purchase Details : </strong> </li>
                         <li><strong>Invoice No : </strong> {{ $purchaseReturn->purchase ? $purchaseReturn->purchase->invoice_id : 'N/A' }}</li>
                         <li><strong>Date : </strong>{{ $purchaseReturn->purchase ? $purchaseReturn->purchase->date : 'N/A' }}</li>
                     </ul>

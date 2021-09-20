@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            <form id="payment_form" action="{{ route('purchases.payment.update', $payment->id) }}" method="POST" enctype="multipart/form-data">
+            <form id="payment_form" action="{{ route('purchases.return.payment.update', $payment->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">

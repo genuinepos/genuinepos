@@ -56,24 +56,13 @@ class ExpanseCategoryController extends Controller
     // Update expanse category
     public function update(Request $request)
     {
-        //return $request->all();
         $this->validate($request, [
             'name' => 'required',
         ]);
 
-        $codePrefix = '';
-        if (!$request->code) {
-            $name = explode(' ', $request->name);
-            for ($i = 0; $i < count($name); $i++) {
-                $prefix = str_split($name[$i])[0];
-                $codePrefix .= $prefix;
-            }
-        }
-
         $updateCategory = ExpanseCategory::where('id', $request->id)->first();
         $updateCategory->update([
             'name' => $request->name,
-            'code' => $request->code ? $request->code : $codePrefix,
         ]);
         return response()->json('Expanse category updated successfully');
     }

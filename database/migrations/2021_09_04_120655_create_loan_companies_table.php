@@ -16,12 +16,12 @@ class CreateLoanCompaniesTable extends Migration
         Schema::create('loan_companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('pay_loan_amount')->default(0);
-            $table->decimal('pay_loan_due')->default(0);
-            $table->decimal('get_loan_amount')->default(0);
-            $table->decimal('get_loan_due')->default(0);
-            $table->decimal('total_pay')->default(0);
-            $table->decimal('total_receive')->default(0);
+            $table->decimal('pay_loan_amount', 22)->default(0);
+            $table->decimal('pay_loan_due', 22)->default(0);
+            $table->decimal('get_loan_amount', 22)->default(0);
+            $table->decimal('get_loan_due', 22)->default(0);
+            $table->decimal('total_pay', 22)->default(0);
+            $table->decimal('total_receive', 22)->default(0);
             $table->timestamps();
         });
     }

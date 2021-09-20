@@ -21,6 +21,7 @@ use App\Models\ProductWarehouse;
 use DB;
 use App\Models\ProductBranchVariant;
 use App\Models\ProductWarehouseVariant;
+use App\Models\PurchaseReturn;
 use App\Utils\ProductStockUtil;
 use App\Utils\SupplierUtil;
 use App\Utils\Util;
@@ -109,14 +110,10 @@ class PurchaseController extends Controller
         $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
 
         if (isset($request->warehouse_id)) {
-            $this->validate($request, [
-                'warehouse_id' => 'required',
-            ]);
+            $this->validate($request, ['warehouse_id' => 'required']);
         }
 
-        $this->validate($request, [
-            'supplier_id' => 'required',
-        ]);
+        $this->validate($request, ['supplier_id' => 'required']);
 
         if (!isset($request->product_ids)) {
             return response()->json(['errorMsg' => 'Product table is empty.']);
@@ -177,7 +174,7 @@ class PurchaseController extends Controller
 
         // add purchase total information
         $addPurchase = new Purchase();
-        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PI') . date('ymd') . $invoiceId;
+        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PI') . date('Y') . $invoiceId;
 
         $addPurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $addPurchase->branch_id = auth()->user()->branch_id;
@@ -261,7 +258,6 @@ class PurchaseController extends Controller
             $addPurchasePayment = new PurchasePayment();
             $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPI') . date('ymd') . $invoiceId;
             $addPurchasePayment->purchase_id = $addPurchase->id;
-            $addPurchasePayment->supplier_id = $request->supplier_id;
             $addPurchasePayment->account_id = $request->account_id;
             $addPurchasePayment->pay_mode = $request->payment_method;
             $addPurchasePayment->paid_amount = $request->paying_amount;
@@ -367,9 +363,7 @@ class PurchaseController extends Controller
         $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
 
         if (isset($request->warehouse_id)) {
-            $this->validate($request, [
-                'warehouse_id' => 'required',
-            ]);
+            $this->validate($request, ['warehouse_id' => 'required']);
         }
 
         if (!isset($request->product_ids)) {
@@ -503,7 +497,6 @@ class PurchaseController extends Controller
         $updatePurchase->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0.00;
         $updatePurchase->net_total_amount = $request->net_total_amount;
         $updatePurchase->total_purchase_amount = $request->total_purchase_amount;
-        $updatePurchase->due = $request->total_purchase_amount - $updatePurchase->paid - $updatePurchase->purchase_return_amount;
         $updatePurchase->shipment_details = $request->shipment_details;
         $updatePurchase->purchase_note = $request->purchase_note;
         $updatePurchase->purchase_status = $request->purchase_status;
@@ -617,6 +610,7 @@ class PurchaseController extends Controller
 
         // update product stock branch or warehouse wise
         $this->purchaseUtil->updateStockForPurchaseStore($request);
+        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchase->supplier_id);
         // deleted not getting previous product
         $deletedPurchaseProducts = PurchaseProduct::where('purchase_id', $request->id)->where('delete_in_update', 1)->get();
@@ -629,7 +623,7 @@ class PurchaseController extends Controller
             $variant_id = $PurchaseProduct->product_variant_id ? $PurchaseProduct->product_variant_id : NULL;
             $this->productStockUtil->adjustMainProductAndVariantStock($PurchaseProduct->product_id, $variant_id);
         }
-
+        
         session()->flash('successMsg', 'Successfully purchase is updated');
         return response()->json('Successfully purchase is updated');
     }
@@ -1043,14 +1037,7 @@ class PurchaseController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
-
         $purchase = Purchase::where('id', $purchaseId)->first();
-
-        // Update purchase
-        $purchase->paid = $purchase->paid + $request->amount;
-        $purchase->due = $purchase->due - $request->amount;
-        $purchase->save();
-
         // generate invoice ID
         $i = 5;
         $a = 0;
@@ -1064,7 +1051,6 @@ class PurchaseController extends Controller
         $addPurchasePayment = new PurchasePayment();
         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPR') . date('ymd') . $invoiceId;
         $addPurchasePayment->purchase_id = $purchase->id;
-        $addPurchasePayment->supplier_id = $purchase->supplier_id;
         $addPurchasePayment->account_id = $request->account_id;
         $addPurchasePayment->pay_mode = $request->payment_method;
         $addPurchasePayment->paid_amount = $request->amount;
@@ -1130,7 +1116,9 @@ class PurchaseController extends Controller
         $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
         $addSupplierLedger->save();
 
+        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
+        
         return response()->json('Successfully payment is added.');
     }
 
@@ -1146,11 +1134,11 @@ class PurchaseController extends Controller
     {
         $updatePurchasePayment = PurchasePayment::with(
             'account',
-            'supplier',
-            'purchase',
             'purchase.purchase_return',
             'cashFlow'
         )->where('id', $paymentId)->first();
+
+        $purchase = Purchase::where('id', $updatePurchasePayment->purchase_id)->first();
 
         // Update previous account and delete previous cashflow.
         $account = Account::where('id', $updatePurchasePayment->account_id)->first();
@@ -1243,7 +1231,9 @@ class PurchaseController extends Controller
                 $updatePurchasePayment->cashFlow->delete();
             }
         }
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchasePayment->purchase->supplier_id);
+        
+        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
 
         return response()->json('Successfully payment is updated.');
     }
@@ -1257,18 +1247,7 @@ class PurchaseController extends Controller
 
     public function returnPaymentStore(Request $request, $purchaseId)
     {
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
         $purchase = Purchase::with(['purchase_return'])->where('id', $purchaseId)->first();
-        //Update Supplier due 
-        $supplier = Supplier::where('id', $purchase->supplier_id)->first();
-        $supplier->total_purchase_return_due -= $request->amount;
-        $supplier->save();
-
-        // Update purchase
-        $purchase->purchase_return_due -= $request->amount;
-        $purchase->save();
-
         // update purchase return
         if ($purchase->purchase_return) {
             $purchase->purchase_return->total_return_due_received = $purchase->purchase_return->total_return_due_received + $request->amount;
@@ -1280,15 +1259,12 @@ class PurchaseController extends Controller
         $i = 5;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
+        while ($a < $i) { $invoiceId .= rand(1, 9);$a++; }
+
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
-        $addPurchasePayment->invoice_id = 'PRPR' . date('dmy') . $invoiceId;
+        $addPurchasePayment->invoice_id = 'PRP' . date('dmy') . $invoiceId;
         $addPurchasePayment->purchase_id = $purchase->id;
-        $addPurchasePayment->supplier_id = $purchase->supplier_id;
         $addPurchasePayment->account_id = $request->account_id;
         $addPurchasePayment->pay_mode = $request->payment_method;
         $addPurchasePayment->paid_amount = $request->amount;
@@ -1350,12 +1326,14 @@ class PurchaseController extends Controller
         }
 
         $addSupplierLedger = new SupplierLedger();
-        $addSupplierLedger->supplier_id = $supplier->id;
+        $addSupplierLedger->supplier_id = $purchase->supplier_id;
         $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
         $addSupplierLedger->row_type = 2;
         $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
         $addSupplierLedger->save();
 
+        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
         return response()->json('Successfully payment is added.');
     }
 
@@ -1369,30 +1347,20 @@ class PurchaseController extends Controller
 
     public function returnPaymentUpdate(Request $request, $paymentId)
     {
-        $updatePurchasePayment = PurchasePayment::with('account', 'supplier', 'purchase', 'purchase.purchase_return', 'cashFlow')->where('id', $paymentId)->first();
-
-        //Update Supplier due 
-        $updatePurchasePayment->supplier->total_purchase_return_due = $updatePurchasePayment->supplier->total_purchase_return_due + $updatePurchasePayment->paid_amount;
-        $updatePurchasePayment->supplier->total_purchase_return_due = $updatePurchasePayment->supplier->total_purchase_return_due - $request->amount;
-        $updatePurchasePayment->supplier->save();
-
-        // Update purchase 
-        $updatePurchasePayment->purchase->purchase_return_due = $updatePurchasePayment->purchase->purchase_return_due + $updatePurchasePayment->paid_amount;
-        $updatePurchasePayment->purchase->purchase_return_due = $updatePurchasePayment->purchase->purchase_return_due - $request->amount;
-        $updatePurchasePayment->purchase->save();
-
+        $updatePurchasePayment = PurchasePayment::with('account', 'purchase.purchase_return', 'cashFlow')->where('id', $paymentId)->first();
+        $purchase = Purchase::where('id', $updatePurchasePayment->purchase_id)->first();
         // Update purchase return
-        $updatePurchasePayment->purchase->purchase_return->total_return_due_received -= abs($updatePurchasePayment->paid_amount);
-        $updatePurchasePayment->purchase->purchase_return->total_return_due_received += abs($request->amount);
-        $updatePurchasePayment->purchase->purchase_return->total_return_due += abs($updatePurchasePayment->paid_amount);
-        $updatePurchasePayment->purchase->purchase_return->total_return_due -= abs($request->amount);
-
-        $updatePurchasePayment->purchase->purchase_return->save();
+        $purchaseReturn = PurchaseReturn::where('id', $updatePurchasePayment->purchase->purchase_return->id)->first();
+        $purchaseReturn->total_return_due_received -= $updatePurchasePayment->paid_amount;
+        $purchaseReturn->total_return_due_received += (float)$request->amount;
+        $purchaseReturn->total_return_due -= $updatePurchasePayment->paid_amount;
+        $purchaseReturn->total_return_due += (float)$request->amount;
+        $purchaseReturn->save();
 
         // Update previous account and delete previous cashflow.
         if ($updatePurchasePayment->account) {
             $updatePurchasePayment->account->credit = $updatePurchasePayment->account->credit + $updatePurchasePayment->paid_amount;
-            $updatePurchasePayment->account->balance -= $updatePurchasePayment->account->balance - $updatePurchasePayment->paid_amount;
+            $updatePurchasePayment->account->balance = $updatePurchasePayment->account->balance - $updatePurchasePayment->paid_amount;
             $updatePurchasePayment->account->save();
             //$updatePurchasePayment->cashFlow->delete();
         }
@@ -1479,7 +1447,11 @@ class PurchaseController extends Controller
                 $updatePurchasePayment->cashFlow->delete();
             }
         }
-        return response()->json('Successfully payment is updated.');
+
+        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
+
+        return response()->json('Successfully payment is updated FF.');
     }
 
     //Get purchase wise payment list

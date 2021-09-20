@@ -6,21 +6,25 @@ use App\Models\Account;
 use App\Models\CashFlow;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Utils\PurchaseUtil;
+use App\Utils\SupplierUtil;
 use Illuminate\Http\Request;
+use App\Models\PurchaseReturn;
 use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
 use App\Models\SupplierPayment;
-use App\Models\SupplierPaymentInvoice;
-use App\Utils\SupplierUtil;
 use Illuminate\Support\Facades\DB;
+use App\Models\SupplierPaymentInvoice;
 use Yajra\DataTables\Facades\DataTables;
 
 class SupplierController extends Controller
 {
     public $supplierUtil;
-    public function __construct(SupplierUtil $supplierUtil)
+    public $purchaseUtil;
+    public function __construct(SupplierUtil $supplierUtil, PurchaseUtil $purchaseUtil)
     {
         $this->supplierUtil = $supplierUtil;
+        $this->purchaseUtil = $purchaseUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -85,7 +89,7 @@ class SupplierController extends Controller
         $addSupplierLedger->row_type = 3;
         $addSupplierLedger->amount = $request->opening_balance ? $request->opening_balance : 0;
         $addSupplierLedger->save();
-        
+
         return response()->json('Supplier created successfully');
     }
 
@@ -150,7 +154,7 @@ class SupplierController extends Controller
         return response()->json('supplier deleted successfully');
     }
 
-    // Change stauts method
+    // Change status method
     public function changeStatus($supplierId)
     {
         $statusChange = Supplier::where('id', $supplierId)->first();
@@ -361,12 +365,6 @@ class SupplierController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
 
-        // // Update Supplier Amount
-        // $supplier = Supplier::where('id', $supplierId)->first();
-        // $supplier->total_paid += $request->amount;
-        // $supplier->total_purchase_due -= $request->amount;
-        // $supplier->save();
-
         // generate invoice ID
         $l = 6;
         $sv = 0;
@@ -463,13 +461,9 @@ class SupplierController extends Controller
             foreach ($dueInvoices as $dueInvoice) {
                 if ($dueInvoice->due > $request->amount) {
                     if ($request->amount > 0) {
-                        $dueInvoice->paid += $request->amount;
-                        $dueInvoice->due -= $request->amount;
-                        $dueInvoice->save();
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPI') . date('ymd') . $invoiceId;
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
-                        $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
                         $addPurchasePayment->paid_amount = $request->amount;
@@ -508,16 +502,13 @@ class SupplierController extends Controller
 
                         //$dueAmounts -= $dueAmounts; 
                         $request->amount -= $request->amount;
+                        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
                 } elseif ($dueInvoice->due == $request->amount) {
                     if ($request->amount > 0) {
-                        $dueInvoice->paid += $request->amount;
-                        $dueInvoice->due -= $request->amount;
-                        $dueInvoice->save();
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPI') . date('ymd') . $invoiceId;
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
-                        $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
                         $addPurchasePayment->paid_amount = $request->amount;
@@ -554,13 +545,13 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice->paid_amount = $request->amount;
                         $addSupplierPaymentInvoice->save();
                         $request->amount -= $request->amount;
+                        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
                 } elseif ($dueInvoice->due < $request->amount) {
                     if ($dueInvoice->due > 0) {
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
-                        $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
                         $addPurchasePayment->paid_amount = $dueInvoice->due;
@@ -599,9 +590,7 @@ class SupplierController extends Controller
 
                         // Calculate next payment amount
                         $request->amount -= $dueInvoice->due;
-                        $dueInvoice->paid += $dueInvoice->due;
-                        $dueInvoice->due -= $dueInvoice->due;
-                        $dueInvoice->save();
+                        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
                 }
                 $index++;
@@ -621,291 +610,510 @@ class SupplierController extends Controller
 
     public function returnPaymentAdd(Request $request, $supplierId)
     {
-        $supplier = Supplier::where('id', $supplierId)->first();
-        $supplier->total_purchase_return_due -= $request->amount;
-        $supplier->save();
+        $dueReturnInvoices = DB::table('purchase_returns')
+            ->join('purchases', 'purchase_returns.purchase_id', 'purchases.id')
+            ->where('purchases.supplier_id', $supplierId)
+            ->where('purchase_returns.total_return_due', '>', 0)
+            ->where('purchase_returns.supplier_id', NULL)
+            ->select('purchase_returns.*')
+            ->get();
 
-        $dueReturnInvoices = Purchase::with(['purchase_return'])->where('supplier_id', $supplierId)->where('purchase_return_due', '>', 0)->get();
+        // generate invoice ID
+        $l = 6;
+        $sv = 0;
+        $voucherNo = '';
+        while ($sv < $l) {
+            $voucherNo .= rand(1, 9);
+            $sv++;
+        }
+
+        // Add Supplier Payment Record
+        $supplierPayment = new SupplierPayment();
+        $supplierPayment->voucher_no = 'RPV' . $voucherNo;
+        $supplierPayment->branch_id = auth()->user()->branch_id;
+        $supplierPayment->supplier_id = $supplierId;
+        $supplierPayment->account_id = $request->account_id;
+        $supplierPayment->paid_amount = $request->amount;
+        $supplierPayment->type = 2;
+        $supplierPayment->pay_mode = $request->payment_method;
+        $supplierPayment->date = $request->date;
+        $supplierPayment->time = date('h:i:s a');
+        $supplierPayment->month = date('F');
+        $supplierPayment->year = date('Y');
+
+        if ($request->payment_method == 'Card') {
+            $supplierPayment->card_no = $request->card_no;
+            $supplierPayment->card_holder = $request->card_holder_name;
+            $supplierPayment->card_transaction_no = $request->card_transaction_no;
+            $supplierPayment->card_type = $request->card_type;
+            $supplierPayment->card_month = $request->month;
+            $supplierPayment->card_year = $request->year;
+            $supplierPayment->card_secure_code = $request->secure_code;
+        } elseif ($request->payment_method == 'Cheque') {
+            $supplierPayment->cheque_no = $request->cheque_no;
+        } elseif ($request->payment_method == 'Bank-Transfer') {
+            $supplierPayment->account_no = $request->account_no;
+        } elseif ($request->payment_method == 'Custom') {
+            $supplierPayment->transaction_no = $request->transaction_no;
+        }
+
+        if ($request->hasFile('attachment')) {
+            $PaymentAttachment = $request->file('attachment');
+            $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
+            $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
+            $supplierPayment->attachment = $paymentAttachmentName;
+        }
+
+        $supplierPayment->note = $request->note;
+        $supplierPayment->save();
+
+        if ($request->account_id) {
+            // update account
+            $account = Account::where('id', $request->account_id)->first();
+            $account->credit += $request->amount;
+            $account->balance += $request->amount;
+            $account->save();
+
+            // Add cash flow
+            $addCashFlow = new CashFlow();
+            $addCashFlow->account_id = $request->account_id;
+            $addCashFlow->credit = $request->amount;
+            $addCashFlow->balance = $account->balance;
+            $addCashFlow->purchase_payment_id = $supplierPayment->id;
+            $addCashFlow->transaction_type = 12;
+            $addCashFlow->cash_type = 2;
+            $addCashFlow->date = date('d-m-y', strtotime($request->date));
+            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+            $addCashFlow->month = date('F');
+            $addCashFlow->year = date('Y');
+            $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
+        }
+
+        // Add supplier payment for direct payment
+        $addSupplierLedger = new SupplierLedger();
+        $addSupplierLedger->supplier_id = $supplierId;
+        $addSupplierLedger->row_type = 4;
+        $addSupplierLedger->supplier_payment_id = $supplierPayment->id;
+        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
+        $addSupplierLedger->save();
 
         if (count($dueReturnInvoices) > 0) {
             $index = 0;
             foreach ($dueReturnInvoices as $dueReturnInvoice) {
-                if ($dueReturnInvoice->purchase_return_due > $request->amount) {
-                    // Update purchase
-                    $dueReturnInvoice->purchase_return_due -= $request->amount;
-                    $dueReturnInvoice->save();
-
-                    // update purchase return
-                    $dueReturnInvoice->purchase_return->total_return_due_received += $request->amount;
-                    $dueReturnInvoice->purchase_return->total_return_due -= $request->amount;
-                    $dueReturnInvoice->purchase_return->save();
-
-                    // generate invoice ID
-                    $i = 5;
-                    $a = 0;
-                    $invoiceId = '';
-                    while ($a < $i) {
-                        $invoiceId .= rand(1, 9);
-                        $a++;
+                $purchaseReturnInv = PurchaseReturn::where('id', $dueReturnInvoice->id)->first();
+                if ($purchaseReturnInv->total_return_due > $request->amount) {
+                    if ($request->amount > 0) {
+                        $purchaseReturnInv->total_return_due -= $request->amount;
+                        $purchaseReturnInv->total_return_due_received += $request->amount;
+                        $purchaseReturnInv->save();
+                        $purchase = Purchase::where('id', $purchaseReturnInv->purchase_id)->first();
+                        // generate invoice ID
+                        $i = 5;
+                        $a = 0;
+                        $invoiceId = '';
+                        while ($a < $i) {
+                            $invoiceId .= rand(1, 9);
+                            $a++;
+                        }
+    
+                        // Add purchase payment
+                        $addPurchasePayment = new PurchasePayment();
+                        $addPurchasePayment->invoice_id = 'RPV' . date('dmy') . $invoiceId;
+                        $addPurchasePayment->purchase_id = $purchase->id;
+                        $addPurchasePayment->supplier_id = $supplierId;
+                        $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
+                        $addPurchasePayment->account_id = $request->account_id;
+                        $addPurchasePayment->pay_mode = $request->payment_method;
+                        $addPurchasePayment->paid_amount = $request->amount;
+                        $addPurchasePayment->payment_type = 2;
+                        $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
+                        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addPurchasePayment->month = date('F');
+                        $addPurchasePayment->year = date('Y');
+                        $addPurchasePayment->note = $request->note;
+    
+                        if ($request->payment_method == 'Card') {
+                            $addPurchasePayment->card_no = $request->card_no;
+                            $addPurchasePayment->card_holder = $request->card_holder_name;
+                            $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
+                            $addPurchasePayment->card_type = $request->card_type;
+                            $addPurchasePayment->card_month = $request->month;
+                            $addPurchasePayment->card_year = $request->year;
+                            $addPurchasePayment->card_secure_code = $request->secure_code;
+                        } elseif ($request->payment_method == 'Cheque') {
+                            $addPurchasePayment->cheque_no = $request->cheque_no;
+                        } elseif ($request->payment_method == 'Bank-Transfer') {
+                            $addPurchasePayment->account_no = $request->account_no;
+                        } elseif ($request->payment_method == 'Custom') {
+                            $addPurchasePayment->transaction_no = $request->transaction_no;
+                        }
+                        $addPurchasePayment->admin_id = auth()->user()->id;
+    
+                        if ($request->hasFile('attachment')) {
+                            $purchasePaymentAttachment = $request->file('attachment');
+                            $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
+                            $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
+                            $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
+                        }
+    
+                        $addPurchasePayment->save();
+    
+                        // Add Supplier return Payment invoice
+                        $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
+                        $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
+                        $addSupplierPaymentInvoice->purchase_id = $purchase->id;
+                        $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                        $addSupplierPaymentInvoice->type = 2;
+                        $addSupplierPaymentInvoice->save();
+    
+                        $request->amount -= $request->amount;
+                        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                     }
-                    // Add purchase payment
-                    $addPurchasePayment = new PurchasePayment();
-                    $addPurchasePayment->invoice_id = 'PRPI' . date('dmy') . $invoiceId;
-                    $addPurchasePayment->purchase_id = $dueReturnInvoice->id;
-                    $addPurchasePayment->supplier_id = $supplierId;
-                    $addPurchasePayment->account_id = $request->account_id;
-                    $addPurchasePayment->pay_mode = $request->payment_method;
-                    $addPurchasePayment->paid_amount = $request->amount;
-                    $addPurchasePayment->payment_type = 2;
-                    $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                    $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
-                    $addPurchasePayment->month = date('F');
-                    $addPurchasePayment->year = date('Y');
-                    $addPurchasePayment->note = $request->note;
-
-                    if ($request->payment_method == 'Card') {
-                        $addPurchasePayment->card_no = $request->card_no;
-                        $addPurchasePayment->card_holder = $request->card_holder_name;
-                        $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                        $addPurchasePayment->card_type = $request->card_type;
-                        $addPurchasePayment->card_month = $request->month;
-                        $addPurchasePayment->card_year = $request->year;
-                        $addPurchasePayment->card_secure_code = $request->secure_code;
-                    } elseif ($request->payment_method == 'Cheque') {
-                        $addPurchasePayment->cheque_no = $request->cheque_no;
-                    } elseif ($request->payment_method == 'Bank-Transfer') {
-                        $addPurchasePayment->account_no = $request->account_no;
-                    } elseif ($request->payment_method == 'Custom') {
-                        $addPurchasePayment->transaction_no = $request->transaction_no;
+                } elseif ($purchaseReturnInv->total_return_due == $request->amount) {
+                    if ($request->amount > 0) {
+                        $purchaseReturnInv->total_return_due -= $request->amount;
+                        $purchaseReturnInv->total_return_due_received += $request->amount;
+                        $purchaseReturnInv->save();
+                        $purchase = Purchase::where('id', $purchaseReturnInv->purchase_id)->first();
+                        // generate invoice ID
+                        $i = 5;
+                        $a = 0;
+                        $invoiceId = '';
+                        while ($a < $i) {
+                            $invoiceId .= rand(1, 9);
+                            $a++;
+                        }
+    
+                        // Add purchase payment
+                        $addPurchasePayment = new PurchasePayment();
+                        $addPurchasePayment->invoice_id = 'RPV' . date('dmy') . $invoiceId;
+                        $addPurchasePayment->purchase_id = $purchase->id;;
+                        $addPurchasePayment->supplier_id = $supplierId;
+                        $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
+                        $addPurchasePayment->account_id = $request->account_id;
+                        $addPurchasePayment->pay_mode = $request->payment_method;
+                        $addPurchasePayment->paid_amount = $request->amount;
+                        $addPurchasePayment->payment_type = 2;
+                        $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
+                        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addPurchasePayment->month = date('F');
+                        $addPurchasePayment->year = date('Y');
+                        $addPurchasePayment->note = $request->note;
+    
+                        if ($request->payment_method == 'Card') {
+                            $addPurchasePayment->card_no = $request->card_no;
+                            $addPurchasePayment->card_holder = $request->card_holder_name;
+                            $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
+                            $addPurchasePayment->card_type = $request->card_type;
+                            $addPurchasePayment->card_month = $request->month;
+                            $addPurchasePayment->card_year = $request->year;
+                            $addPurchasePayment->card_secure_code = $request->secure_code;
+                        } elseif ($request->payment_method == 'Cheque') {
+                            $addPurchasePayment->cheque_no = $request->cheque_no;
+                        } elseif ($request->payment_method == 'Bank-Transfer') {
+                            $addPurchasePayment->account_no = $request->account_no;
+                        } elseif ($request->payment_method == 'Custom') {
+                            $addPurchasePayment->transaction_no = $request->transaction_no;
+                        }
+                        $addPurchasePayment->admin_id = auth()->user()->id;
+    
+                        if ($request->hasFile('attachment')) {
+                            $purchasePaymentAttachment = $request->file('attachment');
+                            $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
+                            $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
+                            $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
+                        }
+                        $addPurchasePayment->save();
+    
+                        // Add Supplier return Payment invoice
+                        $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
+                        $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
+                        $addSupplierPaymentInvoice->purchase_id = $purchase->id;
+                        $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                        $addSupplierPaymentInvoice->type = 2;
+                        $addSupplierPaymentInvoice->save();
+    
+                        $request->amount -= $request->amount;
+                        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                     }
-                    $addPurchasePayment->admin_id = auth()->user()->id;
-
-                    if ($request->hasFile('attachment')) {
-                        $purchasePaymentAttachment = $request->file('attachment');
-                        $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
-                        $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
-                        $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
+                } elseif ($purchaseReturnInv->total_return_due < $request->amount) {
+                    if ($request->amount > 0) {
+                        $purchaseReturnInv->total_return_due -= $purchaseReturnInv->purchase_return_due;
+                        $purchaseReturnInv->total_return_due_received += $purchaseReturnInv->purchase_return_due;
+                        $purchaseReturnInv->save();
+                        $purchase = Purchase::where('id', $purchaseReturnInv->purchase_id)->first();
+                        // generate invoice ID
+                        $i = 5;
+                        $a = 0;
+                        $invoiceId = '';
+                        while ($a < $i) {
+                            $invoiceId .= rand(1, 9);
+                            $a++;
+                        }
+    
+                        // Add purchase payment
+                        $addPurchasePayment = new PurchasePayment();
+                        $addPurchasePayment->invoice_id = 'RPV' . date('dmy') . $invoiceId;
+                        $addPurchasePayment->purchase_id = $purchase->id;
+                        $addPurchasePayment->supplier_id = $supplierId;
+                        $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
+                        $addPurchasePayment->account_id = $request->account_id;
+                        $addPurchasePayment->pay_mode = $request->payment_method;
+                        $addPurchasePayment->paid_amount = $dueReturnInvoice->total_return_due;
+                        $addPurchasePayment->payment_type = 2;
+                        $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
+                        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addPurchasePayment->month = date('F');
+                        $addPurchasePayment->year = date('Y');
+                        $addPurchasePayment->note = $request->note;
+    
+                        if ($request->payment_method == 'Card') {
+                            $addPurchasePayment->card_no = $request->card_no;
+                            $addPurchasePayment->card_holder = $request->card_holder_name;
+                            $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
+                            $addPurchasePayment->card_type = $request->card_type;
+                            $addPurchasePayment->card_month = $request->month;
+                            $addPurchasePayment->card_year = $request->year;
+                            $addPurchasePayment->card_secure_code = $request->secure_code;
+                        } elseif ($request->payment_method == 'Cheque') {
+                            $addPurchasePayment->cheque_no = $request->cheque_no;
+                        } elseif ($request->payment_method == 'Bank-Transfer') {
+                            $addPurchasePayment->account_no = $request->account_no;
+                        } elseif ($request->payment_method == 'Custom') {
+                            $addPurchasePayment->transaction_no = $request->transaction_no;
+                        }
+                        $addPurchasePayment->admin_id = auth()->user()->id;
+    
+                        if ($request->hasFile('attachment')) {
+                            $purchasePaymentAttachment = $request->file('attachment');
+                            $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
+                            $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
+                            $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
+                        }
+                        $addPurchasePayment->save();
+    
+                        // Add Supplier return Payment invoice
+                        $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
+                        $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
+                        $addSupplierPaymentInvoice->purchase_id = $purchase->id;
+                        $addSupplierPaymentInvoice->paid_amount = $dueReturnInvoice->total_return_due;
+                        $addSupplierPaymentInvoice->type = 2;
+                        $addSupplierPaymentInvoice->save();
+    
+                        $request->amount -= $dueReturnInvoice->total_return_due;
+                        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                     }
-
-                    $addPurchasePayment->save();
-
-                    if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->credit += $request->amount;
-                        $account->balance += $request->amount;
-                        $account->save();
-
-                        // Add cash flow
-                        $addCashFlow = new CashFlow();
-                        $addCashFlow->account_id = $request->account_id;
-                        $addCashFlow->credit = $request->amount;
-                        $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
-                        $addCashFlow->transaction_type = 3;
-                        $addCashFlow->cash_type = 2;
-                        $addCashFlow->date = date('d-m-y', strtotime($request->date));
-                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                        $addCashFlow->month = date('F');
-                        $addCashFlow->year = date('Y');
-                        $addCashFlow->admin_id = auth()->user()->id;
-                        $addCashFlow->save();
-                    }
-
-                    $addSupplierLedger = new SupplierLedger();
-                    $addSupplierLedger->supplier_id = $supplier->id;
-                    $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-                    $addSupplierLedger->row_type = 2;
-                    $addSupplierLedger->save();
-
-                    if ($index == 1) {
-                        break;
-                    }
-                } elseif ($dueReturnInvoice->purchase_return_due == $request->amount) {
-                    // Update purchase
-                    $dueReturnInvoice->purchase_return_due -= $request->amount;
-                    $dueReturnInvoice->save();
-
-                    // update purchase return
-                    $dueReturnInvoice->purchase_return->total_return_due_received += $request->amount;
-                    $dueReturnInvoice->purchase_return->total_return_due -= $request->amount;
-                    $dueReturnInvoice->purchase_return->save();
-
-                    // generate invoice ID
-                    $i = 5;
-                    $a = 0;
-                    $invoiceId = '';
-                    while ($a < $i) {
-                        $invoiceId .= rand(1, 9);
-                        $a++;
-                    }
-
-                    // Add purchase payment
-                    $addPurchasePayment = new PurchasePayment();
-                    $addPurchasePayment->invoice_id = 'PRPI' . date('dmy') . $invoiceId;
-                    $addPurchasePayment->purchase_id = $dueReturnInvoice->id;
-                    $addPurchasePayment->supplier_id = $supplierId;
-                    $addPurchasePayment->account_id = $request->account_id;
-                    $addPurchasePayment->pay_mode = $request->payment_method;
-                    $addPurchasePayment->paid_amount = $request->amount;
-                    $addPurchasePayment->payment_type = 2;
-                    $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                    $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
-                    $addPurchasePayment->month = date('F');
-                    $addPurchasePayment->year = date('Y');
-                    $addPurchasePayment->note = $request->note;
-
-                    if ($request->payment_method == 'Card') {
-                        $addPurchasePayment->card_no = $request->card_no;
-                        $addPurchasePayment->card_holder = $request->card_holder_name;
-                        $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                        $addPurchasePayment->card_type = $request->card_type;
-                        $addPurchasePayment->card_month = $request->month;
-                        $addPurchasePayment->card_year = $request->year;
-                        $addPurchasePayment->card_secure_code = $request->secure_code;
-                    } elseif ($request->payment_method == 'Cheque') {
-                        $addPurchasePayment->cheque_no = $request->cheque_no;
-                    } elseif ($request->payment_method == 'Bank-Transfer') {
-                        $addPurchasePayment->account_no = $request->account_no;
-                    } elseif ($request->payment_method == 'Custom') {
-                        $addPurchasePayment->transaction_no = $request->transaction_no;
-                    }
-                    $addPurchasePayment->admin_id = auth()->user()->id;
-
-                    if ($request->hasFile('attachment')) {
-                        $purchasePaymentAttachment = $request->file('attachment');
-                        $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
-                        $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
-                        $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
-                    }
-
-                    $addPurchasePayment->save();
-
-                    if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->credit += $request->amount;
-                        $account->balance += $request->amount;
-                        $account->save();
-
-                        // Add cash flow
-                        $addCashFlow = new CashFlow();
-                        $addCashFlow->account_id = $request->account_id;
-                        $addCashFlow->credit = $request->amount;
-                        $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
-                        $addCashFlow->transaction_type = 3;
-                        $addCashFlow->cash_type = 2;
-                        $addCashFlow->date = date('d-m-y', strtotime($request->date));
-                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                        $addCashFlow->month = date('F');
-                        $addCashFlow->year = date('Y');
-                        $addCashFlow->admin_id = auth()->user()->id;
-                        $addCashFlow->save();
-                    }
-
-                    $addSupplierLedger = new SupplierLedger();
-                    $addSupplierLedger->supplier_id = $supplier->id;
-                    $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-                    $addSupplierLedger->row_type = 2;
-                    $addSupplierLedger->save();
-
-                    if ($index == 1) {
-                        break;
-                    }
-                } elseif ($dueReturnInvoice->purchase_return_due < $request->amount) {
-                    // Update purchase
-                    $dueReturnInvoice->purchase_return_due -= $dueReturnInvoice->purchase_return_due;
-                    $dueReturnInvoice->save();
-
-                    // update purchase return
-                    $request->amount -= $dueReturnInvoice->purchase_return_due;
-                    $dueReturnInvoice->purchase_return->total_return_due_received += $dueReturnInvoice->purchase_return_due;
-                    $dueReturnInvoice->purchase_return->total_return_due -= $dueReturnInvoice->purchase_return_due;
-                    $dueReturnInvoice->purchase_return->save();
-
-                    // generate invoice ID
-                    $i = 5;
-                    $a = 0;
-                    $invoiceId = '';
-                    while ($a < $i) {
-                        $invoiceId .= rand(1, 9);
-                        $a++;
-                    }
-
-                    // Add purchase payment
-                    $addPurchasePayment = new PurchasePayment();
-                    $addPurchasePayment->invoice_id = 'PRPI' . date('dmy') . $invoiceId;
-                    $addPurchasePayment->purchase_id = $dueReturnInvoice->id;
-                    $addPurchasePayment->supplier_id = $supplierId;
-                    $addPurchasePayment->account_id = $request->account_id;
-                    $addPurchasePayment->pay_mode = $request->payment_method;
-                    $addPurchasePayment->paid_amount = $dueReturnInvoice->purchase_return_due;
-                    $addPurchasePayment->payment_type = 2;
-                    $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                    $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
-                    $addPurchasePayment->month = date('F');
-                    $addPurchasePayment->year = date('Y');
-                    $addPurchasePayment->note = $request->note;
-
-                    if ($request->payment_method == 'Card') {
-                        $addPurchasePayment->card_no = $request->card_no;
-                        $addPurchasePayment->card_holder = $request->card_holder_name;
-                        $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                        $addPurchasePayment->card_type = $request->card_type;
-                        $addPurchasePayment->card_month = $request->month;
-                        $addPurchasePayment->card_year = $request->year;
-                        $addPurchasePayment->card_secure_code = $request->secure_code;
-                    } elseif ($request->payment_method == 'Cheque') {
-                        $addPurchasePayment->cheque_no = $request->cheque_no;
-                    } elseif ($request->payment_method == 'Bank-Transfer') {
-                        $addPurchasePayment->account_no = $request->account_no;
-                    } elseif ($request->payment_method == 'Custom') {
-                        $addPurchasePayment->transaction_no = $request->transaction_no;
-                    }
-                    $addPurchasePayment->admin_id = auth()->user()->id;
-
-                    if ($request->hasFile('attachment')) {
-                        $purchasePaymentAttachment = $request->file('attachment');
-                        $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
-                        $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
-                        $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
-                    }
-                    $addPurchasePayment->save();
-
-                    if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->credit += $dueReturnInvoice->purchase_return_due;
-                        $account->balance += $dueReturnInvoice->purchase_return_due;
-                        $account->save();
-
-                        // Add cash flow
-                        $addCashFlow = new CashFlow();
-                        $addCashFlow->account_id = $request->account_id;
-                        $addCashFlow->credit = $dueReturnInvoice->purchase_return_due;
-                        $addCashFlow->balance = $account->balance;
-                        $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
-                        $addCashFlow->transaction_type = 3;
-                        $addCashFlow->cash_type = 2;
-                        $addCashFlow->date = date('d-m-y', strtotime($request->date));
-                        $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                        $addCashFlow->month = date('F');
-                        $addCashFlow->year = date('Y');
-                        $addCashFlow->admin_id = auth()->user()->id;
-                        $addCashFlow->save();
-                    }
-
-                    $addSupplierLedger = new SupplierLedger();
-                    $addSupplierLedger->supplier_id = $supplier->id;
-                    $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-                    $addSupplierLedger->row_type = 2;
-                    $addSupplierLedger->save();
                 }
                 $index++;
             }
         }
 
+        if ($request->amount > 0) {
+            $dueSupplierReturnInvoices = PurchaseReturn::where('supplier_id', $supplierId)
+                ->where('total_return_due', '>', 0)
+                ->where('purchase_id', NULL)
+                ->get();
+            if (count($dueSupplierReturnInvoices) > 0) {
+                $index = 0;
+                foreach ($dueSupplierReturnInvoices as $dueSupplierReturnInvoice) {
+                    if ($dueSupplierReturnInvoice->total_return_due > $request->amount) {
+                        if ($request->amount > 0) {
+                            $dueSupplierReturnInvoice->total_return_due -= $request->amount;
+                            $dueSupplierReturnInvoice->total_return_due_received += $request->amount;
+                            $dueSupplierReturnInvoice->save();
+                            // generate invoice ID
+                            $i = 5;
+                            $a = 0;
+                            $invoiceId = '';
+                            while ($a < $i) {
+                                $invoiceId .= rand(1, 9);
+                                $a++;
+                            }
+
+                            // Add purchase payment
+                            $addPurchasePayment = new PurchasePayment();
+                            $addPurchasePayment->invoice_id = 'RPV' . date('dmy') . $invoiceId;
+                            $addPurchasePayment->supplier_id = $supplierId;
+                            $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
+                            $addPurchasePayment->account_id = $request->account_id;
+                            $addPurchasePayment->pay_mode = $request->payment_method;
+                            $addPurchasePayment->paid_amount = $request->amount;
+                            $addPurchasePayment->payment_type = 2;
+                            $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
+                            $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                            $addPurchasePayment->month = date('F');
+                            $addPurchasePayment->year = date('Y');
+                            $addPurchasePayment->note = $request->note;
+
+                            if ($request->payment_method == 'Card') {
+                                $addPurchasePayment->card_no = $request->card_no;
+                                $addPurchasePayment->card_holder = $request->card_holder_name;
+                                $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
+                                $addPurchasePayment->card_type = $request->card_type;
+                                $addPurchasePayment->card_month = $request->month;
+                                $addPurchasePayment->card_year = $request->year;
+                                $addPurchasePayment->card_secure_code = $request->secure_code;
+                            } elseif ($request->payment_method == 'Cheque') {
+                                $addPurchasePayment->cheque_no = $request->cheque_no;
+                            } elseif ($request->payment_method == 'Bank-Transfer') {
+                                $addPurchasePayment->account_no = $request->account_no;
+                            } elseif ($request->payment_method == 'Custom') {
+                                $addPurchasePayment->transaction_no = $request->transaction_no;
+                            }
+                            $addPurchasePayment->admin_id = auth()->user()->id;
+
+                            if ($request->hasFile('attachment')) {
+                                $purchasePaymentAttachment = $request->file('attachment');
+                                $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
+                                $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
+                                $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
+                            }
+
+                            $addPurchasePayment->save();
+
+                            // Add Supplier return Payment invoice
+                            $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
+                            $addSupplierPaymentInvoice->supplier_payment_id = $addPurchasePayment->id;
+                            $addSupplierPaymentInvoice->supplier_return_id = $dueSupplierReturnInvoice->id;
+                            $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                            $addSupplierPaymentInvoice->type = 2;
+                            $addSupplierPaymentInvoice->save();
+                            $request->amount -= $request->amount;
+                        }
+                    } elseif ($dueSupplierReturnInvoice->total_return_due == $request->amount) {
+                        if ($request->amount > 0) {
+                            $dueSupplierReturnInvoice->total_return_due -= $request->amount;
+                            $dueSupplierReturnInvoice->total_return_due_received += $request->amount;
+                            $dueSupplierReturnInvoice->save();
+                            // generate invoice ID
+                            $i = 5;
+                            $a = 0;
+                            $invoiceId = '';
+                            while ($a < $i) {
+                                $invoiceId .= rand(1, 9);
+                                $a++;
+                            }
+
+                            // Add purchase payment
+                            $addPurchasePayment = new PurchasePayment();
+                            $addPurchasePayment->invoice_id = 'RPV' . date('dmy') . $invoiceId;
+                            $addPurchasePayment->supplier_id = $supplierId;
+                            $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
+                            $addPurchasePayment->account_id = $request->account_id;
+                            $addPurchasePayment->pay_mode = $request->payment_method;
+                            $addPurchasePayment->paid_amount = $request->amount;
+                            $addPurchasePayment->payment_type = 2;
+                            $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
+                            $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                            $addPurchasePayment->month = date('F');
+                            $addPurchasePayment->year = date('Y');
+                            $addPurchasePayment->note = $request->note;
+
+                            if ($request->payment_method == 'Card') {
+                                $addPurchasePayment->card_no = $request->card_no;
+                                $addPurchasePayment->card_holder = $request->card_holder_name;
+                                $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
+                                $addPurchasePayment->card_type = $request->card_type;
+                                $addPurchasePayment->card_month = $request->month;
+                                $addPurchasePayment->card_year = $request->year;
+                                $addPurchasePayment->card_secure_code = $request->secure_code;
+                            } elseif ($request->payment_method == 'Cheque') {
+                                $addPurchasePayment->cheque_no = $request->cheque_no;
+                            } elseif ($request->payment_method == 'Bank-Transfer') {
+                                $addPurchasePayment->account_no = $request->account_no;
+                            } elseif ($request->payment_method == 'Custom') {
+                                $addPurchasePayment->transaction_no = $request->transaction_no;
+                            }
+                            $addPurchasePayment->admin_id = auth()->user()->id;
+
+                            if ($request->hasFile('attachment')) {
+                                $purchasePaymentAttachment = $request->file('attachment');
+                                $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
+                                $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
+                                $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
+                            }
+                            $addPurchasePayment->save();
+
+                            // Add Supplier return Payment invoice
+                            $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
+                            $addSupplierPaymentInvoice->supplier_payment_id = $addPurchasePayment->id;
+                            $addSupplierPaymentInvoice->supplier_return_id = $dueSupplierReturnInvoice->id;
+                            $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                            $addSupplierPaymentInvoice->type = 2;
+                            $addSupplierPaymentInvoice->save();
+                            $request->amount -= $request->amount;
+                        }
+                    } elseif ($dueSupplierReturnInvoice->total_return_due < $request->amount) {
+                        if ($request->amount > 0) {
+                            $dueSupplierReturnInvoice->total_return_due -= $purchaseReturnInv->purchase_return_due;
+                            $dueSupplierReturnInvoice->total_return_due_received += $purchaseReturnInv->purchase_return_due;
+                            $dueSupplierReturnInvoice->save();
+                            // generate invoice ID
+                            $i = 5;
+                            $a = 0;
+                            $invoiceId = '';
+                            while ($a < $i) {
+                                $invoiceId .= rand(1, 9);
+                                $a++;
+                            }
+
+                            // Add purchase payment
+                            $addPurchasePayment = new PurchasePayment();
+                            $addPurchasePayment->invoice_id = 'RPV' . date('dmy') . $invoiceId;
+                            $addPurchasePayment->supplier_id = $supplierId;
+                            $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
+                            $addPurchasePayment->account_id = $request->account_id;
+                            $addPurchasePayment->pay_mode = $request->payment_method;
+                            $addPurchasePayment->paid_amount = $dueReturnInvoice->total_return_due;
+                            $addPurchasePayment->payment_type = 2;
+                            $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
+                            $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                            $addPurchasePayment->month = date('F');
+                            $addPurchasePayment->year = date('Y');
+                            $addPurchasePayment->note = $request->note;
+
+                            if ($request->payment_method == 'Card') {
+                                $addPurchasePayment->card_no = $request->card_no;
+                                $addPurchasePayment->card_holder = $request->card_holder_name;
+                                $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
+                                $addPurchasePayment->card_type = $request->card_type;
+                                $addPurchasePayment->card_month = $request->month;
+                                $addPurchasePayment->card_year = $request->year;
+                                $addPurchasePayment->card_secure_code = $request->secure_code;
+                            } elseif ($request->payment_method == 'Cheque') {
+                                $addPurchasePayment->cheque_no = $request->cheque_no;
+                            } elseif ($request->payment_method == 'Bank-Transfer') {
+                                $addPurchasePayment->account_no = $request->account_no;
+                            } elseif ($request->payment_method == 'Custom') {
+                                $addPurchasePayment->transaction_no = $request->transaction_no;
+                            }
+                            $addPurchasePayment->admin_id = auth()->user()->id;
+
+                            if ($request->hasFile('attachment')) {
+                                $purchasePaymentAttachment = $request->file('attachment');
+                                $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
+                                $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
+                                $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
+                            }
+                            $addPurchasePayment->save();
+
+                            // Add Supplier return Payment invoice
+                            $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
+                            $addSupplierPaymentInvoice->supplier_payment_id = $addPurchasePayment->id;
+                            $addSupplierPaymentInvoice->supplier_return_id = $dueSupplierReturnInvoice->id;
+                            $addSupplierPaymentInvoice->paid_amount = $dueSupplierReturnInvoice->total_return_due;
+                            $addSupplierPaymentInvoice->type = 2;
+                            $addSupplierPaymentInvoice->save();
+                            $request->amount -= $dueSupplierReturnInvoice->total_return_due;
+                        }
+                    }
+                    $index++;
+                }
+            }
+        }
+
+        $this->supplierUtil->adjustSupplierForSalePaymentDue($supplierId);
         return response()->json('Return amount received successfully.');
     }
 
@@ -935,6 +1143,7 @@ class SupplierController extends Controller
     public function paymentDelete(Request $request, $paymentId)
     {
         $deleteSupplierPayment = SupplierPayment::with('supplier_payment_invoices')->where('id', $paymentId)->first();
+        $storeSupplierPaymentInvoices = $deleteSupplierPayment->supplier_payment_invoices;
         if ($deleteSupplierPayment->attachment != null) {
             if (file_exists(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment))) {
                 unlink(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment));
@@ -955,19 +1164,15 @@ class SupplierController extends Controller
             }
         }
 
+        $deleteSupplierPayment->delete();
+
         // Update supplier payment invoices
-        if (count($deleteSupplierPayment->supplier_payment_invoices) > 0) {
-            foreach ($deleteSupplierPayment->supplier_payment_invoices as $pInvoice) {
-                if ($deleteSupplierPayment->type == 1) {
-                    $updatePurchase = Purchase::where('id', $pInvoice->purchase_id)->first();
-                    $updatePurchase->paid -= $pInvoice->paid_amount;
-                    $updatePurchase->due += $pInvoice->paid_amount;
-                    $updatePurchase->save();
-                }
+        if (count($storeSupplierPaymentInvoices) > 0) {
+            foreach ($storeSupplierPaymentInvoices as $pInvoice) {
+                $purchase = Purchase::where('id', $pInvoice->purchase_id)->first();
+                $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
             }
         }
-
-        $deleteSupplierPayment->delete();
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($deleteSupplierPayment->supplier_id);
         return response()->json('Payment deleted successfully.');

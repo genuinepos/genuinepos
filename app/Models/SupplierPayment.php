@@ -18,6 +18,11 @@ class SupplierPayment extends Model
         return $this->hasMany(SupplierPaymentInvoice::class);
     }
 
+    public function supplier_return_invoice()
+    {
+        return $this->hasMany(PurchaseReturn::class, 'supplier_return_id');
+    }
+
     public function account()
     {
         return $this->belongsTo(Account::class, 'account_id');

@@ -32,7 +32,7 @@ class ExpenseUtil
         $addLoan->loan_reason = $request->loan_reason;
         $addLoan->loan_by = 'Expense';
         $addLoan->created_user_id = auth()->id();
-        $addLoan->report_date = date('Y-m-d');
+        $addLoan->report_date = date('Y-m-d', strtotime($request->date));
         $addLoan->save();
 
         $addCompanyLoanAmount = LoanCompany::where('id', $request->company_id)->first();

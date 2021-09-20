@@ -9,6 +9,7 @@
         processing: true,
         serverSide: true,
         searchable: true,
+        aaSorting: [[1, 'desc']],
         "ajax": {
             "url": "{{ route('accounting.loan.index') }}",
             "data": function(d) {
@@ -24,6 +25,7 @@
             {data: 'reference_no', name: 'reference_no'},
             {data: 'c_name', name: 'c_name'},
             {data: 'type', name: 'type'},
+            {data: 'loan_by', name: 'loan_by'},
             {data: 'loan_amount', name: 'loan_amount'},
             {data: 'due', name: 'due'},
             {data: 'total_paid', name: 'total_paid'},

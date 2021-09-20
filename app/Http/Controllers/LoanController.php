@@ -90,7 +90,7 @@ class LoanController extends Controller
                     return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->report_date));
                 })->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->b_name) {
-                        return $row->b_name . '/' . $row->b_code . '(<b>BR</b>)';
+                        return $row->b_name . '/' . $row->b_code . '(<b>BL</b>)';
                     } else {
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
@@ -100,13 +100,19 @@ class LoanController extends Controller
                     } else {
                         return '<span class="text-danger"><strong>Get Loan</strong></span>';
                     }
+                })->editColumn('loan_by', function ($row) use ($generalSettings) {
+                    if ($row->loan_by) {
+                        return $row->loan_by;
+                    }else {
+                        return 'Direct Loan pay.';
+                    }
                 })->editColumn('loan_amount', function ($row) use ($generalSettings) {
                     return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->loan_amount;
                 })->editColumn('due', function ($row) use ($generalSettings) {
                     return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
                 })->editColumn('total_paid', function ($row) use ($generalSettings) {
                     return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_paid;
-                })->rawColumns(['report_date', 'branch', 'type', 'loan_amount', 'due', 'total_paid', 'action'])->smart(true)->make(true);
+                })->rawColumns(['report_date', 'branch', 'type', 'loan_by', 'loan_amount', 'due', 'total_paid', 'action'])->smart(true)->make(true);
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();

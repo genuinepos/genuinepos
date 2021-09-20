@@ -140,6 +140,7 @@
                                 <th>Ref. No.</th>
                                 <th>Company</th>
                                 <th>Type</th>
+                                <th>Loan By</th>
                                 <th>Loan Amount</th>
                                 <th>Due</th>
                                 <th>Total Paid</th>

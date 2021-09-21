@@ -1,42 +1,4 @@
 <div class="row tab_contant loans mt-1">
-    <div class="col-md-12">
-        <div class="sec-name">
-            <div class="col-md-12">
-                <form id="filter_tax_report_form" action="" method="get">
-                    @csrf
-                    <div class="form-group row">
-                        @if ($addons->branches == 1)
-                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                <div class="col-md-3">
-                                    <label><strong>Business Location :</strong></label>
-                                    <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                        <option value="">All</option>
-                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                        @foreach ($branches as $br)
-                                            <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
-                        @endif
-                        
-                        <div class="col-md-3">
-                            <label><strong>Company :</strong></label>
-                            <select name="company_id" class="form-control submit_able" id="f_company_id" autofocus>
-                                <option value="">All</option>
-                            </select>
-                        </div>
-            
-                        <div class="col-md-3">
-                            <label><strong>Date range :</strong></label>
-                            <input readonly type="text" class="form-control daterange submit_able_input" id="date_range">
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-   
     <div class="col-md-4">
         <div class="card" id="add_loan_form">
             <div class="section-header">
@@ -48,6 +10,14 @@
             <div class="form-area px-3 pb-2">
                 <form id="adding_loan_form" action="{{ route('accounting.loan.store') }}" method="POST">
                     @csrf
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label><strong>Date : <span class="text-danger">*</span></strong></label>
+                            <input type="text" name="date" class="form-control datepicker" id="date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                            <span class="error error_date"></span>
+                        </div>
+                    </div>
+
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label><strong>Company : <span class="text-danger">*</span></strong></label>
@@ -124,8 +94,44 @@
                 <div class="col-md-6">
                     <h6>Loans</h6>
                 </div>
+
             </div>
+
+
             <div class="widget_content">
+                
+                <form id="filter_tax_report_form" class="px-1" action="" method="get">
+                    @csrf
+                    <div class="form-group row">
+                        @if ($addons->branches == 1)
+                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                <div class="col-md-3">
+                                    <label><strong>Business Location :</strong></label>
+                                    <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                        <option value="">All</option>
+                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                        @foreach ($branches as $br)
+                                            <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+                        @endif
+                        
+                        <div class="col-md-3">
+                            <label><strong>Company :</strong></label>
+                            <select name="company_id" class="form-control submit_able" id="f_company_id" autofocus>
+                                <option value="">All</option>
+                            </select>
+                        </div>
+            
+                        <div class="col-md-3">
+                            <label><strong>Date range :</strong></label>
+                            <input readonly type="text" class="form-control daterange submit_able_input" id="date_range">
+                        </div>
+                    </div>
+                </form>
+
                 <div class="data_preloader">
                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                 </div>

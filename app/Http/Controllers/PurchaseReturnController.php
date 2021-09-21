@@ -118,7 +118,11 @@ class PurchaseReturnController extends Controller
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('purchases.returns.delete', $row->id) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
                         $html .= '<a class="dropdown-item" id="view_payment" href=""><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
                         if ($row->total_return_due > 0) {
-                            $html .= '<a class="dropdown-item" id="add_purchase_supplier_return_payment" href=""><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
+                            if($row->purchase_id){
+                                $html .= '<a class="dropdown-item" id="add_return_payment" href="'. route('purchases.return.payment.modal', [$row->purchase_id]) .'"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
+                            }else {
+                                $html .= '<a class="dropdown-item" id="add_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
+                            }
                         }
                     }
 
@@ -152,7 +156,7 @@ class PurchaseReturnController extends Controller
                     return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_return_due_received . '</b>';
                 })
                 ->editColumn('total_return_due', function ($row) use ($generalSettings) {
-                    return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ($row->total_return_due >= 0 ? $row->total_return_due :   0.00) . '</span></b>';
+                    return  '<b>'.json_decode($generalSettings->business, true)['currency']. '<span class="text-danger"> ' . ($row->total_return_due >= 0 ? $row->total_return_due :   bcadd(0, 0,2)) . '</span></b>';
                 })
 
                 ->editColumn('payment_status', function ($row) {
@@ -164,18 +168,13 @@ class PurchaseReturnController extends Controller
                     }
                     return $html;
                 })
-                ->setRowAttr([
-                    'data-href' => function ($row) {
-                        return route('purchases.returns.show', [$row->id]);
-                    }
-                ])
-                ->setRowClass('clickable_row')
                 ->rawColumns(['action', 'date', 'return_from', 'location', 'total_return_amount', 'total_return_due_received', 'total_return_due', 'payment_status'])
                 ->make(true);
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        return view('purchases.purchase_return.index', compact('branches'));
+        $suppliers = DB::table('suppliers')->where('status', 1)->get(['id', 'name', 'phone']);
+        return view('purchases.purchase_return.index', compact('branches', 'suppliers'));
     }
 
     // create purchase return view
@@ -184,6 +183,7 @@ class PurchaseReturnController extends Controller
         if (auth()->user()->permission->purchase['purchase_return'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+
         $purchaseId = $purchaseId;
         $purchase = Purchase::with(['warehouse', 'branch', 'supplier'])->where('id', $purchaseId)->first();
         return view('purchases.purchase_return.create', compact('purchaseId', 'purchase'));
@@ -283,11 +283,12 @@ class PurchaseReturnController extends Controller
     public function delete($purchaseReturnId)
     {
         $purchaseReturn = PurchaseReturn::with(['purchase', 'purchase.supplier', 'supplier', 'purchase_return_products'])->where('id', $purchaseReturnId)->first();
-        $purchaseReturn->purchase->is_return_available = 0;
+        
         $storeReturnProducts = $purchaseReturn->purchase_return_products;
         $storePurchase = $purchaseReturn->purchase;
         $storeSupplierId = $purchaseReturn->purchase ? $purchaseReturn->purchase->supplier_id : $purchaseReturn->supplier_id;
         if ($purchaseReturn->return_type == 1) {
+            $purchaseReturn->purchase->is_return_available = 0;
             if ($purchaseReturn->total_return_due_received > 0) {
                 return response()->json(['errorMsg' => "You can not delete this, casuse your have received some or full amount on this return."]);
             }
@@ -336,7 +337,7 @@ class PurchaseReturnController extends Controller
             }
         } else {
             if ($purchaseReturn->total_return_due_received > 0) {
-                return response()->json(['errorMsg' => "You can not delete this, casuse your have received some or full amount on this return."]);
+                return response()->json(['errorMsg' => "You can not delete this, cause your have received some or full amount on this return."]);
             }
 
             foreach ($purchaseReturn->purchase_return_products as $purchase_return_product) {
@@ -353,7 +354,7 @@ class PurchaseReturnController extends Controller
                         $productWarehouseVariant->variant_quantity += $purchase_return_product->return_qty;
                         $productWarehouseVariant->save();
                     }
-                } elseif ($purchaseReturn->purchase->branch_id) {
+                } elseif ($purchaseReturn->branch_id) {
                     // Addition product branch qty for adjustment
                     $productBranch = ProductBranch::where('branch_id', $purchaseReturn->purchase->branch_id)->where('product_id', $purchaseProduct->product_id)->first();
                     $productBranch->product_quantity += $purchase_return_product->return_qty;
@@ -783,5 +784,10 @@ class PurchaseReturnController extends Controller
 
         session()->flash('successMsg', 'Purchase return created successfully.');
         return response()->json('Purchase return created successfully.');
+    }
+
+    public function returnPaymentList()
+    {
+        # code...
     }
 }

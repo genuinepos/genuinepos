@@ -2,6 +2,7 @@
 @push('stylesheets')
 <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
+<link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
 @endpush
 @section('title', 'Loans - ')
 @section('content')
@@ -48,6 +49,7 @@
 @push('scripts')
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
     @include('accounting.loans.jsPartials.companyBodyJs')
     @include('accounting.loans.jsPartials.loanBodyJs')
     <script type="text/javascript">
@@ -78,5 +80,12 @@
         $(document).on('click', '.cancelBtn ', function () {
            $('.daterange').val('');
         });
+
+        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var _expectedDateFormat = '';
+        _expectedDateFormat = dateFormat.replace('d', 'dd');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+        $('.datepicker').datepicker({ format: _expectedDateFormat })
     </script>
 @endpush

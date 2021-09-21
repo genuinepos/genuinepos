@@ -84,7 +84,6 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -448,7 +447,7 @@
             });
         });
 
-        // //Show payment view modal with data
+        //Show payment view modal with data
         $(document).on('click', '#view_payment', function(e) {
             e.preventDefault();
             $('.data_preloader').show();

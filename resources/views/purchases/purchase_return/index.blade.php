@@ -48,7 +48,11 @@
                                                     <label><strong>Supplier :</strong></label>
                                                     <select name="supplier_id"
                                                         class="form-control selectpicker submit_able"
-                                                        id="supplier_id" data-live-search="true">
+                                                        id="supplier_id">
+                                                        <option value="">All</option>
+                                                        @foreach ($suppliers as $supplier)
+                                                            <option value="{{ $supplier->id }}">{{ $supplier->name .' ('.$supplier->phone.')' }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -71,8 +75,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- =========================================top section button=================== -->
                    
                     <div class="row mt-1">
                         <div class="card">
@@ -130,6 +132,66 @@
     <div id="purchase_return_details">
 
     </div>
+
+    @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
+    <!--Payment list modal-->
+    <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+        aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="payment_list_modal_body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Payment list modal-->
+
+    <!--Add Payment modal-->
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+        aria-hidden="true">
+
+    </div>
+    <!--Add Payment modal-->
+
+    <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+        aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content payment_details_contant">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span
+                            class="payment_invoice"></span>)</h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <div class="payment_details_area">
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 text-end">
+                            <ul class="list-unstyled">
+                                <li class="mt-1" id="payment_attachment"></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <ul class="list-unstyled">
+                                <li class="mt-1">
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                                    <button type="submit" id="print_payment" class="c-btn me-0 btn_blue">Print</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
@@ -179,53 +241,97 @@
             ],
         });
 
-        // Get all supplier for filter form
-        function setSupplier(){
-            $.ajax({
-                url:"{{route('purchases.get.all.supplier')}}",
-                async:true,
-                type:'get',
-                dataType: 'json',
-                success:function(suppliers){
-                    $('#supplier_id').append('<option value="">All</option>');
-                    $.each(suppliers, function(key, val){
-                        $('#supplier_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
-                    });
-                }
-            });
-        }
-        setSupplier();
-
         function returnDetails(url) {
+           
+        }
+
+        $(document).on('click', '.details_button', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
             $('.data_preloader').show();
             $.get(url, function(data) {
                 $('#purchase_return_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
             });
-        }
-
-        $(document).on('click', '.details_button', function(e) {
-            e.preventDefault();
-            var url = $(this).closest('tr').data('href');
-            returnDetails(url);
         });
 
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:last-child)', function(e) {
+        $(document).on('click', '#add_return_payment', function(e) {
             e.preventDefault();
-            var url = $(this).parent().data('href');
-            returnDetails(url);
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $.get(url,  function(data) {
+                $('#paymentModal').html(data);
+                $('#paymentModal').modal('show');
+                $('.data_preloader').hide();
+            });
         });
 
-        // Show details modal with data
-        $(document).on('click', '.details_button', function (e) {
+        //Add purchase payment request by ajax
+        $(document).on('submit', '#payment_form', function(e) {
             e.preventDefault();
-            var purchaseReturn = $(this).closest('tr').data('info');
-            purchaseReturnDetails(purchaseReturn);
-            $('#detailsModal').modal('show'); 
-        })
+            $('.loading_button').show();
+            var available = $('#p_available_amount').val();
+            var paying_amount = $('#p_amount').val();
+            if (parseFloat(paying_amount) > parseFloat(available)) {
+                $('.error_p_amount').html('Paying amount must not be greater then due amount.');
+                $('.loading_button').hide();
+                return;
+            }
+            var url = $(this).attr('action');
+            var inputs = $('.p_input');
+            inputs.removeClass('is-invalid');
+            $('.error').html('');
+            var countErrorField = 0;
+            $.each(inputs, function(key, val) {
+                var inputId = $(val).attr('id');
+                var idValue = $('#' + inputId).val();
+                if (idValue == '') {
+                    countErrorField += 1;
+                    var fieldName = $('#' + inputId).data('name');
+                    $('.error_' + inputId).html(fieldName + ' is required.');
+                }
+            });
 
+            if (countErrorField > 0) {
+                $('.loading_button').hide();
+                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (!$.isEmptyObject(data.errorMsg)) {
+                        toastr.error(data.errorMsg, 'ERROR');
+                        $('.loading_button').hide();
+                    } else {
+                        $('.loading_button').hide();
+                        $('#paymentModal').modal('hide');
+                        $('#paymentViewModal').modal('hide');
+                        toastr.success(data);
+                        table.ajax.reload();
+                    }
+                }
+            });
+        });
+
+        //Show payment view modal with data
+        $(document).on('click', '#view_return_payment', function(e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $.get(url, function(data) {
+                $('#payment_list_modal_body').html(data);
+                $('#paymentViewModal').modal('show');
+                $('.data_preloader').hide();
+            });
+        });
       
         $(document).on('click', '#delete',function(e){
             e.preventDefault(); 
@@ -235,18 +341,8 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
@@ -290,7 +386,6 @@
                 $('.submit_able_input').blur();
             }, 700);
         });
-
 
         // Make print
         $(document).on('click', '.print_btn', function (e) {

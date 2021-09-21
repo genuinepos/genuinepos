@@ -171,17 +171,16 @@ class ExpanseController extends Controller
         }
 
         // generate invoice ID
-        $i = 6;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+      
+        $invoiceId = 1;
+        $lastExpense = DB::table('expanses')->orderBy('id', 'desc')->select('id')->first();
+        if ($lastExpense) {
+            $invoiceId = ++$lastExpense->id;
         }
 
         // Add expanse
         $addExpanse = new Expanse();
-        $addExpanse->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'EXI') . date('ymd') . $invoiceId;
+        $addExpanse->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'ER') . date('my') . $invoiceId;
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $addExpanse->branch_id = NULL;
         }else {

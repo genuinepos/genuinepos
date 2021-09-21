@@ -22,7 +22,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Add Purchase Return</h5>
+                                            <h5>Add Purchase Return</h5> 
                                         </div>
 
                                         <div class="col-6">

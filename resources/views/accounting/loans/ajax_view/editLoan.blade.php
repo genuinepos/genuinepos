@@ -2,6 +2,14 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-6">
+            <label><strong>Date : <span class="text-danger">*</span></strong></label>
+            <input type="text" name="date" class="form-control datepicker" id="date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}">
+            <span class="error error_e_date"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-6">
             <label><strong>Company : <span class="text-danger">*</span></strong></label>
             <select name="company_id" class="form-control" id="e_company_id">
                 <option value="">Select Company</option>
@@ -57,3 +65,12 @@
         </div>
     </div>
 </form>
+
+<script>
+    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '';
+    _expectedDateFormat = dateFormat.replace('d', 'dd');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    $('.datepicker').datepicker({ format: _expectedDateFormat })
+</script>

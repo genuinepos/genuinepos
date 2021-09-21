@@ -290,6 +290,7 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
         Route::get('supplier/return/edit/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnEdit')->name('purchases.returns.supplier.return.edit');
         Route::get('get/editable/supplierReturn/{purchaseReturnId}', 'PurchaseReturnController@getEditableSupplierReturn')->name('purchases.return.get.editable.supplier.return');
         Route::post('supplier/return/update/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnUpdate')->name('purchases.returns.supplier.return.update');
+        Route::post('return/payments/{returnId}', 'PurchaseReturnController@returnPaymentList')->name('purchases.returns.purchase.return.payment.list');
     });
 });
 
@@ -456,7 +457,6 @@ Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Ht
     Route::get('sarach/product/{product_code}', 'TransferToWarehouseController@productSearch');
     Route::get('check/single/product/stock/{product_id}', 'TransferToWarehouseController@checkBranchSingleProduct');
     Route::get('check/branch/variant/qty/{product_id}/{variant_id}', 'TransferToWarehouseController@checkBranchProductVariant');
-
 
     // Receive stock from branch **route group**
     Route::group(['prefix' => 'receive'], function () {

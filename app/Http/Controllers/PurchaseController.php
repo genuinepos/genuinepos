@@ -624,7 +624,7 @@ class PurchaseController extends Controller
 
         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchase->supplier_id);
-        
+
         session()->flash('successMsg', 'Successfully purchase is updated');
         return response()->json('Successfully purchase is updated');
     }
@@ -1119,7 +1119,7 @@ class PurchaseController extends Controller
 
         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
-        
+
         return response()->json('Successfully payment is added.');
     }
 
@@ -1232,7 +1232,7 @@ class PurchaseController extends Controller
                 $updatePurchasePayment->cashFlow->delete();
             }
         }
-        
+
         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
 
@@ -1251,8 +1251,8 @@ class PurchaseController extends Controller
         $purchase = Purchase::with(['purchase_return'])->where('id', $purchaseId)->first();
         // update purchase return
         if ($purchase->purchase_return) {
-            $purchase->purchase_return->total_return_due_received = $purchase->purchase_return->total_return_due_received + $request->amount;
-            $purchase->purchase_return->total_return_due = $purchase->purchase_return->total_return_due - $request->amount;
+            $purchase->purchase_return->total_return_due_received += (float)$request->amount;
+            $purchase->purchase_return->total_return_due -= (float)$request->amount;
             $purchase->purchase_return->save();
         }
 
@@ -1260,7 +1260,10 @@ class PurchaseController extends Controller
         $i = 5;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) { $invoiceId .= rand(1, 9);$a++; }
+        while ($a < $i) {
+            $invoiceId .= rand(1, 9);
+            $a++;
+        }
 
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
@@ -1354,8 +1357,8 @@ class PurchaseController extends Controller
         $purchaseReturn = PurchaseReturn::where('id', $updatePurchasePayment->purchase->purchase_return->id)->first();
         $purchaseReturn->total_return_due_received -= $updatePurchasePayment->paid_amount;
         $purchaseReturn->total_return_due_received += (float)$request->amount;
-        $purchaseReturn->total_return_due -= $updatePurchasePayment->paid_amount;
-        $purchaseReturn->total_return_due += (float)$request->amount;
+        $purchaseReturn->total_return_due += $updatePurchasePayment->paid_amount;
+        $purchaseReturn->total_return_due -= (float)$request->amount;
         $purchaseReturn->save();
 
         // Update previous account and delete previous cashflow.
@@ -1414,7 +1417,8 @@ class PurchaseController extends Controller
 
             // Add or update cash flow
             $cashFlow = CashFlow::where('account_id', $request->account_id)
-                ->where('purchase_payment_id', $updatePurchasePayment->id)->first();
+                ->where('purchase_payment_id', $updatePurchasePayment->id)
+                ->first();
             if ($cashFlow) {
                 $cashFlow->credit = $request->amount;
                 $cashFlow->balance = $account->balance;

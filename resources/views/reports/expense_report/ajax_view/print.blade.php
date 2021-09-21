@@ -32,6 +32,7 @@
                 <tr>
                     <th class="text-start">Date</th>
                     <th class="text-start">Reference No</th>
+                    <th class="text-start">Description</th>
                     <th class="text-start">B.Location</th>
                     <th class="text-start">Expense For</th>
                     <th class="text-start">Amount</th>
@@ -50,6 +51,17 @@
                     <tr>
                         <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ex->date)) }}</td>
                         <td class="text-start">{{ $ex->invoice_id }}</td>
+                        <td class="text-start">
+                            @php
+                                $expenseDescriptions = DB::table('expense_descriptions')
+                                ->where('expense_id', $ex->id)
+                                ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
+                                ->select('expanse_categories.name', 'expanse_categories.code')->get();
+                            @endphp
+                            @foreach ($expenseDescriptions as $exDescription)
+                                {{ $exDescription->name.'('.$exDescription->code.')' }}
+                            @endforeach
+                        </td>
                         <td class="text-start">
                             @if ($ex->branch_name) 
                                 {!! $ex->branch_name . '/' . $ex->branch_code . '(<b>BR</b>)' !!}
@@ -99,7 +111,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Paid :</th>
+                    <th class="text-end">Total Due :</th>
                     <th class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.bcadd($totalDue, 0, 2) }}</th>
                 </tr>
             </thead>

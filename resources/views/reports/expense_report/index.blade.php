@@ -185,7 +185,7 @@
             }
         },
         columnDefs: [{
-            "targets": [4, 5,  ],
+            "targets": [4, 5],
             "orderable": false,
             "searchable": false
         }],
@@ -208,7 +208,7 @@
             var paid = sum_table_col($('.data_tbl'), 'paid');
             $('#paid').text(parseFloat(paid).toFixed(2));
             var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(parseFloat(paid).toFixed(2));
+            $('#due').text(parseFloat(due).toFixed(2));
         },
     });
 

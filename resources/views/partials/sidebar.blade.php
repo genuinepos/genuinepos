@@ -542,6 +542,10 @@
                                     </div>
                                 @endif
                             @endif
+                        </div>
+                        <br>
+                        <hr>
+                        <div class="row">
 
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
                                 @if (auth()->user()->permission->sale['pos_all'] == '1')
@@ -564,7 +568,10 @@
                                     </div>
                                 @endif
                             @endif
-
+                        </div>
+                        <br>
+                        <hr>
+                        <div class="row">
                             @if (auth()->user()->permission->sale['sale_draft'] == '1')
                                 <div
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -611,7 +618,7 @@
                                     </div>
                                     <p class="switch_text">@lang('menu.shipments')</p>
                                 </div>
-                            @endif
+                            @endif 
                         </div>
                     </div>
                 </div>

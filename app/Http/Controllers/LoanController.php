@@ -125,7 +125,8 @@ class LoanController extends Controller
             'company_id' => 'required',
             'type' => 'required',
             'loan_amount' => 'required',
-            'account_id' => 'required'
+            'account_id' => 'required',
+            'date' => 'required'
         ], [
             'company_id.required' => 'Company field is required.',
             'account_id.required' => 'Account field is required.',
@@ -191,8 +192,8 @@ class LoanController extends Controller
             $addCashFlow->balance = $account->balance;
             $addCashFlow->loan_id = $addLoan->id;
             $addCashFlow->transaction_type = 10;
-            $addCashFlow->date = date('d-m-Y');
-            $addCashFlow->report_date = date('Y-m-d');
+            $addCashFlow->date = $request->date;
+            $addCashFlow->report_date = date('Y-m-d', $request->date);
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->id();
@@ -220,7 +221,8 @@ class LoanController extends Controller
             'company_id' => 'required',
             'type' => 'required',
             'loan_amount' => 'required',
-            'account_id' => 'required'
+            'account_id' => 'required',
+            'date' => 'required'
         ], [
             'company_id.required' => 'Company field is required.',
             'account_id.required' => 'Account field is required.',
@@ -276,7 +278,7 @@ class LoanController extends Controller
                 $presentAccount->save();
             }
 
-            $addCashFlow = CashFlow::where('loan_id', $updateLoan->id)->where('loan_payment_id', NULL)->first();
+            $addCashFlow = CashFlow::where('loan_id', $updateLoan->id)->first();
             $addCashFlow->account_id = $request->account_id;
             if ($request->type == 1) {
                 $addCashFlow->debit = $request->loan_amount;
@@ -301,7 +303,7 @@ class LoanController extends Controller
         $updateLoan->account_id = $request->account_id;
         $updateLoan->loan_reason = $request->loan_reason;
         $updateLoan->created_user_id = auth()->id();
-        $updateLoan->report_date = date('Y-m-d');
+        $updateLoan->report_date = date('Y-m-d', strtotime($request->date));
         $updateLoan->save();
 
         return response()->json('Loan updated Successfully');

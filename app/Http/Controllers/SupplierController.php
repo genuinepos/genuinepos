@@ -933,6 +933,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->invoice_id = 'RPV' . date('dmy') . $invoiceId;
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
+                            $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;
                             $addPurchasePayment->account_id = $request->account_id;
                             $addPurchasePayment->pay_mode = $request->payment_method;
                             $addPurchasePayment->paid_amount = $request->amount;
@@ -997,6 +998,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->invoice_id = 'RPV' . date('dmy') . $invoiceId;
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
+                            $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;
                             $addPurchasePayment->account_id = $request->account_id;
                             $addPurchasePayment->pay_mode = $request->payment_method;
                             $addPurchasePayment->paid_amount = $request->amount;
@@ -1060,6 +1062,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->invoice_id = 'RPV' . date('dmy') . $invoiceId;
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
+                            $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;
                             $addPurchasePayment->account_id = $request->account_id;
                             $addPurchasePayment->pay_mode = $request->payment_method;
                             $addPurchasePayment->paid_amount = $dueSupplierReturnInvoice->total_return_due;

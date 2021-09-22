@@ -402,7 +402,7 @@ class CustomerController extends Controller
                 'money_receipt',
                 'customer_payment'
             ]
-        )->where('customer_id', $customerId)->orderBy('id', 'desc')->get();
+        )->where('customer_id', $customerId)->orderBy('report_date', 'ASC')->get();
 
         $customer = DB::table('customers')->where('id', $customerId)->select('id', 'contact_id', 'name')->first();
         return view('contacts.customers.ajax_view.ledger_list', compact('ledgers', 'customer'));
@@ -423,7 +423,7 @@ class CustomerController extends Controller
                 'money_receipt',
                 'customer_payment'
             ]
-        )->where('customer_id', $customerId)->orderBy('id', 'desc')->get();
+        )->where('customer_id', $customerId)->orderBy('report_date', 'ASC')->get();
 
         $customer = DB::table('customers')->where('id', $customerId)->select(
             'id',

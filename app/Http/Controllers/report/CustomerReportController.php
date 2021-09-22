@@ -28,6 +28,9 @@ class CustomerReportController extends Controller
 
             $customers = $query->select(
                 'customers.name',
+                'customers.contact_id',
+                'customers.phone',
+                'customers.address',
                 'customers.opening_balance',
                 'customers.total_paid',
                 'customers.total_sale',
@@ -36,6 +39,9 @@ class CustomerReportController extends Controller
             );
 
             return DataTables::of($customers)
+                ->editColumn('name', function ($row) use ($generalSettings) {
+                    return $row->name.' (ID: '.$row->contact_id.')';
+                })
                 ->editColumn('opening_balance', function ($row) use ($generalSettings) {
                     return '<b><span class="opening_balance" data-value="' . $row->opening_balance . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->opening_balance . '</span></b>';
                 })
@@ -51,7 +57,7 @@ class CustomerReportController extends Controller
                 ->editColumn('total_sale_return_due', function ($row) use ($generalSettings) {
                     return '<b><span class="total_sale_return_due" data-value="' . $row->total_sale_return_due . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_return_due . '</span></b>';
                 })
-                ->rawColumns(['opening_balance', 'total_paid', 'total_sale', 'total_sale_due', 'total_due', 'total_sale_return_due'])
+                ->rawColumns(['name', 'opening_balance', 'total_paid', 'total_sale', 'total_sale_due', 'total_due', 'total_sale_return_due'])
                 ->make(true);
         }
 
@@ -69,6 +75,9 @@ class CustomerReportController extends Controller
 
         $customerReports = $query->select(
             'customers.name',
+            'customers.contact_id',
+            'customers.phone',
+            'customers.address',
             'customers.opening_balance',
             'customers.total_paid',
             'customers.total_sale',

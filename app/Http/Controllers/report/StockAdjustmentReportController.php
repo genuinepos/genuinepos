@@ -85,7 +85,7 @@ class StockAdjustmentReportController extends Controller
                     'admin_and_users.prefix',
                     'admin_and_users.name',
                     'admin_and_users.last_name',
-                )->orderBy('id', 'desc');
+                )->orderBy('stock_adjustments.report_date_ts', 'desc');
             } else {
                 $adjustments = $query->select(
                     'stock_adjustments.*',
@@ -96,7 +96,8 @@ class StockAdjustmentReportController extends Controller
                     'admin_and_users.prefix',
                     'admin_and_users.name as cr_name',
                     'admin_and_users.last_name',
-                )->where('stock_adjustments.branch_id', auth()->user()->branch_id);
+                )->orderBy('stock_adjustments.report_date_ts', 'desc')
+                ->where('stock_adjustments.branch_id', auth()->user()->branch_id);
             }
 
             return DataTables::of($adjustments)

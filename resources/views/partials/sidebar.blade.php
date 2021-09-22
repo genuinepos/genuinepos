@@ -775,8 +775,7 @@
                         </div>
                         <div class="container-fluid">
                             <div class="row">
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('expanses.create') }}" class="bar-link">
                                             <span><i class="fas fa-plus-square"></i></span>
@@ -785,6 +784,17 @@
                                     <p class="switch_text">@lang('menu.add_expense')</p>
                                 </div>
 
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('expanses.categories.index') }}" class="bar-link">
+                                            <span><i class="fas fa-cubes"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.expense_categories')</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('expanses.index') }}" class="bar-link">
@@ -796,11 +806,11 @@
 
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
-                                        <a href="{{ route('expanses.categories.index') }}" class="bar-link">
-                                            <span><i class="fas fa-cubes"></i></span>
+                                        <a href="{{ route('expanses.category.wise.expense') }}" class="bar-link">
+                                            <span><i class="far fa-list-alt"></i></span>
                                         </a>
                                     </div>
-                                    <p class="switch_text">@lang('menu.expense_categories')</p>
+                                    <p class="switch_text">@lang('menu.category_wise_expenses')</p>
                                 </div>
                             </div>
                         </div>

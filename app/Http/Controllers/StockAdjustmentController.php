@@ -77,7 +77,7 @@ class StockAdjustmentController extends Controller
                     'admin_and_users.name',
                     'admin_and_users.last_name',
                 )->where('stock_adjustments.branch_id', auth()->user()->branch_id)
-                ->orderBy('id', 'desc');
+                ->orderBy('stock_adjustments.report_date_ts', 'desc');
             }
 
             return DataTables::of($adjustments)

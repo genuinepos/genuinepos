@@ -6,22 +6,21 @@ use App\Models\Loan;
 use App\Models\Account;
 use App\Models\CashFlow;
 use App\Models\LoanCompany;
+use Illuminate\Support\Facades\DB;
 
 class ExpenseUtil
 {
     public function addLoanByExpense($request, $expenseId)
     {
         // generate reference no
-        $i = 4;
-        $a = 0;
-        $refId = '';
-        while ($a < $i) {
-            $refId .= rand(1, 9);
-            $a++;
+        $refId = 1;
+        $lastLoan = DB::table('loans')->orderBy('id', 'desc')->first();
+        if ($lastLoan) {
+            $refId = ++$lastLoan->id;
         }
 
         $addLoan = new Loan();
-        $addLoan->reference_no = 'LP'. date('Y') . $refId;
+        $addLoan->reference_no = 'LP'. date('my') . $refId;
         $addLoan->branch_id = auth()->user()->branch_id;
         $addLoan->expense_id = $expenseId;
         $addLoan->loan_company_id = $request->company_id;

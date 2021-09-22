@@ -21,9 +21,9 @@
         columns: [
             {data: 'action', name: 'action'},
             {data: 'report_date',name: 'report_date'},
-            {data: 'branch',name: 'branch'},
+            {data: 'branch',name: 'branches.name'},
             {data: 'reference_no', name: 'reference_no'},
-            {data: 'c_name', name: 'c_name'},
+            {data: 'c_name', name: 'loan_companies.name'},
             {data: 'type', name: 'type'},
             {data: 'loan_by', name: 'loan_by'},
             {data: 'loan_amount', name: 'loan_amount'},

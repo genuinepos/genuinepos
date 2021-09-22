@@ -84,7 +84,6 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -253,7 +252,6 @@
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-            aaSorting: [[0, 'desc']],
             "ajax": {
                 "url": "{{ route('sales.index2') }}",
                 "data": function(d) {

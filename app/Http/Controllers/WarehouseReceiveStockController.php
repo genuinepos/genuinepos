@@ -34,7 +34,8 @@ class WarehouseReceiveStockController extends Controller
                     'warehouses.warehouse_code',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                )->orderBy('id', 'desc')->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id);
+                )->orderBy('transfer_stock_to_warehouses.report_date', 'desc')
+                ->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id);
 
             return DataTables::of($transfers)
                 ->addColumn('action', function ($row) {
@@ -52,13 +53,13 @@ class WarehouseReceiveStockController extends Controller
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return  $row->branch_name . '/' . $row->branch_code;
+                        return $row->branch_name . '/' . $row->branch_code;
                     } else {
                         return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('to',  function ($row) {
-                    return  $row->warehouse_name . '/' . $row->warehouse_code;
+                    return $row->warehouse_name . '/' . $row->warehouse_code;
                 })
                 ->editColumn('status', function ($row) {
                     $html = '';

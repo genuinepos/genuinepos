@@ -86,6 +86,10 @@
         _expectedDateFormat = dateFormat.replace('d', 'dd');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
         _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-        $('.datepicker').datepicker({ format: _expectedDateFormat })
+        _expectedDateFormat = _expectedDateFormat.replace('/', '-');
+        _expectedDateFormat = _expectedDateFormat.replace('/', '-');
+        _expectedDateFormat = _expectedDateFormat.replace('/', '-');
+        console.log(_expectedDateFormat);
+        $('.datepicker').datepicker({ format: _expectedDateFormat });
     </script>
 @endpush

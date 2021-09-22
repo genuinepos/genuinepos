@@ -39,7 +39,7 @@ class TransferToWarehouseController extends Controller
                     'branches.name as branch_name',
                     'branches.branch_code',
                 )->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)
-                ->orderBy('transfer_stock_to_warehouses.id', 'desc');
+                ->orderBy('transfer_stock_to_warehouses.report_date', 'desc');
 
             return DataTables::of($transfers)
                 ->addColumn('action', function ($row) {

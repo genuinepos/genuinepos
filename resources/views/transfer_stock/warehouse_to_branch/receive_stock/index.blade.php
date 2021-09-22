@@ -38,7 +38,7 @@
                                                 <tr>
                                                     <th class="text-start">Date</th>
                                                     <th class="text-start">Reference ID</th>
-                                                    <th class="text-start">Branch(From)</th>
+                                                    <th class="text-start">B.Location(From)</th>
                                                     <th class="text-start">Warehouse(To)</th>
                                                     <th class="text-start">Total Item</th>
                                                     <th class="text-start">Total Qty</th>
@@ -80,7 +80,6 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[0, 'asc']],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax: "{{ route('transfer.stocks.to.branch.receive.stock.index') }}",
             columnDefs: [{"targets": [2, 3, 4, 7],"orderable": false,"searchable": false}],

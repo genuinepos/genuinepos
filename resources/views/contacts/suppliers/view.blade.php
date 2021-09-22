@@ -333,7 +333,6 @@
         purchase_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
-            aaSorting: [[0, 'asc']],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax:"{{ url('contacts/suppliers/view', $supplierId) }}",
             columnDefs: [{
@@ -442,9 +441,11 @@
             });
         }
         getSupplierAllInformations();
-
-         // Pass sale details in the details modal
-         function purchaseDetails(url) {
+        
+        // Show details modal with data
+        $(document).on('click', '.details_button', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
             $('#purchase_table_preloader').show();
             $.ajax({
                 url:url,
@@ -455,21 +456,9 @@
                     $('#detailsModal').modal('show');
                 }
             });
-        }
-    
-        // Show details modal with data
-        $(document).on('click', '.details_button', function (e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            purchaseDetails(url);
         });
 
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:first-child, :last-child, :nth-child(8))', function(e){
-            e.preventDefault();
-            var purchase = $(this).parent().data('href');
-            purchaseDetails(purchase);
-        });
+  
 
          // Show change status modal and pass actual link in the change status form
          $(document).on('click', '#change_status', function (e) {

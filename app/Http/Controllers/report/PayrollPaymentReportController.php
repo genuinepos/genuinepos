@@ -47,7 +47,7 @@ class PayrollPaymentReportController extends Controller
                     'paid_by.prefix as pb_prefix',
                     'paid_by.name as pb_name',
                     'paid_by.last_name as pb_last_name',
-                )->orderBy('hrm_payroll_payments.id', 'desc');
+                )->orderBy('hrm_payroll_payments.report_date', 'desc');
             } else {
                 $payrollPayments = $payrollPaymentQ->select(
                     'hrm_payroll_payments.date',
@@ -62,7 +62,7 @@ class PayrollPaymentReportController extends Controller
                     'paid_by.name as pb_name',
                     'paid_by.last_name as pb_last_name',
                 )->where('admin_and_users.branch_id', auth()->user()->branch_id)
-                    ->orderBy('hrm_payroll_payments.id', 'desc');
+                    ->orderBy('hrm_payroll_payments.report_date', 'desc');
             }
 
             return DataTables::of($payrollPayments)
@@ -127,7 +127,7 @@ class PayrollPaymentReportController extends Controller
                 'paid_by.prefix as pb_prefix',
                 'paid_by.name as pb_name',
                 'paid_by.last_name as pb_last_name',
-            )->orderBy('hrm_payroll_payments.id', 'desc')->orderBy('hrm_payroll_payments.id', 'desc')->get();
+            )->orderBy('hrm_payroll_payments.id', 'desc')->orderBy('hrm_payroll_payments.report_date', 'desc')->get();
         } else {
             $payrollPayments = $payrollPaymentQ->select(
                 'hrm_payroll_payments.date',
@@ -143,7 +143,7 @@ class PayrollPaymentReportController extends Controller
                 'paid_by.name as pb_name',
                 'paid_by.last_name as pb_last_name',
             )->where('admin_and_users.branch_id', auth()->user()->branch_id)
-                ->orderBy('hrm_payroll_payments.id', 'desc')->get();
+                ->orderBy('hrm_payroll_payments.report_date', 'desc')->get();
         }
 
         return view('reports.payroll_payment_report.ajax_view.payroll_payment_report_print', compact('payrollPayments', 'branch_id', 's_date', 'e_date'));

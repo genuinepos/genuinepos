@@ -3,7 +3,7 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css" />
 @endpush
-@section('title', 'All Stock Adjustment - ')
+@section('title', 'Category Wise Expense List - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -13,11 +13,10 @@
                         <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-sliders-h"></span>
-                                <h5>Stock Adjustments</h5>
+                                <span class="fas fa-money-bill"></span>
+                                <h5>Category Wise Expenses</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -28,10 +27,9 @@
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
                                                                 <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                                 @foreach ($branches as $branch)
@@ -43,23 +41,29 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
-                                                <div class="col-md-3">
-                                                    <label><strong>Type :</strong></label>
-                                                    <select name="type" id="type" class="form-control submit_able" autofocus>
+                                             
+                                                <div class="col-md-2">
+                                                    <label><strong>Expense For :</strong></label>
+                                                    <select name="admin_id" class="form-control submit_able" id="admin_id" >
                                                         <option value="">All</option>
-                                                        <option value="1">Normal</option>
-                                                        <option value="2">Abnormal</option>
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
+                                                    <label><strong>Category :</strong></label>
+                                                    <select name="category_id" class="form-control submit_able" id="category_id" >
+                                                        <option value="">All</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
+                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input"
+                                                            autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -70,18 +74,11 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
-                    <div class="row mt-1">
+                    <div class="row mt-2">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Adjustment</h6>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="{{ route('stock.adjustments.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                    </div>
+                                    <h6>Category Wise Expense List</h6>
                                 </div>
                             </div>
 
@@ -93,21 +90,27 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Actions</th>
                                                 <th class="text-start">Date</th>
-                                                <th class="text-start">Reference No</th>
-                                                <th class="text-start">Adjustment location</th>
-                                                <th class="text-start">Business location</th>
-                                                <th class="text-start">Type</th>
-                                                <th class="text-start">Total Amount</th>
-                                                <th class="text-start">Total Recovered Amount</th>
-                                                <th class="text-start">Reason</th>
-                                                <th class="text-start">Created By</th>
+                                                <th class="text-start">Expense Category</th>
+                                                <th class="text-start">Reference ID</th>
+                                                <th class="text-start">B.Location</th>
+                                                <th class="text-start">Amount</th>
+                                                <th class="text-start">Expanse For</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
                                         </tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="4" class="text-end text-white">Total :</th>
+                                                <th class="text-white">
+                                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                    <span id="total_amount"></span>
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -122,57 +125,64 @@
             </div>
         </div>
     </div>
-
-    <div class="adjustment_details"> </div>
 @endsection
 @push('scripts')
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
-    
     <script>
-        adjustment_table = $('.data_tbl').DataTable({
+        var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [ 
-                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
             ],
             "processing": true,
             "serverSide": true,
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             "ajax": {
-                "url": "{{ route('stock.adjustments.index') }}",
+                "url": "{{ route('expanses.category.wise.expense') }}",
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
-                    d.type = $('#status').val();
+                    d.admin_id = $('#admin_id').val();
+                    d.category_id = $('#category_id').val();
                     d.date_range = $('#date_range').val();
                 }
             },
-            columnDefs: [{"targets": [0, 3, 4, 9],"orderable": false,"searchable": false}],
             columns: [
-                {data: 'action'},
-                {data: 'date', name: 'date'},
+                {data: 'date', name: 'date' },
+                {data: 'category_name', name: 'expanse_categories.name'},
                 {data: 'invoice_id', name: 'invoice_id'},
-                {data: 'adjustment_location', name: 'adjustment_location'},
-                {data: 'business_location', name: 'branches.name'},
-                {data: 'type', name: 'type'},
-                {data: 'net_total_amount', name: 'net_total_amount'},
-                {data: 'recovered_amount', name: 'recovered_amount'},
-                {data: 'reason', name: 'reason'},
-                {data: 'created_by', name: 'admin_and_users.name'},
-            ],
+                {data: 'from', name: 'branches.name'},
+                {data: 'amount', name: 'amount' },
+                {data: 'user_name', name: 'admin_and_users.name'},
+            ],fnDrawCallback: function() {
+                var paid = sum_table_col($('.data_tbl'), 'amount');
+                $('#total_amount').text(parseFloat(paid).toFixed(2));
+            },
         });
+
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
         //Submit filter form by select input changing
         $(document).on('change', '.submit_able', function () {
-            adjustment_table.ajax.reload();
+            table.ajax.reload();
         });
 
         //Submit filter form by date-range field blur 
         $(document).on('blur', '.submit_able_input', function () {
             setTimeout(function() {
-                adjustment_table.ajax.reload();
+                table.ajax.reload();
             }, 500);
         });
 
@@ -184,74 +194,40 @@
             }, 500);
         });
 
-        // Pass sale details in the details modal
-        function adjustmentDetails(url) {
-            $('.data_preloader').show();
+        // Set accounts in payment and payment edit form
+        function setExpanseCategory(){
             $.ajax({
-                url:url,
+                url:"{{route('expanses.all.categories')}}",
+                async:true,
                 type:'get',
-                success:function(data){
-                    $('.adjustment_details').html(data);
-                    $('.data_preloader').hide();
-                    $('#detailsModal').modal('show');
+                dataType: 'json',
+                success:function(categories){
+                    $.each(categories, function (key, category) {
+                        $('#category_id').append('<option value="'+category.id+'">'+ category.name +' ('+category.code+')'+'</option>');
+                    });
                 }
             });
         }
+        setExpanseCategory();
 
-        // Show details modal with data
-        $(document).on('click', '.details_button', function (e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            adjustmentDetails(url);
-        });
-
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
-                }
-            });
-        });
-            
-        //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
+        // Set accounts in payment and payment edit form
+        function setAdmin(){
             $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-                    adjustment_table.ajax.reload();
-                    toastr.success(data);
+                url:"{{route('expanses.all.admins')}}",
+                async:true,
+                type:'get',
+                dataType: 'json',
+                success:function(admins){
+                    $.each(admins, function (key, admin) {
+                        var prefix = admin.prefix ? admin.prefix : '';
+                        var last_name = admin.last_name ? admin.last_name : '';
+                        $('#admin_id').append('<option value="'+admin.id+'">'+ admin.name+' '+last_name+'</option>');
+                    });
                 }
             });
-        });
-
-        // Make print
-        $(document).on('click', '.print_btn', function (e) {
-           e.preventDefault(); 
-            var body = $('.adjustment_print_template').html();
-            var header = $('.heading_area').html();
-            $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
-                printDelay: 500,
-                header : null,        
-            });
-        });
+        }setAdmin();
     </script>
-  
+
     <script type="text/javascript">
         $(function() {
             var start = moment().startOf('year');
@@ -279,12 +255,6 @@
 
         $(document).on('click', '.cancelBtn ', function () {
            $('.daterange').val('');
-        });
-
-        $(document).on('change', '#payment_method', function () {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#'+value).show();
         });
     </script>
 @endpush

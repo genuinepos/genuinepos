@@ -62,7 +62,7 @@ class PurchaseUtil
                 'created_by.prefix as created_prefix',
                 'created_by.name as created_name',
                 'created_by.last_name as created_last_name',
-            )->orderBy('purchases.id', 'desc');
+            )->orderBy('purchases.report_date', 'desc');
         } else {
             $purchases = $query->select(
                 'purchases.*',
@@ -74,7 +74,7 @@ class PurchaseUtil
                 'created_by.prefix as created_prefix',
                 'created_by.name as created_name',
                 'created_by.last_name as created_last_name',
-            )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchases.id', 'desc');
+            )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchases.report_date', 'desc');
         }
 
         return DataTables::of($purchases)
@@ -316,7 +316,7 @@ class PurchaseUtil
                 'product_variants.variant_code',
                 'product_variants.variant_price',
                 'suppliers.name as supplier_name'
-            )->orderBy('purchase_products.id', 'desc');
+            )->orderBy('purchases.report_date', 'desc');
         } else {
             $purchaseProducts = $query->select(
                 'purchase_products.purchase_id',
@@ -335,7 +335,7 @@ class PurchaseUtil
                 'product_variants.variant_code',
                 'product_variants.variant_price',
                 'suppliers.name as supplier_name'
-            )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchase_products.id', 'desc');
+            )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchases.report_date', 'desc');
         }
 
         return DataTables::of($purchaseProducts)

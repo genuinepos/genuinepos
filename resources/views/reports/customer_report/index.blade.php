@@ -70,9 +70,9 @@
                                                             <thead>
                                                                 <tr class="text-start">
                                                                     <th>Customer</th>
+                                                                    <th>Opening Balance Due</th>
                                                                     <th>Total Sale</th>
                                                                     <th>Total Paid</th>
-                                                                    <th>Opening Balance Due</th>
                                                                     <th>Total Due</th>
                                                                     <th>Total Return Due</th>
                                                                 </tr>
@@ -81,13 +81,13 @@
                                                                 
                                                             </tbody>
                                                             <tfoot>
-                                                                <tr>
-                                                                    <th class="text-end">Total</th>
-                                                                    <th id="total_sale">0.00</th>
-                                                                    <th id="total_paid">0.00</th>
-                                                                    <th id="total_op_blc_due">0.00</th>
-                                                                    <th id="total_sale_due">0.00</th>
-                                                                    <th id="total_return_due">0.00</th>
+                                                                <tr class="bg-secondary">
+                                                                    <th class="text-end text-white">Total :</th>
+                                                                    <th id="total_op_blc_due" class="text-white">0.00</th>
+                                                                    <th id="total_sale" class="text-white">0.00</th>
+                                                                    <th id="total_paid" class="text-white">0.00</th>
+                                                                    <th id="total_sale_due" class="text-white">0.00</th>
+                                                                    <th id="total_return_due" class="text-white">0.00</th>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
@@ -124,9 +124,9 @@
         },
         columns: [
             { data: 'name', name: 'name'},
+            { data: 'opening_balance', name: 'opening_balance'},
             { data: 'total_sale', name: 'total_sale'},
             { data: 'total_paid', name: 'total_paid'},
-            { data: 'opening_balance', name: 'opening_balance'},
             { data: 'total_sale_due', name: 'total_sale_due'},
             { data: 'total_sale_return_due', name: 'total_sale_return_due'},
         ],
@@ -163,12 +163,14 @@
     //Print supplier report
     $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
+        
         var url = "{{ route('reports.customer.print') }}";
-        var supplier_id = $('#branch_id').val();
+        var customer_id = $('#customer_id').val();
+        console.log(customer_id);
         $.ajax({
             url:url,
             type:'get',
-            data: {supplier_id},
+            data: {customer_id},
             success:function(data){
                 $(data).printThis({
                     debug: false,                   

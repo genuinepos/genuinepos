@@ -37,7 +37,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-3"><b>Branch :</b><span class="text-danger">*</span></label>
+                                                <label for="inputEmail3" class="col-3"><b>B.Location :</b><span class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                     <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">

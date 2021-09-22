@@ -35,7 +35,9 @@ class BranchReceiveStockController extends Controller
                     'warehouses.warehouse_code',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                )->orderBy('id', 'desc')->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)->get();
+                )->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)
+                ->orderBy('transfer_stock_to_branches.report_date', 'desc')
+                ->get();
 
             return DataTables::of($transfers)
                 ->addColumn('action', function ($row) {
@@ -109,7 +111,6 @@ class BranchReceiveStockController extends Controller
 
     public function receiveProcessSave(Request $request, $sendStockId)
     {
-        //return $request->all();
         $updateSandStocks = TransferStockToBranch::where('id', $sendStockId)->first();
         $updateSandStocks->total_received_qty = $request->total_received_quantity;
 

@@ -28,12 +28,12 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Voucher No</th>
                     <th class="text-start">Date</th>
+                    <th class="text-start">Voucher No</th>
                     <th class="text-start">Supplier</th>
-                    <th class="text-start">Paid Amount</th>
                     <th class="text-start">Pay Method</th>
                     <th class="text-start">P.Invoice ID</th>
+                    <th class="text-start">Paid Amount</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -45,9 +45,9 @@
                         <td class="text-start">{{ $payment->payment_invoice }}</td>
                         <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($payment->date)) }}</td>
                         <td class="text-start">{{ $payment->supplier_name }}</td>
-                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b> {{ $payment->paid_amount }}</td>
                         <td class="text-start">{{ $payment->pay_mode }}</td>
                         <td class="text-start">{{ $payment->purchase_invoice }}</td>
+                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b> {{ $payment->paid_amount }}</td>
                     </tr>
                 @endforeach
             </tbody>

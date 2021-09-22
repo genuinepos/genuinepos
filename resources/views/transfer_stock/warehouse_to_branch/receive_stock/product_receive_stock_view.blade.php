@@ -36,7 +36,7 @@
                                             <p class="m-0"><strong>Date: </strong> <span class="transfer_date">05-12-2020</span></p> 
                                          </div>
                                          <div class="col-md-6">
-                                            <p class="m-0"><strong>Branch (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
+                                            <p class="m-0"><strong>Business Location (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
                                              <p class="m-0"><strong>Warehouse (To) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p> 
                                          </div>
                                     </div>

@@ -13,7 +13,7 @@
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label><strong>Date : <span class="text-danger">*</span></strong></label>
-                            <input type="text" name="date" class="form-control datepicker" id="date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                            <input type="text" name="date" class="form-control datepicker" id="date" value="{{ str_replace('/', '-', date(json_decode($generalSettings->business, true)['date_format'])) }}">
                             <span class="error error_date"></span>
                         </div>
                     </div>

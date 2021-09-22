@@ -30,11 +30,11 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
+                    <th class="text-start">Date</th>
                     <th class="text-start">Product</th>
                     <th class="text-start">P.Code(SKU)</th>
                     <th class="text-start">Supplier</th>
                     <th class="text-start">P.Invoice ID</th>
-                    <th class="text-start">Date</th>
                     <th class="text-start">Qty</th>
                     <th class="text-start">Unit Cost</th>
                     <th class="text-start">SubTotal</th>
@@ -43,6 +43,7 @@
             <tbody class="sale_print_product_list">
                 @foreach ($purchaseProducts as $pProduct)
                     <tr>
+                        <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($pProduct->report_date)) }}</td>
                         <td class="text-start">
                             @php
                                 $variant = $pProduct->variant_name ? ' - ' . $pProduct->variant_name : '';
@@ -55,7 +56,6 @@
                         <td class="text-start">{{ $pProduct->variant_code ? $pProduct->variant_code : $pProduct->product_code}}</td>
                         <td class="text-start">{{ $pProduct->supplier_name }}</td>
                         <td class="text-start">{{ $pProduct->invoice_id }}</td>
-                        <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($pProduct->report_date)) }}</td>
                         <td class="text-start">{!! $pProduct->quantity . ' (<span class="qty" data-value="' . $pProduct->quantity . '">' . $pProduct->unit_code . '</span>)' !!}</td>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $pProduct->net_unit_cost }}</td>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $pProduct->line_total }}</td>

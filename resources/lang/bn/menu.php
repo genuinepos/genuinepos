@@ -62,6 +62,7 @@ return [
     'expense_list' => 'ব্যয়ের তালিকা',
     'add_expense' => 'ব্যয় যোগ করুন',
     'expense_categories' => 'ব্যয় বিভাগ',
+    'category_wise_expenses' => 'বিভাগ অনুযায়ী খরচ',
     // Menu child of Accounting module  
     'bank' => 'ব্যাংক',
     'account_types' => 'অ্যাকাউন্টের ধরণ',

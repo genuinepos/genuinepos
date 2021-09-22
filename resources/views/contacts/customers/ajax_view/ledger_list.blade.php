@@ -77,7 +77,7 @@
                     <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->customer_payment->date)) }}</td> 
                     <td class="text-start">{{ $ledger->customer_payment->type == 1 ? 'Dr' : 'Cr' }}</td>
                     <td class="text-start">
-                        {{ $ledger->customer_payment->type == 1 ? 'Direct Received From Customer(Sale Due)' : 'Paid To Customer (Sale Return Due)' }}
+                        {{ $ledger->customer_payment->type == 1 ? 'Received From Customer(Sale Due)' : 'Paid To Customer (Sale Return Due)' }}
                         <b>{!! $ledger->customer_payment->account ? '<br>'.$ledger->customer_payment->account->name : '' !!}
                         {!! $ledger->customer_payment->account ? 'A/C '.$ledger->customer_payment->account->account_number: '' !!}</b>
                     </td>
@@ -123,7 +123,6 @@
             {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary', title : "Customer Ledger Of {{$customer->name.' (ID:'.$customer->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary', title : "Customer Ledger Of {{$customer->name.' (ID:'.$customer->contact_id.')'}}",exportOptions: {columns: 'th:not(:first-child)'}},
         ],
-        aaSorting: [[0, 'asc']],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
     });
 </script>

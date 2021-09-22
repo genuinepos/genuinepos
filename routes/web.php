@@ -473,6 +473,7 @@ Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Ht
 // Expense route group
 Route::group(['prefix' => 'expenses', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/', 'ExpanseController@index')->name('expanses.index');
+    Route::get('category/wise/expenses', 'ExpanseController@categoryWiseExpense')->name('expanses.category.wise.expense');
     Route::get('create', 'ExpanseController@create')->name('expanses.create');
     Route::post('store', 'ExpanseController@store')->name('expanses.store');
     Route::get('edit/{expanseId}', 'ExpanseController@edit')->name('expanses.edit');

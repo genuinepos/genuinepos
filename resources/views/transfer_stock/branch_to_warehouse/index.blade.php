@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets') @endpush
-@section('title', 'All Transfer(Branch To Warehouse) - ')
+@section('title', 'All Transfer(B.Location To Warehouse) - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -36,7 +36,7 @@
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Reference ID</th>
-                                                <th>Branch(From)</th>
+                                                <th>B.Location(From)</th>
                                                 <th>Warehouse(To) </th>
                                                 <th>Shipping Charge</th>
                                                 <th>Total Amount</th>
@@ -78,7 +78,6 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[3, 'asc']],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax: "{{ route('transfer.stock.to.warehouse.index') }}",
             columnDefs: [{"targets": [2, 3, 4, 7],"orderable": false,"searchable": false}],

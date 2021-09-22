@@ -29,6 +29,9 @@ class SupplierReportController extends Controller
 
             $suppliers = $query->select(
                 'suppliers.name',
+                'suppliers.contact_id',
+                'suppliers.phone',
+                'suppliers.address',
                 'suppliers.opening_balance',
                 'suppliers.total_paid',
                 'suppliers.total_purchase',
@@ -37,6 +40,9 @@ class SupplierReportController extends Controller
             );
 
             return DataTables::of($suppliers)
+                ->editColumn('name', function ($row) {
+                    return $row->name.' (ID: '.$row->contact_id.')';
+                })
                 ->editColumn('opening_balance', function ($row) use ($generalSettings) {
                     return '<b><span class="opening_balance" data-value="'.$row->opening_balance.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->opening_balance . '</span></b>';
                 })
@@ -52,7 +58,7 @@ class SupplierReportController extends Controller
                 ->editColumn('total_purchase_return_due', function ($row) use ($generalSettings) {
                     return '<b><span class="total_purchase_return_due" data-value="'.$row->total_purchase_return_due.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_purchase_return_due . '</span></b>';
                 })
-                ->rawColumns(['opening_balance', 'total_paid', 'total_purchase', 'total_purchase_due', 'total_due', 'total_purchase_return_due'])
+                ->rawColumns(['name', 'opening_balance', 'total_paid', 'total_purchase', 'total_purchase_due', 'total_due', 'total_purchase_return_due'])
                 ->make(true);
         }
 
@@ -72,6 +78,9 @@ class SupplierReportController extends Controller
 
         $supplierReports = $query->select(
             'suppliers.name',
+            'suppliers.contact_id',
+            'suppliers.phone',
+            'suppliers.address',
             'suppliers.opening_balance',
             'suppliers.total_paid',
             'suppliers.total_purchase',

@@ -183,7 +183,7 @@
         "processing": true,
         "serverSide": true,
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-        aaSorting: [[0, 'desc']],
+        //aaSorting: [[0, 'desc']],
         "ajax": {
             "url": "{{ route('sales.product.list') }}",
             "data": function(d) {

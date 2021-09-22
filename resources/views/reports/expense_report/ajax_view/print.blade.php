@@ -35,10 +35,9 @@
                     <th class="text-start">Description</th>
                     <th class="text-start">B.Location</th>
                     <th class="text-start">Expense For</th>
-                    <th class="text-start">Amount</th>
+                    <th class="text-start">Total Amount</th>
                     <th class="text-start">Paid</th>
                     <th class="text-start">Due</th>
-                    <th class="text-start">Payment Status</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -56,10 +55,12 @@
                                 $expenseDescriptions = DB::table('expense_descriptions')
                                 ->where('expense_id', $ex->id)
                                 ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
-                                ->select('expanse_categories.name', 'expanse_categories.code')->get();
+                                ->select(
+                                    'expanse_categories.name', 'expanse_categories.code', 'expense_descriptions.amount'
+                                    )->get();
                             @endphp
                             @foreach ($expenseDescriptions as $exDescription)
-                                {{ $exDescription->name.'('.$exDescription->code.')' }}
+                                {!! '<b>'.$exDescription->name.'('.$exDescription->code.'):</b>'.json_decode($generalSettings->business, true)['currency'].$exDescription->amount  !!} <br>
                             @endforeach
                         </td>
                         <td class="text-start">
@@ -75,19 +76,6 @@
                         <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $ex->net_total_amount }}</td>
                         <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $ex->paid }}</td>
                         <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $ex->due }}</td>
-                        <td>
-                            @php
-                                $payable = $ex->net_total_amount;
-                            @endphp
-                            
-                            @if ($ex->due <= 0) 
-                                Paid
-                            @elseif ($ex->due > 0 && $ex->due < $payable) 
-                                Partial
-                            @elseif ($payable == $ex->due) 
-                                Due
-                            @endif
-                        </td>
                     </tr>
                 @endforeach
             </tbody>

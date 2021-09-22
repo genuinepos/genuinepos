@@ -158,12 +158,10 @@ class PurchaseController extends Controller
         }
 
         // generate invoice ID
-        $i = 6;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        $invoiceId = 1;
+        $lastPurchase = DB::table('purchases')->orderBy('id', 'desc')->first();
+        if ($lastPurchase) {
+            $invoiceId = ++$lastPurchase->id;
         }
 
         $getLastCreated = Purchase::where('is_last_created', 1)->first();
@@ -174,11 +172,9 @@ class PurchaseController extends Controller
 
         // add purchase total information
         $addPurchase = new Purchase();
-        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PI') . date('Y') . $invoiceId;
-
+        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
         $addPurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $addPurchase->branch_id = auth()->user()->branch_id;
-
         $addPurchase->supplier_id = $request->supplier_id;
         $addPurchase->pay_term = $request->pay_term;
         $addPurchase->pay_term_number = $request->pay_term_number;

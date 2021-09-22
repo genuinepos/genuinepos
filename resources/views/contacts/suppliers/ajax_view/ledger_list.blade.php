@@ -63,7 +63,7 @@
                     <td>{{ $ledger->supplier_payment->type == 1 ? 'Cr' : 'Dr' }}</td>
                     
                     <td>
-                        {{ $ledger->supplier_payment->type == 1 ? 'Direct Paid to Supplier' : 'Direct Received From Supplier' }}
+                        {{ $ledger->supplier_payment->type == 1 ? 'Paid to Supplier' : 'Received From Supplier' }}
                          <b>
                             {!! $ledger->supplier_payment->account ? '<br>'.$ledger->supplier_payment->account->name : '' !!}
                             {!! $ledger->supplier_payment->account ? 'A/C '.$ledger->supplier_payment->account->account_number: '' !!}
@@ -104,14 +104,16 @@
 </table>
 
 <script>
-    $('.data_tbl2').DataTable({
+    var ledgerTable = $('.data_tbl2').DataTable({
         dom: "lBfrtip",
         buttons: [ 
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
             {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}",exportOptions: {columns: 'th:not(:first-child)'}},
         ],
-        aaSorting: [[0, 'desc']],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+        // "ordering" : "false",
+
     });
+    // ledgerTable.columns(0).data().sort((a, b)=> {return new Date(b.date) - new Date(a.date);});
 </script>

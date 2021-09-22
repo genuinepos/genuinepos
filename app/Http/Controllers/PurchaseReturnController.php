@@ -74,8 +74,8 @@ class PurchaseReturnController extends Controller
 
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('purchase_returns.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
             }
 
@@ -88,7 +88,7 @@ class PurchaseReturnController extends Controller
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
                     'suppliers.name as sup_name',
-                )->orderBy('id', 'desc');
+                )->orderBy('purchase_returns.report_date', 'desc');
             } else {
                 $returns = $query->select(
                     'purchase_returns.*',
@@ -98,7 +98,7 @@ class PurchaseReturnController extends Controller
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
                     'suppliers.name as sup_name',
-                )->where('purchase_returns.branch_id', auth()->user()->branch_id)->orderBy('id', 'desc');
+                )->where('purchase_returns.branch_id', auth()->user()->branch_id)->orderBy('purchase_returns.report_date', 'desc');
             }
 
             return DataTables::of($returns)

@@ -53,7 +53,7 @@ class ExpanseReportController extends Controller
                     'admin_and_users.prefix as cr_prefix',
                     'admin_and_users.name as cr_name',
                     'admin_and_users.last_name as cr_last_name',
-                )->orderBy('id', 'desc');
+                )->orderBy('expanses.report_date', 'desc');
             } else {
                 $expenses = $query->select(
                     'expanses.*',
@@ -63,7 +63,7 @@ class ExpanseReportController extends Controller
                     'admin_and_users.name as cr_name',
                     'admin_and_users.last_name as cr_last_name',
                 )->where('expanses.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc');
+                    ->orderBy('expanses.report_date', 'desc');
             }
 
             return DataTables::of($expenses)
@@ -74,7 +74,7 @@ class ExpanseReportController extends Controller
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'].'(<b>HO</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('user_name',  function ($row) {
@@ -93,20 +93,20 @@ class ExpanseReportController extends Controller
                     return $html;
                 })
                 ->editColumn('tax_percent',  function ($row) {
-                    $tax_amount = $row->total_amount /100 * $row->tax_percent;
-                    return '<b><span class="tax_amount" data-value="'.$tax_amount.'">'.$tax_amount.'('.$row->tax_percent.'%)</span></b>';
+                    $tax_amount = $row->total_amount / 100 * $row->tax_percent;
+                    return '<b><span class="tax_amount" data-value="' . $tax_amount . '">' . $tax_amount . '(' . $row->tax_percent . '%)</span></b>';
                 })
                 ->editColumn('net_total', function ($row) use ($generalSettings) {
-                    return '<span class="net_total" data-value="'.$row->net_total_amount.'"><b>'.json_decode($generalSettings->business, true)['currency'] . $row->net_total_amount .'</b></span>';
+                    return '<span class="net_total" data-value="' . $row->net_total_amount . '"><b>' . json_decode($generalSettings->business, true)['currency'] . $row->net_total_amount . '</b></span>';
                 })
                 ->editColumn('paid', function ($row) use ($generalSettings) {
-                    return '<span class="paid" data-value="'.$row->paid.'"><b>'.json_decode($generalSettings->business, true)['currency'] . $row->paid.'</b></span>';
+                    return '<span class="paid" data-value="' . $row->paid . '"><b>' . json_decode($generalSettings->business, true)['currency'] . $row->paid . '</b></span>';
                 })
                 ->editColumn('due', function ($row) use ($generalSettings) {
                     $html = "";
-                    $html .= '<span class="due" data-value="'.$row->due.'" class="text-danger"><strong>' .
-                            json_decode($generalSettings->business, true)['currency'] . $row->due .
-                            '</strong></span>';
+                    $html .= '<span class="due" data-value="' . $row->due . '" class="text-danger"><strong>' .
+                        json_decode($generalSettings->business, true)['currency'] . $row->due .
+                        '</strong></span>';
                     return $html;
                 })
                 ->setRowClass('text-start')
@@ -157,8 +157,7 @@ class ExpanseReportController extends Controller
                 'admin_and_users.prefix as cr_prefix',
                 'admin_and_users.name as cr_name',
                 'admin_and_users.last_name as cr_last_name',
-            )->orderBy('id', 'desc')
-                ->get();
+            )->orderBy('expanses.report_date', 'desc')->get();
         } else {
             $expenses = $query->select(
                 'expanses.*',
@@ -169,8 +168,7 @@ class ExpanseReportController extends Controller
                 'admin_and_users.name as cr_name',
                 'admin_and_users.last_name as cr_last_name',
             )->where('expanses.branch_id', auth()->user()->branch_id)
-                ->orderBy('id', 'desc')
-                ->get();
+                ->orderBy('expanses.report_date', 'desc')->get();
         }
 
         return view('reports.expense_report.ajax_view.print', compact('expenses', 'fromDate', 'toDate', 'branch_id'));

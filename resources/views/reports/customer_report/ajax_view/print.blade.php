@@ -36,7 +36,7 @@
                         $allTotalReturnDue += $report->total_sale_return_due;
                     @endphp
                     <tr>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $report->name }}</td>
+                        <td class="text-start">{{ $report->name.' (ID: '.$report->contact_id.')' }}</td>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $report->total_sale }}</td>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $report->total_paid }}</td>
                         <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $report->opening_balance }}</td>
@@ -45,16 +45,40 @@
                     </tr>
                 @endforeach
             </tbody>
-            <tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6"></div>
+    <div class="col-6">
+        <table class="table modal-table table-sm table-bordered">
+            <tbody>
                 <tr>
-                    <th class="text-start">Total</th>
-                    <th class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalSale, 0, 2) }}</th>
-                    <th class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalPaid, 0, 2) }}</th>
-                    <th class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalOpDue, 0, 2) }}</th>
-                    <th class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalDue, 0, 2) }}</th>
-                    <th class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalReturnDue, 0, 2) }}</th>
+                    <th class="text-start">Opening Balance Due :</th>
+                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalOpDue, 0, 2) }}</td>
                 </tr>
-            </tfoot>
+
+                <tr>
+                    <th class="text-start">Total Sale :</th>
+                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalSale, 0, 2) }}</td>
+                </tr>
+
+                <tr>
+                    <th class="text-start">Total Paid :</th>
+                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalPaid, 0, 2) }}</td>
+                </tr>
+
+                <tr>
+                    <th class="text-start">Total Sale Due :</th>
+                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalDue, 0, 2) }}</td>
+                </tr>
+
+                <tr>
+                    <th class="text-start">Total Returnable Due :</th>
+                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalReturnDue, 0, 2) }}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>

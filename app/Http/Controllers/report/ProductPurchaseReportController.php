@@ -72,7 +72,7 @@ class ProductPurchaseReportController extends Controller
                     'product_variants.variant_code',
                     'product_variants.variant_price',
                     'suppliers.name as supplier_name'
-                )->orderBy('purchase_products.id', 'desc');
+                )->orderBy('purchases.report_date', 'desc');
             } else {
                 $purchaseProducts = $query->select(
                     'purchase_products.purchase_id',
@@ -91,7 +91,8 @@ class ProductPurchaseReportController extends Controller
                     'product_variants.variant_code',
                     'product_variants.variant_price',
                     'suppliers.name as supplier_name'
-                )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchase_products.id', 'desc');
+                )->where('purchases.branch_id', auth()->user()->branch_id)
+                ->orderBy('purchases.report_date', 'desc');
             }
 
             return DataTables::of($purchaseProducts)
@@ -191,7 +192,7 @@ class ProductPurchaseReportController extends Controller
                 'product_variants.variant_name',
                 'product_variants.variant_code',
                 'suppliers.name as supplier_name'
-            )->orderBy('purchase_products.id', 'desc')->get();
+            )->orderBy('purchases.report_date', 'desc')->get();
         } else {
             $purchaseProducts = $query->select(
                 'purchase_products.purchase_id',
@@ -207,7 +208,8 @@ class ProductPurchaseReportController extends Controller
                 'product_variants.variant_name',
                 'product_variants.variant_code',
                 'suppliers.name as supplier_name'
-            )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchase_products.id', 'desc')->get();
+            )->where('purchases.branch_id', auth()->user()->branch_id)
+            ->orderBy('purchases.report_date', 'desc')->get();
         }
 
         return view('reports.product_purchase_report.ajax_view.print', compact('purchaseProducts', 'fromDate', 'toDate', 'branch_id'));

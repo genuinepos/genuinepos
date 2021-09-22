@@ -70,9 +70,9 @@
                                                             <thead>
                                                                 <tr class="text-start">
                                                                     <th>Supplier</th>
+                                                                    <th>Opening Balance Due</th>
                                                                     <th>Total Purchase</th>
                                                                     <th>Total Paid</th>
-                                                                    <th>Opening Balance Due</th>
                                                                     <th>Total Due</th>
                                                                     <th>Total Return Due</th>
                                                                 </tr>
@@ -81,13 +81,13 @@
                                                                 
                                                             </tbody>
                                                             <tfoot>
-                                                                <tr>
-                                                                    <th class="text-end">Total</th>
-                                                                    <th id="total_purchase">0.00</th>
-                                                                    <th id="total_paid">0.00</th>
-                                                                    <th id="total_op_blc_due">0.00</th>
-                                                                    <th id="total_purchase_due">0.00</th>
-                                                                    <th id="total_return_due">0.00</th>
+                                                                <tr class="bg-secondary">
+                                                                    <th class="text-end text-white">Total :</th>
+                                                                    <th id="total_op_blc_due" class="text-white">0.00</th>
+                                                                    <th id="total_purchase" class="text-white">0.00</th>
+                                                                    <th id="total_paid" class="text-white">0.00</th>
+                                                                    <th id="total_purchase_due" class="text-white">0.00</th>
+                                                                    <th id="total_return_due" class="text-white">0.00</th>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
@@ -120,15 +120,13 @@
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.supplier.index') }}",
-            "data": function(d) {
-                d.supplier_id = $('#supplier_id').val();
-            }
+            "data": function(d) {d.supplier_id = $('#supplier_id').val();}
         },
         columns: [
             { data: 'name', name: 'name'},
+            { data: 'opening_balance', name: 'opening_balance'},
             { data: 'total_purchase', name: 'total_purchase'},
             { data: 'total_paid', name: 'total_paid'},
-            { data: 'opening_balance', name: 'opening_balance'},
             { data: 'total_purchase_due', name: 'total_purchase_due'},
             { data: 'total_purchase_return_due', name: 'total_purchase_return_due'},
         ],

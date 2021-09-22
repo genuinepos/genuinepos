@@ -95,6 +95,7 @@
                                                 <th class="text-start">Actions</th>
                                                 <th class="text-start">Date</th>
                                                 <th class="text-start">Reference ID</th>
+                                                <th class="text-start">Description</th>
                                                 <th class="text-start">B.Location</th>
                                                 <th class="text-start">Payment Status</th>
                                                 <th class="text-start">Tax</th>
@@ -205,7 +206,6 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[0, 'asc']],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('expanses.index') }}",
@@ -215,11 +215,12 @@
                     d.date_range = $('#date_range').val();
                 }
             },
-            columnDefs: [{"targets": [0, 4, 5, 8],"orderable": false,"searchable": false}],
+            columnDefs: [{"targets": [0, 3, 4, 5, 8],"orderable": false,"searchable": false}],
             columns: [
                 { data: 'action', },
                 { data: 'date', name: 'date' },
                 { data: 'invoice_id', name: 'invoice_id'},
+                { data: 'descriptions', name: 'descriptions' },
                 { data: 'from', name: 'branches.name' },
                 { data: 'payment_status', name: 'payment_status' },
                 { data: 'tax_percent', name: 'tax_percent' },

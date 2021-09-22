@@ -56,8 +56,8 @@ class SalePaymentReportController extends Controller
                     'sale_payments.date',
                     'sales.invoice_id as sale_invoice',
                     'customers.name as customer_name',
-                )->orderBy('sale_payments.id', 'desc');
-            }else {
+                )->orderBy('sale_payments.report_date', 'desc');
+            } else {
                 $payments = $query->select(
                     'sale_payments.id as payment_id',
                     'sale_payments.invoice_id as payment_invoice',
@@ -66,21 +66,22 @@ class SalePaymentReportController extends Controller
                     'sale_payments.date',
                     'sales.invoice_id as sale_invoice',
                     'customers.name as customer_name',
-                )->where('sales.branch_id', auth()->user()->branch_id)->orderBy('sale_payments.id', 'desc');
+                )->where('sales.branch_id', auth()->user()->branch_id)
+                    ->orderBy('sale_payments.report_date', 'desc');
             }
-            
+
             return DataTables::of($payments)
-            ->editColumn('date', function ($row) {
-                return date('d/m/Y', strtotime($row->date));
-            })
-            ->editColumn('customer_name',  function ($row) {
-                return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
-            })
-            ->editColumn('paid_amount',  function ($row) use ($generalSettings) {
-                return '<b><span class="paid_amount" data-value="'.$row->paid_amount.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid_amount . '</span></b>';
-            })
-            ->rawColumns(['date', 'customer_name', 'paid_amount'])
-            ->make(true);
+                ->editColumn('date', function ($row) {
+                    return date('d/m/Y', strtotime($row->date));
+                })
+                ->editColumn('customer_name',  function ($row) {
+                    return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
+                })
+                ->editColumn('paid_amount',  function ($row) use ($generalSettings) {
+                    return '<b><span class="paid_amount" data-value="' . $row->paid_amount . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid_amount . '</span></b>';
+                })
+                ->rawColumns(['date', 'customer_name', 'paid_amount'])
+                ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('reports.sale_payment_report.index', compact('branches'));
@@ -130,8 +131,8 @@ class SalePaymentReportController extends Controller
                 'sale_payments.date',
                 'sales.invoice_id as sale_invoice',
                 'customers.name as customer_name',
-            )->get();
-        }else {
+            )->orderBy('sale_payments.report_date', 'desc')->get();
+        } else {
             $payments = $query->select(
                 'sale_payments.id as payment_id',
                 'sale_payments.invoice_id as payment_invoice',
@@ -140,7 +141,9 @@ class SalePaymentReportController extends Controller
                 'sale_payments.date',
                 'sales.invoice_id as sale_invoice',
                 'customers.name as customer_name',
-            )->where('sales.branch_id', auth()->user()->branch_id)->get();
+            )->where('sales.branch_id', auth()->user()->branch_id)
+                ->orderBy('sale_payments.report_date', 'desc')
+                ->get();
         }
 
         return view('reports.sale_payment_report.ajax_view.print', compact('payments', 'fromDate', 'toDate', 'branch_id'));

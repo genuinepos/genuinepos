@@ -55,7 +55,7 @@ class LoanController extends Controller
                     'accounts.account_number as ac_number',
                     'branches.name as b_name',
                     'branches.branch_code as b_code',
-                )->get();
+                )->orderBy('loans.report_date', 'desc')->get();
             }else {
                 $loans = $query->select(
                     'loans.*',
@@ -64,7 +64,8 @@ class LoanController extends Controller
                     'accounts.account_number as ac_number',
                     'branches.name as b_name',
                     'branches.branch_code as b_code',
-                )->where('loans.branch_id', auth()->user()->branch_id)->get();
+                )->where('loans.branch_id', auth()->user()->branch_id)
+                ->orderBy('loans.report_date', 'desc')->get();
             }
             
             return DataTables::of($loans)
@@ -133,17 +134,16 @@ class LoanController extends Controller
         ]);
 
         // generate reference no
-        $i = 4;
-        $a = 0;
-        $refId = '';
-        while ($a < $i) {
-            $refId .= rand(1, 9);
-            $a++;
+       
+        $refId = 1;
+        $lastLoan = DB::table('loans')->orderBy('id', 'desc')->first();
+        if ($lastLoan) {
+            $refId = ++$lastLoan->id;
         }
-
+        
         $prefix = $request->type == 1 ? 'LP' : 'LG';
         $addLoan = new Loan();
-        $addLoan->reference_no = $prefix . date('Y') . $refId;
+        $addLoan->reference_no = $prefix . date('my') . $refId;
         $addLoan->branch_id = auth()->user()->branch_id;
         $addLoan->loan_company_id = $request->company_id;
         $addLoan->type = $request->type;
@@ -153,7 +153,7 @@ class LoanController extends Controller
         $addLoan->loan_by = 'Cash';
         $addLoan->loan_reason = $request->loan_reason;
         $addLoan->created_user_id = auth()->id();
-        $addLoan->report_date = date('Y-m-d');
+        $addLoan->report_date = date('Y-m-d', strtotime($request->date));
         $addLoan->save();
 
         $addCompanyLoanAmount = LoanCompany::where('id', $request->company_id)->first();
@@ -193,7 +193,7 @@ class LoanController extends Controller
             $addCashFlow->loan_id = $addLoan->id;
             $addCashFlow->transaction_type = 10;
             $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', $request->date);
+            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->id();

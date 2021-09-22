@@ -372,7 +372,7 @@ class SaleUtil
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'customers.name as customer_name',
-            )->where('sales.status', 1)->where('sales.created_by', 1)->orderBy('id', 'desc');
+            )->where('sales.status', 1)->where('sales.created_by', 1)->orderBy('sales.report_date', 'desc');
         } else {
             $sales = $this->filteredQuery($request, $query)->select(
                 'sales.*',
@@ -380,7 +380,7 @@ class SaleUtil
                 'branches.branch_code',
                 'customers.name as customer_name',
             )->where('sales.branch_id', auth()->user()->branch_id)
-                ->where('sales.status', 1)->where('created_by', 1)->orderBy('id', 'desc');
+                ->where('sales.status', 1)->where('created_by', 1)->orderBy('sales.report_date', 'desc');
         }
 
         return DataTables::of($sales)
@@ -490,7 +490,7 @@ class SaleUtil
                 'branches.branch_code',
                 'customers.name as customer_name',
             )->where('sales.status', 1)->where('created_by', 2)
-                ->orderBy('id', 'desc');
+                ->orderBy('sales.report_date', 'desc');
         } else {
             $sales = $this->filteredQuery($request, $query)->select(
                 'sales.*',
@@ -499,7 +499,7 @@ class SaleUtil
                 'customers.name as customer_name',
             )->where('sales.branch_id', auth()->user()->branch_id)->where('created_by', 2)
                 ->where('sales.status', 1)
-                ->orderBy('id', 'desc');
+                ->orderBy('sales.report_date', 'desc');
         }
 
         return DataTables::of($sales)
@@ -674,7 +674,7 @@ class SaleUtil
                     'product_variants.variant_name',
                     'product_variants.variant_code',
                     'customers.name as customer_name'
-                );
+                )->orderBy('sales.report_date', 'desc');
         } else {
             $saleProducts = $query
                 ->select(
@@ -691,7 +691,7 @@ class SaleUtil
                     'product_variants.variant_name',
                     'product_variants.variant_code',
                     'customers.name as customer_name'
-                )->where('sales.branch_id', auth()->user()->branch_id);
+                )->where('sales.branch_id', auth()->user()->branch_id)->orderBy('sales.report_date', 'desc');
         }
 
         return DataTables::of($saleProducts)
@@ -706,8 +706,8 @@ class SaleUtil
                 return $row->name . $variant;
             })->editColumn('sku', function ($row) {
                 return $row->variant_code ? $row->variant_code : $row->product_code;
-            })->editColumn('date', function ($row) {
-                return date('d/m/Y', strtotime($row->date));
+            })->editColumn('date', function ($row) use ($generalSettings) {
+                return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
             })->editColumn('customer', function ($row) {
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
             })->editColumn('quantity', function ($row) {
@@ -739,7 +739,7 @@ class SaleUtil
                 'admin_and_users.name as u_name',
                 'admin_and_users.last_name as u_last_name',
             )->where('sales.status', 2)
-                ->orderBy('id', 'desc');
+                ->orderBy('sales.report_date', 'desc');
         } else {
             $drafts = $this->filteredQuery($request, $query)->select(
                 'sales.*',
@@ -751,7 +751,7 @@ class SaleUtil
                 'admin_and_users.last_name as u_last_name',
             )->where('branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 2)
-                ->orderBy('id', 'desc');
+                ->orderBy('sales.report_date', 'desc');
         }
 
         return DataTables::of($drafts)
@@ -822,7 +822,7 @@ class SaleUtil
                 'admin_and_users.prefix as u_prefix',
                 'admin_and_users.name as u_name',
                 'admin_and_users.last_name as u_last_name',
-            )->where('sales.status', 4)->orderBy('sales.id', 'desc');
+            )->where('sales.status', 4)->orderBy('sales.report_date', 'desc');
         } else {
             $quotations = $this->filteredQuery($request, $query)->select(
                 'sales.*',
@@ -833,7 +833,7 @@ class SaleUtil
                 'admin_and_users.name as u_name',
                 'admin_and_users.last_name as u_last_name',
             )->where('sales.branch_id', auth()->user()->branch_id)
-                ->where('sales.status', 4)->orderBy('sales.id', 'desc');
+                ->where('sales.status', 4)->orderBy('sales.report_date', 'desc');
         }
 
         return DataTables::of($quotations)
@@ -905,7 +905,7 @@ class SaleUtil
                 'admin_and_users.last_name as cr_last_name',
             )->where('sales.created_by', 1)->orderBy('id', 'desc')->where('sales.status', 1)
                 ->where('shipment_status', '!=', 'NULL')
-                ->orderBy('sales.id', 'desc');
+                ->orderBy('sales.report_date', 'desc');
         } else {
             $sales = $this->filteredQuery($request, $query)->select(
                 'sales.*',
@@ -918,7 +918,7 @@ class SaleUtil
             )->where('sales.created_by', 1)->where('branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 1)
                 ->where('shipment_status', '!=', 'NULL')
-                ->orderBy('sales.id', 'desc');
+                ->orderBy('sales.report_date', 'desc');
         }
 
         return DataTables::of($sales)

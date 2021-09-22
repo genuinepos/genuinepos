@@ -63,6 +63,7 @@ return [
   'expense_list' => 'Expense List',
   'add_expense' => 'Add Expense',
   'expense_categories' => 'Expense Categories',
+  'category_wise_expenses' => 'Category Wise Expenses',
   // Menu childs of Accounting module  
   'bank' => 'Bank',
   'account_types' => 'Account Types',

@@ -119,6 +119,7 @@ class Util
         $addCustomerLedger = new CustomerLedger();
         $addCustomerLedger->customer_id = $addCustomer->id;
         $addCustomerLedger->row_type = 3;
+        $addCustomerLedger->report_date = date('Y-m-d');
         $addCustomerLedger->amount = $request->opening_balance ? $request->opening_balance : 0.00;
         $addCustomerLedger->save();
         
@@ -174,6 +175,7 @@ class Util
             $addSupplierLedger = new SupplierLedger();
             $addSupplierLedger->supplier_id = $addSupplier->id;
             $addSupplierLedger->row_type = 3;
+            $addSupplierLedger->report_date = date('Y-m-d');
             $addSupplierLedger->amount = $request->opening_balance;
             $addSupplierLedger->save();
         }

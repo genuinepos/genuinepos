@@ -41,7 +41,7 @@ class PurchasePaymentReportController extends Controller
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
                 $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $query->whereBetween('purchase_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            } 
+            }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $payments = $query->select(
@@ -52,8 +52,8 @@ class PurchasePaymentReportController extends Controller
                     'purchase_payments.date',
                     'purchases.invoice_id as purchase_invoice',
                     'suppliers.name as supplier_name',
-                )->orderBy('purchase_payments.id', 'desc');
-            }else {
+                )->orderBy('purchase_payments.report_date', 'desc');
+            } else {
                 $payments = $query->select(
                     'purchase_payments.id as payment_id',
                     'purchase_payments.invoice_id as payment_invoice',
@@ -62,19 +62,20 @@ class PurchasePaymentReportController extends Controller
                     'purchase_payments.date',
                     'purchases.invoice_id as purchase_invoice',
                     'suppliers.name as supplier_name',
-                )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchase_payments.id', 'desc');;
+                )->where('purchases.branch_id', auth()->user()->branch_id)
+                    ->orderBy('purchase_payments.report_date', 'desc');
             }
-         
+
 
             return DataTables::of($payments)
-            ->editColumn('date', function ($row) {
-                return date('d/m/Y', strtotime($row->date));
-            })
-            ->editColumn('paid_amount',  function ($row) use ($generalSettings) {
-                return '<b><span class="paid_amount" data-value="'.$row->paid_amount.'">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid_amount . '</span></b>';
-            })
-            ->rawColumns(['date', 'paid_amount'])
-            ->make(true);
+                ->editColumn('date', function ($row) {
+                    return date('d/m/Y', strtotime($row->date));
+                })
+                ->editColumn('paid_amount',  function ($row) use ($generalSettings) {
+                    return '<b><span class="paid_amount" data-value="' . $row->paid_amount . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid_amount . '</span></b>';
+                })
+                ->rawColumns(['date', 'paid_amount'])
+                ->make(true);
         }
 
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
@@ -110,7 +111,7 @@ class PurchasePaymentReportController extends Controller
             $fromDate = date('Y-m-d', strtotime($date_range[0]));
             $toDate = date('Y-m-d', strtotime($date_range[0]));
             $query->whereBetween('purchase_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-        } 
+        }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $payments = $query->select(
@@ -121,8 +122,8 @@ class PurchasePaymentReportController extends Controller
                 'purchase_payments.date',
                 'purchases.invoice_id as purchase_invoice',
                 'suppliers.name as supplier_name',
-            )->get();
-        }else {
+            )->orderBy('purchase_payments.report_date', 'desc')->get();
+        } else {
             $payments = $query->select(
                 'purchase_payments.id as payment_id',
                 'purchase_payments.invoice_id as payment_invoice',
@@ -131,7 +132,9 @@ class PurchasePaymentReportController extends Controller
                 'purchase_payments.date',
                 'purchases.invoice_id as purchase_invoice',
                 'suppliers.name as supplier_name',
-            )->where('purchases.branch_id', auth()->user()->branch_id)->get();
+            )->where('purchases.branch_id', auth()->user()->branch_id)
+                ->orderBy('purchase_payments.report_date', 'desc')
+                ->get();
         }
 
         return view('reports.purchase_payment_report.ajax_view.print', compact('payments', 'fromDate', 'toDate', 'branch_id'));

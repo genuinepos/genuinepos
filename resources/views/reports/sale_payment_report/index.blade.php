@@ -90,12 +90,12 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
-                                                    <th>Voucher No</th>
                                                     <th>Date</th>
-                                                    <th>Amount</th>
+                                                    <th>Voucher No</th>
                                                     <th>Customer</th>
                                                     <th>Payment Method</th>
                                                     <th>Sale</th>
+                                                    <th>Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -103,9 +103,11 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="2" class="text-end text-white">Total :</th>
-                                                    <th class="text-start text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid_amount"></span></th>
-                                                    <th colspan="3"></th>
+                                                    <th colspan="5" class="text-end text-white">Total :</th>
+                                                    <th class="text-start text-white">
+                                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                        <span id="paid_amount"></span>
+                                                    </th>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -146,7 +148,6 @@
         ],
         "processing": true,
         "serverSide": true,
-        aaSorting: [[1, 'asc']],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.sale.payments.index') }}",
@@ -157,12 +158,12 @@
             }
         },
         columns: [
-            {data: 'payment_invoice', name: 'invoice_id'},
             {data: 'date', name: 'date'},
-            {data: 'paid_amount', name: 'paid_amount'},
+            {data: 'payment_invoice', name: 'invoice_id'},
             {data: 'customer_name', name: 'customers.name'},
             {data: 'pay_mode', name: 'pay_mode'},
             {data: 'sale_invoice', name: 'sales.invoice_id'},
+            {data: 'paid_amount', name: 'paid_amount'},
         ],
         fnDrawCallback: function() {
             var paid_amount = sum_table_col($('.data_tbl'), 'paid_amount');

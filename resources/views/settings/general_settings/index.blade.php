@@ -202,12 +202,8 @@
                                                 <option value="m-d-Y"
                                                     {{ json_decode($generalSettings->business, true)['date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>
                                                     mm-dd-yyyy</option>
-                                                <option value="m/d/Y"
-                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'm/d/Y' ? 'SELECTED' : '' }}>
-                                                    mm/dd/yyyy</option>
-                                                <option value="d/m/Y"
-                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'd/m/Y' ? 'SELECTED' : '' }}>
-                                                    dd/mm/yyyy</option>
+                                                <option value="m/d/Y" {{ json_decode($generalSettings->business, true)['date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>
+                                                    yyyy-mm-dd</option>
                                             </select>
                                             <span class="error error_date_format"></span>
                                         </div>

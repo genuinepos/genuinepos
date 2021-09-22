@@ -127,12 +127,12 @@
     
                                             </tbody>
                                             <tfoot>
-                                                <tr>
-                                                    <th colspan="5" class="text-end">Total :</th>
-                                                    <th><span id="total_qty"></span></th>
-                                                    <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_unit_cost"></span></th>
-                                                    <th>---</th>
-                                                    <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_subtotal"></span></th>
+                                                <tr class="bg-secondary">
+                                                    <th colspan="5" class="text-end text-white">Total :</th>
+                                                    <th class="text-start text-white">(<span id="total_qty"></span>)</th>
+                                                    <th class="text-start text-white">---</th>
+                                                    <th class="text-start text-white">---</th>
+                                                    <th class="text-start text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_subtotal"></span></th>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -173,7 +173,6 @@
         ],
         "processing": true,
         "serverSide": true,
-        aaSorting: [[0, 'asc']],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.product.purchases.index') }}",
@@ -199,8 +198,6 @@
         fnDrawCallback: function() {
             var total_qty = sum_table_col($('.data_tbl'), 'qty');
             $('#total_qty').text(parseFloat(total_qty).toFixed(2));
-            var total_unit_cost = sum_table_col($('.data_tbl'), 'net_unit_cost');
-            $('#total_unit_cost').text(parseFloat(total_unit_cost).toFixed(2));
             var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
             $('#total_subtotal').text(parseFloat(total_subtotal).toFixed(2));
         },

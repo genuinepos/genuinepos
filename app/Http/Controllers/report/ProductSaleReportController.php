@@ -60,7 +60,8 @@ class ProductSaleReportController extends Controller
                 $query->where('sales.year', date('Y'));
             }
 
-            $saleProducts = $query
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+                $saleProducts = $query
                 ->select(
                     'sale_products.sale_id',
                     'sale_products.product_id',
@@ -75,7 +76,27 @@ class ProductSaleReportController extends Controller
                     'product_variants.variant_name',
                     'product_variants.variant_code',
                     'customers.name as customer_name'
-                );
+                )->orderBy('sales.report_date', 'desc');
+            }else {
+                $saleProducts = $query
+                ->select(
+                    'sale_products.sale_id',
+                    'sale_products.product_id',
+                    'sale_products.product_variant_id',
+                    'sale_products.unit_price_inc_tax',
+                    'sale_products.quantity',
+                    'units.code_name as unit_code',
+                    'sale_products.subtotal',
+                    'sales.*',
+                    'products.name',
+                    'products.product_code',
+                    'product_variants.variant_name',
+                    'product_variants.variant_code',
+                    'customers.name as customer_name'
+                )->where('sales.branch_id', auth()->user()->branch_id)
+                ->orderBy('sales.report_date', 'desc');
+            }
+            
 
             return DataTables::of($saleProducts)
                 ->editColumn('product', function ($row) {
@@ -163,7 +184,7 @@ class ProductSaleReportController extends Controller
                 'product_variants.variant_name',
                 'product_variants.variant_code',
                 'customers.name as customer_name'
-            )->get();
+            )->orderBy('sales.report_date', 'desc')->get();
         return view('reports.product_sale_report.ajax_view.print', compact('saleProducts', 'fromDate', 'toDate', 'branch_id'));
     }
 

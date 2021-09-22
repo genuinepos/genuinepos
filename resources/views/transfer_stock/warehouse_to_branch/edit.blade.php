@@ -57,10 +57,10 @@
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-4"><span
-                                                    class="text-danger">*</span> <b>Branch :</b></label>
+                                                    class="text-danger">*</span> <b>B.Location :</b></label>
                                                 <div class="col-8">
                                                     <select name="branch_id" data-name="Branch" class="form-control add_input" id="branch_id">
-                                                        <option value="">Select Branch</option>
+                                                        <option value="">Select Business Location</option>
                                                         @foreach ($branches as $branch)
                                                             <option {{ $transfer->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
                                                         @endforeach

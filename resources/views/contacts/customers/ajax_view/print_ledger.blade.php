@@ -101,7 +101,7 @@
                             <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->customer_payment->date)) }}</td> 
                             <td class="text-start">{{ $ledger->customer_payment->type == 1 ? 'Dr' : 'Cr' }}</td>
                             <td class="text-start">
-                                {{ $ledger->customer_payment->type == 1 ? 'Direct Received From Customer(Sale Due)' : 'Paid To Customer (Sale Return Due)' }}
+                                {{ $ledger->customer_payment->type == 1 ? 'Received From Customer(Sale Due)' : 'Paid To Customer (Sale Return Due)' }}
                                 <b>{!! $ledger->customer_payment->account ? '<br>'.$ledger->customer_payment->account->name : '' !!}
                                 {!! $ledger->customer_payment->account ? 'A/C '.$ledger->customer_payment->account->account_number: '' !!}</b>
                             </td>

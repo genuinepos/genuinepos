@@ -343,7 +343,7 @@ class SupplierController extends Controller
             'total_purchase',
             'total_purchase_due'
         )->first();
-        $addSupplierLedgerModelData = SupplierLedger::orderBy('report_date', 'ASC');
+        $addSupplierLedgerModelData = SupplierLedger::orderBy('report_date', 'asc');
         $ledgers = $addSupplierLedgerModelData->with(['purchase', 'purchase_payment', 'purchase_payment.purchase', 'supplier_payment'])
             ->where('supplier_id', $supplierId)->get();
         return view('contacts.suppliers.ajax_view.print_ledger', compact('ledgers', 'supplier'));

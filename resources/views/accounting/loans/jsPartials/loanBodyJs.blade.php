@@ -190,4 +190,29 @@
             $('.submit_able_input').blur();
         }, 500);
     });
+
+    //Print Profit/Loss 
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('accounting.loan.print') }}";
+        var branch_id = $('#branch_id').val();
+        var company_id = $('#f_company_id').val();
+        var date_range = $('#date_range').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: { branch_id, company_id, date_range },
+            success:function(data){
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 700, 
+                    header: null,        
+                });
+            }
+        }); 
+    });
 </script>

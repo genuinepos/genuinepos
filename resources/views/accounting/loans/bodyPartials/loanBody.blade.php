@@ -2,8 +2,15 @@
     <div class="col-md-4">
         <div class="card" id="add_loan_form">
             <div class="section-header">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <h6>Add Loan </h6>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label></label>
+                        <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                    </div>
                 </div>
             </div>
 
@@ -99,7 +106,6 @@
 
 
             <div class="widget_content">
-                
                 <form id="filter_tax_report_form" class="px-1" action="" method="get">
                     @csrf
                     <div class="form-group row">

@@ -105,7 +105,7 @@ class LoanController extends Controller
                     if ($row->loan_by) {
                         return $row->loan_by;
                     }else {
-                        return 'Direct Loan pay.';
+                        return 'Cash Loan pay.';
                     }
                 })->editColumn('loan_amount', function ($row) use ($generalSettings) {
                     return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->loan_amount;
@@ -349,5 +349,64 @@ class LoanController extends Controller
     public function allCompaniesForForm()
     {
         return DB::table('loan_companies')->select('id', 'name')->get();
+    }
+
+    public function loanPrint(Request $request)
+    {
+        $loans = '';
+        $branch_id = $request->branch_id;
+        $fromDate = '';
+        $toDate = '';
+        $company_id = $request->company_id;
+        $query = DB::table('loans')
+            ->leftJoin('branches', 'loans.branch_id', 'branches.id')
+            ->leftJoin('loan_companies', 'loans.loan_company_id', 'loan_companies.id')
+            ->leftJoin('accounts', 'loans.account_id', 'accounts.id');
+
+        if ($request->branch_id) {
+            if ($request->branch_id == 'NULL') {
+                $query->where('loans.branch_id', NULL);
+            } else {
+                $query->where('loans.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->company_id) {
+            $query->where('loans.loan_company_id', $request->company_id);
+        }
+
+        if ($request->date_range) {
+            $date_range = explode('-', $request->date_range);
+            $form_date = date('Y-m-d', strtotime($date_range[0]));
+            $to_date = date('Y-m-d', strtotime($date_range[1]));
+            $fromDate = date('Y-m-d', strtotime($date_range[0]));
+            $toDate = date('Y-m-d', strtotime($date_range[1]));
+            $query->whereBetween('loans.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        }
+
+        $generalSettings = DB::table('general_settings')->first();
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            $loans = $query->select(
+                'loans.*',
+                'loan_companies.name as c_name',
+                'accounts.name as ac_name',
+                'accounts.account_number as ac_number',
+                'branches.name as b_name',
+                'branches.branch_code as b_code',
+            )->orderBy('loans.report_date', 'desc')->get();
+        }else {
+            $loans = $query->select(
+                'loans.*',
+                'loan_companies.name as c_name',
+                'accounts.name as ac_name',
+                'accounts.account_number as ac_number',
+                'branches.name as b_name',
+                'branches.branch_code as b_code',
+            )->where('loans.branch_id', auth()->user()->branch_id)
+            ->orderBy('loans.report_date', 'desc')->get();
+        }
+
+        return view('reports.loan_report.print', compact('loans', 'branch_id', 'fromDate', 'toDate', 'company_id'));
     }
 }

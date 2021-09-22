@@ -20,6 +20,7 @@
          @if ($fromDate && $toDate)
             <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
         @endif
+        <p>{{ json_decode($generalSettings->business, true)['address'] }}</p>
         <p><b>Product Sale Report </b></p> 
     </div>
 </div>

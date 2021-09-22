@@ -575,6 +575,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
             Route::post('update/{loanId}', 'LoanController@update')->name('accounting.loan.update');
             Route::delete('delete/{loanId}', 'LoanController@delete')->name('accounting.loan.delete');
             Route::get('all/companies/for/form', 'LoanController@allCompaniesForForm')->name('accounting.loan.all.companies.for.form');
+            Route::get('loan/print', 'LoanController@loanPrint')->name('accounting.loan.print');
         });
 
         Route::group(['prefix' => 'companies'], function () {

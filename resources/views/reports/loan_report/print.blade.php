@@ -65,7 +65,7 @@
                 @foreach ($loans as $loan)
                     <tr>
                         <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}</td>
-                        <td>
+                        <td class="text-start">
                             @if ($loan->b_name) 
                                 {!! $loan->b_name . '/' . $loan->b_code . '(<b>BL</b>)' !!}
                              @else 

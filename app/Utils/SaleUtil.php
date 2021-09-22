@@ -272,6 +272,7 @@ class SaleUtil
             $addCustomerLedger->customer_id = $sale->customer_id;
             $addCustomerLedger->sale_payment_id = $addSalePayment->id;
             $addCustomerLedger->row_type = 2;
+            $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
             $addCustomerLedger->save();
         }
     }

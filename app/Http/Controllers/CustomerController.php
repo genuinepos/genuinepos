@@ -153,13 +153,12 @@ class CustomerController extends Controller
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);
 
-        if ($request->opening_balance && $request->opening_balance >= 0) {
-            $addCustomerLedger = new CustomerLedger();
-            $addCustomerLedger->customer_id = $addCustomer->id;
-            $addCustomerLedger->row_type = 3;
-            $addCustomerLedger->amount = $request->opening_balance;
-            $addCustomerLedger->save();
-        }
+        $addCustomerLedger = new CustomerLedger();
+        $addCustomerLedger->customer_id = $addCustomer->id;
+        $addCustomerLedger->row_type = 3;
+        $addCustomerLedger->report_date = date('Y-m-d');
+        $addCustomerLedger->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+        $addCustomerLedger->save();
 
         return response()->json('Customer created successfully');
     }
@@ -393,7 +392,7 @@ class CustomerController extends Controller
     {
         $ledgers = CustomerLedger::with(
             [
-                'sale', 
+                'sale',
                 'sale.sale_products',
                 'sale.sale_products.product',
                 'sale.sale_products.variant',
@@ -414,7 +413,7 @@ class CustomerController extends Controller
     {
         $ledgers = CustomerLedger::with(
             [
-                'sale', 
+                'sale',
                 'sale.sale_products',
                 'sale.sale_products.product',
                 'sale.sale_products.variant',

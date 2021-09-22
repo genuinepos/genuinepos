@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Models\CustomerLedger;
+use App\Models\Sale;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -817,6 +819,11 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
         Route::get('/', 'AttendanceReportController@attendanceReport')->name('reports.attendance');
         Route::get('print', 'AttendanceReportController@attendanceReportPrint')->name('reports.attendance.print');
     });
+
+    Route::group(['prefix' => 'financial'], function () {
+        Route::get('/', 'FinancialReportControllerReport@index')->name('reports.financial.index');
+        Route::get('print', 'FinancialReportControllerReport@print')->name('reports.financial.print');
+    });
 });
 
 Route::group(['prefix' => 'short-menus', 'namespace' => 'App\Http\Controllers'], function () {
@@ -961,6 +968,13 @@ Route::get('/test', function () {
     // dd($response);
     // $date =  '8/25/2021';
     // return date('Y-m-d', strtotime($date. ' -1 days'));
+
+    $ledger = CustomerLedger::where('sale_id', '!=', NULL)->get();
+    foreach ($ledger as $value) {
+         $sale = Sale::where('id', $value->sale_id)->first();
+         $value->report_date = $sale->report_date;
+         $value->save();
+    }
 });
 
 // All authenticated routes

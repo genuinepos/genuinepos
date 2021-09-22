@@ -113,6 +113,7 @@ return [
     'purchase_payment_report' => 'ক্রয় পেমেন্ট রিপোর্ট',
     'sale_payment_report' => 'প্রাপ্ত পেমেন্ট রিপোর্ট',
     'expense_report' => 'ব্যয় রিপোর্ট',
+    'financial_report' => 'চূড়ান্ত প্রতিবেদন',
     'register_report' => 'রিপোর্ট নিবন্ধ',
     'sales_representative_report' => 'বিক্রয় প্রতিনিধি রিপোর্ট',
     'payroll_report' => 'বেতন রিপোর্ট',

@@ -76,6 +76,11 @@
                                         <input type="radio" name="group" />
                                         <span class="button-group__label">This Year</span>
                                     </label>
+
+                                    <label class="button-group__btn" id="date" data-value="all_time">
+                                        <input type="radio" name="group" />
+                                        <span class="button-group__label">All Time</span>
+                                    </label>
                                 </div>
                             </div>
                         </div>

@@ -115,6 +115,7 @@ return [
   'purchase_payment_report' => 'Purchase Payment Report',
   'sale_payment_report' => 'Receive Payment Report',
   'expense_report' => 'Expense Report',
+  'financial_report' => 'Financial Report',
   'register_report' => 'Register Report',
   'sales_representative_report' => 'Sales Representative Report',
   'payroll_report' => 'Payroll Report',

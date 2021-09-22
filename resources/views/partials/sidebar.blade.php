@@ -668,7 +668,7 @@
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.receive_stocks') 
-                                        <small class="ml-1"><b>(From Branch)</small></b>
+                                        <small class="ml-1"><b>(From B.Location)</small></b>
                                     </p>
                                 </div>
 
@@ -1339,8 +1339,7 @@
                             @endif
 
                             @if (auth()->user()->permission->report['expanse_report'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.expenses.index') }}" class="bar-link">
                                             <span><i class="far fa-money-bill-alt"></i></span>
@@ -1349,6 +1348,15 @@
                                     <p class="switch_text">@lang('menu.expense_report')</p>
                                 </div>
                             @endif
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('reports.financial.index') }}" class="bar-link">
+                                        <span><i class="fas fa-money-bill-wave"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.financial_report')</p>
+                            </div>
 
                             <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">

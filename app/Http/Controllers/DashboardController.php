@@ -7,8 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-use Yajra\DataTables\Html\Editor\Fields\DateTime;
-
 
 class DashboardController extends Controller
 {
@@ -47,10 +45,10 @@ class DashboardController extends Controller
 
         $userQuery = DB::table('admin_and_users');
         $purchaseQuery = DB::table('purchases')
-        ->select(
-            DB::raw('sum(total_purchase_amount) as total_purchase'),
-            DB::raw('sum(case when due > 0 then due end) as total_due'),
-        );
+            ->select(
+                DB::raw('sum(total_purchase_amount) as total_purchase'),
+                DB::raw('sum(case when due > 0 then due end) as total_due'),
+            );
 
         $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
@@ -82,14 +80,16 @@ class DashboardController extends Controller
             }
         }
 
-        if ($request->date_range) {
-            $date_range = explode('~', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $saleQuery->whereBetween('sales.report_date', [$form_date, $to_date]); // Final
-            $purchaseQuery->whereBetween('purchases.report_date', [$form_date, $to_date]);
-            $expenseQuery->whereBetween('expanses.report_date', [$form_date, $to_date]);
-            $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date, $to_date]);
+        if ($request->date_range != 'all_time') {
+            if ($request->date_range) {
+                $date_range = explode('~', $request->date_range);
+                $form_date = date('Y-m-d', strtotime($date_range[0]));
+                $to_date = date('Y-m-d', strtotime($date_range[1]));
+                $saleQuery->whereBetween('sales.report_date', [$form_date, $to_date]); // Final
+                $purchaseQuery->whereBetween('purchases.report_date', [$form_date, $to_date]);
+                $expenseQuery->whereBetween('expanses.report_date', [$form_date, $to_date]);
+                $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date, $to_date]);
+            }
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -104,7 +104,7 @@ class DashboardController extends Controller
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->groupBy('expanses.id')->get();
             $users = $userQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->count();
             $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)
-            ->groupBy('stock_adjustments.id')->get();
+                ->groupBy('stock_adjustments.id')->get();
         }
 
 
@@ -118,7 +118,7 @@ class DashboardController extends Controller
         $totalExpense = $expenses->sum('total_expense');
         $products = DB::table('products')->count();
         $total_adjustment = $adjustments->sum('total_adjustment');
-      
+
         return response()->json([
             'total_sale' => $totalSales,
             'totalSaleDue' => $totalSaleDue,
@@ -179,11 +179,13 @@ class DashboardController extends Controller
                 }
             }
 
-            if ($request->date_range) {
-                $date_range = explode('~', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->date_range != 'all_time') {
+                if ($request->date_range) {
+                    $date_range = explode('~', $request->date_range);
+                    $form_date = date('Y-m-d', strtotime($date_range[0]));
+                    $to_date = date('Y-m-d', strtotime($date_range[1]));
+                    $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+                }
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -254,11 +256,13 @@ class DashboardController extends Controller
                 }
             }
 
-            if ($request->date_range) {
-                $date_range = explode('~', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->date_range != 'all_time') {
+                if ($request->date_range) {
+                    $date_range = explode('~', $request->date_range);
+                    $form_date = date('Y-m-d', strtotime($date_range[0]));
+                    $to_date = date('Y-m-d', strtotime($date_range[1]));
+                    $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+                }
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -318,11 +322,13 @@ class DashboardController extends Controller
                 }
             }
 
-            if ($request->date_range) {
-                $date_range = explode('~', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->date_range != 'all_time') {
+                if ($request->date_range) {
+                    $date_range = explode('~', $request->date_range);
+                    $form_date = date('Y-m-d', strtotime($date_range[0]));
+                    $to_date = date('Y-m-d', strtotime($date_range[1]));
+                    $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+                }
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -404,7 +410,7 @@ class DashboardController extends Controller
         );
 
         $saleReturnQuery = DB::table('sale_returns')
-        ->select(DB::raw('sum(total_return_amount) as total_return'));
+            ->select(DB::raw('sum(total_return_amount) as total_return'));
 
         $expenseQuery = DB::table('expanses')->select(DB::raw('sum(net_total_amount) as total_expense'));
 
@@ -422,9 +428,9 @@ class DashboardController extends Controller
         );
 
         $payrollQuery = DB::table('hrm_payroll_payments')
-        ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-        ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
-        ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
+            ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
+            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+            ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
             if ($request->branch_id == 'HF') {
@@ -448,8 +454,8 @@ class DashboardController extends Controller
                 $warehouseTransferQuery->where('transfer_stock_to_warehouses.branch_id', $request->branch_id);
                 $payrollQuery->where('admin_and_users.branch_id', $request->branch_id);
                 $branch = DB::table('branches')->where('id', $request->branch_id)
-                ->select('name', 'branch_code')
-                ->first();
+                    ->select('name', 'branch_code')
+                    ->first();
             }
         }
 
@@ -463,41 +469,41 @@ class DashboardController extends Controller
             $branchTransfer = $branchTransferQuery->groupBy('transfer_stock_to_branches.id')->whereDate('report_date', Carbon::today())->get();
             $warehouseTransfer = $warehouseTransferQuery->groupBy('transfer_stock_to_warehouses.id')->whereDate('report_date', Carbon::today())->get();
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
-            ->whereDate('hrm_payroll_payments.report_date', Carbon::today())->get();
+                ->whereDate('hrm_payroll_payments.report_date', Carbon::today())->get();
         } else {
             $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
-            ->groupBy('sales.id')->whereDate('report_date', Carbon::today())->get();
-            
+                ->groupBy('sales.id')->whereDate('report_date', Carbon::today())->get();
+
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)
-            ->groupBy('purchases.id')->whereDate('report_date', Carbon::today())->get();
+                ->groupBy('purchases.id')->whereDate('report_date', Carbon::today())->get();
 
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)
-            ->groupBy('expanses.id')
-            ->whereDate('report_date', Carbon::today())->get();
+                ->groupBy('expanses.id')
+                ->whereDate('report_date', Carbon::today())->get();
 
             $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)
-            ->groupBy('stock_adjustments.id')
-            ->whereDate('report_date_ts', Carbon::today())->get();
+                ->groupBy('stock_adjustments.id')
+                ->whereDate('report_date_ts', Carbon::today())->get();
 
             $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')
-            ->where('purchase_returns.branch_id', auth()->user()->branch_id)
-            ->whereDate('report_date', Carbon::today())->get();
+                ->where('purchase_returns.branch_id', auth()->user()->branch_id)
+                ->whereDate('report_date', Carbon::today())->get();
 
             $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')
-            ->where('sale_returns.branch_id', auth()->user()->branch_id)
-            ->whereDate('report_date', Carbon::today())->get();
+                ->where('sale_returns.branch_id', auth()->user()->branch_id)
+                ->whereDate('report_date', Carbon::today())->get();
 
             $branchTransfer = $branchTransferQuery->groupBy('transfer_stock_to_branches.id')
-            ->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)
-            ->whereDate('report_date', Carbon::today())->get();
+                ->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)
+                ->whereDate('report_date', Carbon::today())->get();
 
             $warehouseTransfer = $warehouseTransferQuery->groupBy('transfer_stock_to_warehouses.id')
-            ->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)
-            ->whereDate('report_date', Carbon::today())->get();
+                ->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)
+                ->whereDate('report_date', Carbon::today())->get();
 
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
-            ->whereDate('hrm_payroll_payments.report_date', Carbon::today())
-            ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                ->whereDate('hrm_payroll_payments.report_date', Carbon::today())
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
         }
 
         $totalSales = $sales->sum('total_sale');
@@ -511,14 +517,14 @@ class DashboardController extends Controller
         $total_recovered = $adjustments->sum('total_recovered');
         $totalTransferShippingCost = $branchTransfer->sum('total_shipping_cost_br') + $warehouseTransfer->sum('total_shipping_cost_wh');
         $purchaseTotalShipmentCost = $purchases->sum('total_shipment_charge');
-       
+
         $totalPayroll = $payrolls->sum('total_payroll');
         $branch_id = $request->branch_id;
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('dashboard.ajax_view.today_summery', compact(
-            'totalSales', 
+            'totalSales',
             'totalSaleDiscount',
-            'totalSalesReturn', 
+            'totalSalesReturn',
             'totalSalesShipmentCost',
             'totalPurchase',
             'totalPurchaseReturn',
@@ -533,7 +539,7 @@ class DashboardController extends Controller
             'branch_id',
         ));
     }
-    
+
     public function changeLang($lang)
     {
         session(['lang' => $lang]);

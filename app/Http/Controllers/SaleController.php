@@ -306,6 +306,8 @@ class SaleController extends Controller
                 $addCustomerLedger = new CustomerLedger();
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_id = $addSale->id;
+                $addCustomerLedger->row_type = 1;
+                //$addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
                 $addCustomerLedger->save();
             }
         } else {
@@ -1209,6 +1211,7 @@ class SaleController extends Controller
             $addCustomerLedger->customer_id = $customer->id;
             $addCustomerLedger->sale_payment_id = $addSalePayment->id;
             $addCustomerLedger->row_type = 2;
+            $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
             $addCustomerLedger->save();
         }
 

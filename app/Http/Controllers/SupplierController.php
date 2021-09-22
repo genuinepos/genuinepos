@@ -227,7 +227,6 @@ class SupplierController extends Controller
                     }
 
                     $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-
                     if (auth()->user()->permission->purchase['purchase_return'] == '1') {
                         $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
                     }

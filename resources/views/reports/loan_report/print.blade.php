@@ -2,7 +2,6 @@
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
             <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-            <p><b>All Business Location.</b></p> 
         @elseif ($branch_id == 'NULL')
             <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
         @else

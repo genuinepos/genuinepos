@@ -970,12 +970,22 @@ Route::get('/test', function () {
     // $date =  '8/25/2021';
     // return date('Y-m-d', strtotime($date. ' -1 days'));
 
-    $ledger = CustomerLedger::where('sale_id', '!=', NULL)->get();
-    foreach ($ledger as $value) {
-         $sale = Sale::where('id', $value->sale_id)->first();
-         $value->report_date = $sale->report_date;
-         $value->save();
-    }
+    // $ledger = CustomerLedger::where('sale_id', '!=', NULL)->get();
+    // foreach ($ledger as $value) {
+    //      $sale = Sale::where('id', $value->sale_id)->first();
+    //      $value->report_date = $sale->report_date;
+    //      $value->save();
+    // }
+
+    $cashFlowD = DB::table('cash_flows')->where('cash_type', 1)
+    ->select(DB::raw('sum(debit) as t_debit'))
+    ->get();
+
+    $cashFlowC = DB::table('cash_flows')->where('cash_type', 2)
+    ->select(DB::raw('sum(credit) as t_credit'))
+    ->get();
+
+    return $cashFlowC->sum('t_credit') - $cashFlowD->sum('t_debit');
 });
 
 // All authenticated routes

@@ -109,7 +109,7 @@
         </table>
     </div>
 </div>
-<div style="page-break-after: always;"></div>
+
 <div class="row" >
     <div class="col-6"></div>
     <div class="col-6">

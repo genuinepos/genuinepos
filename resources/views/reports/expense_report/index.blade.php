@@ -263,7 +263,13 @@
                     loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
                     removeInline: false, 
                     printDelay: 700, 
-                    header: null,        
+                    header: null, 
+                    header: null, 
+                    pageTitle: '',
+                    formValues: false,         
+                    canvas: false, 
+                    beforePrint: null,
+                    afterPrint: null      
                 });
             }
         }); 

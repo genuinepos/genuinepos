@@ -1,5 +1,11 @@
 <style>
-     @page {margin:2cm 1.2cm 0.5cm 1.2cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
+     @page {
+         margin:1.8cm 1.2cm 0.5cm 1.2cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;
+    }
+
+         @media print{
+            header{ display: none;}
+         }
 </style>
 @php
     $totalExpense = 0;
@@ -9,10 +15,10 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p><b>All Business Location.</b></p> 
         @elseif ($branch_id == 'NULL')
-            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+            <p>{{ json_decode($generalSettings->business, true)['shop_name'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')->where('id', $branch_id)->select('name', 'branch_code')->first();
@@ -23,8 +29,8 @@
         @if ($fromDate && $toDate)
             <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
         @endif
-        <p>{{ json_decode($generalSettings->business, true)['address'] }}</p>
-        <p><b>Expense Report </b></p>
+        <p style="width: 40%;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        <h6 style="margin-top: 10px;"><b>Expense Report </b></h6>
     </div>
 </div>
 <br>

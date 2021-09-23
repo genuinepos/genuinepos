@@ -1,12 +1,6 @@
 <style>
-     /* @page {
-         margin:1.8cm 1.2cm 0.5cm 1.2cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;
-    } */
-    @page {
-      size: a4;  / auto is the initial value /
-      /* margin: 10mm; / this affects the margin in the printer settings / */
-      margin:1.8cm 1.2cm 0.5cm 1.2cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;
-    }
+      @page {margin:1.5cm 1.2cm 0.1cm 1.2cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;
+    } 
 </style>
 @php
     $totalExpense = 0;
@@ -35,7 +29,7 @@
     </div>
 </div>
 <br>
-<div class="row mt-4" id="pageFooter">
+<div class="row">
     <div class="col-12">
         <table class="table modal-table table-sm table-bordered">
             <thead>

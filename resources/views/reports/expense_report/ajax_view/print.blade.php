@@ -124,6 +124,6 @@
     </div>
 @endif
 
-<div id="page_info" style="position:fixed;bottom:0px;left:0px;width:100%;color:#CCC;background:#333;" class="text-end">
+<small id="page_info" style="position:fixed;bottom:0px;left:0px;width:100%;color:#CCC;background:#333;" class="text-end">
     print Date : {{ date('d-m-Y h:i:s a') }}
-</div>
+</small>

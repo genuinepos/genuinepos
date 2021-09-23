@@ -1,5 +1,5 @@
 <style>
-     @page {margin:1.5cm 1cm 1.5cm 1cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
+     @page {margin:2cm 1.2cm 0.5cm 1.2cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
 </style>
 @php
     $totalExpense = 0;
@@ -118,4 +118,6 @@
     </div>
 @endif
 
-<div id="page_number" style="position:fixed;bottom:0px;left:0px;width:100%;color:#CCC;background:#333;"></div>
+<div id="page_info" style="position:fixed;bottom:0px;left:0px;width:100%;color:#CCC;background:#333;" class="text-end">
+    print Date : {{ date('d-m-Y h:i:s a') }}
+</div>

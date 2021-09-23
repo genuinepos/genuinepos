@@ -1,3 +1,6 @@
+<style>
+    @page {margin:1.5cm 1cm 1.5cm 1cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
+</style>
 @php
     $totalExpense = 0;
     $totalPaid = 0;
@@ -25,7 +28,7 @@
     </div>
 </div>
 <br>
-<div class="row">
+<div class="row" id="pageFooter">
     <div class="col-12">
         <table class="table modal-table table-sm table-bordered">
             <thead>
@@ -83,7 +86,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" >
     <div class="col-6"></div>
     <div class="col-6">
         <table class="table modal-table table-sm table-bordered">
@@ -114,3 +117,5 @@
         </div>
     </div>
 @endif
+
+<div id="page_number" style="position:fixed;bottom:0px;left:0px;width:100%;color:#CCC;background:#333;"></div>

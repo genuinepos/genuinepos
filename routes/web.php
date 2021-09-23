@@ -993,9 +993,11 @@ Route::get('/test', function () {
         ->select(DB::raw('sum(credit) as t_credit'))
         ->get();
 
+    $totalCredit = $cashFlowC->sum('t_credit') ? $cashFlowC->sum('t_credit') : 0;
+
+    $expenseLoan = DB::table('loans')->where('loan_by', 'Expense')->select(DB::raw('sum(loan_amount) as amt'))->get();
+
     return $cashFlowC->sum('t_credit') - $acDebit;
-
-
 });
 
 // All authenticated routes

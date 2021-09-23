@@ -1,3 +1,6 @@
+<style>
+    @page {/* size:21cm 29.7cm; */ margin:1cm 1cm 1cm 1cm; *//* margin:20px 20px 10px; */mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
+</style>
 <div class="row">
     <div class="col-md-12 text-center">
         <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>

@@ -1,3 +1,6 @@
+<style>
+    @page {/* size:21cm 29.7cm; */ margin:1cm 1cm 1cm 1cm; *//* margin:20px 20px 10px; */mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
+</style>
 @php
     $totalQty = 0;
     $totalUnitPrice = 0;

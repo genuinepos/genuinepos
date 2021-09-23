@@ -1,5 +1,5 @@
 <style>
-    @page {margin:1.5cm 1cm 1.5cm 1cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
+     @page {margin:1.5cm 1cm 1.5cm 1cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
 </style>
 @php
     $totalExpense = 0;

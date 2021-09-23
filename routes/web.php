@@ -978,14 +978,24 @@ Route::get('/test', function () {
     // }
 
     $cashFlowD = DB::table('cash_flows')->where('cash_type', 1)
-    ->select(DB::raw('sum(debit) as t_debit'))
+        ->select(DB::raw('sum(debit) as t_debit'))
+        ->get();
+
+    $expenseLoan = DB::table('cash_flows')->where('loan_id', '!=', NULL)
+    ->leftJoin('loans', 'cash_flows.loan_id', 'loans.id')
+    ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(debit) as t_debit'))
+    ->groupBy('loans.loan_by')
     ->get();
+
+    $acDebit = $cashFlowD->sum('t_debit') - $expenseLoan->sum('t_debit');
 
     $cashFlowC = DB::table('cash_flows')->where('cash_type', 2)
-    ->select(DB::raw('sum(credit) as t_credit'))
-    ->get();
+        ->select(DB::raw('sum(credit) as t_credit'))
+        ->get();
 
-    return $cashFlowC->sum('t_credit') - $cashFlowD->sum('t_debit');
+    return $cashFlowC->sum('t_credit') - $acDebit;
+
+
 });
 
 // All authenticated routes

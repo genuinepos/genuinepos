@@ -1,6 +1,10 @@
 <style>
       @page {margin:1.5cm 1.2cm 0.1cm 1.2cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;
     } 
+     /* @page {margin:1cm 1cm 1cm 1cm; mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;} */
+     /* @page {
+        margin-top: 0;
+    } */
 </style>
 @php
     $totalExpense = 0;
@@ -77,9 +81,9 @@
 
                         <td>{{ $ex->cr_prefix . ' ' . $ex->cr_name . ' ' . $ex->cr_last_name }}</td>
                       
-                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $ex->net_total_amount }}</td>
-                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $ex->paid }}</td>
-                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $ex->due }}</td>
+                        <td class="text-start">{{ $ex->net_total_amount }}</td>
+                        <td class="text-start">{{ $ex->paid }}</td>
+                        <td class="text-start">{{ $ex->due }}</td>
                     </tr>
                 @endforeach
             </tbody>

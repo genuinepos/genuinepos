@@ -49,7 +49,7 @@
                     <td class="text-start">{{ date('d/m/Y', strtotime($row->date)) }}</td>
                     <td class="text-start">{{ $row->prefix.' '.$row->name.' '.$row->last_name }}-{{ $row->emp_id }}</h6></td>
                     <td class="text-start">{{ $row->voucher_no }}</td>
-                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $row->paid }}</td>
+                    <td class="text-start">{{ $row->paid }}</td>
                     <td class="text-start">{{ $row->reference_no }}</td>
                     <td class="text-start">{{ $row->pb_prefix.' '.$row->pb_name.' '.$row->pb_last_name }}-{{ $row->emp_id }}</h6></td>
                 </tr>

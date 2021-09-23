@@ -1,5 +1,8 @@
 <style>
-    @page {/* size:21cm 29.7cm; */ margin:1cm 1cm 1cm 1cm; *//* margin:20px 20px 10px; */mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
+    /* @page {margin:1cm 1cm 1cm 1cm; mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;} */
+    @page {
+        margin-top: 0;
+    }
 </style>
 @php
     $allTotalPurchase = 0;
@@ -40,11 +43,11 @@
                     @endphp
                     <tr>
                         <td class="text-start">{{ $report->name.' (ID: '.$report->contact_id.')' }}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $report->total_purchase }}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $report->total_paid }}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $report->opening_balance }}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $report->total_purchase_due }}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $report->total_purchase_return_due }}</td>
+                        <td class="text-start">{{ $report->total_purchase }}</td>
+                        <td class="text-start">{{ $report->total_paid }}</td>
+                        <td class="text-start">{{ $report->opening_balance }}</td>
+                        <td class="text-start">{{ $report->total_purchase_due }}</td>
+                        <td class="text-start">{{ $report->total_purchase_return_due }}</td>
                     </tr>
                 @endforeach
             </tbody>

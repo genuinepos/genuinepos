@@ -60,8 +60,8 @@
                         <td class="text-start">{{ $pProduct->supplier_name }}</td>
                         <td class="text-start">{{ $pProduct->invoice_id }}</td>
                         <td class="text-start">{!! $pProduct->quantity . ' (<span class="qty" data-value="' . $pProduct->quantity . '">' . $pProduct->unit_code . '</span>)' !!}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $pProduct->net_unit_cost }}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $pProduct->line_total }}</td>
+                        <td class="text-start">{{ $pProduct->net_unit_cost }}</td>
+                        <td class="text-start">{{ $pProduct->line_total }}</td>
                     </tr>
                 @endforeach
             </tbody>

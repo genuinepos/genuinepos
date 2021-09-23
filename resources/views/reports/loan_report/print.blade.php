@@ -91,17 +91,17 @@
                                  Cash Loan pay
                             @endif
                         </td>
-                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $loan->loan_amount }}
+                        <td class="text-start">{{ $loan->loan_amount }}
                             @php
                                 $totalLoan += $loan->loan_amount;
                             @endphp
                         </td>
-                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $loan->total_paid }}
+                        <td class="text-start">{{ $loan->total_paid }}
                             @php
                                 $totalPaid += $loan->total_paid;
                             @endphp
                         </td>
-                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b>{{ $loan->due }}
+                        <td class="text-start">{{ $loan->due }}
                             @php
                                 $totalDue += $loan->due;
                             @endphp

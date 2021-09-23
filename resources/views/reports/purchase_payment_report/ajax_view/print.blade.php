@@ -50,7 +50,7 @@
                         <td class="text-start">{{ $payment->supplier_name }}</td>
                         <td class="text-start">{{ $payment->pay_mode }}</td>
                         <td class="text-start">{{ $payment->purchase_invoice }}</td>
-                        <td class="text-start"><b>{{json_decode($generalSettings->business, true)['currency']}}</b> {{ $payment->paid_amount }}</td>
+                        <td class="text-start">{{ $payment->paid_amount }}</td>
                     </tr>
                 @endforeach
             </tbody>

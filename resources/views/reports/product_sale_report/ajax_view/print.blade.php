@@ -61,8 +61,8 @@
                         <td class="text-start">{{ $sProduct->invoice_id }}</td>
                         
                         <td class="text-start">{!! $sProduct->quantity . ' (<span class="qty" data-value="' . $sProduct->quantity . '">' . $sProduct->unit_code . '</span>)' !!}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $sProduct->unit_price_inc_tax }}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. $sProduct->subtotal }}</td>
+                        <td class="text-start">{{ $sProduct->unit_price_inc_tax }}</td>
+                        <td class="text-start">{{ $sProduct->subtotal }}</td>
                     </tr>
                 @endforeach
             </tbody>

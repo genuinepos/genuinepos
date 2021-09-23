@@ -3,7 +3,7 @@
          margin:1.8cm 1.2cm 0.5cm 1.2cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;
     } */
     @page {
-      size: auto;  / auto is the initial value /
+      size: a4;  / auto is the initial value /
       /* margin: 10mm; / this affects the margin in the printer settings / */
       margin:1.8cm 1.2cm 0.5cm 1.2cm;mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;
     }

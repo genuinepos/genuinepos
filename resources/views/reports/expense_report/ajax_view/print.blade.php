@@ -35,7 +35,7 @@
     </div>
 </div>
 <br>
-<div class="row" id="pageFooter">
+<div class="row mt-4" id="pageFooter">
     <div class="col-12">
         <table class="table modal-table table-sm table-bordered">
             <thead>

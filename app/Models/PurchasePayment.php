@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\CashFlow;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Models\SupplierLedger;
 use Illuminate\Database\Eloquent\Model;
 
 class PurchasePayment extends Model
@@ -31,5 +32,10 @@ class PurchasePayment extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id')->select(['id', 'name', 'phone', 'business_name', 'total_purchase_due']);
+    }
+
+    public function ledger()
+    {
+        return $this->hasOne(SupplierLedger::class);
     }
 }

@@ -14,6 +14,8 @@ class AccountUtil
             ->where('debit', '!=', NULL)
             ->select(DB::raw('sum(debit) as t_debit'))
             ->get();
+        
+        $totalDebit = $cashFlowD->sum('t_debit') ? $cashFlowD->sum('t_debit') : 0;
 
         $expenseLoan = DB::table('cash_flows')
             ->where('cash_flows.account_id', $account_id)
@@ -23,21 +25,23 @@ class AccountUtil
             ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(debit) as t_debit'))
             ->groupBy('loans.loan_by')
             ->get();
+        
+        $totalExpenseLoan = $expenseLoan->sum('t_debit') ? $expenseLoan->sum('t_debit') : 0;
 
-        $acDebit = $cashFlowD->sum('t_debit') - $expenseLoan->sum('t_debit');
+        $acDebit = $totalDebit - $totalExpenseLoan;
 
         $cashFlowC = DB::table('cash_flows')->where('cash_type', 2)
             ->where('credit', '!=', NULL)
             ->where('cash_flows.account_id', $account_id)
             ->select(DB::raw('sum(credit) as t_credit'))
             ->get();
-
-        $expenseLoan = DB::table('loans')->where('loan_by', 'Expense')->select(DB::raw('sum(loan_amount) as amt'))->get();
+        
+        $totalCredit = $cashFlowC->sum('t_credit') ? $cashFlowC->sum('t_credit') : 0;
 
         $account = Account::where('id', $account_id)->first();
         $account->debit = $acDebit;
-        $account->credit = $cashFlowC;
-        $account->balance = $cashFlowC->sum('t_credit') - $acDebit;
+        $account->credit = $totalCredit;
+        $account->balance = $totalCredit - $acDebit;
         $account->save();
         return $account->balance;
     }

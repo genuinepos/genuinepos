@@ -7,6 +7,7 @@ use App\Models\Supplier;
 use App\Models\Warehouse;
 use App\Models\AdminAndUser;
 use App\Models\PurchaseReturn;
+use App\Models\SupplierLedger;
 use App\Models\PurchaseProduct;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,6 +51,11 @@ class Purchase extends Model
     public function purchase_payments()
     {
         return $this->hasMany(PurchasePayment::class);
+    }
+
+    public function ledger()
+    {
+        return $this->hasOne(SupplierLedger::class);
     }
 
 }

@@ -185,8 +185,9 @@ class SaleReturnController extends Controller
         }
 
         $saleReturn = SaleReturn::where('sale_id', $saleId)->first();
+        $sale = Sale::where('id', $saleId)->first();
         if ($saleReturn) {
-            $sale = Sale::where('id', $saleId)->first();
+          
             $customer = Customer::where('id', $sale->customer_id)->first();
             //Update sale
             if ($customer) {
@@ -283,7 +284,6 @@ class SaleReturnController extends Controller
             // update sale return products
             $index = 0;
             foreach ($sale_product_ids as $sale_product_id) {
-
                 // Update sale product quantity for adjustment
                 $saleProduct = SaleProduct::where('id', $sale_product_id)->first();
 
@@ -330,38 +330,13 @@ class SaleReturnController extends Controller
                 $index++;
             }
         } else {
-            $sale = Sale::where('id', $saleId)->first();
-            //Update sale
-            $customer = Customer::where('id', $sale->customer_id)->first();
-            if ($customer) {
-                $customer->total_sale_due -= $sale->due;
-                $customer->save();
-            }
-
             //Update sale and customer return due
             $saleDue = $sale->total_payable_amount - ($sale->paid - $sale->change_amount);
             $saleReturnDue = $request->total_return_amount - $saleDue;
             if ($saleReturnDue >= 0) {
                 $sale->sale_return_due = $saleReturnDue;
-                if ($customer) {
-                    $customer->total_sale_return_due += $saleReturnDue;
-                    $customer->save();
-                }
             } else {
                 $sale->sale_return_due = 0.00;
-            }
-
-            $acSaleDue = $saleDue - $request->total_return_amount;
-            $sale->due = $acSaleDue > 0 ? $saleDue : 0;
-            $sale->sale_return_amount = $request->total_return_amount;
-            $sale->is_return_available = 1;
-            $sale->save();
-
-            if ($sale->due >= 0) {
-                if ($customer) {
-                    $customer->total_sale_due += $sale->due;
-                    $customer->save();
-                }
             }
 
             $addSaleReturn = new SaleReturn();

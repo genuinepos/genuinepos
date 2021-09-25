@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Unit;
-use App\Models\Account;
 use App\Models\Product;
 use App\Models\CashFlow;
 use App\Models\Purchase;
@@ -22,6 +21,7 @@ use DB;
 use App\Models\ProductBranchVariant;
 use App\Models\ProductWarehouseVariant;
 use App\Models\PurchaseReturn;
+use App\Utils\AccountUtil;
 use App\Utils\ProductStockUtil;
 use App\Utils\SupplierUtil;
 use App\Utils\Util;
@@ -33,18 +33,21 @@ class PurchaseController extends Controller
     protected $util;
     protected $supplierUtil;
     protected $productStockUtil;
+    protected $accountUtil;
     public function __construct(
         NameSearchUtil $nameSearchUtil,
         PurchaseUtil $purchaseUtil,
         Util $util,
         SupplierUtil $supplierUtil,
-        ProductStockUtil $productStockUtil
+        ProductStockUtil $productStockUtil,
+        AccountUtil $accountUtil
     ) {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->util = $util;
         $this->supplierUtil = $supplierUtil;
         $this->productStockUtil = $productStockUtil;
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -282,17 +285,11 @@ class PurchaseController extends Controller
             $addPurchasePayment->save();
 
             if ($request->account_id) {
-                // update account
-                $account = Account::where('id', $request->account_id)->first();
-                $account->debit += (float)$request->paying_amount;
-                $account->balance -= (float)$request->paying_amount;
-                $account->save();
-
                 // Add cash flow
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->debit = $request->paying_amount;
-                $addCashFlow->balance = $account->balance;
+                //$addCashFlow->balance = $account->balance;
                 $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
                 $addCashFlow->transaction_type = 3;
                 $addCashFlow->cash_type = 1;
@@ -301,6 +298,8 @@ class PurchaseController extends Controller
                 $addCashFlow->month = date('F');
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
+                $addCashFlow->save();
+                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
                 $addCashFlow->save();
             }
 
@@ -382,7 +381,7 @@ class PurchaseController extends Controller
         $selling_prices = $request->selling_prices;
 
         // get updatable purchase row
-        $updatePurchase = purchase::with('purchase_products')->where('id', $request->id)->first();
+        $updatePurchase = purchase::with(['purchase_products', 'ledger'])->where('id', $request->id)->first();
 
         // update product and variant quantity for adjustment
         $storePurchaseProduct = $updatePurchase->purchase_products;
@@ -468,7 +467,6 @@ class PurchaseController extends Controller
         }
 
         $updatePurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
-
         // generate invoice ID
         $i = 6;
         $a = 0;
@@ -511,6 +509,8 @@ class PurchaseController extends Controller
             $updatePurchase->attachment = $purchaseAttachmentName;
         }
         $updatePurchase->save();
+        $updatePurchase->ledger->report_date = $updatePurchase->report_date;
+        $updatePurchase->ledger->save();
 
         // update product and variant Price & quantity
         $storePurchaseProducts = $updatePurchase->purchase_products;
@@ -674,7 +674,6 @@ class PurchaseController extends Controller
         $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
 
         $variantId = $request->variant_id != 'noid' ? $request->variant_id : NULL;
-
         $updatePurchaseProduct = PurchaseProduct::where('purchase_id', $purchaseId)
             ->where('product_id', $request->product_id)
             ->where('product_variant_id', $variantId)->first();
@@ -843,19 +842,8 @@ class PurchaseController extends Controller
         // get deleting purchase row
         $deletePurchase = purchase::with('supplier', 'purchase_products')->where('id', $purchaseId)->first();
         $supplier = DB::table('suppliers')->where('id', $deletePurchase->supplier_id)->first();
-
         //purchase payments
-        if (count($deletePurchase->purchase_payments) > 0) {
-            foreach ($deletePurchase->purchase_payments as $payment) {
-                $account = Account::where('id', $payment->account_id)->first();
-                if ($account) {
-                    $account->debit -= $payment->paid_amount;
-                    $account->balance += $payment->paid_amount;
-                    $account->save();
-                }
-            }
-        }
-
+        $storedPayments = $deletePurchase->purchase_payments;
         $storePurchaseProducts = $deletePurchase->purchase_products;
         foreach ($deletePurchase->purchase_products as $purchase_product) {
             $SupplierProduct = SupplierProduct::where('supplier_id', $deletePurchase->supplier_id)
@@ -928,6 +916,14 @@ class PurchaseController extends Controller
         foreach ($storePurchaseProducts as $purchase_product) {
             $variant_id = $purchase_product->product_variant_id ? $purchase_product->product_variant_id : NULL;
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $variant_id);
+        }
+
+        if (count($storedPayments) > 0) {
+            foreach ($storedPayments as $payment) {
+                if ($payment->account_id) {
+                    $this->accountUtil->adjustAccountBalance($payment->account_id);
+                }
+            }
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($supplier->id);
@@ -1084,17 +1080,11 @@ class PurchaseController extends Controller
 
         $addPurchasePayment->save();
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->debit = $account->debit + $request->amount;
-            $account->balance = $account->balance - $request->amount;
-            $account->save();
-
             // Add cash flow
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->debit = $request->amount;
-            $addCashFlow->balance = $account->balance;
+            //$addCashFlow->balance = $account->balance;
             $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
             $addCashFlow->transaction_type = 3;
             $addCashFlow->cash_type = 1;
@@ -1103,6 +1093,8 @@ class PurchaseController extends Controller
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
+            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
             $addCashFlow->save();
         }
 
@@ -1132,19 +1124,11 @@ class PurchaseController extends Controller
         $updatePurchasePayment = PurchasePayment::with(
             'account',
             'purchase.purchase_return',
-            'cashFlow'
+            'cashFlow',
+            'ledger'
         )->where('id', $paymentId)->first();
 
         $purchase = Purchase::where('id', $updatePurchasePayment->purchase_id)->first();
-
-        // Update previous account and delete previous cashflow.
-        $account = Account::where('id', $updatePurchasePayment->account_id)->first();
-        if ($account) {
-            $account->debit -= $updatePurchasePayment->paid_amount;
-            $account->balance += $updatePurchasePayment->paid_amount;
-            $account->save();
-            //$updatePurchasePayment->cashFlow->delete();
-        }
 
         // update purchase payment
         $updatePurchasePayment->account_id = $request->account_id;
@@ -1184,35 +1168,33 @@ class PurchaseController extends Controller
             $updatePurchasePayment->attachment = $purchasePaymentAttachmentName;
         }
         $updatePurchasePayment->save();
+        $updatePurchasePayment->ledger->report_date = $updatePurchasePayment->report_date;
+        $updatePurchasePayment->ledger->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->debit += $request->amount;
-            $account->balance -= $request->amount;
-            $account->save();
-
             // Add or update cash flow
             $cashFlow = CashFlow::where('account_id', $request->account_id)
                 ->where('purchase_payment_id', $updatePurchasePayment->id)->first();
             if ($cashFlow) {
                 $cashFlow->debit = $request->amount;
-                $cashFlow->balance = $account->balance;
                 $cashFlow->date = $request->date;
                 $cashFlow->report_date = date('Y-m-d', strtotime($request->date));
                 $cashFlow->month = date('F');
                 $cashFlow->year = date('Y');
                 $cashFlow->admin_id = auth()->user()->id;
                 $cashFlow->save();
+                $cashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                $cashFlow->save();
             } else {
                 if ($updatePurchasePayment->cashFlow) {
+                    $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
                     $updatePurchasePayment->cashFlow->delete();
+                    $this->accountUtil->adjustAccountBalance($storeAccountId);
                 }
 
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->debit = $request->amount;
-                $addCashFlow->balance = $account->balance;
                 $addCashFlow->purchase_payment_id = $updatePurchasePayment->id;
                 $addCashFlow->transaction_type = 3;
                 $addCashFlow->cash_type = 1;
@@ -1222,10 +1204,14 @@ class PurchaseController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
+                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                $addCashFlow->save();
             }
         } else {
             if ($updatePurchasePayment->cashFlow) {
+                $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
                 $updatePurchasePayment->cashFlow->delete();
+                $this->accountUtil->adjustAccountBalance($storeAccountId);
             }
         }
 
@@ -1303,17 +1289,10 @@ class PurchaseController extends Controller
         $addPurchasePayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->credit += $request->amount;
-            $account->balance += $request->amount;
-            $account->save();
-
             // Add cash flow
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->credit = $request->amount;
-            $addCashFlow->balance = $account->balance;
             $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
             $addCashFlow->transaction_type = 3;
             $addCashFlow->cash_type = 2;
@@ -1322,6 +1301,8 @@ class PurchaseController extends Controller
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
+            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
             $addCashFlow->save();
         }
 
@@ -1356,14 +1337,6 @@ class PurchaseController extends Controller
         $purchaseReturn->total_return_due += $updatePurchasePayment->paid_amount;
         $purchaseReturn->total_return_due -= (float)$request->amount;
         $purchaseReturn->save();
-
-        // Update previous account and delete previous cashflow.
-        if ($updatePurchasePayment->account) {
-            $updatePurchasePayment->account->credit = $updatePurchasePayment->account->credit + $updatePurchasePayment->paid_amount;
-            $updatePurchasePayment->account->balance = $updatePurchasePayment->account->balance - $updatePurchasePayment->paid_amount;
-            $updatePurchasePayment->account->save();
-            //$updatePurchasePayment->cashFlow->delete();
-        }
 
         // update purchase payment
         $updatePurchasePayment->account_id = $request->account_id;
@@ -1403,36 +1376,34 @@ class PurchaseController extends Controller
             $updatePurchasePayment->attachment = $purchasePaymentAttachmentName;
         }
         $updatePurchasePayment->save();
+        $updatePurchasePayment->ledger->report_date = $updatePurchasePayment->report_date;
+        $updatePurchasePayment->ledger->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->credit += $request->amount;
-            $account->balance += $request->amount;
-            $account->save();
-
             // Add or update cash flow
             $cashFlow = CashFlow::where('account_id', $request->account_id)
                 ->where('purchase_payment_id', $updatePurchasePayment->id)
                 ->first();
             if ($cashFlow) {
                 $cashFlow->credit = $request->amount;
-                $cashFlow->balance = $account->balance;
                 $cashFlow->date = $request->date;
                 $cashFlow->report_date = date('Y-m-d', strtotime($request->date));
                 $cashFlow->month = date('F');
                 $cashFlow->year = date('Y');
                 $cashFlow->admin_id = auth()->user()->id;
                 $cashFlow->save();
+                $cashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                $cashFlow->save();
             } else {
                 if ($updatePurchasePayment->cashFlow) {
+                    $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
                     $updatePurchasePayment->cashFlow->delete();
+                    $this->accountUtil->adjustAccountBalance($storeAccountId);
                 }
 
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->credit = $request->amount;
-                $addCashFlow->balance = $account->balance;
                 $addCashFlow->purchase_payment_id = $updatePurchasePayment->id;
                 $addCashFlow->transaction_type = 3;
                 $addCashFlow->cash_type = 1;
@@ -1442,10 +1413,14 @@ class PurchaseController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
+                $this->accountUtil->adjustAccountBalance($request->account_id);
+                $addCashFlow->save();
             }
         } else {
             if ($updatePurchasePayment->cashFlow) {
+                $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
                 $updatePurchasePayment->cashFlow->delete();
+                $this->accountUtil->adjustAccountBalance($storeAccountId);
             }
         }
 
@@ -1478,20 +1453,11 @@ class PurchaseController extends Controller
             ->first();
 
         if (!is_null($deletePurchasePayment)) {
-            //Update Supplier due 
-            $supplier = Supplier::where('id', $deletePurchasePayment->purchase->supplier_id)->first();
-
-            // Update purchase 
-            $deletePurchasePayment->purchase->paid -= $deletePurchasePayment->paid_amount;
-            $deletePurchasePayment->purchase->due += $deletePurchasePayment->paid_amount;
-            $deletePurchasePayment->purchase->save();
-
             // Update previous account and delete previous cashflow.
-            if ($deletePurchasePayment->account) {
-                $deletePurchasePayment->account->debit -= $deletePurchasePayment->paid_amount;
-                $deletePurchasePayment->account->balance += $deletePurchasePayment->paid_amount;
-                $deletePurchasePayment->account->save();
+            if ($deletePurchasePayment->cashFlow) {
+                $storeAccountId = $deletePurchasePayment->cashFlow->account_id;
                 $deletePurchasePayment->cashFlow->delete();
+                $this->accountUtil->adjustAccountBalance($storeAccountId);
             }
 
             if ($deletePurchasePayment->attachment != null) {
@@ -1499,10 +1465,37 @@ class PurchaseController extends Controller
                     unlink(public_path('uploads/payment_attachment/' . $deletePurchasePayment->attachment));
                 }
             }
-
-            $deletePurchasePayment->delete();
-            $this->supplierUtil->adjustSupplierForSalePaymentDue($supplier->id);
+            //Update Supplier due 
+            if ($deletePurchasePayment->payment_type == 1) {
+                $supplier = Supplier::where('id', $deletePurchasePayment->purchase->supplier_id)->first();
+                $storedPurchaseId = $deletePurchasePayment->purchase_id;
+                $deletePurchasePayment->delete();
+                if ($storedPurchaseId) {
+                    $purchase = Purchase::where('id', $storedPurchaseId)->first();
+                    $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
+                }
+                $this->supplierUtil->adjustSupplierForSalePaymentDue($supplier->id);
+            } else {
+                if ($deletePurchasePayment->purchase) {
+                    $storedPurchase = $deletePurchasePayment->purchase;
+                    $purchaseReturn = PurchaseReturn::where('id', $deletePurchasePayment->purchase->purchase_return->id)->first();
+                    $purchaseReturn->total_return_due_received -= $deletePurchasePayment->paid_amount;
+                    $purchaseReturn->total_return_due += $deletePurchasePayment->paid_amount;
+                    $purchaseReturn->save();
+                    $deletePurchasePayment->delete();
+                    $this->purchaseUtil->adjustPurchaseInvoiceAmounts($storedPurchase);
+                    $this->supplierUtil->adjustSupplierForSalePaymentDue($storedPurchase->supplier_id);
+                } else {
+                    $purchaseReturn = PurchaseReturn::where('id', $deletePurchasePayment->supplier_return->id)->first();
+                    $purchaseReturn->total_return_due_received -= $deletePurchasePayment->paid_amount;
+                    $purchaseReturn->total_return_due += $deletePurchasePayment->paid_amount;
+                    $purchaseReturn->save();
+                    $deletePurchasePayment->delete();
+                    $this->supplierUtil->adjustSupplierForSalePaymentDue($purchaseReturn->supplier_id);
+                }
+            }
         }
+
         return response()->json('Successfully payment is deleted.');
     }
 

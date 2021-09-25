@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
 use App\Models\CashFlow;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Utils\AccountUtil;
 use App\Utils\PurchaseUtil;
 use App\Utils\SupplierUtil;
 use Illuminate\Http\Request;
@@ -21,10 +21,12 @@ class SupplierController extends Controller
 {
     public $supplierUtil;
     public $purchaseUtil;
-    public function __construct(SupplierUtil $supplierUtil, PurchaseUtil $purchaseUtil)
+    public $accountUtil;
+    public function __construct(SupplierUtil $supplierUtil, PurchaseUtil $purchaseUtil, AccountUtil $accountUtil)
     {
         $this->supplierUtil = $supplierUtil;
         $this->purchaseUtil = $purchaseUtil;
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -359,7 +361,7 @@ class SupplierController extends Controller
     public function payment($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
-        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
+        $accounts = DB::table('accounts')->orderBy('id', 'DESC')->where('status', 1)->get();
         return view('contacts.suppliers.ajax_view.payment_modal', compact('supplier', 'accounts'));
     }
 
@@ -368,7 +370,6 @@ class SupplierController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
-
         // generate invoice ID
         $l = 6;
         $sv = 0;
@@ -418,17 +419,10 @@ class SupplierController extends Controller
         $supplierPayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->debit += $request->amount;
-            $account->balance -= $request->amount;
-            $account->save();
-
             // Add cash flow
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->debit = $request->amount;
-            $addCashFlow->balance = $account->balance;
             $addCashFlow->supplier_payment_id = $supplierPayment->id;
             $addCashFlow->transaction_type = 12;
             $addCashFlow->cash_type = 1;
@@ -437,6 +431,8 @@ class SupplierController extends Controller
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
+            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
             $addCashFlow->save();
         }
 
@@ -608,7 +604,7 @@ class SupplierController extends Controller
     public function returnPayment($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
-        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
+        $accounts = DB::table('accounts')->orderBy('id', 'DESC')->where('status', 1)->get();
         return view('contacts.suppliers.ajax_view.return_payment_modal', compact('supplier', 'accounts'));
     }
 
@@ -672,17 +668,10 @@ class SupplierController extends Controller
         $supplierPayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->credit += $request->amount;
-            $account->balance += $request->amount;
-            $account->save();
-
             // Add cash flow
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->credit = $request->amount;
-            $addCashFlow->balance = $account->balance;
             $addCashFlow->supplier_payment_id = $supplierPayment->id;
             $addCashFlow->transaction_type = 12;
             $addCashFlow->cash_type = 2;
@@ -692,6 +681,9 @@ class SupplierController extends Controller
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
             $addCashFlow->save();
+            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+            $addCashFlow->save();
+
         }
 
         // Add supplier payment for direct payment
@@ -1150,29 +1142,19 @@ class SupplierController extends Controller
     public function paymentDelete(Request $request, $paymentId)
     {
         $deleteSupplierPayment = SupplierPayment::with('supplier_payment_invoices')->where('id', $paymentId)->first();
-        $storedSupplierPayment = SupplierPayment::with('supplier_payment_invoices')->where('id', $paymentId)->first();
+        $storedSupplierPayment = $deleteSupplierPayment;
         $storeSupplierPaymentInvoices = $deleteSupplierPayment->supplier_payment_invoices;
         if ($deleteSupplierPayment->attachment != null) {
             if (file_exists(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment))) {
                 unlink(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment));
             }
         }
-
-        if ($deleteSupplierPayment->account_id) {
-            if ($deleteSupplierPayment->type == 1) {
-                $account = Account::where('id', $deleteSupplierPayment->account_id)->first();
-                $account->debit -= $deleteSupplierPayment->paid_amount;
-                $account->balance += $deleteSupplierPayment->paid_amount;
-                $account->save();
-            } else {
-                $account = Account::where('id', $deleteSupplierPayment->account_id)->first();
-                $account->credit -= $deleteSupplierPayment->paid_amount;
-                $account->balance -= $deleteSupplierPayment->paid_amount;
-                $account->save();
-            }
-        }
-
+        $storedAccountId = $deleteSupplierPayment->account_id;
         $deleteSupplierPayment->delete();
+
+        if ($storedAccountId) {
+            $this->accountUtil->adjustAccountBalance($storedAccountId);
+        }
 
         // Update supplier payment invoices
         if (count($storeSupplierPaymentInvoices) > 0) {

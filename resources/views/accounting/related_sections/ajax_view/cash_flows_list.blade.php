@@ -30,26 +30,25 @@
                     @elseif($cashFlow->transaction_type == 3)  
                         @if($cashFlow->purchase_payment->payment_on == 1)
                            {{ $cashFlow->purchase_payment->payment_type == 1 ? 'Purchase Payment' : 'Purchase Return' }}  <br>
-                            <span class="mt-1">{{ 'Supplier : ' .$cashFlow->purchase_payment->supplier->name }}</span>  <br>
+                            <span class="mt-1">{{ 'Supplier : ' .$cashFlow->purchase_payment->purchase->supplier->name }}</span>  <br>
                             <span class="mt-1">{!! '<b>Purchase Invoice : </b>'. '<span class="text-primary">'.$cashFlow->purchase_payment->purchase->invoice_id.'</span>' !!}</span> <br>
                             <span class="mt-1">{!! '<b>Payment Voucher : </b>'. '<span class="text-primary">'. $cashFlow->purchase_payment->invoice_id.'</span>' !!}</span>
                         @else   
-                            {{ $cashFlow->purchase_payment->payment_type == 1 ? 'Purchase Payment' : 'Purchase Return' }} <br>
-                            <span class="mt-1">{{ 'Supplier : ' .$cashFlow->purchase_payment->supplier->name }}</span>  <br>
+                            {{ $cashFlow->purchase_payment->payment_type == 1 ? 'Purchase Due Payment' : 'Purchase Return Due Payment' }} <br>
+                            <span class="mt-1">{{ 'Supplier : ' .$cashFlow->purchase_payment->purchase->supplier->name }}</span>  <br>
                             <span class="mt-1">{!! '<b>Payment Voucher : </b>'. $cashFlow->purchase_payment->invoice_id !!}</span>  <br>
                             <span class="mt-1">{!! '<b>Payment Voucher : </b>'. $cashFlow->purchase_payment->invoice_id !!}</span>
                         @endif
                     @elseif($cashFlow->transaction_type == 2)  
                         @if($cashFlow->sale_payment->payment_on == 1)
-                            {{ $cashFlow->sale_payment->payment_type == 1 ? 'Sale Payment' : 'Sale Return' }} <br>
-                            <span class="mt-1">Customer : {{ $cashFlow->sale_payment->customer ? $cashFlow->sale_payment->customer->name : 'Walk-In-Customer' }}</span>  <br>
+                            {{ $cashFlow->sale_payment->payment_type == 1 ? 'Sale Due Payment' : 'Sale Return Due Payment' }} <br>
+                            <span class="mt-1">Customer : {{ $cashFlow->sale_payment->sale->customer ? $cashFlow->sale_payment->sale->customer->name : 'Walk-In-Customer' }}</span>  <br>
                             <span class="mt-1">{!! '<b>Sale Invoice</b>: '. $cashFlow->sale_payment->sale->invoice_id !!}</span><br>
                             <span class="mt-1">{!! '<b>Payment Voucher : </b>'. $cashFlow->sale_payment->invoice_id !!}</span>
                         @else   
-                            {{ $cashFlow->sale_payment->payment_type == 1 ? 'Sale Payment' : 'Sale Return' }}  <br>
-                            <span class="mt-1">Customer : {{ $cashFlow->sale_payment->customer ? $cashFlow->sale_payment->customer->name : 'Walk-In-Customer' }}</span>  <br>
+                            {{ $cashFlow->sale_payment->payment_type == 1 ? 'Sale Due Payment' : 'Sale Return' }}  <br>
+                            <span class="mt-1">Customer : {{ $cashFlow->sale_payment->sale->customer ? $cashFlow->sale_payment->sale->customer->name : 'Walk-In-Customer' }}</span>  <br>
                             <span class="mt-1">{!! '<b>Payment Invoice :<b>'. $cashFlow->sale_payment->invoice_id !!}</b></span> <br> 
-                            <span class="mt-1">{!! '<b>Payment Voucher : </b>'. $cashFlow->sale_payment->invoice_id !!}</span>
                         @endif  
                     @elseif($cashFlow->transaction_type == 6)  
                         <b>Expense</b> <br>

@@ -26,6 +26,7 @@ use App\Models\CustomerLedger;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
+use App\Utils\AccountUtil;
 use App\Utils\CustomerUtil;
 use App\Utils\ProductStockUtil;
 
@@ -37,13 +38,15 @@ class SaleController extends Controller
     protected $util;
     protected $customerUtil;
     protected $productStockUtil;
+    protected $accountUtil;
     public function __construct(
         NameSearchUtil $nameSearchUtil,
         SaleUtil $saleUtil,
         SmsUtil $smsUtil,
         Util $util,
         CustomerUtil $customerUtil,
-        ProductStockUtil $productStockUtil
+        ProductStockUtil $productStockUtil,
+        AccountUtil $accountUtil
     ) {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->saleUtil = $saleUtil;
@@ -51,6 +54,7 @@ class SaleController extends Controller
         $this->util = $util;
         $this->customerUtil = $customerUtil;
         $this->productStockUtil = $productStockUtil;
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -581,14 +585,13 @@ class SaleController extends Controller
         $updateSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0.00;
         $updateSale->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0.00;
         $updateSale->total_payable_amount = $request->total_payable_amount;
-        $updateSale->due = $request->total_payable_amount - $updateSale->paid - $updateSale->sale_return_amount;
         $updateSale->shipment_details = $request->shipment_details;
         $updateSale->shipment_address = $request->shipment_address;
         $updateSale->shipment_status = $request->shipment_status;
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->sale_note = $request->sale_note;
         $updateSale->save();
-
+      
         // update product quantity
         $quantities = $request->quantities;
         $units = $request->units;
@@ -661,8 +664,10 @@ class SaleController extends Controller
             $deleteNotFoundSaleProduct->delete();
         }
 
+
         // Update customer total sale due
         if ($request->status == 1) {
+            $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
             $customer = Customer::where('id', $updateSale->customer_id)->first();
             if ($customer) {
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
@@ -965,28 +970,21 @@ class SaleController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
-
         $sale = Sale::where('id', $saleId)->first();
-
-        // Update sale
-        $sale->paid = $sale->paid + $request->amount;
-        $sale->due = $sale->due - $request->amount;
-        $sale->save();
-
         // generate invoice ID
-        $i = 5;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        $invoiceId = 1;
+        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+        if ($lastSalePayment) {
+            $invoiceId = ++$lastSalePayment->id;
         }
-
+      
         // Add sale payment
         $this->saleUtil->addPayment($paymentInvoicePrefix, $request, $request->amount, $invoiceId, $saleId);
         if ($sale->customer_id) {
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
         }
+
+        $this->saleUtil->adjustSaleInvoiceAmounts($sale);
         return response()->json('Payment added successfully.');
     }
 
@@ -1007,21 +1005,6 @@ class SaleController extends Controller
             'sale',
             'cashFlow'
         )->where('id', $paymentId)->first();
-
-        // Update sale 
-        $updateSalePayment->sale->paid = $updateSalePayment->sale->paid - $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->due = $updateSalePayment->sale->due + $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->paid = $updateSalePayment->sale->paid + $request->amount;
-        $updateSalePayment->sale->due = $updateSalePayment->sale->due - $request->amount;
-        $updateSalePayment->sale->save();
-
-        // Update previous account and delete previous cashflow.
-        if ($updateSalePayment->account) {
-            $updateSalePayment->account->credit = $updateSalePayment->account->credit - $updateSalePayment->paid_amount;
-            $updateSalePayment->account->balance = $updateSalePayment->account->balance - $updateSalePayment->paid_amount;
-            $updateSalePayment->account->save();
-            //$updateSalePayment->cashFlow->delete();
-        }
 
         // update sale payment
         $updateSalePayment->account_id = $request->account_id;
@@ -1063,31 +1046,27 @@ class SaleController extends Controller
         $updateSalePayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->credit = $account->credit + $request->amount;
-            $account->balance = $account->balance + $request->amount;
-            $account->save();
-
             // Add or update cash flow
             $cashFlow = CashFlow::where('account_id', $request->account_id)->where('sale_payment_id', $updateSalePayment->id)->first();
             if ($cashFlow) {
                 $cashFlow->credit = $request->amount;
-                $cashFlow->balance = $account->balance;
                 $cashFlow->date = $request->date;
                 $cashFlow->report_date = date('Y-m-d', strtotime($request->date));
                 $cashFlow->month = date('F');
                 $cashFlow->year = date('Y');
                 $cashFlow->save();
+                $cashFlow->balance = $this->accountUtil->adjustAccountBalance($updateSalePayment->account_id);
+                $cashFlow->save();
             } else {
                 if ($updateSalePayment->cashFlow) {
+                    $storedAccountId = $updateSalePayment->cashFlow->account_id;
                     $updateSalePayment->cashFlow->delete();
+                    $this->accountUtil->adjustAccountBalance($storedAccountId);
                 }
 
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->credit = $request->amount;
-                $addCashFlow->balance = $account->balance;
                 $addCashFlow->sale_payment_id = $updateSalePayment->id;
                 $addCashFlow->transaction_type = 2;
                 $addCashFlow->cash_type = 2;
@@ -1097,9 +1076,18 @@ class SaleController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
+                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                $addCashFlow->save();
+            }
+        }else {
+            if ($updateSalePayment->cashFlow) {
+                $storedAccountId = $updateSalePayment->cashFlow->account_id;
+                $updateSalePayment->cashFlow->delete();
+                $this->accountUtil->adjustAccountBalance($storedAccountId);
             }
         }
 
+        $this->saleUtil->adjustSaleInvoiceAmounts($updateSalePayment->sale);
         if ($updateSalePayment->sale->customer_id) {
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSalePayment->sale->customer_id);
         }
@@ -1118,33 +1106,17 @@ class SaleController extends Controller
     public function returnPaymentAdd(Request $request, $saleId)
     {
         $sale = Sale::where('id', $saleId)->first();
-        //Update Supplier due 
-        $customer = Customer::where('id', $sale->customer_id)->first();
-        if ($customer) {
-            $customer->total_sale_return_due = $customer->total_sale_return_due - $request->amount;
-            $customer->save();
-        }
-
-        // Update sale
-        $sale->sale_return_due = $sale->sale_return_due - $request->amount;
-        $sale->save();
-
-        // update sale return
-        $sale->sale_return->total_return_due_pay = $sale->sale_return->total_return_due_pay + $request->amount;
-        $sale->sale_return->total_return_due = $sale->sale_return->total_return_due - $request->amount;
-        $sale->sale_return->save();
-
+   
         // generate invoice ID
-        $i = 5;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        $invoiceId = 1;
+        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+        if($lastSalePayment){
+            $invoiceId = ++$lastSalePayment->id;
         }
+      
         // Add sale payment
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = 'SRPI' . date('dmy') . $invoiceId;
+        $addSalePayment->invoice_id = 'SRPV' . date('my') . $invoiceId;
         $addSalePayment->sale_id = $sale->id;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;
@@ -1184,17 +1156,10 @@ class SaleController extends Controller
         $addSalePayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->debit = $account->debit + $request->amount;
-            $account->balance = $account->balance - $request->amount;
-            $account->save();
-
             // Add cash flow
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->debit = $request->amount;
-            $addCashFlow->balance = $account->balance;
             $addCashFlow->sale_payment_id = $addSalePayment->id;
             $addCashFlow->transaction_type = 2;
             $addCashFlow->cash_type = 1;
@@ -1204,11 +1169,18 @@ class SaleController extends Controller
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
             $addCashFlow->save();
+            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+            $addCashFlow->save();
         }
 
-        if ($customer) {
+        $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+        if ($sale->customer_id) {
+            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
+        }
+
+        if ($sale->customer_id) {
             $addCustomerLedger = new CustomerLedger();
-            $addCustomerLedger->customer_id = $customer->id;
+            $addCustomerLedger->customer_id = $sale->customer_id;
             $addCustomerLedger->sale_payment_id = $addSalePayment->id;
             $addCustomerLedger->row_type = 2;
             $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
@@ -1235,32 +1207,12 @@ class SaleController extends Controller
             'cashFlow'
         )->where('id', $paymentId)->first();
 
-        //Update Customer due 
-        if ($updateSalePayment->customer) {
-            $updateSalePayment->customer->total_sale_return_due = $updateSalePayment->customer->total_sale_return_due + $updateSalePayment->paid_amount;
-            $updateSalePayment->customer->total_sale_return_due = $updateSalePayment->customer->total_sale_return_due - $request->amount;
-            $updateSalePayment->customer->save();
-        }
-
-        // Update sale 
-        $updateSalePayment->sale->sale_return_due = $updateSalePayment->sale->sale_return_due - $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->sale_return_due = $updateSalePayment->sale->sale_return_due - $request->amount;
-        $updateSalePayment->sale->save();
-
         // Update sale return
-        $updateSalePayment->sale->sale_return->total_return_due = $updateSalePayment->sale->sale_return->total_return_due + $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->sale_return->total_return_due = $updateSalePayment->sale->sale_return->total_return_due - $request->amount;
-        $updateSalePayment->sale->sale_return->total_return_due_pay = $updateSalePayment->sale->sale_return->total_return_due_pay + $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->sale_return->total_return_due_pay = $updateSalePayment->sale->sale_return->total_return_due_pay - $request->amount;
+        $updateSalePayment->sale->sale_return->total_return_due += $updateSalePayment->paid_amount;
+        $updateSalePayment->sale->sale_return->total_return_due -= $request->amount;
+        $updateSalePayment->sale->sale_return->total_return_due_pay += $updateSalePayment->paid_amount;
+        $updateSalePayment->sale->sale_return->total_return_due_pay -= $request->amount;
         $updateSalePayment->sale->sale_return->save();
-
-        // Update previous account and delete previous cashflow.
-        if ($updateSalePayment->account) {
-            $updateSalePayment->account->debit = $updateSalePayment->account->debit - $updateSalePayment->paid_amount;
-            $updateSalePayment->account->balance = $updateSalePayment->account->balance + $updateSalePayment->paid_amount;
-            $updateSalePayment->account->save();
-            //$updateSalePayment->cashFlow->delete();
-        }
 
         // update sale payment
         $updateSalePayment->account_id = $request->account_id;
@@ -1302,31 +1254,27 @@ class SaleController extends Controller
         $updateSalePayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->debit = $account->debit + $request->amount;
-            $account->balance = $account->balance - $request->amount;
-            $account->save();
-
             // Add or update cash flow
             $cashFlow = CashFlow::where('account_id', $request->account_id)->where('sale_payment_id', $updateSalePayment->id)->first();
             if ($cashFlow) {
                 $cashFlow->debit = $request->amount;
-                $cashFlow->balance = $account->balance;
                 $cashFlow->date = $request->date;
                 $cashFlow->report_date = date('Y-m-d', strtotime($request->date));
                 $cashFlow->month = date('F');
                 $cashFlow->year = date('Y');
                 $cashFlow->save();
+                $cashFlow->balance = $this->accountUtil->adjustAccountBalance($updateSalePayment->account_id);
+                $cashFlow->save();
             } else {
                 if ($updateSalePayment->cashFlow) {
+                    $storedAccountId = $updateSalePayment->cashFlow->account_id;
                     $updateSalePayment->cashFlow->delete();
+                    $this->accountUtil->adjustAccountBalance($storedAccountId->account_id);
                 }
 
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->debit = $request->amount;
-                $addCashFlow->balance = $account->balance;
                 $addCashFlow->sale_payment_id = $updateSalePayment->id;
                 $addCashFlow->transaction_type = 2;
                 $addCashFlow->cash_type = 1;
@@ -1336,11 +1284,20 @@ class SaleController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
+                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                $addCashFlow->save();
             }
         } else {
             if ($updateSalePayment->cashFlow) {
+                $storedAccountId = $updateSalePayment->cashFlow->account_id;
                 $updateSalePayment->cashFlow->delete();
+                $this->accountUtil->adjustAccountBalance($storedAccountId->account_id);
             }
+        }
+        
+        $this->saleUtil->adjustSaleInvoiceAmounts($updateSalePayment->sale);
+        if ($updateSalePayment->sale->customer_id) {
+            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSalePayment->sale->customer_id);
         }
         return response()->json('Payment is updated successfully.');
     }
@@ -1362,19 +1319,9 @@ class SaleController extends Controller
             //Update customer due 
             if ($deleteSalePayment->payment_type == 1) {
                 // Update sale 
-                $customer = DB::table('customers')->where('id', $deleteSalePayment->sale->customer_id)->first();
-                $deleteSalePayment->sale->paid = $deleteSalePayment->sale->paid - $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->due = $deleteSalePayment->sale->due + $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->save();
-
-                // Update previous account and delete previous cashflow.
-                if ($deleteSalePayment->account) {
-                    $deleteSalePayment->account->credit = $deleteSalePayment->account->credit - $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->balance = $deleteSalePayment->account->balance - $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->save();
-                    $deleteSalePayment->cashFlow->delete();
-                }
-
+                $storedCustomerId = $deleteSalePayment->sale->customer_id;
+                $storedSale = $deleteSalePayment->sale;
+                $storedAccountId = $deleteSalePayment->account_id;
                 if ($deleteSalePayment->attachment != null) {
                     if (file_exists(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment))) {
                         unlink(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment));
@@ -1383,31 +1330,23 @@ class SaleController extends Controller
 
                 $deleteSalePayment->delete();
 
-                if ($customer) {
-                    $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
+                $this->saleUtil->adjustSaleInvoiceAmounts($storedSale);
+                if ($storedCustomerId) {
+                    $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
+                }
+
+                if ($storedAccountId) {
+                    $this->accountUtil->adjustAccountBalance($storedAccountId);
                 }
             } elseif ($deleteSalePayment->payment_type == 2) {
-                if ($deleteSalePayment->customer) {
-                    $deleteSalePayment->customer->total_sale_return_due = $deleteSalePayment->customer->total_sale_return_due + $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->customer->save();
-                }
-
-                // Update sale 
-                $deleteSalePayment->sale->sale_return_due = $deleteSalePayment->sale->sale_return_due + $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->save();
+                $storedCustomerId = $deleteSalePayment->sale->customer_id;
+                $storedSale = $deleteSalePayment->sale;
+                $storedAccountId = $deleteSalePayment->account_id;
 
                 // Update sale return
-                $deleteSalePayment->sale->sale_return->total_return_due = $deleteSalePayment->sale->sale_return->total_return_due + $deleteSalePayment->paid_amount;
-                $deleteSalePayment->sale->sale_return->total_return_due_pay = $deleteSalePayment->sale->sale_return->total_return_due_pay - $deleteSalePayment->paid_amount;
+                $deleteSalePayment->sale->sale_return->total_return_due += $deleteSalePayment->paid_amount;
+                $deleteSalePayment->sale->sale_return->total_return_due_pay -= $deleteSalePayment->paid_amount;
                 $deleteSalePayment->sale->sale_return->save();
-
-                // Update previous account and delete previous cashflow.
-                if ($deleteSalePayment->account) {
-                    $deleteSalePayment->account->debit = $deleteSalePayment->account->debit - $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->balance = $deleteSalePayment->account->balance + $deleteSalePayment->paid_amount;
-                    $deleteSalePayment->account->save();
-                    $deleteSalePayment->cashFlow->delete();
-                }
 
                 if ($deleteSalePayment->attachment != null) {
                     if (file_exists(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment))) {
@@ -1416,6 +1355,15 @@ class SaleController extends Controller
                 }
 
                 $deleteSalePayment->delete();
+
+                $this->saleUtil->adjustSaleInvoiceAmounts($storedSale);
+                if ($storedCustomerId) {
+                    $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
+                }
+
+                if ($storedAccountId) {
+                    $this->accountUtil->adjustAccountBalance($storedAccountId);
+                }
             }
         }
         return response()->json('Payment deleted successfully.');

@@ -3,10 +3,8 @@
 namespace App\Utils;
 
 use App\Models\Sale;
-use App\Models\Account;
 use App\Models\Product;
 use App\Models\CashFlow;
-use App\Models\Customer;
 use App\Models\SalePayment;
 use App\Utils\CustomerUtil;
 use App\Models\ProductBranch;
@@ -22,10 +20,15 @@ class SaleUtil
 {
     public $customerUtil;
     public $productStockUtil;
-    public function __construct(CustomerUtil $customerUtil, ProductStockUtil $productStockUtil)
-    {
+    public $accountUtil;
+    public function __construct(
+        CustomerUtil $customerUtil,
+        ProductStockUtil $productStockUtil,
+        AccountUtil $accountUtil
+    ) {
         $this->customerUtil = $customerUtil;
         $this->productStockUtil = $productStockUtil;
+        $this->accountUtil = $accountUtil;
     }
     public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId)
     {
@@ -47,35 +50,36 @@ class SaleUtil
                             foreach ($dueInvoices as $dueInvoice) {
                                 if ($dueInvoice->due > $dueAmounts) {
                                     if ($dueAmounts > 0) {
-                                        $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
-                                        $dueInvoice->due = $dueInvoice->due - $dueAmounts;
-                                        $dueInvoice->save();
+                                        $invoiceId = 1;
+                                        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+                                        if ($lastSalePayment) {
+                                            $invoiceId = ++$lastSalePayment->id;
+                                        }
                                         $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
                                         $dueAmounts -= $dueAmounts;
+                                        $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
-
-                                    // //$dueAmounts -= $dueAmounts; 
-                                    // if ($index == 1) {
-                                    //     break;
-                                    // }
                                 } elseif ($dueInvoice->due == $dueAmounts) {
                                     if ($dueAmounts > 0) {
-                                        $dueInvoice->paid = $dueInvoice->paid + $dueAmounts;
-                                        $dueInvoice->due = $dueInvoice->due - $dueAmounts;
-                                        $dueInvoice->save();
+                                        $invoiceId = 1;
+                                        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+                                        if ($lastSalePayment) {
+                                            $invoiceId = ++$lastSalePayment->id;
+                                        }
                                         $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
                                         $dueAmounts -= $dueAmounts;
+                                        $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
-                                    // if ($index == 1) {
-                                    //     break;
-                                    // }
                                 } elseif ($dueInvoice->due < $dueAmounts) {
                                     if ($dueInvoice->due > 0) {
+                                        $invoiceId = 1;
+                                        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+                                        if ($lastSalePayment) {
+                                            $invoiceId = ++$lastSalePayment->id;
+                                        }
                                         $this->addPayment($paymentInvoicePrefix, $request, $dueInvoice->due, $invoiceId, $dueInvoice->id);
                                         $dueAmounts = $dueAmounts - $dueInvoice->due;
-                                        $dueInvoice->paid = $dueInvoice->paid + $dueInvoice->due;
-                                        $dueInvoice->due = $dueInvoice->due - $dueInvoice->due;
-                                        $dueInvoice->save();
+                                        $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
                                 }
                                 $index++;
@@ -83,10 +87,11 @@ class SaleUtil
                         }
 
                         if ($dueAmounts > 0) {
-                            $l = 6;
-                            $sv = 0;
-                            $voucherNo = '';
-                            while ($sv < $l) {$voucherNo .= rand(1, 9);$sv++;}
+                            $voucherNo = 1;
+                            $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+                            if ($lastSalePayment) {
+                                $voucherNo = ++$lastSalePayment->id;
+                            }
                             // Add Customer Payment Record
                             $customerPayment = new CustomerPayment();
                             $customerPayment->voucher_no = 'CPV' . $voucherNo;
@@ -120,17 +125,10 @@ class SaleUtil
                             $customerPayment->save();
 
                             if ($request->account_id) {
-                                // update account
-                                $account = Account::where('id', $request->account_id)->first();
-                                $account->credit += $dueAmounts;
-                                $account->balance += $dueAmounts;
-                                $account->save();
-
                                 // Add cash flow
                                 $addCashFlow = new CashFlow();
                                 $addCashFlow->account_id = $request->account_id;
                                 $addCashFlow->credit = $dueAmounts;
-                                $addCashFlow->balance = $account->balance;
                                 $addCashFlow->customer_payment_id = $customerPayment->id;
                                 $addCashFlow->transaction_type = 13;
                                 $addCashFlow->cash_type = 2;
@@ -139,6 +137,8 @@ class SaleUtil
                                 $addCashFlow->month = date('F');
                                 $addCashFlow->year = date('Y');
                                 $addCashFlow->admin_id = auth()->user()->id;
+                                $addCashFlow->save();
+                                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
                                 $addCashFlow->save();
                             }
 
@@ -245,17 +245,10 @@ class SaleUtil
         $addSalePayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->credit = $account->credit + $payingAmount;
-            $account->balance = $account->balance + $payingAmount;
-            $account->save();
-
             // Add cash flow
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->credit = $payingAmount;
-            $addCashFlow->balance = $account->balance;
             $addCashFlow->sale_payment_id = $addSalePayment->id;
             $addCashFlow->transaction_type = 2;
             $addCashFlow->cash_type = 2;
@@ -264,6 +257,8 @@ class SaleUtil
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
+            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
             $addCashFlow->save();
         }
 
@@ -287,30 +282,13 @@ class SaleUtil
             'sale_products.product.comboProducts',
         ])->where('id', $saleId)->first();
 
-        $customer = Customer::where('id', $deleteSale->customer_id)->first();
- 
-        if (count($deleteSale->sale_payments) > 0) {
-            foreach ($deleteSale->sale_payments as $payment) {
-                if ($payment->attachment) {
-                    if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
-                        unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
-                    }
-                }
 
-                if ($payment->account_id) {
-                    $account = Account::where('id', $payment->account)->first();
-                    if ($account) {
-                        $account->credit -= $payment->paid_amount;
-                        $account->balance -= $payment->paid_amount;
-                        $account->save();
-                    }
-                }
-            }
-        }
-
-        // Add product quantity for adjustment
+        $storedCustomerId = $deleteSale->customer_id;
+        $storedPayments = $deleteSale->sale_payments;
         $storedSaleProducts = $deleteSale->sale_products;
         $storeStatus = $deleteSale->status;
+
+        // Add product quantity for adjustment
         if ($deleteSale->status == 1) {
             foreach ($deleteSale->sale_products as $sale_product) {
                 if ($sale_product->product->type == 1) {
@@ -347,15 +325,29 @@ class SaleUtil
         }
         $deleteSale->delete();
 
+        if (count($storedPayments) > 0) {
+            foreach ($storedPayments as $payment) {
+                if ($payment->attachment) {
+                    if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                        unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                    }
+                }
+
+                if ($payment->account_id) {
+                    $this->accountUtil->adjustAccountBalance($payment->account_id);
+                }
+            }
+        }
+
         if ($storeStatus == 1) {
             foreach ($storedSaleProducts as $saleProduct) {
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
             }
         }
-        
-        if ($customer) {
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
+
+        if ($storedCustomerId) {
+            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
         }
     }
 
@@ -1024,5 +1016,33 @@ class SaleUtil
             $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
         }
         return $query;
+    }
+
+    public function adjustSaleInvoiceAmounts($sale)
+    {
+        $totalSalePaid = DB::table('sale_payments')
+            ->where('sale_payments.sale_id', $sale->id)->where('payment_type', 1)
+            ->select(DB::raw('sum(paid_amount) as total_paid'))
+            ->groupBy('sale_payments.sale_id')
+            ->get();
+
+        $totalReturnPaid = DB::table('sale_payments')
+            ->where('sale_payments.sale_id', $sale->id)->where('payment_type', 2)
+            ->select(DB::raw('sum(paid_amount) as total_paid'))
+            ->groupBy('sale_payments.sale_id')
+            ->get();
+
+        $return = DB::table('sale_returns')->where('sale_id', $sale->id)->first();
+        $returnAmount = $return ? $return->total_return_amount : 0;
+        $due = $sale->total_payable_amount - $totalSalePaid->sum('total_paid') - $returnAmount + $totalReturnPaid->sum('total_paid');
+        $returnDue = $returnAmount
+            - ($sale->total_payable_amount - $totalSalePaid->sum('total_paid'))
+            - $totalReturnPaid->sum('total_paid');
+
+        $sale->paid = $totalSalePaid->sum('total_paid');
+        $sale->due = $due;
+        $sale->sale_return_amount = $returnAmount;
+        $sale->sale_return_due = $returnDue > 0 ? $returnDue : 0;
+        $sale->save();
     }
 }

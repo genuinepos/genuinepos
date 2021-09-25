@@ -12,15 +12,18 @@ use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerPaymentInvoice;
+use App\Utils\AccountUtil;
 use App\Utils\CustomerUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
 {
     public $customerUtil;
-    public function __construct(CustomerUtil $customerUtil)
+    public $accountUtil;
+    public function __construct(CustomerUtil $customerUtil, AccountUtil $accountUtil)
     {
         $this->customerUtil = $customerUtil;
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 

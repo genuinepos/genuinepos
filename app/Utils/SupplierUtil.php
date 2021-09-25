@@ -75,7 +75,7 @@ class SupplierUtil
             + $totalSupplierReturnPayment->sum('sr_paid') 
             + $__totalInvoiceReturnPayment->sum('total_inv_return_paid');
 
-        $totalDue = ($totalPurchase + 0 + $totalReturnPaid) - $totalPaid - $totalReturn;
+        $totalDue = ($totalPurchase + $supplier->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn;
         $returnDue = $totalReturn - ($totalPurchase - $totalPaid) - $totalReturnPaid;
 
         $supplier->total_purchase = $totalPurchase;

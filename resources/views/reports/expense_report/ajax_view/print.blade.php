@@ -1,4 +1,14 @@
 <style>
+
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
+
     @page {
         margin-top: 0.8cm;
         margin-bottom: 20px;

@@ -50,7 +50,6 @@
                                                 <th>Name</th>
                                                 <th>Business Name</th>
                                                 <th>Phone</th>
-                                                <th>Email</th>
                                                 <th>Group</th>
                                                 <th>Opening Balance</th>
                                                 <th>Total Sale</th>
@@ -400,7 +399,6 @@
                 {data: 'name',name: 'name'},
                 {data: 'business_name',name: 'business_name'},
                 {data: 'phone',name: 'phone'},
-                {data: 'email',name: 'email'},
                 {data: 'group_name', name: 'customer_groups.name'},
                 {data: 'opening_balance',name: 'opening_balance'},
                 {data: 'total_sale',name: 'total_sale'},

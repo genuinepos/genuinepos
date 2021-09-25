@@ -1105,7 +1105,10 @@ class SaleController extends Controller
 
     public function returnPaymentAdd(Request $request, $saleId)
     {
-        $sale = Sale::where('id', $saleId)->first();
+        $sale = Sale::with(['sale_return'])->where('id', $saleId)->first();
+        $sale->sale_return->total_return_due -= $request->amount;
+        $sale->sale_return->total_return_due_pay += $request->amount;
+        $sale->sale_return->save();
    
         // generate invoice ID
         $invoiceId = 1;

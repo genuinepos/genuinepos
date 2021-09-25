@@ -369,6 +369,19 @@
             });
         });
 
+        // show payment edit modal with data
+        $(document).on('click', '#edit_return_payment', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $('#payment_heading').html('Edit Return Payment');
+            $.get(url, function(data) {
+                $('.data_preloader').hide();
+                $('#payment-modal-body').html(data); 
+                $('#paymentModal').modal('show'); 
+            });
+        });
+
         //Show payment view modal with data
         $(document).on('click', '#payment_details', function (e) {
            e.preventDefault();

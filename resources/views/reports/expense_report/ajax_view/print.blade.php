@@ -135,34 +135,41 @@
             <thead>
                 <tr>
                     <th class="text-end">Total Expense :</th>
-                    <th class="text-end">
+                    <td class="text-end">
                         {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalExpense) }}
+                        {{-- <br>
+                        ( {{ App\Utils\Converter::format_in_text($totalExpense) }} {{json_decode($generalSettings->business, true)['currency']}} ) --}}
                         {{-- ({{ App\Utils\Converter::format_in_text($totalExpense) }} Taka) --}}
                         {{-- {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalExpense, 0, 2) }} --}}
-                    </th>
+                    </td>
                 </tr>
 
                 <tr>
                     <th class="text-end">Total Paid :</th>
-                    <th class="text-end">
+                    <td class="text-end">
                         {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalPaid) }}
                         {{-- {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalPaid, 0, 2) }} --}}
-                    </th>
+
+                        {{-- <br>
+                        ( {{ App\Utils\Converter::format_in_text($totalPaid) }} {{json_decode($generalSettings->business, true)['currency']}} ) --}}
+
+                    </td>
                 </tr>
 
                 <tr>
                     <th class="text-end">Total Due :</th>
-                    <th class="text-end">
+                    <td class="text-end">
                         {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalDue) }}
+                        
+                        {{-- <br>
+                        ({{ App\Utils\Converter::format_in_text($totalDue)}} {{json_decode($generalSettings->business, true)['currency']}}) --}}
                         {{-- {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalDue, 0, 2) }} --}}
-                    </th>
+                    </td>
                 </tr>
             </thead>
         </table>
     </div>
 </div>
-
-
 
 
 @if (env('PRINT_SD_OTHERS') == 'true')

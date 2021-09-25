@@ -1,20 +1,48 @@
 <style>
     @page {
         margin-top: 0.8cm;
-        /* margin-bottom: 2cm; */
-        margin-bottom: 1cm;
+        margin-bottom: 20px;
+    }
+    /* @media print {
+        margin-top: 0.8cm;
+        margin-bottom: 30px;
+    } */
+
+    .header, .header-space,
+    .footer, .footer-space {
+        height: 20px;
+    }
+    .header {
+        position: fixed;
+        top: 0;
+    }
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+    .noBorder {
+        border: 0px !important;
+    }
+    tr.noBorder td {
+        border: 0px !important;
+    }
+    tr.noBorder {
+        border: 0px !important;
+        border-left: 1px solid transparent;
+        border-bottom: 1px solid transparent;
     }
 </style>
 @php
-$totalExpense = 0;
-$totalPaid = 0;
-$totalDue = 0;
+    $totalExpense = 0;
+    $totalPaid = 0;
+    $totalDue = 0;
 @endphp
+
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-            <p><b>All Business Location.</b></p>
+            <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
             <p>{{ json_decode($generalSettings->business, true)['shop_name'] }}</p>
         @else
@@ -87,12 +115,15 @@ $totalDue = 0;
 
                         <td>{{ $ex->cr_prefix . ' ' . $ex->cr_name . ' ' . $ex->cr_last_name }}</td>
 
-                        <td class="text-start">{{ $ex->net_total_amount }}</td>
-                        <td class="text-start">{{ $ex->paid }}</td>
-                        <td class="text-start">{{ $ex->due }}</td>
+                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ex->net_total_amount) }}</td>
+                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ex->paid) }}</td>
+                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ex->due) }}</td>
+                        {{-- <td class="text-start">{{ $ex->paid }}</td>
+                        <td class="text-start">{{ $ex->due }}</td> --}}
                     </tr>
                 @endforeach
             </tbody>
+          
         </table>
     </div>
 </div>
@@ -105,29 +136,34 @@ $totalDue = 0;
                 <tr>
                     <th class="text-end">Total Expense :</th>
                     <th class="text-end">
-                        {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalExpense, 0, 2) }}
+                        {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalExpense) }}
+                        {{-- ({{ App\Utils\Converter::format_in_text($totalExpense) }} Taka) --}}
+                        {{-- {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalExpense, 0, 2) }} --}}
                     </th>
                 </tr>
 
                 <tr>
                     <th class="text-end">Total Paid :</th>
                     <th class="text-end">
-                        {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalPaid, 0, 2) }}
+                        {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalPaid) }}
+                        {{-- {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalPaid, 0, 2) }} --}}
                     </th>
                 </tr>
 
                 <tr>
                     <th class="text-end">Total Due :</th>
                     <th class="text-end">
-                        {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalDue, 0, 2) }}
+                        {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalDue) }}
+                        {{-- {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalDue, 0, 2) }} --}}
                     </th>
                 </tr>
             </thead>
-            <tfoot>
-            </tfoot>
         </table>
     </div>
 </div>
+
+
+
 
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
@@ -137,8 +173,8 @@ $totalDue = 0;
     </div>
 @endif
 
-<div id="footerText">
-    <small id="page_info" style="position:fixed;bottom:0px;left:0px;width:100%;font-size: 5px;color: #000;" class="text-end">
-        Print Date : {{ date('d-m-Y h:i:s a') }}
+<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
+    <small style="font-size: 5px;" class="text-end">
+        Print Date: {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

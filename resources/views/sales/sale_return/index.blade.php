@@ -173,7 +173,11 @@
                 data:request,
                 success:function(data){
                     table.ajax.reload();
-                    toastr.error(data);
+                    if (!$.isEmptyObject(data.errorMsg)) {
+                        toastr.error(data.errorMsg);
+                    }else{
+                        toastr.error(data);
+                    }
                 }
             });
         });

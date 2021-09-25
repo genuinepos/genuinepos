@@ -4,40 +4,6 @@
             <div class="col-md-8">
                 <div class="form_element m-0 mt-3">
                     <div class="element-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <p class="checkbox_input_wrap">
-                                    <input type="checkbox" name="is_loan" id="is_loan">
-                                    <strong>Is Loan Exists In This Expense</strong>
-                                </p>
-                            </div>
-
-                            <div class="col-md-4 loan_amount_field d-none">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class=" col-4"><b>Loan Amt: ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
-                                    <div class="col-8">
-                                        <input name="loan_amount" class="form-control" id="loan_amount" value="0.00">
-                                        <span class="error error_loan_amount"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 loan_amount_field d-none">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class=" col-4"><b>Company: </b> </label>
-                                    <div class="col-8">
-                                        <select name="company_id" class="form-control">
-                                            <option value="">Loan Paying Company</option>
-                                            @foreach ($companies as $com)
-                                                <option value="{{ $com->id }}">{{ $com->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="error error_company_id"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <div class="input-group">

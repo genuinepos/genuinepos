@@ -378,7 +378,7 @@ class SaleReturnController extends Controller
         $saleReturn = SaleReturn::with(['sale', 'sale.customer', 'sale_return_products'])->where('id', $saleReturnId)->first();
         $storedReturnedProducts = $saleReturn->sale_return_products;
         if ($saleReturn->total_return_due_pay > 0) {
-            return response()->json(['errorMsg' => "You can not delete this, casuse your have paid some or full amount on this return."]);
+            return response()->json(['errorMsg' => "You can not delete this return invoice, cause your have paid some or full amount on this return."]);
         }
         $saleReturn->sale->is_return_available = 0;
 

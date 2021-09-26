@@ -305,12 +305,11 @@ class SaleController extends Controller
             $addSale->save();
 
             if ($customer) {
-                $customer->save();
                 $addCustomerLedger = new CustomerLedger();
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_id = $addSale->id;
                 $addCustomerLedger->row_type = 1;
-                //$addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
+                $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
                 $addCustomerLedger->save();
             }
         } else {
@@ -336,10 +335,7 @@ class SaleController extends Controller
 
         // update product quantity and add sale product
         $branch_id = auth()->user()->branch_id;
-        if ($request->status == 1) {
-            $this->saleUtil->updateProductBranchStock($request, $branch_id);
-        }
-
+     
         $__index = 0;
         foreach ($product_ids as $product_id) {
             $addSaleProduct = new SaleProduct();
@@ -373,6 +369,12 @@ class SaleController extends Controller
             foreach ($product_ids as $product_id) {
                 $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+
+                if ($branch_id) {
+                    $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
+                } else {
+                    $this->productStockUtil->adjustMainBranchStock($product_id, $variant_id);
+                }
                 $__index++;
             }
         }
@@ -526,41 +528,7 @@ class SaleController extends Controller
 
         // update product quantity for adjustment
         $storedSaleProducts = $updateSale->sale_products;
-        foreach ($updateSale->sale_products as $sale_product) {
-            $sale_product->delete_in_update = 1;
-            $sale_product->save();
-            if ($updateSale->status == 1) {
-                if ($sale_product->product->type == 1) {
-                    if ($updateSale->branch_id) {
-                        $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
-                            ->where('product_id', $sale_product->product_id)
-                            ->first();
-                        $productBranch->product_quantity = $productBranch->product_quantity + $sale_product->quantity;
-                        $productBranch->save();
-                        if ($sale_product->product_variant_id) {
-                            $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                                ->where('product_id', $sale_product->product_id)
-                                ->where('product_variant_id', $sale_product->product_variant_id)
-                                ->first();
-                            $productBranchVariant->variant_quantity = $productBranchVariant->variant_quantity + $sale_product->quantity;
-                            $productBranchVariant->save();
-                        }
-                    } else {
-                        $mbProduct = Product::where('id', $sale_product->product_id)
-                            ->first();
-                        $mbProduct->mb_stock += $sale_product->quantity;
-                        $mbProduct->save();
-                        if ($sale_product->product_variant_id) {
-                            $mbProductVariant = ProductVariant::where('id', $sale_product->product_variant_id)
-                                ->where('product_id', $sale_product->product_id)->first();
-                            $mbProductVariant->mb_stock += $sale_product->quantity;
-                            $mbProductVariant->save();
-                        }
-                    }
-                }
-            }
-        }
-
+ 
         // generate invoice ID
         $invoiceId = 1;
         $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
@@ -605,11 +573,6 @@ class SaleController extends Controller
         $subtotals = $request->subtotals;
         $descriptions = $request->descriptions;
         $index = 0;
-
-        // Update branch product stock
-        if ($request->status == 1) {
-            $this->saleUtil->updateProductBranchStock($request, auth()->user()->branch_id);
-        }
 
         // Update sale product rows
         $__index = 0;
@@ -658,9 +621,16 @@ class SaleController extends Controller
         $deleteNotFoundSaleProducts = SaleProduct::where('sale_id', $updateSale->id)
             ->where('delete_in_update', 1)->get();
         foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
+            $storedVariant_id = $deleteNotFoundSaleProduct->product_variant_id ? $deleteNotFoundSaleProduct->product_variant_id : NULL;
+            $storedProductId = $deleteNotFoundSaleProduct->product_id;
             $deleteNotFoundSaleProduct->delete();
+            $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $variant_id);
+            if (auth()->user()->branch_id) {
+                $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariant_id, auth()->user()->branch_id);
+            } else {
+                $this->productStockUtil->adjustMainBranchStock($storedProductId, $storedVariant_id);
+            }
         }
-
 
         // Update customer total sale due
         if ($request->status == 1) {
@@ -670,9 +640,15 @@ class SaleController extends Controller
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
             }
 
-            foreach ($storedSaleProducts as $saleProduct) {
+            $sale_products = DB::table('sale_products')->where('sale_id', $updateSale->id)->get();
+            foreach ($sale_products as $saleProduct) {
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
+                if (auth()->user()->branch_id) {
+                    $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, auth()->user()->branch_id);
+                } else {
+                    $this->productStockUtil->adjustMainBranchStock($saleProduct->product_id, $variant_id);
+                }
             }
         }
 

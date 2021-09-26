@@ -282,47 +282,10 @@ class SaleUtil
             'sale_products.product.comboProducts',
         ])->where('id', $saleId)->first();
 
-
         $storedCustomerId = $deleteSale->customer_id;
         $storedPayments = $deleteSale->sale_payments;
         $storedSaleProducts = $deleteSale->sale_products;
         $storeStatus = $deleteSale->status;
-
-        // Add product quantity for adjustment
-        if ($deleteSale->status == 1) {
-            foreach ($deleteSale->sale_products as $sale_product) {
-                if ($sale_product->product->type == 1) {
-                    if ($deleteSale->branch_id) {
-                        $productBranch = ProductBranch::where('branch_id', $deleteSale->branch_id)
-                            ->where('product_id', $sale_product->product_id)
-                            ->first();
-                        $productBranch->product_quantity += $sale_product->quantity;
-                        $productBranch->save();
-                        if ($sale_product->product_variant_id) {
-                            $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                                ->where('product_id', $sale_product->product_id)
-                                ->where('product_variant_id', $sale_product->product_variant_id)
-                                ->first();
-
-                            $productBranchVariant->variant_quantity += $sale_product->quantity;
-                            $productBranchVariant->save();
-                        }
-                    } else {
-                        $product = Product::where('id', $sale_product->product_id)
-                            ->first();
-                        $product->mb_stock += $sale_product->quantity;
-                        $product->save();
-
-                        if ($sale_product->product_variant_id) {
-                            $productVariant = ProductVariant::where('id', $sale_product->product_variant_id)
-                                ->first();
-                            $productVariant->mb_stock += $sale_product->quantity;
-                            $productVariant->save();
-                        }
-                    }
-                }
-            }
-        }
         $deleteSale->delete();
 
         if (count($storedPayments) > 0) {
@@ -343,6 +306,14 @@ class SaleUtil
             foreach ($storedSaleProducts as $saleProduct) {
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
+                $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
+                $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
+                
+                if (auth()->user()->branch_id) {
+                    $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, auth()->user()->branch_id);
+                } else {
+                    $this->productStockUtil->adjustMainBranchStock($saleProduct->product_id, $variant_id);
+                }
             }
         }
 

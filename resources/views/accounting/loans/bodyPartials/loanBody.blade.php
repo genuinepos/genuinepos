@@ -5,13 +5,6 @@
                 <div class="col-md-6">
                     <h6>Add Loan </h6>
                 </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label></label>
-                        <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
-                    </div>
-                </div>
             </div>
 
             <div class="form-area px-3 pb-2">
@@ -101,9 +94,11 @@
                 <div class="col-md-6">
                     <h6>Loans</h6>
                 </div>
-
+                
+                <div class="col-md-6">
+                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                </div>
             </div>
-
 
             <div class="widget_content">
                 <form id="filter_tax_report_form" class="px-1" action="" method="get">

@@ -830,11 +830,11 @@
 
         var e_quantity = $('#e_quantity').val();
         var e_unit_price = $('#e_unit_price').val();
-        var e_unit_discount_type = $('#e_unit_discount_type').val();
+        var e_unit_discount_type = $('#e_unit_discount_type').val() ? $('#e_unit_discount_type').val() : 1;
         var e_unit_discount = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
         var e_unit_discount_amount = $('#e_discount_amount').val() ? $('#e_discount_amount').val() : 0.00;
         var e_unit_tax_percent = $('#e_unit_tax').val() ? $('#e_unit_tax').val() : 0.00;
-        var e_unit_tax_type = $('#e_tax_type').val();
+        var e_unit_tax_type = $('#e_tax_type').val() ? $('#e_tax_type').val() : 1;
         var e_unit = $('#e_unit').val();
 
         var productTableRow = $('#sale_list tr:nth-child(' + (tableRowIndex + 1) + ')');

@@ -207,7 +207,7 @@
                     importCSS: true,                
                     importStyle: true,          
                     loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
-                    removeInline: true, 
+                    removeInline: false, 
                     printDelay: 500,
                     header : null,   
                     footer : null,      

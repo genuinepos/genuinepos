@@ -1,10 +1,14 @@
 <style>
-    @page {margin: 0px 38px;margin-top: 0.8cm;margin-bottom: 20px;}
-    /* @media print {
-        margin-top: 0.8cm;
-        margin-bottom: 30px;
-    } */
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
 
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 6px;margin-right: 6px;}
     .header, .header-space,
     .footer, .footer-space {height: 20px;}
     .header {position: fixed;top: 0;}
@@ -22,25 +26,30 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location.</b></p>
+            <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-        @else 
+        @else
             @php
-                $branch = DB::table('branches')->where('id', $branch_id)->select('name', 'branch_code')->first();
+                $branch = DB::table('branches')
+                    ->where('id', $branch_id)
+                    ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
+                    ->first();
             @endphp
-            <h6>{{ $branch->name.' '.$branch->branch_code }}</h6>
+            <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
+            <p><b>Date :</b>
+                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
+                <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+            </p>
         @endif
-        <br>
-        <h6><b>Stock Adjustment Report </b></h6> 
+        <h6 style="margin-top: 10px;"><b>Stock Adjustment Report </b></h6> 
     </div>
 </div>
 <br>

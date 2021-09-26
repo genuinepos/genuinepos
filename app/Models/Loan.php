@@ -14,4 +14,9 @@ class Loan extends Model
     {
         return $this->belongsTo(LoanCompany::class, 'loan_company_id');
     }
+
+    public function cashFlow()
+    {
+        return $this->hasOne(CashFlow::class);
+    }
 }

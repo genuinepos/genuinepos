@@ -1,5 +1,4 @@
 <style>
-
     @media print
     {
         table { page-break-after:auto }
@@ -9,19 +8,10 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {
-        margin-top: 0.8cm;
-        /* margin-bottom: 20px; */
-        margin-bottom: 33px;
-    }
-    /* @media print {
-        margin-top: 0.8cm;
-        margin-bottom: 30px;
-    } */
-
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 6px;margin-right: 6px;}
     .header, .header-space,
     .footer, .footer-space {height: 20px;}
-    .header {position: fixed;top: 0;}
+    .header {position: fixed; top: 0;}
     .footer {position: fixed;bottom: 0;}
     .noBorder {border: 0px !important;}
     tr.noBorder td {border: 0px !important;}
@@ -40,13 +30,13 @@
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <p>{{ json_decode($generalSettings->business, true)['shop_name'] }}</p>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
                     ->where('id', $branch_id)
-                    ->select('name', 'branch_code')
+                    ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
                     ->first();
             @endphp
             <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>

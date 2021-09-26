@@ -100,7 +100,7 @@
                 <select name="account_id" class="form-control form-control-sm"  id="p_account_id">
                 <option value="">None</option>
                 @foreach ($accounts as $account)
-                    <option {{ $payment->account_id == $account ? 'SELECTED' : '' }} value="{{ $account->id }}">{{ $account->name }} (A/C:
+                    <option {{ $payment->account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">{{ $account->name }} (A/C:
                         {{ $account->account_number }}) (Balance: {{ $account->balance }})</option>
                 @endforeach
                 </select>

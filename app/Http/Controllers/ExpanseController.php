@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
 use App\Models\Expanse;
 use App\Models\CashFlow;
 use App\Utils\ExpenseUtil;
@@ -11,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
 use App\Models\ExpenseDescription;
+use App\Utils\AccountUtil;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -18,9 +18,11 @@ use Yajra\DataTables\Facades\DataTables;
 class ExpanseController extends Controller
 {
     protected $expenseUtil;
-    public function __construct(ExpenseUtil $expenseUtil)
+    protected $accountUtil;
+    public function __construct(ExpenseUtil $expenseUtil, AccountUtil $accountUtil)
     {
         $this->expenseUtil = $expenseUtil;
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -255,17 +257,8 @@ class ExpanseController extends Controller
             'total_amount' => 'required',
         ]);
 
-        if ($request->is_loan) {
-            $this->validate($request, [
-                'loan_amount' => 'required',
-                'company_id' => 'required',
-                'paying_amount' => 'required',
-                'account_id' => 'required',
-            ]);
-        }
-
+   
         // generate invoice ID
-
         $invoiceId = 1;
         $lastExpense = DB::table('expanses')->orderBy('id', 'desc')->select('id')->first();
         if ($lastExpense) {
@@ -346,17 +339,11 @@ class ExpanseController extends Controller
             $addExpansePayment->save();
 
             if ($request->account_id) {
-                // update account
-                $account = Account::where('id', $request->account_id)->first();
-                $account->debit += $request->paying_amount;
-                $account->balance -= $request->paying_amount;
-                $account->save();
-
                 // Add cash flow
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->debit = $request->paying_amount;
-                $addCashFlow->balance = $account->balance;
+
                 $addCashFlow->expanse_payment_id = $addExpansePayment->id;
                 $addCashFlow->transaction_type = 6;
                 $addCashFlow->cash_type = 1;
@@ -366,11 +353,9 @@ class ExpanseController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
+                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                $addCashFlow->save();
             }
-        }
-
-        if (isset($request->is_loan)) {
-            $this->expenseUtil->addLoanByExpense($request, $addExpanse->id);
         }
 
         $expense = Expanse::with(['expense_descriptions', 'expense_descriptions.category', 'admin'])
@@ -583,17 +568,10 @@ class ExpanseController extends Controller
         $addExpansePayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->debit += $request->amount;
-            $account->balance -= $request->amount;
-            $account->save();
-
             // Add cash flow
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->debit = $request->amount;
-            $addCashFlow->balance = $account->balance;
             $addCashFlow->expanse_payment_id = $addExpansePayment->id;
             $addCashFlow->transaction_type = 6;
             $addCashFlow->cash_type = 1;
@@ -602,6 +580,8 @@ class ExpanseController extends Controller
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
+            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
             $addCashFlow->save();
         }
         return response()->json('Successfully payment is added.');
@@ -625,14 +605,6 @@ class ExpanseController extends Controller
         $updateExpansePayment->expense->paid += $request->amount;
         $updateExpansePayment->expense->due -= $request->amount;
         $updateExpansePayment->expense->save();
-
-        // Update previoues account and delete previous cashflow.
-        if ($updateExpansePayment->account) {
-            $updateExpansePayment->account->debit -= $updateExpansePayment->paid_amount;
-            $updateExpansePayment->account->balance += $updateExpansePayment->paid_amount;
-            $updateExpansePayment->account->save();
-            //$updateExpansePayment->cashFlow->delete();
-        }
 
         // update Expanse payment
         $updateExpansePayment->account_id = $request->account_id;
@@ -674,33 +646,29 @@ class ExpanseController extends Controller
         $updateExpansePayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->debit += $request->amount;
-            $account->balance -= $request->amount;
-            $account->save();
-
             // Add or update cash flow
             $cashFlow = CashFlow::where('account_id', $request->account_id)
                 ->where('expanse_payment_id', $updateExpansePayment->id)->first();
             if ($cashFlow) {
                 $cashFlow->debit = $request->amount;
-                $cashFlow->balance = $account->balance;
                 $cashFlow->date = $request->date;
                 $cashFlow->report_date = date('Y-m-d', strtotime($request->date));
                 $cashFlow->month = date('F');
                 $cashFlow->year = date('Y');
                 $cashFlow->admin_id = auth()->user()->id;
                 $cashFlow->save();
+                $cashFlow->balance = $this->accountUtil->adjustAccountBalance($cashFlow->account_id);
+                $cashFlow->save();
             } else {
                 if ($updateExpansePayment->cashFlow) {
+                    $storedAccountId = $updateExpansePayment->cashFlow->account_id;
                     $updateExpansePayment->cashFlow->delete();
+                    $this->accountUtil->adjustAccountBalance($storedAccountId);
                 }
 
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->debit = $request->amount;
-                $addCashFlow->balance = $account->balance;
                 $addCashFlow->expanse_payment_id = $updateExpansePayment->id;
                 $addCashFlow->transaction_type = 6;
                 $addCashFlow->cash_type = 1;
@@ -710,10 +678,14 @@ class ExpanseController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
+                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                $addCashFlow->save();
             }
         } else {
             if ($updateExpansePayment->cashFlow) {
+                $storedAccountId = $updateExpansePayment->cashFlow->account_id;
                 $updateExpansePayment->cashFlow->delete();
+                $this->accountUtil->adjustAccountBalance($storedAccountId);
             }
         }
         return response()->json('Successfully payment is added.');
@@ -722,28 +694,23 @@ class ExpanseController extends Controller
     public function paymentDelete(Request $request, $paymentId)
     {
         $deleteExpansePayment = ExpansePayment::with('account', 'expense', 'cashFlow')->where('id', $paymentId)->first();
-
+        $storedAccountId = $deleteExpansePayment->account_id;
         if (!is_null($deleteExpansePayment)) {
             // Update expanse 
             $deleteExpansePayment->expense->paid -= $deleteExpansePayment->paid_amount;
             $deleteExpansePayment->expense->due += $deleteExpansePayment->paid_amount;
             $deleteExpansePayment->expense->save();
 
-            // Update previoues account and delete previous cashflow.
-            if ($deleteExpansePayment->account) {
-                $deleteExpansePayment->account->debit -= $deleteExpansePayment->paid_amount;
-                $deleteExpansePayment->account->balance += $deleteExpansePayment->paid_amount;
-                $deleteExpansePayment->account->save();
-                $deleteExpansePayment->cashFlow->delete();
-            }
-
             if ($deleteExpansePayment->attachment != null) {
                 if (file_exists(public_path('uploads/payment_attachment/' . $deleteExpansePayment->attachment))) {
                     unlink(public_path('uploads/payment_attachment/' . $deleteExpansePayment->attachment));
                 }
             }
-
             $deleteExpansePayment->delete();
+        }
+
+        if ($storedAccountId) {
+            $this->accountUtil->adjustAccountBalance($storedAccountId);
         }
 
         return response()->json('Successfully payment is deleted.');

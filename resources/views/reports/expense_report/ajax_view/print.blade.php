@@ -53,6 +53,7 @@
         @if ($branch_id == '')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p><b>All Business Location</b></p>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @elseif ($branch_id == 'NULL')
             <p>{{ json_decode($generalSettings->business, true)['shop_name'] }}</p>
         @else
@@ -71,7 +72,6 @@
                 <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         <h6 style="margin-top: 10px;"><b>Expense Report </b></h6>
     </div>
 </div>

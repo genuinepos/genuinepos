@@ -14,7 +14,7 @@ class AddColumnToCashFlows extends Migration
     public function up()
     {
         Schema::table('cash_flows', function (Blueprint $table) {
-            $table->timestamp('report_date')->nullable(false)->change();
+            $table->timestamp('report_date')->default(null)->change();
         });
     }
 

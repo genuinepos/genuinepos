@@ -249,14 +249,6 @@
                 <div class="col-md-6">
                     <table class="table modal-table table-sm">
                         <tbody>
-                            {{-- <tr>
-                                <td class="text-start"><strong>Net Total Amount :</strong></td>
-                                <td class="text-end">
-                                    <b>
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                        {{ $sale->net_total_amount }}</b>
-                                </td>
-                            </tr> --}}
                             <tr>
                                 <td class="text-end"><strong> Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="text-end">

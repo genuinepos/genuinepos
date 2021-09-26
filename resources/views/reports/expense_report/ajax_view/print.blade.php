@@ -1,36 +1,12 @@
 <style>
-    @page {
-        margin-top: 0.8cm;
-        margin-bottom: 20px;
-    }
-    /* @media print {
-        margin-top: 0.8cm;
-        margin-bottom: 30px;
-    } */
-
+    @page {margin-top: 0.8cm;margin-bottom: 20px;}
     .header, .header-space,
-    .footer, .footer-space {
-        height: 20px;
-    }
-    .header {
-        position: fixed;
-        top: 0;
-    }
-    .footer {
-        position: fixed;
-        bottom: 0;
-    }
-    .noBorder {
-        border: 0px !important;
-    }
-    tr.noBorder td {
-        border: 0px !important;
-    }
-    tr.noBorder {
-        border: 0px !important;
-        border-left: 1px solid transparent;
-        border-bottom: 1px solid transparent;
-    }
+    .footer, .footer-space {height: 20px;}
+    .header {position: fixed;top: 0;}
+    .footer {position: fixed;bottom: 0;}
+    .noBorder {border: 0px !important;}
+    tr.noBorder td {border: 0px !important;}
+    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
 @php
     $totalExpense = 0;
@@ -42,10 +18,11 @@
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-            <p><b>All Business Location</b></p>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
             <p>{{ json_decode($generalSettings->business, true)['shop_name'] }}</p>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -53,7 +30,8 @@
                     ->select('name', 'branch_code')
                     ->first();
             @endphp
-            {{ $branch->name . ' ' . $branch->branch_code }}
+            <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
 
         @if ($fromDate && $toDate)
@@ -76,9 +54,9 @@
                     <th class="text-start">Description</th>
                     <th class="text-start">B.Location</th>
                     <th class="text-start">Expense For</th>
-                    <th class="text-start">Total Amount</th>
-                    <th class="text-start">Paid</th>
-                    <th class="text-start">Due</th>
+                    <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-start">Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-start">Due({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -102,7 +80,7 @@
                                     ->get();
                             @endphp
                             @foreach ($expenseDescriptions as $exDescription)
-                                {!! '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b>' . json_decode($generalSettings->business, true)['currency'] . $exDescription->amount !!} <br>
+                                {!! '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b>'. $exDescription->amount !!} <br>
                             @endforeach
                         </td>
                         <td class="text-start">
@@ -118,8 +96,6 @@
                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ex->net_total_amount) }}</td>
                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ex->paid) }}</td>
                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ex->due) }}</td>
-                        {{-- <td class="text-start">{{ $ex->paid }}</td>
-                        <td class="text-start">{{ $ex->due }}</td> --}}
                     </tr>
                 @endforeach
             </tbody>
@@ -137,10 +113,6 @@
                     <th class="text-end">Total Expense :</th>
                     <td class="text-end">
                         {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalExpense) }}
-                        {{-- <br>
-                        ( {{ App\Utils\Converter::format_in_text($totalExpense) }} {{json_decode($generalSettings->business, true)['currency']}} ) --}}
-                        {{-- ({{ App\Utils\Converter::format_in_text($totalExpense) }} Taka) --}}
-                        {{-- {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalExpense, 0, 2) }} --}}
                     </td>
                 </tr>
 
@@ -148,11 +120,6 @@
                     <th class="text-end">Total Paid :</th>
                     <td class="text-end">
                         {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalPaid) }}
-                        {{-- {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalPaid, 0, 2) }} --}}
-
-                        {{-- <br>
-                        ( {{ App\Utils\Converter::format_in_text($totalPaid) }} {{json_decode($generalSettings->business, true)['currency']}} ) --}}
-
                     </td>
                 </tr>
 
@@ -160,10 +127,6 @@
                     <th class="text-end">Total Due :</th>
                     <td class="text-end">
                         {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalDue) }}
-                        
-                        {{-- <br>
-                        ({{ App\Utils\Converter::format_in_text($totalDue)}} {{json_decode($generalSettings->business, true)['currency']}}) --}}
-                        {{-- {{ json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($totalDue, 0, 2) }} --}}
                     </td>
                 </tr>
             </thead>
@@ -180,7 +143,7 @@
     </div>
 @endif
 
-<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
+<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;margin-top:10px;" class="footer">
     <small style="font-size: 5px;" class="text-end">
         Print Date: {{ date('d-m-Y , h:iA') }}
     </small>

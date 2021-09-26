@@ -1,38 +1,17 @@
 <style>
-    @page {
-        margin: 0px 35px;
-        margin-top: 0.8cm;
-        margin-bottom: 20px;
-
-    }
+    @page {margin: 0px 38px;margin-top: 0.8cm;margin-bottom: 20px;}
     /* @media print {
         margin-top: 0.8cm;
         margin-bottom: 30px;
     } */
 
     .header, .header-space,
-    .footer, .footer-space {
-        height: 20px;
-    }
-    .header {
-        position: fixed;
-        top: 0;
-    }
-    .footer {
-        position: fixed;
-        bottom: 0;
-    }
-    .noBorder {
-        border: 0px !important;
-    }
-    tr.noBorder td {
-        border: 0px !important;
-    }
-    tr.noBorder {
-        border: 0px !important;
-        border-left: 1px solid transparent;
-        border-bottom: 1px solid transparent;
-    }
+    .footer, .footer-space {height: 20px;}
+    .header {position: fixed;top: 0;}
+    .footer {position: fixed;bottom: 0;}
+    .noBorder {border: 0px !important;}
+    tr.noBorder td {border: 0px !important;}
+    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
 @php
     $totalNormal = 0;
@@ -44,15 +23,17 @@
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
             <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-            <p><b>All Business Location.</b></p> 
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <p><b>All Business Location.</b></p>
         @elseif ($branch_id == 'NULL')
             <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else 
             @php
                 $branch = DB::table('branches')->where('id', $branch_id)->select('name', 'branch_code')->first();
             @endphp
-            {{ $branch->name.' '.$branch->branch_code }}
+            <h6>{{ $branch->name.' '.$branch->branch_code }}</h6>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
 
         @if ($fromDate && $toDate)
@@ -72,8 +53,8 @@
                     <th class="text-start">Reference No.</th>
                     <th class="text-start">B.Location</th>
                     <th class="text-start">Type</th>
-                    <th class="text-start">Total Amount</th>
-                    <th class="text-start">Total Recovered Amount</th>
+                    <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -105,8 +86,8 @@
                         <td class="text-start">
                             {{ $ad->type == 1 ? 'Normal' : 'Abnormal' }}
                         </td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. App\Utils\Converter::format_in_bdt($ad->net_total_amount) }}</td>
-                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. App\Utils\Converter::format_in_bdt($ad->recovered_amount) }}</td>
+                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ad->net_total_amount) }}</td>
+                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ad->recovered_amount) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -162,3 +143,9 @@
         </div>
     </div>
 @endif
+
+<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
+    <small style="font-size: 5px;" class="text-end">
+        Print Date: {{ date('d-m-Y , h:iA') }}
+    </small>
+</div>

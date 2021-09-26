@@ -124,6 +124,7 @@ class LoanController extends Controller
 
     public function store(Request $request)
     {
+        //return date('Y-m-d', strtotime($request->date));
         $this->validate($request, [
             'company_id' => 'required',
             'type' => 'required',

@@ -234,12 +234,11 @@ class SaleController extends Controller
         }
 
         // generate invoice ID
-        $i = 5;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        
+        $invoiceId = 1;
+        $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
+        if ($lastSale) {
+            $invoiceId = ++$lastSale->id;
         }
 
         $this->validate($request, [
@@ -563,15 +562,13 @@ class SaleController extends Controller
         }
 
         // generate invoice ID
-        $i = 6;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        $invoiceId = 1;
+        $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
+        if ($lastSale) {
+            $invoiceId = ++$lastSale->id;
         }
 
-        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'SI') . date('ymd') . $invoiceId;
+        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
         $updateSale->status = $request->status;
         $updateSale->pay_term = $request->pay_term;
         $updateSale->date = $request->date;

@@ -11,7 +11,8 @@
 
     @page {
         margin-top: 0.8cm;
-        margin-bottom: 20px;
+        /* margin-bottom: 20px; */
+        margin-bottom: 33px;
     }
     /* @media print {
         margin-top: 0.8cm;
@@ -190,7 +191,7 @@
     </div>
 @endif
 
-<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
+<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
     <small style="font-size: 5px;" class="text-end">
         Print Date: {{ date('d-m-Y , h:iA') }}
     </small>

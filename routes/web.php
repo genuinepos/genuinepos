@@ -980,3 +980,6 @@ Route::get('/test', function () {
 
 // All authenticated routes
 Auth::routes();
+Route::get('dbal', function() {
+    dd(\Doctrine\DBAL\Types\Type::getTypesMap());
+});

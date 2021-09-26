@@ -3,10 +3,10 @@
 namespace App\Providers;
 
 use Exception;
-use Doctrine\DBAL\Types\Type;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use App\Utils\DatabaseUtils\TimestampType;
+// use Doctrine\DBAL\Types\Type;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,9 +40,9 @@ class AppServiceProvider extends ServiceProvider
             echo $e->getMessage() . PHP_EOL;
         }
 
-        if (!Type::hasType('timestamp')) {
-            Type::addType('timestamp', TimestampType::class);
-        }
+        // if (!Type::hasType('timestamp')) {
+        //     Type::addType('timestamp', TimestampType::class);
+        // }
 
     }
 }

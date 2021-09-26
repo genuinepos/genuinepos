@@ -67,7 +67,8 @@ class LoanController extends Controller
                     'branches.name as b_name',
                     'branches.branch_code as b_code',
                 )->where('loans.branch_id', auth()->user()->branch_id)
-                    ->orderBy('loans.report_date', 'desc')->get();
+                    ->orderBy('loans.report_date', 'desc')
+                    ->get();
             }
 
             return DataTables::of($loans)
@@ -124,7 +125,6 @@ class LoanController extends Controller
 
     public function store(Request $request)
     {
-        //return date('Y-m-d', strtotime($request->date));
         $this->validate($request, [
             'company_id' => 'required',
             'type' => 'required',

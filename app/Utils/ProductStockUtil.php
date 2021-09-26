@@ -109,8 +109,24 @@ class ProductStockUtil
         
         $PurchaseReturn = DB::table('purchase_return_products')
             ->leftJoin('purchase_returns', 'purchase_return_products.purchase_return_id', 'purchases.id')
-            ->where('purchases.branch_id', NULL)
+            ->where('purchase_returns.branch_id', NULL)
             ->where('product_id', $product_id)->select(DB::raw('sum(return_qty) as total_return'))
             ->groupBy('product_id')->get();
+
+        $transferred = DB::table('transfer_stock_to_warehouse_products')
+        ->leftJoin('transfer_stock_to_warehouses', 'transfer_stock_to_warehouse_products.transfer_stock_id', 'transfer_stock_to_warehouses.id')
+        ->where('transfer_stock_to_warehouses.branch_id', NULL)
+        ->where('transfer_stock_to_warehouse_products.product_id', $product_id)
+        ->select(DB::raw('sum(total_received_qty) as total_qty'))
+        ->groupBy('transfer_stock_to_warehouse_products.product_id')->get();
+
+        $received = DB::table('transfer_stock_to_branch_products')
+        ->leftJoin('transfer_stock_to_branches', 'transfer_stock_to_branch_products.transfer_stock_id', 'transfer_stock_to_branches.id')
+        ->where('transfer_stock_to_branches.branch_id', NULL)
+        ->where('transfer_stock_to_branch_products.product_id', $product_id)
+        ->select(DB::raw('sum(total_received_qty) as total_qty'))
+        ->groupBy('transfer_stock_to_branch_products.product_id')->get();
+
+        // $currentMbStock = $productOpeningStock->sum('po_stock')->
     }
 }

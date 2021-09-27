@@ -1,10 +1,20 @@
 <?php
 
+/**
+ * Add `timestamp` type to DBAL
+ * Unused code for reference / backward compatibility
+ */
+
 namespace App\Utils\DatabaseUtils;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+
+// Add these lines to any of your service providers 
+// if (!Type::hasType('timestamp')) {
+//     Type::addType('timestamp', TimestampType::class);
+// }
 
 class TimestampType extends Type
 {

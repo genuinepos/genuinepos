@@ -242,9 +242,6 @@ class PurchaseController extends Controller
             $index++;
         }
 
-        // update product stock branch or warehouse wise
-        $this->purchaseUtil->updateStockForPurchaseStore($request);
-
         // Add supplier ledger
         $addSupplierLedger = new SupplierLedger();
         $addSupplierLedger->supplier_id = $request->supplier_id;
@@ -339,11 +336,23 @@ class PurchaseController extends Controller
                 $updateVariantQty->is_purchased = 1;
                 $updateVariantQty->save();
             }
-            $variant_id = $variant_ids[$productIndex] != 'noid' ? $variant_ids[$productIndex] : NULL;
-            $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
             $productIndex++;
         }
 
+
+        $__index = 0;
+        foreach ($product_ids as $productId) {
+            $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+            $this->productStockUtil->adjustMainProductAndVariantStock($productId, $variant_id);
+            if (isset($request->warehouse_id)) {
+                $this->productStockUtil->adjustWarehouseStock($productId, $variant_id, $request->warehouse_id);
+            } else if (auth()->user()->branch_id) {
+                $this->productStockUtil->adjustBranchStock($productId, $variant_id, auth()->user()->branch_id);
+            } else {
+                $this->productStockUtil->adjustMainBranchStock($productId, $variant_id);
+            }
+            $__index++;
+        }
         $this->supplierUtil->adjustSupplierForSalePaymentDue($request->supplier_id);
 
         session()->flash('successMsg', 'Successfully purchase is added');
@@ -382,9 +391,9 @@ class PurchaseController extends Controller
 
         // get updatable purchase row
         $updatePurchase = purchase::with(['purchase_products', 'ledger'])->where('id', $request->id)->first();
+        $storedWarehouseId = $updatePurchase->warehouse_id;
 
         // update product and variant quantity for adjustment
-        $storePurchaseProduct = $updatePurchase->purchase_products;
         foreach ($updatePurchase->purchase_products as $purchase_product) {
             $SupplierProduct = SupplierProduct::where('supplier_id', $updatePurchase->supplier_id)
                 ->where('product_id', $purchase_product->product_id)
@@ -397,48 +406,6 @@ class PurchaseController extends Controller
             }
         }
 
-        // update Branch or Warehouse product and variant quantity for adjustment
-        if ($updatePurchase->warehouse_id) {
-            foreach ($updatePurchase->purchase_products as $purchase_product) {
-                $updateProductWarehouse = ProductWarehouse::where('warehouse_id', $updatePurchase->warehouse_id)
-                    ->where('product_id', $purchase_product->product_id)->first();
-                $updateProductWarehouse->product_quantity -= (float)$purchase_product->quantity;
-                $updateProductWarehouse->save();
-                if ($purchase_product->product_variant_id) {
-                    $updateProductWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $updateProductWarehouse->id)->where('product_id', $purchase_product->product_id)
-                        ->where('product_variant_id', $purchase_product->product_variant_id)->first();
-                    $updateProductWarehouseVariant->variant_quantity -= (float)$purchase_product->quantity;
-                    $updateProductWarehouseVariant->save();
-                }
-            }
-        } elseif ($updatePurchase->branch_id) {
-            foreach ($updatePurchase->purchase_products as $purchase_product) {
-                $updateProductBranch = ProductBranch::where('branch_id', $updatePurchase->branch_id)->where('product_id', $purchase_product->product_id)->first();
-                $updateProductBranch->product_quantity -= (float)$purchase_product->quantity;
-                $updateProductBranch->save();
-
-                if ($purchase_product->product_variant_id) {
-                    $updateProductBranchVariant =  ProductBranchVariant::where('product_branch_id', $updateProductBranch->id)->where('product_id', $purchase_product->product_id)->where('product_variant_id', $purchase_product->product_variant_id)->first();
-                    $updateProductBranchVariant->variant_quantity -= (float)$purchase_product->quantity;
-                    $updateProductBranchVariant->save();
-                }
-            }
-        } else {
-            foreach ($updatePurchase->purchase_products as $purchase_product) {
-                $MbStock = Product::where('id', $purchase_product->product_id)->first();
-                $MbStock->mb_stock -= $purchase_product->quantity;
-                $MbStock->save();
-
-                if ($purchase_product->product_variant_id) {
-                    $updateProVariantMbStock = ProductVariant::where('id', $purchase_product->product_variant_id)
-                        ->where('product_id', $purchase_product->product_id)->first();
-                    $updateProVariantMbStock->mb_stock -= $purchase_product->quantity;
-                    $updateProVariantMbStock->save();
-                }
-            }
-        }
-
-        // update update delete_in_update column of purchase_product table for noticing new and old product for update
         foreach ($updatePurchase->purchase_products as $purchase_product) {
             $purchase_product->delete_in_update = 1;
             $purchase_product->save();
@@ -468,16 +435,14 @@ class PurchaseController extends Controller
 
         $updatePurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         // generate invoice ID
-        $i = 6;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        $invoiceId = 1;
+        $lastPurchase = DB::table('purchases')->orderBy('id', 'desc')->first();
+        if ($lastPurchase) {
+            $invoiceId = ++$lastPurchase->id;
         }
-
+     
         // update purchase total information
-        $updatePurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PI') . date('ymd') . $invoiceId;
+        $updatePurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
         $updatePurchase->pay_term = $request->pay_term;
         $updatePurchase->pay_term_number = $request->pay_term_number;
         $updatePurchase->invoice_id = $request->invoice_id;
@@ -604,18 +569,41 @@ class PurchaseController extends Controller
             $index++;
         }
 
-        // update product stock branch or warehouse wise
-        $this->purchaseUtil->updateStockForPurchaseStore($request);
         // deleted not getting previous product
         $deletedPurchaseProducts = PurchaseProduct::where('purchase_id', $request->id)->where('delete_in_update', 1)->get();
-        foreach ($deletedPurchaseProducts as $deletedPurchaseProduct) {
-            $deletedPurchaseProduct->delete();
+        if (count($deletedPurchaseProducts) > 0) {
+            foreach ($deletedPurchaseProducts as $deletedPurchaseProduct) {
+                $storedProductId = $deletedPurchaseProduct->product_id;
+                $storedVariantId = $deletedPurchaseProduct->product_variant_id;
+                $deletedPurchaseProduct->delete();
+                // Adjust deleted product stock
+                $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
+                if (isset($request->warehouse_id)) {
+                    $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId, $request->warehouse_id);
+                } else if (auth()->user()->branch_id) {
+                    $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
+                } else {
+                    $this->productStockUtil->adjustMainBranchStock($storedProductId, $storedVariantId);
+                }
+            }
         }
 
-        // update product and variant quantity
-        foreach ($storePurchaseProducts as $PurchaseProduct) {
-            $variant_id = $PurchaseProduct->product_variant_id ? $PurchaseProduct->product_variant_id : NULL;
-            $this->productStockUtil->adjustMainProductAndVariantStock($PurchaseProduct->product_id, $variant_id);
+        $purchase_products = DB::table('purchase_products')->where('purchase_id', $updatePurchase->id)->get();
+        foreach ($purchase_products as $purchase_product) {
+            $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $purchase_product->product_variant_id);
+            if (isset($request->warehouse_id)) {
+                $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
+            } else if (auth()->user()->branch_id) {
+                $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
+            } else {
+                $this->productStockUtil->adjustMainBranchStock($purchase_product->product_id, $purchase_product->product_variant_id);
+            }
+        }
+
+        if (isset($request->warehouse_id) && $request->warehouse_id != $storedWarehouseId) {
+            foreach ($storePurchaseProducts as $PurchaseProduct) {
+                $this->productStockUtil->adjustWarehouseStock($PurchaseProduct->product_id, $PurchaseProduct->product_variant_id, $storedWarehouseId);
+            }
         }
 
         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
@@ -672,7 +660,6 @@ class PurchaseController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'purchase'])->first();
         $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
-
         $variantId = $request->variant_id != 'noid' ? $request->variant_id : NULL;
         $updatePurchaseProduct = PurchaseProduct::where('purchase_id', $purchaseId)
             ->where('product_id', $request->product_id)
@@ -683,9 +670,6 @@ class PurchaseController extends Controller
         $updatePurchase->report_date = date('Y-m-d', strtotime($request->date));
         $updatePurchase->total_purchase_amount -= $updatePurchaseProduct->line_total;
         $updatePurchase->total_purchase_amount += $request->linetotal;
-        $updatePurchase->due -= $updatePurchaseProduct->line_total;
-        $updatePurchase->due += $request->linetotal;
-        $updatePurchase->save();
 
         $SupplierProduct = SupplierProduct::where('supplier_id', $updatePurchase->supplier_id)
             ->where('product_id', $updatePurchaseProduct->product_id)
@@ -725,47 +709,6 @@ class PurchaseController extends Controller
             }
         }
 
-        // update Business location or Warehouse product and variant quantity for adjustment
-        if ($updatePurchase->warehouse_id) {
-            $updateProductWarehouse = ProductWarehouse::where('warehouse_id', $updatePurchase->warehouse_id)
-                ->where('product_id', $updatePurchaseProduct->product_id)->first();
-            $updateProductWarehouse->product_quantity -= (float)$updatePurchaseProduct->quantity;
-            $updateProductWarehouse->product_quantity += (float)$request->quantity;
-            $updateProductWarehouse->save();
-            if ($updatePurchaseProduct->product_variant_id) {
-                $updateProductWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $updateProductWarehouse->id)->where('product_id', $updatePurchaseProduct->product_id)
-                    ->where('product_variant_id', $updatePurchaseProduct->product_variant_id)->first();
-                $updateProductWarehouseVariant->variant_quantity -= $updatePurchaseProduct->quantity;
-                $updateProductWarehouseVariant->variant_quantity += (float)$request->quantity;
-                $updateProductWarehouseVariant->save();
-            }
-        } elseif ($updatePurchase->branch_id) {
-            $updateProductBranch = ProductBranch::where('branch_id', $updatePurchase->branch_id)->where('product_id', $updatePurchaseProduct->product_id)->first();
-            $updateProductBranch->product_quantity -= $updatePurchaseProduct->quantity;
-            $updateProductBranch->product_quantity += (float)$request->quantity;
-            $updateProductBranch->save();
-
-            if ($updatePurchaseProduct->product_variant_id) {
-                $updateProductBranchVariant =  ProductBranchVariant::where('product_branch_id', $updateProductBranch->id)->where('product_id', $updatePurchaseProduct->product_id)->where('product_variant_id', $updatePurchaseProduct->product_variant_id)->first();
-                $updateProductBranchVariant->variant_quantity -= $updatePurchaseProduct->quantity;
-                $updateProductBranchVariant->variant_quantity += (float)$request->quantity;
-                $updateProductBranchVariant->save();
-            }
-        } else {
-            $MbStock = Product::where('id', $updatePurchaseProduct->product_id)->first();
-            $MbStock->mb_stock -= $updatePurchaseProduct->quantity;
-            $MbStock->mb_stock += (float)$request->quantity;
-            $MbStock->save();
-
-            if ($updatePurchaseProduct->product_variant_id) {
-                $updateProVariantMbStock = ProductVariant::where('id', $updatePurchaseProduct->product_variant_id)
-                    ->where('product_id', $updatePurchaseProduct->product_id)->first();
-                $updateProVariantMbStock->mb_stock -= $updatePurchaseProduct->quantity;
-                $updateProVariantMbStock->mb_stock += (float)$request->quantity;
-                $updateProVariantMbStock->save();
-            }
-        }
-
         $updatePurchaseProduct->product_id = $request->product_id;
         $updatePurchaseProduct->product_variant_id = $variantId;
         $updatePurchaseProduct->quantity = $request->quantity;
@@ -788,6 +731,16 @@ class PurchaseController extends Controller
         }
         $updatePurchaseProduct->save();
 
+        // update Business location or Warehouse product and variant quantity for adjustment
+        if ($updatePurchase->warehouse_id) {
+            $this->productStockUtil->adjustWarehouseStock($request->product_id, $variantId, $updatePurchase->warehouse_id);
+        } elseif ($updatePurchase->branch_id) {
+            $this->productStockUtil->adjustBranchStock($request->product_id, $variantId, $updatePurchase->branch_id);
+        } else {
+            $this->productStockUtil->adjustMainBranchStock($request->product_id, $variantId);
+        }
+
+        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
         $this->productStockUtil->adjustMainProductAndVariantStock($request->product_id, $variantId);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchase->supplier_id);
 
@@ -843,6 +796,8 @@ class PurchaseController extends Controller
         $deletePurchase = purchase::with('supplier', 'purchase_products')->where('id', $purchaseId)->first();
         $supplier = DB::table('suppliers')->where('id', $deletePurchase->supplier_id)->first();
         //purchase payments
+        $storedWarehouseId = $deletePurchase->warehouse_id;
+        $storedBranchId = $deletePurchase->branch_id;
         $storedPayments = $deletePurchase->purchase_payments;
         $storePurchaseProducts = $deletePurchase->purchase_products;
         foreach ($deletePurchase->purchase_products as $purchase_product) {
@@ -856,66 +811,18 @@ class PurchaseController extends Controller
             }
         }
 
-        // update product and variant quantity for adjustment
-        if ($deletePurchase->warehouse_id) {
-            // update warehouse product or warehouse product and variant quantity for adjustment
-            foreach ($deletePurchase->purchase_products as $purchase_product) {
-                $updateProductWarehouse = ProductWarehouse::where('warehouse_id', $deletePurchase->warehouse_id)->where('product_id', $purchase_product->product_id)->first();
-                if ($updateProductWarehouse) {
-                    $updateProductWarehouse->product_quantity = $updateProductWarehouse->product_quantity - $purchase_product->quantity;
-                    $updateProductWarehouse->save();
-                    if ($purchase_product->product_variant_id) {
-                        $updateProductWarehouseVariant =  ProductWarehouseVariant::where('product_warehouse_id', $updateProductWarehouse->id)
-                            ->where('product_id', $purchase_product->product_id)
-                            ->where('product_variant_id', $purchase_product->product_variant_id)->first();
-
-                        $updateProductWarehouseVariant->variant_quantity = $updateProductWarehouseVariant->variant_quantity - $purchase_product->quantity;
-                        $updateProductWarehouseVariant->save();
-                    }
-                }
-            }
-        } else {
-            if ($deletePurchase->branch_id) {
-                // update warehouse product or branch product and variant quantity for adjustment
-                foreach ($deletePurchase->purchase_products as $purchase_product) {
-                    $updateProductBranch = ProductBranch::where('branch_id', $deletePurchase->branch_id)
-                        ->where('product_id', $purchase_product->product_id)->first();
-                    if ($updateProductBranch) {
-                        $updateProductBranch->product_quantity = $updateProductBranch->product_quantity - $purchase_product->quantity;
-                        $updateProductBranch->save();
-                        if ($purchase_product->product_variant_id) {
-                            $updateProductBranchVariant =  ProductBranchVariant::where('product_branch_id', $updateProductBranch->id)
-                                ->where('product_id', $purchase_product->product_id)
-                                ->where('product_variant_id', $purchase_product->product_variant_id)
-                                ->first();
-                            $updateProductBranchVariant->variant_quantity = $updateProductBranchVariant->variant_quantity - $purchase_product->quantity;
-                            $updateProductBranchVariant->save();
-                        }
-                    }
-                }
-            } else {
-                foreach ($deletePurchase->purchase_products as $purchase_product) {
-                    $updateProductBranch = Product::where('id', $purchase_product->product_id)->first();
-                    if ($updateProductBranch) {
-                        $updateProductBranch->mb_stock = $updateProductBranch->mb_stock - $purchase_product->quantity;
-                        $updateProductBranch->save();
-                        if ($purchase_product->product_variant_id) {
-                            $updateProductVariant = ProductVariant::where('product_id', $purchase_product->product_id)
-                                ->where('id', $purchase_product->product_variant_id)
-                                ->first();
-                            $updateProductVariant->mb_stock = $updateProductVariant->mb_stock - $purchase_product->quantity;
-                            $updateProductVariant->save();
-                        }
-                    }
-                }
-            }
-        }
-
         $deletePurchase->delete();
 
         foreach ($storePurchaseProducts as $purchase_product) {
             $variant_id = $purchase_product->product_variant_id ? $purchase_product->product_variant_id : NULL;
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $variant_id);
+            if ($storedWarehouseId) {
+                $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $variant_id, $storedWarehouseId);
+            } elseif($storedBranchId){
+                $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $variant_id, $storedBranchId);
+            }else {
+                $this->productStockUtil->adjustMainBranchStock($purchase_product->product_id, $variant_id);
+            }
         }
 
         if (count($storedPayments) > 0) {

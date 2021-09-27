@@ -237,7 +237,6 @@ class SaleReturnController extends Controller
             if ($sale->customer_id) {
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
             }
-            
         } else {
             $sale->is_return_available = 1;
             //Update sale and customer return due
@@ -308,43 +307,19 @@ class SaleReturnController extends Controller
     {
         $saleReturn = SaleReturn::with(['sale', 'sale.customer', 'sale_return_products'])->where('id', $saleReturnId)->first();
         $storedReturnedProducts = $saleReturn->sale_return_products;
+        $storedBranchId = $saleReturn->sale->branch_id;
         if ($saleReturn->total_return_due_pay > 0) {
             return response()->json(['errorMsg' => "You can not delete this return invoice, cause your have paid some or full amount on this return."]);
         }
         $saleReturn->sale->is_return_available = 0;
-
-        foreach ($saleReturn->sale_return_products as $sale_return_product) {
-            // Get sale product
-            $saleProduct = SaleProduct::where('id', $sale_return_product->sale_product_id)->first();
-            if ($saleReturn->branch_id) {
-                // Addition product branch qty for adjustment
-                $productBranch = ProductBranch::where('branch_id', $saleReturn->branch_id)->where('product_id', $saleProduct->product_id)->first();
-                $productBranch->product_quantity -= $sale_return_product->return_qty;
-                $productBranch->save();
-
-                // Addition product branch variant qty for adjustment
-                if ($saleProduct->product_variant_id) {
-                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $saleProduct->product_id)->where('product_variant_id', $saleProduct->product_variant_id)->first();
-                    $productBranchVariant->variant_quantity -= $sale_return_product->return_qty;
-                    $productBranchVariant->save();
-                }
-            } else {
-                $mb_product = Product::where('id', $saleProduct->product_id)->first();
-                $mb_product->mb_stock -= $sale_return_product->return_qty;
-                $mb_product->save();
-
-                if ($saleProduct->product_variant_id) {
-                    $mb_variant = ProductVariant::where('id', $saleProduct->product_variant_id)->first();
-                    $mb_variant->mb_stock -= $sale_return_product->return_qty;
-                    $mb_variant->save();
-                }
-            }
-        }
-
         $saleReturn->delete();
-
         foreach ($storedReturnedProducts as $return_product) {
             $this->productStockUtil->adjustMainProductAndVariantStock($return_product->product_id, $return_product->product_variant_id);
+            if ($storedBranchId) {
+                $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storedBranchId);
+            } else {
+                $this->productStockUtil->adjustMainBranchStock($return_product->product_id, $return_product->product_variant_id);
+            }
         }
 
         $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);

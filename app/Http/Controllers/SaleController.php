@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tax;
 use App\Utils\Util;
 use App\Models\Sale;
-use App\Models\Unit;
-use App\Models\Brand;
 use App\Utils\SmsUtil;
 use App\Models\Account;
 use App\Models\Product;
 use App\Utils\SaleUtil;
 use App\Models\CashFlow;
-use App\Models\Category;
 use App\Models\Customer;
-use App\Models\Warranty;
 use App\Jobs\SaleMailJob;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
@@ -234,7 +229,6 @@ class SaleController extends Controller
         }
 
         // generate invoice ID
-        
         $invoiceId = 1;
         $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
         if ($lastSale) {
@@ -526,6 +520,11 @@ class SaleController extends Controller
             'sale_products.product.comboProducts'
         ])->where('id', $saleId)->first();
 
+        foreach ($updateSale->sale_products as $sale_product) {
+            $sale_product->delete_in_update = 1;
+            $sale_product->save();
+        }
+
         // generate invoice ID
         $invoiceId = 1;
         $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
@@ -553,7 +552,7 @@ class SaleController extends Controller
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->sale_note = $request->sale_note;
         $updateSale->save();
-      
+        
         // update product quantity
         $quantities = $request->quantities;
         $units = $request->units;
@@ -618,14 +617,14 @@ class SaleController extends Controller
         $deleteNotFoundSaleProducts = SaleProduct::where('sale_id', $updateSale->id)
             ->where('delete_in_update', 1)->get();
         foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
-            $storedVariant_id = $deleteNotFoundSaleProduct->product_variant_id ? $deleteNotFoundSaleProduct->product_variant_id : NULL;
             $storedProductId = $deleteNotFoundSaleProduct->product_id;
+            $storedVariantId = $deleteNotFoundSaleProduct->product_variant_id ? $deleteNotFoundSaleProduct->product_variant_id : NULL;
             $deleteNotFoundSaleProduct->delete();
-            $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $variant_id);
+            $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
             if (auth()->user()->branch_id) {
-                $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariant_id, auth()->user()->branch_id);
+                $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
             } else {
-                $this->productStockUtil->adjustMainBranchStock($storedProductId, $storedVariant_id);
+                $this->productStockUtil->adjustMainBranchStock($storedProductId, $storedVariantId);
             }
         }
 
@@ -1344,11 +1343,11 @@ class SaleController extends Controller
     // Add product modal view with data
     public function addProductModalVeiw()
     {
-        $units = Unit::select(['id', 'name'])->get();
-        $warranties =  Warranty::select(['id', 'name', 'type'])->get();
-        $taxes = Tax::select(['id', 'tax_name', 'tax_percent'])->get();
-        $categories = Category::where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
-        $brands = $brands = Brand::all();
+        $units = DB::table('units')->select('id', 'name')->get();
+        $warranties =  DB::table('warranties')->select('id', 'name', 'type')->get();
+        $taxes = DB::table('taxes')->select(['id', 'tax_name', 'tax_percent'])->get();
+        $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
+        $brands = DB::table('brands')->select('id', 'name')->get();
         return view('sales.ajax_view.add_product_modal_view', compact('units', 'warranties', 'taxes', 'categories', 'brands'));
     }
 

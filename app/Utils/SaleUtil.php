@@ -3,17 +3,13 @@
 namespace App\Utils;
 
 use App\Models\Sale;
-use App\Models\Product;
 use App\Models\CashFlow;
 use App\Models\SalePayment;
 use App\Utils\CustomerUtil;
-use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
-use App\Models\ProductVariant;
 use App\Models\CustomerPayment;
 use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductBranchVariant;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleUtil
@@ -160,53 +156,6 @@ class SaleUtil
         }
     }
 
-    public function updateProductBranchStock($request, $branch_id)
-    {
-        // update product quantity
-        $quantities = $request->quantities;
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-
-        $index = 0;
-        foreach ($product_ids as $product_id) {
-            // Update Branch product stock
-            if ($branch_id) {
-                $updateProductQty = Product::where('id', $product_id)->first();
-                if ($updateProductQty->type == 1) {
-                    $updateBranchProductQty = ProductBranch::where('branch_id', $branch_id)
-                        ->where('product_id', $product_id)->first();
-                    $updateBranchProductQty->product_quantity -= (float)$quantities[$index];
-                    $updateBranchProductQty->save();
-
-                    if ($variant_ids[$index] != 'noid') {
-                        $updateProductBranchVariant = ProductBranchVariant::where('product_branch_id', $updateBranchProductQty->id)
-                            ->where('product_id', $product_id)
-                            ->where('product_variant_id', $variant_ids[$index])
-                            ->first();
-                        $updateProductBranchVariant->variant_quantity -= (float)$quantities[$index];
-                        $updateProductBranchVariant->save();
-                    }
-                }
-            } else {
-                $updateProductQty = Product::where('id', $product_id)->first();
-                if ($updateProductQty->type == 1) {
-                    $updateProductQty->mb_stock -= (float)$quantities[$index];
-                    $updateProductQty->save();
-
-                    if ($variant_ids[$index] != 'noid') {
-                        $updateProductVariant = ProductVariant::where('id', $variant_ids[$index])
-                            ->where('product_id', $product_id)
-                            ->first();
-
-                        $updateProductVariant->mb_stock -= (float)$quantities[$index];
-                        $updateProductVariant->save();
-                    }
-                }
-            }
-            $index++;
-        }
-    }
-
     // Add sale add payment util method
     public function addPayment($invoicePrefix, $request, $payingAmount, $invoiceId, $saleId)
     {
@@ -283,6 +232,7 @@ class SaleUtil
         ])->where('id', $saleId)->first();
 
         $storedCustomerId = $deleteSale->customer_id;
+        $storedBranchId = $deleteSale->branch_id;
         $storedPayments = $deleteSale->sale_payments;
         $storedSaleProducts = $deleteSale->sale_products;
         $storeStatus = $deleteSale->status;
@@ -309,8 +259,8 @@ class SaleUtil
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
                 
-                if (auth()->user()->branch_id) {
-                    $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, auth()->user()->branch_id);
+                if ($storedBranchId) {
+                    $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, $storedBranchId);
                 } else {
                     $this->productStockUtil->adjustMainBranchStock($saleProduct->product_id, $variant_id);
                 }

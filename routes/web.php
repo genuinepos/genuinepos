@@ -1,16 +1,11 @@
 <?php
 
-use App\Models\Supplier;
 use App\Models\AdminAndUser;
-use App\Models\PurchaseReturn;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Models\CustomerLedger;
-use App\Models\Sale;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -980,6 +975,6 @@ Route::get('/test', function () {
 
 // All authenticated routes
 Auth::routes();
-Route::get('dbal', function() {
-    dd(\Doctrine\DBAL\Types\Type::getTypesMap());
-});
+// Route::get('dbal', function() {
+//     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
+// });

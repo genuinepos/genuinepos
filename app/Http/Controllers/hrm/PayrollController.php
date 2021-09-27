@@ -542,7 +542,6 @@ class PayrollController extends Controller
     // Update payroll payment
     public function paymentUpdate(Request $request, $paymentId)
     {
-        //return $request->all();
         $updatePayrollPayment = PayrollPayment::with('account', 'payroll',)->where('id', $paymentId)->first();
 
         $updatePayrollPayment->payroll->paid -= $updatePayrollPayment->paid;

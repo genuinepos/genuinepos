@@ -9,15 +9,16 @@ use App\Models\ProductVariant;
 use App\Models\StockAdjustment;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductBranchVariant;
 use App\Models\StockAdjustmentProduct;
-use App\Models\ProductWarehouseVariant;
+use App\Utils\ProductStockUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockAdjustmentController extends Controller
 {
-    public function __construct()
+    protected $productStockUtil;
+    public function __construct(ProductStockUtil $productStockUtil)
     {
+        $this->productStockUtil = $productStockUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -182,7 +183,6 @@ class StockAdjustmentController extends Controller
     // Store Stock Adjustment
     public function store(Request $request)
     {
-        //return $request->all();
         $this->validate($request, [
             'type' => 'required',
         ]);
@@ -198,12 +198,10 @@ class StockAdjustmentController extends Controller
         }
 
         // generate invoice ID
-        $i = 4;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        $invoiceId = 1;
+        $lastRow = DB::table('stock_adjustments')->orderBy('id', 'desc')->first();
+        if ($lastRow) {
+            $invoiceId = ++$lastRow->id;
         }
 
         // Add Stock adjustment.
@@ -211,7 +209,7 @@ class StockAdjustmentController extends Controller
         $addStockAdjustment->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $addStockAdjustment->branch_id = auth()->user()->branch_id;
 
-        $addStockAdjustment->invoice_id = $request->invoice_id ? $request->invoice_id : 'SAR' . date('dmy') . $invoiceId;
+        $addStockAdjustment->invoice_id = $request->invoice_id ? $request->invoice_id : date('my') . $invoiceId;
         $addStockAdjustment->type = $request->type;
         $addStockAdjustment->total_item = $request->total_item;
         $addStockAdjustment->net_total_amount = $request->net_total_amount;
@@ -245,78 +243,16 @@ class StockAdjustmentController extends Controller
             $addStockAdjustmentProduct->subtotal = $subtotals[$index];
             $addStockAdjustmentProduct->save();
 
-            // Update product Qty
-            $product = Product::where('id', $product_id)->first();
-            $product->quantity -= (float)$quantities[$index];
-            $product->total_adjusted += (float)$quantities[$index];
-            $product->save();
-
-            // Update product variant if variant is exists
-            if ($variant_ids[$index] != 'noid') {
-                $productVariant = ProductVariant::where('id', $variant_ids[$index])
-                    ->where('product_id', $product_id)->first();
-                $productVariant->variant_quantity -= (float)$quantities[$index];
-                $productVariant->total_adjusted += (float)$quantities[$index];
-                $productVariant->save();
-            }
-
-            //Update product branch qty
+            $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
             if (isset($request->warehouse_id)) {
-                $productWarehouse = ProductWarehouse::where('warehouse_id', $request->warehouse_id)
-                    ->where('product_id', $product_id)
-                    ->first();
-
-                if ($productWarehouse) {
-                    $productWarehouse->product_quantity -= (float)$quantities[$index];
-                    $productWarehouse->save();
-
-                    // Update product branch variant qty if variant is exists. 
-                    if ($variant_ids[$index] != 'noid') {
-                        $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
-                            ->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                        $productWarehouseVariant->variant_quantity -= (float)$quantities[$index];
-                        $productWarehouseVariant->save();
-                    }
-                }
+                $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $request->warehouse_id);
             } else {
                 if (auth()->user()->branch_id) {
-                    $productBranch = ProductBranch::where('branch_id', auth()->user()->branch_id)
-                        ->where('product_id', $product_id)
-                        ->first();
-
-                    if ($productBranch) {
-                        $productBranch->product_quantity -= (float)$quantities[$index];
-                        $productBranch->save();
-
-                        // Update product branch variant qty if variant is exists. 
-                        if ($variant_ids[$index] != 'noid') {
-                            $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                                ->where('product_id', $product_id)
-                                ->where('product_variant_id', $variant_ids[$index])
-                                ->first();
-
-                            $productBranchVariant->variant_quantity -= (float)$quantities[$index];
-                            $productBranchVariant->save();
-                        }
-                    }
+                    $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
                 } else {
-                    // Update product Qty
-                    $product = Product::where('id', $product_id)->first();
-                    $product->mb_stock -= (float)$quantities[$index];
-                    $product->save();
-
-                    // Update product variant if variant is exists
-                    if ($variant_ids[$index] != 'noid') {
-                        $productVariant = ProductVariant::where('id', $variant_ids[$index])
-                            ->where('product_id', $product_id)
-                            ->first();
-
-                        $productVariant->mb_stock -= (float)$quantities[$index];
-                        $productVariant->save();
-                    }
+                    $this->productStockUtil->adjustMainBranchStock($product_id, $variant_id);
                 }
             }
-
             $index++;
         }
         session()->flash('successMsg', 'Stock adjustment created successfully');
@@ -333,75 +269,22 @@ class StockAdjustmentController extends Controller
         ])->where('id', $adjustmentId)->first();
 
         if (!is_null($deleteAdjustment)) {
-            foreach ($deleteAdjustment->adjustment_products as $adjustment_product) {
+            $storedWarehouseId = $deleteAdjustment->warehouse_id;
+            $storedBranchId = $deleteAdjustment->branch_id;
+            $storedAdjustmentProducts = $deleteAdjustment->adjustment_products;
+            $deleteAdjustment->delete();
+            foreach ($storedAdjustmentProducts as $adjustment_product) {
                 // Update product qty for adjustment
-                $adjustment_product->product->quantity += $adjustment_product->quantity;
-                $adjustment_product->product->total_adjusted -= $adjustment_product->quantity;
-                $adjustment_product->product->save();
-
-                // Update product variant qty for adjustment if variant exists
-                if ($adjustment_product->product_variant_id) {
-                    $adjustment_product->variant->variant_quantity += $adjustment_product->quantity;
-                    $adjustment_product->variant->total_adjusted -= $adjustment_product->quantity;
-                    $adjustment_product->variant->save();
-                }
-
-                if ($deleteAdjustment->warehouse_id) {
-                    // Update product branch qty for adjustment
-                    $productWarehouse = ProductWarehouse::where('warehouse_id', $deleteAdjustment->warehouse_id)
-                        ->where('product_id', $adjustment_product->product_id)
-                        ->first();
-
-                    if ($productWarehouse) {
-                        $productWarehouse->product_quantity += $adjustment_product->quantity;
-                        $productWarehouse->save();
-
-                        if ($adjustment_product->product_variant_id) {
-                            $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
-                                ->where('product_id', $adjustment_product->product_id)
-                                ->where('product_variant_id', $adjustment_product->product_variant_id)
-                                ->first();
-
-                            $productWarehouseVariant->variant_quantity += $adjustment_product->quantity;
-                            $productWarehouseVariant->save();
-                        }
-                    }
-                } elseif ($deleteAdjustment->branch_id) {
-                    // Update product branch qty for adjustment
-                    $productBranch = ProductBranch::where('branch_id', $deleteAdjustment->branch_id)
-                        ->where('product_id', $adjustment_product->product_id)
-                        ->first();
-
-                    if ($productBranch) {
-                        $productBranch->product_quantity += $adjustment_product->quantity;
-                        $productBranch->save();
-
-                        if ($adjustment_product->product_variant_id) {
-                            $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                                ->where('product_id', $adjustment_product->product_id)
-                                ->where('product_variant_id', $adjustment_product->product_variant_id)->first();
-                            $productBranchVariant->variant_quantity += $adjustment_product->quantity;
-                            $productBranchVariant->save();
-                        }
-                    }
+                $this->productStockUtil->adjustMainProductAndVariantStock($adjustment_product->product_id, $adjustment_product->product_variant_id);
+                if ($storedWarehouseId) {
+                    $this->productStockUtil->adjustWarehouseStock($adjustment_product->product_id, $adjustment_product->product_variant_id, $storedWarehouseId);
+                } elseif ($storedBranchId) {
+                    $this->productStockUtil->adjustBranchStock($adjustment_product->product_id, $adjustment_product->product_variant_id, $storedBranchId);
                 } else {
-                    // Update product Qty
-                    $product = Product::where('id', $adjustment_product->product_id)->first();
-                    $product->mb_stock += $adjustment_product->quantity;
-                    $product->save();
-
-                    // Update product variant if variant is exists
-                    if ($adjustment_product->product_variant_id) {
-                        $productVariant = ProductVariant::where('id', $adjustment_product->product_variant_id)
-                            ->where('product_id', $adjustment_product->product_id)
-                            ->first();
-
-                        $productVariant->mb_stock += $adjustment_product->quantity;
-                        $productVariant->save();
-                    }
+                    $this->productStockUtil->adjustMainBranchStock($adjustment_product->product_id, $adjustment_product->product_variant_id);
                 }
             }
-            $deleteAdjustment->delete();
+            
         }
         return response()->json('Stock adjustment deleted successfully.');
     }

@@ -409,7 +409,8 @@
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
-                                                                <input type="text" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $product->profit }}">
+                                                                <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $product->profit }}">
+                                                                <span class="error error_profit"></span> 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -418,7 +419,7 @@
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
-                                                                <input type="text" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax" value="{{ $product->product_price }}">
+                                                                <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax" value="{{ $product->product_price }}">
                                                             <span class="error error_product_price"></span>    
                                                             </div>
                                                         </div>
@@ -872,11 +873,13 @@
     });
 
     $(document).on('input', '#product_price',function() {
-        var selling_price = $(this).val();
+        var selling_price = $(this).val() ? $(this).val() : 0;
         var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
-        var calcProfit = parseFloat(profitAmount) / parseFloat(product_cost) * 100;
-        $('#profit').val(parseFloat(calcProfit).toFixed(2));
+        var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __calcProfit = calcProfit ? calcProfit : 0
+        $('#profit').val(parseFloat(__calcProfit).toFixed(2));
     });
 
     $('#tax_id').on('change', function() {

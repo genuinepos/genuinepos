@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Utils\Util;
 use App\Models\Sale;
 use App\Utils\SmsUtil;
-use App\Models\Account;
 use App\Models\Product;
 use App\Utils\SaleUtil;
 use App\Models\CashFlow;
@@ -23,6 +22,8 @@ use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\CashRegisterTransaction;
+use App\Utils\AccountUtil;
+use App\Utils\ProductStockUtil;
 
 class POSController extends Controller
 {
@@ -30,16 +31,22 @@ class POSController extends Controller
     protected $smsUtil;
     protected $util;
     protected $customerUtil;
+    protected $accountUtil;
+    protected $productStockUtil;
     public function __construct(
         SaleUtil $saleUtil,
         SmsUtil $smsUtil,
         Util $util,
-        CustomerUtil $customerUtil
+        CustomerUtil $customerUtil,
+        AccountUtil $accountUtil, 
+        ProductStockUtil $productStockUtil
     ) {
         $this->saleUtil = $saleUtil;
         $this->smsUtil = $smsUtil;
         $this->util = $util;
         $this->customerUtil = $customerUtil;
+        $this->accountUtil = $accountUtil;
+        $this->productStockUtil = $productStockUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -124,14 +131,12 @@ class POSController extends Controller
         }
 
         // generate invoice ID
-        $i = 4;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        $invoiceId = 1;
+        $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
+        if ($lastSale) {
+            $invoiceId = ++$lastSale->id;
         }
-
+        
         $addSale = new Sale();
         $addSale->invoice_id = $invoicePrefix . $invoiceId;
         $addSale->admin_id = auth()->user()->id;
@@ -190,7 +195,6 @@ class POSController extends Controller
                 $addSale->change_amount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
                 $addSale->due = $request->total_due >= 0 ? $request->total_due : 0.00;
             }
-
             $addSale->save();
 
             if ($customer) {
@@ -201,14 +205,15 @@ class POSController extends Controller
                 $addCustomerLedger = new CustomerLedger();
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_id = $addSale->id;
+                $addCustomerLedger->report_date = date('Y-m-d');
                 $addCustomerLedger->save();
             }
         } else {
             $addSale->total_payable_amount = $request->total_invoice_payable;
             $addSale->save();
         }
-
         $addSale->save();
+
         // update product quantity
         $quantities = $request->quantities;
         $units = $request->units;
@@ -227,10 +232,7 @@ class POSController extends Controller
 
         // update product quantity and add sale product
         $branch_id = auth()->user()->branch_id;
-        if ($request->action == 1) {
-            $this->saleUtil->updateProductBranchStock($request, $branch_id);
-        }
-
+     
         $__index = 0;
         foreach ($product_ids as $product_id) {
             $addSaleProduct = new SaleProduct();
@@ -253,7 +255,26 @@ class POSController extends Controller
             $__index++;
         }
 
-        // Add sale payment
+        if ($request->action == 1) {
+            $__index = 0;
+            foreach ($product_ids as $product_id) {
+                $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+                $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+                if ($branch_id) {
+                    $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
+                } else {
+                    $this->productStockUtil->adjustMainBranchStock($product_id, $variant_id);
+                }
+                $__index++;
+            }
+        }
+
+        $invoiceId = 1;
+        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+        if ($lastSale) {
+            $invoiceId = ++$lastSalePayment->id;
+        }
+
         if ($request->action == 1) {
             $this->salePayment($request, $addSale, $paymentInvoicePrefix, $invoiceId);
             if ($customer) {
@@ -402,22 +423,11 @@ class POSController extends Controller
         }
 
         foreach ($updateSale->sale_payments as $sale_payment) {
-            if ($sale_payment->account_id) {
-                $account = Account::where('id', $sale_payment->account_id)->first();
-                $account->credit -= $sale_payment->paid_amount;
-                $account->balance -= $sale_payment->paid_amount;
-                $account->save();
-            }
+            $storedAccountId = $sale_payment->account_id;
             $sale_payment->delete();
-        }
-
-        // generate invoice ID
-        $i = 6;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+            if ($storedAccountId) {
+                $this->accountUtil->adjustAccountBalance($storedAccountId);
+            }
         }
 
         $updateSale->status = $request->action;
@@ -457,45 +467,6 @@ class POSController extends Controller
         foreach ($updateSale->sale_products as $sale_product) {
             $sale_product->delete_in_update = 1;
             $sale_product->save();
-            if ($updateSale->status == 1) {
-                if ($sale_product->product->type == 1) {
-                    $sale_product->product->quantity = $sale_product->product->quantity + $sale_product->quantity;
-                    $sale_product->product->number_of_sale = $sale_product->product->number_of_sale - $sale_product->quantity;
-                    $sale_product->product->save();
-                    if ($sale_product->product_variant_id) {
-                        $sale_product->variant->variant_quantity = $sale_product->variant->variant_quantity + $sale_product->quantity;
-                        $sale_product->variant->number_of_sale = $sale_product->variant->number_of_sale - $sale_product->quantity;
-                        $sale_product->variant->save();
-                    }
-
-                    if ($updateSale->branch_id) {
-                        $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
-                            ->where('product_id', $sale_product->product_id)
-                            ->first();
-                        $productBranch->product_quantity +=  $sale_product->quantity;
-                        $productBranch->save();
-                        if ($sale_product->product_variant_id) {
-                            $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                                ->where('product_id', $sale_product->product_id)
-                                ->where('product_variant_id', $sale_product->product_variant_id)
-                                ->first();
-                            $productBranchVariant->variant_quantity += $sale_product->quantity;
-                            $productBranchVariant->save();
-                        }
-                    } else {
-                        $mbProduct = Product::where('id', $sale_product->product_id)
-                            ->first();
-                        $mbProduct->mb_stock += $sale_product->quantity;
-                        $mbProduct->save();
-                        if ($sale_product->product_variant_id) {
-                            $mbProductVariant = ProductVariant::where('id', $sale_product->product_variant_id)
-                                ->where('product_id', $sale_product->product_id)->first();
-                            $mbProductVariant->mb_stock += $sale_product->quantity;
-                            $mbProductVariant->save();
-                        }
-                    }
-                }
-            }
         }
 
         // update product quantity
@@ -513,10 +484,6 @@ class POSController extends Controller
         $unit_prices_exc_tax = $request->unit_prices_exc_tax;
         $unit_prices_inc_tax = $request->unit_prices_inc_tax;
         $subtotals = $request->subtotals;
-
-        if ($request->action == 1) {
-            $this->saleUtil->updateProductBranchStock($request, auth()->user()->branch_id);
-        }
 
         $__index = 0;
         foreach ($product_ids as $product_id) {
@@ -565,7 +532,25 @@ class POSController extends Controller
         $deleteNotFoundSaleProducts = SaleProduct::where('sale_id', $updateSale->id)
             ->where('delete_in_update', 1)->get();
         foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
+            $storedProductId = $deleteNotFoundSaleProduct->product_id;
+            $storedVariantId = $deleteNotFoundSaleProduct->product_variant_id;
             $deleteNotFoundSaleProduct->delete();
+            $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
+            if (auth()->user()->branch_id) {
+                $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
+            } else {
+                $this->productStockUtil->adjustMainBranchStock($storedProductId, $storedVariantId);
+            }
+        }
+
+        $saleProducts = DB::table('sale_products')->where('sale_id', $updateSale->id)->get();
+        foreach ($saleProducts as $saleProduct) {
+            $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $saleProduct->product_variant_id);
+            if (auth()->user()->branch_id) {
+                $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $saleProduct->product_variant_id, auth()->user()->branch_id);
+            } else {
+                $this->productStockUtil->adjustMainBranchStock($saleProduct->product_id, $saleProduct->product_variant_id);
+            }
         }
 
         // Add new payment 
@@ -604,17 +589,10 @@ class POSController extends Controller
             $addSalePayment->save();
 
             if ($request->account_id) {
-                // update account
-                $account = Account::where('id', $request->account_id)->first();
-                $account->credit = $account->credit + $request->paying_amount;
-                $account->balance = $account->balance + $request->paying_amount;
-                $account->save();
-
                 // Add cash flow
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->credit = $request->paying_amount;
-                $addCashFlow->balance = $account->balance;
                 $addCashFlow->sale_payment_id = $addSalePayment->id;
                 $addCashFlow->transaction_type = 2;
                 $addCashFlow->cash_type = 2;
@@ -624,6 +602,7 @@ class POSController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
+                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
             }
 
             if ($updateSale->customer_id) {
@@ -631,6 +610,7 @@ class POSController extends Controller
                 $addCustomerLedger->customer_id = $updateSale->customer_id;
                 $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                 $addCustomerLedger->row_type = 2;
+                $addCustomerLedger->report_date = date('Y-m-d');
                 $addCustomerLedger->save();
             }
         }
@@ -819,8 +799,13 @@ class POSController extends Controller
             $paidAmount = $request->paying_amount - $changedAmount;
             if ($request->previous_due > 0) {
                 if ($paidAmount >= $request->total_invoice_payable) {
+                    $invoiceId = 1;
+                    $lastPayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+                    if ($lastPayment) {
+                        $invoiceId = ++$lastPayment->id;
+                    }
                     $addSalePayment = new SalePayment();
-                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $invoiceId;
                     $addSalePayment->sale_id = $addSale->id;
                     $addSalePayment->customer_id = $request->customer_id ? $request->customer_id : NULL;
                     $addSalePayment->account_id = $request->account_id;
@@ -853,17 +838,10 @@ class POSController extends Controller
                     $addSalePayment->save();
 
                     if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->credit += $request->total_invoice_payable;
-                        $account->balance += $request->total_invoice_payable;
-                        $account->save();
-
                         // Add cash flow
                         $addCashFlow = new CashFlow();
                         $addCashFlow->account_id = $request->account_id;
                         $addCashFlow->credit = $request->total_invoice_payable;
-                        $addCashFlow->balance = $account->balance;
                         $addCashFlow->sale_payment_id = $addSalePayment->id;
                         $addCashFlow->transaction_type = 2;
                         $addCashFlow->cash_type = 2;
@@ -873,6 +851,8 @@ class POSController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
+                        $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                        $addCashFlow->save();
                     }
 
                     if ($request->customer_id) {
@@ -880,6 +860,7 @@ class POSController extends Controller
                         $addCustomerLedger->customer_id = $request->customer_id;
                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                         $addCustomerLedger->row_type = 2;
+                        $addCustomerLedger->report_date = date('Y-m-d');
                         $addCustomerLedger->save();
                     }
 
@@ -897,6 +878,12 @@ class POSController extends Controller
                                     $dueInvoice->paid += $dueAmounts;
                                     $dueInvoice->due -= $dueAmounts;
                                     $dueInvoice->save();
+                                    $invoiceId = 1;
+                                    $lastPayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+                                    if ($lastPayment) {
+                                        $invoiceId = ++$lastPayment->id;
+                                    }
+
                                     $addSalePayment = new SalePayment();
                                     $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
                                     $addSalePayment->sale_id = $dueInvoice->id;
@@ -932,17 +919,10 @@ class POSController extends Controller
                                     $addSalePayment->save();
 
                                     if ($request->account_id) {
-                                        // update account
-                                        $account = Account::where('id', $request->account_id)->first();
-                                        $account->credit += $dueAmounts;
-                                        $account->balance += $dueAmounts;
-                                        $account->save();
-
                                         // Add cash flow
                                         $addCashFlow = new CashFlow();
                                         $addCashFlow->account_id = $request->account_id;
                                         $addCashFlow->credit = $dueAmounts;
-                                        $addCashFlow->balance = $account->balance;
                                         $addCashFlow->sale_payment_id = $addSalePayment->id;
                                         $addCashFlow->transaction_type = 2;
                                         $addCashFlow->cash_type = 2;
@@ -952,6 +932,8 @@ class POSController extends Controller
                                         $addCashFlow->year = date('Y');
                                         $addCashFlow->admin_id = auth()->user()->id;
                                         $addCashFlow->save();
+                                        $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                                        $addCashFlow->save();
                                     }
 
                                     if ($request->customer_id) {
@@ -959,6 +941,7 @@ class POSController extends Controller
                                         $addCustomerLedger->customer_id = $request->customer_id;
                                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                                         $addCustomerLedger->row_type = 2;
+                                        $addCustomerLedger->report_date = date('Y-m-d');
                                         $addCustomerLedger->save();
                                     }
                                     $dueAmounts -= $dueAmounts;
@@ -968,6 +951,13 @@ class POSController extends Controller
                                     $dueInvoice->paid += $dueAmounts;
                                     $dueInvoice->due -= $dueAmounts;
                                     $dueInvoice->save();
+
+                                    $invoiceId = 1;
+                                    $lastPayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+                                    if ($lastPayment) {
+                                        $invoiceId = ++$lastPayment->id;
+                                    }
+
                                     $addSalePayment = new SalePayment();
                                     $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
                                     $addSalePayment->sale_id = $dueInvoice->id;
@@ -1003,17 +993,10 @@ class POSController extends Controller
                                     $addSalePayment->save();
 
                                     if ($request->account_id) {
-                                        // update account
-                                        $account = Account::where('id', $request->account_id)->first();
-                                        $account->credit += $dueAmounts;
-                                        $account->balance += $dueAmounts;
-                                        $account->save();
-
                                         // Add cash flow
                                         $addCashFlow = new CashFlow();
                                         $addCashFlow->account_id = $request->account_id;
                                         $addCashFlow->credit = $dueAmounts;
-                                        $addCashFlow->balance = $account->balance;
                                         $addCashFlow->sale_payment_id = $addSalePayment->id;
                                         $addCashFlow->transaction_type = 2;
                                         $addCashFlow->cash_type = 2;
@@ -1023,6 +1006,8 @@ class POSController extends Controller
                                         $addCashFlow->year = date('Y');
                                         $addCashFlow->admin_id = auth()->user()->id;
                                         $addCashFlow->save();
+                                        $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                                        $addCashFlow->save();
                                     }
 
                                     if ($request->customer_id) {
@@ -1030,12 +1015,18 @@ class POSController extends Controller
                                         $addCustomerLedger->customer_id = $request->customer_id;
                                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                                         $addCustomerLedger->row_type = 2;
+                                        $addCustomerLedger->report_date = date('Y-m-d');
                                         $addCustomerLedger->save();
                                     }
                                     $dueAmounts -= $dueAmounts;
                                 }
                             } elseif ($dueInvoice->due < $dueAmounts) {
                                 if ($dueInvoice->due > 0) {
+                                    $invoiceId = 1;
+                                    $lastPayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+                                    if ($lastPayment) {
+                                        $invoiceId = ++$lastPayment->id;
+                                    }
                                     $addSalePayment = new SalePayment();
                                     $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
                                     $addSalePayment->sale_id = $dueInvoice->id;
@@ -1071,17 +1062,10 @@ class POSController extends Controller
                                     $addSalePayment->save();
 
                                     if ($request->account_id) {
-                                        // update account
-                                        $account = Account::where('id', $request->account_id)->first();
-                                        $account->credit += $dueInvoice->due;
-                                        $account->balance += $dueInvoice->due;
-                                        $account->save();
-
                                         // Add cash flow
                                         $addCashFlow = new CashFlow();
                                         $addCashFlow->account_id = $request->account_id;
                                         $addCashFlow->credit = $dueInvoice->due;
-                                        $addCashFlow->balance = $account->balance;
                                         $addCashFlow->sale_payment_id = $addSalePayment->id;
                                         $addCashFlow->transaction_type = 2;
                                         $addCashFlow->cash_type = 2;
@@ -1091,6 +1075,8 @@ class POSController extends Controller
                                         $addCashFlow->year = date('Y');
                                         $addCashFlow->admin_id = auth()->user()->id;
                                         $addCashFlow->save();
+                                        $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                                        $addCashFlow->save();
                                     }
 
                                     if ($request->customer_id) {
@@ -1098,6 +1084,7 @@ class POSController extends Controller
                                         $addCustomerLedger->customer_id = $request->customer_id;
                                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                                         $addCustomerLedger->row_type = 2;
+                                        $addCustomerLedger->report_date = date('Y-m-d');
                                         $addCustomerLedger->save();
                                     }
 
@@ -1111,10 +1098,12 @@ class POSController extends Controller
                         }
 
                         if ($dueAmounts > 0) {
-                            $l = 6;
-                            $sv = 0;
-                            $voucherNo = '';
-                            while ($sv < $l) {$voucherNo .= rand(1, 9);$sv++;}
+                            $voucherNo = 1;
+                            $lastCustomerPayment = DB::table('customer_payments')->orderBy('id', 'desc')->first();
+                            if ($lastCustomerPayment) {
+                                $voucherNo = ++$lastCustomerPayment->id;
+                            }
+
                             // Add Customer Payment Record
                             $customerPayment = new CustomerPayment();
                             $customerPayment->voucher_no = 'CPV' . $voucherNo;
@@ -1148,17 +1137,10 @@ class POSController extends Controller
                             $customerPayment->save();
 
                             if ($request->account_id) {
-                                // update account
-                                $account = Account::where('id', $request->account_id)->first();
-                                $account->credit += $dueAmounts;
-                                $account->balance += $dueAmounts;
-                                $account->save();
-
                                 // Add cash flow
                                 $addCashFlow = new CashFlow();
                                 $addCashFlow->account_id = $request->account_id;
                                 $addCashFlow->credit = $dueAmounts;
-                                $addCashFlow->balance = $account->balance;
                                 $addCashFlow->customer_payment_id = $customerPayment->id;
                                 $addCashFlow->transaction_type = 13;
                                 $addCashFlow->cash_type = 2;
@@ -1167,6 +1149,8 @@ class POSController extends Controller
                                 $addCashFlow->month = date('F');
                                 $addCashFlow->year = date('Y');
                                 $addCashFlow->admin_id = auth()->user()->id;
+                                $addCashFlow->save();
+                                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
                                 $addCashFlow->save();
                             }
 
@@ -1214,17 +1198,10 @@ class POSController extends Controller
                     $addSalePayment->save();
 
                     if ($request->account_id) {
-                        // update account
-                        $account = Account::where('id', $request->account_id)->first();
-                        $account->credit += $paidAmount;
-                        $account->balance += $paidAmount;
-                        $account->save();
-
                         // Add cash flow
                         $addCashFlow = new CashFlow();
                         $addCashFlow->account_id = $request->account_id;
                         $addCashFlow->credit = $paidAmount;
-                        $addCashFlow->balance = $account->balance;
                         $addCashFlow->sale_payment_id = $addSalePayment->id;
                         $addCashFlow->transaction_type = 2;
                         $addCashFlow->cash_type = 2;
@@ -1234,6 +1211,8 @@ class POSController extends Controller
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
                         $addCashFlow->save();
+                        $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                        $addCashFlow->save();
                     }
 
                     if ($request->customer_id) {
@@ -1241,6 +1220,7 @@ class POSController extends Controller
                         $addCustomerLedger->customer_id = $request->customer_id;
                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                         $addCustomerLedger->row_type = 2;
+                        $addCustomerLedger->report_date = date('Y-m-d');
                         $addCustomerLedger->save();
                     }
                 }
@@ -1279,17 +1259,10 @@ class POSController extends Controller
                 $addSalePayment->save();
 
                 if ($request->account_id) {
-                    // update account
-                    $account = Account::where('id', $request->account_id)->first();
-                    $account->credit += $request->paying_amount;
-                    $account->balance += $request->paying_amount;
-                    $account->save();
-
                     // Add cash flow
                     $addCashFlow = new CashFlow();
                     $addCashFlow->account_id = $request->account_id;
                     $addCashFlow->credit = $request->paying_amount;
-                    $addCashFlow->balance = $account->balance;
                     $addCashFlow->sale_payment_id = $addSalePayment->id;
                     $addCashFlow->transaction_type = 2;
                     $addCashFlow->cash_type = 2;
@@ -1300,6 +1273,8 @@ class POSController extends Controller
                     $addCashFlow->year = date('Y');
                     $addCashFlow->admin_id = auth()->user()->id;
                     $addCashFlow->save();
+                    $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                    $addCashFlow->save();
                 }
 
                 if ($request->customer_id) {
@@ -1307,6 +1282,7 @@ class POSController extends Controller
                     $addCustomerLedger->customer_id = $request->customer_id;
                     $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                     $addCustomerLedger->row_type = 2;
+                    $addCustomerLedger->report_date = date('Y-m-d');
                     $addCustomerLedger->save();
                 }
             }
@@ -1603,17 +1579,10 @@ class POSController extends Controller
             $addSalePayment->save();
 
             if ($request->account_id) {
-                // update account
-                $account = Account::where('id', $request->account_id)->first();
-                $account->credit += $request->paying_amount;
-                $account->balance += $request->paying_amount;
-                $account->save();
-
                 // Add cash flow
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->credit = $request->paying_amount;
-                $addCashFlow->balance = $account->balance;
                 $addCashFlow->sale_payment_id = $addSalePayment->id;
                 $addCashFlow->transaction_type = 2;
                 $addCashFlow->cash_type = 2;
@@ -1623,6 +1592,8 @@ class POSController extends Controller
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
                 $addCashFlow->save();
+                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                $addCashFlow->save();
             }
 
             if ($request->customer_id) {
@@ -1630,6 +1601,7 @@ class POSController extends Controller
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                 $addCustomerLedger->row_type = 2;
+                $addCustomerLedger->report_date = date('Y-m-d');
                 $addCustomerLedger->save();
             }
         }

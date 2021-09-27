@@ -148,7 +148,6 @@ class ProductController extends Controller
                     'product_cost' => 'required',
                     'product_cost_with_tax' => 'required',
                 ],
-
             );
             $addProduct->product_cost = $request->product_cost;
             $addProduct->profit = $request->profit ? $request->profit : 0.00;
@@ -576,6 +575,7 @@ class ProductController extends Controller
             $this->validate(
                 $request,
                 [
+                    'profit' => 'required',
                     'product_price' => 'required',
                     'product_cost' => 'required',
                     'product_cost_with_tax' => 'required',

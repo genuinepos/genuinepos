@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // The application will send a exception(warning) message. But will work.
+        // The application will send a exception(warning) message if anything goes wrong. But will work.
         try {
             $generalSettings = DB::table('general_settings')->first();
             $addons = DB::table('addons')->first();
@@ -36,13 +36,7 @@ class AppServiceProvider extends ServiceProvider
                 view()->share('addons', $addons);
             }
         } catch (Exception $e) {
-            echo 'General setting is important! ' . PHP_EOL;
             echo $e->getMessage() . PHP_EOL;
         }
-
-        // if (!Type::hasType('timestamp')) {
-        //     Type::addType('timestamp', TimestampType::class);
-        // }
-
     }
 }

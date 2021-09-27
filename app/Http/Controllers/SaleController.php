@@ -526,9 +526,6 @@ class SaleController extends Controller
             'sale_products.product.comboProducts'
         ])->where('id', $saleId)->first();
 
-        // update product quantity for adjustment
-        $storedSaleProducts = $updateSale->sale_products;
- 
         // generate invoice ID
         $invoiceId = 1;
         $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
@@ -632,7 +629,6 @@ class SaleController extends Controller
             }
         }
 
-        // Update customer total sale due
         if ($request->status == 1) {
             $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
             $customer = Customer::where('id', $updateSale->customer_id)->first();

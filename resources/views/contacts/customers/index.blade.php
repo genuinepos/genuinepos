@@ -48,14 +48,15 @@
                                                 <th>Actions</th>
                                                 <th>Customer ID</th>
                                                 <th>Name</th>
-                                                <th>Business Name</th>
+                                                <th>Business</th>
                                                 <th>Phone</th>
                                                 <th>Group</th>
-                                                <th>Opening Balance</th>
-                                                <th>Total Sale</th>
-                                                <th>Total Paid</th>
-                                                <th>Sale Due</th>
-                                                <th>Return Due</th>
+                                                <th>Opening Balance({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Total Sale({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Sale Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Total Return({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -404,6 +405,7 @@
                 {data: 'total_sale',name: 'total_sale'},
                 {data: 'total_paid',name: 'total_paid'},
                 {data: 'total_sale_due',name: 'total_sale_due'},
+                {data: 'total_return',name: 'total_return'},
                 {data: 'total_sale_return_due',name: 'total_sale_return_due'},
                 {data: 'status',name: 'status'},
             ],

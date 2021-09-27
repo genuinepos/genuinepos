@@ -13,6 +13,7 @@ use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerPaymentInvoice;
 use App\Utils\AccountUtil;
+use App\Utils\Converter;
 use App\Utils\CustomerUtil;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -20,10 +21,12 @@ class CustomerController extends Controller
 {
     public $customerUtil;
     public $accountUtil;
-    public function __construct(CustomerUtil $customerUtil, AccountUtil $accountUtil)
+    public $converter;
+    public function __construct(CustomerUtil $customerUtil, AccountUtil $accountUtil, Converter $converter)
     {
         $this->customerUtil = $customerUtil;
         $this->accountUtil = $accountUtil;
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -34,6 +37,7 @@ class CustomerController extends Controller
         }
 
         if ($request->ajax()) {
+            
             $generalSettings = DB::table('general_settings')->first();
             $customers = DB::table('customers')
                 ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
@@ -51,9 +55,6 @@ class CustomerController extends Controller
                     }
 
                     $html .= '<a class="dropdown-item" id="view_payment" href="' . route('customers.view.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-
-
-
                     $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>';
 
                     if ($row->total_sale_return_due > 0) {
@@ -87,19 +88,12 @@ class CustomerController extends Controller
                 ->editColumn('group_name', function ($row) {
                     return $row->group_name ? $row->group_name : '...';
                 })
-                ->editColumn('opening_balance', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->opening_balance;
-                })->editColumn('total_sale', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale;
-                })->editColumn('total_paid', function ($row) use ($generalSettings) {
-                    return '<span class="text-success">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_paid . '</span>';
-                })
-                ->editColumn('total_sale_due', function ($row) use ($generalSettings) {
-                    return '<span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_due . '</span>';
-                })
-                ->editColumn('total_sale_return_due', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_sale_return_due;
-                })
+                ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
+                ->editColumn('total_sale', fn ($row) => $this->converter->format_in_bdt($row->total_sale))
+                ->editColumn('total_paid', fn ($row) => '<span class="text-success">' .$this->converter->format_in_bdt($row->total_paid) . '</span>')
+                ->editColumn('total_sale_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->total_sale_due) . '</span>')
+                ->editColumn('total_return', fn ($row) => $this->converter->format_in_bdt($row->total_return))
+                ->editColumn('total_sale_return_due', fn ($row) => $this->converter->format_in_bdt($row->total_sale_return_due))
                 ->editColumn('status', function ($row) {
                     if ($row->status == 1) {
                         return '<i class="far fa-thumbs-up text-success"></i>';

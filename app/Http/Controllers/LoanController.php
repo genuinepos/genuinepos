@@ -137,7 +137,6 @@ class LoanController extends Controller
         ]);
 
         // generate reference no
-
         $refId = 1;
         $lastLoan = DB::table('loans')->orderBy('id', 'desc')->first();
         if ($lastLoan) {

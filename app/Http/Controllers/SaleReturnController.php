@@ -182,51 +182,21 @@ class SaleReturnController extends Controller
         }
 
         // generate invoice ID
-        $i = 5;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        $invoiceId = 1;
+        $lastReturn = DB::table('sale_returns')->orderBy('id', 'desc')->first();
+        if ($lastReturn) {
+            $invoiceId = ++$lastReturn->id;
         }
 
         $saleReturn = SaleReturn::where('sale_id', $saleId)->first();
         $sale = Sale::where('id', $saleId)->first();
         if ($saleReturn) {
             //Update purchase and supplier purchase return due
-            $saleDue = $sale->total_payable_amount - ($sale->paid);
+            $saleDue = $sale->total_payable_amount - $sale->paid;
             $saleReturnDue = $request->total_return_amount - $saleDue;
-            //Adjust Quantity 
-            foreach ($saleReturn->sale_return_products as $sale_return_product) {
-                // Addition sale product for adjustment
-                $saleProduct = SaleProduct::where('id', $sale_return_product->sale_product_id)->first();
-                if ($sale->branch_id) {
-                    // Addition product branch qty for adjustment
-                    $productBranch = ProductBranch::where('branch_id', $sale->branch_id)->where('product_id', $saleProduct->product_id)->first();
-                    $productBranch->product_quantity -= $sale_return_product->return_qty;
-                    $productBranch->save();
-
-                    // Addition product branch variant qty for adjustment
-                    if ($saleProduct->product_variant_id) {
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $saleProduct->product_id)->where('product_variant_id', $saleProduct->product_variant_id)->first();
-                        $productBranchVariant->variant_quantity -= $sale_return_product->return_qty;
-                        $productBranchVariant->save();
-                    }
-                } else {
-                    $mb_product = Product::where('id', $saleProduct->product_id)->first();
-                    $mb_product->mb_stock -= $sale_return_product->return_qty;
-                    $mb_product->save();
-
-                    if ($saleProduct->product_variant_id) {
-                        $mb_variant = ProductVariant::where('id', $saleProduct->product_variant_id)->first();
-                        $mb_variant->mb_stock -= $sale_return_product->return_qty;
-                        $mb_variant->save();
-                    }
-                }
-            }
-
+         
             // Update Sale return
-            $saleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'SRI') . date('ymd') . $invoiceId;
+            $saleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
             $saleReturn->return_discount_type = $request->return_discount_type;
             $saleReturn->return_discount = $request->return_discount;
             $saleReturn->return_discount_amount = $request->total_return_discount_amount;
@@ -234,6 +204,8 @@ class SaleReturnController extends Controller
             $saleReturn->total_return_amount = $request->total_return_amount;
             if ($saleReturnDue > 0) {
                 $saleReturn->total_return_due = $saleReturnDue - $saleReturn->total_return_due_pay;
+            }else {
+                $saleReturn->total_return_due = 0;
             }
 
             $saleReturn->date = $request->date;
@@ -243,32 +215,8 @@ class SaleReturnController extends Controller
             // update sale return products
             $index = 0;
             foreach ($sale_product_ids as $sale_product_id) {
-                if ($sale->branch_id) {
-                    // Update product branch quantity for adjustment
-                    $productBranch = ProductBranch::where('branch_id', $sale->branch_id)->where('product_id', $saleProduct->product_id)->first();
-                    $productBranch->product_quantity += $return_quantities[$index];
-                    $productBranch->save();
-
-                    if ($saleProduct->product_variant_id) {
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $saleProduct->product_id)->where('product_variant_id', $saleProduct->product_variant_id)->first();
-                        $productBranchVariant->variant_quantity += $return_quantities[$index];
-                        $productBranchVariant->save();
-                    }
-                } else {
-                    $mb_product = Product::where('id', $saleProduct->product_id)->first();
-                    $mb_product->mb_stock += $return_quantities[$index];
-                    $mb_product->save();
-
-                    if ($saleProduct->product_variant_id) {
-                        $mb_variant = ProductVariant::where('id', $saleProduct->product_variant_id)->first();
-                        $mb_variant->mb_stock += $return_quantities[$index];
-                        $mb_variant->save();
-                    }
-                }
-
                 $returnProduct = SaleReturnProduct::where('sale_return_id', $saleReturn->id)
                     ->where('sale_product_id', $sale_product_id)->first();
-
                 $returnProduct->return_qty = $return_quantities[$index];
                 $returnProduct->unit = $units[$index];
                 $returnProduct->return_subtotal = $return_subtotals[$index];
@@ -278,6 +226,11 @@ class SaleReturnController extends Controller
 
             foreach ($sale->sale_products as $sale_product) {
                 $this->productStockUtil->adjustMainProductAndVariantStock($sale_product->product_id, $sale_product->product_variant_id);
+                if ($sale->branch_id) {
+                    $this->productStockUtil->adjustBranchStock($sale_product->product_id, $sale_product->product_variant_id, $sale->branch_id);
+                } else {
+                    $this->productStockUtil->adjustMainBranchStock($sale_product->product_id, $sale_product->product_variant_id);
+                }
             }
 
             $this->saleUtil->adjustSaleInvoiceAmounts($sale);
@@ -286,13 +239,14 @@ class SaleReturnController extends Controller
             }
             
         } else {
+            $sale->is_return_available = 1;
             //Update sale and customer return due
             $saleDue = $sale->total_payable_amount - $sale->paid;
             $saleReturnDue = $request->total_return_amount - $saleDue;
            
             $addSaleReturn = new SaleReturn();
             $addSaleReturn->sale_id = $sale->id;
-            $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'SRI') . date('ymd') . $invoiceId;
+            $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
 
             $addSaleReturn->branch_id = $sale->branch_id;
             $addSaleReturn->admin_id = auth()->user()->id;
@@ -316,34 +270,6 @@ class SaleReturnController extends Controller
             foreach ($sale_product_ids as $sale_product_id) {
                 // Update sale product quantity for adjustment
                 $saleProduct = SaleProduct::where('id', $sale_product_id)->first();
-                if ($sale->branch_id) {
-                    // Update product branch quantity for adjustment
-                    $productBranch = ProductBranch::where('branch_id', $sale->branch_id)
-                        ->where('product_id', $saleProduct->product_id)
-                        ->first();
-                    $productBranch->product_quantity += $return_quantities[$index];
-                    $productBranch->save();
-
-                    if ($saleProduct->product_variant_id) {
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                            ->where('product_id', $saleProduct->product_id)
-                            ->where('product_variant_id', $saleProduct->product_variant_id)
-                            ->first();
-                        $productBranchVariant->variant_quantity += $return_quantities[$index];
-                        $productBranchVariant->save();
-                    }
-                } else {
-                    $mb_product = Product::where('id', $saleProduct->product_id)->first();
-                    $mb_product->mb_stock += $return_quantities[$index];
-                    $mb_product->save();
-
-                    if ($saleProduct->product_variant_id) {
-                        $mb_variant = ProductVariant::where('id', $saleProduct->product_variant_id)->first();
-                        $mb_variant->mb_stock += $return_quantities[$index];
-                        $mb_variant->save();
-                    }
-                }
-
                 $addReturnProduct = new SaleReturnProduct();
                 $addReturnProduct->sale_return_id = $addSaleReturn->id;
                 $addReturnProduct->sale_product_id = $sale_product_id;
@@ -358,6 +284,11 @@ class SaleReturnController extends Controller
 
             foreach ($sale->sale_products as $sale_product) {
                 $this->productStockUtil->adjustMainProductAndVariantStock($sale_product->product_id, $sale_product->product_variant_id);
+                if ($sale->branch_id) {
+                    $this->productStockUtil->adjustBranchStock($sale_product->product_id, $sale_product->product_variant_id, $sale->branch_id);
+                } else {
+                    $this->productStockUtil->adjustMainBranchStock($sale_product->product_id, $sale_product->product_variant_id);
+                }
             }
 
             $this->saleUtil->adjustSaleInvoiceAmounts($sale);

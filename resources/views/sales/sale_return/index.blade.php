@@ -66,9 +66,7 @@
         </div>
     </div>
 
-    <div id="sale_return_details">
-        
-    </div>
+    <div id="sale_return_details"></div>
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
@@ -120,24 +118,6 @@
             returnDetails(url);
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure to delete ?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     }).then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         } else {
-        //             swal("Your imaginary file is safe!");
-        //         }
-        //     });
-        // });
         $(document).on('click', '#delete',function(e){
                 e.preventDefault(); 
                 var url = $(this).attr('href');

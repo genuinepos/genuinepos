@@ -14,7 +14,7 @@
         input[type=number]#quantity::-webkit-inner-spin-button, 
         input[type=number]#quantity::-webkit-outer-spin-button {opacity: 1;margin: 0;}
     </style>
-    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -70,7 +70,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID">
+                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -102,7 +102,7 @@
                                                 <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control datepicker"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off">
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="datepicker">
                                                         <span class="error error_date"></span>
                                                 </div>
                                             </div>

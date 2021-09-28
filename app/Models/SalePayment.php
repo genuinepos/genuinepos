@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Sale;
 use App\Models\Account;
 use App\Models\Customer;
+use App\Models\CustomerLedger;
 use Illuminate\Database\Eloquent\Model;
 
 class SalePayment extends Model
@@ -31,5 +32,10 @@ class SalePayment extends Model
     public function cashFlow()
     {
         return $this->hasOne(CashFlow::class, 'sale_payment_id');
+    }
+
+    public function ledger()
+    {
+        return $this->hasOne(CustomerLedger::class);
     }
 }

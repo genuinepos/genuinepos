@@ -8,6 +8,7 @@ use App\Models\SaleReturn;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
 use App\Models\AdminAndUser;
+use App\Models\CustomerLedger;
 use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
@@ -40,5 +41,10 @@ class Sale extends Model
     public function admin()
     {
         return $this->belongsTo(AdminAndUser::class, 'admin_id');
+    }
+
+    public function ledger()
+    {
+        return $this->hasOne(CustomerLedger::class);
     }
 }

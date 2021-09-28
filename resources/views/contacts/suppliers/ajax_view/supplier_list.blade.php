@@ -7,12 +7,12 @@
             <th>Name</th>
             <th>Business Name</th>
             <th>Phone</th>
-            <th>Opening Balance</th>
-            <th>Total Purchase</th>
-            <th>Total Paid</th>
-            <th>Purchase Due</th>
-            <th>Total Return Item Amt.</th>
-            <th>Returnable Due Amt.</th>
+            <th>Opening Balance({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th>Total Purchase({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th>Purchase Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th>Total Return Item Amt.({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th>Returnable Due Amt.({{ json_decode($generalSettings->business, true)['currency'] }})</th>
             <th>Status</th>
         </tr>
     </thead>
@@ -58,22 +58,16 @@
                 <td>{{ $supplier->name }}</td> 
                 <td>{{ $supplier->business_name ? $supplier->business_name : 'N/A' }}</td> 
                 <td>{{ $supplier->phone }}</td>
-                <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->opening_balance }}</b></td>
-                <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_purchase }}</b></td>
-                <td>
-                    <b>
-                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                       <span class="text-success">{{ $supplier->total_paid }}</span> 
-                    </b>
+                <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->opening_balance) }}</td>
+                <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</td>
+                <td class="text-end">
+                    <span class="text-success">{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</span> 
                 </td>
-                <td>
-                    <b>
-                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                        <span class="text-danger">{{ $supplier->total_purchase_due }}</span>
-                    </b>
+                <td class="text-end">
+                    <span class="text-danger">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</span>
                 </td>
-                <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_return }}</b></td>
-                <td><b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $supplier->total_purchase_return_due }}</b></td>
+                <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
+                <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}</td>
                 <td>
                     @if ($supplier->status == 1)
                         <span class="text-success"><b>Active</b></span>

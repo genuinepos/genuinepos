@@ -25,13 +25,13 @@ class StockAdjustmentController extends Controller
     // Index view of stock adjustment
     public function index(Request $request)
     {
+
         if (auth()->user()->permission->s_adjust['adjustment_all'] == '0') {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
-
             $adjustments = '';
             $query = DB::table('stock_adjustments')->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
                 ->leftJoin('warehouses', 'stock_adjustments.warehouse_id', 'warehouses.id')
@@ -49,11 +49,14 @@ class StockAdjustmentController extends Controller
                 $query->where('stock_adjustments.type', $request->type);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                $query->whereBetween('stock_adjustments.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->from_date) {
+                // $date_range = explode('-', $request->date_range);
+                // $form_date = date('Y-m-d', strtotime($date_range[0]));
+                // $to_date = date('Y-m-d', strtotime($date_range[1]));
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $query->whereBetween('stock_adjustments.report_date_ts', $date_range); // Final
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

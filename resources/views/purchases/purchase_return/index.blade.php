@@ -1,7 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('title', 'Purchase Return List - ')
 @section('content')
@@ -28,8 +27,8 @@
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
-                                                            <label><strong>Branch :</strong></label>
+                                                        <div class="col-md-2">
+                                                            <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able" id="branch_id">
                                                                 <option value="">All</option>
@@ -44,7 +43,7 @@
                                                     @endif
                                                 @endif
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Supplier :</strong></label>
                                                     <select name="supplier_id"
                                                         class="form-control selectpicker submit_able"
@@ -56,16 +55,27 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <label><strong>Date Range :</strong></label>
+                                                <div class="col-md-2">
+                                                    <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date"
                                                             autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i
+                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                        </div>
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -195,7 +205,7 @@
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script>
         // Show session message by toster alert.
@@ -219,7 +229,8 @@
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
                     d.supplier_id = $('#supplier_id').val();
-                    d.date_range = $('#date_range').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
                 }
             },
             columnDefs: [{
@@ -240,10 +251,6 @@
                 {data: 'action'},
             ],
         });
-
-        function returnDetails(url) {
-           
-        }
 
         $(document).on('click', '.details_button', function(e) {
             e.preventDefault();
@@ -372,19 +379,19 @@
             table.ajax.reload();
         });
 
-        //Submit filter form by date-range field blur 
-        $(document).on('blur', '.submit_able_input', function () {
-            setTimeout(function() {
+        $(document).on('input', '.from_date', function () {
+            if ($(this).val() == '') {
                 table.ajax.reload();
-            }, 800);
+            }
         });
 
-        //Submit filter form by date-range apply button
-        $(document).on('click', '.applyBtn', function () {
-            setTimeout(function() {
-                $('.submit_able_input').addClass('.form-control:focus');
-                $('.submit_able_input').blur();
-            }, 700);
+        //Submit filter form by date-range field blur 
+        $(document).on('click', '.day-item', function () {
+            if ($('.from_date').val()) {
+                setTimeout(function() {
+                    table.ajax.reload();
+                }, 500);
+            }
         });
 
         // Make print
@@ -405,32 +412,42 @@
     </script>
 
     <script type="text/javascript">
-        $(function() {
-            var start = moment().startOf('year');
-            var end = moment().endOf('year');
-            $('.daterange').daterangepicker({
-                buttonClasses: ' btn',
-                applyClass: 'btn-primary',
-                cancelClass: 'btn-secondary',
-                startDate: start,
-                endDate: end,
-                locale: {cancelLabel: 'Clear'},
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
-                    'This Year': [moment().startOf('year'), moment().endOf('year')],
-                    'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
-                }
-            });
-            $('.daterange').val('');
-        });
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        })
 
-        $(document).on('click', '.cancelBtn ', function () {
-           $('.daterange').val('');
-        });
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker2'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        })
     </script>
 @endpush

@@ -1,13 +1,8 @@
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
-        .sale_and_purchase_amount_area table tbody tr th,td {color: #32325d;}
-        .sale_purchase_and_profit_area {position: relative;}
         .data_preloader{top:2.3%}
-        .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
-        .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
         /* Search Product area style */
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .search_area{position: relative;}
@@ -26,7 +21,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
@@ -40,7 +34,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
-                                    <div class="col-md-10">
+                                    <div class="col-md-12">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
                                                 <div class="col-md-2 search_area">
@@ -102,26 +96,36 @@
                                                         <option value="">All</option>
                                                     </select>
                                                 </div>
+                                            </div>
 
+                                            <div class="form-group row">
                                                 <div class="col-md-2">
-                                                    <label><strong>Date Range :</strong></label>
+                                                    <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date"
+                                                            autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i
+                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                        </div>
+                                                        <input type="text" name="to_date" id="datepicker2"
+                                                            class="form-control to_date"
+                                                            autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label></label>
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -130,34 +134,47 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Product</th>
-                                                    <th>P.Code</th>
-                                                    <th>Customer</th>
-                                                    <th>Invoice ID</th>
-                                                    <th>Quantity</th>
-                                                    <th>Unit Price</th>
-                                                    <th>Subtotal</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-    
-                                            </tbody>
-                                            <tfoot>
-                                                <tr class="bg-secondary">
-                                                    <th colspan="5" class="text-end text-white">Total :</th>
-                                                    <th class="text-white">(<span id="total_qty"></span>)</th>
-                                                    <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_price_inc_tax"></span></th>
-                                                    <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="total_subtotal"></span></th>
-                                                    <th></th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
+                                    <div class="section-header">
+                                        <div class="col-md-10">
+                                            <h6>Sald Product List</h6>
+                                        </div>
+                                        @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                            <div class="col-md-2">
+                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="widget_content">
+                                        <div class="table-responsive" id="data-list">
+                                            <table class="display data_tbl data__table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Product</th>
+                                                        <th>P.Code</th>
+                                                        <th>Customer</th>
+                                                        <th>Invoice ID</th>
+                                                        <th>Quantity</th>
+                                                        <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                        <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+        
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr class="bg-secondary">
+                                                        <th colspan="5" class="text-end text-white">Total :{{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                        <th class="text-white">(<span id="total_qty"></span>)</th>
+                                                        <th class="text-white">---</th>
+                                                        <th class="text-white"> <span id="total_subtotal"></span></th>
+                                                        <th></th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div> 
                             </div>
@@ -171,14 +188,13 @@
 @push('scripts')
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [ 
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
-            {extend: 'print',text: 'Print',className: 'btn btn-primary'},
         ],
         "processing": true,
         "serverSide": true,
@@ -193,7 +209,8 @@
                 d.category_id = $('#category_id').val();
                 d.sub_category_id = $('#sub_category_id').val();
                 d.customer_id = $('#customer_id').val();
-                d.date_range = $('#date_range').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
             }
         },
         columns: [
@@ -202,18 +219,17 @@
             {data: 'sku', name: 'products.product_code'},
             {data: 'customer', name: 'customers.name'},
             {data: 'invoice_id', name: 'sales.invoice_id'},
-            {data: 'quantity', name: 'quantity'},
-            {data: 'unit_price_inc_tax', name: 'unit_price_inc_tax'},
-            {data: 'subtotal', name: 'subtotal'},
+            {data: 'quantity', name: 'quantity', className:'text-end'},
+            {data: 'unit_price_inc_tax', name: 'unit_price_inc_tax', className:'text-end'},
+            {data: 'subtotal', name: 'subtotal', className:'text-end'},
             {data: 'action'},
         ],
         fnDrawCallback: function() {
             var total_qty = sum_table_col($('.data_tbl'), 'qty');
             $('#total_qty').text(parseFloat(total_qty).toFixed(2));
-            var total_price_inc_tax = sum_table_col($('.data_tbl'), 'unit_price_inc_tax');
-            $('#total_price_inc_tax').text(parseFloat(total_price_inc_tax).toFixed(2));
             var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
-            $('#total_subtotal').text(parseFloat(total_subtotal).toFixed(2));
+            var __total_subtotal = parseFloat(total_subtotal).toFixed(2)
+            $('#total_subtotal').text(__total_subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         },
     });
 
@@ -245,11 +261,24 @@
         table.ajax.reload();
     });
 
-    //Submit filter form by date-range field blur 
-    $(document).on('blur', '.submit_able_input', function () {
-        setTimeout(function() {
+    //Submit filter form by select input changing
+    $(document).on('change', '.submit_able', function () {
+        table.ajax.reload();
+    });
+
+    $(document).on('input', '.from_date', function () {
+        if ($(this).val() == '') {
             table.ajax.reload();
-        }, 500);
+        }
+    });
+
+    //Submit filter form by date-range field blur 
+    $(document).on('click', '.day-item', function () {
+        if ($('.from_date').val()) {
+            setTimeout(function() {
+                table.ajax.reload();
+            }, 500);
+        }
     });
 
      //Submit filter form by date-range field blur 
@@ -259,14 +288,7 @@
         table.ajax.reload();
     });
 
-    //Submit filter form by date-range apply button
-    $(document).on('click', '.applyBtn', function () {
-        setTimeout(function() {
-            $('.submit_able_input').addClass('.form-control:focus');
-            $('.submit_able_input').blur();
-        }, 500);
-    });
-
+ 
     $('#search_product').on('input', function () {
         $('.search_result').hide();
         var product_name = $(this).val();
@@ -347,32 +369,42 @@
 </script>
 
 <script type="text/javascript">
-    $(function() {
-        var start = moment().startOf('year');
-        var end = moment().endOf('year');
-        $('.daterange').daterangepicker({
-            buttonClasses: ' btn',
-            applyClass: 'btn-primary',
-            cancelClass: 'btn-secondary',
-            startDate: start,
-            endDate: end,
-            locale: {cancelLabel: 'Clear'},
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
-                'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
-            }
-        });
-        $('.daterange').val('');
-    });
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
+    })
 
-    $(document).on('click', '.cancelBtn ', function () {
-        $('.daterange').val('');
-    });
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker2'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
+    })
 </script>
 @endpush

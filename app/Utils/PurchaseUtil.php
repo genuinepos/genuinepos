@@ -2,10 +2,19 @@
 
 namespace App\Utils;
 
+use App\Utils\Converter;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+
 class PurchaseUtil
 {
+    public $converter;
+    public function __construct(
+        Converter $converter,
+    ) {
+        $this->converter = $converter;
+    }
+
     public function purchaseListTable($request)
     {
         $generalSettings = DB::table('general_settings')->first();
@@ -36,11 +45,11 @@ class PurchaseUtil
             $query->where('purchases.purchase_status', $request->status);
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $query->whereBetween('purchases.report_date', $date_range); // Final
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -86,17 +95,13 @@ class PurchaseUtil
                 } else {
                     return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
                 }
-            })->editColumn('total_purchase_amount', function ($row) use ($generalSettings) {
-                return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_purchase_amount . '</b>';
-            })->editColumn('paid', function ($row) use ($generalSettings) {
-                return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid . '</b>';
-            })->editColumn('due', function ($row) use ($generalSettings) {
-                return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'].' '. $row->due . '</span></b>';
-            })->editColumn('purchase_return_amount', function ($row) use ($generalSettings) {
-                return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_amount . '</b>';
-            })->editColumn('purchase_return_due', function ($row) use ($generalSettings) {
-                return '<b><span class="text-success">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_due . '</span></b>';
-            })->editColumn('status', function ($row) {
+            })
+            ->editColumn('total_purchase_amount', fn ($row) => $this->converter->format_in_bdt($row->total_purchase_amount))
+            ->editColumn('paid', fn ($row) => $this->converter->format_in_bdt($row->paid))
+            ->editColumn('due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
+            ->editColumn('purchase_return_amount', fn ($row) => $this->converter->format_in_bdt($row->purchase_return_amount))
+            ->editColumn('purchase_return_due', fn ($row) => '<span class="text-success">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
+            ->editColumn('status', function ($row) {
                 if ($row->purchase_status == 1) {
                     return '<span class="text-success"><b>Received</b></span>';
                 } elseif ($row->purchase_status == 2) {
@@ -121,41 +126,42 @@ class PurchaseUtil
     }
 
 
-    public function updateStockForPurchaseStore($request)
-    {
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        if (isset($request->warehouse_id)) {
-            $__index = 0;
-            foreach ($product_ids as $productId) {
-                // Update warehouse product Stock
-                $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
-                $this->productStockUtil->adjustWarehouseStock($productId, $variant_id, $request->warehouse_id);
-                $__index++;
-            }
-        } else {
-            $__index = 0;
-            if (auth()->user()->branch_id) {
-                foreach ($product_ids as $productId) {
-                    // Update branch product stock
-                    $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
-                    $this->productStockUtil->adjustBranchStock($productId, $variant_id, auth()->user()->branch_id);
-                    $__index++;
-                }
-            } else {
-                $__index = 0;
-                foreach ($product_ids as $productId) {
-                    $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
-                    $this->productStockUtil->adjustMainBranchStock($productId, $variant_id);
-                    $__index = 0;
-                }
-            }
-        }
-    }
+    // private function updateStockForPurchaseStore($request)
+    // {
+    //     $product_ids = $request->product_ids;
+    //     $variant_ids = $request->variant_ids;
+    //     if (isset($request->warehouse_id)) {
+    //         $__index = 0;
+    //         foreach ($product_ids as $productId) {
+    //             // Update warehouse product Stock
+    //             $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+    //             $this->productStockUtil->adjustWarehouseStock($productId, $variant_id, $request->warehouse_id);
+    //             $__index++;
+    //         }
+    //     } else {
+    //         $__index = 0;
+    //         if (auth()->user()->branch_id) {
+    //             foreach ($product_ids as $productId) {
+    //                 // Update branch product stock
+    //                 $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+    //                 $this->productStockUtil->adjustBranchStock($productId, $variant_id, auth()->user()->branch_id);
+    //                 $__index++;
+    //             }
+    //         } else {
+    //             $__index = 0;
+    //             foreach ($product_ids as $productId) {
+    //                 $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+    //                 $this->productStockUtil->adjustMainBranchStock($productId, $variant_id);
+    //                 $__index = 0;
+    //             }
+    //         }
+    //     }
+    // }
 
     public function purchaseProductListTable($request)
     {
         $generalSettings = DB::table('general_settings')->first();
+        $converter = $this->converter;
         $purchaseProducts = '';
         $query = DB::table('purchase_products')
             ->leftJoin('purchases', 'purchase_products.purchase_id', '=', 'purchases.id')
@@ -195,11 +201,11 @@ class PurchaseUtil
             $query->where('products.parent_category_id', $request->sub_category_id);
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $query->whereBetween('purchases.report_date', $date_range); // Final
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
@@ -260,22 +266,21 @@ class PurchaseUtil
                 return date('d/m/Y', strtotime($row->date));
             })->editColumn('quantity', function ($row) {
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
-            })->editColumn('net_unit_cost',  function ($row) use ($generalSettings) {
-                return '<b><span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_unit_cost . '</span></b>';
-            })->editColumn('price',  function ($row) use ($generalSettings) {
+            })
+            ->editColumn('net_unit_cost', fn ($row) => $this->converter->format_in_bdt($row->net_unit_cost))
+            ->editColumn('price',  function ($row) use ($converter) {
                 if ($row->selling_price > 0) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->selling_price . '</b>';
+                    return $converter->format_in_bdt($row->selling_price);
                 } else {
                     if ($row->variant_name) {
-                        return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->variant_price . '</b>';
+                        return $converter->format_in_bdt($row->variant_price);
                     } else {
-                        return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->product_price . '</b>';
+                        return $converter->format_in_bdt($row->product_price);
                     }
                 }
-                return '<b><span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_unit_cost . '</span></b>';
-            })->editColumn('subtotal', function ($row) use ($generalSettings) {
-                return '<b><span class="subtotal" data-value="' . $row->line_total . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->line_total . '</span></b>';
-            })->rawColumns(['action', 'product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'price', 'subtotal'])
+                return $converter->format_in_bdt($row->net_unit_cost);
+            })->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->line_total . '">' . $this->converter->format_in_bdt($row->line_total) . '</span>')
+            ->rawColumns(['action', 'product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'price', 'subtotal'])
             ->make(true);
     }
 

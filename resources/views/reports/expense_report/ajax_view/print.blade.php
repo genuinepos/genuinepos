@@ -102,9 +102,9 @@
 
                         <td>{{ $ex->cr_prefix . ' ' . $ex->cr_name . ' ' . $ex->cr_last_name }}</td>
 
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ex->net_total_amount) }}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ex->paid) }}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ex->due) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->net_total_amount) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->paid) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->due) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -119,23 +119,23 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Expense :</th>
+                    <th class="text-end">Total Expense : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
-                        {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalExpense) }}
+                        {{ App\Utils\Converter::format_in_bdt($totalExpense) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Paid :</th>
+                    <th class="text-end">Total Paid : {{json_decode($generalSettings->business, true)['currency']}}</th>
                     <td class="text-end">
-                        {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalPaid) }}
+                        {{ App\Utils\Converter::format_in_bdt($totalPaid) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Due :</th>
+                    <th class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
-                        {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($totalDue) }}
+                        {{ App\Utils\Converter::format_in_bdt($totalDue) }}
                     </td>
                 </tr>
             </thead>

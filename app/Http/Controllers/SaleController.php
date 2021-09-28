@@ -552,6 +552,9 @@ class SaleController extends Controller
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->sale_note = $request->sale_note;
         $updateSale->save();
+        $updateSale->ledger->report_date = $updateSale->report_date;
+        $updateSale->ledger->save();
+
         
         // update product quantity
         $quantities = $request->quantities;
@@ -1223,6 +1226,8 @@ class SaleController extends Controller
             $updateSalePayment->attachment = $salePaymentAttachmentName;
         }
         $updateSalePayment->save();
+        $updateSalePayment->ledger->report_date = $updateSalePayment->report_date;
+        $updateSalePayment->ledger->save();
 
         if ($request->account_id) {
             // Add or update cash flow

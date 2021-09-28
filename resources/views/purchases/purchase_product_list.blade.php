@@ -1,18 +1,17 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css" />
-        <style>
-            /* Search Product area style */
-            .selectProduct {background-color: #ab1c59;color: #fff !important;}
-            .search_area{position: relative;}
-            .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
-                margin-top: 1px;}
-            .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
-            .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
-            .search_result ul li a:hover {color: white;background-color: #ab1c59;}
-            /* Search Product area style end */
-        </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Search Product area style */
+        .selectProduct {background-color: #ab1c59;color: #fff !important;}
+        .search_area{position: relative;}
+        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
+            margin-top: 1px;}
+        .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
+        .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
+        .search_result ul li a:hover {color: white;background-color: #ab1c59;}
+        /* Search Product area style end */
+    </style>
 @endpush
 @section('title', 'Purchase List - ')
 @section('content')
@@ -93,16 +92,31 @@
                                                         <option value="">All</option>
                                                     </select>
                                                 </div>
+                                            </div>
 
+                                            <div class="form-group row">
                                                 <div class="col-md-2">
-                                                    <label><strong>Date Range :</strong></label>
+                                                    <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date"
+                                                            autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i
+                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                        </div>
+                                                        <input type="text" name="to_date" id="datepicker2"
+                                                            class="form-control to_date"
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
@@ -144,15 +158,23 @@
                                                 <th>Supplier</th>
                                                 <th>P.Invoice ID</th>
                                                 <th>Quantity</th>
-                                                <th>Unit Cost</th>
-                                                <th>Unit Price</th>
-                                                <th>Subtotal</th>
+                                                <th>Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="5" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                <th class="text-start text-white">(<span id="total_qty"></span>)</th>
+                                                <th class="text-start text-white">---</th>
+                                                <th class="text-start text-white">---</th>
+                                                <th class="text-start text-white"><span id="total_subtotal"></span></th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -170,7 +192,7 @@
 @endsection
 @push('scripts')
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script>
         var table = $('.data_tbl').DataTable({
@@ -192,7 +214,8 @@
                     d.supplier_id = $('#supplier_id').val();
                     d.category_id = $('#category_id').val();
                     d.sub_category_id = $('#sub_category_id').val();
-                    d.date_range = $('#date_range').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
                 }
             },
             columns: [
@@ -201,13 +224,32 @@
                 {data: 'product_code', name: 'products.name'},
                 {data: 'supplier_name', name: 'suppliers.name as supplier_name'},
                 {data: 'invoice_id', name: 'purchases.invoice_id'},
-                {data: 'quantity', name: 'quantity'},
-                {data: 'net_unit_cost', name: 'net_unit_cost'},
-                {data: 'price', name: 'purchase_products.selling_price'},
-                {data: 'subtotal', name: 'subtotal'},
+                {data: 'quantity', name: 'quantity', className: 'text-end'},
+                {data: 'net_unit_cost', name: 'net_unit_cost', className: 'text-end'},
+                {data: 'price', name: 'purchase_products.selling_price', className: 'text-end'},
+                {data: 'subtotal', name: 'subtotal', className: 'text-end'},
                 {data: 'action', name: 'action'},
-            ]
+            ],
+            fnDrawCallback: function() {
+                var total_qty = sum_table_col($('.data_tbl'), 'qty');
+                $('#total_qty').text(parseFloat(total_qty).toFixed(2));
+                var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
+                var __total_subtotal = parseFloat(total_subtotal).toFixed(2)
+                $('#total_subtotal').text(__total_subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            }
         });
+
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
         $('#category_id').on('change', function() {
             var category_id = $(this).val();
@@ -262,49 +304,60 @@
             table.ajax.reload();
         });
 
-        //Submit filter form by date-range field blur 
-        $(document).on('blur', '.submit_able_input', function() {
-            setTimeout(function() {
+        $(document).on('input', '.from_date', function () {
+            if ($(this).val() == '') {
                 table.ajax.reload();
-            }, 800);
+            }
         });
 
-        //Submit filter form by date-range apply button
-        $(document).on('click', '.applyBtn', function() {
-            setTimeout(function() {
-                $('.submit_able_input').addClass('.form-control:focus');
-                $('.submit_able_input').blur();
-            }, 700);
+        //Submit filter form by date-range field blur 
+        $(document).on('click', '.day-item', function () {
+            if ($('.from_date').val()) {
+                setTimeout(function() {
+                    table.ajax.reload();
+                }, 500);
+            }
         });
     </script>
 
     <script type="text/javascript">
-        $(function() {
-            var start = moment().startOf('year');
-            var end = moment().endOf('year');
-            $('.daterange').daterangepicker({
-                buttonClasses: ' btn',
-                applyClass: 'btn-primary',
-                cancelClass: 'btn-secondary',
-                startDate: start,
-                endDate: end,
-                locale: {cancelLabel: 'Clear'},
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
-                    'This Year': [moment().startOf('year'), moment().endOf('year')],
-                    'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
-                }
-            });
-            $('.daterange').val('');
+        
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
         });
 
-        $(document).on('click', '.cancelBtn ', function () {
-           $('.daterange').val('');
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker2'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
         });
 
         $('#search_product').on('input', function () {
@@ -334,29 +387,29 @@
             });
         });
 
-    $(document).on('click', '#select_product', function (e) {
-        e.preventDefault();
-        var product_name = $(this).html();
-        $('#search_product').val(product_name.trim());
-        var product_id = $(this).data('p_id');
-        var variant_id = $(this).data('v_id');
-        $('#product_id').val(product_id);
-        $('#variant_id').val(variant_id);
-        $('.search_result').hide();
-        table.ajax.reload();
-    });
-
-    $('body').keyup(function(e){
-        if (e.keyCode == 13 || e.keyCode == 9){  
-            $(".selectProduct").click();
+        $(document).on('click', '#select_product', function (e) {
+            e.preventDefault();
+            var product_name = $(this).html();
+            $('#search_product').val(product_name.trim());
+            var product_id = $(this).data('p_id');
+            var variant_id = $(this).data('v_id');
+            $('#product_id').val(product_id);
+            $('#variant_id').val(variant_id);
             $('.search_result').hide();
-            $('#list').empty();
-        }
-    });
+            table.ajax.reload();
+        });
 
-    $(document).on('mouseenter', '#list>li>a',function () {
-        $('#list>li>a').removeClass('selectProduct');
-        $(this).addClass('selectProduct');
-    });
+        $('body').keyup(function(e){
+            if (e.keyCode == 13 || e.keyCode == 9){  
+                $(".selectProduct").click();
+                $('.search_result').hide();
+                $('#list').empty();
+            }
+        });
+
+        $(document).on('mouseenter', '#list>li>a',function () {
+            $('#list>li>a').removeClass('selectProduct');
+            $(this).addClass('selectProduct');
+        });
     </script>
 @endpush

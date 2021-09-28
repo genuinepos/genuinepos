@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Models\CashFlow;
 use App\Models\LoanCompany;
 use App\Utils\AccountUtil;
+use App\Utils\LoanUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -13,9 +14,11 @@ use Yajra\DataTables\Facades\DataTables;
 class LoanController extends Controller
 {
     protected $accountUtil;
-    public function __construct(AccountUtil $accountUtil)
+    protected $loanUtil;
+    public function __construct(AccountUtil $accountUtil, LoanUtil $loanUtil)
     {
         $this->accountUtil = $accountUtil;
+        $this->loanUtil = $loanUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -158,16 +161,11 @@ class LoanController extends Controller
         $addLoan->report_date = date('Y-m-d', strtotime($request->date));
         $addLoan->save();
 
-        $addCompanyLoanAmount = LoanCompany::where('id', $request->company_id)->first();
         if ($request->type == 1) {
-            $addCompanyLoanAmount->pay_loan_amount += (float)$request->loan_amount;
-            $addCompanyLoanAmount->pay_loan_due += (float)$request->loan_amount;
+            $this->loanUtil->adjustCompanyPayLoanAmount($request->company_id);
         } else {
-            $addCompanyLoanAmount->get_loan_amount += (float)$request->loan_amount;
-            $addCompanyLoanAmount->get_loan_due += (float)$request->loan_amount;
+            $this->loanUtil->adjustCompanyReceiveLoanAmount($request->company_id);
         }
-        $addCompanyLoanAmount->save();
-
 
         if ($request->account_id) {
             // Add cash flow
@@ -223,19 +221,7 @@ class LoanController extends Controller
 
         $updateLoan = Loan::where('id', $loanId)->first();
         $storedPreviousAccountId = $updateLoan->account_id;
-        $previousCompany = LoanCompany::where('id', $updateLoan->loan_company_id)->first();
-        if ($previousCompany) {
-            if ($updateLoan->type == 1) {
-                $previousCompany->pay_loan_amount -= $updateLoan->loan_amount;
-                $previousCompany->pay_loan_due -= $updateLoan->loan_amount;
-                $previousCompany->save();
-            } else {
-                $previousCompany->get_loan_amount -= $updateLoan->loan_amount;
-                $previousCompany->get_loan_due -= $updateLoan->loan_amount;
-                $previousCompany->save();
-            }
-        }
-
+   
         $addCompanyLoanAmount = LoanCompany::where('id', $request->company_id)->first();
         if ($request->type == 1) {
             $addCompanyLoanAmount->pay_loan_amount = $addCompanyLoanAmount->pay_loan_amount + $request->loan_amount;

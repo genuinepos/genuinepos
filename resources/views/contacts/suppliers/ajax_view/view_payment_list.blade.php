@@ -62,7 +62,7 @@
                     <th class="text-white text-start">Type</th>
                     <th class="text-white text-start">Method</th>
                     <th class="text-white text-start">Account</th>
-                    <th class="text-white text-start">Amount</th>
+                    <th class="text-white text-end">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                     <th class="text-white text-start">Action</th>
                 </tr>
             </thead>
@@ -81,8 +81,8 @@
                             <td class="text-start">{{ $payment->type == 1 ? 'Purchase Due' : 'Return due' }}</td>
                             <td class="text-start">{{ $payment->pay_mode }}</td>
                             <td class="text-start">{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
-                            <td class="text-start">
-                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                                 @php
                                     $total += $payment->paid_amount;
                                 @endphp
@@ -101,10 +101,11 @@
             </tbody>
             <tfoot>
                 <tr class="bg-secondary">
-                    <th colspan="5" class="text-white text-end"> <b>Total :</b> </th>
-                    <th colspan="2" class="text-white text-start">
-                        <b>{{json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($total, 0, 2) }}</b>
+                    <th colspan="5" class="text-white text-end"> <b>Total : {{json_decode($generalSettings->business, true)['currency'] }}</b> </th>
+                    <th class="text-white text-end">
+                        <b>{{ App\Utils\Converter::format_in_bdt($total) }}</b>
                     </th>
+                    <td></td>
                 </tr>
             </tfoot>
         </table>

@@ -1,5 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
         .input-group-text {font-size: 12px !important;}
         .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute; width: 94%;z-index: 9999999;padding: 0;left: 3%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
@@ -83,7 +84,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Purchase Invoice ID">
+                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Purchase Invoice ID" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -101,7 +102,7 @@
                                             @else
                                                 <div class="input-group mt-1">
                                                     <label for="inputEmail3" class=" col-4"><span
-                                                        class="text-danger">*</span> <b>Branch :</b> </label>
+                                                        class="text-danger">*</span> <b>Store Location :</b> </label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}">
                                                         <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
@@ -115,7 +116,7 @@
                                                 <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control changeable"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker" placeholder="dd-mm-yyyy">
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker" placeholder="dd-mm-yyyy" autocomplete="off">
                                                 </div>
                                             </div>
 

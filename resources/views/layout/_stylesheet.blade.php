@@ -1,7 +1,6 @@
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
-
     <link href="{{ asset('public/backend/css/reset.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/backend/css/typography.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/backend/css/body.css') }}" rel="stylesheet" type="text/css">
@@ -38,4 +37,6 @@
         .text-custom-blue {color: #6083b1;}
         .monospace {font-family: monospace;}
         @media screen and (min-width: 960px) {#dashboard-8 .main__nav {overflow-y: hidden;}}
+        select.month-item-year {width: 100px;font-size: 14px;}
+        select.month-item-name {font-size: 13px;}
     </style>

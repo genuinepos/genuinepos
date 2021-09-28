@@ -14,9 +14,9 @@
         columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
             {data: 'name',name: 'name'},
             {data: 'pay_loan_amount',name: 'pay_loan_amount'},
-            {data: 'total_pay',name: 'total_pay'},
-            {data: 'get_loan_amount',name: 'get_loan_amount'},
             {data: 'total_receive',name: 'total_receive'},
+            {data: 'get_loan_amount',name: 'get_loan_amount'},
+            {data: 'total_pay',name: 'total_pay'},
             {data: 'action',name: 'action'},
         ],
     });

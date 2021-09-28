@@ -106,7 +106,7 @@
                                                 <label for="inputEmail3" class=" col-4"> <b>Sale Date :</b> <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="date" class="form-control datepicker"
+                                                    <input type="text" name="date" class="form-control" id="datepicker"
                                                         value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}">
                                                     <span class="error error_date"></span>
                                                 </div>

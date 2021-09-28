@@ -17,14 +17,17 @@ class SaleUtil
     public $customerUtil;
     public $productStockUtil;
     public $accountUtil;
+    public $converter;
     public function __construct(
         CustomerUtil $customerUtil,
         ProductStockUtil $productStockUtil,
-        AccountUtil $accountUtil
+        AccountUtil $accountUtil,
+        Converter $converter,
     ) {
         $this->customerUtil = $customerUtil;
         $this->productStockUtil = $productStockUtil;
         $this->accountUtil = $accountUtil;
+        $this->converter = $converter;
     }
     public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId)
     {
@@ -361,21 +364,11 @@ class SaleUtil
             ->editColumn('customer',  function ($row) {
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
             })
-            ->editColumn('total_payable_amount', function ($row) use ($generalSettings) {
-                return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_payable_amount . '</b>';
-            })
-            ->editColumn('paid', function ($row) use ($generalSettings) {
-                return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid . '</b>';
-            })
-            ->editColumn('due', function ($row) use ($generalSettings) {
-                return '<b><span class="text-success">' . json_decode($generalSettings->business, true)['currency'] . ($row->due >= 0 ? $row->due :   0.00) . '</span></b>';
-            })
-            ->editColumn('sale_return_amount', function ($row) use ($generalSettings) {
-                return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->sale_return_amount . '</b>';
-            })
-            ->editColumn('sale_return_due', function ($row) use ($generalSettings) {
-                return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->sale_return_due . '</span></b>';
-            })
+            ->editColumn('total_payable_amount', fn ($row) => $this->converter->format_in_bdt($row->total_payable_amount))
+            ->editColumn('paid', fn ($row) => '<span class="text-success">'. $this->converter->format_in_bdt($row->paid). '</span>')
+            ->editColumn('due', fn ($row) =>  '<span class="text-danger">'.$this->converter->format_in_bdt($row->due). '</span>')
+            ->editColumn('sale_return_amount', fn ($row) => $this->converter->format_in_bdt($row->sale_return_amount))
+            ->editColumn('sale_return_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
             ->editColumn('paid_status', function ($row) {
                 $payable = $row->total_payable_amount - $row->sale_return_amount;
                 if ($row->due <= 0) {
@@ -563,13 +556,11 @@ class SaleUtil
             $query->where('products.parent_category_id', $request->sub_category_id);
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-        } else {
-            $query->where('sales.year', date('Y'));
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $query->whereBetween('sales.report_date', $date_range); // Final
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
@@ -626,11 +617,11 @@ class SaleUtil
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
             })->editColumn('quantity', function ($row) {
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
-            })->editColumn('unit_price_inc_tax',  function ($row) use ($generalSettings) {
-                return '<b><span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->unit_price_inc_tax . '</span></b>';
-            })->editColumn('subtotal', function ($row) use ($generalSettings) {
-                return '<b><span class="subtotal" data-value="' . $row->subtotal . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->subtotal . '</span></b>';
-            })->rawColumns(['product', 'sku', 'date', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal', 'action'])->make(true);
+            })->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
+            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . $this->converter->format_in_bdt($row->subtotal) . '</span>')
+            ->rawColumns(['product', 'sku', 'date', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal', 'action'])
+            ->make(true);
+        
     }
 
     public function saleDraftTable($request)
@@ -930,11 +921,11 @@ class SaleUtil
             }
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $query->whereBetween('sales.report_date', $date_range); // Final
         }
         return $query;
     }

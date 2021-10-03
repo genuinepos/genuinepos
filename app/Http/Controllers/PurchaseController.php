@@ -13,7 +13,6 @@ use App\Utils\AccountUtil;
 use App\Utils\PurchaseUtil;
 use App\Utils\SupplierUtil;
 use Illuminate\Http\Request;
-use App\Models\ProductBranch;
 use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
 use App\Models\PurchaseReturn;
@@ -22,9 +21,6 @@ use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
 use App\Utils\ProductStockUtil;
-use App\Models\ProductWarehouse;
-use App\Models\ProductBranchVariant;
-use App\Models\ProductWarehouseVariant;
 
 class PurchaseController extends Controller
 {

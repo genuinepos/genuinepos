@@ -173,7 +173,7 @@ class AccountingRelatedSectionController extends Controller
                 'loan',
                 'loan.company',
             ]
-        )->orderBy('id', 'desc')->get();
+        )->orderBy('report_date', 'desc')->get();
         return view('accounting.related_sections.ajax_view.cash_flows_list', compact('CashFlows'));
     }
 
@@ -202,18 +202,18 @@ class AccountingRelatedSectionController extends Controller
             ]
         );
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $query->whereBetween('report_date', $date_range); // Final
         }
 
         if ($request->transaction_type) {
             $query->where('cash_type', $request->transaction_type);
         }
         
-        $filterCashFlows = $query->orderBy('id', 'desc')->get();
+        $filterCashFlows = $query->orderBy('report_date', 'desc')->get();
         return view('accounting.related_sections.ajax_view.filtered_cash_flow', compact('filterCashFlows'));
     }
 
@@ -244,13 +244,11 @@ class AccountingRelatedSectionController extends Controller
             ]
         );
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $query->whereBetween('report_date', $date_range); // Final
         }
 
         if ($request->transaction_type) {

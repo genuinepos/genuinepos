@@ -4,11 +4,12 @@
 <div class="row">
     <div class="col-md-12 text-center">
         <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-        <p>{{ json_decode($generalSettings->business, true)['address'] }}</p> 
+        <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address']  }}</p>
         @if ($fromDate && $toDate)
             <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
         @endif
-        <h6 class="margin-top:10px;"><b>Accounts Cash Flow </b></h6> 
+        <br>
+        <h6>Accounts Cash Flow </h6> 
     </div>
 </div>
 <br>

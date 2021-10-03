@@ -116,9 +116,7 @@
                                                         
                                                     </div>
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                           
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div>
                                             </div>
@@ -140,9 +138,7 @@
                                                                     <th><i class="fas fa-trash-alt text-danger"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="product_list">
-
-                                                            </tbody>
+                                                            <tbody id="product_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>

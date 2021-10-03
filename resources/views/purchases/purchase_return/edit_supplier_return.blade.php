@@ -8,6 +8,7 @@
         .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
         .selectProduct{background-color: #ab1c59; color: #fff!important;}
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -210,6 +211,7 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         function getTaxes(){
             $.ajax({
@@ -719,5 +721,29 @@
         setInterval(function(){
             $('#search_product').removeClass('is-valid');
         }, 1000);
+
+        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var _expectedDateFormat = '' ;
+        _expectedDateFormat = dateFormat.replace('d', 'DD');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: _expectedDateFormat,
+        });
     </script>
 @endpush

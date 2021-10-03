@@ -5,9 +5,10 @@ namespace App\Utils;
 use App\Models\Product;
 use App\Models\ProductBranch;
 use App\Models\ProductVariant;
+use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
-use App\Models\ProductWarehouse;
+use App\Models\ProductWarehouseVariant;
 
 class ProductStockUtil
 {
@@ -357,7 +358,7 @@ class ProductStockUtil
                         - $adjustment->sum('total_qty')
                         + $received->sum('total_qty');
 
-        $productBranch = ProductBranch::where('branch_id', $branch_id)->where('id', $product_id)->first();
+        $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $product_id)->first();
         $productBranch->product_quantity = $currentMbStock;
         $productBranch->save();
 
@@ -429,7 +430,6 @@ class ProductStockUtil
                 ->where('transfer_stock_to_branch_products.product_variant_id', $variant_id)
                 ->select(DB::raw('sum(total_received_qty) as total_qty'))
                 ->groupBy('transfer_stock_to_branch_products.product_variant_id')->get();
-            
             
             $adjustment = DB::table('stock_adjustment_products')
                 ->leftJoin('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
@@ -512,7 +512,7 @@ class ProductStockUtil
                         - $adjustment->sum('total_qty')
                         + $received->sum('total_qty');
 
-        $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)->where('id', $product_id)->first();
+        $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)->where('product_id', $product_id)->first();
         $productWarehouse->product_quantity = $currentMbStock;
         $productWarehouse->save();
 
@@ -574,13 +574,47 @@ class ProductStockUtil
                             - $adjustment->sum('total_qty')
                             + $received->sum('total_qty');
     
-            $productWarehouseVariant = ProductBranchVariant::where('product_warehouse_id', $productWarehouse->id)
+            $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
             ->where('product_id', $product_id)
             ->where('product_variant_id', $variant_id)
             ->first();
             
             $productWarehouseVariant->variant_quantity = $currentMbStock;
             $productWarehouseVariant->save();
+        }
+    }
+
+    public function addWarehouseProduct($product_id, $variant_id, $warehouse_id)
+    {
+        $checkExistsProductInWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouse_id)
+        ->where('product_id', $product_id)->first();
+        if (!$checkExistsProductInWarehouse) {
+            $productWarehouse = new ProductWarehouse();
+            $productWarehouse->warehouse_id = $warehouse_id;
+            $productWarehouse->product_id = $product_id;
+            $productWarehouse->save();
+            if ($variant_id) {
+                $productWarehouseVariant = new ProductWarehouseVariant();
+                $productWarehouseVariant->product_warehouse_id = $productWarehouse->id;
+                $productWarehouseVariant->product_variant_id = $variant_id;
+            }
+        }
+    }
+
+    public function addBranchProduct($product_id, $variant_id, $branch_id)
+    {
+        $checkExistsProductInBranch = DB::table('product_branches')->where('branch_id', $branch_id)
+        ->where('product_id', $product_id)->first();
+        if (!$checkExistsProductInBranch) {
+            $productBranch = new ProductBranch();
+            $productBranch->branch_id = auth()->user()->branch_id;
+            $productBranch->product_id = $product_id;
+            $productBranch->save();
+            if ($variant_id) {
+                $productBranchVariant = new ProductBranchVariant();
+                $productBranchVariant->product_branch_id = $productBranch->id;
+                $productBranchVariant->product_variant_id = $variant_id;
+            }
         }
     }
 

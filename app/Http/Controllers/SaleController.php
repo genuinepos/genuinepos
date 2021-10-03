@@ -552,9 +552,10 @@ class SaleController extends Controller
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->sale_note = $request->sale_note;
         $updateSale->save();
-        $updateSale->ledger->report_date = $updateSale->report_date;
-        $updateSale->ledger->save();
-
+        if ($updateSale->ledger) {
+            $updateSale->ledger->report_date = $updateSale->report_date;
+            $updateSale->ledger->save();
+        }
         
         // update product quantity
         $quantities = $request->quantities;

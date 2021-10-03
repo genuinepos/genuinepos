@@ -10,7 +10,7 @@
         .input-group-text-sale {font-size: 7px !important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
-    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -61,18 +61,19 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Date :</b> </label>
+                                                <label for="inputEmail3" class=" col-4"><b>Date :</b> <span
+                                                    class="text-danger">*</span> </label>
                                                 <div class="col-8">
                                                     <input required type="text" name="date" class="form-control datepicker changeable"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="date">
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><span
-                                                    class="text-danger">*</span> <b>Type :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i></label>
+                                                <label for="inputEmail3" class=" col-4"><b>Type :</b> <span
+                                                    class="text-danger">*</span>  <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <select name="type" data-name="Adjustment type"
                                                         class="form-control add_input" title="Select branch" id="type">
@@ -219,7 +220,7 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
-    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
          // Calculate total amount functionalitie
          function calculateTotalAmount(){
@@ -743,26 +744,6 @@
              $('.loading_button').show();
              var url = $(this).attr('action');
              var request = $(this).serialize();
-             var inputs = $('.add_input');
-                 inputs.removeClass('is-invalid');
-                 $('.error').html('');  
-                 var countErrorField = 0;  
-             $.each(inputs, function(key, val){
-                 var inputId = $(val).attr('id');
-                 var idValue = $('#'+inputId).val();
-                 if(idValue == ''){
-                     countErrorField += 1;
-                     var fieldName = $('#'+inputId).data('name');
-                     $('.error_'+inputId).html(fieldName+' is required.');
-                 }
-             });
- 
-             if(countErrorField > 0){
-                 $('.loading_button').hide();
-                 toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-                 return;
-             }
-             
              $('.submit_button').prop('type', 'button');
              $.ajax({
                  url:url,
@@ -830,10 +811,27 @@
         });
 
         var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
-        var _expectedDateFormat = '' ;
-        _expectedDateFormat = dateFormat.replace('d', 'dd');
-        _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
-        _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-        $('.datepicker').datepicker({format: _expectedDateFormat});
+        var _expectedDateFormat = '';
+        _expectedDateFormat = dateFormat.replace('d', 'DD');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: _expectedDateFormat,
+        });
      </script>
 @endpush

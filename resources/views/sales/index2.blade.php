@@ -71,7 +71,7 @@
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date"
+                                                            class="form-control from_date date"
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
@@ -83,7 +83,7 @@
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -297,7 +297,11 @@
         });
 
         $(document).on('input', '.from_date', function () {
-            if ($(this).val() == '') {
+            sales_table.ajax.reload();
+        });
+
+        $(document).on('input', '.to_date', function () {
+            if ($('.from_date').val()) {
                 sales_table.ajax.reload();
             }
         });
@@ -652,7 +656,7 @@
                 return totalDays - 1;
             },
             format: 'DD-MM-YYYY'
-        })
+        });
 
         new Litepicker({
             singleMode: true,
@@ -670,8 +674,8 @@
             tooltipNumber: (totalDays) => {
                 return totalDays - 1;
             },
-            format: 'DD-MM-YYYY'
-        })
+            format: 'DD-MM-YYYY',
+        });
   
         $(document).on('change', '#payment_method', function () {
             var value = $(this).val();

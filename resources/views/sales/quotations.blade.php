@@ -211,13 +211,17 @@
             quotationDetails(url);
         });
 
-        //Submit filter form by select input changing
-        $(document).on('change', '.submit_able', function () {
+         //Submit filter form by select input changing
+         $(document).on('change', '.submit_able', function () {
             qutotation_table.ajax.reload();
         });
 
         $(document).on('input', '.from_date', function () {
-            if ($(this).val() == '') {
+            qutotation_table.ajax.reload();
+        });
+
+        $(document).on('input', '.to_date', function () {
+            if ($('.from_date').val()) {
                 qutotation_table.ajax.reload();
             }
         });

@@ -191,6 +191,10 @@ class PurchaseReturnController extends Controller
 
     public function store(Request $request, $purchaseId)
     {
+        $this->validate($request, [
+            'date' => 'required',
+        ]);
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
 

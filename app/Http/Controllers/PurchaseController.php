@@ -2,25 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use App\Utils\Util;
 use App\Models\Unit;
 use App\Models\Product;
 use App\Models\CashFlow;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Utils\AccountUtil;
 use App\Utils\PurchaseUtil;
+use App\Utils\SupplierUtil;
 use Illuminate\Http\Request;
+use App\Models\ProductBranch;
 use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
+use App\Models\PurchaseReturn;
 use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
-use DB;
-use App\Models\PurchaseReturn;
-use App\Utils\AccountUtil;
 use App\Utils\ProductStockUtil;
-use App\Utils\SupplierUtil;
-use App\Utils\Util;
+use App\Models\ProductWarehouse;
+use App\Models\ProductBranchVariant;
+use App\Models\ProductWarehouseVariant;
 
 class PurchaseController extends Controller
 {
@@ -235,6 +239,7 @@ class PurchaseController extends Controller
             }
 
             $addPurchaseProduct->save();
+
             $index++;
         }
 
@@ -335,14 +340,15 @@ class PurchaseController extends Controller
             $productIndex++;
         }
 
-
         $__index = 0;
         foreach ($product_ids as $productId) {
             $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
             $this->productStockUtil->adjustMainProductAndVariantStock($productId, $variant_id);
             if (isset($request->warehouse_id)) {
+                $this->productStockUtil->addWarehouseProduct($productId, $variant_id, $request->warehouse_id);
                 $this->productStockUtil->adjustWarehouseStock($productId, $variant_id, $request->warehouse_id);
             } else if (auth()->user()->branch_id) {
+                $this->productStockUtil->addBranchProduct($productId, $variant_id, auth()->user()->branch_id);
                 $this->productStockUtil->adjustBranchStock($productId, $variant_id, auth()->user()->branch_id);
             } else {
                 $this->productStockUtil->adjustMainBranchStock($productId, $variant_id);
@@ -588,8 +594,10 @@ class PurchaseController extends Controller
         foreach ($purchase_products as $purchase_product) {
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $purchase_product->product_variant_id);
             if (isset($request->warehouse_id)) {
+                $this->productStockUtil->addWarehouseProduct($productId, $variant_id, $request->warehouse_id);
                 $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
             } else if (auth()->user()->branch_id) {
+                $this->productStockUtil->addBranchProduct($productId, $variant_id, auth()->user()->branch_id);
                 $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
             } else {
                 $this->productStockUtil->adjustMainBranchStock($purchase_product->product_id, $purchase_product->product_variant_id);

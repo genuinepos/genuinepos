@@ -27,7 +27,7 @@
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able" id="branch_id" autofocus>
@@ -43,7 +43,7 @@
                                                     @endif
                                                 @endif
                                                 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Type :</strong></label>
                                                     <select name="type" id="type" class="form-control submit_able" autofocus>
                                                         <option value="">All</option>
@@ -52,14 +52,14 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <input name="from_date" class="form-control submit_able_input from_date" id="datepicker">
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>To Date :</strong></label>
                                                     <div class="input-group">
                                                         <input name="to_date" class="form-control submit_able_input to_date" id="datepicker2">
@@ -174,7 +174,11 @@
         });
 
         $(document).on('input', '.from_date', function () {
-            if ($('.from_date').val() == '') {
+            adjustment_table.ajax.reload();
+        });
+
+        $(document).on('input', '.to_date', function () {
+            if ($('.from_date').val()) {
                 adjustment_table.ajax.reload();
             }
         });

@@ -550,9 +550,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="add_supplier_modal_body">
-
-                </div>
+                <div class="modal-body" id="add_supplier_modal_body"></div>
             </div>
         </div>
     </div> 
@@ -566,9 +564,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="add_product_body">
-                    
-                </div>
+                <div class="modal-body" id="add_product_body"></div>
             </div>
         </div>
     </div> 

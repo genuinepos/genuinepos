@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Expanse;
 use App\Models\CashFlow;
+use App\Utils\Converter;
+use App\Utils\AccountUtil;
 use App\Utils\ExpenseUtil;
 use App\Models\AdminAndUser;
 use Illuminate\Http\Request;
 use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
 use App\Models\ExpenseDescription;
-use App\Utils\AccountUtil;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -19,10 +20,12 @@ class ExpanseController extends Controller
 {
     protected $expenseUtil;
     protected $accountUtil;
-    public function __construct(ExpenseUtil $expenseUtil, AccountUtil $accountUtil)
+    protected $converter;
+    public function __construct(ExpenseUtil $expenseUtil, AccountUtil $accountUtil, Converter $converter)
     {
         $this->expenseUtil = $expenseUtil;
         $this->accountUtil = $accountUtil;
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -48,11 +51,11 @@ class ExpanseController extends Controller
                 $query->where('expanses.admin_id', $request->admin_id);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->from_date) {
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $query->whereBetween('expanses.report_date', $date_range); // Final
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -102,7 +105,7 @@ class ExpanseController extends Controller
                             )->get();
                     $html = '';
                     foreach ($expenseDescriptions as $exDescription){
-                        $html .= '<b>'.$exDescription->name.'('.$exDescription->code.'):</b>'.json_decode($generalSettings->business, true)['currency'].$exDescription->amount.'</br>';
+                        $html .= '<b>'.$exDescription->name.'('.$exDescription->code.'):</b> '.$exDescription->amount.'</br>';
                     }
                     return $html;
                 })
@@ -131,17 +134,10 @@ class ExpanseController extends Controller
                     return $html;
                 })
                 ->editColumn('tax_percent',  function ($row) {
-                    return '<b>' . $row->tax_percent . '%</b>';
+                    return $row->tax_percent . '%';
                 })
-                ->editColumn('net_total_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . $row->net_total_amount .
-                        '</b></span>';
-                })
-                ->editColumn('due', function ($row) use ($generalSettings) {
-                    $html = "";
-                    $html .= '<span class="text-danger"><strong>' . json_decode($generalSettings->business, true)['currency'] . $row->due . '</strong></span>';
-                    return $html;
-                })
+                ->editColumn('net_total_amount', fn ($row) => $this->converter->format_in_bdt($row->net_total_amount) .'</span>')
+                ->editColumn('due', fn ($row) => '<span class="text-danger">'. $this->converter->format_in_bdt($row->due) . '</span>')
                 ->setRowClass('text-start')
                 ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'due', 'net_total_amount', 'descriptions'])
                 ->make(true);
@@ -178,11 +174,11 @@ class ExpanseController extends Controller
                 $query->where('expense_descriptions.expense_category_id', $request->category_id);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->from_date) {
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $query->whereBetween('expanses.report_date', $date_range); // Final
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -230,9 +226,8 @@ class ExpanseController extends Controller
                         return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
                     }else{ return '---';}
                     
-                })->editColumn('amount', function ($row) use ($generalSettings) {
-                    return '<b><span class="amount" data-value="' . $row->amount . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->amount . '</span></b>';
-                })->rawColumns(['date', 'from', 'category_name', 'user_name', 'amount'])
+                })->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
+                ->rawColumns(['date', 'from', 'category_name', 'user_name', 'amount'])
                 ->make(true);
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();

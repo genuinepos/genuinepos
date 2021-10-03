@@ -379,7 +379,11 @@
         });
 
         $(document).on('input', '.from_date', function () {
-            if ($(this).val() == '') {
+            table.ajax.reload();
+        });
+
+        $(document).on('input', '.to_date', function () {
+            if ($('.from_date').val()) {
                 table.ajax.reload();
             }
         });

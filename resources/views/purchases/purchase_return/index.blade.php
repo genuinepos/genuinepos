@@ -111,7 +111,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Date</th>
-                                                <th>PR.Invoice ID</th>
+                                                <th>Return Invoice ID</th>
                                                 <th>Parent Purchase</th>
                                                 <th>Supplier Name</th>
                                                 <th>Location</th>
@@ -380,7 +380,11 @@
         });
 
         $(document).on('input', '.from_date', function () {
-            if ($(this).val() == '') {
+            table.ajax.reload();
+        });
+
+        $(document).on('input', '.to_date', function () {
+            if ($('.from_date').val()) {
                 table.ajax.reload();
             }
         });

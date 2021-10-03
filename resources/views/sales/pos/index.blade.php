@@ -9,7 +9,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
@@ -82,12 +81,11 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All POS Sale <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></label></h6>
+                                    <h6>All POS Sale </label></h6>
                                 </div>
                                 @if (auth()->user()->permission->purchase['purchase_add'] == '1')
                                     <div class="col-md-2">

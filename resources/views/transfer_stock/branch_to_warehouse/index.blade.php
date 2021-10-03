@@ -7,7 +7,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-exchange-alt"></span>
@@ -17,7 +16,7 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
+
                     <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -57,7 +56,6 @@
                             </form>
                         </div>
                     </div>
-                 
                 </div>
             </div>
         </div>
@@ -93,26 +91,15 @@
             ],
         });
 
-        function transferDetails(url) {
+        $(document).on('click', '.details_button', function(e) {
+            e.preventDefault();
             $('.data_preloader').show();
+            var url = $(this).attr('href');
             $.get(url, function(data) {
                 $('#transfer_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
             });
-        }
-
-        $(document).on('click', '.details_button', function(e) {
-            e.preventDefault();
-            var url = $(this).closest('tr').data('href');
-            transferDetails(url);
-        });
-
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:last-child)', function(e) {
-            e.preventDefault();
-            var url = $(this).parent().data('href');
-            transferDetails(url);
         });
 
         $(document).on('click', '#delete',function(e){
@@ -123,18 +110,8 @@
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });

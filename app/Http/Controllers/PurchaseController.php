@@ -590,10 +590,10 @@ class PurchaseController extends Controller
         foreach ($purchase_products as $purchase_product) {
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $purchase_product->product_variant_id);
             if (isset($request->warehouse_id)) {
-                $this->productStockUtil->addWarehouseProduct($productId, $variant_id, $request->warehouse_id);
+                $this->productStockUtil->addWarehouseProduct($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
                 $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
             } else if (auth()->user()->branch_id) {
-                $this->productStockUtil->addBranchProduct($productId, $variant_id, auth()->user()->branch_id);
+                $this->productStockUtil->addBranchProduct($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
                 $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
             } else {
                 $this->productStockUtil->adjustMainBranchStock($purchase_product->product_id, $purchase_product->product_variant_id);

@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\ProductBranch;
-use App\Models\ProductVariant;
-use App\Models\ProductWarehouse;
+use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductBranchVariant;
 use App\Models\TransferStockToBranch;
-use App\Models\ProductWarehouseVariant;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\TransferStockToBranchProduct;
 use App\Jobs\BranchReceiveStockDetailsMailJob;
 
 class BranchReceiveStockController extends Controller
 {
-    public function __construct()
+    protected $productStockUtil;
+    public function __construct(ProductStockUtil $productStockUtil,)
     {
+        $this->productStockUtil = $productStockUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -75,12 +72,6 @@ class BranchReceiveStockController extends Controller
                     }
                     return $html;
                 })
-                ->setRowAttr([
-                    'data-href' => function ($row) {
-                        return route('transfer.stocks.to.warehouse.receive.stock.show', [$row->id]);
-                    }
-                ])
-                ->setRowClass('clickable_row text-start')
                 ->rawColumns(['date', 'from', 'to', 'status', 'action'])
                 ->make(true);
         }
@@ -117,9 +108,15 @@ class BranchReceiveStockController extends Controller
         $status = 0;
         if ($request->total_received_quantity == 0) {
             $status = 1;
-        } elseif ($request->total_received_quantity > 0 && $updateSandStocks->total_send_qty == $request->total_received_quantity) {
+        } elseif (
+            $request->total_received_quantity > 0 &&
+            $updateSandStocks->total_send_qty == $request->total_received_quantity
+        ) {
             $status = 3;
-        } elseif ($request->total_received_quantity > 0 && $request->total_received_quantity < $updateSandStocks->total_send_qty) {
+        } elseif (
+            $request->total_received_quantity > 0 &&
+            $request->total_received_quantity < $updateSandStocks->total_send_qty
+        ) {
             $status = 2;
         }
 
@@ -130,134 +127,25 @@ class BranchReceiveStockController extends Controller
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
         $receive_quantities = $request->receive_quantities;
-        $previous_received_quantities = $request->previous_received_quantities;
 
         $index = 0;
         foreach ($product_ids as $product_id) {
-            // Update warehouse and branch qty for adjustment
-            $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSandStocks->warehouse_id)->where('product_id', $product_id)->first();
-            $productWarehouse->product_quantity += (float)$previous_received_quantities[$index];
-            $productWarehouse->save();
-
-            if ($variant_ids[$index] != 'noid') {
-                $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $product_id)
-                    ->where('product_variant_id', $variant_ids[$index])
-                    ->first();
-
-                $productWarehouseVariant->variant_quantity += (float)$previous_received_quantities[$index];
-                $productWarehouseVariant->save();
-            }
-
-            if ($updateSandStocks->branch_id) {
-                $productBranch = ProductBranch::where('branch_id', $updateSandStocks->branch_id)->where('product_id', $product_id)->first();
-                if ($productBranch) {
-                    $productBranch->product_quantity -= (float)$previous_received_quantities[$index];
-                    $productBranch->save();
-
-                    if ($variant_ids[$index] != 'noid') {
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)
-                            ->where('product_variant_id', $variant_ids[$index])
-                            ->first();
-
-                        if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity -= (float)$previous_received_quantities[$index];
-                            $productBranchVariant->save();
-                        }
-                    }
-                }
-            } else {
-                $product = Product::where('id', $product_id)->first();
-                if ($product) {
-                    $product->mb_stock -= (float)$previous_received_quantities[$index];
-                    $product->save();
-
-                    if ($variant_ids[$index] != 'noid') {
-                        $productVariant = ProductVariant::where('product_id', $product_id)
-                            ->where('id', $variant_ids[$index])
-                            ->first();
-
-                        if ($productVariant) {
-                            $productVariant->mb_stock -= (float)$previous_received_quantities[$index];
-                            $productVariant->save();
-                        }
-                    }
-                }
-            }
-
             $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $updateTransferProduct = TransferStockToBranchProduct::where('transfer_stock_id', $updateSandStocks->id)->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
+            $updateTransferProduct = TransferStockToBranchProduct::where('transfer_stock_id', $updateSandStocks->id)
+                ->where('product_id', $product_id)
+                ->where('product_variant_id', $variant_id)
+                ->first();
             $updateTransferProduct->received_qty = $receive_quantities[$index];
             $updateTransferProduct->save();
 
-            // Update warehouse and branch qty 
-            $productWarehouse = ProductWarehouse::where('warehouse_id', $updateSandStocks->warehouse_id)->where('product_id', $product_id)->first();
-            $productWarehouse->product_quantity -= (float)$receive_quantities[$index];
-            $productWarehouse->save();
-
-            if ($variant_ids[$index] != 'noid') {
-                $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                $productWarehouseVariant->variant_quantity -= (float)$receive_quantities[$index];
-                $productWarehouseVariant->save();
-            }
+            $this->productStockUtil->addWarehouseProduct($product_id, $variant_id, $updateSandStocks->warehouse_id);
+            $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $updateSandStocks->warehouse_id);
 
             if ($updateSandStocks->branch_id) {
-                $productBranch = ProductBranch::where('branch_id', $updateSandStocks->branch_id)
-                    ->where('product_id', $product_id)
-                    ->first();
-
-                if ($productBranch) {
-                    $productBranch->product_quantity += (float)$receive_quantities[$index];
-                    $productBranch->save();
-                    if ($variant_ids[$index] != 'noid') {
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                        if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity += (float)$receive_quantities[$index];
-                            $productBranchVariant->save();
-                        } else {
-                            $addBranchProductVariant = new ProductBranchVariant();
-                            $addBranchProductVariant->product_branch_id = $productBranch->id;
-                            $addBranchProductVariant->product_id = $product_id;
-                            $addBranchProductVariant->product_variant_id = $variant_ids[$index];
-                            $addBranchProductVariant->variant_quantity = $receive_quantities[$index];
-                            $addBranchProductVariant->save();
-                        }
-                    }
-                } else {
-                    $addBranchProduct = new ProductBranch();
-                    $addBranchProduct->branch_id = $updateSandStocks->branch_id;
-                    $addBranchProduct->product_id = $product_id;
-                    $addBranchProduct->product_quantity = $receive_quantities[$index];
-                    $addBranchProduct->save();
-                    if ($variant_ids[$index] != 'noid') {
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $addBranchProduct->id)->where('product_id', $product_id)->where('product_variant_id', $variant_ids[$index])->first();
-                        if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity += (float)$receive_quantities[$index];
-                            $productBranchVariant->save();
-                        } else {
-                            $addBranchProductVariant = new ProductBranchVariant();
-                            $addBranchProductVariant->product_branch_id = $addBranchProduct->id;
-                            $addBranchProductVariant->product_id = $product_id;
-                            $addBranchProductVariant->product_variant_id = $variant_ids[$index];
-                            $addBranchProductVariant->variant_quantity = $receive_quantities[$index];
-                            $addBranchProductVariant->save();
-                        }
-                    }
-                }
+                $this->productStockUtil->addBranchProduct($product_id, $variant_id, $updateSandStocks->branch_id);
+                $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $updateSandStocks->branch_id);
             } else {
-                $product = Product::where('id', $product_id)->first();
-                if ($product) {
-                    $product->mb_stock += (float)$receive_quantities[$index];
-                    $product->save();
-
-                    if ($variant_ids[$index] != 'noid') {
-                        $productVariant = ProductVariant::where('product_id', $product_id)
-                            ->where('id', $variant_ids[$index])->first();
-                        if ($productVariant) {
-                            $productVariant->mb_stock += (float)$receive_quantities[$index];
-                            $productVariant->save();
-                        }
-                    }
-                }
+                $this->productStockUtil->adjustMainBranchStock($product_id, $variant_id);
             }
             $index++;
         }

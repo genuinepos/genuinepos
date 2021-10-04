@@ -10,7 +10,7 @@
         .selectProduct{background-color: #ab1c59; color: #fff!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
-    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -24,7 +24,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Edit Transfer Stock ff</h5>
+                                            <h5>Edit Transfer Stock</h5>
                                         </div>
 
                                         <div class="col-6">
@@ -37,8 +37,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><span
-                                                    class="text-danger">*</span> <b>Warehouse :</b><span
+                                                <label for="inputEmail3" class="col-4"> <b>Warehouse :</b><span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <select class="form-control changeable add_input"
@@ -56,16 +55,9 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><span
-                                                    class="text-danger">*</span> <b>B.Location :</b></label>
+                                                <label for="inputEmail3" class="col-4"> <b>B.Location :</b></label>
                                                 <div class="col-8">
-                                                    <select name="branch_id" data-name="Branch" class="form-control add_input" id="branch_id">
-                                                        <option value="">Select Business Location</option>
-                                                        @foreach ($branches as $branch)
-                                                            <option {{ $transfer->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_branch_id"></span>
+                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                 </div>
                                             </div>
                                         </div> 
@@ -74,17 +66,17 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-2"><b>Date :</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="date" class="form-control datepicker changeable" autocomplete="off"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}" id="date">
+                                                    <input required type="text" name="date" class="form-control changeable" autocomplete="off" id="datepicker"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-3"><b>Invoice ID :</b> </label>
+                                                <label for="inputEmail3" class=" col-3"><b>Ref. ID :</b> </label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control">
+                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +147,6 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
-                            
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -212,11 +203,10 @@
             </form>
         </div>
     </div>
-
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
-    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
@@ -264,7 +254,7 @@
         });
 
         // add Transfer product by searching product code
-        function searchProduct(product_code, warehouse_id){
+        function searchProduct(product_code, warehouse_id) {
             $.ajax({
                 url:"{{ url('transfer/stocks/sarach/product') }}"+"/"+product_code+"/"+warehouse_id,
                 dataType: 'json',
@@ -359,7 +349,6 @@
                                     productTable();  
                                 }
                             }else{
-                                console.log(product); 
                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                                 var products = product.namedProducts;
                                 var li = "";
@@ -1009,9 +998,26 @@
 
         var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
         var _expectedDateFormat = '' ;
-        _expectedDateFormat = dateFormat.replace('d', 'dd');
-        _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
-        _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-        $('.datepicker').datepicker({format: _expectedDateFormat});
+        _expectedDateFormat = dateFormat.replace('d', 'DD');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: _expectedDateFormat,
+        });
     </script>
 @endpush

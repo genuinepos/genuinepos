@@ -639,6 +639,12 @@
                         </div>
                         <div class="container-fluid">
                             <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
+                                    <p>{!! __('menu.transfer_stock_heading_1') !!}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('transfer.stock.to.branch.create') }}"
@@ -671,7 +677,15 @@
                                         <small class="ml-1"><b>(From B.Location)</small></b>
                                     </p>
                                 </div>
+                            </div>
 
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
+                                    <p>{!! __('menu.transfer_stock_heading_2') !!}</p>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('transfer.stock.to.warehouse.create') }}" class="bar-link">

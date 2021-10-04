@@ -53,13 +53,12 @@ class SalePurchaseReportController extends Controller
             }
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-
-            $sale_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $purchase_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $sale_query->whereBetween('report_date', $date_range);
+            $purchase_query->whereBetween('report_date', $date_range);
         }
 
         $sales = $sale_query->get();
@@ -94,16 +93,13 @@ class SalePurchaseReportController extends Controller
             }
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
 
-            $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[1]));
-
-            $sale_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $purchase_query->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $sale_query->whereBetween('report_date', $date_range);
+            $purchase_query->whereBetween('report_date', $date_range);
         }
 
         $sales = $sale_query->get();

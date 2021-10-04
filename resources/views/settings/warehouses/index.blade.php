@@ -26,7 +26,7 @@
                                                 <div class="form-group row">
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-3">
-                                                            <label><strong>Branch :</strong></label>
+                                                            <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
@@ -47,7 +47,7 @@
                             </div>
                         @endif
                     </div>
-                    <!-- =========================================top section button=================== -->
+
                     <div class="row mt-1">
                         <div class="col-md-4">
                             <div class="card" id="add_form">
@@ -124,7 +124,7 @@
                                                 <tr>
                                                     <th class="text-start">SL</th>
                                                     <th class="text-start">Name</th>
-                                                    <th class="text-start">Branch</th>
+                                                    <th class="text-start">Business Location</th>
                                                     <th class="text-start">Warehouse Code</th>
                                                     <th class="text-start">Phone</th>
                                                     <th class="text-start">Address</th>

@@ -1,7 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
         .sale_and_purchase_amount_area table tbody tr th,td {color: #32325d;}
         .sale_purchase_and_profit_area {position: relative;}
@@ -40,12 +39,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
-                                    <div class="col-md-8">
+                                    <div class="col-md-12">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
-                                                <div class="col-md-3 search_area">
+                                                <div class="col-md-2 search_area">
                                                     <label><strong>Search Product :</strong></label>
-                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus>
+                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
                                                     <input type="hidden" name="product_id" id="product_id" value="">
                                                     <input type="hidden" name="variant_id" id="variant_id" value="">
                                                     <div class="search_result d-none">
@@ -57,7 +56,7 @@
 
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
@@ -74,7 +73,7 @@
                                                     @endif
                                                 @endif
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                         <option value="">All</option>
@@ -82,25 +81,46 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <label><strong>Date Range :</strong></label>
+                                                <div class="col-md-2">
+                                                    <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date date"
+                                                            autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i
+                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                        </div>
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label><strong></strong></label>
+                                                            <div class="input-group">
+                                                                <button type="button" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end mt-4" id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label></label>
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -109,6 +129,9 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <div class="card">
+                                    <div class="data_preloader">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    </div>
                                     <div class="table-responsive" id="data-list">
                                         <table class="display data_tbl data__table">
                                             <thead>
@@ -119,13 +142,11 @@
                                                     <th>Customer</th>
                                                     <th>Invoice ID</th>
                                                     <th>Quantity</th>
-                                                    <th>Unit Price</th>
-                                                    <th>Subtotal</th>
+                                                    <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-    
-                                            </tbody>
+                                            <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
                                                     <th colspan="5" class="text-end text-white">Total :</th>
@@ -147,8 +168,7 @@
 @endsection
 @push('scripts')
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     function setCustomers(){
         $.ajax({
@@ -179,7 +199,8 @@
                 d.variant_id = $('#variant_id').val();
                 d.branch_id = $('#branch_id').val();
                 d.customer_id = $('#customer_id').val();
-                d.date_range = $('#date_range').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
             }
         },
         columns: [
@@ -189,8 +210,8 @@
             {data: 'customer', name: 'customers.name'},
             {data: 'invoice_id', name: 'sales.invoice_id'},
             {data: 'quantity', name: 'quantity'},
-            {data: 'unit_price_inc_tax', name: 'unit_price_inc_tax'},
-            {data: 'subtotal', name: 'subtotal'},
+            {data: 'unit_price_inc_tax', name: 'unit_price_inc_tax', className: 'text-end'},
+            {data: 'subtotal', name: 'subtotal', className: 'text-end'},
         ],
         fnDrawCallback: function() {
             var total_qty = sum_table_col($('.data_tbl'), 'qty');
@@ -199,6 +220,7 @@
             $('#total_price_inc_tax').text(parseFloat(total_price_inc_tax).toFixed(2));
             var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
             $('#total_subtotal').text(parseFloat(total_subtotal).toFixed(2));
+            $('.data_preloader').hide();
         },
     });
 
@@ -215,30 +237,17 @@
     }
 
     //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
+    $(document).on('click', '#filter_button', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
         table.ajax.reload();
     });
 
     //Submit filter form by date-range field blur 
-    $(document).on('blur', '.submit_able_input', function () {
-        setTimeout(function() {
-            table.ajax.reload();
-        }, 500);
-    });
-
-     //Submit filter form by date-range field blur 
-     $(document).on('click', '#search_product', function () {
+    $(document).on('click', '#search_product', function () {
         $(this).val('');
         $('#product_id').val('');
-        table.ajax.reload();
-    });
-
-    //Submit filter form by date-range apply button
-    $(document).on('click', '.applyBtn', function () {
-        setTimeout(function() {
-            $('.submit_able_input').addClass('.form-control:focus');
-            $('.submit_able_input').blur();
-        }, 500);
+        $('#variant_id').val('');
     });
 
     $('#search_product').on('input', function () {
@@ -248,7 +257,6 @@
             $('.search_result').hide();
             $('#product_id').val('');
             $('#variant_id').val('');
-            table.ajax.reload();
             return;
         }
 
@@ -276,7 +284,6 @@
         $('#product_id').val(product_id);
         $('#variant_id').val(variant_id);
         $('.search_result').hide();
-        table.ajax.reload();
     });
 
     $('body').keyup(function(e){
@@ -300,11 +307,12 @@
         var product_id = $('#product_id').val();
         var variant_id = $('#variant_id').val();
         var customer_id = $('#customer_id').val();
-        var date_range = $('#date_range').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
         $.ajax({
             url:url,
             type:'get',
-            data: {branch_id, product_id, customer_id, variant_id, date_range},
+            data: {branch_id, product_id, customer_id, variant_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
                     debug: false,                   
@@ -321,32 +329,42 @@
 </script>
 
 <script type="text/javascript">
-    $(function() {
-        var start = moment().startOf('year');
-        var end = moment().endOf('year');
-        $('.daterange').daterangepicker({
-            buttonClasses: ' btn',
-            applyClass: 'btn-primary',
-            cancelClass: 'btn-secondary',
-            startDate: start,
-            endDate: end,
-            locale: {cancelLabel: 'Clear'},
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
-                'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
-            }
-        });
-        $('.daterange').val('');
+     new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
     });
 
-    $(document).on('click', '.cancelBtn ', function () {
-        $('.daterange').val('');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker2'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
     });
 </script>
 @endpush

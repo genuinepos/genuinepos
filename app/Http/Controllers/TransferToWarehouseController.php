@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Utils\Converter;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
+use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\TransferStockToWarehouse;
@@ -17,9 +19,13 @@ use App\Models\TransferStockToWarehouseProduct;
 class TransferToWarehouseController extends Controller
 {
     protected $nameSearchUtil;
-    public function __construct(NameSearchUtil $nameSearchUtil)
+    protected $productStockUtil;
+    protected $converter;
+    public function __construct(NameSearchUtil $nameSearchUtil, ProductStockUtil $productStockUtil, Converter $converter)
     {
         $this->nameSearchUtil = $nameSearchUtil;
+        $this->productStockUtil = $productStockUtil;
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -44,9 +50,9 @@ class TransferToWarehouseController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('transfer.stock.to.warehouse.edit', $row->id) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('transfer.stock.to.warehouse.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stock.to.warehouse.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('transfer.stock.to.warehouse.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('transfer.stock.to.warehouse.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
@@ -64,29 +70,17 @@ class TransferToWarehouseController extends Controller
                 ->editColumn('to_name',  function ($row) {
                     return  $row->to_name . '/' . $row->to_code;
                 })
-                ->editColumn('shipping_charge', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->shipping_charge . '</b>';
-                })
-                ->editColumn('net_total_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . $row->net_total_amount  . '</b>';
-                })
+                ->editColumn('shipping_charge', fn ($row) => $this->converter->format_in_bdt( $row->shipping_charge))
+                ->editColumn('net_total_amount', fn ($row) => $this->converter->format_in_bdt($row->net_total_amount))
                 ->editColumn('status', function ($row) {
-                    $html = '';
                     if ($row->status == 1) {
-                        $html .= '<span class="badge bg-danger">Pending</span>';
+                        return '<span class="badge bg-danger">Pending</span>';
                     } else if ($row->status == 2) {
-                        $html .= '<span class="badge bg-warning text-white">Partial</span>';
+                        return '<span class="badge bg-warning text-white">Partial</span>';
                     } else if ($row->status == 3) {
-                        $html .= '<span class="badge bg-success">Completed</span>';
+                       return '<span class="badge bg-success">Completed</span>';
                     }
-                    return $html;
                 })
-                ->setRowAttr([
-                    'data-href' => function ($row) {
-                        return route('transfer.stock.to.warehouse.show', [$row->id]);
-                    }
-                ])
-                ->setRowClass('clickable_row text-start')
                 ->rawColumns(['action', 'date', 'from', 'to_name', 'shipping_charge', 'net_total_amount', 'status'])
                 ->make(true);
         }
@@ -114,18 +108,18 @@ class TransferToWarehouseController extends Controller
     {
         $this->validate($request, [
             'warehouse_id' => 'required',
+            'date' => 'required',
         ]);
 
-        $i = 6;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+      
+        $invoiceId = 1;
+        $lastTransfer = DB::table('transfer_stock_to_warehouses')->orderBy('id', 'desc')->first();
+        if ($lastTransfer) {
+            $invoiceId = ++$lastTransfer->id;
         }
 
         $addTransferToWarehouse = new TransferStockToWarehouse();
-        $addTransferToWarehouse->invoice_id = $request->invoice_id ? $request->invoice_id : 'TSB' . date('dmy') . $invoiceId;
+        $addTransferToWarehouse->invoice_id = $request->invoice_id ? $request->invoice_id : 'TW' . date('my') . $invoiceId;
         $addTransferToWarehouse->warehouse_id = $request->warehouse_id;
         $addTransferToWarehouse->branch_id = $request->branch_id;
         $addTransferToWarehouse->status = 1;
@@ -218,26 +212,25 @@ class TransferToWarehouseController extends Controller
     {
         $this->validate($request, [
             'warehouse_id' => 'required',
+            'date' => 'required',
         ]);
 
-        $i = 6;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
+        $invoiceId = 1;
+        $lastTransfer = DB::table('transfer_stock_to_warehouses')->orderBy('id', 'desc')->first();
+        if ($lastTransfer) {
+            $invoiceId = ++$lastTransfer->id;
         }
 
         $updateTransferToWarehouse = TransferStockToWarehouse::with('transfer_products')
-            ->where('id', $transferId)->first();
-
+            ->where('id', $transferId)
+            ->first();
         // Update is delete in update status
         foreach ($updateTransferToWarehouse->transfer_products as $transfer_product) {
             $transfer_product->is_delete_in_update = 1;
             $transfer_product->save();
         }
 
-        $updateTransferToWarehouse->invoice_id = $request->invoice_id ? $request->invoice_id : 'TSW' . date('dmy') . $invoiceId;
+        $updateTransferToWarehouse->invoice_id = $request->invoice_id ? $request->invoice_id : 'TW' . date('my') . $invoiceId;
         $updateTransferToWarehouse->warehouse_id = $request->warehouse_id;
         $updateTransferToWarehouse->branch_id = $request->branch_id;
         $updateTransferToWarehouse->total_item = $request->total_item;
@@ -254,7 +247,7 @@ class TransferToWarehouseController extends Controller
         } elseif ($updateTransferToWarehouse->total_received_qty == 0) {
             $updateTransferToWarehouse->status = 1;
         }
-        
+
         $updateTransferToWarehouse->net_total_amount = $request->net_total_amount;
         $updateTransferToWarehouse->shipping_charge = $request->shipping_charge;
         $updateTransferToWarehouse->additional_note = $request->additional_note;
@@ -319,7 +312,6 @@ class TransferToWarehouseController extends Controller
             $deleteTransferToWarehouse->delete();
             foreach ($storedTransferredProducts as $transfer_product) {
                 $this->productStockUtil->adjustWarehouseStock($transfer_product->product_id, $transfer_product->product_variant_id, $storedWarehouseId);
-
                 if ($storedBranchId) {
                     $this->productStockUtil->adjustBranchStock($transfer_product->product_id, $transfer_product->product_variant_id, $storedBranchId);
                 } else {

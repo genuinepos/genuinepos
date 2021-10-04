@@ -1,5 +1,21 @@
 <style>
-    @page {/* size:21cm 29.7cm; */ margin:1cm 1cm 1cm 1cm; *//* margin:20px 20px 10px; */mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
+
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 6px;margin-right: 6px;}
+    .header, .header-space,
+    .footer, .footer-space {height: 20px;}
+    .header {position: fixed; top: 0;}
+    .footer {position: fixed;bottom: 0;}
+    .noBorder {border: 0px !important;}
+    tr.noBorder td {border: 0px !important;}
+    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
 @php
     $total_purchase = 0;
@@ -32,21 +48,27 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-            <p><b>All Business Location.</b></p> 
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-        @else 
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        @else
             @php
-                $branch = DB::table('branches')->where('id', $branch_id)->select('name', 'branch_code')->first();
+                $branch = DB::table('branches')
+                    ->where('id', $branch_id)
+                    ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
+                    ->first();
             @endphp
-            {{ $branch->name.' '.$branch->branch_code }}
+            <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
         
         @if ($fromDate && $toDate)
             <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
         @endif
-        <p><b>Sale / Purcahse Report </b></p> 
+        <h6 style="margin-top: 10px;"><b>Sale / Purcahse Report </b></h6> 
     </div>
 </div>
 <br>
@@ -64,31 +86,31 @@
                             <th class="text-start">Total Purchase :</th>
                             <td class="text-end">
                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ number_format((float)$total_purchase, 2, '.', '') }}
+                                {{ App\Utils\Converter::format_in_bdt($total_purchase) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Purchase Including Tax : </th>
+                            <th class="text-start">Purchase Including Tax :</th>
                             <td class="text-end">
                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ number_format((float)$total_purchase_inc_tax, 2, '.', '') }}
+                                {{ App\Utils\Converter::format_in_bdt($total_purchase_inc_tax) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Purchase Return Including Tax : </th>
+                            <th class="text-start">Purchase Return Including Tax :</th>
                             <td class="text-end">
                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ number_format((float)$total_purchase_return, 2, '.', '') }}
+                                {{ App\Utils\Converter::format_in_bdt($total_purchase_return) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start"> Purchase Due: </th>
+                            <th class="text-start"> Purchase Due :</th>
                             <td class="text-end">
                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ number_format((float)$total_purchase_due, 2, '.', '') }}
+                                {{ App\Utils\Converter::format_in_bdt($total_purchase_due) }}
                             </td>
                         </tr>
                     </tbody>
@@ -110,31 +132,31 @@
                             <th class="text-start">Total Sale :</th>
                             <td class="text-end">
                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ number_format((float)$total_sale, 2, '.', '') }}
+                                {{ App\Utils\Converter::format_in_bdt($total_sale) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Sale Including Tax : </th>
+                            <th class="text-start">Sale Including Tax :</th>
                             <td class="text-end">
                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ number_format((float)$total_sale_inc_tax, 2, '.', '') }}
+                                {{ App\Utils\Converter::format_in_bdt($total_sale_inc_tax) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Sale Return Including Tax : </th>
+                            <th class="text-start">Sale Return Including Tax :</th>
                             <td class="text-end">
                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ number_format((float)$total_sale_return, 2, '.', '') }}
+                                {{ App\Utils\Converter::format_in_bdt($total_sale_return) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start"> Sale Due: </th>
+                            <th class="text-start">Sale Due :</th>
                             <td class="text-end">
                                 {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ number_format((float)$total_sale_due, 2, '.', '') }}
+                                {{ App\Utils\Converter::format_in_bdt($total_sale_due) }}
                             </td>
                         </tr>
                     </tbody>
@@ -156,13 +178,13 @@
                     <h5 class="text-muted">Sale - Purchase : 
                         <span class="{{ $saleMinusPurchase < 0 ? 'text-danger' : '' }}">
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            {{ number_format((float)$saleMinusPurchase, 2, '.', '') }}
+                            {{ App\Utils\Converter::format_in_bdt($saleMinusPurchase) }}
                         </span>
                     </h5>
                     <h5 class="text-muted">Due amount (Sale Due - Purchase Due) :
                         <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            {{ number_format((float)$saleDueMinusPurchaseDue, 2, '.', '') }}
+                            {{ App\Utils\Converter::format_in_bdt($saleDueMinusPurchaseDue) }}
                         </span>
                     </h5>
                 </div>

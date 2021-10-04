@@ -37,8 +37,8 @@
                                                 <th>Reference ID</th>
                                                 <th>B.Location(From)</th>
                                                 <th>Warehouse(To) </th>
-                                                <th>Shipping Charge</th>
-                                                <th>Total Amount</th>
+                                                <th>Shipping Charge({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Total Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -61,9 +61,7 @@
         </div>
     </div>
 
-    <div id="transfer_details">
-        
-    </div>
+    <div id="transfer_details"></div>
 @endsection
 @push('scripts')
     <script>
@@ -84,8 +82,8 @@
                 {data: 'invoice_id',name: 'invoice_id'},
                 {data: 'from',name: 'from'},
                 {data: 'to_name',name: 'to_name'},
-                {data: 'shipping_charge',name: 'shipping_charge'},
-                {data: 'net_total_amount',name: 'net_total_amount'},
+                {data: 'shipping_charge',name: 'shipping_charge', className: 'text-end'},
+                {data: 'net_total_amount',name: 'net_total_amount', className: 'text-end'},
                 {data: 'status',name: 'status'},
                 {data: 'action'},
             ],

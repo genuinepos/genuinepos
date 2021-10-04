@@ -171,17 +171,17 @@ class ProfitLossReportController extends Controller
             }
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $saleQuery->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $expenseQuery->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $payrollQuery->whereBetween('hrm_payroll_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $saleProductQuery->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $transferStBranchQuery->whereBetween('transfer_stock_to_branches.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $transferStWarehouseQuery->whereBetween('transfer_stock_to_warehouses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', $date_range);
+            $saleQuery->whereBetween('sales.report_date', $date_range);
+            $expenseQuery->whereBetween('expanses.report_date', $date_range);
+            $payrollQuery->whereBetween('hrm_payroll_payments.report_date', $date_range);
+            $saleProductQuery->whereBetween('sales.report_date', $date_range);
+            $transferStBranchQuery->whereBetween('transfer_stock_to_branches.report_date', $date_range);
+            $transferStWarehouseQuery->whereBetween('transfer_stock_to_warehouses.report_date', $date_range);
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -343,19 +343,17 @@ class ProfitLossReportController extends Controller
             }
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[1]));
-            $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $saleQuery->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $expenseQuery->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $payrollQuery->whereBetween('hrm_payroll_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $saleProductQuery->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $transferStBranchQuery->whereBetween('transfer_stock_to_branches.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $transferStWarehouseQuery->whereBetween('transfer_stock_to_warehouses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', $date_range);
+            $saleQuery->whereBetween('sales.report_date', $date_range);
+            $expenseQuery->whereBetween('expanses.report_date', $date_range);
+            $payrollQuery->whereBetween('hrm_payroll_payments.report_date', $date_range);
+            $saleProductQuery->whereBetween('sales.report_date', $date_range);
+            $transferStBranchQuery->whereBetween('transfer_stock_to_branches.report_date', $date_range);
+            $transferStWarehouseQuery->whereBetween('transfer_stock_to_warehouses.report_date', $date_range);
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

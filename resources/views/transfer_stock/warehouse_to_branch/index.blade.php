@@ -7,7 +7,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-exchange-alt"></span>
@@ -38,8 +37,8 @@
                                                 <th>Reference ID</th>
                                                 <th>Warehouse(From) </th>
                                                 <th>B.Location(To)</th>
-                                                <th>Shipping Charge</th>
-                                                <th>Total Amount</th>
+                                                <th>Shipping Charge({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Total Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -62,9 +61,7 @@
         </div>
     </div>
 
-    <div id="transfer_details">
-        
-    </div>
+    <div id="transfer_details"></div>
 @endsection
 @push('scripts')
     <script>
@@ -79,39 +76,28 @@
             "serverSide": true,
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             ajax: "{{ route('transfer.stock.to.branch.index') }}",
-            columnDefs: [{"targets": [2, 3, 4, 7],"orderable": false,"searchable": false}],
+            columnDefs: [{"targets": [4, 7],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id',name: 'invoice_id'},
-                {data: 'from',name: 'from'},
-                {data: 'to',name: 'to'},
-                {data: 'shipping_charge',name: 'shipping_charge'},
-                {data: 'net_total_amount',name: 'net_total_amount'},
+                {data: 'from',name: 'warehouses.warehouse_name'},
+                {data: 'to',name: 'branches.name'},
+                {data: 'shipping_charge',name: 'shipping_charge', className: 'text-end'},
+                {data: 'net_total_amount',name: 'net_total_amount', className: 'text-end'},
                 {data: 'status',name: 'status'},
                 {data: 'action'},
             ],
         });
 
-        function transferDetails(url) {
+        $(document).on('click', '.details_button', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
             $('.data_preloader').show();
             $.get(url, function(data) {
                 $('#transfer_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
             });
-        }
-
-        $(document).on('click', '.details_button', function(e) {
-            e.preventDefault();
-            var url = $(this).closest('tr').data('href');
-            transferDetails(url);
-        });
-
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:last-child)', function(e) {
-            e.preventDefault();
-            var url = $(this).parent().data('href');
-            transferDetails(url);
         });
 
         // Show sweet alert for delete
@@ -121,21 +107,8 @@
             $('#deleted_form').attr('action', url);           
             $.confirm({
                 'title': 'Delete Confirmation',
-                'message': 'You are about to delete this item. <br />It cannot be restored at a later time! Continue?',
-                'buttons': {
-                    'Yes': {
-                        'btnClass': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
-                }
+                'message': 'You are about to delete this item. <br/>It cannot be restored at a later time! Continue?',
+                'buttons': {'Yes': {'btnClass': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}}
             });
         });
 

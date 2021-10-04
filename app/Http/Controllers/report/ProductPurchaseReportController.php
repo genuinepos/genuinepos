@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\report;
 
+use App\Utils\Converter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -9,8 +10,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProductPurchaseReportController extends Controller
 {
-    public function __construct()
+    protected $converter;
+    public function __construct( Converter $converter)
     {
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -18,6 +21,7 @@ class ProductPurchaseReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            $converter = $this->converter;
             $generalSettings = DB::table('general_settings')->first();
             $purchaseProducts = '';
             $query = DB::table('purchase_products')
@@ -47,11 +51,11 @@ class ProductPurchaseReportController extends Controller
                 $query->where('purchases.supplier_id', $request->supplier_id);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            if ($request->from_date) {
+                $fromDate = date('Y-m-d', strtotime($request->from_date));
+                $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+                $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                $query->whereBetween('purchases.report_date', $date_range);
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
@@ -109,25 +113,20 @@ class ProductPurchaseReportController extends Controller
                 ->editColumn('quantity', function ($row) {
                     return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
                 })
-                ->editColumn('net_unit_cost',  function ($row) use ($generalSettings) {
-                    return '<b><span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_unit_cost . '</span></b>';
-                })
-                ->editColumn('price',  function ($row) use ($generalSettings) {
+                ->editColumn('net_unit_cost',  fn ($row) =>'<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' .$this->converter->format_in_bdt($row->net_unit_cost) . '</span>')
+                ->editColumn('price',  function ($row) use ($converter) {
                     if ($row->selling_price > 0) {
-                        return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->selling_price . '</b>';
+                        return $converter->format_in_bdt($row->selling_price);
                     }else {
                         if ($row->variant_name) {
-                            return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->variant_price . '</b>';
+                            return $converter->format_in_bdt($row->variant_price);
                         }else {
-                            return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->product_price . '</b>';
+                            return $converter->format_in_bdt($row->product_price);
                         }
                     }
-                    return '<b><span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_unit_cost . '</span></b>';
+                    return '<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . $converter->format_in_bdt($row->net_unit_cost) . '</span>';
                 })
-                ->editColumn('subtotal', function ($row) use ($generalSettings) {
-
-                    return '<b><span class="subtotal" data-value="' . $row->line_total . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->line_total . '</span></b>';
-                })
+                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->line_total . '">' . $this->converter->format_in_bdt($row->line_total) . '</span>')
                 ->rawColumns(['product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'price', 'subtotal'])
                 ->make(true);
         }
@@ -168,13 +167,11 @@ class ProductPurchaseReportController extends Controller
             $query->where('purchases.supplier_id', $request->supplier_id);
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $query->whereBetween('purchases.report_date', $date_range);
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {

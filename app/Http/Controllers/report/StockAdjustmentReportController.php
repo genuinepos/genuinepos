@@ -5,12 +5,15 @@ namespace App\Http\Controllers\report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Utils\Converter;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockAdjustmentReportController extends Controller
 {
-    public function __construct()
+    protected $converter;
+    public function __construct(Converter $converter)
     {
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -27,11 +30,11 @@ class StockAdjustmentReportController extends Controller
                 }
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            if ($request->from_date) {
+                $fromDate = date('Y-m-d', strtotime($request->from_date));
+                $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+                $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                $query->whereBetween('report_date_ts', $date_range);
             }
 
             return $query->select(
@@ -68,11 +71,11 @@ class StockAdjustmentReportController extends Controller
                 $query->where('stock_adjustments.type', $request->type);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('stock_adjustments.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->from_date) {
+                $fromDate = date('Y-m-d', strtotime($request->from_date));
+                $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+                $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                $query->whereBetween('stock_adjustments.report_date_ts', $date_range); // Final
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -115,11 +118,9 @@ class StockAdjustmentReportController extends Controller
                     }
                 })->editColumn('type',  function ($row) {
                     return $row->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>';
-                })->editColumn('net_total', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_total_amount . '</b>';
-                })->editColumn('recovered_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->recovered_amount . '</b>';
-                })->editColumn('created_by', function ($row) {
+                })->editColumn('net_total', fn ($row) => $this->converter->format_in_bdt($row->net_total_amount))
+                ->editColumn('recovered_amount', fn ($row) => $this->converter->format_in_bdt($row->recovered_amount))
+                ->editColumn('created_by', function ($row) {
                     return $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
                 })->rawColumns(['date', 'invoice_id', 'from', 'type', 'net_total', 'recovered_amount', 'created_by'])
                 ->make(true);
@@ -149,13 +150,11 @@ class StockAdjustmentReportController extends Controller
             $query->where('stock_adjustments.type', $request->type);
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('stock_adjustments.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $query->whereBetween('stock_adjustments.report_date_ts', $date_range); // Final
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

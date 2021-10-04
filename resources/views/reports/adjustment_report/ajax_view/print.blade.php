@@ -26,11 +26,11 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
@@ -62,8 +62,8 @@
                     <th class="text-start">Reference No.</th>
                     <th class="text-start">B.Location</th>
                     <th class="text-start">Type</th>
-                    <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -95,8 +95,8 @@
                         <td class="text-start">
                             {{ $ad->type == 1 ? 'Normal' : 'Abnormal' }}
                         </td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ad->net_total_amount) }}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ad->recovered_amount) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ad->net_total_amount) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ad->recovered_amount) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -111,33 +111,33 @@
     </div>
 
     <div class="col-6">
-        <table class="table modal-table table-sm">
+        <table class="table modal-table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <th class="text-start">Total Normal : </th>
-                    <td class="text-start"> 
-                        {{ json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($totalNormal)  }} 
+                    <th class="text-end">Total Normal : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end"> 
+                        {{ App\Utils\Converter::format_in_bdt($totalNormal)  }} 
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-start">Total Abormal :</th>
-                    <td class="text-start">
-                        {{ json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($totalAbnormal)  }} 
+                    <th class="text-end">Total Abormal : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">
+                        {{ App\Utils\Converter::format_in_bdt($totalAbnormal)  }} 
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-start">Total Adjustment :</th>
-                    <td class="text-start">
-                        {{ json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($totalAdjustment)  }}
+                    <th class="text-end">Total Adjustment : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">
+                        {{ App\Utils\Converter::format_in_bdt($totalAdjustment)  }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-start">Total Recovered Amount :</th>
-                    <td class="text-start">
-                        {{ json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($totalRecovered)  }}
+                    <th class="text-end">Total Recovered Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">
+                        {{ App\Utils\Converter::format_in_bdt($totalRecovered)  }}
                     </td>
                 </tr>
             </tbody>

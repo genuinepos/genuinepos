@@ -1,7 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .sale_and_purchase_amount_area table tbody tr th,td {color: #32325d;}
         .sale_purchase_and_profit_area {position: relative;}
@@ -32,7 +31,7 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-8">
-                                        <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
+                                        <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -53,15 +52,33 @@
                                                     @endif
                                                 @endif
                                                 <div class="col-md-3">
-                                                    <label><strong>Date Range :</strong></label>
+                                                    <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date date"
                                                             autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i
+                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                        </div>
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -140,8 +157,8 @@
                                                     <th class="text-start">Reference No</th>
                                                     <th class="text-start">Adjustment From</th>
                                                     <th class="text-start">Type</th>
-                                                    <th class="text-start">Total Amount</th>
-                                                    <th class="text-start">Total Recovered Amount</th>
+                                                    <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                    <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                                                     <th class="text-start">Reason</th>
                                                     <th class="text-start">Created By</th>
                                                 </tr>
@@ -161,17 +178,17 @@
     </div>
 @endsection
 @push('scripts')
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var __currency_symbol = "{{ json_decode($generalSettings->business, true)['currency'] }}";
     function getAdjustmentAmounts() {
         $('.data_preloader').show();
         var branch_id = $('#branch_id').val();
-        var date_range = $('#date_range').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
         $.ajax({
             url: "{{ route('reports.stock.adjustments.index') }}",
-            data:{ branch_id, date_range },
+            data:{ branch_id, from_date, to_date },
             type: 'get',
             success: function(data) {
                 $('.total_normal').html(__currency_symbol+' '+(data[0].total_normal ? data[0].total_normal : parseFloat(0).toFixed(2)));
@@ -184,12 +201,11 @@
     }
     getAdjustmentAmounts();
 
-    adjustment_table = $('.data_tbl').DataTable({
+    var adjustment_table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [ 
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
-            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
-            {extend: 'print',text: 'Print',className: 'btn btn-primary'},
+            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'}
         ],
         "processing": true,
         "serverSide": true,
@@ -199,7 +215,8 @@
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.type = $('#status').val();
-                d.date_range = $('#date_range').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
             }
         },
         columns: [
@@ -207,45 +224,32 @@
             {data: 'invoice_id', name: 'invoice_id'},
             {data: 'from', name: 'branches.name'},
             {data: 'type', name: 'type'},
-            {data: 'net_total', name: 'net_total_amount'},
-            {data: 'recovered_amount', name: 'recovered_amount'},
+            {data: 'net_total', name: 'net_total_amount', className : 'text-end'},
+            {data: 'recovered_amount', name: 'recovered_amount', className : 'text-end'},
             {data: 'reason', name: 'reason'},
             {data: 'created_by', name: 'admin_and_users.name'},
         ],
     });
 
     //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
+    $(document).on('submit', '#filter_form', function (e) {
+        e.preventDefault();
         adjustment_table.ajax.reload();
         getAdjustmentAmounts();
     });
 
-    //Submit filter form by date-range field blur 
-    $(document).on('blur', '.submit_able_input', function () {
-        setTimeout(function() {
-            adjustment_table.ajax.reload();
-            getAdjustmentAmounts();
-        }, 500);
-    });
-
-    //Submit filter form by date-range apply button
-    $(document).on('click', '.applyBtn', function () {
-        setTimeout(function() {
-            $('.submit_able_input').addClass('.form-control:focus');
-            $('.submit_able_input').blur();
-        }, 500);
-    });
 
     //Print S.Adjustment report
     $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
         var url = "{{ route('reports.stock.adjustments.print') }}";
         var branch_id = $('#branch_id').val();
-        var date_range = $('#date_range').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
         $.ajax({
             url:url,
             type:'get',
-            data: {branch_id, date_range},
+            data: {branch_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
                     debug: false,                   
@@ -262,32 +266,42 @@
 </script>
 
 <script type="text/javascript">
-    $(function() {
-        var start = moment().startOf('year');
-        var end = moment().endOf('year');
-        $('.daterange').daterangepicker({
-            buttonClasses: ' btn',
-            applyClass: 'btn-primary',
-            cancelClass: 'btn-secondary',
-            startDate: start,
-            endDate: end,
-            locale: {cancelLabel: 'Clear'},
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
-                'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
-            }
-        });
-        $('.daterange').val('');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
     });
 
-    $(document).on('click', '.cancelBtn ', function () {
-        $('.daterange').val('');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker2'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
     });
 </script>
 @endpush

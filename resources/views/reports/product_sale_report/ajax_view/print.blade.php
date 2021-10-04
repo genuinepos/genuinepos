@@ -25,11 +25,11 @@
     <div class="row">
         <div class="col-md-12 text-center">
             @if ($branch_id == '')
-                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
                 <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
                 <p><b>All Business Location</b></p>
             @elseif ($branch_id == 'NULL')
-                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
                 <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             @else
                 @php
@@ -63,8 +63,8 @@
                         <th class="text-start">Customer</th>
                         <th class="text-start">Invoice ID</th>
                         <th class="text-start">Qty</th>
-                        <th class="text-start">Unit Price({{json_decode($generalSettings->business, true)['currency']}})</th>
-                        <th class="text-start">SubTotal({{json_decode($generalSettings->business, true)['currency']}})</th>
+                        <th class="text-end">Unit Price({{json_decode($generalSettings->business, true)['currency']}})</th>
+                        <th class="text-end">SubTotal({{json_decode($generalSettings->business, true)['currency']}})</th>
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">
@@ -85,8 +85,8 @@
                             <td class="text-start">{{ $sProduct->invoice_id }}</td>
                             
                             <td class="text-start">{!! $sProduct->quantity . ' (<span class="qty" data-value="' . $sProduct->quantity . '">' . $sProduct->unit_code . '</span>)' !!}</td>
-                            <td class="text-start">{{ App\Utils\Converter::format_in_bdt($sProduct->unit_price_inc_tax) }}</td>
-                            <td class="text-start">{{ App\Utils\Converter::format_in_bdt($sProduct->subtotal) }}</td>
+                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sProduct->unit_price_inc_tax) }}</td>
+                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sProduct->subtotal) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -105,13 +105,13 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">Total Price :</th>
-                        <td class="text-end">{{json_decode($generalSettings->business, true)['currency'] .' '. App\Utils\Converter::format_in_bdt($totalUnitPrice) }}</td>
+                        <th class="text-end">Total Price : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalUnitPrice) }}</td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">Net Total Amount :</th>
-                        <td class="text-end">{{json_decode($generalSettings->business, true)['currency'] .' '. App\Utils\Converter::format_in_bdt($totalSubTotal) }}</td>
+                        <th class="text-end">Net Total Amount : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalSubTotal) }}</td>
                     </tr>
             
                 </thead>

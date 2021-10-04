@@ -215,7 +215,7 @@ class ExpanseController extends Controller
                     return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
                 })->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }

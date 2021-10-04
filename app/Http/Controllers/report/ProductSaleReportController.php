@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\report;
 
+use App\Utils\Converter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -9,12 +10,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProductSaleReportController extends Controller
 {
-    public function __construct()
+    protected $converter;
+    public function __construct(Converter $converter)
     {
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
-    // Index view of supplier report
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -51,11 +53,11 @@ class ProductSaleReportController extends Controller
                 }
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            if ($request->from_date) {
+                $fromDate = date('Y-m-d', strtotime($request->from_date));
+                $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+                $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                $query->whereBetween('sales.report_date', $date_range);
             } else {
                 $query->where('sales.year', date('Y'));
             }
@@ -110,11 +112,9 @@ class ProductSaleReportController extends Controller
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })->editColumn('quantity', function ($row) {
                     return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
-                })->editColumn('unit_price_inc_tax',  function ($row) use ($generalSettings) {
-                    return '<b><span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->unit_price_inc_tax . '</span></b>';
-                })->editColumn('subtotal', function ($row) use ($generalSettings) {
-                    return '<b><span class="subtotal" data-value="' . $row->subtotal . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->subtotal . '</span></b>';
-                })->rawColumns(['product', 'sku', 'date', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])->make(true);
+                })->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
+                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . $this->converter->format_in_bdt($row->subtotal) . '</span>')
+                ->rawColumns(['product', 'sku', 'date', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('reports.product_sale_report.index', compact('branches'));
@@ -158,13 +158,11 @@ class ProductSaleReportController extends Controller
             }
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $query->whereBetween('sales.report_date', $date_range);
         } else {
             $query->where('sales.year', date('Y'));
         }

@@ -50,6 +50,8 @@ return [
   'sale_return_list' => 'Sale Return List',
   'shipments' => 'Shipments',
   // Menu childs of Transfer module
+  'transfer_stock_heading_1' => 'TRANSFER STOCK FROM <b>WAREHOUSE</b> TO <b>BUSINESS LOCATION</b>',
+  'transfer_stock_heading_2' => 'TRANSFER STOCK FROM <b>BUSINESS LOCATION</b> TO <b>WAREHOUSE</b>',
   'add_transfer' => 'Add Transfer',
   'transfer_list' => 'Transfer List',
   'receive_stocks' => 'Receive Stocks',

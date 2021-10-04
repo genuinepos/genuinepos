@@ -35,11 +35,11 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
+                                        <form id="filter_form">
                                             <div class="form-group row">
                                                 <div class="col-md-2 search_area">
                                                     <label><strong>Search Product :</strong></label>
-                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus>
+                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
                                                     <input type="hidden" name="product_id" id="product_id" value="">
                                                     <input type="hidden" name="variant_id" id="variant_id" value="">
                                                     <div class="search_result d-none">
@@ -124,6 +124,13 @@
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -146,6 +153,9 @@
                                     </div>
 
                                     <div class="widget_content">
+                                        <div class="data_preloader">
+                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                        </div>
                                         <div class="table-responsive" id="data-list">
                                             <table class="display data_tbl data__table">
                                                 <thead>
@@ -230,6 +240,7 @@
             var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
             var __total_subtotal = parseFloat(total_subtotal).toFixed(2)
             $('#total_subtotal').text(__total_subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('.data_preloader').hide();
         },
     });
 
@@ -257,37 +268,19 @@
     });
 
     //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
+    $(document).on('click', '#filter_button', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
         table.ajax.reload();
-    });
-
-    $(document).on('input', '.from_date', function () {
-        table.ajax.reload();
-    });
-
-    $(document).on('input', '.to_date', function () {
-        if ($('.from_date').val()) {
-            table.ajax.reload();
-        }
     });
 
     //Submit filter form by date-range field blur 
-    $(document).on('click', '.day-item', function () {
-        if ($('.from_date').val()) {
-            setTimeout(function() {
-                table.ajax.reload();
-            }, 500);
-        }
-    });
-
-     //Submit filter form by date-range field blur 
-     $(document).on('click', '#search_product', function () {
+    $(document).on('click', '#search_product', function () {
         $(this).val('');
         $('#product_id').val('');
-        table.ajax.reload();
+        $('#variant_id').val('');
     });
 
- 
     $('#search_product').on('input', function () {
         $('.search_result').hide();
         var product_name = $(this).val();
@@ -295,7 +288,6 @@
             $('.search_result').hide();
             $('#product_id').val('');
             $('#variant_id').val('');
-            table.ajax.reload();
             return;
         }
 
@@ -315,7 +307,6 @@
     });
 
     $(document).on('click', '#select_product', function (e) {
-        e.preventDefault();
         var product_name = $(this).html();
         $('#search_product').val(product_name.trim());
         var product_id = $(this).data('p_id');
@@ -323,10 +314,10 @@
         $('#product_id').val(product_id);
         $('#variant_id').val(variant_id);
         $('.search_result').hide();
-        table.ajax.reload();
     });
 
     $('body').keyup(function(e){
+        e.preventDefault();
         if (e.keyCode == 13 || e.keyCode == 9){  
             $(".selectProduct").click();
             $('.search_result').hide();
@@ -347,11 +338,12 @@
         var product_id = $('#product_id').val();
         var variant_id = $('#variant_id').val();
         var customer_id = $('#customer_id').val();
-        var date_range = $('#date_range').val();
+        var from_date = $('from_date').val();
+        var to_date = $('to_date').val();
         $.ajax({
             url:url,
             type:'get',
-            data: {branch_id, product_id, customer_id, variant_id, date_range},
+            data: {branch_id, product_id, customer_id, variant_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
                     debug: false,                   

@@ -63,8 +63,8 @@
                     <th class="text-start">Supplier</th>
                     <th class="text-start">P.Invoice ID</th>
                     <th class="text-start">Qty</th>
-                    <th class="text-start">Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-start">SubTotal({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">SubTotal({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -84,8 +84,8 @@
                         <td class="text-start">{{ $pProduct->supplier_name }}</td>
                         <td class="text-start">{{ $pProduct->invoice_id }}</td>
                         <td class="text-start">{!! $pProduct->quantity . ' (<span class="qty" data-value="' . $pProduct->quantity . '">' . $pProduct->unit_code . '</span>)' !!}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($pProduct->net_unit_cost) }}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($pProduct->line_total) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($pProduct->net_unit_cost) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($pProduct->line_total) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -104,13 +104,13 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Cost :</th>
-                    <td class="text-end">{{ json_decode($generalSettings->business, true)['currency'] .' '. App\Utils\Converter::format_in_bdt($totalUnitCost) }}</td>
+                    <th class="text-end">Total Cost : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalUnitCost) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Net Total Amount :</th>
-                    <td class="text-end">{{ json_decode($generalSettings->business, true)['currency'] .' '. App\Utils\Converter::format_in_bdt($totalSubTotal) }}</td>
+                    <th class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalSubTotal) }}</td>
                 </tr>
             </thead>
         </table>

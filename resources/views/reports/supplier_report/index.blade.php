@@ -15,7 +15,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-users"></span>
@@ -62,7 +61,6 @@
                                 <div class="report_data">
                                     <div class="card">
                                         <div class="card-body">
-                                            <!--begin: Datatable-->
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="table-responsive" >
@@ -70,11 +68,11 @@
                                                             <thead>
                                                                 <tr class="text-start">
                                                                     <th>Supplier</th>
-                                                                    <th>Opening Balance Due</th>
-                                                                    <th>Total Purchase</th>
-                                                                    <th>Total Paid</th>
-                                                                    <th>Total Due</th>
-                                                                    <th>Total Return Due</th>
+                                                                    <th>Opening Balance Due({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                                    <th>Total Purchase({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                                    <th>Total Paid({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                                    <th>Total Due({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                                    <th>Total Return Due({{json_decode($generalSettings->business, true)['currency'] }})</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -82,7 +80,7 @@
                                                             </tbody>
                                                             <tfoot>
                                                                 <tr class="bg-secondary">
-                                                                    <th class="text-end text-white">Total :</th>
+                                                                    <th class="text-end text-white">Total : ({{json_decode($generalSettings->business, true)['currency'] }})</th>
                                                                     <th id="total_op_blc_due" class="text-white">0.00</th>
                                                                     <th id="total_purchase" class="text-white">0.00</th>
                                                                     <th id="total_paid" class="text-white">0.00</th>
@@ -124,23 +122,23 @@
         },
         columns: [
             { data: 'name', name: 'name'},
-            { data: 'opening_balance', name: 'opening_balance'},
-            { data: 'total_purchase', name: 'total_purchase'},
-            { data: 'total_paid', name: 'total_paid'},
-            { data: 'total_purchase_due', name: 'total_purchase_due'},
-            { data: 'total_purchase_return_due', name: 'total_purchase_return_due'},
+            { data: 'opening_balance', name: 'opening_balance', className: 'text-end'},
+            { data: 'total_purchase', name: 'total_purchase', className: 'text-end'},
+            { data: 'total_paid', name: 'total_paid', className: 'text-end'},
+            { data: 'total_purchase_due', name: 'total_purchase_due', className: 'text-end'},
+            { data: 'total_purchase_return_due', name: 'total_purchase_return_due', className: 'text-end'},
         ],
         fnDrawCallback: function() {
             var totalPurchase = sum_table_col($('.data_tbl'), 'total_purchase');
-            $('#total_purchase').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalPurchase).toFixed(2));
+            $('#total_purchase').text(parseFloat(totalPurchase).toFixed(2));
             var totalPaid = sum_table_col($('.data_tbl'), 'total_paid');
-            $('#total_paid').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalPaid).toFixed(2));
+            $('#total_paid').text(parseFloat(totalPaid).toFixed(2));
             var totalOpeningBalance = sum_table_col($('.data_tbl'), 'opening_balance');
-            $('#total_op_blc_due').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalOpeningBalance).toFixed(2));
+            $('#total_op_blc_due').text(parseFloat(totalOpeningBalance).toFixed(2));
             var totalDue = sum_table_col($('.data_tbl'), 'total_purchase_due');
-            $('#total_purchase_due').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalDue).toFixed(2));
+            $('#total_purchase_due').text(parseFloat(totalDue).toFixed(2));
             var totalReturnDue = sum_table_col($('.data_tbl'), 'total_purchase_return_due');
-            $('#total_return_due').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalReturnDue).toFixed(2));
+            $('#total_return_due').text(parseFloat(totalReturnDue).toFixed(2));
         },
     });
 

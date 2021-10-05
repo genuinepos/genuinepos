@@ -23,11 +23,11 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <form action="" method="get" class="px-2">
+                                        <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id">
                                                                 <option value="">All</option>
@@ -40,7 +40,7 @@
                                                     @endif
                                                 @endif
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id"
                                                         class="form-control selectpicker submit_able"
@@ -48,7 +48,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -61,7 +61,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>To Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -71,6 +71,13 @@
                                                         <input type="text" name="to_date" id="datepicker2"
                                                             class="form-control to_date"
                                                             autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -106,7 +113,7 @@
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Draft ID</th>
-                                                <th>Branch</th>
+                                                <th>Business Location</th>
                                                 <th>Customer</th>
                                                 <th>Total Amount</th>
                                                 <th>Created By</th>
@@ -160,7 +167,7 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[3, 'asc']],
+            aaSorting: [[0, 'asc']],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('sales.drafts') }}",
@@ -184,7 +191,9 @@
                 { data: 'total_payable_amount', name: 'total_payable_amount' },
                 { data: 'user', name: 'user' },
                 { data: 'action' },
-            ],
+            ],fnDrawCallback: function() {
+                $('.data_preloader').hide();
+            },
         });
 
         // Get all supplier for filter form
@@ -228,27 +237,10 @@
         });
 
         //Submit filter form by select input changing
-        $(document).on('change', '.submit_able', function () {
+        $(document).on('submit', '#filter_form', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
             table.ajax.reload();
-        });
-
-        $(document).on('input', '.from_date', function () {
-            table.ajax.reload();
-        });
-
-        $(document).on('input', '.to_date', function () {
-            if ($('.from_date').val()) {
-                table.ajax.reload();
-            }
-        });
-
-        //Submit filter form by date-range field blur 
-        $(document).on('click', '.day-item', function () {
-            if ($('.from_date').val()) {
-                setTimeout(function() {
-                    table.ajax.reload();
-                }, 500);
-            }
         });
 
         // Make print

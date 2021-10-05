@@ -356,7 +356,7 @@ class SaleUtil
             })
             ->editColumn('from',  function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
                     return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                 }
@@ -466,7 +466,7 @@ class SaleUtil
             })
             ->editColumn('from',  function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
                     return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                 }
@@ -667,9 +667,9 @@ class SaleUtil
             })
             ->editColumn('from',  function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
-                    return json_decode($generalSettings->business, true)['shop_name'] . '(<b>BR</b>)';
+                    return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer',  function ($row) {
@@ -749,9 +749,9 @@ class SaleUtil
             })
             ->editColumn('from',  function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
-                    return json_decode($generalSettings->business, true)['shop_name'] . '(<b>BR</b>)';
+                    return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer',  function ($row) {
@@ -825,7 +825,7 @@ class SaleUtil
             })
             ->editColumn('from',  function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
                     return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                 }
@@ -863,12 +863,6 @@ class SaleUtil
                 }
                 return $html;
             })
-            ->setRowAttr([
-                'data-href' => function ($row) {
-                    return route('sales.show', [$row->id]);
-                }
-            ])
-            ->setRowClass('clickable_row text-start')
             ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'shipment_status', 'paid_status'])
             ->make(true);
     }

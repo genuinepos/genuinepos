@@ -52,36 +52,39 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <ul class="list-unstyled"><br>
-                                        <li><strong class="name">Jamal Hosain</strong></li><br>
+                                        <li><strong>Supplier Name :</strong></li>
+                                        <li>{{ $supplier->name }}</li><br>
                                         <li><strong><i class="fas fa-map-marker-alt"></i> Address</strong></li>
-                                        <li><span class="address">Dhaka, Bangladesh.</span></li><br>
+                                        <li>{{ $supplier->address }}</li><br>
                                         <li><strong><i class="fas fa-briefcase"></i> Business Name</strong></li>
-                                        <li><span class="business">Premium Multi Trade</span></li>
+                                        <li>{{ $supplier->business_name }}</li>
                                     </ul>
                                 </div>
 
                                 <div class="col-md-3"><br>
                                     <ul class="list-unstyled">
                                         <li><strong><i class="fas fa-phone-square"></i> Phone</strong></li>
-                                        <li><span class="phone">+0881087555558</span></li>
+                                        <li>{{ $supplier->phone }}</li>
                                     </ul>
                                 </div>
 
                                 <div class="col-md-3"><br>
                                     <ul class="list-unstyled">
                                         <li><strong><i class="fas fa-info"></i> Tex Number</strong></li>
-                                        <li><span class="tax_number">Tx0881087555558</span></li>
+                                        <li><span class="tax_number">{{ $supplier->tax_number }}</span></li>
                                     </ul>
                                 </div>
 
                                 <div class="col-md-3">
                                     <ul class="list-unstyled">
-                                        <li><strong> Total Purchase :</strong></li>
-                                        <li><span class="total_purchase">2000000.00</span></li>
-                                        <li><strong> Total Paid :</strong></li>
-                                        <li><span class="total_paid">2000000.00</span></li>
-                                        <li><strong> Total Purchase Due :</strong></li>
-                                        <li><span class="total_purchase_due">2000000.00</span></li>
+                                        <li><strong> Total Purchase : </strong> </li>
+                                        <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> {{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</li>
+                                        <li><strong> Total Paid : </strong> </li>
+                                        <li>
+                                            <b> {{ json_decode($generalSettings->business, true)['currency'] }}</b> {{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}
+                                        </li>
+                                        <li><strong> Total Purchase Due :</strong> </li>
+                                        <li><b> {{ json_decode($generalSettings->business, true)['currency'] }}</b> {{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -90,7 +93,7 @@
                         <div class="tab_contant ledger d-none">
                         
                             <div class="row">
-                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                <div class="col-md-5 col-sm-12 col-lg-5">
                                     <div class="account_summary_area">
                                         <div class="heading py-2">
                                             <h4 class="py-2 pl-1">Account Summary</h4>
@@ -100,33 +103,37 @@
                                             <table class="table modal-table table-sm">
                                                 <tbody>
                                                     <tr>
-                                                        <td class="text-start"><strong>Opening Balance :</strong></td>
-                                                        <td class="text-start"><span class="opening_balance">0.00</span></td>
+                                                        <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->opening_balance) }}</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-start"><strong>Total Purchase :</strong></td>
-                                                        <td class="text-start"><span class="total_purchase">100000.00</span></td>
+                                                        <td class="text-end"><strong>Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-start"><strong>Total Return :</strong></td>
-                                                        <td class="text-start"><span class="total_return">100000.00</span></td>
+                                                        <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-start"><strong>Total Paid :</strong></td>
-                                                        <td class="text-start"><span class="total_paid">100000.00</span></td>
+                                                        <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                        <td class="text-end">
+                                                            {{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}
+                                                        </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-start"><strong>Balance Due :</strong></td>
-                                                        <td class="text-start"><span class="balance_due">0.00</span></td>
+                                                        <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-start"><strong>Total Returnable/Refundable Amount :</strong></td>
-                                                        <td class="text-start"><span class="total_purchase_return_due">0.00</span></td>
+                                                        <td class="text-end"><strong>Total Returnable/Refundable Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                        <td class="text-end">
+                                                            {{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -134,7 +141,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                <div class="col-md-7 col-sm-12 col-lg-7">
                                     <div class="account_summary_area">
                                         <div class="heading py-2">
                                             <h4 class="py-2 pl-1">Filter Area</h4>
@@ -225,14 +232,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!--end: Datatable-->
                     </div>
                 </div>
-                <!--end::Card-->
             </div>
-            <!--end::Container-->
         </div>
-        <!--end::Entry-->
     </div>
 
     <div id="purchase_details"></div>
@@ -330,7 +333,7 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
     <script>
         $('.data_preloader').show();
-        purchase_table = $('.data_tbl').DataTable({
+        var purchase_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
@@ -374,23 +377,6 @@
         }
         setSuppliers();
 
-         // Set accounts in payment and payment edit form
-         function setAccount(){
-            $.ajax({
-                url:"{{route('accounting.accounts.all.form.account')}}",
-                async:true,
-                type:'get',
-                dataType: 'json',
-                success:function(accounts){
-                    $.each(accounts, function (key, account) {
-                        $('#p_account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                        $('#pe_account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                    });
-                }
-            });
-        }
-        setAccount();
-
         // Change supplier 
         $('#supplier_id').on('change', function () {
            var supplierId = $(this).val(); 
@@ -406,41 +392,17 @@
             $(this).addClass('tab_active');
         });
 
-        function getSupplierAllInformations() {
-            // Supplier info
-            $.ajax({
-                url: "{{ route('contacts.supplier.all.info', $supplierId) }}",
-                type: 'get',
-                dataType: 'json',
-                success: function(supplier) {
-                    
-                    $('.name').html(supplier.name);
-                    $('.address').html(supplier.address);
-                    $('.business').html(supplier.business_name);
-                    $('.phone').html(supplier.phone);
-                    $('.tax_number').html(supplier.tax_number);
-                    $('.total_purchase').html(supplier.total_purchase);
-                    $('.total_purchase').html(supplier.total_purchase);
-                    $('.total_paid').html(supplier.total_paid);
-                    $('.total_return').html(supplier.total_return);
-                    $('.balance_due').html(supplier.total_purchase_due);
-                    $('.opening_balance').html(supplier.opening_balance);
-                    $('#supplier_id').val(supplier.id);
-                    $('.total_purchase_return_due').html(supplier.total_purchase_return_due);
-                    $('.data_preloader').hide();
-                }
-            });
-
-            // Supplier pyaments
+        function getSupplierLedgerList() {
             $.ajax({
                 url: "{{ route('contacts.supplier.payment.list', $supplierId) }}",
                 type: 'get',
-                success: function(paymentList) {
-                    $('#payment_list_table').html(paymentList);
+                success: function(ledgerList) {
+                    $('#payment_list_table').html(ledgerList);
+                    $('.data_preloader').hide();
                 }
             });
         }
-        getSupplierAllInformations();
+        getSupplierLedgerList();
         
         // Show details modal with data
         $(document).on('click', '.details_button', function (e) {

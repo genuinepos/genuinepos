@@ -25,7 +25,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
@@ -287,7 +286,7 @@
         $('.search_result').hide();
     });
 
-    $('body').keyup(function(e){
+    $('body').keyup(function(e) {
         if (e.keyCode == 13 || e.keyCode == 9){  
             $(".selectProduct").click();
             $('.search_result').hide();

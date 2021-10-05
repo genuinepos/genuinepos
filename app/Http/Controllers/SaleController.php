@@ -843,7 +843,7 @@ class SaleController extends Controller
                     }
                 } else {
                     if ($variant_product->mb_stock > 0) {
-                        return response()->json(['variant_product' => $product, 'qty_limit' => $variant_product->mb_stock]);
+                        return response()->json(['variant_product' => $variant_product, 'qty_limit' => $variant_product->mb_stock]);
                     } else {
                         return response()->json(['errorMsg' => 'Stock is not available of this product in this branch/shop']);
                     }

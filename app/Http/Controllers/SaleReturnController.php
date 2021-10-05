@@ -91,7 +91,7 @@ class SaleReturnController extends Controller
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.returns.delete', $row->id) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
                         $html .= '<a class="dropdown-item" id="view_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
                         if ($row->total_return_due > 0) {
-                            $html .= '<a class="dropdown-item" id="add_purchase_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
+                            $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                         }
                     }
 
@@ -112,13 +112,11 @@ class SaleReturnController extends Controller
                     return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ($row->total_return_due >= 0 ? $row->total_return_due :   0.00) . '</span></b>';
                 })
                 ->editColumn('payment_status', function ($row) {
-                    $html = '';
-                    if ($row->total_return_due >= 0) {
-                        $html .= '<span class="text-success"><b>Paid</b></span>';
+                    if ($row->total_return_due > 0) {
+                        return '<span class="text-danger"><b>Due</b></span>';
                     } else {
-                        $html .= '<<span class="text-danger"><b>Due</b></span>';
+                        return '<span class="text-success"><b>Paid</b></span>';
                     }
-                    return $html;
                 })
                 ->editColumn('customer', function ($row) {
                     return $row->cus_name ? $row->cus_name : 'Walk-In-Customer';

@@ -37,67 +37,66 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Paid Amount :</th>
-                            <td width="50%">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $customerPayment->paid_amount }}
+                            <th width="50%" class="text-start">Paid Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td width="50%" class="text-start">
+                                {{ App\Utils\Converter::format_in_bdt($customerPayment->paid_amount) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">Payment Account :</th>
-                            <td width="50%">{{ $customerPayment->account ? $customerPayment->account->name : '' }}</td>
+                            <td width="50%" class="text-start">{{ $customerPayment->account ? $customerPayment->account->name : '' }}</td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">Payment Method :</th>
-                            <td width="50%">{{ $customerPayment->pay_mode }}</td>
+                            <td width="50%" class="text-start">{{ $customerPayment->pay_mode }}</td>
                         </tr>
 
                         @if ($customerPayment->pay_mode == 'Card')
                             <tr>
                                 <th width="50%" class="text-start">Card Number :</th>
-                                <td width="50%">{{ $customerPayment->card_no }}</td>
+                                <td width="50%" class="text-start">{{ $customerPayment->card_no }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Card Holder :</th>
-                                <td width="50%">{{ $customerPayment->card_holder }}</td>
+                                <td width="50%" class="text-start">{{ $customerPayment->card_holder }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Card Type :</th>
-                                <td width="50%">{{ $customerPayment->card_type }}</td>
+                                <td width="50%" class="text-start">{{ $customerPayment->card_type }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%">{{ $customerPayment->card_transaction_no }}</td>
+                                <td width="50%" class="text-start">{{ $customerPayment->card_transaction_no }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Month :</th>
-                                <td width="50%">{{ $customerPayment->card_month }}</td>
+                                <td width="50%" class="text-start">{{ $customerPayment->card_month }}</td>
                             </tr>
 
                             <tr>
                                 <th width="50%" class="text-start">Year :</th>
-                                <td width="50%">{{ $customerPayment->card_year }}</td>
+                                <td width="50%" class="text-start">{{ $customerPayment->card_year }}</td>
                             </tr>
                         @elseif($customerPayment->pay_mode == 'Cheque')
                             <tr>
                                 <th width="50%" class="text-start">Chaque No :</th>
-                                <td width="50%">{{ $customerPayment->cheque_no }}</td>
+                                <td width="50%" class="text-start">{{ $customerPayment->cheque_no }}</td>
                             </tr>
                         @elseif($customerPayment->pay_mode == 'Bank-Transfer')
                             <tr>
                                 <th width="50%" class="text-start">Account No :</th>
-                                <td width="50%">{{ $customerPayment->account_no }}</td>
+                                <td width="50%" class="text-start">{{ $customerPayment->account_no }}</td>
                             </tr>
                         @elseif($customerPayment->pay_mode == 'Custom')
                             <tr>
                                 <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%">{{ $customerPayment->transaction_no }}</td>
+                                <td width="50%" class="text-start">{{ $customerPayment->transaction_no }}</td>
                             </tr>
                         @endif
                     </tbody>
@@ -109,14 +108,14 @@
                     <tbody>
                         <tr>
                             <th width="50%" class="text-start">Voucher No :</th>
-                            <td width="50%">
+                            <td width="50%" class="text-start">
                                 {{ $customerPayment->voucher_no }}
                             </td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">Paid On :</th>
-                            <td width="50%">
+                            <td width="50%" class="text-start">
                                 @php
                                     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
                                 @endphp
@@ -126,7 +125,7 @@
 
                         <tr>
                             <th width="50%" class="text-start">Payment Note :</th>
-                            <td width="50%">
+                            <td width="50%" class="text-start">
                                 {{ $customerPayment->note }}
                             </td>
                         </tr>

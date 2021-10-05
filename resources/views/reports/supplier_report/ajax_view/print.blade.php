@@ -1,8 +1,21 @@
 <style>
-    /* @page {margin:1cm 1cm 1cm 1cm; mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;} */
-    @page {
-        margin-top: 0;
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
     }
+
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 6px;margin-right: 6px;}
+    .header, .header-space,
+    .footer, .footer-space {height: 20px;}
+    .header {position: fixed; top: 0;}
+    .footer {position: fixed;bottom: 0;}
+    .noBorder {border: 0px !important;}
+    tr.noBorder td {border: 0px !important;}
+    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
 @php
     $allTotalPurchase = 0;
@@ -13,9 +26,9 @@
 @endphp
 <div class="row">
     <div class="col-md-12 text-center">
-        <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-        <p><b> {{ json_decode($generalSettings->business, true)['address'] }}</b></p>
-        <p><b>Supplier Report</b></p> 
+        <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+        <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        <h6 style="margin-top: 10px;"><b>Supplier Report</b></h6> 
     </div>
 </div>
 <br/>
@@ -25,11 +38,11 @@
             <thead>
                 <tr>
                     <th class="text-start">Supplier</th>
-                    <th class="text-start">Total Purchase</th>
-                    <th class="text-start">Total Paid</th>
-                    <th class="text-start">Opening Balance Due</th>
-                    <th class="text-start">Total Due</th>
-                    <th class="text-start">Total Return Due</th>
+                    <th class="text-end">Total Purchase({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-end">Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-end">Opening Balance Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-end">Total Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-end">Total Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -42,12 +55,12 @@
                         $allTotalReturnDue += $report->total_purchase_return_due;
                     @endphp
                     <tr>
-                        <td class="text-start">{{ $report->name.' (ID: '.$report->contact_id.')' }}</td>
-                        <td class="text-start">{{ $report->total_purchase }}</td>
-                        <td class="text-start">{{ $report->total_paid }}</td>
-                        <td class="text-start">{{ $report->opening_balance }}</td>
-                        <td class="text-start">{{ $report->total_purchase_due }}</td>
-                        <td class="text-start">{{ $report->total_purchase_return_due }}</td>
+                        <td class="text-end">{{ $report->name.' (ID: '.$report->contact_id.')' }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($report->total_purchase) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($report->total_paid) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($report->opening_balance) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($report->total_purchase_due) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($report->total_purchase_return_due) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -61,28 +74,28 @@
         <table class="table modal-table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <th class="text-start">Opening Balance Due :</th>
-                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalOpDue, 0, 2) }}</td>
+                    <th class="text-end">Opening Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalOpDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-start">Total Purchase :</th>
-                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalPurchase, 0, 2) }}</td>
+                    <th class="text-end">Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPurchase) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-start">Total Paid :</th>
-                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalPaid, 0, 2) }}</td>
+                    <th class="text-end">Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPaid) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-start">Total Purchase Due :</th>
-                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalDue, 0, 2) }}</td>
+                    <th class="text-end">Total Purchase Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-start">Total Returnable/Refundable Due :</th>
-                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] .' '. bcadd($allTotalReturnDue, 0, 2) }}</td>
+                    <th class="text-end">Total Returnable/Refundable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalReturnDue) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -92,7 +105,13 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small> 
+            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
         </div>
     </div>
 @endif
+
+<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
+    <small style="font-size: 5px;" class="text-end">
+        Print Date: {{ date('d-m-Y , h:iA') }}
+    </small>
+</div>

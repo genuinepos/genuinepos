@@ -143,7 +143,7 @@
                                 <div class="card">
                                     <div class="section-header">
                                         <div class="col-md-10">
-                                            <h6>Sald Product List</h6>
+                                            <h6>Sold Product List</h6>
                                         </div>
                                         @if (auth()->user()->permission->purchase['purchase_add'] == '1')
                                             <div class="col-md-2">
@@ -171,9 +171,7 @@
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-        
-                                                </tbody>
+                                                <tbody></tbody>
                                                 <tfoot>
                                                     <tr class="bg-secondary">
                                                         <th colspan="5" class="text-end text-white">Total :{{ json_decode($generalSettings->business, true)['currency'] }}</th>
@@ -298,7 +296,7 @@
             success:function(data){
                 if (!$.isEmptyObject(data.noResult)) {
                     $('.search_result').hide();
-                }else{
+                } else {
                     $('.search_result').show();
                     $('#list').html(data);
                 }
@@ -307,6 +305,7 @@
     });
 
     $(document).on('click', '#select_product', function (e) {
+        e.preventDefault();
         var product_name = $(this).html();
         $('#search_product').val(product_name.trim());
         var product_id = $(this).data('p_id');
@@ -318,7 +317,7 @@
 
     $('body').keyup(function(e){
         e.preventDefault();
-        if (e.keyCode == 13 || e.keyCode == 9){  
+        if (e.keyCode == 13 || e.keyCode == 9) {  
             $(".selectProduct").click();
             $('.search_result').hide();
             $('#list').empty();
@@ -377,7 +376,7 @@
             return totalDays - 1;
         },
         format: 'DD-MM-YYYY'
-    })
+    });
 
     new Litepicker({
         singleMode: true,
@@ -396,6 +395,6 @@
             return totalDays - 1;
         },
         format: 'DD-MM-YYYY'
-    })
+    });
 </script>
 @endpush

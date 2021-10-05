@@ -26,19 +26,19 @@
                     <li><strong>Total Sale : </strong>
                         <span class="card_text invoice_no">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
-                           <b>{{ $customer->total_sale }}</b> 
+                           <b>{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</b> 
                         </span>
                     </li>
                     <li><strong>Total Paid : </strong>
                         {{ json_decode($generalSettings->business, true)['currency'] }}
                         <span class="card_text text-success">
-                            <b>{{ $customer->total_paid }}</b> 
+                            <b>{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</b> 
                         </span>
                     </li>
                     <li><strong>Total Due : </strong>
                         {{ json_decode($generalSettings->business, true)['currency'] }}
                         <span class="card_text text-danger">
-                            <b>{{ $customer->total_sale_due }}</b> 
+                            <b>{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</b> 
                         </span>
                     </li>
                 </ul>

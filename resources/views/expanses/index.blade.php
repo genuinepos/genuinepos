@@ -21,7 +21,7 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <form action="" method="get" class="px-2">
+                                        <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -68,6 +68,13 @@
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -230,32 +237,16 @@
                 { data: 'net_total_amount', name: 'net_total_amount', className: 'text-end'},
                 { data: 'due', name: 'due', className: 'text-end'},
                 { data: 'user_name', name: 'user_name' },
-            ],
+            ],fnDrawCallback: function() {
+                $('.data_preloader').hide();
+            },
         });
 
         //Submit filter form by select input changing
-        $(document).on('change', '.submit_able', function () {
+        $(document).on('submit', '#filter_form', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
             table.ajax.reload();
-        });
-
-        $(document).on('input', '.from_date', function () {
-            table.ajax.reload();
-        });
-
-        $(document).on('input', '.to_date', function () {
-            if ($('.from_date').val()) {
-                table.ajax.reload();
-            }
-        });
-
-        //Submit filter form by date-range field blur 
-        $(document).on('click', '.day-item', function () {
-            console.log('CLICKED');
-            if ($('.from_date').val()) {
-                setTimeout(function() {
-                    table.ajax.reload();
-                }, 500);
-            }
         });
 
         $(document).on('click', '#add_payment', function (e) {

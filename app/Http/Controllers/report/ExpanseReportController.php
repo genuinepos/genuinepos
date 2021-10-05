@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\report;
 
 use App\Models\Expanse;
-//use App\Charts\CommonChart;
+use App\Utils\Converter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -11,8 +11,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ExpanseReportController extends Controller
 {
-    public function __construct()
+    protected $converter;
+    public function __construct(Converter $converter)
     {
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -20,6 +22,7 @@ class ExpanseReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            $converter = $this->converter;
             $generalSettings = DB::table('general_settings')->first();
             $expenses = '';
             $query = DB::table('expanses')
@@ -38,11 +41,11 @@ class ExpanseReportController extends Controller
                 $query->where('expanses.admin_id', $request->admin_id);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->from_date) {
+                $fromDate = date('Y-m-d', strtotime($request->from_date));
+                $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+                $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                $query->whereBetween('expanses.report_date', $date_range); // Final
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -92,24 +95,13 @@ class ExpanseReportController extends Controller
                     }
                     return $html;
                 })
-                ->editColumn('tax_percent',  function ($row) {
+                ->editColumn('tax_percent',  function ($row) use($converter) {
                     $tax_amount = $row->total_amount / 100 * $row->tax_percent;
-                    return '<b><span class="tax_amount" data-value="' . $tax_amount . '">' . $tax_amount . '(' . $row->tax_percent . '%)</span></b>';
+                    return '<b><span class="tax_amount" data-value="' . $tax_amount . '">' . $converter->format_in_bdt($tax_amount) . '(' . $row->tax_percent . '%)</span></b>';
                 })
-                ->editColumn('net_total', function ($row) use ($generalSettings) {
-                    return '<span class="net_total" data-value="' . $row->net_total_amount . '"><b>' . json_decode($generalSettings->business, true)['currency'] . $row->net_total_amount . '</b></span>';
-                })
-                ->editColumn('paid', function ($row) use ($generalSettings) {
-                    return '<span class="paid" data-value="' . $row->paid . '"><b>' . json_decode($generalSettings->business, true)['currency'] . $row->paid . '</b></span>';
-                })
-                ->editColumn('due', function ($row) use ($generalSettings) {
-                    $html = "";
-                    $html .= '<span class="due" data-value="' . $row->due . '" class="text-danger"><strong>' .
-                        json_decode($generalSettings->business, true)['currency'] . $row->due .
-                        '</strong></span>';
-                    return $html;
-                })
-                ->setRowClass('text-start')
+                ->editColumn('net_total', fn ($row) => '<span class="net_total" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
+                ->editColumn('paid', fn ($row) => '<span class="paid" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+                ->editColumn('due', fn ($row) => '<span class="due" data-value="' . $row->due . '" class="text-danger">' . $this->converter->format_in_bdt($row->due) .'</span>')
                 ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'paid', 'due', 'net_total'])
                 ->make(true);
         }
@@ -139,13 +131,11 @@ class ExpanseReportController extends Controller
             $query->where('expanses.admin_id', $request->admin_id);
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $query->whereBetween('expanses.report_date', $date_range); // Final
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

@@ -1,14 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
-    <style>
-        .sale_and_purchase_amount_area table tbody tr th,td {color: #32325d;}
-        .sale_purchase_and_profit_area {position: relative;}
-        .data_preloader{top:2.3%}
-        .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
-        .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
-    </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('title', 'Sale Payment Report - ')
 @section('content')
@@ -17,12 +9,12 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="far fa-money-bill-alt"></span>
                                 <h5>Sale Payment Report</h5>
                             </div>
+
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
@@ -31,12 +23,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
-                                    <div class="col-md-8">
-                                        <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
+                                    <div class="col-md-12">
+                                        <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
@@ -52,32 +44,56 @@
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
-                                                <div class="col-md-4">
+                                                <div class="col-md-2">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                         <option value="">All</option>
+                                                        @foreach ($customers as $customer)
+                                                            <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-4">
-                                                    <label><strong>Date Range :</strong></label>
+                                                <div class="col-md-2">
+                                                    <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
                                                                     class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date date"
+                                                            autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i
+                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                        </div>
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label><strong></strong></label>
+                                                            <div class="input-group">
+                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 mt-3">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label></label>
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -86,6 +102,9 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <div class="card">
+                                    <div class="data_preloader">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    </div>
                                     <div class="table-responsive" id="data-list">
                                         <table class="display data_tbl data__table">
                                             <thead>
@@ -94,8 +113,8 @@
                                                     <th>Voucher No</th>
                                                     <th>Customer</th>
                                                     <th>Payment Method</th>
-                                                    <th>Sale</th>
-                                                    <th>Amount</th>
+                                                    <th>Sale Invoice ID</th>
+                                                    <th>Amount({{json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -103,9 +122,8 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="5" class="text-end text-white">Total :</th>
+                                                    <th colspan="5" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                                     <th class="text-start text-white">
-                                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
                                                         <span id="paid_amount"></span>
                                                     </th>
                                                 </tr>
@@ -122,23 +140,8 @@
     </div>
 @endsection
 @push('scripts')
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    function setCustomers(){
-        $.ajax({
-            url:"{{route('sales.get.all.customer')}}",
-            type:'get',
-            success:function(customers){
-                $('#customer_id').append('<option value="NULL">Walk-In-Customer</option>');
-                $.each(customers, function(key, val){
-                    $('#customer_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
-                });
-            }
-        });
-    }
-    setCustomers();
-
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [ 
@@ -153,7 +156,8 @@
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.customer_id = $('#customer_id').val();
-                d.date_range = $('#date_range').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
             }
         },
         columns: [
@@ -162,11 +166,12 @@
             {data: 'customer_name', name: 'customers.name'},
             {data: 'pay_mode', name: 'pay_mode'},
             {data: 'sale_invoice', name: 'sales.invoice_id'},
-            {data: 'paid_amount', name: 'paid_amount'},
+            {data: 'paid_amount', name: 'paid_amount', className: 'text-end'},
         ],
         fnDrawCallback: function() {
             var paid_amount = sum_table_col($('.data_tbl'), 'paid_amount');
             $('#paid_amount').text(parseFloat(paid_amount).toFixed(2));
+            $('.data_preloader').hide();
         },
     });
 
@@ -183,23 +188,10 @@
     }
 
     //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
+    $(document).on('submit', '#filter_form', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
         table.ajax.reload();
-    });
-
-    //Submit filter form by date-range field blur 
-    $(document).on('blur', '.submit_able_input', function () {
-        setTimeout(function() {
-            table.ajax.reload();
-        }, 500);
-    });
-
-    //Submit filter form by date-range apply button
-    $(document).on('click', '.applyBtn', function () {
-        setTimeout(function() {
-            $('.submit_able_input').addClass('.form-control:focus');
-            $('.submit_able_input').blur();
-        }, 500);
     });
 
     //Print purchase Payment report
@@ -208,11 +200,12 @@
         var url = "{{ route('reports.sale.payments.print') }}";
         var branch_id = $('#branch_id').val();
         var customer_id = $('#customer_id').val();
-        var date_range = $('#date_range').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
         $.ajax({
             url:url,
             type:'get',
-            data: {branch_id, customer_id, date_range},
+            data: {branch_id, customer_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
                     debug: false,                   
@@ -229,32 +222,42 @@
 </script>
 
 <script type="text/javascript">
-    $(function() {
-        var start = moment().startOf('year');
-        var end = moment().endOf('year');
-        $('.daterange').daterangepicker({
-            buttonClasses: ' btn',
-            applyClass: 'btn-primary',
-            cancelClass: 'btn-secondary',
-            startDate: start,
-            endDate: end,
-            locale: {cancelLabel: 'Clear'},
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
-                'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
-            }
-        });
-        $('.daterange').val('');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
     });
 
-    $(document).on('click', '.cancelBtn ', function () {
-        $('.daterange').val('');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker2'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
     });
 </script>
 @endpush

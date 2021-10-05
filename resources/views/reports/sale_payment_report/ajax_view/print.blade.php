@@ -60,7 +60,7 @@
                     <th class="text-start">Customer</th>
                     <th class="text-start">Pay Method</th>
                     <th class="text-start">Sale Invoice ID</th>
-                    <th class="text-start">Paid Amount</th>
+                    <th class="text-end">Paid Amount({{json_decode($generalSettings->business, true)['currency'] }})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -74,7 +74,7 @@
                         <td class="text-start">{{ $payment->customer_name ? $payment->customer_name : 'Walk-In-Customer' }}</td>
                         <td class="text-start">{{ $payment->pay_mode }}</td>
                         <td class="text-start">{{ $payment->sale_invoice }}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -88,8 +88,8 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Received Amount :</th>
-                    <td class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
+                    <th class="text-end">Total Received Amount : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
                 </tr>
             </thead>
         </table>

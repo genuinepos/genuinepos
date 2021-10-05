@@ -35,8 +35,8 @@
                     <th class="text-start">Invoice ID</th>
                     <th class="text-start">Voucher No</th>
                     <th class="text-start">Payment Method</th>
-                    <th class="text-start">Debit</th>
-                    <th class="text-start">Credit</th>
+                    <th class="text-end">Debit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-end">Credit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                 </tr>
             </thead>
             
@@ -54,12 +54,10 @@
                             <td class="text-start">{{ $ledger->sale->invoice_id }}</td>
                             <td class="text-start">---</td>
                             <td class="text-start">---</td>
-                            
-                            <td class="text-start">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $ledger->sale->total_payable_amount }}
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($ledger->sale->total_payable_amount) }}
                             </td>
-                            <td>---</td>
+                            <td class="text-start">---</td>
                         @elseif($ledger->row_type == 2)
                             <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale_payment->date)) }}</td> 
                             <td class="text-start">{{ $ledger->sale_payment->payment_type == 1 ? 'Dr' : 'Cr' }}</td>
@@ -75,14 +73,12 @@
                             <td class="text-start">{{ $ledger->sale_payment->pay_mode }}</td>
                             @if ($ledger->sale_payment->payment_type == 1)
                                 <td class="text-start">---</td>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                                    {{ $ledger->sale_payment->paid_amount }}
+                                <td class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($ledger->sale_payment->paid_amount) }}
                                 </td>
                             @else   
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                                    {{ $ledger->sale_payment->paid_amount }}
+                                <td class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($ledger->sale_payment->paid_amount) }}
                                 </td>
                                 <td>---</td>  
                             @endif
@@ -95,7 +91,7 @@
                             <td class="text-start">---</td>
                             <td class="text-start"> {{ $ledger->money_receipt->invoice_id }}</td>
                             <td class="text-start">{{ $ledger->money_receipt->payment_method }}</td>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $ledger->amount }}</td>
+                            <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ledger->amount) }}</td>
                             <td class="text-start">---</td> 
                         @elseif($ledger->row_type == 5)
                             <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->customer_payment->date)) }}</td> 
@@ -110,14 +106,12 @@
                             <td class="text-start">{{ $ledger->customer_payment->pay_mode }}</td>
                             @if ($ledger->customer_payment->type == 1)
                                 <td class="text-start">---</td>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                                    {{ $ledger->customer_payment->paid_amount }}
+                                <td class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($ledger->customer_payment->paid_amount) }}
                                 </td>
                             @else   
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                                    {{ $ledger->customer_payment->paid_amount }}
+                                <td class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($ledger->customer_payment->paid_amount) }}
                                 </td>
                                 <td class="text-start">---</td>
                             @endif
@@ -128,9 +122,8 @@
                             <td class="text-start">---</td>
                             <td class="text-start">---</td>
                             <td class="text-start">---</td>   
-                            <td class="text-start">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $ledger->amount }}
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($ledger->amount) }}
                             </td>
                             <td class="text-start">---</td>   
                         @endif

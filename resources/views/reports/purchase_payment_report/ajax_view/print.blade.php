@@ -8,7 +8,7 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 6px;margin-right: 6px;}
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 6px;margin-right: 6px;}
     .header, .header-space,
     .footer, .footer-space {height: 20px;}
     .header {position: fixed; top: 0;}
@@ -60,7 +60,7 @@
                     <th class="text-start">Supplier</th>
                     <th class="text-start">Pay Method</th>
                     <th class="text-start">P.Invoice ID</th>
-                    <th class="text-start">Paid Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">Paid Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -74,7 +74,7 @@
                         <td class="text-start">{{ $payment->supplier_name }}</td>
                         <td class="text-start">{{ $payment->pay_mode }}</td>
                         <td class="text-start">{{ $payment->purchase_invoice }}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}</td>
                     </tr>
                 @endforeach
             </tbody>

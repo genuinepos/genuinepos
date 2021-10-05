@@ -29,19 +29,19 @@
                     <li> 
                         <h6>
                             Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            <b class="text-success">{{ $customer->total_paid }}</b> 
+                            <b class="text-success">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</b> 
                         </h6>
                     </li>
                     <li>
                         <h6>
                             Total Sale Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-danger">{{ $customer->total_sale_due }}</b> 
+                            <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</b> 
                         </h6>
                     </li>
                     <li>
                         <h6>
                             Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-danger"> {{ $customer->total_sale_return_due }}</b> 
+                            <b class="text-danger"> {{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</b> 
                         </h6>
                     </li>
                 </ul>
@@ -58,13 +58,13 @@
         <table class="table modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-primary">
-                    <th class="text-white">Date</th>
-                    <th class="text-white">Voucher No</th>
-                    <th class="text-white">Type</th>
-                    <th class="text-white">Method</th>
-                    <th class="text-white">Account</th>
-                    <th class="text-white">Amount</th>
-                    <th class="text-white">Action</th>
+                    <th class="text-white text-start">Date</th>
+                    <th class="text-white text-start">Voucher No</th>
+                    <th class="text-white text-start">Type</th>
+                    <th class="text-white text-start">Method</th>
+                    <th class="text-white text-start">Account</th>
+                    <th class="text-white text-end">Amount({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-white text-start">Action</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
@@ -72,20 +72,20 @@
                 @if (count($customer->customer_payments) > 0)
                     @foreach ($customer->customer_payments as $payment)
                         <tr>
-                            <td>
+                            <td class="text-start">
                                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
                             </td>
-                            <td>{{ $payment->voucher_no }}</td>
-                            <td>{{ $payment->type == 1 ? 'Sale Due' : 'Return due' }}</td>
-                            <td>{{ $payment->pay_mode }}</td>
-                            <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
-                            <td>
-                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
+                            <td class="text-start">{{ $payment->voucher_no }}</td>
+                            <td class="text-start">{{ $payment->type == 1 ? 'Sale Due' : 'Return due' }}</td>
+                            <td class="text-start">{{ $payment->pay_mode }}</td>
+                            <td class="text-start">{{ $payment->account ? $payment->account->name.' (A/C: '.$payment->account->account_number.')' : 'N/A' }}</td>
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                                 @php
                                     $total += $payment->paid_amount;
                                 @endphp
                             </td>
-                            <td>
+                            <td class="text-start">
                                 <a href="{{ route('customers.view.details', $payment->id) }}" id="payment_details" class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
                                 <a href="{{ route('customers.payment.delete', $payment->id) }}" id="delete_payment" class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
                             </td>
@@ -99,8 +99,8 @@
             </tbody>
             <tfoot>
                 <tr class="bg-secondary">
-                    <th colspan="5" class="text-white text-end"> <b>Total :</b> </th>
-                    <th class="text-white"><b>{{json_decode($generalSettings->business, true)['currency'] . ' ' . bcadd($total, 0, 2) }}</b></th>
+                    <th colspan="5" class="text-white text-end"> <b>Total : {{json_decode($generalSettings->business, true)['currency'] }}</b> </th>
+                    <th class="text-white text-end"><b>{{App\Utils\Converter::format_in_bdt($total) }}</b></th>
                     <th></th>
                 </tr>
             </tfoot>

@@ -31,12 +31,9 @@
 
                             <div class="tab_list_area">
                                 <ul class="list-unstyled">
-                                    <li><a id="tab_btn" data-show="contract_info_area" class="tab_btn tab_active" href=""><i
-                                                class="fas fa-info-circle"></i> Contract Info</a></li>
-                                    <li><a id="tab_btn" data-show="ledger" class="tab_btn" href=""><i class="fas fa-scroll"></i>
-                                            Ledger</a></li>
-                                    <li><a id="tab_btn" data-show="sale" class="tab_btn" href=""><i
-                                                class="fas fa-shopping-bag"></i> Sale</a></li>
+                                    <li><a id="tab_btn" data-show="contract_info_area" class="tab_btn tab_active" href=""><i class="fas fa-info-circle"></i> Contract Info</a></li>
+                                    <li><a id="tab_btn" data-show="ledger" class="tab_btn" href=""><i class="fas fa-scroll"></i> Ledger</a></li>
+                                    <li><a id="tab_btn" data-show="sale" class="tab_btn" href=""><i class="fas fa-shopping-bag"></i> Sale</a></li>
                                 </ul>
                             </div>
 
@@ -44,36 +41,34 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
-                                            <li><strong class="name">Jamal Hosain</strong></li><br>
-                                            <li><strong><i class="fas fa-map-marker-alt"></i> Address</strong></li>
-                                            <li><span class="address">Dhaka, Bangladesh.</span></li><br>
-                                            <li><strong><i class="fas fa-briefcase"></i> Business Name</strong></li>
-                                            <li><span class="business">Premium Multi Trade</span></li>
+                                            <li><strong>Customer Name :</strong></li>
+                                            <li><span class="name">{{ $customer->name }}</span></li><br>
+                                            <li><strong><i class="fas fa-map-marker-alt"></i> Address :</strong></li>
+                                            <li><span class="address">{{ $customer->address }}</span></li><br>
+                                            <li><strong><i class="fas fa-briefcase"></i> Business Name :</strong></li>
+                                            <li><span class="business">{{ $customer->business_name }}</span></li>
                                         </ul>
                                     </div>
 
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
                                             <li><strong><i class="fas fa-phone-square"></i> Phone</strong></li>
-                                            <li><span class="phone">+0881087555558</span></li>
+                                            <li><span class="phone">{{ $customer->phone }}</span></li>
                                         </ul>
                                     </div>
 
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
                                             <li><strong><i class="fas fa-info"></i> Tax Number</strong></li>
-                                            <li><span class="tax_number">Tx0881087555558</span></li>
+                                            <li><span class="tax_number">{{ $customer->tax_number }}</span></li>
                                         </ul>
                                     </div>
 
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
-                                            <li><strong> Total Sale :</strong></li>
-                                            <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_sale">2000000.00</span></li>
-                                            <li><strong> Total Paid :</strong></li>
-                                            <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_paid">2000000.00</span></li>
-                                            <li><strong> Total Sale Due :</strong></li>
-                                            <li><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_sale_due">2000000.00</span></li>
+                                            <li><strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</li>
+                                            <li><strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</li>
+                                            <li><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -91,23 +86,25 @@
                                                 <table class="table modal-table table-sm">
                                                     <tbody>
                                                         <tr>
-                                                            <td class="text-start"><strong>Opening Balance :</strong></td>
-                                                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="opening_balance">0.00</span></td>
+                                                            <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> </td>
+                                                            <td class="text-end"> {{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</td>
                                                         </tr>
 
                                                         <tr>
-                                                            <td class="text-start"><strong>Total Sale :</strong></td>
-                                                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_sale">100000.00</span></td>
+                                                            <td class="text-end"><strong>Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</td>
                                                         </tr>
 
                                                         <tr>
-                                                            <td class="text-start"><strong>Total Paid :</strong></td>
-                                                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="total_paid">100000.00</span></td>
+                                                            <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                            <td class="text-end"> 
+                                                                {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}
+                                                            </td>
                                                         </tr>
 
                                                         <tr>
-                                                            <td class="text-start"><strong>Balance Due :</strong></td>
-                                                            <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> <span class="balance_due">0.00</span></td>
+                                                            <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -188,9 +185,7 @@
                                                             <th>Payment Status</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        
-                                                    </tbody>
+                                                    <tbody></tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -201,7 +196,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--end: Datatable-->
                         </div>
                     </div>
                 </div>
@@ -315,23 +309,6 @@
             ],
         });
         
-        // Set accounts in payment and payment edit form
-        function setAccount(){
-            $.ajax({
-                url:"{{route('accounting.accounts.all.form.account')}}",
-                async:true,
-                type:'get',
-                dataType: 'json',
-                success:function(accounts){
-                    $.each(accounts, function (key, account) {
-                        $('#p_account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                        $('#pe_account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                    });
-                }
-            });
-        }
-        setAccount();
-
         // Change customer 
         $('#customer_id').on('change', function () {
            var customerId = $(this).val(); 
@@ -347,39 +324,17 @@
             $(this).addClass('tab_active');
         });
 
-        function getCustomerAllInformations() {
-            // Supplier info
-            $.ajax({
-                url: "{{ route('contacts.customer.all.info', $customerId) }}",
-                type: 'get',
-                dataType: 'json',
-                success: function(customer) {
-                    console.log(customer);
-                    $('.name').html(customer.name);
-                    $('.address').html(customer.address);
-                    $('.business').html(customer.business_name);
-                    $('.phone').html(customer.phone);
-                    $('.tax_number').html(customer.tax_number);
-                    $('.total_sale').html(customer.total_sale);
-                    $('.total_paid').html(customer.total_paid);
-                    $('.total_sale_due').html(customer.total_sale_due);
-                    $('.balance_due').html(customer.total_sale_due);
-                    $('.opening_balance').html(customer.opening_balance);
-                    $('#customer_id').val(customer.id);
-                }
-            });
-
-            // customer pyaments
+        function getCustomerLedgerList() {
             $.ajax({
                 url: "{{ route('contacts.customer.ledger.list', $customerId) }}",
                 type: 'get',
-                success: function(paymentList) {
-                    $('#payment_list_table').html(paymentList);
+                success: function(ledgerList) {
+                    $('#payment_list_table').html(ledgerList);
                     $('.data_preloader').hide();
                 }
             });
         }
-        getCustomerAllInformations();
+        getCustomerLedgerList();
 
         // Pass sale details in the details modal
         function saleDetails(url) {

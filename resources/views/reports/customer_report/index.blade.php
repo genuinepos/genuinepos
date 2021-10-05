@@ -70,11 +70,11 @@
                                                             <thead>
                                                                 <tr class="text-start">
                                                                     <th>Customer</th>
-                                                                    <th>Opening Balance Due</th>
-                                                                    <th>Total Sale</th>
-                                                                    <th>Total Paid</th>
-                                                                    <th>Total Due</th>
-                                                                    <th>Total Return Due</th>
+                                                                    <th>Opening Balance Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                                    <th>Total Sale({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                                    <th>Total Paid({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                                    <th>Total Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                                    <th>Total Return Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -82,7 +82,7 @@
                                                             </tbody>
                                                             <tfoot>
                                                                 <tr class="bg-secondary">
-                                                                    <th class="text-end text-white">Total :</th>
+                                                                    <th class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency']}}</th>
                                                                     <th id="total_op_blc_due" class="text-white">0.00</th>
                                                                     <th id="total_sale" class="text-white">0.00</th>
                                                                     <th id="total_paid" class="text-white">0.00</th>
@@ -124,23 +124,23 @@
         },
         columns: [
             { data: 'name', name: 'name'},
-            { data: 'opening_balance', name: 'opening_balance'},
-            { data: 'total_sale', name: 'total_sale'},
-            { data: 'total_paid', name: 'total_paid'},
-            { data: 'total_sale_due', name: 'total_sale_due'},
-            { data: 'total_sale_return_due', name: 'total_sale_return_due'},
+            { data: 'opening_balance', name: 'opening_balance', className: 'text-end'},
+            { data: 'total_sale', name: 'total_sale', className: 'text-end'},
+            { data: 'total_paid', name: 'total_paid', className: 'text-end'},
+            { data: 'total_sale_due', name: 'total_sale_due', className: 'text-end'},
+            { data: 'total_sale_return_due', name: 'total_sale_return_due', className: 'text-end'},
         ],
         fnDrawCallback: function() {
             var totalSale = sum_table_col($('.data_tbl'), 'total_sale');
-            $('#total_sale').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalSale).toFixed(2));
+            $('#total_sale').text(parseFloat(totalSale).toFixed(2));
             var totalPaid = sum_table_col($('.data_tbl'), 'total_paid');
-            $('#total_paid').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalPaid).toFixed(2));
+            $('#total_paid').text(parseFloat(totalPaid).toFixed(2));
             var totalOpeningBalance = sum_table_col($('.data_tbl'), 'opening_balance');
-            $('#total_op_blc_due').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalOpeningBalance).toFixed(2));
+            $('#total_op_blc_due').text(parseFloat(totalOpeningBalance).toFixed(2));
             var totalDue = sum_table_col($('.data_tbl'), 'total_purchase_due');
-            $('#total_sale_due').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalDue).toFixed(2));
+            $('#total_sale_due').text(parseFloat(totalDue).toFixed(2));
             var totalReturnDue = sum_table_col($('.data_tbl'), 'total_purchase_return_due');
-            $('#total_return_due').text("{{ json_decode($generalSettings->business, true)['currency'] }} "+parseFloat(totalReturnDue).toFixed(2));
+            $('#total_return_due').text(parseFloat(totalReturnDue).toFixed(2));
         },
     });
 

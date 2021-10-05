@@ -23,14 +23,14 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <form action="" method="get" class="px-2">
+                                        <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id"
+                                                                class="form-control" id="branch_id"
                                                                 data-live-search="true">
                                                                 <option value="">All</option>
                                                                 <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
@@ -44,15 +44,15 @@
                                                     @endif
                                                 @endif
                                                 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id"
-                                                        class="form-control selectpicker submit_able"
+                                                        class="form-control selectpicker"
                                                         id="customer_id">
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Payment Status :</strong></label>
                                                     <select name="payment_status" id="payment_status" class="form-control submit_able">
                                                         <option value="">All</option>
@@ -61,7 +61,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -74,7 +74,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>To Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -84,6 +84,13 @@
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -91,7 +98,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
+
                     <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -186,11 +193,15 @@
                 {data: 'shipment_status', name: 'shipment_status'},
                 {data: 'paid_status', name: 'paid_status'},
                 {data: 'action',},
-            ],
+            ],fnDrawCallback: function() {
+                $('.data_preloader').hide();
+            }
         });
 
-        // Pass sale details in the details modal
-        function saleDetails(url) {
+        // Show details modal with data
+        $(document).on('click', '.details_button', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
             $('.data_preloader').show();
             $.ajax({
                 url:url,
@@ -201,20 +212,6 @@
                     $('#detailsModal').modal('show');
                 }
             });
-        }
-        
-        // Show details modal with data
-        $(document).on('click', '.details_button', function (e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            saleDetails(url);
-        });
-
-        // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:last-child)', function(e){
-            e.preventDefault();
-            var sale = $(this).parent().data('href');
-            saleDetails(sale);
         });
 
         // Get Edit Shipment Modal form
@@ -374,27 +371,10 @@
         });
 
         //Submit filter form by select input changing
-        $(document).on('change', '.submit_able', function () {
+        $(document).on('submit', '#filter_form', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
             table.ajax.reload();
-        });
-
-        $(document).on('input', '.from_date', function () {
-            table.ajax.reload();
-        });
-
-        $(document).on('input', '.to_date', function () {
-            if ($('.from_date').val()) {
-                table.ajax.reload();
-            }
-        });
-
-        //Submit filter form by date-range field blur 
-        $(document).on('click', '.day-item', function () {
-            if ($('.from_date').val()) {
-                setTimeout(function() {
-                    table.ajax.reload();
-                }, 500);
-            }
         });
     </script>
 @endpush

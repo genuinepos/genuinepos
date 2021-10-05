@@ -11,8 +11,8 @@
             <th>Invoice ID</th>
             <th>Voucher No</th>
             <th>Payment Method</th>
-            <th>Debit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-            <th>Credit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th class="text-end">Debit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th class="text-end">Credit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
         </tr>
     </thead>
 
@@ -33,7 +33,7 @@
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($ledger->sale->total_payable_amount) }}
                     </td>
-                    <td>---</td>
+                    <td class="text-start">---</td>
                 @elseif($ledger->row_type == 2)
                     <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale_payment->date)) }}</td> 
                     <td class="text-start">{{ $ledger->sale_payment->payment_type == 1 ? 'Dr' : 'Cr' }}</td>

@@ -6,15 +6,17 @@ use App\Models\Sale;
 use App\Models\Account;
 use App\Models\CashFlow;
 use App\Models\Customer;
+use App\Utils\Converter;
+use App\Utils\AccountUtil;
 use App\Models\SalePayment;
+use App\Utils\CustomerUtil;
 use Illuminate\Http\Request;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerPaymentInvoice;
-use App\Utils\AccountUtil;
-use App\Utils\Converter;
-use App\Utils\CustomerUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\SaleUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
@@ -22,11 +24,15 @@ class CustomerController extends Controller
     public $customerUtil;
     public $accountUtil;
     public $converter;
-    public function __construct(CustomerUtil $customerUtil, AccountUtil $accountUtil, Converter $converter)
+    public $invoiceVoucherRefIdUtil;
+    public $saleUtil;
+    public function __construct(CustomerUtil $customerUtil, AccountUtil $accountUtil, Converter $converter, SaleUtil $saleUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->customerUtil = $customerUtil;
         $this->accountUtil = $accountUtil;
         $this->converter = $converter;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->saleUtil = $saleUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -373,15 +379,8 @@ class CustomerController extends Controller
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status'])
                 ->make(true);
         }
-        $customer = DB::table('customers')->where('id', $customerId)->first(['name', 'contact_id']);
+        $customer = DB::table('customers')->where('id', $customerId)->first();
         return view('contacts.customers.view', compact('customerId', 'customer'));
-    }
-
-    // Customer all info
-    public function cutomerAllInfo($customerId)
-    {
-        $customer = Customer::where('id', $customerId)->first();
-        return response()->json($customer);
     }
 
     // Customer ledger list
@@ -450,18 +449,9 @@ class CustomerController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
-        // generate invoice ID
-        $l = 6;
-        $sv = 0;
-        $voucherNo = '';
-        while ($sv < $l) {
-            $voucherNo .= rand(1, 9);
-            $sv++;
-        }
-
         // Add Customer Payment Record
         $customerPayment = new CustomerPayment();
-        $customerPayment->voucher_no = 'CPV' . $voucherNo;
+        $customerPayment->voucher_no = 'CPV' . $this->invoiceVoucherRefIdUtil->customerPaymentVoucherNo();
         $customerPayment->branch_id = auth()->user()->branch_id;
         $customerPayment->customer_id = $customerId;
         $customerPayment->account_id = $request->account_id;
@@ -499,17 +489,10 @@ class CustomerController extends Controller
         $customerPayment->save();
 
         if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->credit += $request->amount;
-            $account->balance += $request->amount;
-            $account->save();
-
             // Add cash flow
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->credit = $request->amount;
-            $addCashFlow->balance = $account->balance;
             $addCashFlow->customer_payment_id = $customerPayment->id;
             $addCashFlow->transaction_type = 13;
             $addCashFlow->cash_type = 2;
@@ -518,6 +501,8 @@ class CustomerController extends Controller
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
+            $addCashFlow->save();
+            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
             $addCashFlow->save();
         }
 
@@ -529,26 +514,14 @@ class CustomerController extends Controller
         $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
         $addCustomerLedger->save();
 
-        // generate invoice ID
-        $i = 6;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
-
         $dueInvoices = Sale::where('customer_id', $customerId)->where('due', '>', 0)->get();
         if (count($dueInvoices) > 0) {
             $index = 0;
             foreach ($dueInvoices as $dueInvoice) {
                 if ($dueInvoice->due > $request->amount) {
                     if ($request->amount > 0) {
-                        $dueInvoice->paid += $request->amount;
-                        $dueInvoice->due -= $request->amount;
-                        $dueInvoice->save();
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
                         $addSalePayment->sale_id = $dueInvoice->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->account_id = $request->account_id;
@@ -587,15 +560,13 @@ class CustomerController extends Controller
                         $addCustomerPaymentInvoice->sale_id = $dueInvoice->id;
                         $addCustomerPaymentInvoice->paid_amount = $request->amount;
                         $addCustomerPaymentInvoice->save();
+                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         $request->amount -= $request->amount;
                     }
                 } elseif ($dueInvoice->due == $request->amount) {
                     if ($request->amount > 0) {
-                        $dueInvoice->paid += $request->amount;
-                        $dueInvoice->due -= $request->amount;
-                        $dueInvoice->save();
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
                         $addSalePayment->sale_id = $dueInvoice->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->account_id = $request->account_id;
@@ -634,12 +605,13 @@ class CustomerController extends Controller
                         $addCustomerPaymentInvoice->sale_id = $dueInvoice->id;
                         $addCustomerPaymentInvoice->paid_amount = $request->amount;
                         $addCustomerPaymentInvoice->save();
+                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         $request->amount -= $request->amount;
                     }
                 } elseif ($dueInvoice->due < $request->amount) {
                     if ($dueInvoice->due > 0) {
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
                         $addSalePayment->sale_id = $dueInvoice->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->account_id = $request->account_id;
@@ -680,9 +652,7 @@ class CustomerController extends Controller
                         $addCustomerPaymentInvoice->save();
 
                         $request->amount -= $dueInvoice->due;
-                        $dueInvoice->paid += $dueInvoice->due;
-                        $dueInvoice->due -= $dueInvoice->due;
-                        $dueInvoice->save();
+                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                     }
                 }
                 $index++;
@@ -996,7 +966,7 @@ class CustomerController extends Controller
     {
         $customer = Customer::with(
             'customer_payments',
-            'customer_payments.account:id,name'
+            'customer_payments.account:id,name,account_number'
         )->where('id', $customerId)->first();
         return view('contacts.customers.ajax_view.view_payment_list', compact('customer'));
     }

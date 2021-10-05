@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\report;
 
+use App\Utils\Converter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -9,8 +10,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SalePaymentReportController extends Controller
 {
-    public function __construct()
+    protected $converter;
+    public function __construct(Converter $converter)
     {
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -40,11 +43,11 @@ class SalePaymentReportController extends Controller
                 }
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('sale_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            if ($request->from_date) {
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $query->whereBetween('sale_payments.report_date', $date_range);
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -77,14 +80,13 @@ class SalePaymentReportController extends Controller
                 ->editColumn('customer_name',  function ($row) {
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
-                ->editColumn('paid_amount',  function ($row) use ($generalSettings) {
-                    return '<b><span class="paid_amount" data-value="' . $row->paid_amount . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid_amount . '</span></b>';
-                })
+                ->editColumn('paid_amount', fn ($row) => '<span class="paid_amount" data-value="' . $row->paid_amount . '">' . $this->converter->format_in_bdt($row->paid_amount) . '</span>')
                 ->rawColumns(['date', 'customer_name', 'paid_amount'])
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        return view('reports.sale_payment_report.index', compact('branches'));
+        $customers = DB::table('customers')->get(['id', 'name', 'phone']);
+        return view('reports.sale_payment_report.index', compact('branches', 'customers'));
     }
 
     public function print(Request $request)
@@ -113,13 +115,11 @@ class SalePaymentReportController extends Controller
             }
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('sale_payments.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $query->whereBetween('sale_payments.report_date', $date_range);
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

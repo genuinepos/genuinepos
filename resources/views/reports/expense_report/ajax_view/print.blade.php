@@ -8,7 +8,7 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 6px;margin-right: 6px;}
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 6px;margin-right: 6px;}
     .header, .header-space,
     .footer, .footer-space {height: 20px;}
     .header {position: fixed; top: 0;}
@@ -26,11 +26,11 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php

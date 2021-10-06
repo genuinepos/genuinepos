@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
-use App\Models\Product;
 use App\Models\SaleReturn;
 use App\Models\SaleProduct;
 use Illuminate\Http\Request;
-use App\Models\ProductBranch;
-use App\Models\ProductVariant;
 use App\Models\SaleReturnProduct;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductBranchVariant;
+use App\Models\SalePayment;
+use App\Utils\Converter;
 use App\Utils\CustomerUtil;
 use App\Utils\ProductStockUtil;
 use App\Utils\SaleUtil;
@@ -22,11 +20,13 @@ class SaleReturnController extends Controller
     protected $productStockUtil;
     protected $saleUtil;
     protected $customerUtil;
-    public function __construct(ProductStockUtil $productStockUtil, SaleUtil $saleUtil, CustomerUtil $customerUtil)
+    protected $converter;
+    public function __construct(ProductStockUtil $productStockUtil, SaleUtil $saleUtil, CustomerUtil $customerUtil, Converter $converter)
     {
         $this->productStockUtil = $productStockUtil;
         $this->saleUtil = $saleUtil;
         $this->customerUtil = $customerUtil;
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -89,9 +89,11 @@ class SaleReturnController extends Controller
                     if (auth()->user()->branch_id == $row->branch_id) {
                         $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', $row->sale_id) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.returns.delete', $row->id) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
-                        $html .= '<a class="dropdown-item" id="view_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
+                        $html .= '<a class="dropdown-item" id="view_payment" href="' . route('sales.returns.payment.list', [$row->sale_id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
                         if ($row->total_return_due > 0) {
-                            $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                            if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->sale_id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                            }
                         }
                     }
 
@@ -105,12 +107,8 @@ class SaleReturnController extends Controller
                 ->editColumn('from',  function ($row) use ($generalSettings) {
                     return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BL)</b>' : json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
                 })
-                ->editColumn('total_return_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_return_amount . '</b>';
-                })
-                ->editColumn('total_return_due', function ($row) use ($generalSettings) {
-                    return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ($row->total_return_due >= 0 ? $row->total_return_due :   0.00) . '</span></b>';
-                })
+                ->editColumn('total_return_amount', fn ($row) => $this->converter->format_in_bdt($row->total_return_amount))
+                ->editColumn('total_return_due', fn ($row) => '<span class="text-danger">' . ($row->total_return_due >= 0 ? $this->converter->format_in_bdt($row->total_return_due) :   0.00) . '</span>')
                 ->editColumn('payment_status', function ($row) {
                     if ($row->total_return_due > 0) {
                         return '<span class="text-danger"><b>Due</b></span>';
@@ -121,12 +119,6 @@ class SaleReturnController extends Controller
                 ->editColumn('customer', function ($row) {
                     return $row->cus_name ? $row->cus_name : 'Walk-In-Customer';
                 })
-                ->setRowAttr([
-                    'data-href' => function ($row) {
-                        return route('sales.returns.show', [$row->id]);
-                    }
-                ])
-                ->setRowClass('clickable_row text-start')
                 ->rawColumns(['action', 'date', 'from', 'total_return_amount', 'total_return_due', 'payment_status'])
                 ->make(true);
         }
@@ -192,7 +184,7 @@ class SaleReturnController extends Controller
             //Update purchase and supplier purchase return due
             $saleDue = $sale->total_payable_amount - $sale->paid;
             $saleReturnDue = $request->total_return_amount - $saleDue;
-         
+
             // Update Sale return
             $saleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
             $saleReturn->return_discount_type = $request->return_discount_type;
@@ -202,7 +194,7 @@ class SaleReturnController extends Controller
             $saleReturn->total_return_amount = $request->total_return_amount;
             if ($saleReturnDue > 0) {
                 $saleReturn->total_return_due = $saleReturnDue - $saleReturn->total_return_due_pay;
-            }else {
+            } else {
                 $saleReturn->total_return_due = 0;
             }
 
@@ -240,7 +232,7 @@ class SaleReturnController extends Controller
             //Update sale and customer return due
             $saleDue = $sale->total_payable_amount - $sale->paid;
             $saleReturnDue = $request->total_return_amount - $saleDue;
-           
+
             $addSaleReturn = new SaleReturn();
             $addSaleReturn->sale_id = $sale->id;
             $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
@@ -324,7 +316,14 @@ class SaleReturnController extends Controller
         if ($saleReturn->sale->customer_id) {
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($saleReturn->sale->customer_id);
         }
-        
+
         return response()->json('Sale return deleted successfully');
+    }
+
+    public function returnPaymentList($saleId)
+    {
+        $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
+        $payments = SalePayment::where('sale_id', $saleId)->where('payment_type', 2)->get();
+        return view('sales.sale_return.ajax_view.return_payment_list', compact('sale', 'payments'));
     }
 }

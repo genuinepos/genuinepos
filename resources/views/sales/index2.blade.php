@@ -348,8 +348,8 @@
             });
         });
 
-         // show payment edit modal with data
-         $(document).on('click', '#edit_payment', function (e) {
+        // show payment edit modal with data
+        $(document).on('click', '#edit_payment', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
@@ -428,7 +428,6 @@
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();
                     } else {
-                        $('.payment_method').hide();
                         $('.loading_button').hide();
                         $('#paymentModal').modal('hide');
                         $('#paymentViewModal').modal('hide');

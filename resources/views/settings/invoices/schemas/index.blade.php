@@ -335,7 +335,7 @@
                     data:request,
                     success:function(data){
                         toastr.error(data);
-                        $('#kt_datatable').DataTable().ajax.reload();
+                        table.ajax.reload();
                         $('#deleted_form')[0].reset();
                     }
                 });

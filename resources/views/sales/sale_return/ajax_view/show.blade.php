@@ -11,21 +11,16 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-6">
                         <ul class="list-unstyled">
                             <li><strong>Return Details : </strong> </li>
-                            <li><strong>Invoice ID : </strong> {{ $saleReturn->invoice_id }}</li>
+                            <li><strong>Return Invoice ID : </strong> {{ $saleReturn->invoice_id }}</li>
                             <li><strong>Return Date : </strong> {{ $saleReturn->date }}</li>
-                            <li><strong>Customer Name : </strong> {{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
-                            <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code.'(BL)' : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }} </li>
+                            <li><strong>Customer Name : </strong> {{ $saleReturn->sale->customer ? $saleReturn->sale->customer->name : 'Walk-In-Customer' }}</li>
+                            <li><strong>Stock Location : </strong> {!! $saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code.'<b>(BL)</b>' : json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>' !!} </li>
                         </ul>
                     </div>
-                    <div class="col-md-4 text-left">
-                        <ul class="list-unstyled">
-                            
-                        </ul>
-                    </div>
-                    <div class="col-md-4 text-left">
+                    <div class="col-6 text-left">
                         <ul class="list-unstyled">
                             <li><strong>Parent Sale Details  </strong></li>
                             <li><strong>Invoice No : </strong> {{ $saleReturn->sale->invoice_id  }}</li>
@@ -84,34 +79,30 @@
                         <div class="table-responsive">
                             <table class="table modal-table tabl-sm">
                                 <tr>
-                                    <th class="text-start">Net Total Amount : </th>
+                                    <th class="text-start">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                     <td class="text-start net_total ">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                        {{ $saleReturn->net_total_amount }}
+                                        {{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Return Discount : </th>
+                                    <th class="text-start">Return Discount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                     <td class="text-start return_discount">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                        {{ $saleReturn->return_discount_amount }}
+                                        {{ App\Utils\Converter::format_in_bdt($saleReturn->return_discount_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Total Amount : </th>
+                                    <th class="text-start">Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                     <td class="text-start total_return_amount">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                        {{ $saleReturn->total_return_amount }}
+                                        {{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Total Due : </th>
+                                    <th class="text-start">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                     <td class="text-start total_return_amount">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                        {{ $saleReturn->total_return_due }}
+                                        {{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_due) }}
                                     </td>
                                 </tr>
                             </table>
@@ -214,13 +205,13 @@
                                         @endif
                                     </td>
                                     <td class="text-start">
-                                        {{ $sale_return_product->sale_product->unit_price_inc_tax  }}
+                                        {{ App\Utils\Converter::format_in_bdt($sale_return_product->sale_product->unit_price_inc_tax) }}
                                     </td>
                                     <td class="text-start">
                                         {{ $sale_return_product->return_qty }} ({{ $sale_return_product->unit }})
                                     </td>
                                     <td class="text-start">
-                                        {{ $sale_return_product->return_subtotal }} 
+                                        {{ App\Utils\Converter::format_in_bdt($sale_return_product->return_subtotal) }} 
                                     </td>
                                 </tr>
                             @endif
@@ -229,28 +220,27 @@
                     <tfoot>
                         <tr>
                             <td class="text-start" colspan="4"><strong>Net Total Amount :</strong></td>
-                            <td class="text-start" colspan="2" class="net_total">{{ $saleReturn->net_total_amount }}</td>
+                            <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}</td>
                         </tr>
                         <tr>
                             <th class="text-start" colspan="4">Return Discount</th>
-                            <td class="text-start" colspan="2" class="return_discount">
+                            <td class="text-start" colspan="2">
                                 @if ($saleReturn->return_discount_type == 1)
-                                    {{ $saleReturn->return_discount_amount }} (Fixed)
+                                    {{ App\Utils\Converter::format_in_bdt($saleReturn->return_discount_amount) }} (Fixed)
                                 @else  
-                                    {{ $saleReturn->return_discount_amount }} ({{ $saleReturn->return_discount}}%)
+                                    {{ App\Utils\Converter::format_in_bdt($saleReturn->return_discount_amount) }} ({{ $saleReturn->return_discount}}%)
                                 @endif
-                                
                             </td>
                         </tr>
                         
                         <tr>
                             <th class="text-start" colspan="4">Grand Total</th>
-                            <td class="text-start" colspan="2" class="total_return_amount">{{ $saleReturn->total_return_amount }}</td>
+                            <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_amount) }}</td>
                         </tr>
     
                         <tr>
                             <th class="text-start" colspan="4">Total Due</th>
-                            <td class="text-start" colspan="2" class="total_due">{{ $saleReturn->sale->sale_return_due }}</td>
+                            <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->sale->sale_return_due) }}</td>
                         </tr>
                     </tfoot>
                 </table>

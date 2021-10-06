@@ -360,6 +360,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::get('get/sale/{saleId}', 'SaleReturnController@getSale')->name('sales.returns.get.sale');
         Route::post('store/{saleId}', 'SaleReturnController@store')->name('sales.returns.store');
         Route::delete('delete/{saleReturnId}', 'SaleReturnController@delete')->name('sales.returns.delete');
+        Route::get('payment/list/{saleId}', 'SaleReturnController@returnPaymentList')->name('sales.returns.payment.list');
     });
 
     //Pos cash register routes

@@ -11,23 +11,23 @@
                     @endif
                 </b>
             </h3>
-            <h6>
+            <p>
                 @if ($payment->sale->branch)
                     {{ $payment->sale->branch->city . ', ' . $payment->sale->branch->state . ', ' . $payment->sale->branch->zip_code . ', ' . $payment->sale->branch->country }}
                 @else
                     {{ json_decode($generalSettings->business, true)['address'] }}
                 @endif
-            </h6>
-            <h6>Payment Details</h6>
+            </p>
+            <h6 style="margin-top: 10px;"><b>Payment Details</b></h6>
         </div>
     </div>
 
     <div class="reference_area pt-3">
-        <h6><b>Title :</b>
-            {{ $payment->payment_type == 1 ? 'Sale Payment' : 'Sale Return Payment' }} </h6>
-        <h6><b>Invoice No :</b> {{ $payment->sale->invoice_id }}</h6>
-        <h6><b>Customer :</b>
-            {{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}</h6>
+        <p><b>Title :</b>
+            {{ $payment->payment_type == 1 ? 'Sale Payment' : 'Sale Return Payment' }} </p>
+        <p><b>Invoice No :</b> {{ $payment->sale->invoice_id }}</p>
+        <p><b>Customer :</b>
+            {{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}</p>
     </div>
 
     <div class="total_amount_table_area pt-5">

@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('title', 'Customer List - ')
 @section('content')
@@ -347,8 +347,8 @@
     </div>
     <!-- Customer payment view Modal End-->
 
-      <!-- Customer payment details Modal--> 
-      <div class="modal fade" id="paymentDatailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <!-- Customer payment details Modal--> 
+    <div class="modal fade" id="paymentDatailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -366,7 +366,6 @@
                         </div>
                         <div class="col-md-6 text-end">
                             <ul class="list-unstyled">
-                                {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li> --}}
                                 <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
                                 <button type="submit" id="print_payment" class="c-btn btn_blue">Print</button>
                             </ul>
@@ -379,12 +378,12 @@
     <!-- Customer payment details Modal End-->
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [ 
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
             ],
@@ -412,11 +411,7 @@
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
         // call jquery method 
         $(document).ready(function() {
@@ -815,7 +810,7 @@
                 });
             });
 
-            $(document).on('click', '#delete_receipt',function(e){
+            $(document).on('click', '#delete_receipt',function(e) {
                 e.preventDefault(); 
                 var url = $(this).attr('href');
                     var tr = $(this).closest('tr');
@@ -824,17 +819,8 @@
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure?',
                     'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-danger',
-                            'action': function() {
-                                $('#receipt_deleted_form').submit();
-                                tr.remove();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-modal-primary',
-                            'action': function() {console.log('Deleted canceled.');} 
-                        }
+                        'Yes': {'class': 'yes btn-danger', 'action': function() {$('#receipt_deleted_form').submit();tr.remove();}},
+                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                     }
                 });
             });
@@ -864,78 +850,78 @@
                 }
             });
 
-        $(document).on('click', '#view_payment', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            var url = $(this).attr('href');
-            $.get(url, function(data) {
-                $('#payment_list').html(data);
-                $('#viewPaymentModal').modal('show');
-                $('.data_preloader').hide();
+            $(document).on('click', '#view_payment', function(e) {
+                e.preventDefault();
+                $('.data_preloader').show();
+                var url = $(this).attr('href');
+                $.get(url, function(data) {
+                    $('#payment_list').html(data);
+                    $('#viewPaymentModal').modal('show');
+                    $('.data_preloader').hide();
+                });
             });
-        });
 
-        $(document).on('click', '#payment_details', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            var url = $(this).attr('href');
-            $.get(url, function(data) {
-                $('#payment_details_body').html(data);
-                $('#paymentDatailsModal').modal('show');
-                $('.data_preloader').hide();
+            $(document).on('click', '#payment_details', function(e) {
+                e.preventDefault();
+                $('.data_preloader').show();
+                var url = $(this).attr('href');
+                $.get(url, function(data) {
+                    $('#payment_details_body').html(data);
+                    $('#paymentDatailsModal').modal('show');
+                    $('.data_preloader').hide();
+                });
             });
-        });
 
-        // Print single payment details
-        $('#print_payment').on('click', function (e) {
-           e.preventDefault(); 
-            var body = $('.sale_payment_print_area').html();
-            var header = $('.header_area').html();
-            var footer = $('.signature_area').html();
-            $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                removeInline: true, 
-                printDelay: 500, 
-                header: header,  
-                footer: footer
+            // Print single payment details
+            $('#print_payment').on('click', function (e) {
+            e.preventDefault(); 
+                var body = $('.sale_payment_print_area').html();
+                var header = $('.header_area').html();
+                var footer = $('.signature_area').html();
+                $(body).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
+                    removeInline: true, 
+                    printDelay: 500, 
+                    header: header,  
+                    footer: footer
+                });
             });
-        });
 
-        $(document).on('click', '#delete_payment',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_payment_form').attr('action', url);           
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'message': 'Are you sure?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_payment_form').submit();}},
-                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
-                }
+            $(document).on('click', '#delete_payment',function(e){
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('#deleted_payment_form').attr('action', url);           
+                $.confirm({
+                    'title': 'Delete Confirmation',
+                    'message': 'Are you sure?',
+                    'buttons': {
+                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_payment_form').submit();}},
+                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+                    }
+                });
             });
-        });
 
-        //data delete by ajax
-        $(document).on('submit', '#deleted_payment_form',function(e) {
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url:url,
-                type:'post',
-                async:false,
-                data:request,
-                success:function(data){
-                    table.ajax.reload();
-                    toastr.error(data);
-                    $('#deleted_payment_form')[0].reset();
-                    $('#viewPaymentModal').modal('hide');
-                }
+            //data delete by ajax
+            $(document).on('submit', '#deleted_payment_form',function(e) {
+                e.preventDefault();
+                var url = $(this).attr('action');
+                var request = $(this).serialize();
+                $.ajax({
+                    url:url,
+                    type:'post',
+                    async:false,
+                    data:request,
+                    success:function(data) {
+                        table.ajax.reload();
+                        toastr.error(data);
+                        $('#deleted_payment_form')[0].reset();
+                        $('#viewPaymentModal').modal('hide');
+                    }
+                });
             });
-        });
         });
     </script>
 @endpush

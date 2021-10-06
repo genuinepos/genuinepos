@@ -72,7 +72,7 @@
                     <span class="input-group-text" id="basic-addon1"><i
                             class="fas fa-calendar-week text-dark"></i></span>
                 </div>
-                <input type="text" name="date" class="form-control form-control-sm datepicker p_input"
+                <input type="text" name="date" class="form-control form-control-sm p_input"
                     autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
             </div>
             <span class="error error_p_date"></span>
@@ -224,9 +224,26 @@
 <script>
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
     var _expectedDateFormat = '' ;
-    _expectedDateFormat = dateFormat.replace('d', 'dd');
-    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
-    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-    $('.datepicker').datepicker({format: _expectedDateFormat});
+    _expectedDateFormat = dateFormat.replace('d', 'DD');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('p_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
 </script>
 

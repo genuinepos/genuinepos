@@ -1211,6 +1211,7 @@
                 processData: false,
                 success: function(data) {
                     $('.loading_button').addClass('d-none');
+                    $('.error').html('');
                     if ($.isEmptyObject(data.errorMsg)) {
                         toastr.success(data);
                         if (action_direction == 'save') {
@@ -1225,7 +1226,6 @@
                         }
                     } else {
                         toastr.error(data.errorMsg);
-                        $('.error').html('');
                     }
                 },
                 error: function(err) {

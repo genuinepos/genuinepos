@@ -66,9 +66,12 @@
 
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
+                                            <li><strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</li>
                                             <li><strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</li>
+                                            <li><strong> Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</li>
                                             <li><strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</li>
                                             <li><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</li>
+                                            <li><strong> Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -96,6 +99,11 @@
                                                         </tr>
 
                                                         <tr>
+                                                            <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</td>
+                                                        </tr>
+
+                                                        <tr>
                                                             <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                                             <td class="text-end"> 
                                                                 {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}
@@ -105,6 +113,11 @@
                                                         <tr>
                                                             <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td class="text-end"><strong>Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

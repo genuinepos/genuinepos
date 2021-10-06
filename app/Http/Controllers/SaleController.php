@@ -1078,14 +1078,16 @@ class SaleController extends Controller
     public function returnPaymentAdd(Request $request, $saleId)
     {
         $sale = Sale::with(['sale_return'])->where('id', $saleId)->first();
-        $sale->sale_return->total_return_due -= $request->amount;
-        $sale->sale_return->total_return_due_pay += $request->amount;
-        $sale->sale_return->save();
-   
+        if ($sale->sale_return) {
+            $sale->sale_return->total_return_due -= $request->amount;
+            $sale->sale_return->total_return_due_pay += $request->amount;
+            $sale->sale_return->save();
+        }
+        
         // generate invoice ID
         $invoiceId = 1;
         $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
-        if($lastSalePayment){
+        if($lastSalePayment) {
             $invoiceId = ++$lastSalePayment->id;
         }
       
@@ -1183,12 +1185,14 @@ class SaleController extends Controller
         )->where('id', $paymentId)->first();
 
         // Update sale return
-        $updateSalePayment->sale->sale_return->total_return_due += $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->sale_return->total_return_due -= $request->amount;
-        $updateSalePayment->sale->sale_return->total_return_due_pay += $updateSalePayment->paid_amount;
-        $updateSalePayment->sale->sale_return->total_return_due_pay -= $request->amount;
-        $updateSalePayment->sale->sale_return->save();
-
+        if ($updateSalePayment->sale->sale_return) {
+            $updateSalePayment->sale->sale_return->total_return_due += $updateSalePayment->paid_amount;
+            $updateSalePayment->sale->sale_return->total_return_due -= $request->amount;
+            $updateSalePayment->sale->sale_return->total_return_due_pay += $updateSalePayment->paid_amount;
+            $updateSalePayment->sale->sale_return->total_return_due_pay -= $request->amount;
+            $updateSalePayment->sale->sale_return->save();
+        }
+        
         // update sale payment
         $updateSalePayment->account_id = $request->account_id;
         $updateSalePayment->pay_mode = $request->payment_method;

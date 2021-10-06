@@ -158,9 +158,7 @@
         </div>
     </div>
 
-    <div id="purchase_details">
-
-    </div>
+    <div id="purchase_details"></div>
 
     <!-- Change purchase status modal-->
     <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -198,10 +196,9 @@
         <!--Add Payment modal-->
         <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
             aria-hidden="true">
-
         </div>
         <!--Add Payment modal-->
-
+        
         <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
             aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">

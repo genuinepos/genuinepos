@@ -20,7 +20,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong> Invoice ID : </strong><span class="card_text invoice_no">{{ $sale->invoice_id }}</span> </li>
-                    <li><strong>Branch/Business : </strong>
+                    <li><strong>Business Location: </strong>
                         <span>
                             @if ($sale->branch)
                                 {{ $sale->branch->name.'/'.$sale->branch->branch_code }}
@@ -110,7 +110,7 @@
 
         <div class="col-md-5">
             <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
-            <input readonly type="file" name="attachment" class="form-control form-control-sm" id="attachment" data-name="Date" >
+            <input type="file" name="attachment" class="form-control form-control-sm" id="attachment" data-name="Date" >
         </div>
     </div>
 
@@ -197,7 +197,7 @@
     <div class="form-group row mt-3">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+            <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
         </div>
     </div>
@@ -205,9 +205,26 @@
 
 <script>
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
-   var _expectedDateFormat = '' ;
-   _expectedDateFormat = dateFormat.replace('d', 'dd');
-   _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
-   _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-   $('.datepicker').datepicker({format: _expectedDateFormat});
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'DD');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('p_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
 </script>

@@ -424,6 +424,20 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.purchase_product_list')</p>
                                     </div> 
+                                </div>
+                                <br>
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('purchases.returns.supplier.return') }}"
+                                                class="bar-link">
+                                                <span><i class="fas fa-plus-circle"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text"> @lang('menu.add_return')</p>
+                                    </div>
 
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
@@ -474,12 +488,25 @@
                                                 </div>
                                                 <p class="switch_text">@lang('menu.purchase_list')</p>
                                             </div>
+                                        </div>
+                                        <br>
+                                        <hr>
 
+                                        <div class="row">
                                             @if (auth()->user()->permission->purchase['purchase_return'] == '1')
-                                                <div
-                                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                                     <div class="switch_bar">
-                                                        <span class="notify-grin">30</span>
+                                                        <a href="{{ route('purchases.returns.supplier.return') }}"
+                                                            class="bar-link">
+                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                                        </a>
+                                                    </div>
+                                                    <p class="switch_text"> @lang('menu.add_return')</p>
+                                                </div>
+
+                                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                    <div class="switch_bar">
+                                                        {{-- <span class="notify-grin">30</span> --}}
                                                         <a href="{{ route('purchases.returns.index') }}"
                                                             class="bar-link">
                                                             <span><i class="fas fa-undo"></i></span>

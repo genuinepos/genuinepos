@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 
 use Carbon\Carbon;
+use App\Utils\Converter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class DashboardController extends Controller
 {
-    public function __construct()
+    
+    protected $converter;
+    public function __construct(Converter $converter)
     {
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -108,7 +112,7 @@ class DashboardController extends Controller
         }
 
 
-        $totalSales =  $sales->sum('total_sale');
+        $totalSales = $sales->sum('total_sale');
         $totalSaleDue = $sales->sum('total_due');
         $totalSaleDiscount = $sales->sum('total_discount');
 
@@ -120,15 +124,15 @@ class DashboardController extends Controller
         $total_adjustment = $adjustments->sum('total_adjustment');
 
         return response()->json([
-            'total_sale' => $totalSales,
-            'totalSaleDue' => $totalSaleDue,
-            'totalSaleDiscount' => $totalSaleDiscount,
-            'totalPurchase' => $totalPurchase,
-            'totalPurchaseDue' => $totalPurchaseDue,
-            'totalExpense' => $totalExpense,
-            'users' => $users,
-            'products' => $products,
-            'total_adjustment' => $total_adjustment,
+            'total_sale' =>  $this->converter->format_in_bdt($totalSales),
+            'totalSaleDue' => $this->converter->format_in_bdt($totalSaleDue),
+            'totalSaleDiscount' => $this->converter->format_in_bdt($totalSaleDiscount),
+            'totalPurchase' => $this->converter->format_in_bdt($totalPurchase),
+            'totalPurchaseDue' => $this->converter->format_in_bdt($totalPurchaseDue),
+            'totalExpense' => $this->converter->format_in_bdt($totalExpense),
+            'users' => $this->converter->format_in_bdt($users),
+            'products' => $this->converter->format_in_bdt($products),
+            'total_adjustment' => $this->converter->format_in_bdt($total_adjustment),
         ]);
     }
 

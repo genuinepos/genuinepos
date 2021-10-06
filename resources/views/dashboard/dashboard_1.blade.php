@@ -469,15 +469,14 @@
                     data: {branch_id,date_range},
                     success: function(data) {
                         $('.card_preloader').hide();
-                        $('#total_purchase').html(__currency + ' ' + parseFloat(data.totalPurchase).toFixed(2));
-                        $('#total_sale').html(__currency + ' ' + parseFloat(data.total_sale).toFixed(2));
-                        $('#total_purchase_due').html(__currency + ' ' + parseFloat(data.totalPurchaseDue)
-                            .toFixed(2));
-                        $('#total_sale_due').html(__currency + ' ' + parseFloat(data.totalSaleDue).toFixed(2));
-                        $('#total_expense').html(__currency + ' ' + parseFloat(data.totalExpense).toFixed(2));
+                        $('#total_purchase').html(__currency + ' ' + data.totalPurchase);
+                        $('#total_sale').html(__currency + ' ' + data.total_sale);
+                        $('#total_purchase_due').html(__currency + ' ' + data.totalPurchaseDue);
+                        $('#total_sale_due').html(__currency + ' ' + data.totalSaleDue);
+                        $('#total_expense').html(__currency + ' ' + data.totalExpense);
                         $('#total_user').html(data.users);
                         $('#total_product').html(data.products);
-                        $('#total_adjustment').html(__currency + ' ' + parseFloat(data.total_adjustment).toFixed(2));
+                        $('#total_adjustment').html(__currency + ' ' + data.total_adjustment);
                     }
                 });
             }

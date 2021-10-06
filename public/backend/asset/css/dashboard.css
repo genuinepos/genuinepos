@@ -1,5 +1,5 @@
 html {overflow-x: hidden;}
-.title {font-size: 1.8em;}
+.title {font-size: 1.4em;}
 .sub-title {text-transform: uppercase;font-size: 1em;color: rgb(216, 204, 204)218, 199, 199);}
 .card-counter {box-shadow: 2px 2px 10px #DADADA;margin: 5px;padding: 20px 10px;background-color: #fff;color: white;
     height: 100px;border-radius: 5px;transition: .3s linear all;}

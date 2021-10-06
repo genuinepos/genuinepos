@@ -108,7 +108,7 @@ class DashboardController extends Controller
         }
 
 
-        $totalSales =  $this->converter->format_in_bdt($sales->sum('total_sale'));
+        $totalSales =  $sales->sum('total_sale');
         $totalSaleDue = $sales->sum('total_due');
         $totalSaleDiscount = $sales->sum('total_discount');
 

@@ -19,7 +19,7 @@
                 <td class="text-start">{{ $account->bank->name }}({{ $account->bank->branch_name }})</td> 
                 <td class="text-start">{{ $account->account_type ? $account->account_type->name : 'N/A' }}</td>
                 <td class="text-start">{{ $account->remark }}</td>
-                <td class="text-start">{{ $account->balance }}</td>
+                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
                 <td class="text-start">{{ $account->admin ? $account->admin->name.' '.$account->admin->last_name : 'N/A' }}</td>
 
                 <td class="text-start"> 

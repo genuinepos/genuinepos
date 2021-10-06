@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Utils\Converter;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,8 +10,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DashboardController extends Controller
 {
-    public function __construct()
+    protected $converter;
+    public function __construct(Converter $converter)
     {
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -108,16 +110,16 @@ class DashboardController extends Controller
         }
 
 
-        $totalSales = $sales->sum('total_sale');
-        $totalSaleDue = $sales->sum('total_due');
-        $totalSaleDiscount = $sales->sum('total_discount');
+        $totalSales =  $this->converter->format_in_bdt($sales->sum('total_sale'));
+        $totalSaleDue = $this->converter->format_in_bdt($sales->sum('total_due'));
+        $totalSaleDiscount = $this->converter->format_in_bdt($sales->sum('total_discount'));
 
-        $totalPurchase = $purchases->sum('total_purchase');
-        $totalPurchaseDue = $purchases->sum('total_due');
+        $totalPurchase = $this->converter->format_in_bdt($purchases->sum('total_purchase'));
+        $totalPurchaseDue = $this->converter->format_in_bdt($purchases->sum('total_due'));
 
-        $totalExpense = $expenses->sum('total_expense');
+        $totalExpense = $this->converter->format_in_bdt($expenses->sum('total_expense'));
         $products = DB::table('products')->count();
-        $total_adjustment = $adjustments->sum('total_adjustment');
+        $total_adjustment = $this->converter->format_in_bdt($adjustments->sum('total_adjustment'));
 
         return response()->json([
             'total_sale' => $totalSales,

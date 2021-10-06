@@ -611,6 +611,7 @@ class SupplierController extends Controller
         $supplierPayment->type = 2;
         $supplierPayment->pay_mode = $request->payment_method;
         $supplierPayment->date = $request->date;
+        $supplierPayment->report_date = date('Y-m-d', strtotime($request->date));
         $supplierPayment->time = date('h:i:s a');
         $supplierPayment->month = date('F');
         $supplierPayment->year = date('Y');
@@ -1006,11 +1007,12 @@ class SupplierController extends Controller
 
     public function viewPayment($supplierId)
     {
-        $supplier = Supplier::with(
-            'supplier_payments',
-            'supplier_payments.account:id,name'
-        )->where('id', $supplierId)->first();
-        return view('contacts.suppliers.ajax_view.view_payment_list', compact('supplier'));
+        $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
+        $supplier_payments = DB::table('supplier_payments')
+        ->leftJoin('accounts', 'supplier_payments.account_id', 'accounts.id')
+        ->select('supplier_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
+        ->orderBy('report_date', 'desc')->get();
+        return view('contacts.suppliers.ajax_view.view_payment_list', compact('supplier', 'supplier_payments'));
     }
 
     // Supplier Payment Details
@@ -1030,6 +1032,7 @@ class SupplierController extends Controller
     public function paymentDelete(Request $request, $paymentId)
     {
         $deleteSupplierPayment = SupplierPayment::with('supplier_payment_invoices')->where('id', $paymentId)->first();
+        $storedAccountId = $deleteSupplierPayment->account_id;
         $storedSupplierPayment = $deleteSupplierPayment;
         $storeSupplierPaymentInvoices = $deleteSupplierPayment->supplier_payment_invoices;
         if ($deleteSupplierPayment->attachment != null) {
@@ -1037,12 +1040,7 @@ class SupplierController extends Controller
                 unlink(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment));
             }
         }
-        $storedAccountId = $deleteSupplierPayment->account_id;
         $deleteSupplierPayment->delete();
-
-        if ($storedAccountId) {
-            $this->accountUtil->adjustAccountBalance($storedAccountId);
-        }
 
         // Update supplier payment invoices
         if (count($storeSupplierPaymentInvoices) > 0) {
@@ -1069,6 +1067,10 @@ class SupplierController extends Controller
                     }
                 }
             }
+        }
+
+        if ($storedAccountId) {
+            $this->accountUtil->adjustAccountBalance($storedAccountId);
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($deleteSupplierPayment->supplier_id);

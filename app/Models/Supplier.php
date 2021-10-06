@@ -24,6 +24,6 @@ class Supplier extends Model
 
     public function supplier_payments()
     {
-        return $this->hasMany(SupplierPayment::class)->orderBy('report_date', 'DESC');
+        return $this->hasMany(SupplierPayment::class);
     }
 }

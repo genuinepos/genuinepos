@@ -34,6 +34,6 @@ class Customer extends Model
 
     public function customer_payments()
     {
-        return $this->hasMany(CustomerPayment::class)->orderBy('id', 'DESC');
+        return $this->hasMany(CustomerPayment::class);
     }
 }

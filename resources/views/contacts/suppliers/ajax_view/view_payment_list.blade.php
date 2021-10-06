@@ -27,20 +27,20 @@
                     <li>
                         <h6>
                             Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-success">{{ $supplier->total_paid }}</b>
+                            <b class="text-success">{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</b>
                         </h6>
                     </li>
                     <li>
                         <h6>
                             Total Purchase Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-danger">{{ $supplier->total_purchase_due }}</b>
+                            <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</b>
                         </h6>
                        
                     </li>
                     <li>
                         <h6>
                             Total Returnable amount Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b>{{ $supplier->total_purchase_return_due }}</b>
+                            <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}</b>
                         </h6>
                     </li>
                 </ul>
@@ -70,9 +70,9 @@
                 @php
                     $total = 0;
                 @endphp
-                @if (count($supplier->supplier_payments) > 0)
+                @if (count($supplier_payments) > 0)
                    
-                    @foreach ($supplier->supplier_payments as $payment)
+                    @foreach ($supplier_payments as $payment)
                         <tr>
                             <td class="text-start">
                                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
@@ -80,7 +80,7 @@
                             <td class="text-start">{{ $payment->voucher_no }}</td>
                             <td class="text-start">{{ $payment->type == 1 ? 'Purchase Due' : 'Return due' }}</td>
                             <td class="text-start">{{ $payment->pay_mode }}</td>
-                            <td class="text-start">{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
+                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name.' (A/C: '.$payment->ac_no.')' : 'N/A' }}</td>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                                 @php

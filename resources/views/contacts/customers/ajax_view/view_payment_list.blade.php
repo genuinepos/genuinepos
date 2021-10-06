@@ -69,8 +69,8 @@
             </thead>
             <tbody id="payment_list_body">
                 @php $total = 0; @endphp
-                @if (count($customer->customer_payments) > 0)
-                    @foreach ($customer->customer_payments as $payment)
+                @if (count($customer_payments) > 0)
+                    @foreach ($customer_payments as $payment)
                         <tr>
                             <td class="text-start">
                                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
@@ -78,7 +78,7 @@
                             <td class="text-start">{{ $payment->voucher_no }}</td>
                             <td class="text-start">{{ $payment->type == 1 ? 'Sale Due' : 'Return due' }}</td>
                             <td class="text-start">{{ $payment->pay_mode }}</td>
-                            <td class="text-start">{{ $payment->account ? $payment->account->name.' (A/C: '.$payment->account->account_number.')' : 'N/A' }}</td>
+                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name.' (A/C: '.$payment->ac_no.')' : 'N/A' }}</td>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                                 @php

@@ -974,18 +974,6 @@ Route::get('/test', function () {
     //      $value->report_date = $sale->report_date;
     //      $value->save();
     // }
-
-    $supplierPayments = SupplierPayment::all();
-    foreach ($supplierPayments as $supplierPayment) {
-        $supplierPayment->report_date = date('Y-m-d', strtotime($supplierPayment->date));
-        $supplierPayment->save();
-    }
-
-    $customerPayments = CustomerPayment::all();
-    foreach ($customerPayments as $customerPayment) {
-        $customerPayment->report_date = date('Y-m-d', strtotime($customerPayment->date));
-        $customerPayment->save();
-    }
 });
 
 // All authenticated routes

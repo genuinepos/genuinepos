@@ -57,7 +57,6 @@ class BrandController extends Controller
     // Add Brand method
     public function store(Request $request)
     {
-        // return $request->all();
         $this->validate($request, [
             'name' => 'required',
             'photo' => 'sometimes|image|max:2048',
@@ -90,7 +89,6 @@ class BrandController extends Controller
    // Update Brand method
     public function update(Request $request)
     {
-        //return $request->all();
         $this->validate($request, [
             'name' => 'required',
             'photo' => 'sometimes|image|max:2048',
@@ -131,6 +129,6 @@ class BrandController extends Controller
         if (!is_null($deleteBrand)) {
             $deleteBrand->delete(); 
         }
-        return response()->json(__('brand.delete_success'));
+        return response()->json(__('brand.update_success'));
     }
 }

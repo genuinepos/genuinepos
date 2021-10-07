@@ -9,9 +9,7 @@ use Yajra\DataTables\Facades\DataTables;
 class PurchaseUtil
 {
     public $converter;
-    public function __construct(
-        Converter $converter,
-    ) {
+    public function __construct(Converter $converter) {
         $this->converter = $converter;
     }
 

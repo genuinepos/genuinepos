@@ -107,6 +107,7 @@ class AccountController extends Controller
 
     public function delete(Request $request, $accountId)
     {
+        return response()->json('Feature is disabled in this demo');
         $deleteAccount = Account::find($accountId);
         if (!is_null($deleteAccount)) {
             $deleteAccount->delete();

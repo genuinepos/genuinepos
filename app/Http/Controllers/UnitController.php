@@ -53,6 +53,7 @@ class UnitController extends Controller
 
     public function delete(Request $request, $unitId)
     {
+        return response()->json('Feature is disabled in this demo');
         $deleteUnit = Unit::where('id', $unitId)->first();
         if (!is_null($deleteUnit)) {
             $deleteUnit->delete();

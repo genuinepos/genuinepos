@@ -123,6 +123,7 @@ class SubCategoryController extends Controller
 
     public function delete(Request $request, $categoryId)
     {
+        return response()->json('Feature is disabled in this demo');
         $deleteCategory = Category::find($categoryId);
         if ($deleteCategory->photo !== 'default.png') {
             if (file_exists(public_path('uploads/category/' . $deleteCategory->photo))) {

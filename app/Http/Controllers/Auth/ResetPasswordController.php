@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends Controller
@@ -34,6 +33,7 @@ class ResetPasswordController extends Controller
 
     public function resetCurrentPassword(Request $request)
     {
+        return response()->json('Feature is disabled in this demo');
         $this->validate($request,
         [
             'current_password' => 'required',
@@ -53,7 +53,7 @@ class ResetPasswordController extends Controller
                 return response()->json(['errorMsg' => 'Current password and new password is same.
                 If you want to change your current password please enter a new password']);
             }
-        }else{
+        } else {
             return response()->json(['errorMsg' => 'Current password does not matched']);
         }
     }

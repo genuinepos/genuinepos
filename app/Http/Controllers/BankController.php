@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Bank;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class BankController extends Controller
 {
@@ -66,6 +65,7 @@ class BankController extends Controller
 
     public function delete(Request $request, $bankId)
     {
+        return response()->json('Feature is disabled in this demo');
         $deleteBank = Bank::find($bankId);
         if (!is_null($deleteBank)) {
             $deleteBank->delete();  

@@ -139,20 +139,6 @@ class AccountController extends Controller
         return response()->json($accounts);
     }
 
-    public function changeStatus($typeId)
-    {
-        $statusChange = Account::where('id', $typeId)->first();
-        if ($statusChange->status == 1) {
-            $statusChange->status = 0;
-            $statusChange->save();
-            return response()->json('Successfully account type is activated');
-        } else {
-            $statusChange->status = 1;
-            $statusChange->save();
-            return response()->json('Successfully account is closed');
-        }
-    }
-
     public function fundTransfer(Request $request)
     {
         $cashFlow1 = new CashFlow();

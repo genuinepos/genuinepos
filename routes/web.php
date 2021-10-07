@@ -524,7 +524,6 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::post('store', 'AccountController@store')->name('accounting.accounts.store');
         Route::post('update', 'AccountController@update')->name('accounting.accounts.update');
         Route::delete('delete/{accountId}', 'AccountController@delete')->name('accounting.accounts.delete');
-        Route::get('change/status/{accountId}', 'AccountController@changeStatus')->name('accounting.accounts.change.status');
         Route::get('all/banks', 'AccountController@allBanks')->name('accounting.accounts.all.banks');
         Route::get('all/account/types', 'AccountController@allAccountTypes')->name('accounting.accounts.all.account.types');
         Route::get('all/form/account', 'AccountController@allFromAccount')->name('accounting.accounts.all.form.account');

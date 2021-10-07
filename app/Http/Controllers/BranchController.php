@@ -54,7 +54,6 @@ class BranchController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        //return $request->all();
         $this->validate($request, [
             'name' => 'required',
             'code' => 'required',
@@ -161,8 +160,14 @@ class BranchController extends Controller
             abort(403, 'Access Forbidden.');
         }
         
-        $updateBranch = Branch::where('id', $id)->first();
-        $updateBranch->delete();
+        $deleteBranch = Branch::where('id', $id)->first();
+        if ($deleteBranch->logo != 'default.png') {
+            if (file_exists(public_path('uploads/branch_logo/' . $deleteBranch->logo))) {
+                unlink(public_path('uploads/branch_logo/' . $deleteBranch->logo));
+            }
+        }
+        
+        $deleteBranch->delete();
         return response()->json('Branch deleted successfully');
     }
 

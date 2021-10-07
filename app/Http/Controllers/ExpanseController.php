@@ -304,7 +304,7 @@ class ExpanseController extends Controller
 
         if ($request->paying_amount > 0) {
             $addExpansePayment = new ExpansePayment();
-            $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'EPI') . date('ymd') . $invoiceId;
+            $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $invoiceId;
             $addExpansePayment->expanse_id = $addExpanse->id;
             $addExpansePayment->account_id = $request->account_id;
             $addExpansePayment->pay_mode = $request->payment_method;
@@ -338,7 +338,6 @@ class ExpanseController extends Controller
                 $addCashFlow = new CashFlow();
                 $addCashFlow->account_id = $request->account_id;
                 $addCashFlow->debit = $request->paying_amount;
-
                 $addCashFlow->expanse_payment_id = $addExpansePayment->id;
                 $addCashFlow->transaction_type = 6;
                 $addCashFlow->cash_type = 1;

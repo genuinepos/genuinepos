@@ -15,27 +15,6 @@
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name mt-1">
-                                    <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
-                                        <form id="filter_account" action="{{ route('accounting.accounts.filter') }}" method="get" class="px-2">
-                                            <div class="form-group">
-                                                <div class="col-md-4">
-                                                    <label><b>Status</b> : </label>
-                                                    <select name="status" class="form-control submit_able" id="status" autofocus>
-                                                        <option value="1"><strong>Active</strong></option>  
-                                                        <option value="0">Closed</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- =========================================top section button=================== -->

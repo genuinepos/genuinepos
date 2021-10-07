@@ -528,7 +528,6 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::get('all/banks', 'AccountController@allBanks')->name('accounting.accounts.all.banks');
         Route::get('all/account/types', 'AccountController@allAccountTypes')->name('accounting.accounts.all.account.types');
         Route::get('all/form/account', 'AccountController@allFromAccount')->name('accounting.accounts.all.form.account');
-        Route::get('filter/account', 'AccountController@filterAccount')->name('accounting.accounts.filter');
         Route::post('fund/transfer', 'AccountController@fundTransfer')->name('accounting.accounts.fund.transfer');
 
         Route::post('deposit', 'AccountController@deposit')->name('accounting.accounts.fund.deposit');
@@ -982,6 +981,3 @@ Auth::routes();
 //     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
 // });
 
-Route::get('branch', fn() => 'Production (Master) Branch');
-// Comment 2
-Route::get('abb', fn() => "About Page Added");

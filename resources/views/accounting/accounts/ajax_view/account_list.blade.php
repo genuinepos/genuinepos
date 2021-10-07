@@ -29,16 +29,10 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <a id="edit" title="Edit details" data-bs-target="#editModal" class="dropdown-item" href="javascript:;" ><i class="far fa-edit text-primary"></i>Edit</a>
-
                             <a class="dropdown-item" href="{{ route('accounting.accounts.book', $account->id) }}"><i class="fas fa-book text-primary"></i> Account Book</a>
-
                             <a class="dropdown-item" href="{{ route('accounting.accounts.delete', $account->id) }}" id="delete"><i class="fas fa-book text-primary"></i> Delete</a>
-
                             <a id="fund_transfer" class="dropdown-item" data-toggle="modal" data-bs-target="#fundTransferModal" data-id="{{ $account->id }}" data-ac_name="{{ $account->name.' ('.$account->account_number.')' }}" data-balance="{{ $account->balance }}" href="#"><i class="far fa-money-bill-alt text-primary"></i> Fund Transfer</a>
-
                             <a id="deposit" data-toggle="modal" data-bs-target="#depositModal" data-id="{{ $account->id }}" data-ac_name="{{ $account->name.' ('.$account->account_number.')' }}" data-balance="{{ $account->balance }}" class="dropdown-item" href="#"><i class="fas fa-wallet text-primary"></i> Deposit </a>
-
-                            <a id="change_status" class="dropdown-item" href="{{ route('accounting.accounts.change.status', $account->id) }}"><i class="far fa-times-circle text-danger"></i> Close</a>
                         </div>
                     </div>
                 </td> 

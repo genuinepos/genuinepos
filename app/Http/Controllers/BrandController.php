@@ -116,7 +116,7 @@ class BrandController extends Controller
         return response()->json(__('brand.update_success'));
     }
 
-    // Delete Brand method
+    // Delete Brand method//
     public function delete(Request $request, $brandId)
     {
         return response()->json('Feature is disabled in this demo');

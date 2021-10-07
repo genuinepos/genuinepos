@@ -1346,3 +1346,8 @@ table.display tbody tr:hover {
     background: #3b79c5de !IMPORTANT;
     COLOR: #fff;
 }
+
+.menu-list-area ul.list-unstyled {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}

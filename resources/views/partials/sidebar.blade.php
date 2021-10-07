@@ -332,6 +332,32 @@
                                         </div>
                                     @endif
 
+                                    @if (auth()->user()->permission->customers['customer_all'] == '1')
+                                        <div
+                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('contacts.customer.index') }}" class="bar-link">
+                                                    <span><i class="far fa-address-card"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.customers') </p>
+                                        </div>
+
+                                        <div
+                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('contacts.customers.groups.index') }}" class="bar-link">
+                                                    <span><i class="fas fa-users"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.customer_groups')</p>
+                                        </div>
+                                    @endif
+                                </div>
+                                <br>
+                                <hr>
+
+                                <div class="row">
                                     @if (auth()->user()->permission->supplier['supplier_all'] == '1')
                                         <div
                                             class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -348,31 +374,11 @@
                                         <div
                                             class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                             <div class="switch_bar">
-                                                <a href="{{ route('contacts.customer.index') }}" class="bar-link">
-                                                    <span><i class="far fa-address-card"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.customers') </p>
-                                        </div>
-
-                                        <div
-                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
                                                 <a href="{{ route('contacts.customers.import.create') }}" class="bar-link">
                                                     <span><i class="fas fa-file-upload"></i></span>
                                                 </a>
                                             </div>
                                             <p class="switch_text">@lang('menu.import_customers')</p>
-                                        </div>
-
-                                        <div
-                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('contacts.customers.groups.index') }}" class="bar-link">
-                                                    <span><i class="fas fa-users"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.customer_groups')</p>
                                         </div>
                                     @endif
                                 </div>

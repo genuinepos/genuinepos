@@ -11,6 +11,7 @@
                     @endif
                 </b>
             </h3>
+            
             <p>
                 @if ($payment->sale->branch)
                     {{ $payment->sale->branch->city . ', ' . $payment->sale->branch->state . ', ' . $payment->sale->branch->zip_code . ', ' . $payment->sale->branch->country }}

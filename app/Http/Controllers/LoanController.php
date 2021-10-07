@@ -80,7 +80,7 @@ class LoanController extends Controller
                     $html .= '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item" href="' . route('accounting.loan.show', [$row->id]) . '" id="show_loan"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" id="view" href="' . route('accounting.loan.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" href="' . route('accounting.loan.edit', [$row->id]) . '" id="edit_loan"><i class="far fa-edit text-primary"></i> Edit</a>';
 
                     if ($row->type == 1) {
@@ -297,6 +297,12 @@ class LoanController extends Controller
     public function allCompaniesForForm()
     {
         return DB::table('loan_companies')->select('id', 'name')->get();
+    }
+
+    public function show($loanId)
+    {
+        $loan = Loan::with(['company', 'account'])->where('id', $loanId)->first();
+        return view('accounting.loans.ajax_view.loanDetails', compact('loan'));
     }
 
     public function loanPrint(Request $request)

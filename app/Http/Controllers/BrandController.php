@@ -117,7 +117,7 @@ class BrandController extends Controller
             return response()->json(__('brand.update_success'));
     }
 
-    // Delete Brand method
+    // Delete Brand method//
     public function delete(Request $request, $brandId)
     {
         $deleteBrand = Brand::find($brandId);

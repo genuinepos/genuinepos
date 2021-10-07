@@ -982,6 +982,4 @@ Auth::routes();
 //     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
 // });
 
-Route::get('branch', fn() => 'Demo Branch');
-
 Route::get('abb', fn() => "About Page Added");

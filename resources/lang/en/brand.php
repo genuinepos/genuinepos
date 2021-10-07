@@ -23,5 +23,6 @@ return [
     'delete_cancel' => 'Your imaginary file is safe!',
     'add_success' => 'Brand created successfully.',
     'update_success' => 'Brand updated successfully.',
+    'delete_success' => 'Brand deleted successfully.',
 ];
 

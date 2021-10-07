@@ -263,9 +263,6 @@
                     data: request,
                     success: function(data) {
                         $('.data_tbl').DataTable().ajax.reload();
-                        if (condition) {
-                            
-                        }
                         toastr.error(data);
                     }
                 });

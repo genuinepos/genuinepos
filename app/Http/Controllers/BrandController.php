@@ -122,7 +122,6 @@ class BrandController extends Controller
     // Delete Brand method
     public function delete(Request $request, $brandId)
     {
-        //return $categoryId;
         $deleteBrand = Brand::find($brandId);
         if ($deleteBrand->photo !== 'default.png') {
             if (file_exists(public_path('uploads/brand/'.$deleteBrand->photo))) {
@@ -132,6 +131,6 @@ class BrandController extends Controller
         if (!is_null($deleteBrand)) {
             $deleteBrand->delete(); 
         }
-        return response()->json(__('brand.update_success'));
+        return response()->json(__('brand.delete_success'));
     }
 }

@@ -245,18 +245,8 @@
                     'title': '@lang("brand.delete_alert")',
                     'content': 'Are you sure?',
                     'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-modal-primary',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-danger',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
-                        }
+                        'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}
+                        },'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                     }
                 });
             });
@@ -273,6 +263,9 @@
                     data: request,
                     success: function(data) {
                         $('.data_tbl').DataTable().ajax.reload();
+                        if (condition) {
+                            
+                        }
                         toastr.error(data);
                     }
                 });

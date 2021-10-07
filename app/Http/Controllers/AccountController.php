@@ -6,12 +6,15 @@ use App\Models\Bank;
 use App\Models\Account;
 use App\Models\AccountType;
 use App\Models\CashFlow;
+use App\Utils\AccountUtil;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
-    public function __construct()
+    protected $accountUtil;
+    public function __construct(AccountUtil $accountUtil)
     {
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -30,7 +33,7 @@ class AccountController extends Controller
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $accounts = Account::with(['bank', 'account_type', 'admin', 'admin.role'])->orderBy('id', 'DESC')->where('status', 1)->get();
         return view('accounting.accounts.ajax_view.account_list', compact('accounts'));
     }
@@ -66,20 +69,19 @@ class AccountController extends Controller
             'admin_id' => auth()->user()->id,
         ]);
 
-        if ($request->opening_balance && $request->opening_balance != 0) {
-            $addCashflow = new CashFlow();
-            $addCashflow->account_id = $addAccount;
-            $addCashflow->transaction_type = 7;
-            $addCashflow->cash_type = 2;
-            $addCashflow->credit = $request->opening_balance;
-            $addCashflow->balance = $request->opening_balance;
-            $addCashflow->report_date = date('Y-m-d');
-            $addCashflow->date = date('Y-m-d');
-            $addCashflow->month = date('F');
-            $addCashflow->year = date('Y');
-            $addCashflow->admin_id = auth()->user()->id;
-            $addCashflow->save();
-        }
+        $addCashflow = new CashFlow();
+        $addCashflow->account_id = $addAccount;
+        $addCashflow->transaction_type = 7;
+        $addCashflow->cash_type = 2;
+        $addCashflow->credit = $request->opening_balance ? $request->opening_balance : 0;
+        $addCashflow->report_date = date('Y-m-d');
+        $addCashflow->date = date('Y-m-d');
+        $addCashflow->month = date('F');
+        $addCashflow->year = date('Y');
+        $addCashflow->admin_id = auth()->user()->id;
+        $addCashflow->save();
+        $addCashflow->balance = $this->accountUtil->adjustAccountBalance($addAccount);
+        $addCashflow->save();
 
         return response()->json('Account created successfully');
     }
@@ -150,43 +152,22 @@ class AccountController extends Controller
         }
     }
 
-    public function filterAccount(Request $request)
-    {
-        //return $request->status;
-        $filteredAccounts = Account::with([
-            'bank',
-            'account_type',
-            'admin',
-            'admin.role'
-        ])->orderBy('id', 'DESC')->where('status', $request->status)->get();
-        return view('accounting.accounts.ajax_view.filter_account_list', compact('filteredAccounts'));
-    }
-
     public function fundTransfer(Request $request)
     {
-        $senderAccount = Account::where('id', $request->sender_account_id)->first();
-        $senderAccount->debit += $request->amount;
-        $senderAccount->balance -= $request->amount;
-        $senderAccount->save();
-
         $cashFlow1 = new CashFlow();
         $cashFlow1->account_id = $request->sender_account_id;
         $cashFlow1->receiver_account_id = $request->receiver_account_id;
         $cashFlow1->debit = $request->amount;
         $cashFlow1->transaction_type = 4;
         $cashFlow1->cash_type = 1;
-        $cashFlow1->balance = $senderAccount->balance;
         $cashFlow1->date = $request->date;
         $cashFlow1->report_date = date('Y-m-d', strtotime($request->date));
         $cashFlow1->month = date('F');
         $cashFlow1->year = date('Y');
         $cashFlow1->admin_id = auth()->user()->id;
         $cashFlow1->save();
-
-        $receiverAccount = Account::where('id', $request->receiver_account_id)->first();
-        $receiverAccount->credit += $request->amount;
-        $receiverAccount->balance += $request->amount;
-        $receiverAccount->save();
+        $cashFlow1->balance = $this->accountUtil->adjustAccountBalance($request->sender_account_id);
+        $cashFlow1->save();
 
         $cashFlow2 = new CashFlow();
         $cashFlow2->account_id = $request->receiver_account_id;
@@ -194,13 +175,14 @@ class AccountController extends Controller
         $cashFlow2->credit = $request->amount;
         $cashFlow2->transaction_type = 4;
         $cashFlow2->cash_type = 2;
-        $cashFlow2->balance = $receiverAccount->balance;
         $cashFlow2->date = $request->date;
         $cashFlow2->report_date = date('Y-m-d', strtotime($request->date));
         $cashFlow2->month = date('F');
         $cashFlow2->year = date('Y');
         $cashFlow2->related_cash_flow_id = $cashFlow1->id;
         $cashFlow2->admin_id = auth()->user()->id;
+        $cashFlow2->save();
+        $cashFlow2->balance = $this->accountUtil->adjustAccountBalance($request->receiver_account_id);
         $cashFlow2->save();
 
         $cashFlow1->related_cash_flow_id = $cashFlow2->id;
@@ -211,44 +193,36 @@ class AccountController extends Controller
 
     public function deposit(Request $request)
     {
-        $receiverAccount = Account::where('id', $request->receiver_account_id)->first();
-        $receiverAccount->credit += $request->amount;
-        $receiverAccount->balance += $request->amount;
-        $receiverAccount->save();
-
         $cashFlow1 = new CashFlow();
         $cashFlow1->account_id = $request->receiver_account_id;
         $cashFlow1->sender_account_id = $request->sender_account_id ? $request->sender_account_id : NULL;
         $cashFlow1->credit = $request->amount;
         $cashFlow1->transaction_type = 5;
         $cashFlow1->cash_type = 2;
-        $cashFlow1->balance = $receiverAccount->balance;
         $cashFlow1->date = $request->date;
         $cashFlow1->report_date = date('Y-m-d', strtotime($request->date));
         $cashFlow1->month = date('F');
         $cashFlow1->year = date('Y');
         $cashFlow1->admin_id = auth()->user()->id;
         $cashFlow1->save();
+        $cashFlow1->balance = $this->accountUtil->adjustAccountBalance($request->receiver_account_id);
+        $cashFlow1->save();
 
         if ($request->sender_account_id) {
-            $senderAccount = Account::where('id', $request->sender_account_id)->first();
-            $senderAccount->debit += $request->amount;
-            $senderAccount->balance -= $request->amount;
-            $senderAccount->save();
-
             $cashFlow2 = new CashFlow();
             $cashFlow2->account_id = $request->sender_account_id;
             $cashFlow2->receiver_account_id = $request->receiver_account_id;
             $cashFlow2->debit = $request->amount;
             $cashFlow2->transaction_type = 4;
             $cashFlow2->cash_type = 1;
-            $cashFlow2->balance = $senderAccount->balance;
             $cashFlow2->date = $request->date;
             $cashFlow2->report_date = date('Y-m-d', strtotime($request->date));
             $cashFlow2->month = date('F');
             $cashFlow2->year = date('Y');
             $cashFlow2->related_cash_flow_id = $cashFlow1->id;
             $cashFlow2->admin_id = auth()->user()->id;
+            $cashFlow2->save();
+            $cashFlow2->balance = $this->accountUtil->adjustAccountBalance($request->sender_account_id);
             $cashFlow2->save();
 
             $cashFlow1->related_cash_flow_id = $cashFlow2->id;

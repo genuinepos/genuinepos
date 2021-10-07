@@ -33,10 +33,6 @@ class ExpanseCategoryController extends Controller
             'name' => 'required',
         ]);
 
-
-        // generate invoice ID
-      
-
         $lastExpenseCategory = DB::table('expanse_categories')->orderBy('id', 'desc')->first();
         $code = 0;
         if ($lastExpenseCategory) {
@@ -71,7 +67,6 @@ class ExpanseCategoryController extends Controller
     {
         //return $categoryId;
         $deleteCategory = ExpanseCategory::find($categoryId);
-
         if (!is_null($deleteCategory)) {
             $deleteCategory->delete();
         }

@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\AdminAndUser;
-use App\Models\CustomerPayment;
-use App\Models\SupplierPayment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -566,7 +564,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::group(['prefix' => '/'], function () {
             Route::get('/', 'LoanController@index')->name('accounting.loan.index');
             Route::post('store', 'LoanController@store')->name('accounting.loan.store');
-            Route::get('show', 'LoanController@show')->name('accounting.loan.show');
+            Route::get('show/{loanId}', 'LoanController@show')->name('accounting.loan.show');
             Route::get('edit/{loanId}', 'LoanController@edit')->name('accounting.loan.edit');
             Route::post('update/{loanId}', 'LoanController@update')->name('accounting.loan.update');
             Route::delete('delete/{loanId}', 'LoanController@delete')->name('accounting.loan.delete');

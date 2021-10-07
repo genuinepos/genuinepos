@@ -109,6 +109,18 @@
         }); 
     });
 
+     // Show details modal with data
+     $(document).on('click', '#view', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $.get(url, function(data) {
+            $('#loan_details').html(data);
+            $('.data_preloader').hide();
+            $('#detailsModal').modal('show');
+        });
+    });
+
     $(document).on('click', '#delete_loan',function(e){
         e.preventDefault(); 
         var url = $(this).attr('href');

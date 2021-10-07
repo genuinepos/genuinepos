@@ -31,7 +31,6 @@
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
                                     </div>
-                                    
                                 </div>
 
                                 <div class="widget_content">

@@ -164,3 +164,30 @@
         </div>  
     </div>
 </div>
+
+<!--Payment list modal-->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Loan Details</h6>
+                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                    class="fas fa-times"></span></a>
+            </div>
+            <div class="modal-body">
+                <div id="loan_details">
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-end">
+                        <ul class="list-unstyled">
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                            <button type="submit" id="print_payment" class="c-btn btn_blue">Print</button>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -129,6 +129,6 @@ class BrandController extends Controller
         if (!is_null($deleteBrand)) {
             $deleteBrand->delete();
         }
-        return response()->json(__('brand.update_success'));
+        return response()->json(__('brand.delete_success'));
     }
 }

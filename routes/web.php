@@ -984,3 +984,4 @@ Auth::routes();
 
 Route::get('branch', fn() => 'Production (Master) Branch');
 // Comment 2
+Route::get('abb', fn() => "About Page Added");

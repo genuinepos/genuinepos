@@ -244,8 +244,8 @@ class SaleController extends Controller
         $addSale->admin_id = auth()->user()->id;
         $addSale->branch_id = auth()->user()->branch_id;
 
-        // $addSale->customer_id = $request->customer_id;
-        $addSale->customer_id = $request->customer_id != 0 ? $request->customer_id : NULL;
+        $customer_id = $request->customer_id != 0 ? $request->customer_id : NULL;
+        $addSale->customer_id = $customer_id;
         $addSale->status = $request->status;
 
         if ($request->status == 1) {
@@ -274,7 +274,7 @@ class SaleController extends Controller
         $addSale->month = date('F');
         $addSale->year = date('Y');
 
-        $customer = Customer::where('id', $request->customer_id)->first();
+
         // Update customer due
         if ($request->status == 1) {
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0;
@@ -298,9 +298,9 @@ class SaleController extends Controller
             }
             $addSale->save();
 
-            if ($customer) {
+            if ($customer_id) {
                 $addCustomerLedger = new CustomerLedger();
-                $addCustomerLedger->customer_id = $request->customer_id;
+                $addCustomerLedger->customer_id = $customer_id;
                 $addCustomerLedger->sale_id = $addSale->id;
                 $addCustomerLedger->row_type = 1;
                 $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
@@ -353,10 +353,21 @@ class SaleController extends Controller
         }
 
         // Add sale payment
+        $sale = Sale::with([
+            'customer',
+            'branch',
+            'branch.add_sale_invoice_layout',
+            'sale_products',
+            'sale_products.product',
+            'sale_products.product.warranty',
+            'sale_products.variant',
+            'admin'
+        ])->where('id', $addSale->id)->first();
+
         if ($request->status == 1) {
-            $this->saleUtil->__getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId);
-            if ($customer) {
-                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
+            $this->saleUtil->__getSalePaymentForAddSaleStore($request, $sale, $paymentInvoicePrefix, $invoiceId);
+            if ($sale->customer_id) {
+                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
             }
 
             $__index = 0;
@@ -379,23 +390,12 @@ class SaleController extends Controller
         $total_due = $request->total_due;
         $change_amount = $request->change_amount;
 
-        $sale = Sale::with([
-            'customer',
-            'branch',
-            'branch.add_sale_invoice_layout',
-            'sale_products',
-            'sale_products.product',
-            'sale_products.product.warranty',
-            'sale_products.variant',
-            'admin'
-        ])->where('id', $addSale->id)->first();
-
         if (
             env('MAIL_ACTIVE') == 'true' &&
             json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email'] == '1'
         ) {
-            if ($customer && $customer->email) {
-                SaleMailJob::dispatch($customer->email, $sale)
+            if ($sale->customer && $sale->customer->email) {
+                SaleMailJob::dispatch($sale->customer->email, $sale)
                     ->delay(now()->addSeconds(5));
             }
         }
@@ -404,7 +404,7 @@ class SaleController extends Controller
             env('SMS_ACTIVE') == 'true' &&
             json_decode($prefixSettings->send_es_settings, true)['send_notice_via_sms'] == '1'
         ) {
-            if ($customer && $customer->phone) {
+            if ($sale->customer && $sale->customer->phone) {
                 $this->smsUtil->singleSms($sale);
             }
         }

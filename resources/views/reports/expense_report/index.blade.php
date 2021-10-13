@@ -245,13 +245,13 @@
         e.preventDefault();
         var url = "{{ route('reports.expenses.print') }}";
         var branch_id = $('#branch_id').val();
-        var customer_id = $('#customer_id').val();
+        var admin_id = $('#admin_id').val();
         var from_date = $('.from_date').val();
         var to_date = $('.to_date').val();
         $.ajax({
             url:url,
             type:'get',
-            data: {branch_id, customer_id, from_date, to_date},
+            data: {branch_id, admin_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
                     debug: false,                   

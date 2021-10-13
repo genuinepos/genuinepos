@@ -1,3 +1,22 @@
+<style>
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
+
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 10px;margin-right: 10px;}
+    .header, .header-space,
+    .footer, .footer-space {height: 20px;}
+    .header {position: fixed; top: 0;}
+    .footer {position: fixed;bottom: 0;}
+    .noBorder {border: 0px !important;}
+    tr.noBorder td {border: 0px !important;}
+    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+</style>
 @php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
 <div class="sale_payment_print_area">
     <div class="header_area">
@@ -40,7 +59,7 @@
                             <th width="50%" class="text-start">Paid Amount :</th>
                             <td width="50%">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $payment->paid_amount }}
+                                {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
                         </tr>
 

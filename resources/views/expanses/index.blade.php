@@ -71,10 +71,19 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                                
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label><strong></strong></label>
+                                                            <div class="input-group">
+                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 mt-3">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -211,7 +220,6 @@
             buttons: [ 
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
             ],
             "processing": true,
             "serverSide": true,
@@ -469,6 +477,38 @@
                     }
                 }
             });
+        });
+
+        //Print purchase Payment report
+        $(document).on('click', '#print_report', function (e) {
+            e.preventDefault();
+            var url = "{{ route('reports.expenses.print') }}";
+            var branch_id = $('#branch_id').val();
+            var admin_id = $('#admin_id').val();
+            var from_date = $('.from_date').val();
+            var to_date = $('.to_date').val();
+            $.ajax({
+                url:url,
+                type:'get',
+                data: {branch_id, admin_id, from_date, to_date},
+                success:function(data){
+                    $(data).printThis({
+                        debug: false,                   
+                        importCSS: true,                
+                        importStyle: true,          
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                        removeInline: false, 
+                        printDelay: 500, 
+                        header: "", 
+                        pageTitle: "",
+                        // footer: 'Footer Text',
+                        formValues: false,         
+                        canvas: false, 
+                        beforePrint: null,
+                        afterPrint: null      
+                    });
+                }
+            }); 
         });
     </script>
 

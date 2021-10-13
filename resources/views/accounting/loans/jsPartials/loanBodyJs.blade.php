@@ -226,4 +226,21 @@
             }
         }); 
     });
+
+    // Print single payment details
+    $('#print_loan_details').on('click', function (e) {
+        e.preventDefault(); 
+        var body = $('.loan_details_print_area').html();
+        var footer = $('.signature_area').html();
+        $(body).printThis({
+            debug: false,                   
+            importCSS: true,                
+            importStyle: true,          
+            loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
+            removeInline: true, 
+            printDelay: 500, 
+            header: '',  
+            footer: footer
+        });
+    });
 </script>

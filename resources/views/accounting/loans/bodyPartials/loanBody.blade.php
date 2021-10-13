@@ -183,7 +183,7 @@
                     <div class="col-md-12 text-end">
                         <ul class="list-unstyled">
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                            <button type="submit" id="print_payment" class="c-btn btn_blue">Print</button>
+                            <button type="submit" id="print_loan_details" class="c-btn btn_blue">Print</button>
                         </ul>
                     </div>
                 </div>

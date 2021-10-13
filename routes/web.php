@@ -579,6 +579,11 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
             Route::post('update/{companyId}', 'LoanCompanyController@update')->name('accounting.loan.companies.update');
             Route::delete('delete/{companyId}', 'LoanCompanyController@delete')->name('accounting.loan.companies.delete');
         });
+
+        Route::group(['prefix' => 'payments'], function () {
+            Route::get('due/receive/modal/{company_id}', 'LoanPaymentController@dueReceiveModal')->name('accounting.loan.payment.due.receive.modal');
+            Route::post('due/receive/store/{company_id}', 'LoanPaymentController@dueReceiveStore')->name('accounting.loan.payment.due.receive.store');
+        });
     });
 });
 

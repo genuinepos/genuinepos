@@ -14,7 +14,8 @@
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.company_id = $('#f_company_id').val();
-                d.date_range = $('#date_range').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
             }
         },
         columns: [
@@ -163,7 +164,6 @@
             url: url,
             type: 'get',
             success: function(companies) {
-                console.log(companies);
                 $('#company_id').empty();
                 $('#f_company_id').empty();
                 $('#company_id').append('<option value="">Select Company</option>');
@@ -183,23 +183,9 @@
     });
 
     //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
+    $(document).on('submit', '#filter_form', function (e) {
+        e.preventDefault();
         loans_table.ajax.reload();
-    });
-
-    //Submit filter form by date-range field blur 
-    $(document).on('blur', '.submit_able_input', function () {
-        setTimeout(function() {
-            loans_table.ajax.reload();
-        }, 500);
-    });
-
-    //Submit filter form by date-range apply button
-    $(document).on('click', '.applyBtn', function () {
-        setTimeout(function() {
-            $('.submit_able_input').addClass('.form-control:focus');
-            $('.submit_able_input').blur();
-        }, 500);
     });
 
     //Print Profit/Loss 
@@ -221,7 +207,8 @@
                     loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
                     removeInline: false, 
                     printDelay: 700, 
-                    header: null,        
+                    header: null,     
+                    footer: null,     
                 });
             }
         }); 
@@ -243,4 +230,70 @@
             footer: footer
         });
     });
+</script>
+
+<script type="text/javascript">
+     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'DD');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat
+    });
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
+    });
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker2'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
+    });
+
 </script>

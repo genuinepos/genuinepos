@@ -103,8 +103,7 @@
                                 @if (auth()->user()->permission->purchase['purchase_add'] == '1')
                                     <div class="col-md-2">
                                         <div class="btn_30_blue float-end">
-                                            <a href="{{ route('expanses.create') }}"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
+                                            <a href="{{ route('expanses.create') }}"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
                                     </div>
                                 @endif

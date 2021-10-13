@@ -43,11 +43,11 @@ class LoanController extends Controller
                 $query->where('loans.loan_company_id', $request->company_id);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('loans.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->from_date) {
+                $fromDate = date('Y-m-d', strtotime($request->from_date));
+                $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+                $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                $query->whereBetween('loans.report_date', $date_range); // Final
             }
 
             $generalSettings = DB::table('general_settings')->first();
@@ -81,14 +81,8 @@ class LoanController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item" id="view" href="' . route('accounting.loan.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+                    
                     $html .= '<a class="dropdown-item" href="' . route('accounting.loan.edit', [$row->id]) . '" id="edit_loan"><i class="far fa-edit text-primary"></i> Edit</a>';
-
-                    if ($row->type == 1) {
-                        $html .= '<a class="dropdown-item" id="receive_due_loan" href="#"><i class="far fa-money-bill-alt text-primary"></i> Receive Amount</a>';
-                    } else {
-                        $html .= '<a class="dropdown-item" id="pay_due_loan" href="#"><i class="far fa-money-bill-alt text-primary"></i> Pay Amount</a>';
-                    }
-
                     $html .= '<a class="dropdown-item" id="delete_loan" href="' . route('accounting.loan.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
@@ -222,44 +216,39 @@ class LoanController extends Controller
         $updateLoan = Loan::where('id', $loanId)->first();
         $storedPreviousAccountId = $updateLoan->account_id;
    
-        $addCompanyLoanAmount = LoanCompany::where('id', $request->company_id)->first();
         if ($request->type == 1) {
-            $addCompanyLoanAmount->pay_loan_amount = $addCompanyLoanAmount->pay_loan_amount + $request->loan_amount;
-            $addCompanyLoanAmount->pay_loan_due = $addCompanyLoanAmount->pay_loan_due + $request->loan_amount;
-            $addCompanyLoanAmount->save();
+            $this->loanUtil->adjustCompanyPayLoanAmount($request->company_id);
         } else {
-            $addCompanyLoanAmount->get_loan_amount = $addCompanyLoanAmount->get_loan_amount + $request->loan_amount;
-            $addCompanyLoanAmount->get_loan_due = $addCompanyLoanAmount->get_loan_amount + $request->loan_amount;
-            $addCompanyLoanAmount->save();
+            $this->loanUtil->adjustCompanyReceiveLoanAmount($request->company_id);
         }
 
-        $addCashFlow = CashFlow::where('loan_id', $updateLoan->id)->first();
-        $addCashFlow->account_id = $request->account_id;
+        $updateCashFlow = CashFlow::where('loan_id', $updateLoan->id)->first();
+        $updateCashFlow->account_id = $request->account_id;
         if ($request->type == 1) {
-            $addCashFlow->debit = $request->loan_amount;
-            $addCashFlow->credit = NULL;
-            $addCashFlow->cash_type = 1;
+            $updateCashFlow->debit = $request->loan_amount;
+            $updateCashFlow->credit = NULL;
+            $updateCashFlow->cash_type = 1;
         } else {
-            $addCashFlow->credit = $request->loan_amount;
-            $addCashFlow->debit = NULL;
-            $addCashFlow->cash_type = 2;
+            $updateCashFlow->credit = $request->loan_amount;
+            $updateCashFlow->debit = NULL;
+            $updateCashFlow->cash_type = 2;
         }
 
-        $addCashFlow->loan_id = $updateLoan->id;
-        $addCashFlow->transaction_type = 10;
-        $addCashFlow->save();
-        $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($addCashFlow->account_id);
-        $addCashFlow->save();
+        $updateCashFlow->loan_id = $updateLoan->id;
+        $updateCashFlow->transaction_type = 10;
+        $updateCashFlow->save();
+        $updateCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+        $updateCashFlow->save();
 
         $updateLoan->loan_company_id = $request->company_id;
         $updateLoan->type = $request->type;
         $updateLoan->loan_amount = $request->loan_amount;
-        $updateLoan->due = $request->loan_amount;
         $updateLoan->account_id = $request->account_id;
         $updateLoan->loan_reason = $request->loan_reason;
         $updateLoan->created_user_id = auth()->id();
         $updateLoan->report_date = date('Y-m-d', strtotime($request->date));
         $updateLoan->save();
+        $this->loanUtil->loanAmountAdjustment($updateLoan);
 
         if ($request->account_id != $storedPreviousAccountId) {
             $this->accountUtil->adjustAccountBalance($storedPreviousAccountId);
@@ -272,24 +261,19 @@ class LoanController extends Controller
     {
         $loan = Loan::where('id', $loanId)->first();
         $storeAccountId = $loan->account_id;
+        $storedType = $loan->type;
+        $storedCompanyId = $loan->loan_company_id;
         if ($loan->total_paid > 0) {
             return response()->json(['errorMsg' => 'This loan can not delete. Some or full amount has been paid/received on this loan.']);
         }
 
-        $company = LoanCompany::where('id', $loan->loan_company_id)->first();
-        if ($company) {
-            if ($loan->type == 1) {
-                $company->pay_loan_amount -= $loan->loan_amount;
-                $company->pay_loan_due -= $loan->loan_amount;
-                $company->save();
-            } else {
-                $company->get_loan_amount -= $loan->loan_amount;
-                $company->get_loan_due -= $loan->loan_amount;
-                $company->save();
-            }
-        }
-
         $loan->delete();
+        if ($storedType == 1) {
+            $this->loanUtil->adjustCompanyPayLoanAmount($storedCompanyId);
+        } else {
+            $this->loanUtil->adjustCompanyReceiveLoanAmount($storedCompanyId);
+        }
+        
         $this->accountUtil->adjustAccountBalance($storeAccountId);
         return response()->json('Loan deleted Successfully');
     }
@@ -329,13 +313,11 @@ class LoanController extends Controller
             $query->where('loans.loan_company_id', $request->company_id);
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1]));
-            $fromDate = date('Y-m-d', strtotime($date_range[0]));
-            $toDate = date('Y-m-d', strtotime($date_range[1]));
-            $query->whereBetween('loans.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $query->whereBetween('loans.report_date', $date_range); // Final
         }
 
         $generalSettings = DB::table('general_settings')->first();

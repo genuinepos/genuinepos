@@ -80,3 +80,10 @@
         </div>  
     </div>
 </div>
+
+ <!-- Customer payment Modal-->
+ <div class="modal fade" id="loanPymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+ aria-hidden="true">
+
+</div>
+<!-- Customer payment Modal End-->

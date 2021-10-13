@@ -13,7 +13,7 @@
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label><strong>Date : <span class="text-danger">*</span></strong></label>
-                            <input type="text" name="date" class="form-control datepicker" id="date" value="{{ str_replace('/', '-', date(json_decode($generalSettings->business, true)['date_format'])) }}">
+                            <input type="text" name="date" class="form-control" id="date" value="{{ str_replace('/', '-', date(json_decode($generalSettings->business, true)['date_format'])) }}">
                             <span class="error error_date"></span>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
             </div>
 
             <div class="widget_content">
-                <form id="filter_tax_report_form" class="px-1" action="" method="get">
+                <form id="filter_form">
                     @csrf
                     <div class="form-group row">
                         @if ($addons->branches == 1)
@@ -125,10 +125,36 @@
                                 <option value="">All</option>
                             </select>
                         </div>
+
+                        <div class="col-md-2">
+                            <label><strong>From Date :</strong></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i
+                                            class="fas fa-calendar-week input_i"></i></span>
+                                </div>
+                                <input type="text" name="from_date" id="datepicker"
+                                    class="form-control from_date date"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label><strong>To Date :</strong></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i
+                                            class="fas fa-calendar-week input_i"></i></span>
+                                </div>
+                                <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                            </div>
+                        </div>
             
-                        <div class="col-md-3">
-                            <label><strong>Date range :</strong></label>
-                            <input readonly type="text" class="form-control daterange submit_able_input" id="date_range">
+                        <div class="col-md-2">
+                            <label><strong></strong></label>
+                            <div class="input-group">
+                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                            </div>
                         </div>
                     </div>
                 </form>

@@ -64,7 +64,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Pay Loan Amount' : 'Receive Loan Amount' }}</th>
+                            <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Pay Loan Amount :' : 'Receive Loan Amount :' }}</th>
                             <td width="50%" class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($loan->loan_amount) }}
@@ -72,7 +72,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Debit Account' : 'Credit Account' }}</th>
+                            <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Debit Account :' : 'Credit Account :' }}</th>
                             <td width="50%" class="text-start">{{ $loan->account ? $loan->account->name.' (A/C: '.$loan->account->account_number.')' : 'N/A' }}</td>
                         </tr>
                     </tbody>
@@ -82,14 +82,14 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Due Receive Amount' : 'Due Paid Amount' }}</th>
+                            <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Due Receive Amount :' : 'Due Paid Amount :' }}</th>
                             <td width="50%" class="text-start">
                                 {{ $loan->type == 1 ? App\Utils\Converter::format_in_bdt($loan->total_receive) : App\Utils\Converter::format_in_bdt($loan->total_paid) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Due</th>
+                            <th width="50%" class="text-start">Due :</th>
                             <td width="50%" class="text-start">
                                 {{ App\Utils\Converter::format_in_bdt($loan->due) }}
                             </td>

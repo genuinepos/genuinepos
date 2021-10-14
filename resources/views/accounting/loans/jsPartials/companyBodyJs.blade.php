@@ -201,11 +201,56 @@
             success:function(data){
                 $('.loading_button').hide();
                 $('#loanPymentModal').modal('hide');
-                toastr.error(data);
+                toastr.success(data);
                 companies_table.ajax.reload();
                 loans_table.ajax.reload();
             },error:function(err){
                 toastr.error('Please Reload this page again.','Net Connetion is Error'); 
+            }
+        });
+    });
+
+    $(document).on('click', '#view_payments', function(e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $.get(url, function(data) {
+            $('#payment_list').html(data);
+            $('#viewPaymentModal').modal('show');
+            $('.data_preloader').hide();
+        });
+    });
+
+    $(document).on('click', '#delete_payment',function(e){
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $('#deleted_payment_form').attr('action', url);           
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'message': 'Are you sure?',
+            'buttons': {
+                'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_payment_form').submit();}},
+                'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+            }
+        });
+    });
+
+    //data delete by ajax
+    $(document).on('submit', '#deleted_payment_form',function(e) {
+        e.preventDefault();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url:url,
+            type:'post',
+            async:false,
+            data:request,
+            success:function(data) {
+                toastr.error(data);
+                $('#deleted_payment_form')[0].reset();
+                $('#viewPaymentModal').modal('hide');
+                companies_table.ajax.reload();
+                loans_table.ajax.reload();
             }
         });
     });

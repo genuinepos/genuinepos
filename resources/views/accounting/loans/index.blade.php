@@ -26,7 +26,7 @@
                                 <div class="tab_list_area">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <a id="tab_btn" data-show="companies" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Companies</a>
+                                            <a id="tab_btn" data-show="companies" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Companies/Peoples</a>
                                         </li>
 
                                         <li>

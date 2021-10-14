@@ -17,7 +17,8 @@ class LoanCompanyController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $companies = DB::table('loan_companies')->orderBy('id', 'DESC')->get();
+            $companies = DB::table('loan_companies')->orderBy('id', 'DESC')
+            ->where('branch_id', auth()->user()->branch_id)->get();
             $generalSettings = DB::table('general_settings')->first();
             return DataTables::of($companies)
                 ->addIndexColumn()
@@ -27,6 +28,8 @@ class LoanCompanyController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item" href="' . route('accounting.loan.companies.edit', [$row->id]) . '" id="edit_company"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('accounting.loan.payment.list', [$row->id]) . '" id="view_payments"><i class="far fa-edit text-primary"></i> View Payments</a>';
+
                     if ($row->pay_loan_due > 0) {
                         $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.payment.due.receive.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Due Amount</a>';
                     }
@@ -55,11 +58,15 @@ class LoanCompanyController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'phone' => 'required'
         ]);
 
         $addCompany = new LoanCompany();
         $addCompany->name = $request->name;
+        $addCompany->phone = $request->phone;
+        $addCompany->address = $request->address;
+        $addCompany->branch_id = auth()->user()->branch_id;
         $addCompany->save();
 
         return response()->json('Company created Successfully');
@@ -74,11 +81,14 @@ class LoanCompanyController extends Controller
     public function update(Request $request, $companyId)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'phone' => 'required'
         ]);
 
         $updateCompany =  LoanCompany::where('id', $companyId)->first();
         $updateCompany->name = $request->name;
+        $updateCompany->phone = $request->phone;
+        $updateCompany->address = $request->address;
         $updateCompany->save();
         return response()->json('Company updated Successfully');
     }

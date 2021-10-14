@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\LoanPaymentDistribution;
 use Illuminate\Database\Eloquent\Model;
 
 class LoanPayment extends Model
 {
-    use HasFactory;
+    protected $guarded = [];
+    protected $hidden = ['created_at', 'updated_at'];
+    public function loan_payment_distributions()
+    {
+        return $this->hasMany(LoanPaymentDistribution::class);
+    }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnsLoanPaymentsTable extends Migration
+class AddColumnsLoanCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddColumnsLoanPaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('loan_payments', function (Blueprint $table) {
-            $table->string('voucher_no')->after('id')->nullable();
+        Schema::table('loan_companies', function (Blueprint $table) {
+            $table->unsignedBigInteger('branch_id')->after('id')->nullable();
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }
 
@@ -25,8 +26,8 @@ class AddColumnsLoanPaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('loan_payments', function (Blueprint $table) {
-        
+        Schema::table('loan_companies', function (Blueprint $table) {
+            //
         });
     }
 }

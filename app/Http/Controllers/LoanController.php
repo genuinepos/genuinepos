@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Loan;
 use App\Models\CashFlow;
-use App\Models\LoanCompany;
 use App\Utils\AccountUtil;
 use App\Utils\Converter;
 use App\Utils\LoanUtil;
@@ -37,14 +36,6 @@ class LoanController extends Controller
                 ->leftJoin('loan_companies', 'loans.loan_company_id', 'loan_companies.id')
                 ->leftJoin('accounts', 'loans.account_id', 'accounts.id');
 
-            if ($request->branch_id) {
-                if ($request->branch_id == 'NULL') {
-                    $query->where('loans.branch_id', NULL);
-                } else {
-                    $query->where('loans.branch_id', $request->branch_id);
-                }
-            }
-
             if ($request->company_id) {
                 $query->where('loans.loan_company_id', $request->company_id);
             }
@@ -58,27 +49,17 @@ class LoanController extends Controller
 
             $generalSettings = DB::table('general_settings')->first();
             $converter = $this->converter;
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
-                $loans = $query->select(
-                    'loans.*',
-                    'loan_companies.name as c_name',
-                    'accounts.name as ac_name',
-                    'accounts.account_number as ac_number',
-                    'branches.name as b_name',
-                    'branches.branch_code as b_code',
-                )->orderBy('loans.report_date', 'desc')->get();
-            } else {
-                $loans = $query->select(
-                    'loans.*',
-                    'loan_companies.name as c_name',
-                    'accounts.name as ac_name',
-                    'accounts.account_number as ac_number',
-                    'branches.name as b_name',
-                    'branches.branch_code as b_code',
-                )->where('loans.branch_id', auth()->user()->branch_id)
-                    ->orderBy('loans.report_date', 'desc')
-                    ->get();
-            }
+
+            $loans = $query->select(
+                'loans.*',
+                'loan_companies.name as c_name',
+                'accounts.name as ac_name',
+                'accounts.account_number as ac_number',
+                'branches.name as b_name',
+                'branches.branch_code as b_code',
+            )->where('loans.branch_id', auth()->user()->branch_id)
+                ->orderBy('loans.report_date', 'desc')
+                ->get();
 
             return DataTables::of($loans)
                 ->addColumn('action', function ($row) {
@@ -118,7 +99,7 @@ class LoanController extends Controller
                 ->editColumn('total_paid', function ($row) use ($converter) {
                     if ($row->type == 1) {
                         return $converter->format_in_bdt($row->total_receive);
-                    }else {
+                    } else {
                         return $converter->format_in_bdt($row->total_paid);
                     }
                 })->rawColumns(['report_date', 'branch', 'type', 'loan_by', 'loan_amount', 'due', 'total_paid', 'action'])->smart(true)->make(true);
@@ -300,7 +281,6 @@ class LoanController extends Controller
     public function loanPrint(Request $request)
     {
         $loans = '';
-        $branch_id = $request->branch_id;
         $fromDate = '';
         $toDate = '';
         $company_id = $request->company_id;
@@ -308,14 +288,6 @@ class LoanController extends Controller
             ->leftJoin('branches', 'loans.branch_id', 'branches.id')
             ->leftJoin('loan_companies', 'loans.loan_company_id', 'loan_companies.id')
             ->leftJoin('accounts', 'loans.account_id', 'accounts.id');
-
-        if ($request->branch_id) {
-            if ($request->branch_id == 'NULL') {
-                $query->where('loans.branch_id', NULL);
-            } else {
-                $query->where('loans.branch_id', $request->branch_id);
-            }
-        }
 
         if ($request->company_id) {
             $query->where('loans.loan_company_id', $request->company_id);
@@ -330,27 +302,16 @@ class LoanController extends Controller
 
         $generalSettings = DB::table('general_settings')->first();
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
-            $loans = $query->select(
-                'loans.*',
-                'loan_companies.name as c_name',
-                'accounts.name as ac_name',
-                'accounts.account_number as ac_number',
-                'branches.name as b_name',
-                'branches.branch_code as b_code',
-            )->orderBy('loans.report_date', 'desc')->get();
-        } else {
-            $loans = $query->select(
-                'loans.*',
-                'loan_companies.name as c_name',
-                'accounts.name as ac_name',
-                'accounts.account_number as ac_number',
-                'branches.name as b_name',
-                'branches.branch_code as b_code',
-            )->where('loans.branch_id', auth()->user()->branch_id)
-                ->orderBy('loans.report_date', 'desc')->get();
-        }
+        $loans = $query->select(
+            'loans.*',
+            'loan_companies.name as c_name',
+            'accounts.name as ac_name',
+            'accounts.account_number as ac_number',
+            'branches.name as b_name',
+            'branches.branch_code as b_code',
+        )->where('loans.branch_id', auth()->user()->branch_id)
+            ->orderBy('loans.report_date', 'desc')->get();
 
-        return view('reports.loan_report.print', compact('loans', 'branch_id', 'fromDate', 'toDate', 'company_id'));
+        return view('reports.loan_report.print', compact('loans', 'fromDate', 'toDate', 'company_id'));
     }
 }

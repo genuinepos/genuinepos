@@ -19,7 +19,7 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Company : </strong><span class="card_text">{{ $company->name }}</span>
+                                <li><strong>Company/People : </strong><span class="card_text">{{ $company->name }}</span>
                                 </li>
                                 <li><strong>Phone : </strong><span class="card_text"></span></li>
                                 <li><strong>Address : </strong><span class="card_text"></span></li>
@@ -30,14 +30,14 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Loan Pay : </strong>
+                                <li><strong>Total Loan Get : </strong>
                                     <span class="card_text invoice_no">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                        <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}</b> 
                                     </span>
                                 </li>
 
-                                <li><strong>Total Due Receive : </strong>
+                                <li><strong>Total Due Paid : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->total_pay) }}</b> 
@@ -56,7 +56,7 @@
             </div>
             
             <!--begin::Form-->
-            <form id="loan_payment_form" action="{{ route('accounting.loan.payment.due.receive.store', $company->id) }}" method="POST" enctype="multipart/form-data">
+            <form id="loan_payment_form" action="{{ route('accounting.loan.payment.due.pay.store', $company->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
@@ -142,7 +142,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";

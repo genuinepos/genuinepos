@@ -15,16 +15,21 @@ class CreateLoanPaymentsTable extends Migration
     {
         Schema::create('loan_payments', function (Blueprint $table) {
             $table->id();
+            $table->string('voucher_no')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
             $table->unsignedBigInteger('branch_id')->nullable();
+            $table->unsignedBigInteger('account_id')->nullable();
             $table->decimal('paid_amount', 22, 2)->default(0);
-            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('pay_mode')->nullable();
+            $table->string('date')->nullable();
+            $table->timestamp('report_date')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->tinyInteger('payment_type')->default(1)->comment('1=pay_loan_payment;2=get_loan_payment');
             $table->timestamps();
             $table->foreign('company_id')->references('id')->on('loan_companies')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('admin_and_users')->onDelete('set null');
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
     }
 

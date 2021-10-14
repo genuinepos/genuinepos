@@ -20,7 +20,7 @@
 
                     <div class="form-group row">
                         <div class="col-md-6">
-                            <label><strong>Company : <span class="text-danger">*</span></strong></label>
+                            <label><strong>Company/People : <span class="text-danger">*</span></strong></label>
                             <select name="company_id" class="form-control" id="company_id">
                                 <option value="">Select Company</option>
                             </select>
@@ -101,28 +101,22 @@
             </div>
 
             <div class="widget_content">
-                <form id="filter_form">
+                <form id="filter_form" class="px-1">
                     @csrf
                     <div class="form-group row">
-                        @if ($addons->branches == 1)
-                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                <div class="col-md-3">
-                                    <label><strong>Business Location :</strong></label>
-                                    <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                        <option value="">All</option>
-                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                        @foreach ($branches as $br)
-                                            <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
-                        @endif
-                        
                         <div class="col-md-3">
-                            <label><strong>Company :</strong></label>
+                            <label><strong>Company/People :</strong></label>
                             <select name="company_id" class="form-control submit_able" id="f_company_id" autofocus>
                                 <option value="">All</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label><strong>Loan Type :</strong></label>
+                            <select name="type_id" class="form-control submit_able" id="type_id">
+                                <option value="">All</option>
+                                <option value="1">Pay Loan</option>
+                                <option value="2">Get Loan</option>
                             </select>
                         </div>
 
@@ -171,7 +165,7 @@
                                 <th>Date</th>
                                 <th>B.Location</th>
                                 <th>Ref. No.</th>
-                                <th>Company</th>
+                                <th>Company/People</th>
                                 <th>Type</th>
                                 <th>Loan By</th>
                                 <th>Loan Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>

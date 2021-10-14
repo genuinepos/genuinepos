@@ -3,7 +3,7 @@
         <div class="card" id="add_com_form">
             <div class="section-header">
                 <div class="col-md-12">
-                    <h6>Add Company </h6>
+                    <h6>Add Company/People </h6>
                 </div>
             </div>
 
@@ -14,8 +14,20 @@
                         <div class="col-md-12">
                             <label><b>Name :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" id="name" autocomplete="off"
-                                placeholder="Company Name"/>
+                                placeholder="Company/People Name"/>
                             <span class="error error_name"></span>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label><b>Phone :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="phone" class="form-control" id="phone" autocomplete="off"
+                                placeholder="Phone Number Name"/>
+                            <span class="error error_phone"></span>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label><b>Address :</b> </label>
+                            <textarea name="address" class="form-control" id="address" cols="10" rows="3" placeholder="Address"></textarea>
                         </div>
                     </div>
 
@@ -47,7 +59,7 @@
         <div class="card">
             <div class="section-header">
                 <div class="col-md-6">
-                    <h6>Companies</h6>
+                    <h6>Companies/Peoples</h6>
                 </div>
             </div>
             <div class="widget_content">
@@ -87,3 +99,17 @@
 
 </div>
 <!-- Customer payment Modal End-->
+
+  <!-- Customer payment view Modal--> 
+  <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
+                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+            </div>
+            <div class="modal-body" id="payment_list"></div>
+        </div>
+    </div>
+</div>
+<!-- Customer payment view Modal End-->

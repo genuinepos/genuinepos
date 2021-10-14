@@ -20,17 +20,13 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        @if ($branch_id == '')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
-        @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+        @if (!auth()->user()->branch_id)
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b></h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
-                    ->where('id', $branch_id)
+                    ->where('id', auth()->user()->branch_id)
                     ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
                     ->first();
             @endphp
@@ -77,16 +73,19 @@
                     <th class="text-start">Company/People</th>
                     <th class="text-start">Type</th>
                     <th class="text-start">Loan By</th>
-                    <th class="text-start">Loan Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-start">Total Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-start">Laon Due({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">Loan Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">Total Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">Laon Due({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
                 @php
-                   $totalLoan = 0;
+                   $totalPayLoan = 0;
+                   $totalGetLoan = 0;
                    $totalPaid = 0;
-                   $totalDue = 0;
+                   $totalReceive = 0;
+                   $totalPayLoanDue = 0;
+                   $totalGetLoanDue = 0;
                 @endphp
                 @foreach ($loans as $loan)
                     <tr>
@@ -98,15 +97,18 @@
                                 {!! json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
+
                         <td class="text-start">{{ $loan->reference_no }}</td>
                         <td class="text-start">{{ $loan->c_name }}</td>
-                        <td> 
+
+                        <td class="text-start"> 
                             @if ($loan->type == 1) 
                                 Pay Loan
                             @else 
                                 Receive Loan
                             @endif
                         </td>
+
                         <td class="text-start">
                             @if ($loan->loan_by) 
                                  {{ $loan->loan_by }}
@@ -114,19 +116,29 @@
                                  Cash Loan pay
                             @endif
                         </td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($loan->loan_amount) }}
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($loan->loan_amount) }}
                             @php
-                                $totalLoan += $loan->loan_amount;
+                                if ($loan->type == 1) {
+                                    $totalPayLoan += $loan->loan_amount;
+                                }else {
+                                    $totalGetLoan += $loan->loan_amount;
+                                }
                             @endphp
                         </td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($loan->total_paid) }}
+                        <td class="text-end">
+                            {{ $loan->type == 1 ? App\Utils\Converter::format_in_bdt($loan->total_receive) : App\Utils\Converter::format_in_bdt($loan->total_paid) }}
                             @php
                                 $totalPaid += $loan->total_paid;
+                                $totalReceive += $loan->total_receive;
                             @endphp
                         </td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($loan->due) }}
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($loan->due) }}
                             @php
-                                $totalDue += $loan->due;
+                                if ($loan->type == 1) {
+                                    $totalPayLoanDue += $loan->due;
+                                }else {
+                                    $totalGetLoanDue += $loan->due;
+                                }
                             @endphp
                         </td>
                     </tr>
@@ -136,24 +148,45 @@
     </div>
 </div>
 
-<div class="row" >
-    <div class="col-6"></div>
+<div class="row">
     <div class="col-6">
+        <p><b>Get Laon Details</b></p>
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Pay loan :</th>
-                    <td class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($totalLoan) }}</td>
+                    <th class="text-end">Total Get loan : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalGetLoan) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Paid :</th>
-                    <td class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
+                    <th class="text-end">Total Due Paid : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Payment Due :</th>
-                    <td class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($totalDue) }}</td>
+                    <th class="text-end">Total Get Loan Due : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalGetLoanDue) }}</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="col-6">
+        <p><b>Pay Laon Details</b></p>
+        <table class="table modal-table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-end">Total Pay loan : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPayLoan) }}</td>
+                </tr>
+
+                <tr>
+                    <th class="text-end">Total Due Receive : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalReceive) }}</td>
+                </tr>
+
+                <tr>
+                    <th class="text-end">Total Pay Loan Due : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPayLoanDue) }}</td>
                 </tr>
             </thead>
         </table>

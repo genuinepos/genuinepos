@@ -10,7 +10,7 @@
 
     <div class="form-group row">
         <div class="col-md-6">
-            <label><strong>Company : <span class="text-danger">*</span></strong></label>
+            <label><strong>Company/People : <span class="text-danger">*</span></strong></label>
             <select name="company_id" class="form-control" id="e_company_id">
                 <option value="">Select Company</option>
                 @foreach ($companies as $company)

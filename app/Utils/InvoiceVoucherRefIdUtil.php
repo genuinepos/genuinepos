@@ -44,4 +44,14 @@ class InvoiceVoucherRefIdUtil
         }
         return $id;
     }
+
+    public function getLastId($table)
+    {
+        $id = 1;
+        $lastEntry = DB::table($table)->orderBy('id', 'desc')->first(['id']);
+        if ($lastEntry) {
+            $id = ++$lastEntry->id;
+        }
+        return $id;
+    }
 }

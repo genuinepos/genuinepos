@@ -1,7 +1,6 @@
 <?php
 namespace App\Utils;
 
-use App\Models\Loan;
 use App\Models\LoanCompany;
 use Illuminate\Support\Facades\DB;
 
@@ -14,13 +13,13 @@ class LoanUtil
         ->select(
             DB::raw('sum(loan_amount) as t_amount'),
             DB::raw('sum(due) as t_due'),
-            DB::raw('sum(total_paid) as t_paid'),
+            DB::raw('sum(total_receive) as t_receive'),
         )->groupBy('loans.loan_company_id')->get();
 
         $company = LoanCompany::where('id', $companyId)->first();
         $company->pay_loan_amount = $payLoan->sum('t_amount');
         $company->pay_loan_due = $payLoan->sum('t_due');
-        $company->total_receive = $payLoan->sum('t_paid');
+        $company->total_receive = $payLoan->sum('t_receive');
         $company->save();
     }
 
@@ -54,7 +53,7 @@ class LoanUtil
             $loan->due = $total_due;
             $loan->total_receive = $total_receive;
             $loan->save();
-        }else {
+        } else {
             $loanPaymentDistributions = DB::table('loan_payment_distributions')->where('loan_id', $loan->id)
             ->where('loan_payment_distributions.payment_type', 2)
             ->select(

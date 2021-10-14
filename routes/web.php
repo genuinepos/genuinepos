@@ -583,6 +583,8 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::group(['prefix' => 'payments'], function () {
             Route::get('due/receive/modal/{company_id}', 'LoanPaymentController@dueReceiveModal')->name('accounting.loan.payment.due.receive.modal');
             Route::post('due/receive/store/{company_id}', 'LoanPaymentController@dueReceiveStore')->name('accounting.loan.payment.due.receive.store');
+            Route::get('due/pay/modal/{company_id}', 'LoanPaymentController@duePayModal')->name('accounting.loan.payment.due.pay.modal');
+            Route::post('due/pay/store/{company_id}', 'LoanPaymentController@duePayStore')->name('accounting.loan.payment.due.pay.store');
         });
     });
 });

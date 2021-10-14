@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Models\CashFlow;
 use App\Models\LoanCompany;
 use App\Utils\AccountUtil;
+use App\Utils\Converter;
 use App\Utils\LoanUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,10 +16,15 @@ class LoanController extends Controller
 {
     protected $accountUtil;
     protected $loanUtil;
-    public function __construct(AccountUtil $accountUtil, LoanUtil $loanUtil)
-    {
+    protected $converter;
+    public function __construct(
+        AccountUtil $accountUtil,
+        LoanUtil $loanUtil,
+        Converter $converter
+    ) {
         $this->accountUtil = $accountUtil;
         $this->loanUtil = $loanUtil;
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -51,7 +57,7 @@ class LoanController extends Controller
             }
 
             $generalSettings = DB::table('general_settings')->first();
-
+            $converter = $this->converter;
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
                 $loans = $query->select(
                     'loans.*',
@@ -81,7 +87,7 @@ class LoanController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item" id="view" href="' . route('accounting.loan.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-                    
+
                     $html .= '<a class="dropdown-item" href="' . route('accounting.loan.edit', [$row->id]) . '" id="edit_loan"><i class="far fa-edit text-primary"></i> Edit</a>';
                     $html .= '<a class="dropdown-item" id="delete_loan" href="' . route('accounting.loan.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
@@ -101,18 +107,20 @@ class LoanController extends Controller
                     } else {
                         return '<span class="text-danger"><strong>Get Loan</strong></span>';
                     }
-                })->editColumn('loan_by', function ($row) use ($generalSettings) {
+                })->editColumn('loan_by', function ($row) {
                     if ($row->loan_by) {
                         return $row->loan_by;
                     } else {
                         return 'Cash Loan pay.';
                     }
-                })->editColumn('loan_amount', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->loan_amount;
-                })->editColumn('due', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
-                })->editColumn('total_paid', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_paid;
+                })->editColumn('loan_amount', fn ($row) => $this->converter->format_in_bdt($row->loan_amount))
+                ->editColumn('due', fn ($row) => $this->converter->format_in_bdt($row->due))
+                ->editColumn('total_paid', function ($row) use ($converter) {
+                    if ($row->type == 1) {
+                        return $converter->format_in_bdt($row->total_receive);
+                    }else {
+                        return $converter->format_in_bdt($row->total_paid);
+                    }
                 })->rawColumns(['report_date', 'branch', 'type', 'loan_by', 'loan_amount', 'due', 'total_paid', 'action'])->smart(true)->make(true);
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
@@ -215,7 +223,7 @@ class LoanController extends Controller
 
         $updateLoan = Loan::where('id', $loanId)->first();
         $storedPreviousAccountId = $updateLoan->account_id;
-   
+
         if ($request->type == 1) {
             $this->loanUtil->adjustCompanyPayLoanAmount($request->company_id);
         } else {
@@ -273,7 +281,7 @@ class LoanController extends Controller
         } else {
             $this->loanUtil->adjustCompanyReceiveLoanAmount($storedCompanyId);
         }
-        
+
         $this->accountUtil->adjustAccountBalance($storeAccountId);
         return response()->json('Loan deleted Successfully');
     }

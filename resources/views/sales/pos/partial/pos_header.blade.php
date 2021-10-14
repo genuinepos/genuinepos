@@ -86,7 +86,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                         </div>
-                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus>
+                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus autocomplete="off">
                                         <div class="input-group-append add_button" id="add_product">
                                             <span class="input-group-text"><i class="fas fa-plus"></i></span>
                                         </div>

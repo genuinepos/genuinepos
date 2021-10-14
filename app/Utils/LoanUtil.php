@@ -48,7 +48,7 @@ class LoanUtil
             ->select(
                 DB::raw('sum(paid_amount) as t_paid'),
             )->groupBy('loan_payment_distributions.loan_id')->get();
-            $total_receive = $loanPaymentDistributions->sum('t_paid') ? $loanPaymentDistributions->sum('t_paid') : 0;
+            $total_receive = $loanPaymentDistributions->sum('t_paid');
             $total_due = $loan->loan_amount - $total_receive;
             $loan->due = $total_due;
             $loan->total_receive = $total_receive;
@@ -59,7 +59,7 @@ class LoanUtil
             ->select(
                 DB::raw('sum(paid_amount) as t_paid'),
             )->groupBy('loan_payment_distributions.loan_id')->get();
-            $total_paid = $loanPaymentDistributions->sum('t_paid') ? $loanPaymentDistributions->sum('t_paid') : 0;
+            $total_paid = $loanPaymentDistributions->sum('t_paid');
             $total_due = $loan->loan_amount - $total_paid;
             $loan->due = $total_due;
             $loan->total_paid = $total_paid;

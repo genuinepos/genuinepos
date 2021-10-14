@@ -153,7 +153,7 @@
         });
     });
 
-            //Add sale payment request by ajax
+    //Add sale payment request by ajax
     $(document).on('submit', '#loan_payment_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
@@ -200,8 +200,7 @@
             processData: false,
             success:function(data){
                 $('.loading_button').hide();
-                $('#loanPaymentModal').modal('hide');
-                $('#paymentViewModal').modal('hide');
+                $('#loanPymentModal').modal('hide');
                 toastr.error(data);
                 companies_table.ajax.reload();
                 loans_table.ajax.reload();

@@ -174,9 +174,9 @@
                                 <th>Company</th>
                                 <th>Type</th>
                                 <th>Loan By</th>
-                                <th>Loan Amount</th>
-                                <th>Due</th>
-                                <th>Total Paid</th>
+                                <th>Loan Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                <th>Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

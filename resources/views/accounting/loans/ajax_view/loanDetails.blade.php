@@ -91,7 +91,7 @@
                         <tr>
                             <th width="50%" class="text-start">Due</th>
                             <td width="50%" class="text-start">
-                                {{ $loan->type == 1 ? App\Utils\Converter::format_in_bdt($loan->total_receive) : App\Utils\Converter::format_in_bdt($loan->due) }}
+                                {{ App\Utils\Converter::format_in_bdt($loan->due) }}
                             </td>
                         </tr>
 

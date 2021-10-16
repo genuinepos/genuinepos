@@ -153,7 +153,7 @@ img.logo__img {
 .navigation {
     display: flex;
     align-items: center;
-    height: 62px;
+    height: 58px;
     position: fixed;
     width: 79.5%;
     z-index: 99;
@@ -168,7 +168,7 @@ img.logo__img {
     align-items: center;
     width: 100%;
     background: linear-gradient(#2a0c1b, #661e45);
-    padding: 6px;
+    padding-top: 6px;
 }
 
 .top-menu {
@@ -677,6 +677,7 @@ footer {
     bottom: 0;
     height: 33px;
     background: linear-gradient(#820334, #2a0c1b);
+    z-index: 9;
 }
 
 footer .logo_wrapper {

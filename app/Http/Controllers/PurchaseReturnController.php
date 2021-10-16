@@ -538,7 +538,7 @@ class PurchaseReturnController extends Controller
 
         $__index2 = 0;
         foreach ($product_ids as $product_id) {
-            $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+            $variant_id = $variant_ids[$__index2] != 'noid' ? $variant_ids[$__index2] : NULL;
             $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
             if (isset($request->warehouse_id)) {
                 $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $request->warehouse_id);

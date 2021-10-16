@@ -29,7 +29,7 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <form action="" method="get" class="px-2">
+                                        <form id="filter_form" class="px-2">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -61,6 +61,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                
                                                 <div class="col-md-2">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
@@ -160,7 +161,8 @@
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.department_id = $('#department_id').val();
-                d.from_date = $('#date_range').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
             }
         },
         columns: [{data: 'date', name: 'date'},
@@ -182,12 +184,13 @@
         $('.data_preloader').show();
         var branch_id = $('#branch_id').val();
         var department_id = $('#department_id').val();
-        var date_range = $('#date_range').val();
+        var from_date = $('.tofrom_date_date').val();
+        var to_date = $('.to_date').val();
         var url = $(this).attr('href');
         $.ajax({
             url:url,
             type:'get',
-            data: { branch_id, department_id, date_range },
+            data: { branch_id, department_id, from_date, to_date },
             success:function(data){
                 $(data).printThis({
                     debug: false,                   

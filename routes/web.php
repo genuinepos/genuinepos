@@ -284,6 +284,7 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
         Route::get('search/product/{productCode}/{warehouseId}', 'PurchaseReturnController@searchProduct');
         Route::get('search/product/in/branch/{productCode}', 'PurchaseReturnController@searchProductInBranch');
         Route::get('check/warehouse/variant/qty/{productId}/{variantId}/{warehouseId}', 'PurchaseReturnController@checkWarehouseProductVariant');
+        Route::get('check/branch/product/stock/{productId}/', 'PurchaseReturnController@checkBranchProductStock');
         Route::get('check/branch/variant/qty/{productId}/{variantId}', 'PurchaseReturnController@checkBranchProductVariant');
         Route::post('supplier/return/store', 'PurchaseReturnController@supplierReturnStore')->name('purchases.returns.supplier.return.store');
         Route::get('supplier/return/edit/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnEdit')->name('purchases.returns.supplier.return.edit');
@@ -981,53 +982,6 @@ Route::get('/test', function () {
     //      $value->report_date = $sale->report_date;
     //      $value->save();
     // }
-
-    $customer = Customer::where('id', 91)->first();
-    $totalCustomerSale = DB::table('sales')->where('customer_id', 91)
-        ->select(DB::raw('sum(total_payable_amount) as total_sale'))->groupBy('customer_id')->get();
-
-    $totalCustomerPayment = DB::table('customer_payments')
-        ->select(DB::raw('sum(paid_amount) as c_paid'))
-        ->where('customer_id', 91)
-        ->where('type', 1)
-        ->groupBy('customer_id')->get();
-
-    $totalSalePayment = DB::table('sale_payments')
-        ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
-        ->where('sale_payments.customer_payment_id', NULL)
-        ->where('sale_payments.payment_type', 1)
-        ->where('sales.customer_id', 91)->select(DB::raw('sum(paid_amount) as s_paid'))
-        ->groupBy('sales.customer_id')->get();
-
-    $totalSaleReturn = DB::table('sale_returns')
-        ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
-        ->where('sales.customer_id', 91)
-        ->select(DB::raw('sum(total_return_amount) as total_return_amt'))
-        ->groupBy('sales.customer_id')->get();
-
-    $totalInvoiceReturnPayment = DB::table('sale_payments') // Paid on invoice return due.
-        ->join('sales', 'sale_payments.sale_id', 'sales.id')
-        ->where('sale_payments.customer_payment_id', NULL)
-        ->where('sale_payments.payment_type', 2)
-        ->where('sales.customer_id', 91)
-        ->select(DB::raw('sum(paid_amount) as total_inv_return_paid'))
-        ->groupBy('sales.customer_id')->get();
-
-    $totalCustomerReturnPayment = DB::table('customer_payments') // Paid on Total customer return due.
-        ->where('customer_id', 91)
-        ->where('type', 2)
-        ->select(DB::raw('sum(paid_amount) as cr_paid'))
-        ->groupBy('customer_id')->get();
-
-
-    $totalSale = $totalCustomerSale->sum('total_sale');
-    $totalPaid = $totalCustomerPayment->sum('c_paid') + $totalSalePayment->sum('s_paid');
-    $totalReturn = $totalSaleReturn->sum('total_return_amt');
-    $totalReturnPaid = $totalInvoiceReturnPayment->sum('total_inv_return_paid') + $totalCustomerReturnPayment->sum('cr_paid');
-    $totalDue = ($totalSale + $customer->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn;
-
- $totalReturnDue = $totalReturn - ($totalSale + $customer->opening_balance - $totalPaid) - $totalReturnPaid;
-    
 });
 
 // All authenticated routes

@@ -52,7 +52,7 @@ class CustomerUtil
         $totalReturn = $totalSaleReturn->sum('total_return_amt');
         $totalReturnPaid = $totalInvoiceReturnPayment->sum('total_inv_return_paid') + $totalCustomerReturnPayment->sum('cr_paid');
         $totalDue = ($totalSale + $customer->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn;
-        $totalReturnDue = $totalReturn - $totalDue - $totalReturnPaid;
+        $totalReturnDue = $totalReturn - ($totalSale + $customer->opening_balance - $totalPaid) - $totalReturnPaid;
 
         $customer->total_sale = $totalSale;
         $customer->total_paid = $totalPaid;

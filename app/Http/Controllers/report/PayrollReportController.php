@@ -31,11 +31,11 @@ class PayrollReportController extends Controller
                 $query->where('admin_and_users.department_id', $request->department_id);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('hrm_payrolls.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->from_date) {
+                $fromDate = date('Y-m-d', strtotime($request->from_date));
+                $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+                $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                $query->whereBetween('hrm_payrolls.report_date_ts', $date_range); // Final
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
@@ -128,13 +128,11 @@ class PayrollReportController extends Controller
             $query->where('admin_and_users.department_id', $request->department_id);
         }
 
-        if ($request->date_range) {
-            $date_range = explode('-', $request->date_range);
-            $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $s_date = date('d-F-Y', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-            $e_date = date('d-F-Y', strtotime($date_range[1]));
-            $query->whereBetween('hrm_payrolls.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+        if ($request->from_date) {
+            $s_date = date('Y-m-d', strtotime($request->from_date));
+            $e_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $s_date;
+            $date_range = [$s_date . ' 00:00:00', $e_date . ' 00:00:00'];
+            $query->whereBetween('hrm_payrolls.report_date_ts', $date_range); // Final
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {

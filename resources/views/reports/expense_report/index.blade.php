@@ -9,7 +9,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-money-bill"></span>
@@ -81,7 +80,7 @@
                                                         <div class="col-md-6">
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
-                                                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                             </div>
                                                         </div>
 

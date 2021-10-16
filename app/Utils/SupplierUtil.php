@@ -65,9 +65,7 @@ class SupplierUtil
             ->groupBy('purchase_payments.supplier_id')->get();
 
         $totalPurchase = $totalSupplierPurchase->sum('total_purchase');
-
         $totalPaid = $totalSupplierPayment->sum('s_paid') + $totalPurchasePayment->sum('p_paid');
-
         $totalReturn = $totalInvoiceReturn->sum('total_inv_return_amt')
             + $totalSupplierReturn->sum('total_sup_return_amt');
 
@@ -76,7 +74,7 @@ class SupplierUtil
             + $__totalInvoiceReturnPayment->sum('total_inv_return_paid');
 
         $totalDue = ($totalPurchase + $supplier->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn;
-        $returnDue = $totalReturn - $totalDue - $totalReturnPaid;
+        $returnDue = $totalReturn - ($totalPurchase + $supplier->opening_balance - $totalPaid) - $totalReturnPaid;
 
         $supplier->total_purchase = $totalPurchase;
         $supplier->total_paid = $totalPaid;

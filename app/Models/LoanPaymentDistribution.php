@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Loan;
 use Illuminate\Database\Eloquent\Model;
 
 class LoanPaymentDistribution extends Model

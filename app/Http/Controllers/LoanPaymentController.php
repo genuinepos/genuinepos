@@ -128,7 +128,7 @@ class LoanPaymentController extends Controller
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
             $addCashFlow->debit = $request->amount;
-            $addCashFlow->cash_type = 2;
+            $addCashFlow->cash_type = 1;
             $addCashFlow->loan_payment_id = $loanPayment->id;
             $addCashFlow->transaction_type = 11;
             $addCashFlow->date = $request->date;

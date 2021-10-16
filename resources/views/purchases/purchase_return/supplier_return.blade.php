@@ -421,7 +421,6 @@
                                         li +='</li>';
                                     }
                                 });
-
                                 $('.variant_list_area').html(li);
                                 $('.select_area').show();
                             }

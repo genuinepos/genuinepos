@@ -121,7 +121,7 @@
 
                 @if ($addons->manufacturing == 1)
                     @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1')
-                        @if (auth()->user()->permission->manufacturing['menuf_view'] == '1') 
+                        @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
                             <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
                                 <a href="#">
                                     <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
@@ -142,7 +142,7 @@
                         </li>
                     @endif
                 @endif
-                
+
                 <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
                     <a href="#">
                         <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">
@@ -275,7 +275,7 @@
                                 </div>
                                 <p class="switch_text">@lang('menu.selling_price_group')</p>
                             </div>
-                         
+
                             <div
                                 class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
@@ -429,7 +429,7 @@
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.purchase_product_list')</p>
-                                    </div> 
+                                    </div>
                                 </div>
                                 <br>
                                 <hr>
@@ -529,7 +529,7 @@
                     @endif
                 @endif
             @endif
-   
+
             <div class="sub-menu_t" id="sales">
                 <div class="sub-menu-width">
                     <div class="model__close bg-secondary-2">
@@ -651,7 +651,7 @@
                                     </div>
                                     <p class="switch_text">@lang('menu.shipments')</p>
                                 </div>
-                            @endif 
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -672,11 +672,11 @@
                         </div>
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
                                     <p>{!! __('menu.transfer_stock_heading_1') !!}</p>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
@@ -685,7 +685,7 @@
                                         </a>
                                     </div>
 
-                                    <p class="switch_text">@lang('menu.add_transfer') 
+                                    <p class="switch_text">@lang('menu.add_transfer')
                                         <small class="ml-1"><b>(@lang('menu.to_branch'))</small></b>
                                     </p>
                                 </div>
@@ -706,7 +706,7 @@
                                             <span><i class="fas fa-check-double"></i></span>
                                         </a>
                                     </div>
-                                    <p class="switch_text">@lang('menu.receive_stocks') 
+                                    <p class="switch_text">@lang('menu.receive_stocks')
                                         <small class="ml-1"><b>(From B.Location)</small></b>
                                     </p>
                                 </div>
@@ -714,7 +714,7 @@
 
                             <hr>
                             <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
                                     <p>{!! __('menu.transfer_stock_heading_2') !!}</p>
                                 </div>
                             </div>
@@ -725,7 +725,7 @@
                                             <span><i class="fas fa-exchange-alt"></i></span>
                                         </a>
                                     </div>
-                                    <p class="switch_text">@lang('menu.add_transfer') 
+                                    <p class="switch_text">@lang('menu.add_transfer')
                                         <small class="ml-1">(@lang('menu.to_warehouse'))</small></p>
                                 </div>
 
@@ -1161,7 +1161,7 @@
 
             @if ($addons->manufacturing == 1)
                 @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1')
-                    @if (auth()->user()->permission->manufacturing['menuf_view'] == '1') 
+                    @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
                         <div class="sub-menu_t" id="manufacture">
                             <div class="sub-menu-width">
                                 <div class="model__close bg-secondary-2">
@@ -1436,7 +1436,7 @@
                 </div>
             </div>
             <!-- ===========================================FILE SIDEBAR=================== -->
-            
+
         </div>
     </div>
 </div>

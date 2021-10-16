@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
+                        <!-- ==========================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
@@ -108,12 +108,12 @@
         //     url:url,
         //     type:'get',
         //     success:function(date){
-            
+
         //     }
         // });
     });
 
-  
+
     $(document).on('click', '#docs', function (e) {
         e.preventDefault();
         // $('.data_preloader').show();
@@ -123,13 +123,13 @@
         //     url:url,
         //     type:'get',
         //     success:function(date){
-            
+
         //     }
         // });
     });
 
 
-    // Show add payment modal with date 
+    // Show add payment modal with date
     $(document).on('click', '#edit', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
@@ -159,14 +159,14 @@
             processData: false,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else{
                     $('#add_work_space_form')[0].reset();
                     $(".select2").select2().val('').trigger('change');
                     $('.loading_button').hide();
                     $('.modal').modal('hide');
-                    toastr.success(data); 
+                    toastr.success(data);
                     table.ajax.reload();
                 }
             }
@@ -187,12 +187,12 @@
             processData: false,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else{
                     $('.loading_button').hide();
                     $('.modal').modal('hide');
-                    toastr.success(data); 
+                    toastr.success(data);
                     table.ajax.reload();
                 }
             }
@@ -202,7 +202,7 @@
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
+        $('#deleted_form').attr('action', url);
         $.confirm({
             'title': 'Delete Confirmation',
             'message': 'Are you sure?',
@@ -217,7 +217,7 @@
                     'class': 'no bg-danger',
                     'action': function() {
                         // alert('Deleted canceled.')
-                    } 
+                    }
                 }
             }
         });

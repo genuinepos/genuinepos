@@ -483,9 +483,9 @@ div#left_bar_toggle {
         margin-left: 3px !important;
     }
 
-    ul.head__cn li a {
+    /* ul.head__cn li a {
         padding: 0px 5px;
-    }
+    } */
 
     li.user_info span.user_name {
         font-size: 9px !important;
@@ -500,7 +500,7 @@ div#left_bar_toggle {
     }
 
     li.top-icon:last-child {
-        margin-left: 8px;
+        margin-left: 2px;
     }
 
     div#left_bar_toggle {
@@ -509,10 +509,6 @@ div#left_bar_toggle {
 
     .toggle_reduce_navigation_width_mobile li.user_info.me-1 {
         display: none;
-    }
-
-    .toggle_reduce_navigation_width_mobile ul.head__cn li a {
-        padding: 8px;
     }
 }
 
@@ -728,6 +724,9 @@ footer img.logo {
     #calculatorModal.modal.show .modal-dialog {
         right: 41%;
     }
+    .top-icon {
+        margin: 0 2px;
+    }
 }
 @media (max-width: 576px) {
     #calculatorModal.modal.show .modal-dialog {
@@ -852,6 +851,7 @@ footer img.logo {
     #dashboard-8 .navigation {
         z-index: 999;
         width: 100%;
+        padding-left: 0px;
     }
     div#left_bar_toggle {
         margin-right: 20px;
@@ -876,20 +876,22 @@ footer img.logo {
     }
     #dashboard-8 .toggle_reduce_navigation_width_tab {
         width: 100%;
-        margin-left: -142px;
     }
     #dashboard-8 .toggle-leftbar.active {
-        margin-top: 71px;
+        margin-top: 65px;
     }
 }
 
 @media (max-width: 500px) {
     #dashboard-8 #primary_nav {
         width: 71px;
-        margin-top: 62px;
+        margin-top: 55px;
     }
     #dashboard-8 .main__content {
         margin-top: 58px;
+    }
+    .toggle_reduce_main_woaper_mobile .main__content {
+        padding-left: 61px;
     }
     #dashboard-8 .main__nav {
         width: 68px;
@@ -916,17 +918,13 @@ footer img.logo {
     }
     #dashboard-8 .navigation {
         width: 100%;
+        padding-left: 0px;
     }
     #dashboard-8 .navigation .user_info {
         margin-right: 0px !important;
     }
     #dashboard-8 .toggle_reduce_main_woaper_mobile {
-        width: 85% !important;
-        margin-left: 68px;
-    }
-    #dashboard-8 .toggle_reduce_navigation_width_mobile {
-        width: 100%;
-        margin-left: -71px;
+        margin-left: 0px;
     }
     #dashboard-8 .toggle_reduce_main_woaper_mobile .sec-name {
         padding: 10px 2px;
@@ -937,13 +935,9 @@ footer img.logo {
 }
 @media (max-width: 400px) {
     #dashboard-8 .toggle_reduce_navigation_width_mobile {
-        width: 95%;
-        margin-left: -68px;
+        margin-left: 0px;
     }
     #dashboard-8 #dashboard-8 .main__nav {
         height: 98px;
-    }
-    #dashboard-8 .toggle_reduce_main_woaper_mobile {
-        width: 80% !important;
     }
 }

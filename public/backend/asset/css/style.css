@@ -1099,14 +1099,15 @@ span.menu-title-t {
     }
     .sub-menu_t {
         position: absolute;
-        width: 86%;
         background: #fff;
-        top: 80px !important;
-        height: 85vh;
+        height: 100vh;
         z-index: 20;
-        left: 19%;
         display: none;
-        padding: 0px 29px;
+        left: 0px;
+        padding: 0;
+        padding-left: 68px;
+        overflow-y: scroll;
+        padding-bottom: 77px;
     }
     .main__nav_t::-webkit-scrollbar {
         width: 6px;

@@ -1635,57 +1635,6 @@ input.full {
     text-transform: uppercase;
 }
 
-.btn_gray {
-    background-position: 0 -230px;
-    font-size: 11px;
-    color: #444;
-    padding: 0 10px;
-    border: #c6c7c7 1px solid;
-    text-shadow: 1px 1px 0px #fff;
-    margin-right: 5px;
-}
-
-.btn_gray:hover {
-    background-position: 0 -128px;
-    -moz-box-shadow: 0 0 3px #bbb;
-    -webkit-box-shadow: 0 0 3px#bbb;
-    box-shadow: 0 0 3px #bbb;
-}
-
-.btn_blue {
-    background-position: 0 -340px;
-    font-size: 11px;
-    padding: 0 10px;
-    color: #fff;
-    border: #093868 1px solid;
-    text-shadow: 1px 1px 0px #333;
-    margin-right: 5px;
-}
-
-.btn_blue:hover {
-    background-position: 0 -280px;
-    -moz-box-shadow: 0 0 3px #aaa;
-    -webkit-box-shadow: 0 0 3px#aaa;
-    box-shadow: 0 0 3px #aaa;
-}
-
-.btn_orange {
-    background-position: 0 -534px;
-    font-size: 11px;
-    padding: 0 10px;
-    color: #fff;
-    border: #9f2b0c 1px solid;
-    text-shadow: 1px 1px 0px #333;
-    margin-right: 5px;
-}
-
-.btn_orange:hover {
-    background-position: 0 -432px;
-    -moz-box-shadow: 0 0 3px #aaa;
-    -webkit-box-shadow: 0 0 3px#aaa;
-    box-shadow: 0 0 3px #aaa;
-}
-
 button::-moz-focus-inner,
 input::-moz-focus-inner
 /*Remove button padding in FF*/
@@ -2283,7 +2232,7 @@ Date:		September 2008
 }
 
 
-/* REQUIRED LINK STYLES: links are "display:block" by default; if the menu options are split into 
+/* REQUIRED LINK STYLES: links are "display:block" by default; if the menu options are split into
 	selectable node links and 'next' links, the script floats the node links left and floats the 'next' links to the right	*/
 
 .fg-menu a:link,
@@ -3037,7 +2986,7 @@ Date:		September 2008
 	Mosaic - Sliding Boxes and Captions jQuery Plugin
 	Version 1.0.1
 	www.buildinternet.com/project/mosaic
-	
+
 	By Sam Dunn / One Mighty Roar (www.onemightyroar.com)
 	Released under MIT License / GPL License
 */
@@ -3228,15 +3177,15 @@ Date:		September 2008
     cursor: default;
     display: block;
     cursor: pointer;
-    /* 
-	if width will be 100% horizontal scrollbar will apear 
+    /*
+	if width will be 100% horizontal scrollbar will apear
 	when scroll mode will be used
 	*/
     /*width: 100%;*/
     font: menu;
     font-size: 12px;
-    /* 
-	it is very important, if line-height not setted or setted 
+    /*
+	it is very important, if line-height not setted or setted
 	in relative units scroll will be broken in firefox
 	*/
     line-height: 16px;
@@ -3409,7 +3358,7 @@ Date:		September 2008
 
 
 /*================
-  WIDGETS 
+  WIDGETS
 ==================*/
 
 .intro_bar {
@@ -8103,7 +8052,7 @@ span.btn_24_blue {
 /*--Safari Browser Hack--*/
 
 
-/*	
+/*
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 #error_404 .error_code {
  width:155px;

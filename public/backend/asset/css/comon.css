@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 /*=====================================
             ALL COMMON STYLE
@@ -12,7 +12,7 @@
 
 /*===== VARIABLES CSS =====*/
 
- :root {
+:root {
     --header-height: 3rem;
     /*========== Colors ==========*/
     --main-color: #6b082e;
@@ -21,23 +21,23 @@
     --main-color-alt: #8b254d;
     --title-color: #393939;
     --text-color: #707070;
-    --text-color-light: #A6A6A6;
+    --text-color-light: #a6a6a6;
     --header-color: #ffffff;
-    --container-color: #FFFFFF;
+    --container-color: #ffffff;
     /*========== Font and typography ==========*/
-    --body-font: 'Poppins', sans-serif;
+    --body-font: "Poppins", sans-serif;
     --biggest-font-size: 2.25rem;
     --h1-font-size: 1.5rem;
     --h2-font-size: 1.25rem;
     --h3-font-size: 1rem;
-    --normal-font-size: .938rem;
-    --small-font-size: .813rem;
-    --smaller-font-size: .75rem;
+    --normal-font-size: 0.938rem;
+    --small-font-size: 0.813rem;
+    --smaller-font-size: 0.75rem;
     /*========== Font weight ==========*/
     --font-medium: 500;
     --font-semi-bold: 600;
     /*========== Margenes ==========*/
-    --mb-1: .5rem;
+    --mb-1: 0.5rem;
     --mb-2: 1rem;
     --mb-3: 1.5rem;
     --mb-4: 2rem;
@@ -49,14 +49,14 @@
 }
 
 @media screen and (min-width: 768px) {
-     :root {
+    :root {
         --biggest-font-size: 4rem;
         --h1-font-size: 2.25rem;
         --h2-font-size: 1.5rem;
         --h3-font-size: 1.25rem;
         --normal-font-size: 1rem;
-        --small-font-size: .875rem;
-        --smaller-font-size: .813rem;
+        --small-font-size: 0.875rem;
+        --smaller-font-size: 0.813rem;
     }
 }
 
@@ -83,7 +83,6 @@ a {
     text-decoration: none;
 }
 
-
 /*========== BASE ==========*/
 
 *,
@@ -95,7 +94,7 @@ a {
 body {
     color: #1d1c1c;
     font-size: 13px;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     line-height: 28px;
 }
 
@@ -128,9 +127,7 @@ button:focus {
     background-color: #fff !important;
 }
 
-
 /* =====================================================CUSTOME BUTTON========================= */
-
 
 /* =====================================action button======================== */
 
@@ -172,9 +169,7 @@ a.action-btn {
     align-items: center;
 }
 
-
 /* =====================================action button======================== */
-
 
 /* ================================================NOTUFY BATCH===================================== */
 
@@ -206,20 +201,12 @@ a.action-btn {
     margin-top: -15px;
 }
 
-
 /* ========================================================top button================ */
 
 .top-icon {
-    border: #862358 2px solid;
     margin: 0px 7px;
-    background: #5c1b3e;
     border-radius: 4px;
 }
-
-.top-icon:hover {
-    border: 2px solid #ffffff;
-}
-
 
 /* ==============================================input======================== */
 
@@ -228,7 +215,6 @@ a.action-btn {
     /* border: var(--title-color); */
 }
 
-
 /* ============================canva================================ */
 
 canvas#chart {
@@ -236,7 +222,6 @@ canvas#chart {
     width: 100%;
     height: 250px;
 }
-
 
 /* ===============================================button====================== */
 
@@ -297,12 +282,17 @@ canvas#chart {
     box-shadow: 0 0 3px #aaa;
 }
 
-
 /* =============================================bootstrap model================= */
 
 .modal-header {
     padding: 4px 12px;
-    background: -webkit-linear-gradient(top, #19a6d3 0%, #0853a1 50%, #064492 51%, #02286e 100%);
+    background: -webkit-linear-gradient(
+        top,
+        #19a6d3 0%,
+        #0853a1 50%,
+        #064492 51%,
+        #02286e 100%
+    );
     color: #fff;
 }
 
@@ -322,7 +312,6 @@ button.btn-close:focus {
     background: #ddd;
     display: flex;
     align-items: end;
-
 }
 
 .close-btn span {
@@ -332,19 +321,18 @@ button.btn-close:focus {
     color: #92392a;
 }
 
-
 /* =======================================form text editor================ */
 
 .cleditorToolbar {
     border-bottom: 1px solid #ddd;
 }
 
-.loading_button{
+.loading_button {
     font-size: 12px;
 }
 
 .swal-button {
-    padding: 2px 20px!important;
+    padding: 2px 20px !important;
 }
 
 a.paginate_button {
@@ -415,8 +403,8 @@ tr.clickable_row {
     position: relative;
 }
 
-.menu_active{
-    background: #fff!important;
+.menu_active {
+    background: #fff !important;
 }
 
 /* Add purchase table */
@@ -432,26 +420,48 @@ span.product_variant {
     font-weight: 700;
 }
 
-.add_button{
+.add_button {
     cursor: pointer;
 }
-a.dashboard_icon {padding: 3px 0px!important;border-radius: 4px;}
-label{font-size: 12px;}
-.t {padding-bottom: 41px!important;}
+a.dashboard_icon {
+    padding: 3px 0px !important;
+    border-radius: 4px;
+}
+label {
+    font-size: 12px;
+}
+.t {
+    padding-bottom: 41px !important;
+}
 
-select {height: 26px;border: 1px solid #D8D8D8;}
+select {
+    height: 26px;
+    border: 1px solid #d8d8d8;
+}
 
 .widget_content .table-responsive {
-    margin-top: -15px; 
+    margin-top: -15px;
 }
 
 a#print_report {
     margin-top: 1em;
 }
 
-.tp {color: #3cb7dd;}
-.modal-table td {color: black;}
+.tp {
+    color: #3cb7dd;
+}
+.modal-table td {
+    color: black;
+}
 
-.text-1{color:#064492!important}
-.btn-1{color: #fff;background-color: #064492;border-color: #064492;}
-.bg-1{background-color: #064492;}
+.text-1 {
+    color: #064492 !important;
+}
+.btn-1 {
+    color: #fff;
+    background-color: #064492;
+    border-color: #064492;
+}
+.bg-1 {
+    background-color: #064492;
+}

@@ -100,7 +100,15 @@ ul#sidenav li a {
 }
 
 ul#sidenav li {
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafafa), color-stop(50%, #ebebeb), color-stop(51%, #e4e4e4), color-stop(100%, #e1e1e2));
+    background: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0%, #fafafa),
+        color-stop(50%, #ebebeb),
+        color-stop(51%, #e4e4e4),
+        color-stop(100%, #e1e1e2)
+    );
 }
 
 .nav_icon {
@@ -133,9 +141,7 @@ ul#sidenav li a:hover {
     background-position: 0 -289px !important;
 }
 
-
 /* =================================================left main nev============================= */
-
 
 /* ===============================================top navigation======================= */
 
@@ -145,14 +151,15 @@ img.logo__img {
 }
 
 .navigation {
-    background: linear-gradient(#2a0c1b, #661e45);
-    padding: 6px;
     display: flex;
     align-items: center;
     height: 62px;
     position: fixed;
     width: 79.5%;
     z-index: 99;
+    padding: 0px;
+    left: 0px;
+    padding-left: 142px;
 }
 
 .panel__nav {
@@ -160,6 +167,8 @@ img.logo__img {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    background: linear-gradient(#2a0c1b, #661e45);
+    padding: 6px;
 }
 
 .top-menu {
@@ -251,21 +260,19 @@ a.btn__sub {
     color: #fff !important;
     background: var(--main-grident);
     margin-top: 10px;
-    transition: .3s;
+    transition: 0.3s;
     border-radius: 4px;
 }
 
 a.btn__sub:hover {
-    background: linear-gradient( #19394c, #14a7ff);
+    background: linear-gradient(#19394c, #14a7ff);
 }
 
 ul.dropdown-menu.dropdown__main__menu.show {
     padding: 5px 8px;
 }
 
-
 /* ===============================================top navigation end======================= */
-
 
 /* ====================================Model toggle===================================== */
 
@@ -386,7 +393,7 @@ div#left_bar_toggle {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 0px!important;
+        margin-top: 0px !important;
     }
     .sub-menu {
         position: absolute;
@@ -457,7 +464,7 @@ div#left_bar_toggle {
         margin: 6px 6px 0px 0;
     }
 }
-@media(max-width: 568px) {
+@media (max-width: 568px) {
     li.dp__top {
         display: none;
     }
@@ -467,39 +474,39 @@ div#left_bar_toggle {
         width: 105px;
         margin-top: 5px;
     }
-    
+
     a.logo {
         height: 50px;
     }
-    
+
     li.top-icon.ms-3 {
-        margin-left: 3px!important;
+        margin-left: 3px !important;
     }
-    
+
     ul.head__cn li a {
         padding: 0px 5px;
     }
-    
+
     li.user_info span.user_name {
-        font-size: 9px!important;
+        font-size: 9px !important;
     }
-    
+
     li.user_info span {
         font-size: 9px;
     }
-    
+
     ul.head__cn li.user_info span a {
         padding: 0 2px;
     }
-    
+
     li.top-icon:last-child {
         margin-left: 8px;
     }
-    
+
     div#left_bar_toggle {
         margin-right: 8px;
     }
-    
+
     .toggle_reduce_navigation_width_mobile li.user_info.me-1 {
         display: none;
     }
@@ -509,7 +516,6 @@ div#left_bar_toggle {
     }
 }
 
-
 /* ===================================check================ */
 
 @media (max-width: 400px) {
@@ -517,13 +523,12 @@ div#left_bar_toggle {
         display: none;
     }
     ul.head__cn li a {
-        padding: 6px 8px;;
+        padding: 6px 8px;
     }
     .user_info {
-        display: none!important;
+        display: none !important;
     }
 }
-
 
 /* =========================== */
 
@@ -624,7 +629,6 @@ div#menu__id {
     top: 62px;
 }
 
-
 /* ===============================2 left bar design=================================== */
 
 ul.head__cn li a span {
@@ -632,22 +636,28 @@ ul.head__cn li a span {
 }
 
 #dashboardmenu ul#sidenav > li a:hover {
-    background: -webkit-linear-gradient(top, #7b2853 0%, #5e1b3f 50%, #5d1b3f 51%, #2c0c1ccf 100%);
+    background: -webkit-linear-gradient(
+        top,
+        #7b2853 0%,
+        #5e1b3f 50%,
+        #5d1b3f 51%,
+        #2c0c1ccf 100%
+    );
 }
 
 ul#sidenav li a:hover {
-   color: #fff;
+    color: #fff;
 }
 
 ul#sidenav li a:hover span {
-   color: #fff;
-} 
+    color: #fff;
+}
 
 ul#sidenav ul {
     margin-top: 3px;
 }
 
-ul#sidenav li li a{
+ul#sidenav li li a {
     padding-left: 37px;
 }
 
@@ -666,7 +676,7 @@ footer {
     width: 100%;
     bottom: 0;
     height: 33px;
-    background: linear-gradient(#820334 ,#2a0c1b);
+    background: linear-gradient(#820334, #2a0c1b);
 }
 
 footer .logo_wrapper {
@@ -679,7 +689,7 @@ footer img.logo {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50% , -50%);
+    transform: translate(-50%, -50%);
 }
 
 /*============================ Calculator design =====================*/
@@ -709,54 +719,54 @@ footer img.logo {
 }
 
 .modal-backdrop.show {
-    opacity: .5;
+    opacity: 0.5;
     display: none;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
     #calculatorModal.modal.show .modal-dialog {
         right: 41%;
     }
 }
-@media(max-width: 576px) {
+@media (max-width: 576px) {
     #calculatorModal.modal.show .modal-dialog {
         top: 60px;
     }
 }
-@media(max-width: 500px) {
+@media (max-width: 500px) {
     #calculatorModal.modal.show .modal-dialog {
         top: 53px;
         right: 20%;
     }
     #dashboard .button-group__label {
-        padding: 0 10px!important;
+        padding: 0 10px !important;
     }
 }
-@media(max-width: 400px) {
+@media (max-width: 400px) {
     #dashboard .button-group__label {
-        padding: 0 5px!important;
+        padding: 0 5px !important;
         font-size: 10px;
     }
 }
 /* =============================== Dashboard 8 design =================================== */
-#dashboard-8 .navigation{
-    width: 90%;
+#dashboard-8 .navigation {
+    width: 100%;
 }
 
 #dashboard-8 .main__nav ul li.menu_active a p.title {
-    color: #581A3B;
+    color: #581a3b;
 }
 
 #dashboard-8 .main__nav li:hover {
-    background: #fff!important;
+    background: #fff !important;
 }
 
-#dashboard-8 .main__nav li:hover a p.title{
+#dashboard-8 .main__nav li:hover a p.title {
     color: #8c0437ee;
 }
 
 #dashboard-8 .menu_active {
-    background: #fff!important;
+    background: #fff !important;
 }
 
 #dashboard-8 #primary_nav .main__nav img {
@@ -784,8 +794,7 @@ footer img.logo {
 
 #dashboard-8 .main__nav::-webkit-scrollbar {
     display: none;
-  }
-
+}
 
 #dashboard-8 .main__nav ul {
     width: 142px;
@@ -803,13 +812,13 @@ footer img.logo {
     width: 142px;
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     #dashboard-8 .main__nav ul li:first-child {
         height: 62px;
     }
 }
 
-#dashboard-8 .main__nav ul li a{
+#dashboard-8 .main__nav ul li a {
     display: block;
 }
 
@@ -823,12 +832,12 @@ footer img.logo {
 }
 
 #dashboard-8 .main-woaper {
-    width: 90%;
+    width: 100%;
     margin-left: 142px;
     margin-bottom: 200px;
 }
 
-@media (max-width: 767px){
+@media (max-width: 767px) {
     #dashboard-8 #primary-nav {
         margin-top: 0;
     }
@@ -852,17 +861,17 @@ footer img.logo {
     }
     #dashboard-8 .toggle_reduce_main_woaper_tab {
         margin-left: 142px;
-        width: 82%!important;
+        width: 82% !important;
     }
     #dashboard-8 .main__nav {
-        margin-top: 0!important;
+        margin-top: 0 !important;
     }
     #dashboard-8 li.dp__top {
         display: none;
     }
     #dashboard-8 .toggle_reduce_main_woaper_tab {
         margin-left: 142px;
-        width: 81%!important;
+        width: 81% !important;
     }
     #dashboard-8 .toggle_reduce_navigation_width_tab {
         width: 100%;
@@ -908,10 +917,10 @@ footer img.logo {
         width: 100%;
     }
     #dashboard-8 .navigation .user_info {
-        margin-right: 0px!important;
+        margin-right: 0px !important;
     }
     #dashboard-8 .toggle_reduce_main_woaper_mobile {
-        width: 85%!important;
+        width: 85% !important;
         margin-left: 68px;
     }
     #dashboard-8 .toggle_reduce_navigation_width_mobile {
@@ -922,7 +931,7 @@ footer img.logo {
         padding: 10px 2px;
     }
     #dashboard-8 .toggle_reduce_main_woaper_mobile input#search-input {
-        width: 100px!important;
+        width: 100px !important;
     }
 }
 @media (max-width: 400px) {
@@ -934,6 +943,6 @@ footer img.logo {
         height: 98px;
     }
     #dashboard-8 .toggle_reduce_main_woaper_mobile {
-        width: 80%!important;
+        width: 80% !important;
     }
 }

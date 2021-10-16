@@ -1,5 +1,21 @@
 <style>
-    @page {/* size:21cm 29.7cm; */ margin:1cm 1cm 1cm 1cm; *//* margin:20px 20px 10px; */mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;}
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
+
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 6px;margin-right: 6px;}
+    .header, .header-space,
+    .footer, .footer-space {height: 20px;}
+    .header {position: fixed; top: 0;}
+    .footer {position: fixed;bottom: 0;}
+    .noBorder {border: 0px !important;}
+    tr.noBorder td {border: 0px !important;}
+    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
 @php use Carbon\Carbon; @endphp
 <div class="print_area">
@@ -14,7 +30,7 @@
                         @endphp
                         <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b>(BL) </h5>
                     @elseif($branch_id == '')
-                        <h5><b>All Branch</b></h5> 
+                        <h5><b>All Business Location</b></h5> 
                     @endif
                     <h6><b>Attendance Report</b></h6>
                     <h6>Attendance Of {{ $s_date .' To '. $e_date }}</h6>
@@ -62,10 +78,19 @@
             @endforeach
         </tbody>
     </table>
+</div>
 
-    @if (env('PRINT_SD_OTHERS') == true)
-        <div class="footer_area text-center">
-            <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
+
+@if (env('PRINT_SD_OTHERS') == 'true')
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
         </div>
-    @endif
+    </div>
+@endif
+
+<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
+    <small style="font-size: 5px;" class="text-end">
+        Print Date: {{ date('d-m-Y , h:iA') }}
+    </small>
 </div>

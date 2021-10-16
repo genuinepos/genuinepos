@@ -5,7 +5,7 @@
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
     <link href="{{ asset('public/backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -200,7 +200,7 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Expired Date :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="expired_date" class="form-control datepicker" autocomplete="off" value="{{ $product->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($product->expire_date)) : '' }}" placeholder="Expired Date">
+                                                        <input type="text" name="expired_date" class="form-control" id="datepicker" autocomplete="off" value="{{ $product->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($product->expire_date)) : '' }}" placeholder="Expired Date">
                                                     </div>
                                                 </div>
                                             </div>
@@ -827,7 +827,7 @@
 @endsection
 @push('scripts')
 <script src="{{asset('public/backend/asset/js/jquery.cleditor.js')}}"></script>
-<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     // Set parent category in parent category form field
     $('.combo_price').hide();
@@ -1674,9 +1674,26 @@
 
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
     var _expectedDateFormat = '' ;
-    _expectedDateFormat = dateFormat.replace('d', 'dd');
-    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
-    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-    $('.datepicker').datepicker({format: _expectedDateFormat});
+    _expectedDateFormat = dateFormat.replace('d', 'DD');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
 </script>
 @endpush

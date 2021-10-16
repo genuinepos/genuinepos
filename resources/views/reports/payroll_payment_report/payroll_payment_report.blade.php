@@ -203,10 +203,9 @@
 
     $(document).on('click', '#print_report',function (e) {
         e.preventDefault(); 
-        $('.data_preloader').show();
         var branch_id = $('#branch_id').val();
         var department_id = $('#department_id').val();
-        var from_date = $('.to_date').val();
+        var from_date = $('.from_date').val();
         var to_date = $('.to_date').val();
         var url = $(this).attr('href');
         $.ajax({
@@ -224,7 +223,6 @@
                     header : null,   
                     footer : null,      
                 });
-                $('.data_preloader').hide();
             }
         });
     });   

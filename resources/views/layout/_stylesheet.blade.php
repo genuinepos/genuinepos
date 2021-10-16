@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/comon.css') }}">
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/layout.css') }}">
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/theme.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     {{-- DataTable Global CSS --}}
     <style>

@@ -15,7 +15,6 @@ li.buttom__icon a img {
 }
 
 .main__nav {
-    background: #7e0d3d;
     height: 100%;
     position: fixed;
     overflow: hidden;
@@ -24,7 +23,6 @@ li.buttom__icon a img {
 }
 
 .main__nav ul li a {
-    color: #fff;
     text-align: center;
     font-size: 27px;
     padding: 20px 10px;
@@ -62,7 +60,6 @@ a.buttom__link {
     justify-content: center;
     /* padding: 10px 0; */
     align-items: center;
-    background: linear-gradient(#8c0437ee, #1e000d);
 }
 
 .main__nav ul li.buttom__icon {
@@ -71,10 +68,6 @@ a.buttom__link {
 
 .main__nav li:hover {
     background: #fff;
-}
-
-.main__nav ul li a:hover {
-    color: var(--main-color-alt);
 }
 
 ul#sidenav li {
@@ -167,7 +160,6 @@ img.logo__img {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background: linear-gradient(#2a0c1b, #661e45);
     padding-top: 6px;
 }
 
@@ -184,7 +176,6 @@ ul.head__cn {
 }
 
 ul.head__cn li a {
-    color: #ffffff;
     /* width: 100%; */
     padding: 7px 10px;
     display: flex;
@@ -672,7 +663,6 @@ footer {
     width: 100%;
     bottom: 0;
     height: 33px;
-    background: linear-gradient(#820334, #2a0c1b);
     z-index: 9;
 }
 
@@ -751,22 +741,6 @@ footer img.logo {
 /* =============================== Dashboard 8 design =================================== */
 #dashboard-8 .navigation {
     width: 100%;
-}
-
-#dashboard-8 .main__nav ul li.menu_active a p.title {
-    color: #581a3b;
-}
-
-#dashboard-8 .main__nav li:hover {
-    background: #fff !important;
-}
-
-#dashboard-8 .main__nav li:hover a p.title {
-    color: #8c0437ee;
-}
-
-#dashboard-8 .menu_active {
-    background: #fff !important;
 }
 
 #dashboard-8 #primary_nav .main__nav img {

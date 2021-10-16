@@ -812,6 +812,12 @@ footer img.logo {
     width: 142px;
 }
 
+@media (max-width: 892px) {
+    .menu-list-area ul.list-unstyled {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
 @media (min-width: 768px) {
     #dashboard-8 .main__nav ul li:first-child {
         height: 62px;
@@ -931,6 +937,9 @@ footer img.logo {
     }
     #dashboard-8 .toggle_reduce_main_woaper_mobile input#search-input {
         width: 100px !important;
+    }
+    .menu-list-area ul.list-unstyled {
+        grid-template-columns: repeat(2, 1fr) !important;
     }
 }
 @media (max-width: 400px) {

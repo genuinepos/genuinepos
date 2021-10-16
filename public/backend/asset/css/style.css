@@ -40,7 +40,8 @@ ul#search_box {
     border-radius: 0;
 }
 
-.search-button {}
+.search-button {
+}
 
 .search-button {
     padding: 0 11px;
@@ -62,7 +63,6 @@ ul#search_box {
     font-size: 16px;
     color: var(--title-color);
 }
-
 
 /* ====================================================main button================================= */
 .switch_bar {
@@ -88,8 +88,7 @@ ul#search_box {
     height: 58%;
 }
 
-
-.switch_text{
+.switch_text {
     font-size: 12px;
     font-weight: 450;
 }
@@ -108,7 +107,7 @@ a.bar-link {
     border: 1px solid #d2cfcf;
     width: 100%;
     border-radius: 4px;
-    background: #f9f9f9!important;
+    background: #f9f9f9 !important;
     box-shadow: inset 0 0 5px#ddd;
     height: 100%;
     margin-top: 0px;
@@ -166,15 +165,11 @@ a.bar-link {
     }
 }
 
-
 /* ============================================================================================== */
-
 
 /* FORM DESIGN START  */
 
-
 /* ============================================================================================== */
-
 
 /* ===============================form heading=============== */
 
@@ -197,7 +192,6 @@ a.bar-link {
     padding-right: 9px;
     font-size: 15px;
 }
-
 
 /* =====================================form body==================== */
 
@@ -254,10 +248,9 @@ label.col-form-label {
     min-height: 200px;
 }
 
-
 /* ==============================tag============= */
 
-.selectize-input>div {
+.selectize-input > div {
     cursor: pointer;
     margin: 2px !important;
     padding: 2px 6px;
@@ -303,9 +296,7 @@ input.form-check-input:focus {
     font-size: 11px;
 }
 
-
 /* ===================CHECKBOX======================== */
-
 
 /* This css is for normalizing styles. You can skip this. */
 
@@ -338,8 +329,8 @@ input.form-check-input:focus {
     margin-right: 5px;
 } */
 
-.form-group input:checked+label:after {
-    content: '';
+.form-group input:checked + label:after {
+    content: "";
     display: block;
     position: absolute;
     top: 5px;
@@ -359,9 +350,7 @@ div#star img {
     height: 17px;
 }
 
-
 /* ==================================================switch desing======================= */
-
 
 /* // Modified CSS for on/off switch */
 
@@ -409,14 +398,14 @@ label.onoffswitch-label {
     content: "ON";
     padding-left: 12px;
     background-color: #0571b2;
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 14px;
 }
 
 .onoffswitch-inner:after {
     content: "OFF";
     padding-right: 11px;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
     color: #999999;
     text-align: right;
 }
@@ -424,7 +413,7 @@ label.onoffswitch-label {
 .onoffswitch-switch {
     width: 26px;
     margin: 2px;
-    background: #FFFFFF;
+    background: #ffffff;
     border: 2px solid #999999;
     border-radius: 20px;
     position: absolute;
@@ -437,11 +426,11 @@ label.onoffswitch-label {
     transition: all 0.3s ease-in 0s;
 }
 
-.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
     margin-left: 0;
 }
 
-.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px;
 }
 
@@ -566,7 +555,7 @@ td {
     font-size: 12px;
 }
 
-.table>:not(caption)>*>* {
+.table > :not(caption) > * > * {
     padding: 10px 5px;
     text-align: center;
 }
@@ -581,7 +570,7 @@ td {
     element.style {
         width: 183px;
     }
-    
+
     table.display thead th {
         padding: 4px 10px 4px 2px !important;
     }
@@ -660,7 +649,13 @@ a.btn-fn:hover {
 .form-wraper {
     width: 100%;
     height: 100vh;
-    background: linear-gradient(-75deg, #41a8c4 0%, #1c597e 51%, #184e6f 51%, #032146 100%);
+    background: linear-gradient(
+        -75deg,
+        #41a8c4 0%,
+        #1c597e 51%,
+        #184e6f 51%,
+        #032146 100%
+    );
 }
 
 .form-content {
@@ -671,7 +666,13 @@ a.btn-fn:hover {
 }
 
 .form-head {
-    background: -webkit-linear-gradient(top, #34bbde 0%, #116bb2 50%, #0e5ba7 51%, #0a539f 100%);
+    background: -webkit-linear-gradient(
+        top,
+        #34bbde 0%,
+        #116bb2 50%,
+        #0e5ba7 51%,
+        #0a539f 100%
+    );
     padding: 1px;
     border-radius: 3px;
     box-shadow: -1px 0px 10px 1px #0a0a0a52;
@@ -711,7 +712,13 @@ span.head-text {
 }
 
 .form-title {
-    background: -webkit-linear-gradient(top, #19a6d3 0%, #0853a1 50%, #064492 51%, #02286e 100%);
+    background: -webkit-linear-gradient(
+        top,
+        #19a6d3 0%,
+        #0853a1 50%,
+        #064492 51%,
+        #02286e 100%
+    );
     height: 50px;
     line-height: 50px;
     margin: 0px;
@@ -719,12 +726,13 @@ span.head-text {
     box-shadow: 0 1px 0 rgb(255 255 255 / 60%) inset;
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
     -webkit-box-shadow: 0 1px 0 rgb(255 255 255 / 60%) inset;
-    text-shadow: 0px -1px 0px rgb(0 0 0 / 80%), 0px 1px 0px rgb(255 255 255 / 20%);
+    text-shadow: 0px -1px 0px rgb(0 0 0 / 80%),
+        0px 1px 0px rgb(255 255 255 / 20%);
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
     font-weight: normal;
-    color: #FFF;
+    color: #fff;
     padding: 0 18px;
     font-size: 20px;
     align-items: center;
@@ -771,7 +779,13 @@ span.head-text {
 button.submit-button {
     width: 100%;
     border: none;
-    background: -webkit-linear-gradient(top, #34bbde 0%, #116bb2 50%, #0e5ba7 51%, #0a539f 100%);
+    background: -webkit-linear-gradient(
+        top,
+        #34bbde 0%,
+        #116bb2 50%,
+        #0e5ba7 51%,
+        #0a539f 100%
+    );
     color: #fff;
     font-size: 18px;
     height: 44px;
@@ -787,7 +801,7 @@ button.submit-button {
 
 a.forget-pw {
     color: #fff;
-    transition: .2s;
+    transition: 0.2s;
 }
 
 a.forget-pw:hover {
@@ -873,7 +887,6 @@ div#wizard {
     font-size: 11px;
     line-height: 12px;
 }
-
 
 /* ============================content post=========================== */
 legend {
@@ -1012,14 +1025,16 @@ legend {
 
 .sub-menu_t {
     position: absolute;
-    width: 90%;
+    width: 100%;
     background: #fff;
-    top: 62px !important;
-    height: 83vh;
+    /* top: 62px !important; */
+    height: 100vh;
     z-index: 20;
     left: 142px;
     display: none;
     padding: 0 0px;
+    padding-top: 62px;
+    padding-right: 142px;
 }
 
 .main__nav_t ul li a:hover {
@@ -1068,18 +1083,31 @@ span.menu-title-t {
     .main-woaper_t {
         width: 100%;
     }
-    .navigation_t {width: 100%; height: 120px;}
-    .main__nav_t {background: #7e0d3d;height: 100vh;position: fixed;overflow-y: scroll;width: 25%; z-index: 2;padding: 11px;top: 15.5%;}
+    .navigation_t {
+        width: 100%;
+        height: 120px;
+    }
+    .main__nav_t {
+        background: #7e0d3d;
+        height: 100vh;
+        position: fixed;
+        overflow-y: scroll;
+        width: 25%;
+        z-index: 2;
+        padding: 11px;
+        top: 15.5%;
+    }
     .sub-menu_t {
         position: absolute;
-        width: 86%;
         background: #fff;
-        top: 80px !important;
-        height: 85vh;
+        height: 100vh;
         z-index: 20;
-        left: 19%;
         display: none;
-        padding: 0px 29px;
+        left: 0px;
+        padding: 0;
+        padding-left: 68px;
+        overflow-y: scroll;
+        padding-bottom: 77px;
     }
     .main__nav_t::-webkit-scrollbar {
         width: 6px;
@@ -1206,7 +1234,9 @@ span.menu-title-t {
 
 .sale-item-sec {
     height: 200px;
-    overflow-y: auto;overflow-x: auto;scrollbar-color: transparent transparent;
+    overflow-y: auto;
+    overflow-x: auto;
+    scrollbar-color: transparent transparent;
 }
 
 div.sale-item-sec::-webkit-scrollbar {
@@ -1240,7 +1270,8 @@ div.sale-item-sec::-webkit-scrollbar-thumb {
 }
 
 @media (max-width: 500px) {
-    .sec-name {}
+    .sec-name {
+    }
     .name-head {
         /* display: block; */
         text-align: center;
@@ -1284,15 +1315,21 @@ div#sidebar_t {
 
 /* Modal CSS */
 .jconfirm .jconfirm-box {
-    padding: 0!important;
+    padding: 0 !important;
 }
 .jconfirm .jconfirm-box div.jconfirm-content-pane {
-    height: unset!important;
+    height: unset !important;
 }
 .jconfirm .jconfirm-box div.jconfirm-title-c {
     padding-bottom: 15px;
-    background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
-    color: #fff!important;
+    background: -webkit-linear-gradient(
+        top,
+        #19a6d3 0%,
+        #0853a1 50%,
+        #064492 51%,
+        #02286e 100%
+    );
+    color: #fff !important;
     padding-top: 9px;
     text-align: center;
 }
@@ -1304,47 +1341,142 @@ div#sidebar_t {
     margin-right: 126px;
 }
 .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
-    background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
-    background: linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%);
+    background: -webkit-linear-gradient(
+        top,
+        #19a6d3 0%,
+        #0853a1 50%,
+        #064492 51%,
+        #02286e 100%
+    );
+    background: linear-gradient(
+        top,
+        #19a6d3 0%,
+        #0853a1 50%,
+        #064492 51%,
+        #02286e 100%
+    );
 }
-.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default {
-    color: #fff!important;
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default,
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default {
+    color: #fff !important;
 }
-.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover {
-    background: -webkit-linear-gradient(top, #07a7d9 0%,#0853a1 50%,#034ba6 51%,#001741 100%);
+.jconfirm.jconfirm-white
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover,
+.jconfirm.jconfirm-light
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover {
+    background: -webkit-linear-gradient(
+        top,
+        #07a7d9 0%,
+        #0853a1 50%,
+        #034ba6 51%,
+        #001741 100%
+    );
 }
 button.btn.btn-modal-primary {
-    background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%)!important;
-    background: -webkit-linear-gradient(top, #19a6d3 0%,#0853a1 50%,#064492 51%,#02286e 100%)!important;
+    background: -webkit-linear-gradient(
+        top,
+        #19a6d3 0%,
+        #0853a1 50%,
+        #064492 51%,
+        #02286e 100%
+    ) !important;
+    background: -webkit-linear-gradient(
+        top,
+        #19a6d3 0%,
+        #0853a1 50%,
+        #064492 51%,
+        #02286e 100%
+    ) !important;
     color: #fff;
 }
 
-a.bar-link p {font-size: 7px; font-weight: 600; margin-top: -7px;}
-.i_bordered {border: 1px solid #bbb9b9; padding: 3px 5px;margin-right: 4px;}
+a.bar-link p {
+    font-size: 7px;
+    font-weight: 600;
+    margin-top: -7px;
+}
+.i_bordered {
+    border: 1px solid #bbb9b9;
+    padding: 3px 5px;
+    margin-right: 4px;
+}
 
 .form-header {
     background: linear-gradient(#fff, #f1f1f1);
 }
 
-.modal_variant_list_area ul li {display: inline-block;margin-left: 10px;border: 1px solid #3cb7dd;border-radius: 3px;}
-.modal_variant_list_area ul li a {display: block;padding: 3px 5px;color: black;}
-ul.add_sale_ex_btn li {display: inline-block; float: right; margin-left: 5px;}
+.modal_variant_list_area ul li {
+    display: inline-block;
+    margin-left: 10px;
+    border: 1px solid #3cb7dd;
+    border-radius: 3px;
+}
+.modal_variant_list_area ul li a {
+    display: block;
+    padding: 3px 5px;
+    color: black;
+}
+ul.add_sale_ex_btn li {
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+}
 
-.extra_label ul li {display: inline-block;margin-right: 9px;margin-top: 4px;}
-.extra_label ul li p {font-size: 12px;font-weight: 600;}
-.sub-menu_t .switch_bar i {font-size: 26px;color: #5d1b3f;}
+.extra_label ul li {
+    display: inline-block;
+    margin-right: 9px;
+    margin-top: 4px;
+}
+.extra_label ul li p {
+    font-size: 12px;
+    font-weight: 600;
+}
+.sub-menu_t .switch_bar i {
+    font-size: 26px;
+    color: #5d1b3f;
+}
 
 /* Short menu modal style */
-.menu-list-area ul li {display: inline-block;margin-left: 8px;border: 1px solid lightgray;padding: 9px 11px 6px 24px;;border-radius: 3px;margin-top: 5px;box-shadow: 1px 1px 3px 1px lightgrey;}
-.menu-list-area .s-menu-icon {font-size: 14px;margin-right: 12px;}
-.menu-list-area ul li .s-menu-text {display: flex;font-size: 11px;font-weight: 500;margin-top: -20px;margin-left: 31px;}
-.menu-list-area ul li input {display: flex;margin-bottom: -15px;margin-left: -16px;}
-.active_tr td {background: #113d73!important;color: white;}
-.active_tr:hover {color: white!important;}
+.menu-list-area ul li {
+    display: inline-block;
+    margin-left: 8px;
+    border: 1px solid lightgray;
+    padding: 9px 11px 6px 24px;
+    border-radius: 3px;
+    margin-top: 5px;
+    box-shadow: 1px 1px 3px 1px lightgrey;
+}
+.menu-list-area .s-menu-icon {
+    font-size: 14px;
+    margin-right: 12px;
+}
+.menu-list-area ul li .s-menu-text {
+    display: flex;
+    font-size: 11px;
+    font-weight: 500;
+    margin-top: -20px;
+    margin-left: 31px;
+}
+.menu-list-area ul li input {
+    display: flex;
+    margin-bottom: -15px;
+    margin-left: -16px;
+}
+.active_tr td {
+    background: #113d73 !important;
+    color: white;
+}
+.active_tr:hover {
+    color: white !important;
+}
 
 table.display tbody tr:hover {
-    background: #3b79c5de !IMPORTANT;
-    COLOR: #fff;
+    background: #3b79c5de !important;
+    color: #fff;
 }
 
 .menu-list-area ul.list-unstyled {

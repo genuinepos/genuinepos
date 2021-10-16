@@ -735,7 +735,7 @@ class CustomerController extends Controller
         // Add supplier payment for direct payment
         $addSupplierLedger = new CustomerLedger();
         $addSupplierLedger->customer_id = $customerId;
-        $addSupplierLedger->row_type = 4;
+        $addSupplierLedger->row_type = 5;
         $addSupplierLedger->customer_payment_id = $customerPayment->id;
         $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
         $addSupplierLedger->save();

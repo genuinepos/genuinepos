@@ -171,9 +171,13 @@ class AccountingRelatedSectionController extends Controller
                 'payroll',
                 'payroll_payment',
                 'loan',
+                'loan_payment',
+                'loan_payment.branch',
+                'loan_payment.company',
                 'loan.company',
             ]
         )->orderBy('report_date', 'desc')->get();
+
         return view('accounting.related_sections.ajax_view.cash_flows_list', compact('CashFlows'));
     }
 
@@ -198,6 +202,9 @@ class AccountingRelatedSectionController extends Controller
                 'payroll',
                 'payroll_payment',
                 'loan',
+                'loan_payment',
+                'loan_payment.branch',
+                'loan_payment.company',
                 'loan.company',
             ]
         );
@@ -240,6 +247,9 @@ class AccountingRelatedSectionController extends Controller
                 'payroll',
                 'payroll_payment',
                 'loan',
+                'loan_payment',
+                'loan_payment.branch',
+                'loan_payment.company',
                 'loan.company',
             ]
         );

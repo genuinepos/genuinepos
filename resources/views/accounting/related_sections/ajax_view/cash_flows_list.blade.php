@@ -61,7 +61,12 @@
                     @elseif($cashFlow->transaction_type == 10)  
                         <b>{{ $cashFlow->loan->type == 1 ? 'Pay Loan' : 'Get Loan' }}</b><br>
                         <b>{{ $cashFlow->loan->company->name }}</b><br>
-                        <b>Reference No : </b> {{ $cashFlow->loan->reference_no }}
+                        <b>Voucher No : </b> {{ $cashFlow->loan->reference_no }}
+                    @elseif($cashFlow->transaction_type == 11)  
+                        <b>{{ $cashFlow->loan_payment->payment_type == 1 ? 'Pay Loan Due Receive' : 'Get Loan Due Paid' }}</b><br/>
+                        <b>B.Location :</b> {{ $cashFlow->loan_payment->branch ? $cashFlow->loan_payment->branch->name.'/'.$cashFlow->loan_payment->branch->branch_code.'(BL)' : json_decode($generalSettings->business, true)['shop_name'] .'(HO)' }}<br/>
+                        <b>Company/Person: </b> {{ $cashFlow->loan_payment->company->name }}<br/>
+                        <b>Payment Voucher No : </b> {{ $cashFlow->loan_payment->voucher_no }}
                     @elseif($cashFlow->transaction_type == 12)  
                         <b>{{ $cashFlow->supplier_payment->type == 1 ? 'Paid To Supplier(Purchase Due)' : 'Receive From Supplier(Return Due)' }}</b><br>
                         <b>Supplier : </b>{{ $cashFlow->supplier_payment->supplier->name }}<br>
@@ -73,9 +78,9 @@
                     @endif
                 </td> 
                 <td class="text-start">{{ $cashFlow->admin ? $cashFlow->admin->prefix.' '.$cashFlow->admin->name.' '.$cashFlow->admin->last_name : '' }}</td>
-                <td class="text-start">{{ $cashFlow->debit }}</td>
-                <td class="text-start">{{ $cashFlow->credit }}</td>
-                <td class="text-start">{{ $cashFlow->balance }}</td>
+                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($cashFlow->debit) }}</td>
+                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($cashFlow->credit) }}</td>
+                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($cashFlow->balance) }}</td>
                 <td class="text-center">
                     <div class="dropdown table-dropdown">
                         @if ($cashFlow->transaction_type == 4 || $cashFlow->transaction_type == 5)

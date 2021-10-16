@@ -21,11 +21,10 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name mt-1">
-                                    <div class="col-md-8">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
+                                    <div class="col-md-12">
                                         <form id="filter_cash_flow" action="{{ route('accounting.filter.cash.flow') }}" method="get" class="px-2">
                                             <div class="form-group row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <label><strong>Transaction Type :</strong></label>
                                                     <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
                                                         <option value=""><strong>All</strong></option> 
@@ -34,7 +33,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -47,7 +46,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <label><strong>To Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -57,60 +56,67 @@
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label><strong></strong></label>
+                                                            <div class="input-group">
+                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            </div>
+                                                        </div>
+            
+                                                        <div class="col-md-6 mt-3">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label></label>
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Cash Flow <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
-                                    </div>
+                    <div class="row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Cash Flow</h6>
                                 </div>
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Date</th>
-                                                    <th class="text-start">Description</th>
-                                                    <th class="text-start">Created By</th>
-                                                    <th class="text-start">Debit</th>
-                                                    <th class="text-start">Credit</th>
-                                                    <th class="text-start">Balance</th>
-                                                    <th class="text-start text-center">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Date</th>
+                                                <th class="text-start">Description</th>
+                                                <th class="text-start">Created By</th>
+                                                <th class="text-start">Debit</th>
+                                                <th class="text-start">Credit</th>
+                                                <th class="text-start">Balance</th>
+                                                <th class="text-start text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -164,30 +170,6 @@
                $('#deleted_form')[0].reset();
            }
        });
-    });
-
-    //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
-        $('#filter_cash_flow').submit();
-    });
-
-    $(document).on('input', '.from_date', function () {
-        $('#filter_cash_flow').submit();
-    });
-
-    $(document).on('input', '.to_date', function () {
-        if ($('.from_date').val()) {
-            $('#filter_cash_flow').submit();
-        }
-    });
-
-    //Submit filter form by date-range field blur 
-    $(document).on('click', '.day-item', function () {
-        if ($('.from_date').val()) {
-            setTimeout(function() {
-                $('#filter_cash_flow').submit();
-            }, 500);
-        }
     });
 
     //Send account filter request

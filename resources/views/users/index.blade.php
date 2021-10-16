@@ -47,7 +47,6 @@
                         @endif
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="row mt-1">
                         <div class="card">
                             <div class="section-header">

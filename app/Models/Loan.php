@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\Account;
+use App\Models\CashFlow;
 use App\Models\LoanCompany;
+use App\Models\LoanPayment;
 use Illuminate\Database\Eloquent\Model;
 
 class Loan extends Model
@@ -13,7 +15,7 @@ class Loan extends Model
 
     public function company()
     {
-        return $this->belongsTo(LoanCompany::class, 'loan_company_id');
+        return $this->belongsTo(LoanCompany::class, 'loan_company_id', 'id');
     }
 
     public function account()

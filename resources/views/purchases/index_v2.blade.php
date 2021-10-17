@@ -44,7 +44,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>Supplier :</strong></label>
                                                     <select name="supplier_id"
@@ -102,7 +102,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -173,7 +173,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
         <!--Payment list modal-->
@@ -198,7 +198,7 @@
             aria-hidden="true">
         </div>
         <!--Add Payment modal-->
-        
+
         <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
             aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -219,7 +219,7 @@
                                     <li class="mt-1" id="payment_attachment"></li>
                                 </ul>
                             </div>
-                            
+
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
                                     <li class="mt-1">
@@ -246,7 +246,7 @@
 
         purchase_table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
@@ -329,9 +329,9 @@
         });
 
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
@@ -519,9 +519,9 @@
         });
 
         $(document).on('click', '#delete_payment',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);       
+            $('#payment_deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',

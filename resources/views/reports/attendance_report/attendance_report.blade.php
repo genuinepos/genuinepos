@@ -48,7 +48,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-3">
                                                     <label><strong>Department :</strong></label>
                                                     <select name="department_id"
@@ -61,7 +61,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
@@ -95,8 +95,8 @@
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
-               
-                    <div class="row mt-1">
+
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="widget_content">
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
@@ -125,7 +125,7 @@
                             </form>
                         </div>
                     </div>
-               
+
                 </div>
             </div>
         </div>
@@ -142,7 +142,7 @@
         "serverSide": true,
         "searching" : false,
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Export To Excel',className: 'btn btn-primary',},
             {extend: 'pdf',text: 'Export To Pdf',className: 'btn btn-primary',},
         ],
@@ -170,7 +170,7 @@
         att_table.ajax.reload();
     });
 
-    //Submit filter form by date-range field blur 
+    //Submit filter form by date-range field blur
     $(document).on('blur', '.submit_able_input', function () {
         setTimeout(function() {
             att_table.ajax.reload();
@@ -187,7 +187,7 @@
 
 
     $(document).on('click', '#print_report',function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
         $('.data_preloader').show();
         var branch_id = $('#branch_id').val();
         var department_id = $('#department_id').val();
@@ -200,19 +200,19 @@
             data: { branch_id, department_id, from_date, to_date },
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
-                    removeInline: true, 
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",
+                    removeInline: true,
                     printDelay: 500,
-                    header : null,   
-                    footer : null,      
+                    header : null,
+                    footer : null,
                 });
                 $('.data_preloader').hide();
             }
         });
-    });    
+    });
 </script>
 
 <script type="text/javascript">

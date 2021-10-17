@@ -18,7 +18,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10"><h6>All Release Note.</h6></div>

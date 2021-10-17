@@ -42,7 +42,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
@@ -101,7 +101,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -161,7 +161,7 @@
     <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content" id="edit_shipment_modal_content">
-                
+
             </div>
         </div>
     </div>
@@ -238,7 +238,7 @@
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="send-natification-modal-body">
-                
+
                 </div>
             </div>
         </div>
@@ -256,7 +256,7 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
@@ -330,8 +330,8 @@
             var url = $(this).attr('href');
             $('#payment_heading').html('Add Payment');
             $.get(url, function(data) {
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -343,8 +343,8 @@
             $('#payment_heading').html('Pay Return Amount');
             $.get(url, function(data) {
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
             });
         });
 
@@ -356,8 +356,8 @@
             $('#payment_heading').html('Edit Payment');
             $.get(url, function(data) {
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
             });
         });
 
@@ -369,8 +369,8 @@
             $('#payment_heading').html('Edit Return Payment');
             $.get(url, function(data) {
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
             });
         });
 
@@ -398,8 +398,8 @@
 
             var url = $(this).attr('action');
             var inputs = $('.p_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -412,7 +412,7 @@
 
             if(countErrorField > 0){
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
+                toastr.error('Please check again all form fields.','Some thing want wrong.');
                 return;
             }
 
@@ -425,14 +425,14 @@
                 processData: false,
                 success:function(data){
                     if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                     } else {
                         $('.loading_button').hide();
                         $('#paymentModal').modal('hide');
                         $('#paymentViewModal').modal('hide');
                         sales_table.ajax.reload();
-                        toastr.success(data); 
+                        toastr.success(data);
                     }
                 }
             });
@@ -457,8 +457,8 @@
             var request = $(this).serialize();
             $('.loading_button').show();
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -482,58 +482,58 @@
                     sales_table.ajax.reload();
                     toastr.success(data);
                     $('.loading_button').hide();
-                    $('#editShipmentModal').modal('hide'); 
+                    $('#editShipmentModal').modal('hide');
                 }
             });
         });
 
         // Make print
         $(document).on('click', '.print_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.sale_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                removeInline: false,
                 printDelay: 500,
-                header : null,      
-                footer : null,   
+                header : null,
+                footer : null,
             });
         });
 
         $(document).on('click', '.print_challan_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.challan_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
-                printDelay: 800, 
-                header: null,   
-                footer: null,     
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                removeInline: false,
+                printDelay: 800,
+                header: null,
+                footer: null,
             });
         });
 
         // Print single payment details
         $('#print_payment').on('click', function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.sale_payment_print_area').html();
             var header = $('.print_header').html();
             var footer = $('.signature_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                removeInline: true, 
-                printDelay: 500, 
-                header: header,  
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                removeInline: true,
+                printDelay: 500,
+                header: header,
                 footer: footer
             });
         });
@@ -549,22 +549,22 @@
                 success:function(data){
                     $('.data_preloader').hide();
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 700, 
-                        header: null,        
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
                     });
                 }
-            }); 
+            });
         });
 
-        $(document).on('click', '#delete',function(e){ 
-            e.preventDefault(); 
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -574,7 +574,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
@@ -592,9 +592,9 @@
         });
 
         $(document).on('click', '#delete_payment',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);       
+            $('#payment_deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -604,7 +604,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#payment_deleted_form',function(e){
             e.preventDefault();
@@ -661,7 +661,7 @@
             },
             format: 'DD-MM-YYYY',
         });
-  
+
         $(document).on('change', '#payment_method', function () {
             var value = $(this).val();
             $('.payment_method').hide();

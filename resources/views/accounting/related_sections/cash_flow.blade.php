@@ -27,8 +27,8 @@
                                                 <div class="col-md-3">
                                                     <label><strong>Transaction Type :</strong></label>
                                                     <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
-                                                        <option value=""><strong>All</strong></option> 
-                                                        <option value="1"><strong>Debit</strong></option>  
+                                                        <option value=""><strong>All</strong></option>
+                                                        <option value="1"><strong>Debit</strong></option>
                                                         <option value="2">Credit</option>
                                                     </select>
                                                 </div>
@@ -65,7 +65,7 @@
                                                                 <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                             </div>
                                                         </div>
-            
+
                                                         <div class="col-md-6 mt-3">
                                                             <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
                                                         </div>
@@ -79,7 +79,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -116,7 +116,7 @@
                             </form>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -140,11 +140,11 @@
        });
     }
     getCashFlows();
-  
+
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
+        $('#deleted_form').attr('action', url);
         $.confirm({
             'title': 'Delete Confirmation',
             'message': 'Are you sure?',
@@ -154,7 +154,7 @@
             }
         });
     });
-       
+
     //data delete by ajax
     $(document).on('submit', '#deleted_form',function(e){
        e.preventDefault();
@@ -186,7 +186,7 @@
                 $('#data-list').html(data);
                 $('.data_preloader').hide();
             }
-        }); 
+        });
     });
 
     //Print purchase Payment report
@@ -202,16 +202,16 @@
             data: {transaction_type, from_date, to_date},
             success:function(data) {
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
                 });
             }
-        }); 
+        });
     });
 </script>
 

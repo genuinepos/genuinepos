@@ -205,6 +205,7 @@ body.red-theme {
 
 .red-theme .section-header {
     background: linear-gradient(#fff, #f1f1f1);
+    border-radius: 4px 5px 0px 0px;
 }
 
 .red-theme .sec-name {

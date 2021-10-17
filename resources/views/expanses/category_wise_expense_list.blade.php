@@ -39,7 +39,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                             
+
                                                 <div class="col-md-2">
                                                     <label><strong>Expense For :</strong></label>
                                                     <select name="admin_id" class="form-control submit_able" id="admin_id" >
@@ -100,7 +100,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row px-3 mt-2">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -130,7 +130,7 @@
                                         <tfoot>
                                             <tr class="bg-secondary">
                                                 <th colspan="4" class="text-end text-white">Total :</th>
-                                                <th class="text-white"> 
+                                                <th class="text-white">
                                                     <span id="total_amount"></span>
                                                 </th>
                                                 <th></th>
@@ -156,7 +156,7 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},

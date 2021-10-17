@@ -1,5 +1,5 @@
 @extends('layout.master')
-@push('stylesheets') 
+@push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('title', 'Supplier List - ')
@@ -21,13 +21,13 @@
                 </div>
                 <!-- =========================================top section button=================== -->
 
-                <div class="row">
+                <div class="row px-3">
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
                                 <h6>All Supplier</h6>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="btn_30_blue float-end">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
@@ -42,7 +42,7 @@
                             <div class="widget_content">
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
                                 <div class="table-responsive" id="data-list">
-                                    
+
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-              
+
             </div>
         </div>
     </div>
@@ -101,7 +101,7 @@
                             </div>
 
                             <div class="col-md-3">
-                              <b>Supplier ID <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</b> 
+                              <b>Supplier ID <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</b>
                                 <input type="text" name="contact_id" class="form-control" placeholder="Contact ID"/>
                             </div>
 
@@ -125,7 +125,7 @@
                             </div>
 
                             <div class="col-md-3">
-                               <b>Alternative Number :</b> 
+                               <b>Alternative Number :</b>
                                 <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number"/>
                             </div>
 
@@ -182,7 +182,7 @@
                                 <input type="text" name="address" class="form-control "  placeholder="Address">
                             </div>
                             <div class="col-md-3">
-                               <b>Prefix <i data-bs-toggle="tooltip" data-bs-placement="right" title="This prefix for barcode." class="fas fa-info-circle tp"></i> :</b> 
+                               <b>Prefix <i data-bs-toggle="tooltip" data-bs-placement="right" title="This prefix for barcode." class="fas fa-info-circle tp"></i> :</b>
                                 <input type="text" name="prefix" class="form-control " placeholder="prefix"/>
                             </div>
                         </div>
@@ -227,7 +227,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- Add Modal End---->
 
     <!-- Edit Modal -->
@@ -241,10 +241,10 @@
                 <div class="modal-body" id="edit_modal_body"></div>
             </div>
         </div>
-    </div> 
-    <!-- Edit Modal End--> 
+    </div>
+    <!-- Edit Modal End-->
 
-    <!-- Supplier payment Modal--> 
+    <!-- Supplier payment Modal-->
     <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -258,7 +258,7 @@
     </div>
     <!-- Supplier payment Modal End-->
 
-    <!-- Supplier payment view Modal--> 
+    <!-- Supplier payment view Modal-->
     <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -272,7 +272,7 @@
     </div>
     <!-- Supplier payment view Modal End-->
 
-    <!-- Supplier payment details Modal--> 
+    <!-- Supplier payment details Modal-->
     <div class="modal fade" id="paymentDatailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -282,7 +282,7 @@
                 </div>
                 <div class="modal-body">
                     <div id="payment_details_body"></div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 text-right">
                             <ul class="list-unstyled">
@@ -296,7 +296,7 @@
                                 <button type="submit" id="print_payment" class="c-btn btn_blue">Print</button>
                             </ul>
                         </div>
-                    </div>   
+                    </div>
                 </div>
             </div>
         </div>
@@ -323,7 +323,7 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({ headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Add Supplier by ajax
         $('#add_supplier_form').on('submit', function(e){
@@ -377,7 +377,7 @@
                     $('.loading_button').hide();
                     $('#edit_supplier_form')[0].reset();
                     getAllSupplier();
-                    $('#editModal').modal('hide'); 
+                    $('#editModal').modal('hide');
                 }
             });
         });
@@ -385,7 +385,7 @@
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
@@ -460,8 +460,8 @@
 
             var url = $(this).attr('action');
             var inputs = $('.p_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -474,7 +474,7 @@
 
             if(countErrorField > 0){
                 $('.loading_button').hide();
-                toastr.error('Please chack all form fields', 'SOMETHING WANG WRONG'); 
+                toastr.error('Please chack all form fields', 'SOMETHING WANG WRONG');
                 return;
             }
 
@@ -487,12 +487,12 @@
                 processData: false,
                 success:function(data){
                     if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                     }else{
                         $('.loading_button').hide();
                         $('#paymentModal').modal('hide');
-                        toastr.success(data); 
+                        toastr.success(data);
                         getAllSupplier();
                     }
                 }
@@ -500,9 +500,9 @@
         });
 
         $(document).on('click', '#add_payment',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Payment Confirmation',
                 'content': 'Are you sure to make this payment?',
@@ -537,8 +537,8 @@
 
         function addValidation() {
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -561,8 +561,8 @@
 
         function editValidation() {
             var inputs = $('.edit_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -570,7 +570,7 @@
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
-                } 
+                }
             });
 
             if(countErrorField > 0){
@@ -607,18 +607,18 @@
 
         // Print single payment details
         $('#print_payment').on('click', function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.sale_payment_print_area').html();
             var header = $('.header_area').html();
             var footer = $('.signature_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                removeInline: true, 
-                printDelay: 500, 
-                header: header,  
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                removeInline: true,
+                printDelay: 500,
+                header: header,
                 footer: footer
             });
         });
@@ -626,7 +626,7 @@
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_payment_form').attr('action', url);           
+            $('#deleted_payment_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
@@ -659,4 +659,4 @@
 
     $('.date-of-birth-picker').datepicker({format: 'yyyy-mm-dd'});
 </script>
- @endpush 
+ @endpush

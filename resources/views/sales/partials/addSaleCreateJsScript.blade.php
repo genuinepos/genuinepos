@@ -177,7 +177,7 @@
                                     tax_amount = __tax_amount;
                                 }
                                 li += '<li>';
-                                li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-product_type="variant" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-tax_type="'+product.tax_type+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-description="'+product.is_show_emi_on_pos+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:250px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-product_type="variant" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-tax_type="'+product.tax_type+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-description="'+product.is_show_emi_on_pos+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                 li +='</li>';
                             });
                             $('.variant_list_area').append(li);
@@ -312,7 +312,7 @@
                                             tax_amount = __tax_amount;
                                         }
                                         li += '<li>';
-                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-product_type="variant" data-p_id="'+product.id+'"  data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-tax_type="'+product.tax_type+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-description="'+product.is_show_emi_on_pos+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-product_type="variant" data-p_id="'+product.id+'"  data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-tax_type="'+product.tax_type+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-description="'+product.is_show_emi_on_pos+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
                                     });
                                 }else{
@@ -337,7 +337,7 @@
                                         tax_amount = __tax_amount;
                                     }
                                     li += '<li>';
-                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-product_type="single" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-product_type="single" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
                                 }
                             });
@@ -737,7 +737,7 @@
     }
 
     // Quantity increase or dicrease and clculate row amount
-    $(document).on('input', '#quantity', function(){
+    $(document).on('input', '#quantity', function() {
         var qty = $(this).val() ? $(this).val() : 0;
         if (qty < 0) {
             $(this).val(0);
@@ -785,7 +785,7 @@
     });
 
     // Input paying amount and clculate due amount
-    $(document).on('input', '#paying_amount', function(){
+    $(document).on('input', '#paying_amount', function() {
         var payingAmount = $(this).val() ? $(this).val() : 0;
         var total_payable_amount = $('#total_payable_amount').val() ? $('#total_payable_amount').val() : 0;
         var calcDueAmount = parseFloat(total_payable_amount) - parseFloat(payingAmount);

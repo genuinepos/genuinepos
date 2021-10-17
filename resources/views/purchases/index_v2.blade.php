@@ -9,148 +9,150 @@
     <div class="body-woaper">
         <div class="container-fluid">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-shopping-basket"></span>
-                                <h5>Purchases</h5>
+                <div class="col-12">
+                    <div class="border-class">
+                        <div class="main__content">
+                            <!-- =====================================================================BODY CONTENT================== -->
+                            <div class="sec-name">
+                                <div class="name-head">
+                                    <span class="fas fa-shopping-basket"></span>
+                                    <h5>Purchases</h5>
+                                </div>
+                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                                        class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="sec-name">
+                                        <div class="col-md-12">
+                                            <form id="filter_form">
+                                                <div class="form-group row">
+                                                    @if ($addons->branches == 1)
+                                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                            <div class="col-md-2">
+                                                                <label><strong>Business Location :</strong></label>
+                                                                <select name="branch_id"
+                                                                    class="form-control submit_able" id="branch_id" autofocus>
+                                                                    <option value="">All</option>
+                                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                    @foreach ($branches as $branch)
+                                                                        <option value="{{ $branch->id }}">
+                                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        @endif
                                                     @endif
-                                                @endif
-                                                
-                                                <div class="col-md-2">
-                                                    <label><strong>Supplier :</strong></label>
-                                                    <select name="supplier_id"
-                                                        class="form-control submit_able"
-                                                        id="supplier_id" autofocus>
-                                                    </select>
-                                                </div>
+                                                    
+                                                    <div class="col-md-2">
+                                                        <label><strong>Supplier :</strong></label>
+                                                        <select name="supplier_id"
+                                                            class="form-control submit_able"
+                                                            id="supplier_id" autofocus>
+                                                        </select>
+                                                    </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>Purchase Status :</strong></label>
-                                                    <select name="status" id="status"
-                                                        class="form-control  submit_able">
-                                                        <option value="">All</option>
-                                                        <option value="1">Received</option>
-                                                        <option value="2">Pending</option>
-                                                        <option value="3">Ordered</option>
-                                                    </select>
-                                                </div>
+                                                    <div class="col-md-2">
+                                                        <label><strong>Purchase Status :</strong></label>
+                                                        <select name="status" id="status"
+                                                            class="form-control  submit_able">
+                                                            <option value="">All</option>
+                                                            <option value="1">Received</option>
+                                                            <option value="2">Pending</option>
+                                                            <option value="3">Ordered</option>
+                                                        </select>
+                                                    </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                    <div class="col-md-2">
+                                                        <label><strong>From Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i
+                                                                        class="fas fa-calendar-week input_i"></i></span>
+                                                            </div>
+                                                            <input type="text" name="from_date" id="datepicker"
+                                                                class="form-control from_date"
+                                                                autocomplete="off">
                                                         </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date"
-                                                            autocomplete="off">
                                                     </div>
-                                                </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                    <div class="col-md-2">
+                                                        <label><strong>To Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i
+                                                                        class="fas fa-calendar-week input_i"></i></span>
+                                                            </div>
+                                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
                                                         </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <label><strong></strong></label>
+                                                        <div class="input-group">
+                                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-1">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>All Purchases</h6>
-                                </div>
-                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('purchases.create') }}"><i class="fas fa-plus-square"></i> Add</a>
+                                            </form>
                                         </div>
                                     </div>
-                                @endif
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>Actions</th>
-                                                <th>Date</th>
-                                                <th>P.Invoice ID</th>
-                                                <th>Purchase From</th>
-                                                <th>Supplier</th>
-                                                <th>Purchase Status</th>
-                                                <th>Payment Status</th>
-                                                <th>Grand Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Return Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Created By</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="row mt-1">
+                            <div class="card">
+                                <div class="section-header">
+                                    <div class="col-md-10">
+                                        <h6>All Purchases</h6>
+                                    </div>
+                                    @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                        <div class="col-md-2">
+                                            <div class="btn_30_blue float-end">
+                                                <a href="{{ route('purchases.create') }}"><i class="fas fa-plus-square"></i> Add</a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
 
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
+                                <div class="widget_content">
+                                    <div class="data_preloader">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    </div>
+                                    <div class="table-responsive" id="data-list">
+                                        <table class="display data_tbl data__table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Actions</th>
+                                                    <th>Date</th>
+                                                    <th>P.Invoice ID</th>
+                                                    <th>Purchase From</th>
+                                                    <th>Supplier</th>
+                                                    <th>Purchase Status</th>
+                                                    <th>Payment Status</th>
+                                                    <th>Grand Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>Return Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>Created By</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <form id="deleted_form" action="" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -172,7 +172,7 @@ class PurchaseController extends Controller
         // add purchase total information
         $addPurchase = new Purchase();
         $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
-        $addPurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
+        $addPurchase->warehouse_id = $request->warehouse_id ? $request->warehouse_id : NULL;
         $addPurchase->branch_id = auth()->user()->branch_id;
         $addPurchase->supplier_id = $request->supplier_id;
         $addPurchase->pay_term = $request->pay_term;

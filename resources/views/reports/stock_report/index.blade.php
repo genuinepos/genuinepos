@@ -33,7 +33,23 @@
                                         <form id="stock_filter_form" action="{{ route('reports.stock.filter') }}" method="get">
                                             @csrf
                                             <div class="form-group row">
-                                                <div class="col-md-3">
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-2">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                                                <option value="">All</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                 @endif
+                                                <div class="col-md-2">
                                                     <label><strong>Category :</strong></label>
                                                     <select id="category_id" name="category_id" class="form-control common_submitable">
                                                         <option value="">All</option>
@@ -43,7 +59,7 @@
                                                     </select>
                                                  </div>
             
-                                                 <div class="col-md-3">
+                                                 <div class="col-md-2">
                                                     <label><strong>Brand :</strong></label>
                                                     <select id="brand_id" name="brand_id" class="form-control common_submitable">
                                                         <option value="">All</option>
@@ -53,7 +69,7 @@
                                                     </select>
                                                  </div>
             
-                                                 <div class="col-md-3">
+                                                 <div class="col-md-2">
                                                     <label><strong>Unit :</strong></label>
                                                     <select id="unit_id" name="unit_id" class="form-control common_submitable">
                                                         <option value="">All</option>
@@ -63,28 +79,12 @@
                                                     </select>
                                                  </div>
             
-                                                 <div class="col-md-3">
+                                                 <div class="col-md-2">
                                                     <label><strong>Tax :</strong></label>
                                                     <select id="tax_id" name="tax_id" class="form-control common_submitable">
                                                         <option value="">All</option>
                                                         @foreach ($taxes as $t)
                                                             <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                 </div>
-                                            </div>
-
-                                            <hr class="m-0 p-0 mt-1">
-                                            <div class="form-group row">
-                                                <div class="col-md-3">
-                                                    <label><strong>Only Business Location Wise Stock :</strong></label>
-                                                    <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                        @foreach ($branches as $branch)
-                                                            <option value="{{ $branch->id }}">
-                                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                                            </option>
                                                         @endforeach
                                                     </select>
                                                  </div>

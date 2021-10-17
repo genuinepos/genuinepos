@@ -275,7 +275,7 @@
                                 var tax_amount = parseFloat(product.tax != null ? variant.variant_cost/100 * product.tax.tax_percent : 0.00);
                                 var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
                                 li += '<li>';
-                                li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                 li +='</li>';
                             });
                             $('.variant_list_area').append(li);
@@ -283,7 +283,7 @@
                             $('#search_product').val('');
                         }
                     }else if(!$.isEmptyObject(product.namedProducts)){
-                        if(product.namedProducts.length > 0){
+                        if(product.namedProducts.length > 0) {
                             var li = "";
                             var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                             var products = product.namedProducts; 
@@ -292,19 +292,20 @@
                                 if (product.product_variants.length > 0) {
                                     $.each(product.product_variants, function(key, variant){
                                         var tax_amount = parseFloat(product.tax != null ? variant.variant_cost/100 * product.tax.tax_percent : 0.00);
-                                        var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
+                                        var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price);
                                         li += '<li class="mt-1">';
-                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
                                     });
                                 }else{
                                     var tax_amount = parseFloat(product.tax != null ? product.product_cost/100 * product.tax.tax_percent : 0.00);
                                     var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
                                     li += '<li class="mt-1">';
-                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-p_code="'+product.product_code+'" data-p_cost="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-p_code="'+product.product_code+'" data-p_cost="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
                                 }
                             });
+
                             $('.variant_list_area').html(li);
                             $('.select_area').show();
                         }

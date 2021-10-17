@@ -30,18 +30,52 @@ class StockReportController extends Controller
     // Get all product stock **requested by ajax**
     public function allProducts()
     {
-        $products = Product::with(
-            [
-                'product_variants',
-                'sale_products',
-                'sale_products.sale',
-                'product_variants.sale_variants',
-                'product_variants.sale_variants.sale',
-                'tax',
-                'unit'
-            ]
-        )->get();
-        return view('reports.stock_report.ajax_view.product_list', compact('products'));
+        // $products = Product::with(
+        //     [
+        //         'product_variants',
+        //         'sale_products',
+        //         'sale_products.sale',
+        //         'product_variants.sale_variants',
+        //         'product_variants.sale_variants.sale',
+        //         'tax',
+        //         'unit'
+        //     ]
+        // )->get();
+        $productStock = DB::table('products')
+        ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+        ->leftJoin('product_branches', 'products.id', 'product_branches.product_id')
+        ->leftJoin('product_branch_variants', 'products.id', 'product_branch_variants.product_id')
+        ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
+        ->leftJoin('product_warehouses', 'products.id', 'product_warehouses.product_id')
+        ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
+        ->leftJoin('branches as warehouse_branch', 'warehouse_branch.id', 'warehouses.branch_id')
+        ->leftJoin('product_warehouse_variants', 'products.id', 'product_warehouse_variants.product_id')
+        ->select(
+            'products.name',
+            'products.product_code',
+            'products.product_price',
+            'products.product_cost_with_tax',
+            'products.mb_stock',
+            'products.mb_total_sale',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'product_variants.mb_stock as v_mb_stock',
+            'product_variants.mb_total_sale as v_mb_total_sale',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'product_branches.product_quantity as b_product_quantity',
+            'product_branches.total_sale as b_total_sale',
+            'product_branch_variants.variant_quantity as b_variant_quantity',
+            'product_branch_variants.total_sale as bv_total_sale',
+            'warehouses.warehouse_name',
+            'warehouses.warehouse_code',
+            'warehouse_branch.name as wb_name',
+            'warehouse_branch.branch_code as wb_code',
+            'product_warehouses.product_quantity as w_product_quantity',
+            'product_warehouse_variants.variant_quantity as w_variant_quantity',
+        )
+        ->get();
+        return view('reports.stock_report.ajax_view.stock_list', compact('productStock'));
     }
 
     // Get all parent Category

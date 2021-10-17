@@ -141,8 +141,8 @@
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button data-action="save" class="btn btn-sm btn-primary submit_button float-end">Save</button>
-                            <button data-action="save_and_print" class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>
+                            <button type="submit" data-action="save" class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                            <button type="submit" data-action="save_and_print" class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>
                         </div>
                     </div>
                 </div>
@@ -304,12 +304,13 @@
         $('.loading_button').show();
         var request = $(this).serialize();
         var url = $(this).attr('action');
-  
+        $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,
             type:'post',
             data: request,
             success:function(data){
+                $('.submit_button').prop('type', 'sumbit');
                 if(!$.isEmptyObject(data.errorMsg)){
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
@@ -328,6 +329,11 @@
                         header: null,        
                     });
                 }
+            },error: function(err) {
+                $('.submit_button').prop('type', 'sumbit');
+                $('.loading_button').hide();
+                $('.error').html('');
+                toastr.error('Net Connetion Error. Reload This Page.'); 
             }
         });
     });

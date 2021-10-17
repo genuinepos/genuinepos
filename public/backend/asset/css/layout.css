@@ -812,7 +812,7 @@ footer img.logo {
 
 #dashboard-8 .main-woaper {
     width: 100%;
-    margin-left: 142px;
+    padding-left: 142px;
     margin-bottom: 200px;
 }
 
@@ -894,6 +894,7 @@ footer img.logo {
     }
     #dashboard-8 .main-woaper {
         width: 100%;
+        padding-left: 0px;
     }
     #dashboard-8 .navigation {
         width: 100%;

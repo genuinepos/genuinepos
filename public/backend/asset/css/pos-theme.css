@@ -66,6 +66,110 @@
 body.red-theme {
     background: #eef0f8 !important;
 }
+
+.red-theme .pos-body {
+    border: 1px solid #3b1127;
+    background: linear-gradient(#dedede, #444444);
+}
+
+.red-theme .head-pos {
+    border-bottom: 1px solid #3a1026;
+}
+
+.red-theme .pos-btn {
+    border: 2px solid #fff;
+    color: #fff;
+}
+
+.red-theme nav.pos-navigation {
+    background: var(--red-color-gradient);
+}
+
+.red-theme .date {
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+.red-theme .left-cat-pos {
+    background: linear-gradient(#dedede, #444444);
+    border: 1px solid #6f5a5a !important;
+}
+
+.red-theme .pos-footer {
+    background: var(--red-color-gradient);
+}
+
+.red-theme .cat-button {
+    background: linear-gradient(#00aebd, #273245);
+    color: #fff;
+}
+
+.red-theme .cat-button:hover {
+    background: linear-gradient(#273245, #00aebd);
+    color: #fff;
+}
+
+.red-theme .product-inner {
+    background: #fff;
+    border: 1px solid #46142e;
+}
+
+.red-theme .show-product {
+    background: linear-gradient(#dedede, #444444);
+    border: 1px solid #3f1229;
+}
+
+.red-theme .product {
+    background: #f7f7f7;
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+}
+
+.red-theme .product-ctn .product-name {
+    color: var(--title-color);
+    background: #ddd;
+}
+
+.red-theme .product-name a {
+    color: #000;
+}
+
+.red-theme .cart-table {
+    border: 1px solid #3d1128;
+    background: linear-gradient(#dedede, #444444);
+}
+
+.red-theme .cart-table-inner-pos {
+    background: #fff;
+    border: 1px solid #43132d;
+}
+
+.red-theme .tbl-head {
+    border-bottom: 2px solid #000;
+}
+
+.red-theme .data_preloader {
+    background: white;
+    color: black;
+}
+
+.red-theme .sub-total-input {
+    background: linear-gradient(#00aebd, #273245);
+}
+
+.red-theme .pos-right-inner {
+    border: 1px solid #3d1128;
+    background: linear-gradient(#dedede, #444444);
+}
+
+.red-theme .check-out-woaper {
+    background: linear-gradient(#00aebd, #273245);
+    border: 1px solid #43132d;
+}
+
+.red-theme .resent-tn {
+    color: #fff;
+    background: #2e30a0;
+}
 /* =================Red theme end=====================  */
 
 /* =================Blue theme==========================  */

@@ -1,0 +1,87 @@
+:root {
+    --red-color-gradient: linear-gradient(#8c0437ee, #1e000d);
+    --red-color-1: #7e0d3d;
+    --red-color-2: #5d1b3f;
+
+    --blue-color-gradient: linear-gradient(#036dad 0%, #29b0fd 100%);
+    --blue-color-1: #29b0fd;
+    --blue-color-2: #036dad;
+
+    --dark-color-gradient: linear-gradient(#444444, #0a0b0c);
+    --dark-color-1: #0d3850;
+    --dark-color-2: #0a0b0c;
+
+    --light-color-gradient: linear-gradient(#e1e1e1, #989898);
+    --light-color-1: #c4c4c4;
+    --light-color-2: #989898;
+
+    --white-color: #fff;
+    --black-color: rgb(41, 41, 41);
+    --black-color-1: rgb(71, 71, 71);
+}
+
+/*================= Color pallete  ===================*/
+.color_change_wrapper {
+    position: fixed;
+    right: 6px;
+    bottom: 40px;
+    z-index: 999;
+}
+
+.color_change_wrapper ul {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 3px;
+}
+
+.color_change_wrapper li {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid;
+    box-shadow: 1px 2px 4px #161616ad;
+}
+
+.color_change_wrapper li.red {
+    background: var(--red-color-gradient);
+}
+
+.color_change_wrapper li.blue {
+    background: var(--blue-color-gradient);
+}
+
+.color_change_wrapper li.dark {
+    background: #18242e;
+}
+
+.color_change_wrapper li.light {
+    background: #c8c8c8;
+}
+
+/*================= Color pallete end ===================*/
+
+/* =================Red theme =====================  */
+body.red-theme {
+    background: #eef0f8 !important;
+}
+/* =================Red theme end=====================  */
+
+/* =================Blue theme==========================  */
+body.blue-theme {
+    background: #eef0f8 !important;
+}
+/* =================Blue theme end=========================  */
+
+/* =================Dark theme =======================  */
+body.dark-theme {
+    background: #eef0f8 !important;
+}
+/* =================Dark theme end =======================  */
+
+/* =================Light theme =======================  */
+body.light-theme {
+    background: var(--light-color-1) !important;
+}
+/* =================Light theme end=======================  */

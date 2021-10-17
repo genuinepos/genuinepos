@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
-    <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css"> 
+    <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
 
     <!-- Calculator -->
@@ -24,13 +24,14 @@
     type="text/css"/>
     <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/style.css">
+    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/pos-theme.css') }}">
     <style> .btn-bg {padding: 2px!important;} </style>
     @stack('css')
     <script src="{{asset('public/backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>
     <!--Toaster.js js link end-->
-  
+
     <script src="{{asset('public')}}/backend/asset/js/bootstrap.bundle.min.js "></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script src="{{asset('public')}}/assets/plugins/custom/Shortcuts-master/shortcuts.js"></script>
@@ -40,7 +41,17 @@
     <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
 </head>
 
-<body>
+<body class="red-theme">
+        {{-- color changing option  --}}
+        <div class="color_change_wrapper">
+            <ul>
+                <li class="red"></li>
+                <li class="blue"></li>
+                <li class="dark"></li>
+                <li class="light"></li>
+            </ul>
+        </div>
+
     <form id="pos_submit_form" action="{{ route('sales.pos.store') }}" method="POST">
         @csrf
         <div class="pos-body">
@@ -202,7 +213,7 @@
                                 <label><b>Available Point :</b> </label>
                                 <input type="number" step="any" name="available_point" id="available_point" class="form-control" value="0" readonly>
                             </div>
-        
+
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
                                     <label><b>Redeemed :</b> </label>
@@ -210,13 +221,13 @@
                                     <input type="number" step="any" name="pre_redeemed" id="pre_redeemed" class="d-none" value="0">
                                     <input type="number" step="any" name="pre_redeemed_amount" id="pre_redeemed_amount" class="d-none" value="0">
                                 </div>
-        
+
                                 <div class="col-md-6">
                                     <label><b>Redeem Amount :</b> </label>
                                     <input type="number" step="any" name="redeem_amount" id="redeem_amount" class="form-control">
                                 </div>
                             </div>
-        
+
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -433,10 +444,10 @@
                             <div class="col-md-6">
                                 <label><strong>Tax</strong> :</label>
                                 <select class="form-control" id="e_unit_tax">
-    
+
                                 </select>
                             </div>
-                          
+
                             <div class="col-md-6">
                                 <label><strong>Tax Type</strong> :</label>
                                 <select class="form-control" id="e_tax_type">
@@ -603,7 +614,7 @@
                     </div>
 
                     <div class="mt-2" id="invoice_description">
-                        
+
                     </div>
                 </div>
             </div>
@@ -676,7 +687,7 @@
         $(document).on('click', '#pos_exit_button',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);           
+            $('#payment_deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to exit?',
@@ -691,7 +702,7 @@
         });
 
         //Key shortcut for to the settings
-        shortcuts.add('ctrl+q',function() { 
+        shortcuts.add('ctrl+q',function() {
             window.location = "{{ route('settings.general.index') }}";
         });
 

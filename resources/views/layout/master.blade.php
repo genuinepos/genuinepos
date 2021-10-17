@@ -15,7 +15,6 @@
     @stack('stylesheets')
 
 </head>
-
 <body id="dashboard-8" class="red-theme">
 
     {{-- color changing option  --}}

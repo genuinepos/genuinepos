@@ -854,68 +854,17 @@ class SaleController extends Controller
         return $this->nameSearchUtil->nameSearching($product_code);
     }
 
-    // Check Branch product variant Stock 
-    public function checkBranchProductVariant($product_id, $variant_id)
-    {
-        $branch_id = auth()->user()->branch_id;
-        if ($branch_id) {
-            $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
-            if ($productBranch) {
-                $productBranchVariant = DB::table('product_branch_variants')->where('product_branch_id', $productBranch->id)
-                    ->where('product_id', $product_id)
-                    ->where('product_variant_id', $variant_id)->first();
-                if ($productBranchVariant) {
-                    if ($productBranchVariant->variant_quantity > 0) {
-                        return response()->json($productBranchVariant->variant_quantity);
-                    } else {
-                        return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop']);
-                    }
-                } else {
-                    return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
-                }
-            } else {
-                return response()->json(['errorMsg' => 'This product is not available in this shop.']);
-            }
-        } else {
-            $mb_variant_stock = DB::table('product_variants')
-                ->where('id', $variant_id)
-                ->where('product_id', $product_id)
-                ->first();
-
-            if ($mb_variant_stock->mb_stock > 0) {
-                return response()->json($mb_variant_stock->mb_stock);
-            } else {
-                return response()->json(['errorMsg' => 'Stock is not available of this product(variant) in this branch/shop']);
-            }
-        }
-    }
-
+    
     // Check Branch Single product Stock
     public function checkBranchSingleProductStock($product_id)
     {
-        $branch_id = auth()->user()->branch_id;
-        if ($branch_id) {
-            $productBranch = DB::table('product_branches')->where('product_id', $product_id)->where('branch_id', $branch_id)->first();
-            if ($productBranch) {
-                if ($productBranch->product_quantity > 0) {
-                    return response()->json($productBranch->product_quantity);
-                } else {
-                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch']);
-                }
-            } else {
-                return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
-            }
-        } else {
-            $mb_product_stock = DB::table('products')
-                ->where('id', $product_id)
-                ->first();
+        return $this->nameSearchUtil->checkBranchSingleProductStock($product_id, auth()->user()->branch_id);
+    }
 
-            if ($mb_product_stock->mb_stock > 0) {
-                return response()->json($mb_product_stock->mb_stock);
-            } else {
-                return response()->json(['errorMsg' => 'Stock is not available of this product(variant) in this branch/shop']);
-            }
-        }
+    // Check Branch variant product Stock 
+    public function checkBranchProductVariant($product_id, $variant_id)
+    {
+        $this->nameSearchUtil->checkBranchVariantProductStock($product_id, $variant_id, auth()->user()->branch_id);
     }
 
     public function editShipment($saleId)

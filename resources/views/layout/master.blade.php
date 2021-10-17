@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Title -->
-    <title>@yield('title') Genuine POS</title>
+    <title>@yield('title') Genuine POS</title> 
 
     <!-- Icon -->
     <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
@@ -16,7 +16,7 @@
 
 </head>
 
-<body id="dashboard-8" class="blue-theme">
+<body id="dashboard-8" class="red-theme">
 
     {{-- color changing option  --}}
     <div class="color_change_wrapper">

@@ -1311,13 +1311,6 @@ div#sidebar_t {
 }
 .jconfirm .jconfirm-box div.jconfirm-title-c {
     padding-bottom: 15px;
-    background: -webkit-linear-gradient(
-        top,
-        #19a6d3 0%,
-        #0853a1 50%,
-        #064492 51%,
-        #02286e 100%
-    );
     color: #fff !important;
     padding-top: 9px;
     text-align: center;
@@ -1366,20 +1359,6 @@ div#sidebar_t {
     );
 }
 button.btn.btn-modal-primary {
-    background: -webkit-linear-gradient(
-        top,
-        #19a6d3 0%,
-        #0853a1 50%,
-        #064492 51%,
-        #02286e 100%
-    ) !important;
-    background: -webkit-linear-gradient(
-        top,
-        #19a6d3 0%,
-        #0853a1 50%,
-        #064492 51%,
-        #02286e 100%
-    ) !important;
     color: #fff;
 }
 

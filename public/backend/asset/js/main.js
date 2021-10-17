@@ -173,7 +173,6 @@ $(function () {
 $(function() {
     $('.color_change_wrapper ul li').on('click', function() {
         let cls = this.className;
-        let body = document.querySelector('body');
         if(cls === 'red') {
             $('.color_change_wrapper ul li').removeClass('active');
             this.classList.add('active');
@@ -189,11 +188,11 @@ $(function() {
             this.classList.add('active');
             $('body').removeClass();
             $('body').addClass('dark-theme');
-        } else if(cls === 'ash') {
+        } else if(cls === 'light') {
             $('.color_change_wrapper ul li').removeClass('active');
             this.classList.add('active');
             $('body').removeClass();
-            $('body').addClass('ash-theme');
+            $('body').addClass('light-theme');
         }
     })
 });

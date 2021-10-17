@@ -16,7 +16,7 @@
 
 </head>
 
-<body id="dashboard-8" class="blue-theme">
+<body id="dashboard-8" class="red-theme">
 
     {{-- color changing option  --}}
     <div class="color_change_wrapper">

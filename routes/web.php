@@ -238,6 +238,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('v2', 'PurchaseController@index_v2')->name('purchases.index_v2');
     Route::get('product/list', 'PurchaseController@purchaseProductList')->name('purchases.product.list');
+    Route::get('po/list', 'PurchaseController@poList')->name('purchases.po.list');
     Route::get('show/{purchaseId}', 'PurchaseController@show')->name('purchases.show');
     Route::get('create', 'PurchaseController@create')->name('purchases.create');
     Route::post('store', 'PurchaseController@store')->name('purchases.store');
@@ -983,44 +984,6 @@ Route::get('/test', function () {
     //      $value->report_date = $sale->report_date;
     //      $value->save();
     // }
-
-    return $productStock = DB::table('products')
-    ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
-    ->leftJoin('product_branches', 'products.id', 'product_branches.product_id')
-    ->leftJoin('product_branch_variants', 'products.id', 'product_branch_variants.product_id')
-    ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
-    ->leftJoin('product_warehouses', 'products.id', 'product_warehouses.product_id')
-    ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
-    ->leftJoin('branches as warehouse_branch', 'warehouse_branch.id', 'warehouses.branch_id')
-    ->leftJoin('product_warehouse_variants', 'products.id', 'product_warehouse_variants.product_id')
-    ->select(
-        'products.name',
-        'products.product_code',
-        'products.mb_stock',
-        'product_variants.variant_name',
-        'product_variants.variant_code',
-        'product_variants.mb_stock as v_mb_stock',
-        'branches.name as branch_name',
-        'branches.branch_code',
-        'product_branches.product_quantity as b_product_quantity',
-        'product_branch_variants.variant_quantity as b_variant_quantity',
-        'warehouses.warehouse_name',
-        'warehouses.warehouse_code',
-        'warehouse_branch.name as wb_name',
-        'warehouse_branch.branch_code as wb_code',
-        'product_warehouses.product_quantity as w_product_quantity',
-        'product_warehouse_variants.variant_quantity as w_variant_quantity',
-    )
-    ->get();
-
-    // $product = Product::with([
-    //     'product_branches:id,product_quantity,total_sale,product_id',
-    //     'product_warehouses' => function ($query)
-    //     {
-    //         $query->where('warehouse_id', 1);
-    //     },
-    // ])->select('id', 'name', 'product_code', 'product_price')
-    // ->get();
 });
 
 // All authenticated routes

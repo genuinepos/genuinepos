@@ -309,7 +309,7 @@
                     </div>
                 </div>
             </div>
-            <!-- ===========================================FILE SIDEBAR=================== -->
+
             @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
                 @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
                     <div class="sub-menu_t" id="contact">
@@ -418,6 +418,7 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.add_purchase')</p>
                                     </div>
+
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('purchases.index_v2') }}" class="bar-link">
@@ -430,10 +431,19 @@
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('purchases.product.list') }}" class="bar-link">
-                                                <span><i class="fas fa-shopping-cart"></i></span>
+                                                <span><i class="fas fa-list"></i></span>
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.purchase_product_list')</p>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('purchases.po.list') }}" class="bar-link">
+                                                <span><i class="fas fa-list"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.po_list')</p>
                                     </div>
                                 </div>
                                 <hr>
@@ -497,6 +507,24 @@
                                                     </a>
                                                 </div>
                                                 <p class="switch_text">@lang('menu.purchase_list')</p>
+                                            </div>
+
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                <div class="switch_bar">
+                                                    <a href="{{ route('purchases.product.list') }}" class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </a>
+                                                </div>
+                                                <p class="switch_text">@lang('menu.purchase_product_list')</p>
+                                            </div>
+
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                <div class="switch_bar">
+                                                    <a href="{{ route('purchases.po.list') }}" class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </a>
+                                                </div>
+                                                <p class="switch_text">@lang('menu.po_list')</p>
                                             </div>
                                         </div>
                                         <hr>

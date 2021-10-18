@@ -92,7 +92,7 @@
                                                     <label for="inputEmail3" class=" col-4"><b>Status :</b></label>
                                                     <div class="col-8">
                                                         <select class="form-control changeable" name="purchase_status" id="purchase_status">
-                                                            <option value="1">Received</option>
+                                                            <option value="1">Purchase</option>
                                                             <option value="2">Pending</option>
                                                             <option value="3">Ordered</option>
                                                         </select>

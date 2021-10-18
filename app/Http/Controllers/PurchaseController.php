@@ -63,6 +63,10 @@ class PurchaseController extends Controller
 
     public function purchaseProductList(Request $request)
     {
+        if (auth()->user()->permission->purchase['purchase_all'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+        
         if ($request->ajax()) {
             return $this->purchaseUtil->purchaseProductListTable($request);
         }
@@ -71,6 +75,21 @@ class PurchaseController extends Controller
         $suppliers = DB::table('suppliers')->get(['id', 'name', 'phone']);
         $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         return view('purchases.purchase_product_list', compact('branches', 'suppliers', 'categories'));
+    }
+
+    public function poList(Request $request)
+    {
+        if (auth()->user()->permission->purchase['purchase_all'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
+        if ($request->ajax()) {
+            return $this->purchaseUtil->poListTable($request);
+        }
+
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        $suppliers = DB::table('suppliers')->get(['id', 'name', 'phone']);
+        return view('purchases.po_list', compact('branches', 'suppliers'));
     }
 
     // show purchase details
@@ -192,6 +211,7 @@ class PurchaseController extends Controller
         $addPurchase->shipment_details = $request->shipment_details;
         $addPurchase->purchase_note = $request->purchase_note;
         $addPurchase->purchase_status = $request->purchase_status;
+        $addPurchase->is_purchased = $request->purchase_status == 1 ? 1 : 0;
         $addPurchase->date = $request->date;
         $addPurchase->report_date = date('Y-m-d', strtotime($request->date));
         $addPurchase->time = date('h:i:s a');

@@ -39,4 +39,7 @@
         @media screen and (min-width: 960px) {#dashboard-8 .main__nav {overflow-y: hidden;}}
         select.month-item-year {width: 100px;font-size: 14px;}
         select.month-item-name {font-size: 13px;}
+        .widget_content .table-responsive{
+            min-height: 60vh!important;
+        }
     </style>

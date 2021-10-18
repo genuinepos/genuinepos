@@ -34,7 +34,16 @@
 
     <div class="reference_area pt-3">
         <h6 class="text-navy-blue"><b>Title :</b>
-            {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Receive Purchase Return' }} </h6>
+            @if ($payment->purchase->purchase_status == 3)
+                @if($payment->payment_type == 1)
+                    PO Advance Payment
+                @else
+                    Return Payment
+                @endif
+            @else 
+                {{ $payment->payment_type == 1 ? 'Purchase due' : 'Return due' }}
+            @endif
+        </h6>
         <h6 class="text-navy-blue"><b>P.Invoice ID :</b> {{ $payment->purchase->invoice_id }}</h6>
         <h6 class="text-navy-blue"><b>Supplier :</b> {{ $payment->purchase->supplier->name }}</h6>
     </div>

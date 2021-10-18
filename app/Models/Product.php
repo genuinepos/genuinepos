@@ -38,7 +38,7 @@ class Product extends Model
     
     public function product_branches()
     {
-        return $this->hasMany(ProductBranch::class, 'id', 'product_id');
+        return $this->hasMany(ProductBranch::class);
     }
 
     public function product_warehouses()

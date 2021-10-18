@@ -37,9 +37,18 @@
                     <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->purchase_payment->date)) }}</td> 
                     <td>{{ $ledger->purchase_payment->payment_type == 1 ? 'Cr' : 'Dr' }}</td>
                     <td>
-                        {{ $ledger->purchase_payment->payment_type == 1 ? 'Purchase Payment' : 'Purchase Return Payment' }} <br>
-                        {{ $ledger->purchase_payment->account ? $ledger->purchase_payment->account->name : '' }}
-                        {{ $ledger->purchase_payment->account ? ' A/C '.$ledger->purchase_payment->account->account_number : '' }} 
+                        @if ($ledger->purchase_payment->purchase->purchase_status == 3)
+                            @if ($ledger->purchase_payment->payment_type == 1)
+                                <b>PO Advance Payment</b><br>
+                            @else 
+                                <b>Purchase Return Payment</b><br>
+                            @endif
+                        @else 
+                            <b>
+                                {{ $ledger->purchase_payment->payment_type == 1 ? 'Purchase Payment' : 'Purchase Return Payment' }}
+                            </b> <br>
+                        @endif
+                        {{ $ledger->purchase_payment->account ? $ledger->purchase_payment->account->name.' A/C '.$ledger->purchase_payment->account->account_number : '' }} <br>
                         Payment For :{{ $ledger->purchase_payment->purchase->invoice_id }}
                     </td>
                     <td>---</td>

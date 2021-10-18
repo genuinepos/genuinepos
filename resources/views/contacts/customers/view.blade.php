@@ -313,11 +313,11 @@
                 { data: 'invoice_id', name: 'invoice_id'},
                 {data: 'from', name: 'branches.name'},
                 {data: 'customer', name: 'customers.name'},
-                {data: 'total_payable_amount', name: 'total_payable_amount'},
-                {data: 'paid', name: 'paid'},
-                {data: 'due', name: 'due'},
-                {data: 'sale_return_amount', name: 'sale_return_amount'},
-                {data: 'sale_return_due', name: 'sale_return_due'},
+                {data: 'total_payable_amount', name: 'total_payable_amount', className: 'text-end'},
+                {data: 'paid', name: 'paid', className: 'text-end'},
+                {data: 'due', name: 'due', className: 'text-end'},
+                {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
+                {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},
                 {data: 'paid_status', name: 'paid_status'},
             ],
         });
@@ -349,8 +349,10 @@
         }
         getCustomerLedgerList();
 
-        // Pass sale details in the details modal
-        function saleDetails(url) {
+        // Show details modal with data
+        $(document).on('click', '.details_button', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
             $('.data_preloader').show();
             $.ajax({
                 url:url,
@@ -361,13 +363,6 @@
                     $('#detailsModal').modal('show');
                 }
             });
-        }
-        //edit_shipment
-        // Show details modal with data
-        $(document).on('click', '.details_button', function (e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            saleDetails(url);
         });
 
         // Print Packing slip

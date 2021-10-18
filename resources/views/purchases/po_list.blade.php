@@ -15,7 +15,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>Purchases</h5>
+                                <h5>Purchase Orders</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -50,6 +50,10 @@
                                                     <select name="supplier_id"
                                                         class="form-control submit_able"
                                                         id="supplier_id" autofocus>
+                                                        <option value="">All</option>
+                                                        @foreach ($suppliers as $row)
+                                                            <option value="{{ $row->id }}">{{ $row->name.' ('.$row->phone.')' }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -106,7 +110,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Purchases</h6>
+                                    <h6>PO List</h6>
                                 </div>
                                 @if (auth()->user()->permission->purchase['purchase_add'] == '1')
                                     <div class="col-md-2">
@@ -256,7 +260,7 @@
             //aaSorting: [[0, 'asc']],
             "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
             "ajax": {
-                "url": "{{ route('purchases.index_v2') }}",
+                "url": "{{ route('purchases.po.list') }}",
                 "data": function(d) {
                     d.warehouse_id = $('#warehouse_id').val();
                     d.branch_id = $('#branch_id').val();
@@ -285,24 +289,6 @@
                 $('.data_preloader').hide();
             },
         });
-
-        // Get all supplier for filter form
-        function setSuppliers() {
-            $.ajax({
-                url: "{{ route('purchases.get.all.supplier') }}",
-                type: 'get',
-                dataType: 'json',
-                success: function(suppliers) {
-                    $('#supplier_id').append('<option value="">All</option>');
-                    $.each(suppliers, function(key, val) {
-                        $('#supplier_id').append('<option value="' + val.id + '">' + val.name + ' (' +
-                            val.phone + ')' + '</option>');
-                    });
-                    $('#supplier_id').val('');
-                }
-            });
-        }
-        setSuppliers();
 
         // Show details modal with data
         $(document).on('click', '.details_button', function(e) {

@@ -113,7 +113,17 @@
                             <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
                             </td>
                             <td>{{ $payment->pay_mode }}</td>
-                            <td>{{ $payment->payment_type == 1 ? 'Purchase due' : 'Return due' }}</td>
+                            <td>
+                                @if ($purchase->purchase_status == 3)
+                                    @if($payment->payment_type == 1)
+                                        PO Advance Payment
+                                    @else
+                                        Return Payment
+                                    @endif
+                                @else 
+                                    {{ $payment->payment_type == 1 ? 'Purchase due' : 'Return due' }}
+                                @endif
+                            </td>
                             <td>{{ $payment->account ? $payment->account->name : '....' }}</td>
                             <td>
                                 @if ($payment->payment_type == 1)

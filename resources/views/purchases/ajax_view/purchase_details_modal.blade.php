@@ -157,9 +157,19 @@
                                                    <td>{{ $payment->invoice_id }}</td>
                                                    <td>{{json_decode($generalSettings->business, true)['currency'] .' '. $payment->paid_amount }}</td>
                                                    <td>{{ $payment->pay_mode }}</td>
-                                                   <td>{{ $payment->payment_type == 1 ? 'Purchase due' : 'Return due' }}</td>
-                                                   <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
                                                    <td>
+                                                        @if ($purchase->purchase_status == 3)
+                                                            @if($payment->payment_type == 1)
+                                                                PO Advance Payment
+                                                            @else
+                                                                Return Payment
+                                                            @endif
+                                                        @else 
+                                                            {{ $payment->payment_type == 1 ? 'Purchase due' : 'Return due' }}
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
+                                                    <td>
                                                        @if (auth()->user()->branch_id == $purchase->branch_id)
                                                            @if ($payment->payment_type == 1)
                                                                <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>

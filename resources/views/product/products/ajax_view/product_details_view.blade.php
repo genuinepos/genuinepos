@@ -21,7 +21,7 @@
                         <li><strong>Brand : </strong> {{ $product->brand ? $product->brand->name : 'N/A' }}</li>
                         <li><strong>Unit : </strong> {{ $product->unit->name }}</li>
                         <li><strong>Barcode Type : </strong> {{ $product->barcode_type }}</li>
-                        <li><strong>Available Branch: </strong>
+                        {{-- <li><strong>Available Branch: </strong>
                             @if (count($product->product_branches))
                                 @foreach ($product->product_branches as $product_branch)
                                      {{ $product_branch->branch->name . '/' . $product_branch->branch->branch_code }},
@@ -29,7 +29,7 @@
                             @else
                                 Yet-to-be-available-in-any-Branch.
                             @endif
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
 
@@ -86,6 +86,9 @@
             @else
                 @if ($product->is_variant == 0)
                     <div class="row">
+                        <div class="heading">
+                            <label class="p-0 m-0"><strong>PURCHASE AND SELLING PRICE DETAILS :</strong></label>
+                        </div>
                         <div class="table-responsive">
                             <!--single_product_pricing_table-->
                             @include('product.products.ajax_view.partials.single_product_pricing_table')
@@ -94,6 +97,10 @@
                     </div>
                 @elseif($product->is_variant == 1)
                     <div class="row">
+                        <div class="heading">
+                            <label class="p-0 m-0"><strong>PURCHASE AND SELLING PRICING DETAILS :</strong></label>
+                        </div>
+
                         <div class="table-responsive">
                             <!--variant_product_pricing_table-->
                             @include('product.products.ajax_view.partials.variant_product_pricing_table')
@@ -102,6 +109,8 @@
                     </div>
                 @endif 
             @endif
+
+            <hr class="m-0">
             
             <div class="row">
                 <div class="heading">
@@ -114,12 +123,25 @@
                 </div>
             </div>
 
+            <hr class="m-0">
+
             <div class="row">
                 <div class="heading">
-                    <label class="p-0 m-0"><strong>BUSINESS LOCATION STOCK DETAILS</strong></label>
+                    <label class="p-0 m-0"><strong>WON BUSINESS LOCATION STOCK DETAILS :</strong></label>
                 </div>
                 <div class="table-responsive" id="branch_stock_details">
                     @include('product.products.ajax_view.partials.branch_stock_details')
+                </div>
+            </div>
+
+            <hr class="m-0">
+
+            <div class="row">
+                <div class="heading">
+                    <label class="p-0 m-0"><strong>ANOTHER BUSINESS LOCATION STOCK DETAILS :</strong></label>
+                </div>
+                <div class="table-responsive" id="branch_stock_details">
+                    @include('product.products.ajax_view.partials.another_branch_details')
                 </div>
             </div>
         </div>

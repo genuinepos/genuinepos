@@ -43,7 +43,6 @@ class CustomerController extends Controller
         }
 
         if ($request->ajax()) {
-
             $generalSettings = DB::table('general_settings')->first();
             $customers = DB::table('customers')
                 ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
@@ -328,14 +327,13 @@ class CustomerController extends Controller
                 })
                 ->editColumn('invoice_id', function ($row) {
                     $html = '';
-                    $html .= $row->is_return_available ? '<br>' : '';
                     $html .= $row->invoice_id;
-                    $html .= $row->is_return_available ? '<span class="badge rounded bg-danger p-0 pl-1 pb-1"><i style="font-size:11px;margin-top:3px;" class="fas fa-undo mr-1 text-white"></i></span>' : '';
+                    $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
@@ -343,39 +341,21 @@ class CustomerController extends Controller
                 ->editColumn('customer',  function ($row) {
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
-                ->editColumn('total_payable_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_payable_amount . '</b>';
-                })
-                ->editColumn('paid', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid . '</b>';
-                })
-                ->editColumn('due', function ($row) use ($generalSettings) {
-                    return '<b><span class="text-success">' . json_decode($generalSettings->business, true)['currency'] . ($row->due >= 0 ? $row->due :   0.00) . '</span></b>';
-                })
-                ->editColumn('sale_return_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->sale_return_amount . '</b>';
-                })
-                ->editColumn('sale_return_due', function ($row) use ($generalSettings) {
-                    return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->sale_return_due . '</span></b>';
-                })
+                ->editColumn('total_payable_amount', fn ($row) => $this->converter->format_in_bdt($row->total_payable_amount))
+                ->editColumn('paid', fn ($row) => '<span class="text-success">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+                ->editColumn('due', fn ($row) =>  '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
+                ->editColumn('sale_return_amount', fn ($row) => $this->converter->format_in_bdt($row->sale_return_amount))
+                ->editColumn('sale_return_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
                 ->editColumn('paid_status', function ($row) {
                     $payable = $row->total_payable_amount - $row->sale_return_amount;
-                    $html = '';
                     if ($row->due <= 0) {
-                        $html .= '<span class="badge bg-success">Paid</span>';
+                        return '<span class="text-success"><b>Paid</b></span>';
                     } elseif ($row->due > 0 && $row->due < $payable) {
-                        $html .= '<span class="badge bg-primary text-white">Partial</span>';
+                        return '<span class="text-primary"><b>Partial</b></span>';
                     } elseif ($payable == $row->due) {
-                        $html .= '<span class="badge bg-danger text-white">Due</span>';
+                        return '<span class="text-danger"><b>Due</b></span>';
                     }
-                    return $html;
                 })
-                ->setRowAttr([
-                    'data-href' => function ($row) {
-                        return route('sales.show', [$row->id]);
-                    }
-                ])
-                ->setRowClass('clickable_row')
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status'])
                 ->make(true);
         }
@@ -451,7 +431,7 @@ class CustomerController extends Controller
 
         // Add Customer Payment Record
         $customerPayment = new CustomerPayment();
-        $customerPayment->voucher_no = 'CPV' . date('my') .$this->invoiceVoucherRefIdUtil->customerPaymentVoucherNo();
+        $customerPayment->voucher_no = 'CPV' . date('my') . $this->invoiceVoucherRefIdUtil->customerPaymentVoucherNo();
         $customerPayment->branch_id = auth()->user()->branch_id;
         $customerPayment->customer_id = $customerId;
         $customerPayment->account_id = $request->account_id;
@@ -918,9 +898,9 @@ class CustomerController extends Controller
     {
         $customer = DB::table('customers')->where('id', $customerId)->first();
         $customer_payments = DB::table('customer_payments')
-        ->leftJoin('accounts', 'customer_payments.account_id', 'accounts.id')
-        ->select('customer_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
-        ->orderBy('report_date', 'desc')->get();
+            ->leftJoin('accounts', 'customer_payments.account_id', 'accounts.id')
+            ->select('customer_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
+            ->orderBy('report_date', 'desc')->get();
         return view('contacts.customers.ajax_view.view_payment_list', compact('customer', 'customer_payments'));
     }
 
@@ -957,7 +937,7 @@ class CustomerController extends Controller
                 if ($customer_payment_invoice->type == 1) {
                     $sale = Sale::where('id', $customer_payment_invoice->sale_id)->first();
                     $this->saleUtil->adjustSaleInvoiceAmounts($sale);
-                }else {
+                } else {
                     $sale = Sale::with('sale_return')->where('id', $customer_payment_invoice->sale_id)->first();
                     if ($sale->sale_return) {
                         $sale->sale_return->total_return_due += $customer_payment_invoice->paid_amount;

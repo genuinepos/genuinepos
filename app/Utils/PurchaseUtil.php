@@ -72,7 +72,7 @@ class PurchaseUtil
                 'created_by.prefix as created_prefix',
                 'created_by.name as created_name',
                 'created_by.last_name as created_last_name',
-            )->orderBy('purchases.report_date', 'desc');
+            )->where('is_purchased', 1)->orderBy('purchases.report_date', 'desc');
         } else {
             $purchases = $query->select(
                 'purchases.id',
@@ -95,7 +95,7 @@ class PurchaseUtil
                 'created_by.prefix as created_prefix',
                 'created_by.name as created_name',
                 'created_by.last_name as created_last_name',
-            )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchases.report_date', 'desc');
+            )->where('purchases.branch_id', auth()->user()->branch_id)->where('is_purchased', 1)->orderBy('purchases.report_date', 'desc');
         }
 
         return DataTables::of($purchases)
@@ -120,14 +120,146 @@ class PurchaseUtil
             ->editColumn('paid', fn ($row) => $this->converter->format_in_bdt($row->paid))
             ->editColumn('due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
             ->editColumn('purchase_return_amount', fn ($row) => $this->converter->format_in_bdt($row->purchase_return_amount))
-            ->editColumn('purchase_return_due', fn ($row) => '<span class="text-success">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
+            ->editColumn('purchase_return_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
             ->editColumn('status', function ($row) {
                 if ($row->purchase_status == 1) {
-                    return '<span class="text-success"><b>Received</b></span>';
+                    return '<span class="text-success"><b>Purchased</b></span>';
                 } elseif ($row->purchase_status == 2) {
-                    return '<span class="text-primary"><b>Pending</b></span>';
+                    return '<span class="text-secondary"><b>Pending</b></span>';
                 } elseif ($row->purchase_status == 3) {
-                    return '<span class="text-warning"><b>Ordered</b></span>';
+                    return '<span class="text-primary"><b>Ordered</b></span>';
+                }
+            })->editColumn('payment_status', function ($row) {
+                $payable = $row->total_purchase_amount - $row->purchase_return_amount;
+                if ($row->due <= 0) {
+                    return '<span class="text-success"><b>Paid</b></span>';
+                } elseif ($row->due > 0 && $row->due < $payable) {
+                    return '<span class="text-primary"><b>Partial</b></span>';
+                } elseif ($payable == $row->due) {
+                    return '<span class="text-danger"><b>Due</b></span>';
+                }
+            })->editColumn('created_by', function ($row) {
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
+            })
+            ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'status', 'created_by'])
+            ->make(true);
+    }
+
+    public function poListTable($request)
+    {
+        $generalSettings = DB::table('general_settings')->first();
+        $purchases = '';
+        $query = DB::table('purchases')
+            ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
+            ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
+            ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
+            ->leftJoin('admin_and_users as created_by', 'purchases.admin_id', 'created_by.id');
+
+        if (!empty($request->branch_id)) {
+            if ($request->branch_id == 'NULL') {
+                $query->where('purchases.branch_id', NULL);
+            } else {
+                $query->where('purchases.branch_id', $request->branch_id);
+            }
+        }
+
+        if (!empty($request->warehouse_id)) {
+            $query->where('purchases.warehouse_id', $request->warehouse_id);
+        }
+
+        if ($request->supplier_id) {
+            $query->where('purchases.supplier_id', $request->supplier_id);
+        }
+
+        if ($request->status) {
+            $query->where('purchases.purchase_status', $request->status);
+        }
+
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $query->whereBetween('purchases.report_date', $date_range); // Final
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $purchases = $query->select(
+                'purchases.id',
+                'purchases.branch_id',
+                'purchases.warehouse_id',
+                'purchases.date',
+                'purchases.invoice_id',
+                'purchases.is_return_available',
+                'purchases.total_purchase_amount',
+                'purchases.purchase_return_amount',
+                'purchases.purchase_return_due',
+                'purchases.due',
+                'purchases.paid',
+                'purchases.purchase_status',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'suppliers.name as supplier_name',
+                'created_by.prefix as created_prefix',
+                'created_by.name as created_name',
+                'created_by.last_name as created_last_name',
+            )->where('purchase_status', 3)->orderBy('purchases.report_date', 'desc');
+        } else {
+            $purchases = $query->select(
+                'purchases.id',
+                'purchases.branch_id',
+                'purchases.warehouse_id',
+                'purchases.date',
+                'purchases.invoice_id',
+                'purchases.is_return_available',
+                'purchases.total_purchase_amount',
+                'purchases.purchase_return_amount',
+                'purchases.purchase_return_due',
+                'purchases.due',
+                'purchases.paid',
+                'purchases.purchase_status',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'suppliers.name as supplier_name',
+                'created_by.prefix as created_prefix',
+                'created_by.name as created_name',
+                'created_by.last_name as created_last_name',
+            )->where('purchases.branch_id', auth()->user()->branch_id)->where('purchase_status', 3)->orderBy('purchases.report_date', 'desc');
+        }
+
+        return DataTables::of($purchases)
+            ->addColumn('action', fn ($row) => $this->createAction($row))
+            ->editColumn('date', function ($row) use ($generalSettings) {
+                return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+            })->editColumn('invoice_id', function ($row) {
+                $html = '';
+                $html .= $row->invoice_id;
+                $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
+                return $html;
+            })->editColumn('from',  function ($row) use ($generalSettings) {
+                if ($row->warehouse_name) {
+                    return $row->warehouse_name . '<b>(WH)</b>';
+                } elseif ($row->branch_name) {
+                    return $row->branch_name . '<b>(BL)</b>';
+                } else {
+                    return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
+                }
+            })
+            ->editColumn('total_purchase_amount', fn ($row) => $this->converter->format_in_bdt($row->total_purchase_amount))
+            ->editColumn('paid', fn ($row) => $this->converter->format_in_bdt($row->paid))
+            ->editColumn('due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
+            ->editColumn('purchase_return_amount', fn ($row) => $this->converter->format_in_bdt($row->purchase_return_amount))
+            ->editColumn('purchase_return_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
+            ->editColumn('status', function ($row) {
+                if ($row->purchase_status == 1) {
+                    return '<span class="text-success"><b>Purchased</b></span>';
+                } elseif ($row->purchase_status == 2) {
+                    return '<span class="text-secondary"><b>Pending</b></span>';
+                } elseif ($row->purchase_status == 3) {
+                    return '<span class="text-primary"><b>Ordered</b></span>';
                 }
             })->editColumn('payment_status', function ($row) {
                 $payable = $row->total_purchase_amount - $row->purchase_return_amount;
@@ -340,7 +472,9 @@ class PurchaseUtil
             }
 
             if (auth()->user()->permission->purchase['purchase_return'] == '1') {
-                $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
+                if ($row->purchase_status == 1) {
+                    $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
+                }
             }
             $html .= '<a class="dropdown-item" id="change_status" href="' . route('purchases.change.status.modal', $row->id) . '"><i class="far fa-edit text-primary"></i> Update Status</a>';
         }

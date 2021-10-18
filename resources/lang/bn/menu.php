@@ -35,6 +35,7 @@ return [
     // Menu childs of Purchases module
     'add_purchase' => 'ক্রয় যুক্ত করুন',
     'purchase_list' => 'ক্রয় তালিকা',
+    'po_list' => 'ক্রয় আদেশ তালিকা',
     'purchase_product_list' => 'পণ্য ক্রয় তালিকা',
     'add_return' => 'রিটার্ন যোগ করুন',
     'purchase_return_list' => 'ক্রয়ের রিটার্ন তালিকা',

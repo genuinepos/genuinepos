@@ -36,9 +36,9 @@ class ProductController extends Controller
         }
 
         if ($request->ajax()) {
-           return $this->productUtil->productListTable($request);
+            return $this->productUtil->productListTable($request);
         }
-        
+
         $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
@@ -55,16 +55,16 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
             $products = DB::table('products')
-            ->select('id', 'name', 'product_cost', 'product_price')->orderBy('products.id', 'desc');
+                ->select('id', 'name', 'product_cost', 'product_price')->orderBy('products.id', 'desc');
 
             return DataTables::of($products)
-            ->addColumn('action', function ($row) {
-                return '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>';
-            })->editColumn('name', function ($row) {
-                return Str::limit($row->name, 17);
-            })->rawColumns(['action'])->make(true);
+                ->addColumn('action', function ($row) {
+                    return '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                })->editColumn('name', function ($row) {
+                    return Str::limit($row->name, 17);
+                })->rawColumns(['action'])->make(true);
         }
-        
+
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
         $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'desc')->get(['id', 'name']);
         $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
@@ -168,7 +168,8 @@ class ProductController extends Controller
                 }
 
                 $this->validate(
-                    $request,[
+                    $request,
+                    [
                         'variant_image.*' => 'sometimes|image|max:2048',
                     ],
                 );
@@ -244,26 +245,72 @@ class ProductController extends Controller
             'category',
             'child_category',
             'tax',
-            'unit',
+            'unit:id,name,code_name',
             'brand',
             'ComboProducts',
             'ComboProducts.parentProduct',
             'ComboProducts.parentProduct.tax',
             'ComboProducts.product_variant',
             'product_variants',
-            'product_warehouses',
-            'product_warehouses.warehouse',
-            'product_warehouses.warehouse.branch',
-            'product_warehouses.product_warehouse_variants',
-            'product_warehouses.product_warehouse_variants.product_variant',
-            'product_branches',
-            'product_branches.branch',
-            'product_branches.product_branch_variants',
-            'product_branches.product_branch_variants.product_variant',
         ])->where('id', $productId)->first();
 
+        $won_branch_stocks = DB::table('product_branches')
+            ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
+            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+            ->where('product_branches.branch_id', auth()->user()->branch_id)
+            ->where('product_branches.product_id', $productId)
+            ->select(
+                'branches.name as b_name',
+                'branches.branch_code',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'product_branches.product_quantity',
+                'product_branches.total_sale',
+                'product_branch_variants.variant_quantity',
+                'product_branch_variants.total_sale as v_total_sale',
+            )->get();
+
+        $another_branch_stocks = DB::table('product_branches')
+            ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
+            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+            ->where('product_branches.branch_id', '!=',auth()->user()->branch_id)
+            ->where('product_branches.product_id', $productId)
+            ->select(
+                'branches.name as b_name',
+                'branches.branch_code',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'product_branches.product_quantity',
+                'product_branches.total_sale',
+                'product_branch_variants.variant_quantity',
+                'product_branch_variants.total_sale as v_total_sale',
+            )->get();
+
+        $won_warehouse_stocks = DB::table('product_warehouses')
+            ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
+            ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
+            ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
+            ->where('warehouses.branch_id', auth()->user()->branch_id)
+            ->where('product_warehouses.product_id', $productId)
+            ->select(
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'product_warehouses.product_quantity',
+                'product_warehouse_variants.variant_quantity',
+            )->get();
+
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-        return view('product.products.ajax_view.product_details_view', compact('product', 'price_groups'));
+        return view('product.products.ajax_view.product_details_view', compact('product', 'price_groups', 'won_branch_stocks', 'another_branch_stocks', 'won_warehouse_stocks'));
     }
 
     //update opening stock
@@ -288,7 +335,7 @@ class ProductController extends Controller
                 $product = Product::where('id', $openingStock->product_id)->first();
                 $product->quantity -= $openingStock->quantity;
                 $product->save();
-                
+
                 if ($openingStock->product_variant_id) {
                     $productVariant = ProductVariant::where('id', $variant_id)->first();
                     $productVariant->variant_quantity -= $openingStock->quantity;
@@ -297,15 +344,15 @@ class ProductController extends Controller
 
                 if ($branch_id) {
                     $productBranch = ProductBranch::where('branch_id', $branch_id)
-                    ->where('product_id', $openingStock->product_id)
-                    ->first();
+                        ->where('product_id', $openingStock->product_id)
+                        ->first();
                     $productBranch->product_quantity -= $openingStock->quantity;
                     $productBranch->save();
 
                     if ($openingStock->product_variant_id) {
                         $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                        ->where('product_id', $openingStock->product_id)
-                        ->where('product_variant_id', $openingStock->product_variant_id)->first();
+                            ->where('product_id', $openingStock->product_id)
+                            ->where('product_variant_id', $openingStock->product_variant_id)->first();
                         $productBranchVariant->variant_quantity -= $openingStock->quantity;
                     }
                 } else {
@@ -350,7 +397,7 @@ class ProductController extends Controller
                 $productBranch = ProductBranch::where('branch_id', $branch_id)
                     ->where('product_id', $product_id)
                     ->first();
-                
+
                 if ($productBranch) {
                     $productBranch->product_quantity += (float)$quantities[$index];
                     $productBranch->save();

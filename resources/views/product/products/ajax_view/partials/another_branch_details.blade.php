@@ -11,8 +11,8 @@
     </thead>
     <tbody>
         <!-- Main Branch single product Stock -->
-        @if (!auth()->user()->branch_id)
-            @if (count($product->product_variants) > 0)
+        @if (auth()->user()->branch_id)
+            @if ($product->product_variants)
                 @foreach ($product->product_variants as $product_variant)
                     <tr>
                         <td class="text-start">{{ $product_variant->variant_code }}</td>
@@ -51,42 +51,38 @@
                     <td>{{ $product->mb_total_sale }}</td>
                 </tr>    
             @endif
-        @else 
-            @if (count($won_branch_stocks) > 0)
-                @foreach ($won_branch_stocks as $row)
-                    @if ($row->variant_name)
-                        <tr>
-                            <td class="text-start">{{ $row->variant_code }}</td>
-                            <td class="text-start">{{ $product->name.'-'.$row->variant_name }}</td>
-                            <td class="text-start">{!! $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' !!}</td>
-                            <td class="text-start">{{ $row->variant_quantity.'('.$product->unit->code_name.')' }}</td>
-                            <td class="text-start">
-                                @php
-                                    $currentStockValue = $row->variant_cost_with_tax * $row->variant_quantity;
-                                @endphp
-                                {{ App\Utils\Converter::format_in_bdt($currentStockValue) }}
-                            </td>
-                            <td class="text-start">{{ $row->v_total_sale.'('.$product->unit->code_name.')' }}</td>
-                        </tr>
-                    @else 
-                        <tr>
-                            <td class="text-start">{{ $product->product_code }}</td>
-                            <td class="text-start">{{ $product->name }}</td>
-                            <td class="text-start">{!! $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' !!}</td>
-                            <td class="text-start">{{ $row->product_quantity.'('.$product->unit->code_name.')' }}</td>
-                            <td class="text-start">
-                                @php
-                                    $currentStockValue = $product->product_cost_with_tax * $row->product_quantity;
-                                @endphp
-                                {{ App\Utils\Converter::format_in_bdt($currentStockValue) }}
-                            </td>
-                            <td class="text-start">{{ $row->total_sale.'('.$product->unit->code_name.')' }}</td>
-                        </tr>
-                    @endif
-                @endforeach
-            @else 
-                <tr><th colspan="6" class="text-center">This Product Is Not Available In This Business Location</th></tr>
-            @endif
         @endif
+        
+        @foreach ($another_branch_stocks as $row)
+            @if ($row->variant_name)
+                <tr>
+                    <td class="text-start">{{ $row->variant_code }}</td>
+                    <td class="text-start">{{ $product->name.'-'.$row->variant_name }}</td>
+                    <td class="text-start">{!! $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' !!}</td>
+                    <td class="text-start">{{ $row->variant_quantity.'('.$product->unit->code_name.')' }}</td>
+                    <td class="text-start">
+                        @php
+                            $currentStockValue = $row->variant_cost_with_tax * $row->variant_quantity;
+                        @endphp
+                        {{ App\Utils\Converter::format_in_bdt($currentStockValue) }}
+                    </td>
+                    <td class="text-start">{{ $row->v_total_sale.'('.$product->unit->code_name.')' }}</td>
+                </tr>
+            @else 
+                <tr>
+                    <td class="text-start">{{ $product->product_code }}</td>
+                    <td class="text-start">{{ $product->name }}</td>
+                    <td class="text-start">{!! $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' !!}</td>
+                    <td class="text-start">{{ $row->product_quantity.'('.$product->unit->code_name.')' }}</td>
+                    <td class="text-start">
+                        @php
+                            $currentStockValue = $product->product_cost_with_tax * $row->product_quantity;
+                        @endphp
+                        {{ App\Utils\Converter::format_in_bdt($currentStockValue) }}
+                    </td>
+                    <td class="text-start">{{ $row->total_sale.'('.$product->unit->code_name.')' }}</td>
+                </tr>
+            @endif
+        @endforeach
     </tbody>
 </table>

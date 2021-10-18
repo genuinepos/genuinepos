@@ -964,9 +964,9 @@ body.light-theme {
 
 .light-theme input:checked + .button-group__label {
     background-color: var(--light-color-1);
-    border-bottom-color: #fff;
-    border-top-color: #fff;
-    color: #fff;
+    border-bottom-color: var(--dark-color-2);
+    border-top-color: var(--dark-color-2);
+    color: var(--dark-color-2);
 }
 
 .light-theme .button-group__label {
@@ -974,7 +974,7 @@ body.light-theme {
     border-bottom: 1px solid #fff;
     border-right: 1px solid #fff;
     border-top: 1px solid #fff;
-    color: #fff;
+    color: var(--dark-color-2);
 }
 
 .light-theme

@@ -176,10 +176,10 @@ body.red-theme {
 }
 
 .red-theme input:checked + .button-group__label {
-    background-color: var(--red-color-1);
-    border-bottom-color: #fff;
+    background-color: var(--red-color-2);
+    /* border-bottom-color: #fff;
     border-top-color: #fff;
-    color: #fff;
+    color: #fff; */
 }
 
 .red-theme .button-group__label {
@@ -192,10 +192,6 @@ body.red-theme {
 
 .red-theme .button-group__btn:first-child input:checked + .button-group__label {
     border-left-color: #fff;
-}
-
-.red-theme .button-group__btn:last-child input:checked + .button-group__label {
-    border-right-color: #fff;
 }
 
 .red-theme .form_element {
@@ -442,10 +438,10 @@ body.blue-theme {
 }
 
 .blue-theme input:checked + .button-group__label {
-    background-color: var(--blue-color-1);
-    border-bottom-color: #fff;
+    background-color: var(--blue-color-2);
+    /* border-bottom-color: #fff;
     border-top-color: #fff;
-    color: #fff;
+    color: #fff; */
 }
 
 .blue-theme .button-group__label {
@@ -702,10 +698,10 @@ body.dark-theme {
 }
 
 .dark-theme input:checked + .button-group__label {
-    background-color: var(--dark-color-1);
-    border-bottom-color: #fff;
+    background-color: var(--dark-color-2);
+    /* border-bottom-color: #fff;
     border-top-color: #fff;
-    color: #fff;
+    color: #fff; */
 }
 
 .dark-theme .button-group__label {
@@ -963,10 +959,10 @@ body.light-theme {
 }
 
 .light-theme input:checked + .button-group__label {
-    background-color: var(--light-color-1);
-    border-bottom-color: var(--dark-color-2);
+    background-color: var(--light-color-2);
+    /* border-bottom-color: var(--dark-color-2);
     border-top-color: var(--dark-color-2);
-    color: var(--dark-color-2);
+    color: var(--dark-color-2); */
 }
 
 .light-theme .button-group__label {

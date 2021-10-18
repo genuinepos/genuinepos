@@ -11,7 +11,14 @@
     --dark-color-1: #0d3850;
     --dark-color-2: #0a0b0c;
 
-    --light-color-gradient: linear-gradient(#e1e1e1, #989898);
+    /* --light-color-gradient: linear-gradient(#e1e1e1, #989898); */
+    --light-color-gradient: -webkit-linear-gradient(
+        top,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(141, 141, 141, 0.35) 50%,
+        rgba(148, 149, 150, 0.35) 51%,
+        rgba(66, 66, 66, 0.4) 100%
+    );
     --light-color-1: #c4c4c4;
     --light-color-2: #989898;
 
@@ -216,6 +223,10 @@ body.blue-theme {
     button.btn-default:hover {
     background: var(--blue-color-2);
 }
+
+.blue-theme .all-cat {
+    border: 1px solid #000;
+}
 /* =================Blue theme end=========================  */
 
 /* =================Dark theme =======================  */
@@ -301,6 +312,7 @@ body.dark-theme {
 
 .dark-theme .tbl-head {
     border-bottom: 2px solid #000;
+    background: #98989869;
 }
 
 .dark-theme .data_preloader {
@@ -371,6 +383,15 @@ body.dark-theme {
     .jconfirm-buttons
     button.btn-default:hover {
     background: var(--dark-color-2);
+}
+
+.dark-theme .set-height {
+    background: rgb(213 213 213);
+}
+
+.dark-theme .all-cat {
+    border: 1px solid #000;
+    background: rgb(71, 71, 71);
 }
 
 /* =================Dark theme end =======================  */

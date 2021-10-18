@@ -1,7 +1,7 @@
 :root {
     --red-color-gradient: linear-gradient(#8c0437ee, #1e000d);
     --red-color-1: #7e0d3d;
-    --red-color-2: #5d1b3f;
+    --red-color-2: #3a1026;
 
     --blue-color-gradient: linear-gradient(#036dad 0%, #29b0fd 100%);
     --blue-color-1: #29b0fd;
@@ -63,129 +63,507 @@
 /*================= Color pallete end ===================*/
 
 /* =================Red theme =====================  */
-body.red-theme {
-    background: #eef0f8 !important;
+body.blue-theme {
+    background: var(--light-color-gradient) !important;
 }
 
-.red-theme .pos-body {
-    border: 1px solid #3b1127;
+.blue-theme .pos-body {
+    border: 1px solid var(--blue-color-2);
     background: linear-gradient(#dedede, #444444);
 }
 
-.red-theme .head-pos {
-    border-bottom: 1px solid #3a1026;
+.blue-theme .head-pos {
+    border-bottom: 1px solid var(--blue-color-2);
 }
 
-.red-theme .pos-btn {
+.blue-theme .pos-btn {
     border: 2px solid #fff;
     color: #fff;
 }
 
-.red-theme nav.pos-navigation {
-    background: var(--red-color-gradient);
+.blue-theme nav.pos-navigation {
+    background: var(--blue-color-gradient);
 }
 
-.red-theme .date {
+.blue-theme .date {
     border: 1px solid #fff;
     color: #fff;
 }
 
-.red-theme .left-cat-pos {
-    background: linear-gradient(#dedede, #444444);
+.blue-theme .left-cat-pos {
+    background: var(--light-color-gradient);
     border: 1px solid #6f5a5a !important;
 }
 
-.red-theme .pos-footer {
-    background: var(--red-color-gradient);
+.blue-theme .pos-footer {
+    background: var(--blue-color-gradient);
 }
 
-.red-theme .cat-button {
-    background: linear-gradient(#00aebd, #273245);
+.blue-theme .cat-button {
+    background: var(--blue-color-gradient);
     color: #fff;
 }
 
-.red-theme .cat-button:hover {
-    background: linear-gradient(#273245, #00aebd);
+.blue-theme .cat-button:hover {
+    background: var(--blue-color-gradient);
     color: #fff;
 }
 
-.red-theme .product-inner {
+.blue-theme .product-inner {
     background: #fff;
-    border: 1px solid #46142e;
+    border: 1px solid var(--blue-color-2);
 }
 
-.red-theme .show-product {
-    background: linear-gradient(#dedede, #444444);
-    border: 1px solid #3f1229;
+.blue-theme .show-product {
+    background: var(--light-color-gradient);
+    border: 1px solid var(--blue-color-2);
 }
 
-.red-theme .product {
+.blue-theme .product {
     background: #f7f7f7;
     box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
 }
 
-.red-theme .product-ctn .product-name {
+.blue-theme .product-ctn .product-name {
     color: var(--title-color);
     background: #ddd;
 }
 
-.red-theme .product-name a {
+.blue-theme .product-name a {
     color: #000;
 }
 
-.red-theme .cart-table {
-    border: 1px solid #3d1128;
-    background: linear-gradient(#dedede, #444444);
+.blue-theme .cart-table {
+    border: 1px solid var(--blue-color-2);
+    background: var(--light-color-gradient);
 }
 
-.red-theme .cart-table-inner-pos {
+.blue-theme .cart-table-inner-pos {
     background: #fff;
-    border: 1px solid #43132d;
+    border: 1px solid var(--blue-color-2);
 }
 
-.red-theme .tbl-head {
+.blue-theme .tbl-head {
     border-bottom: 2px solid #000;
 }
 
-.red-theme .data_preloader {
+.blue-theme .data_preloader {
     background: white;
     color: black;
 }
 
-.red-theme .sub-total-input {
-    background: linear-gradient(#00aebd, #273245);
+.blue-theme .sub-total-input {
+    background: var(--blue-color-gradient);
 }
 
-.red-theme .pos-right-inner {
-    border: 1px solid #3d1128;
-    background: linear-gradient(#dedede, #444444);
+.blue-theme .pos-right-inner {
+    border: 1px solid var(--blue-color-2);
+    background: var(--light-color-gradient);
 }
 
-.red-theme .check-out-woaper {
-    background: linear-gradient(#00aebd, #273245);
-    border: 1px solid #43132d;
+.blue-theme .check-out-woaper {
+    background: var(--blue-color-gradient);
+    border: 1px solid var(--blue-color-2);
 }
 
-.red-theme .resent-tn {
+.blue-theme .resent-tn {
     color: #fff;
-    background: #2e30a0;
+    background: var(--blue-color-1);
 }
-/* =================Red theme end=====================  */
 
-/* =================Blue theme==========================  */
-body.blue-theme {
-    background: #eef0f8 !important;
+.blue-theme .modal-header {
+    background: var(--blue-color-gradient);
+    color: #fff;
+}
+
+.blue-theme .modal-body {
+    background: #fff;
+}
+
+.blue-theme .menu-list-area ul li {
+    border: 1px solid lightgray;
+    box-shadow: 1px 1px 3px 1px lightgrey;
+}
+
+.blue-theme .bg-primary {
+    background: var(--blue-color-gradient);
+}
+
+.blue-theme .btn_30_blue a {
+    border: var(--blue-color-2) 1px solid;
+    box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    -moz-box-shadow: 0px 0px 2px rgba(000, 000, 000, 0.8),
+        inset 0 1px 1px -1px #fff;
+    -webkit-box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    text-shadow: 0px -1px 0px rgb(0 0 0 / 50%),
+        0px 1px 0px rgb(255 255 255 / 20%);
+    color: #fff;
+    background: var(--blue-color-gradient);
+}
+
+.blue-theme .jconfirm .jconfirm-box div.jconfirm-title-c {
+    background: var(--blue-color-gradient);
+}
+
+.blue-theme .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
+    background: var(--blue-color-1);
+}
+
+.blue-theme
+    .jconfirm.jconfirm-light
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover {
+    background: var(--blue-color-2);
 }
 /* =================Blue theme end=========================  */
 
 /* =================Dark theme =======================  */
 body.dark-theme {
-    background: #eef0f8 !important;
+    background: var(--light-color-gradient) !important;
 }
+
+.dark-theme .pos-body {
+    border: 1px solid var(--dark-color-2);
+    background: linear-gradient(#dedede, #444444);
+}
+
+.dark-theme .head-pos {
+    border-bottom: 1px solid var(--dark-color-2);
+}
+
+.dark-theme .pos-btn {
+    border: 2px solid #fff;
+    color: #fff;
+}
+
+.dark-theme nav.pos-navigation {
+    background: var(--dark-color-gradient);
+}
+
+.dark-theme .date {
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+.dark-theme .left-cat-pos {
+    background: var(--light-color-gradient);
+    border: 1px solid #6f5a5a !important;
+}
+
+.dark-theme .pos-footer {
+    background: var(--dark-color-gradient);
+}
+
+.dark-theme .cat-button {
+    background: var(--dark-color-gradient);
+    color: #fff;
+}
+
+.dark-theme .cat-button:hover {
+    background: var(--dark-color-gradient);
+    color: #fff;
+}
+
+.dark-theme .product-inner {
+    background: #fff;
+    border: 1px solid var(--dark-color-2);
+}
+
+.dark-theme .show-product {
+    background: var(--light-color-gradient);
+    border: 1px solid var(--dark-color-2);
+}
+
+.dark-theme .product {
+    background: #f7f7f7;
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+}
+
+.dark-theme .product-ctn .product-name {
+    color: var(--title-color);
+    background: #ddd;
+}
+
+.dark-theme .product-name a {
+    color: #000;
+}
+
+.dark-theme .cart-table {
+    border: 1px solid var(--dark-color-2);
+    background: var(--light-color-gradient);
+}
+
+.dark-theme .cart-table-inner-pos {
+    background: #fff;
+    border: 1px solid var(--dark-color-2);
+}
+
+.dark-theme .tbl-head {
+    border-bottom: 2px solid #000;
+}
+
+.dark-theme .data_preloader {
+    background: white;
+    color: black;
+}
+
+.dark-theme .sub-total-input {
+    background: var(--dark-color-gradient);
+}
+
+.dark-theme .pos-right-inner {
+    border: 1px solid var(--dark-color-2);
+    background: var(--light-color-gradient);
+}
+
+.dark-theme .check-out-woaper {
+    background: var(--dark-color-gradient);
+    border: 1px solid var(--dark-color-2);
+}
+
+.dark-theme .resent-tn {
+    color: #fff;
+    background: var(--dark-color-1);
+}
+
+.dark-theme .modal-header {
+    background: var(--dark-color-gradient);
+    color: #fff;
+}
+
+.dark-theme .modal-body {
+    background: #fff;
+}
+
+.dark-theme .menu-list-area ul li {
+    border: 1px solid lightgray;
+    box-shadow: 1px 1px 3px 1px lightgrey;
+}
+
+.dark-theme .bg-primary {
+    background: var(--dark-color-gradient);
+}
+
+.dark-theme .btn_30_blue a {
+    border: var(--dark-color-2) 1px solid;
+    box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    -moz-box-shadow: 0px 0px 2px rgba(000, 000, 000, 0.8),
+        inset 0 1px 1px -1px #fff;
+    -webkit-box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    text-shadow: 0px -1px 0px rgb(0 0 0 / 50%),
+        0px 1px 0px rgb(255 255 255 / 20%);
+    color: #fff;
+    background: var(--dark-color-gradient);
+}
+
+.dark-theme .jconfirm .jconfirm-box div.jconfirm-title-c {
+    background: var(--dark-color-gradient);
+}
+
+.dark-theme .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
+    background: var(--dark-color-1);
+}
+
+.dark-theme
+    .jconfirm.jconfirm-light
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover {
+    background: var(--dark-color-2);
+}
+
 /* =================Dark theme end =======================  */
 
 /* =================Light theme =======================  */
 body.light-theme {
-    background: var(--light-color-1) !important;
+    background: var(--light-color-gradient) !important;
+}
+
+.light-theme .pos-body {
+    border: 1px solid var(--light-color-1);
+    background: var(--light-color-2);
+}
+
+.light-theme .head-pos {
+    border-bottom: 1px solid var(--light-color-2);
+}
+
+.light-theme .pos-btn {
+    border: 2px solid var(--dark-color-1);
+    color: #fff;
+}
+
+.light-theme nav.pos-navigation {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .date {
+    border: 1px solid var(--dark-color-1);
+    color: var(--dark-color-1);
+}
+
+.light-theme .left-cat-pos {
+    background: var(--light-color-gradient);
+    border: 1px solid #6f5a5a !important;
+}
+
+.light-theme .pos-footer {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .cat-button {
+    background: var(--light-color-gradient);
+    color: var(--dark-color-1);
+}
+
+.light-theme .cat-button:hover {
+    background: var(--light-color-gradient);
+    color: var(--dark-color-2);
+}
+
+.light-theme .product-inner {
+    background: #fff;
+    border: 1px solid var(--light-color-2);
+}
+
+.light-theme .show-product {
+    background: var(--light-color-gradient);
+    border: 1px solid var(--light-color-2);
+}
+
+.light-theme .product {
+    background: #f7f7f7;
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+}
+
+.light-theme .product-ctn .product-name {
+    color: var(--title-color);
+    background: #ddd;
+}
+
+.light-theme .product-name a {
+    color: #000;
+}
+
+.light-theme .cart-table {
+    border: 1px solid var(--light-color-2);
+    background: var(--light-color-gradient);
+}
+
+.light-theme .cart-table-inner-pos {
+    background: #fff;
+    border: 1px solid var(--light-color-2);
+}
+
+.light-theme .tbl-head {
+    border-bottom: 2px solid #000;
+}
+
+.light-theme .data_preloader {
+    background: white;
+    color: black;
+}
+
+.light-theme .sub-total-input {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .pos-right-inner {
+    border: 1px solid var(--light-color-2);
+    background: var(--light-color-gradient);
+}
+
+.light-theme .check-out-woaper {
+    background: var(--light-color-gradient);
+    border: 1px solid var(--light-color-2);
+}
+
+.light-theme .resent-tn {
+    color: var(--dark-color-2);
+    background: var(--light-color-1);
+}
+
+.light-theme .modal-header {
+    background: var(--light-color-gradient);
+    color: #fff;
+}
+
+.light-theme .modal-body {
+    background: #fff;
+}
+
+.light-theme .menu-list-area ul li {
+    border: 1px solid lightgray;
+    box-shadow: 1px 1px 3px 1px lightgrey;
+}
+
+.light-theme .bg-primary {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .btn_30_blue a {
+    border: var(--light-color-2) 1px solid;
+    box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    -moz-box-shadow: 0px 0px 2px rgba(000, 000, 000, 0.8),
+        inset 0 1px 1px -1px #fff;
+    -webkit-box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    text-shadow: 0px -1px 0px rgb(0 0 0 / 50%),
+        0px 1px 0px rgb(255 255 255 / 20%);
+    color: var(--dark-color-2);
+    background: var(--light-color-gradient);
+}
+
+.light-theme .jconfirm .jconfirm-box div.jconfirm-title-c {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
+    background: var(--light-color-1);
+    color: var(--dark-color-2);
+}
+
+.light-theme
+    .jconfirm.jconfirm-light
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover {
+    color: var(--dark-color-2);
+}
+
+.light-theme
+    .jconfirm.jconfirm-light
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover {
+    background: var(--light-color-2);
+}
+
+.light-theme p.address-name {
+    color: var(--dark-color-1);
+}
+
+.light-theme p.store-name {
+    color: var(--dark-color-1);
+}
+
+.light-theme small.login-user-name {
+    color: var(--dark-color-1);
+}
+
+.light-theme .date p span {
+    color: var(--red-color-1);
+}
+
+.light-theme .text-white {
+    color: var(--dark-color-2) !important;
+}
+
+.light-theme .modal-title {
+    color: var(--dark-color-2);
+}
+
+.light-theme .jconfirm .jconfirm-box div.jconfirm-title-c .jconfirm-title {
+    color: var(--dark-color-2);
 }
 /* =================Light theme end=======================  */

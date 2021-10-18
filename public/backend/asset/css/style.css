@@ -586,7 +586,8 @@ td {
 }
 
 .details span {
-    font-weight: 700;
+    /* font-weight: 700; */
+    margin-right: 4px;
 }
 
 .addr-t {
@@ -596,6 +597,8 @@ td {
 
 p.details {
     padding: 5px 0;
+    color: white;
+    text-align: center;
 }
 
 .btn-fn {
@@ -641,7 +644,7 @@ a.btn-fn:hover {
     width: 100%;
     height: 100vh;
     background: linear-gradient(
-        -75deg,
+        76deg,
         #41a8c4 0%,
         #1c597e 51%,
         #184e6f 51%,
@@ -657,21 +660,24 @@ a.btn-fn:hover {
 }
 
 .form-head {
-    background: -webkit-linear-gradient(
+    /* background: -webkit-linear-gradient(
         top,
         #34bbde 0%,
         #116bb2 50%,
         #0e5ba7 51%,
         #0a539f 100%
-    );
+    ); */
     padding: 1px;
     border-radius: 3px;
     box-shadow: -1px 0px 10px 1px #0a0a0a52;
+    /* background: #0205203b; */
 }
 
 img.logo {
-    width: 160px;
+    width: 161px;
+    margin: 0 auto;
     display: block;
+    height: auto;
 }
 
 .logo-main-sec {
@@ -679,27 +685,30 @@ img.logo {
     justify-content: center;
     align-items: center;
     padding-bottom: 10px;
+    margin-top: 14px;
 }
 
 .head {
     margin: 5px;
-    border: 1px solid #000;
+    border: 1px solid #0f76b673;
     padding: 12px 5px;
     /* background: #fff; */
-    background-color: #e2dcdc;
+    /* background: #053b8785; */
     border-radius: 3px;
     -webkit-box-shadow: inset 0 0 5px #666;
     box-shadow: inner 0 0 5px #666;
     line-height: 18px;
+    text-align: center;
 }
 
 span.head-text {
     font-size: 11px;
     display: inline-grid;
+    color: white;
 }
 
 .main-form {
-    margin: 20px 0;
+    /* margin: 20px 0; */
 }
 
 .form-title {
@@ -796,7 +805,7 @@ a.forget-pw {
 }
 
 a.forget-pw:hover {
-    color: var(--main-color);
+    color: #cacaca;
 }
 
 .login_opt_link .form-group label {
@@ -811,14 +820,14 @@ a.forget-pw:hover {
     padding: 4px;
     border: 1px solid #777676;
     border-radius: 5px;
-    background: var(--main-grident);
+    background: #0818543d;
 }
 
 .border-div {
     border: 1px solid #5a5757;
     border-radius: 5px;
     padding: 10px;
-    background: linear-gradient(#00aebd, #273245);
+    /* background: linear-gradient(#00aebd, #273245); */
 }
 
 /* ===========================================registar form================ */
@@ -1095,9 +1104,10 @@ span.menu-title-t {
         display: none;
         left: 0px;
         padding: 0;
-        padding-left: 68px;
+        padding-left: 140px;
         overflow-y: scroll;
         padding-bottom: 77px;
+        margin-top: -2px;
     }
     .main__nav_t::-webkit-scrollbar {
         width: 6px;
@@ -1450,3 +1460,21 @@ table.display tbody tr:hover {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
 }
+
+@media (max-width: 1280px) {
+    .menu-list-area ul.list-unstyled {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .menu-list-area ul.list-unstyled {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-list-area ul.list-unstyled {
+        grid-template-columns: repeat(2, 1fr);
+    }
+} ;

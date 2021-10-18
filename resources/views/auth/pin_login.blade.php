@@ -47,11 +47,11 @@
                                         <button type="submit" class="submit-button">Login</button>
                                     </form>
                                     <div class="login_opt_link">
-                                        
+
                                         <a class="forget-pw" href="">
                                             &nbsp; {{ __('Forgot Your Pin Number?') }}
                                         </a>
-                                       
+
                                         {{-- <div class="form-group cx-box">
                                             <input type="checkbox" id="remembar" class="form-control">
                                             <label for="remembar">Remembar me</label>
@@ -74,7 +74,7 @@
                                             </p>
                                             <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>
                                             <p class="details"><span>Support:</span> support@speeddigit.com</p>
-                                            <p class="details"><span>Web Address:</span> www.speeddigit.com</p>
+                                            <p class="details"><span>Website:</span> www.speeddigit.com</p>
 
                                             <div class="function-btn">
                                                 <span class="btn-fn">P</span>

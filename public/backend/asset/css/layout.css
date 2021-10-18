@@ -160,7 +160,8 @@ img.logo__img {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding-top: 6px;
+    padding-top: 3px;
+    padding-bottom: 14px;
 }
 
 .top-menu {
@@ -710,6 +711,17 @@ footer img.logo {
     display: none;
 }
 
+.logo__sec {
+    display: inline-block;
+    float: left;
+    margin-left: 5px;
+}
+
+@media (max-width: 840px) {
+    .branch-name {
+        display: none !important;
+    }
+}
 @media (max-width: 768px) {
     #calculatorModal.modal.show .modal-dialog {
         right: 41%;
@@ -825,7 +837,7 @@ footer img.logo {
     }
     #dashboard-8 .main-woaper {
         width: 100%;
-        margin-left: 0;
+        padding-left: 0;
     }
     #dashboard-8 .navigation {
         z-index: 999;
@@ -844,7 +856,7 @@ footer img.logo {
         width: 82% !important;
     }
     #dashboard-8 .main__nav {
-        margin-top: 0 !important;
+        margin-top: -2px !important;
     }
     #dashboard-8 li.dp__top {
         display: none;
@@ -858,6 +870,13 @@ footer img.logo {
     }
     #dashboard-8 .toggle-leftbar.active {
         margin-top: 65px;
+    }
+}
+
+@media (max-width: 576px) {
+    .sub-menu-width .switch_text {
+        text-align: left;
+        padding-left: 7px;
     }
 }
 
@@ -914,6 +933,9 @@ footer img.logo {
     }
     .menu-list-area ul.list-unstyled {
         grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .sub-menu_t {
+        padding-left: 64px !important;
     }
 }
 @media (max-width: 400px) {

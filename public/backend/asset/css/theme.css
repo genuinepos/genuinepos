@@ -320,6 +320,12 @@ body.red-theme {
     background: var(--red-color-gradient) !important;
 }
 
+.red-theme .modal-header {
+    padding: 4px 12px;
+    background: var(--red-color-gradient);
+    color: #fff;
+}
+
 /* =================Blue theme==========================  */
 body.blue-theme {
     background: #eef0f8 !important;
@@ -575,6 +581,11 @@ body.blue-theme {
     background: var(--blue-color-gradient) !important;
 }
 
+.blue-theme .modal-header {
+    background: var(--blue-color-gradient);
+    color: #fff;
+}
+
 /* =================Dark theme==========================  */
 body.dark-theme {
     background: #eef0f8 !important;
@@ -828,6 +839,11 @@ body.dark-theme {
 
 .dark-theme button.btn.btn-modal-primary {
     background: var(--dark-color-gradient) !important;
+}
+
+.dark-theme .modal-header {
+    background: var(--dark-color-gradient);
+    color: #fff;
 }
 
 /* =================Light theme==========================  */
@@ -1087,4 +1103,9 @@ body.light-theme {
 
 .light-theme button.btn.btn-modal-primary {
     background: var(--light-color-gradient) !important;
+}
+
+.light-theme .modal-header {
+    background: var(--light-color-gradient);
+    color: #fff;
 }

@@ -106,7 +106,7 @@
                         </div>
                     </div>
                     
-                    <div class="row mt-1">
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -139,8 +139,6 @@
                                                 <th>Grand Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Return Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Created By</th>
                                             </tr>
                                         </thead>
@@ -282,8 +280,6 @@
                 {data: 'total_purchase_amount',name: 'total_purchase_amount', className: 'text-end'},
                 {data: 'paid',name: 'paid', className: 'text-end'},
                 {data: 'due',name: 'due', className: 'text-end'},
-                {data: 'purchase_return_amount',name: 'purchase_return_amount', className: 'text-end'},
-                {data: 'purchase_return_due',name: 'purchase_return_due', className: 'text-end'},
                 {data: 'created_by',name: 'created_by.name'},
             ],fnDrawCallback: function() {
                 $('.data_preloader').hide();

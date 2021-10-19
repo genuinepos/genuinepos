@@ -37,9 +37,12 @@
         var quantities = document.querySelectorAll('#quantity');
         var line_totals = document.querySelectorAll('#line_total');
         var total_item = 0;
-        quantities.forEach(function(qty){
-                total_item += 1;
+        var total_qty = 0;
+        quantities.forEach(function(qty) {
+            total_item += 1;
+            total_qty += parseFloat(qty.value)
         });
+        $('#total_qty').val(parseFloat(total_qty));
         $('#total_item').val(parseFloat(total_item));
 
         //Update Net Total Amount 
@@ -1071,10 +1074,10 @@
 
 
         // Get edit able data
-        function getEditablePurchase(){
+    function getEditablePurchase(){
         $('.data_preloader').show();
         $.ajax({
-            url:"{{route('purchases.get.editable.purchase',$purchaseId)}}",
+            url:"{{route('purchases.get.editable.purchase',[$purchaseId,$editType])}}",
             async:true,
             type:'get',
             dataType: 'json',
@@ -1086,7 +1089,13 @@
                 $('#purchase_status').val(purchase.purchase_status);
                 $('#pay').val(purchase.purchase_status);
                 $('#paid').val(purchase.paid);
-                $.each(purchase.purchase_products,function (key, product) {
+                var product_rows = '';
+                if ($.isEmptyObject(purchase.purchase_products)) {
+                    product_rows = purchase.purchase_order_products;
+                }else{
+                    product_rows = purchase.purchase_products;
+                }
+                $.each(product_rows,function (key, product) {
                     var tr = '';
                     tr += '<tr class="text-start">';
                     tr += '<td>';

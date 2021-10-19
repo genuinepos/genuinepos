@@ -9,6 +9,7 @@ use App\Models\AdminAndUser;
 use App\Models\PurchaseReturn;
 use App\Models\SupplierLedger;
 use App\Models\PurchaseProduct;
+use App\Models\PurchaseOrderProduct;
 use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
@@ -30,6 +31,11 @@ class Purchase extends Model
     public function purchase_products()
     {
         return $this->hasMany(PurchaseProduct::class, 'purchase_id');
+    }
+
+    public function purchase_order_products()
+    {
+        return $this->hasMany(PurchaseOrderProduct::class);
     }
     
     public function supplier()

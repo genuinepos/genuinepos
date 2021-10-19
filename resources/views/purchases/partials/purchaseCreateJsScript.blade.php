@@ -94,9 +94,12 @@
         var quantities = document.querySelectorAll('#quantity');
         var line_totals = document.querySelectorAll('#line_total');
         var total_item = 0;
+        var total_qty = 0;
         quantities.forEach(function(qty){
                 total_item += 1;
+                total_qty += parseFloat(qty.value)
         });
+        $('#total_qty').val(parseFloat(total_qty));
         $('#total_item').val(parseFloat(total_item));
 
         //Update Net Total Amount 

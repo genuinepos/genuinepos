@@ -254,6 +254,7 @@
                                         </div>
 
                                         <div class="col-md-3">
+                                            <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4">Total Item:</label>
                                                 <div class="col-8">

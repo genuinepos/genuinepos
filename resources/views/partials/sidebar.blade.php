@@ -354,7 +354,6 @@
                                         </div>
                                     @endif
                                 </div>
-                                <br>
                                 <hr>
 
                                 <div class="row">
@@ -441,7 +440,7 @@
                                         <p class="switch_text">@lang('menu.po_list')</p>
                                     </div>
                                 </div>
-                                <br>
+                                
                                 <hr>
 
                                 <div class="row">
@@ -523,7 +522,7 @@
                                                 <p class="switch_text">@lang('menu.po_list')</p>
                                             </div>
                                         </div>
-                                        <br>
+                                        
                                         <hr>
 
                                         <div class="row">
@@ -604,7 +603,6 @@
                                 @endif
                             @endif
                         </div>
-                        <br>
                         <hr>
                         <div class="row">
 
@@ -630,7 +628,6 @@
                                 @endif
                             @endif
                         </div>
-                        <br>
                         <hr>
                         <div class="row">
                             @if (auth()->user()->permission->sale['sale_draft'] == '1')

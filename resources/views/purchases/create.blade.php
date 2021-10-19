@@ -272,6 +272,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
+                                                <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
                                                 <label for="inputEmail3" class=" col-4"><b>Total Item :</b> </label>
                                                 <div class="col-8">
                                                     <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">

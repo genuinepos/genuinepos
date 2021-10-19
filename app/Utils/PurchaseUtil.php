@@ -5,7 +5,9 @@ namespace App\Utils;
 use App\Models\Product;
 use App\Utils\Converter;
 use App\Models\ProductVariant;
+use App\Models\PurchaseProduct;
 use Illuminate\Support\Facades\DB;
+use App\Models\PurchaseOrderProduct;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseUtil
@@ -102,7 +104,7 @@ class PurchaseUtil
         }
 
         return DataTables::of($purchases)
-            ->addColumn('action', fn ($row) => $this->createAction($row))
+            ->addColumn('action', fn ($row) => $this->createPurchaseAction($row))
             ->editColumn('date', function ($row) use ($generalSettings) {
                 return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
             })->editColumn('invoice_id', function ($row) {
@@ -234,7 +236,7 @@ class PurchaseUtil
         }
 
         return DataTables::of($purchases)
-            ->addColumn('action', fn ($row) => $this->createAction($row))
+            ->addColumn('action', fn ($row) => $this->createPurchaseOrderAction($row))
             ->editColumn('date', function ($row) use ($generalSettings) {
                 return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
             })->editColumn('invoice_id', function ($row) {
@@ -254,8 +256,6 @@ class PurchaseUtil
             ->editColumn('total_purchase_amount', fn ($row) => $this->converter->format_in_bdt($row->total_purchase_amount))
             ->editColumn('paid', fn ($row) => $this->converter->format_in_bdt($row->paid))
             ->editColumn('due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
-            ->editColumn('purchase_return_amount', fn ($row) => $this->converter->format_in_bdt($row->purchase_return_amount))
-            ->editColumn('purchase_return_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
             ->editColumn('status', function ($row) {
                 if ($row->purchase_status == 1) {
                     return '<span class="text-success"><b>Purchased</b></span>';
@@ -279,39 +279,6 @@ class PurchaseUtil
             ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'status', 'created_by'])
             ->make(true);
     }
-
-
-    // private function updateStockForPurchaseStore($request)
-    // {
-    //     $product_ids = $request->product_ids;
-    //     $variant_ids = $request->variant_ids;
-    //     if (isset($request->warehouse_id)) {
-    //         $__index = 0;
-    //         foreach ($product_ids as $productId) {
-    //             // Update warehouse product Stock
-    //             $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
-    //             $this->productStockUtil->adjustWarehouseStock($productId, $variant_id, $request->warehouse_id);
-    //             $__index++;
-    //         }
-    //     } else {
-    //         $__index = 0;
-    //         if (auth()->user()->branch_id) {
-    //             foreach ($product_ids as $productId) {
-    //                 // Update branch product stock
-    //                 $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
-    //                 $this->productStockUtil->adjustBranchStock($productId, $variant_id, auth()->user()->branch_id);
-    //                 $__index++;
-    //             }
-    //         } else {
-    //             $__index = 0;
-    //             foreach ($product_ids as $productId) {
-    //                 $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
-    //                 $this->productStockUtil->adjustMainBranchStock($productId, $variant_id);
-    //                 $__index = 0;
-    //             }
-    //         }
-    //     }
-    // }
 
     public function purchaseProductListTable($request)
     {
@@ -373,6 +340,7 @@ class PurchaseUtil
                 'purchase_products.line_total',
                 'purchase_products.selling_price',
                 'purchases.id',
+                'purchases.branch_id',
                 'purchases.supplier_id',
                 'purchases.date',
                 'purchases.invoice_id',
@@ -395,6 +363,7 @@ class PurchaseUtil
                 'purchase_products.line_total',
                 'purchase_products.selling_price',
                 'purchases.id',
+                'purchases.branch_id',
                 'purchases.supplier_id',
                 'purchases.date',
                 'purchases.invoice_id',
@@ -412,8 +381,10 @@ class PurchaseUtil
         return DataTables::of($purchaseProducts)
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
-                if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
-                    $html .= '<a href="' . route('purchases.product.edit', [$row->purchase_id, $row->product_id, ($row->product_variant_id ? $row->product_variant_id : 'NULL')]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                if (auth()->user()->branch == $row->branch_id) {
+                    if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
+                        $html .= '<a href="' . route('purchases.product.edit', [$row->purchase_id, $row->product_id, ($row->product_variant_id ? $row->product_variant_id : 'NULL')]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    }
                 }
                 $html .= '</div>';
                 return $html;
@@ -445,12 +416,189 @@ class PurchaseUtil
             ->make(true);
     }
 
-    private function createAction($row)
+    public function addPurchaseProduct($request, $isEditProductPrice, $purchaseId)
+    {
+        $product_ids = $request->product_ids;
+        $variant_ids = $request->variant_ids;
+        $quantities = $request->quantities;
+        $unit_names = $request->unit_names;
+        $discounts = $request->unit_discounts;
+        $unit_costs = $request->unit_costs;
+        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
+        $unit_costs_with_discount = $request->unit_costs_with_discount;
+        $subtotal = $request->subtotals;
+        $tax_percents = $request->tax_percents;
+        $unit_taxes = $request->unit_taxes;
+        $net_unit_costs = $request->net_unit_costs;
+        $linetotals = $request->linetotals;
+        $profits = $request->profits;
+        $selling_prices = $request->selling_prices;
+
+        $index = 0;
+        foreach ($product_ids as $productId) {
+            $addPurchaseProduct = new PurchaseProduct();
+            $addPurchaseProduct->purchase_id = $purchaseId;
+            $addPurchaseProduct->product_id = $productId;
+            $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $addPurchaseProduct->quantity = $quantities[$index];
+            $addPurchaseProduct->unit = $unit_names[$index];
+            $addPurchaseProduct->unit_cost = $unit_costs[$index];
+            $addPurchaseProduct->unit_discount = $discounts[$index];
+            $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
+            $addPurchaseProduct->subtotal = $subtotal[$index];
+            $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
+            $addPurchaseProduct->unit_tax = $unit_taxes[$index];
+            $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
+            $addPurchaseProduct->line_total = $linetotals[$index];
+
+            if ($isEditProductPrice == '1') {
+                $addPurchaseProduct->profit_margin = $profits[$index];
+                $addPurchaseProduct->selling_price = $selling_prices[$index];
+            }
+
+            if (isset($request->lot_number)) {
+                $addPurchaseProduct->lot_no = $request->lot_number[$index];
+            }
+
+            $addPurchaseProduct->save();
+            $index++;
+        }
+    }
+
+    public function updatePurchaseProduct($request, $isEditProductPrice, $purchaseId)
+    {
+        $product_ids = $request->product_ids;
+        $variant_ids = $request->variant_ids;
+        $quantities = $request->quantities;
+        $unit_names = $request->unit_names;
+        $discounts = $request->unit_discounts;
+        $unit_costs = $request->unit_costs;
+        $unit_costs_with_discount = $request->unit_costs_with_discount;
+        $subtotal = $request->subtotals;
+        $tax_percents = $request->tax_percents;
+        $unit_taxes = $request->unit_taxes;
+        $net_unit_costs = $request->net_unit_costs;
+        $linetotals = $request->linetotals;
+        $profits = $request->profits;
+        $selling_prices = $request->selling_prices;
+
+        $index = 0;
+        foreach ($product_ids as $productId) {
+            $filterVariantId = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $updatePurchaseProduct = PurchaseProduct::where('purchase_id', $purchaseId)
+                ->where('product_id', $productId)
+                ->where('product_variant_id', $filterVariantId)->first();
+            if ($updatePurchaseProduct) {
+                $updatePurchaseProduct->product_id = $productId;
+                $updatePurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $updatePurchaseProduct->quantity = $quantities[$index];
+                $updatePurchaseProduct->unit = $unit_names[$index];
+                $updatePurchaseProduct->unit_cost = $unit_costs[$index];
+                $updatePurchaseProduct->unit_discount = $discounts[$index];
+                $updatePurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
+                $updatePurchaseProduct->subtotal = $subtotal[$index];
+                $updatePurchaseProduct->unit_tax_percent = $tax_percents[$index];
+                $updatePurchaseProduct->unit_tax = $unit_taxes[$index];
+                $updatePurchaseProduct->net_unit_cost = $net_unit_costs[$index];
+                $updatePurchaseProduct->line_total = $linetotals[$index];
+
+                if ($isEditProductPrice == '1') {
+                    $updatePurchaseProduct->profit_margin = $profits[$index];
+                    $updatePurchaseProduct->selling_price = $selling_prices[$index];
+                }
+
+                if (isset($request->lot_number)) {
+                    $updatePurchaseProduct->lot_no = $request->lot_number[$index];
+                }
+                $updatePurchaseProduct->delete_in_update = 0;
+                $updatePurchaseProduct->save();
+            } else {
+                $addPurchaseProduct = new PurchaseProduct();
+                $addPurchaseProduct->purchase_id = $purchaseId;
+                $addPurchaseProduct->product_id = $productId;
+                $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $addPurchaseProduct->quantity = $quantities[$index];
+                $addPurchaseProduct->unit = $unit_names[$index];
+                $addPurchaseProduct->unit_cost = $unit_costs[$index];
+                $addPurchaseProduct->unit_discount = $discounts[$index];
+                $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
+                $addPurchaseProduct->subtotal = $subtotal[$index];
+                $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
+                $addPurchaseProduct->unit_tax = $unit_taxes[$index];
+                $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
+                $addPurchaseProduct->line_total = $linetotals[$index];
+
+                if ($isEditProductPrice == '1') {
+                    $addPurchaseProduct->profit_margin = $profits[$index];
+                    $addPurchaseProduct->selling_price = $selling_prices[$index];
+                }
+
+                if (isset($request->lot_number)) {
+                    $addPurchaseProduct->lot_no = $request->lot_number[$index];
+                }
+                $addPurchaseProduct->save();
+            }
+            $index++;
+        }
+    }
+
+    public function addPurchaseOrderProduct($request, $isEditProductPrice, $purchaseId)
+    {
+        $product_ids = $request->product_ids;
+        $variant_ids = $request->variant_ids;
+        $quantities = $request->quantities;
+        $unit_names = $request->unit_names;
+        $discounts = $request->unit_discounts;
+        $unit_costs = $request->unit_costs;
+        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
+        $unit_costs_with_discount = $request->unit_costs_with_discount;
+        $subtotal = $request->subtotals;
+        $tax_percents = $request->tax_percents;
+        $unit_taxes = $request->unit_taxes;
+        $net_unit_costs = $request->net_unit_costs;
+        $linetotals = $request->linetotals;
+        $profits = $request->profits;
+        $selling_prices = $request->selling_prices;
+
+        $index = 0;
+        foreach ($product_ids as $productId) {
+            $addPurchaseProduct = new PurchaseOrderProduct();
+            $addPurchaseProduct->purchase_id = $purchaseId;
+            $addPurchaseProduct->product_id = $productId;
+            $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $addPurchaseProduct->order_quantity = $quantities[$index];
+            $addPurchaseProduct->pending_quantity = $quantities[$index];
+            $addPurchaseProduct->unit = $unit_names[$index];
+            $addPurchaseProduct->unit_cost = $unit_costs[$index];
+            $addPurchaseProduct->unit_discount = $discounts[$index];
+            $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
+            $addPurchaseProduct->subtotal = $subtotal[$index];
+            $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
+            $addPurchaseProduct->unit_tax = $unit_taxes[$index];
+            $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
+            $addPurchaseProduct->line_total = $linetotals[$index];
+
+            if ($isEditProductPrice == '1') {
+                $addPurchaseProduct->profit_margin = $profits[$index];
+                $addPurchaseProduct->selling_price = $selling_prices[$index];
+            }
+
+            if (isset($request->lot_number)) {
+                $addPurchaseProduct->lot_no = $request->lot_number[$index];
+            }
+
+            $addPurchaseProduct->save();
+            $index++;
+        }
+    }
+
+    private function createPurchaseAction($row)
     {
         $html = '<div class="btn-group" role="group">';
         $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
         $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+
         $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
         if (auth()->user()->branch_id == $row->branch_id) {
@@ -467,7 +615,7 @@ class PurchaseUtil
             }
 
             if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
-                $html .= '<a class="dropdown-item" href="' . route('purchases.edit', $row->id) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
             }
 
             if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
@@ -475,14 +623,46 @@ class PurchaseUtil
             }
 
             if (auth()->user()->permission->purchase['purchase_return'] == '1') {
-                if ($row->purchase_status == 1) {
-                    $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
-                }
+                $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
             }
             $html .= '<a class="dropdown-item" id="change_status" href="' . route('purchases.change.status.modal', $row->id) . '"><i class="far fa-edit text-primary"></i> Update Status</a>';
         }
 
         $html .= '<a class="dropdown-item" id="items_notification" href=""><i class="fas fa-envelope text-primary"></i> Items Received Notification</a>';
+        $html .= '</div>';
+        $html .= '</div>';
+        return $html;
+    }
+
+    private function createPurchaseOrderAction($row)
+    {
+        $html = '<div class="btn-group" role="group">';
+        $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+        $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item details_button" href="' . route('purchases.show.order', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+        if (auth()->user()->branch_id == $row->branch_id) {
+            $html .= '<a class="dropdown-item" href="' . route('purchases.po.receive.process', [$row->id]) . '"><i class="fas fa-check-double text-primary"></i> Process To Receive</a>';
+        }
+        $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
+
+        if (auth()->user()->branch_id == $row->branch_id) {
+            if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
+                if ($row->due > 0) {
+                    $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                }
+
+                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+            }
+
+            if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
+                $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
+            }
+
+            if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
+                $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+            }
+        }
+
         $html .= '</div>';
         $html .= '</div>';
         return $html;

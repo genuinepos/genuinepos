@@ -113,6 +113,22 @@ class PurchaseController extends Controller
         return view('purchases.ajax_view.purchase_details_modal', compact('purchase'));
     }
 
+    public function showOrder($purchaseId)
+    {
+        $purchase = Purchase::with([
+            'warehouse',
+            'branch',
+            'supplier',
+            'admin',
+            'purchase_order_products',
+            'purchase_products.product',
+            'purchase_products.product.warranty',
+            'purchase_products.variant',
+            'purchase_payments',
+        ])->where('id', $purchaseId)->first();
+        return view('purchases.ajax_view.order_details', compact('purchase'));
+    }
+
     public function create()
     {
         if (auth()->user()->permission->purchase['purchase_add'] == '0') {
@@ -144,16 +160,8 @@ class PurchaseController extends Controller
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
         $quantities = $request->quantities;
-        $unit_names = $request->unit_names;
-        $discounts = $request->unit_discounts;
-        $unit_costs = $request->unit_costs;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
         $unit_costs_with_discount = $request->unit_costs_with_discount;
-        $subtotal = $request->subtotals;
-        $tax_percents = $request->tax_percents;
-        $unit_taxes = $request->unit_taxes;
         $net_unit_costs = $request->net_unit_costs;
-        $linetotals = $request->linetotals;
         $profits = $request->profits;
         $selling_prices = $request->selling_prices;
 
@@ -203,6 +211,8 @@ class PurchaseController extends Controller
         $addPurchase->purchase_note = $request->purchase_note;
         $addPurchase->purchase_status = $request->purchase_status;
         $addPurchase->is_purchased = $request->purchase_status == 1 ? 1 : 0;
+        $addPurchase->po_qty = $request->purchase_status == 1 ? $request->total_qty : 0;
+        $addPurchase->po_pending_qty = $request->purchase_status == 1 ? $request->total_qty : 0;
         $addPurchase->date = $request->date;
         $addPurchase->report_date = date('Y-m-d', strtotime($request->date));
         $addPurchase->time = date('h:i:s a');
@@ -218,37 +228,13 @@ class PurchaseController extends Controller
         }
         $addPurchase->save();
 
-        // add purchase product
-        $index = 0;
-        foreach ($product_ids as $productId) {
-            $addPurchaseProduct = new PurchaseProduct();
-            $addPurchaseProduct->purchase_id = $addPurchase->id;
-            $addPurchaseProduct->product_id = $productId;
-            $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $addPurchaseProduct->quantity = $quantities[$index];
-            $addPurchaseProduct->unit = $unit_names[$index];
-            $addPurchaseProduct->unit_cost = $unit_costs[$index];
-            $addPurchaseProduct->unit_discount = $discounts[$index];
-            $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
-            $addPurchaseProduct->subtotal = $subtotal[$index];
-            $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
-            $addPurchaseProduct->unit_tax = $unit_taxes[$index];
-            $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
-            $addPurchaseProduct->line_total = $linetotals[$index];
-
-            if ($isEditProductPrice == '1') {
-                $addPurchaseProduct->profit_margin = $profits[$index];
-                $addPurchaseProduct->selling_price = $selling_prices[$index];
-            }
-
-            if (isset($request->lot_number)) {
-                $addPurchaseProduct->lot_no = $request->lot_number[$index];
-            }
-
-            $addPurchaseProduct->save();
-            $index++;
+        // add purchase or purchase order product
+        if ($request->purchase_status == 1) {
+            $this->purchaseUtil->addPurchaseProduct($request, $isEditProductPrice, $addPurchase->id);
+        }else {
+            $this->purchaseUtil->addPurchaseOrderProduct($request, $isEditProductPrice, $addPurchase->id);
         }
-
+        
         // Add supplier ledger
         $addSupplierLedger = new SupplierLedger();
         $addSupplierLedger->supplier_id = $request->supplier_id;
@@ -363,15 +349,8 @@ class PurchaseController extends Controller
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
         $quantities = $request->quantities;
-        $unit_names = $request->unit_names;
-        $discounts = $request->unit_discounts;
-        $unit_costs = $request->unit_costs;
         $unit_costs_with_discount = $request->unit_costs_with_discount;
-        $subtotal = $request->subtotals;
-        $tax_percents = $request->tax_percents;
-        $unit_taxes = $request->unit_taxes;
         $net_unit_costs = $request->net_unit_costs;
-        $linetotals = $request->linetotals;
         $profits = $request->profits;
         $selling_prices = $request->selling_prices;
 
@@ -468,66 +447,10 @@ class PurchaseController extends Controller
             $loop++;
         }
 
-        // add purchase product
-        $index = 0;
-        foreach ($product_ids as $productId) {
-            $filterVariantId = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $updatePurchaseProduct = PurchaseProduct::where('purchase_id', $updatePurchase->id)->where('product_id', $productId)->where('product_variant_id', $filterVariantId)->first();
-            if ($updatePurchaseProduct) {
-                $updatePurchaseProduct->product_id = $productId;
-                $updatePurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-                $updatePurchaseProduct->quantity = $quantities[$index];
-                $updatePurchaseProduct->unit = $unit_names[$index];
-                $updatePurchaseProduct->unit_cost = $unit_costs[$index];
-                $updatePurchaseProduct->unit_discount = $discounts[$index];
-                $updatePurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
-                $updatePurchaseProduct->subtotal = $subtotal[$index];
-                $updatePurchaseProduct->unit_tax_percent = $tax_percents[$index];
-                $updatePurchaseProduct->unit_tax = $unit_taxes[$index];
-                $updatePurchaseProduct->net_unit_cost = $net_unit_costs[$index];
-                $updatePurchaseProduct->line_total = $linetotals[$index];
-
-                if ($isEditProductPrice == '1') {
-                    $updatePurchaseProduct->profit_margin = $profits[$index];
-                    $updatePurchaseProduct->selling_price = $selling_prices[$index];
-                }
-
-                if (isset($request->lot_number)) {
-                    $updatePurchaseProduct->lot_no = $request->lot_number[$index];
-                }
-                $updatePurchaseProduct->delete_in_update = 0;
-                $updatePurchaseProduct->save();
-            } else {
-                $addPurchaseProduct = new PurchaseProduct();
-                $addPurchaseProduct->purchase_id = $updatePurchase->id;
-                $addPurchaseProduct->product_id = $productId;
-                $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-                $addPurchaseProduct->quantity = $quantities[$index];
-                $addPurchaseProduct->unit = $unit_names[$index];
-                $addPurchaseProduct->unit_cost = $unit_costs[$index];
-                $addPurchaseProduct->unit_discount = $discounts[$index];
-                $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
-                $addPurchaseProduct->subtotal = $subtotal[$index];
-                $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
-                $addPurchaseProduct->unit_tax = $unit_taxes[$index];
-                $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
-                $addPurchaseProduct->line_total = $linetotals[$index];
-
-                if ($isEditProductPrice == '1') {
-                    $addPurchaseProduct->profit_margin = $profits[$index];
-                    $addPurchaseProduct->selling_price = $selling_prices[$index];
-                }
-
-                if (isset($request->lot_number)) {
-                    $addPurchaseProduct->lot_no = $request->lot_number[$index];
-                }
-                $addPurchaseProduct->save();
-            }
-            $index++;
-        }
-
+        $this->purchaseUtil->updatePurchaseProduct($request, $isEditProductPrice, $updatePurchase->id);
+       
         // deleted not getting previous product
-        $deletedPurchaseProducts = PurchaseProduct::where('purchase_id', $request->id)->where('delete_in_update', 1)->get();
+        $deletedPurchaseProducts = PurchaseProduct::where('purchase_id', $updatePurchase->id)->where('delete_in_update', 1)->get();
         if (count($deletedPurchaseProducts) > 0) {
             foreach ($deletedPurchaseProducts as $deletedPurchaseProduct) {
                 $storedProductId = $deletedPurchaseProduct->product_id;
@@ -573,25 +496,25 @@ class PurchaseController extends Controller
     }
 
     // Product edit view
-    public function edit($purchaseId)
+    public function edit($purchaseId, $editType)
     {
         $purchaseId = $purchaseId;
+        $editType = $editType;
         $warehouses = DB::table('warehouses')->get();
         $purchase = DB::table('purchases')->where('id', $purchaseId)->select('id', 'warehouse_id', 'date')->first();
-        return view('purchases.edit', compact('purchaseId', 'warehouses', 'purchase'));
+        return view('purchases.edit', compact('purchaseId', 'warehouses', 'purchase', 'editType'));
     }
 
     // Get editable purchase
-    public function editablePurchase($purchaseId)
+    public function editablePurchase($purchaseId, $editType)
     {
-        $purchase = Purchase::with([
-            'warehouse',
-            'supplier',
-            'purchase_products',
-            'purchase_products.product',
-            'purchase_products.variant'
-        ])->where('id', $purchaseId)->first();
-        return response()->json($purchase);
+        if ($editType == 'purchased') {
+            $purchase = Purchase::with(['warehouse','supplier','purchase_products','purchase_products.product','purchase_products.variant'])->where('id', $purchaseId)->first();
+            return response()->json($purchase);
+        }else {
+            $purchase = Purchase::with(['warehouse','supplier','purchase_order_products','purchase_order_products.product','purchase_order_products.variant'])->where('id', $purchaseId)->first();
+            return response()->json($purchase);
+        }
     }
 
     public function editPurchasedProduct($purchaseId, $productId, $variantId)
@@ -640,32 +563,10 @@ class PurchaseController extends Controller
             $SupplierProduct->label_qty += (float)$request->quantity;
             $SupplierProduct->save();
         }
-        // update product and variant quantity for adjustment End
 
-        // update product and variant quantity
+        // update product and variant price
         if ($updatePurchase->is_last_created == 1) {
-            $updateProductQty = Product::where('id', $request->product_id)->first();
-            if ($updateProductQty->is_variant == 0) {
-                $updateProductQty->product_cost = $request->unit_cost_with_discount;
-                $updateProductQty->product_cost_with_tax = $request->net_unit_cost;
-                if ($isEditProductPrice == '1') {
-                    $updateProductQty->profit = $request->profit;
-                    $updateProductQty->product_price = $request->selling_price;
-                }
-            }
-            $updateProductQty->save();
-
-            if ($variantId != NULL) {
-                $updateVariantQty = ProductVariant::where('id', $variantId)->where('product_id', $request->product_id)->first();
-                $updateVariantQty->variant_cost = $request->unit_cost_with_discount;
-                $updateVariantQty->variant_cost_with_tax = $request->net_unit_cost;
-                if ($isEditProductPrice == '1') {
-                    $updateVariantQty->variant_profit = $request->profit;
-                    $updateProductQty->variant_price = $request->selling_price;
-                }
-
-                $updateVariantQty->save();
-            }
+            $this->purchaseUtil->updateProductAndVariantPrice($request->product_id, $variantId, $request->unit_cost_with_discount, $request->net_unit_cost, $request->profit, $request->selling_price, $isEditProductPrice);
         }
 
         $updatePurchaseProduct->product_id = $request->product_id;
@@ -856,19 +757,12 @@ class PurchaseController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
         $purchase = Purchase::where('id', $purchaseId)->first();
-        // generate invoice ID
-        $i = 5;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
-
+   
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
-        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPR') . date('ymd') . $invoiceId;
+        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPR') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
         $addPurchasePayment->purchase_id = $purchase->id;
+        $addPurchasePayment->is_advanced = $purchase->is_purchased == 0 ? 1 : 0;
         $addPurchasePayment->account_id = $request->account_id;
         $addPurchasePayment->pay_mode = $request->payment_method;
         $addPurchasePayment->paid_amount = $request->amount;
@@ -1063,18 +957,9 @@ class PurchaseController extends Controller
             $purchase->purchase_return->save();
         }
 
-        // generate invoice ID
-        $i = 5;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
-
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
-        $addPurchasePayment->invoice_id = 'PRP' . date('dmy') . $invoiceId;
+        $addPurchasePayment->invoice_id = 'PRP' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
         $addPurchasePayment->purchase_id = $purchase->id;
         $addPurchasePayment->account_id = $request->account_id;
         $addPurchasePayment->pay_mode = $request->payment_method;

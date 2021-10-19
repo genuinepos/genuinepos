@@ -2,14 +2,17 @@
 
 namespace App\Utils;
 
+use App\Models\Product;
 use App\Utils\Converter;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseUtil
 {
     public $converter;
-    public function __construct(Converter $converter) {
+    public function __construct(Converter $converter)
+    {
         $this->converter = $converter;
     }
 
@@ -127,7 +130,7 @@ class PurchaseUtil
                 } elseif ($row->purchase_status == 2) {
                     return '<span class="text-secondary"><b>Pending</b></span>';
                 } elseif ($row->purchase_status == 3) {
-                    return '<span class="text-primary"><b>Ordered</b></span>';
+                    return '<span class="text-primary"><b>Purchased By Order</b></span>';
                 }
             })->editColumn('payment_status', function ($row) {
                 $payable = $row->total_purchase_amount - $row->purchase_return_amount;
@@ -322,8 +325,7 @@ class PurchaseUtil
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
-            ;
+            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id');
 
         if ($request->product_id) {
             $query->where('purchase_products.product_id', $request->product_id);
@@ -381,7 +383,7 @@ class PurchaseUtil
                 'product_variants.variant_code',
                 'product_variants.variant_price',
                 'suppliers.name as supplier_name'
-            )->orderBy('purchases.report_date', 'desc');
+            )->where('purchases.is_purchased', 1)->orderBy('purchases.report_date', 'desc');
         } else {
             $purchaseProducts = $query->select(
                 'purchase_products.purchase_id',
@@ -403,7 +405,8 @@ class PurchaseUtil
                 'product_variants.variant_code',
                 'product_variants.variant_price',
                 'suppliers.name as supplier_name'
-            )->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchases.report_date', 'desc');
+            )->where('purchases.is_purchased', 1)
+                ->where('purchases.branch_id', auth()->user()->branch_id)->orderBy('purchases.report_date', 'desc');
         }
 
         return DataTables::of($purchaseProducts)
@@ -485,28 +488,57 @@ class PurchaseUtil
         return $html;
     }
 
+    public function updateProductAndVariantPrice($productId, $variant_id, $unit_cost_with_discount, $net_unit_cost, $profit, $selling_price, $isEditProductPrice)
+    {
+        $updateProduct = Product::where('id', $productId)->first();
+        $updateProduct->is_purchased = 1;
+        if ($updateProduct->is_variant == 0) {
+            $updateProduct->product_cost = $unit_cost_with_discount;
+            $updateProduct->product_cost_with_tax = $net_unit_cost;
+            if ($isEditProductPrice == '1') {
+                $updateProduct->profit = $profit;
+                $updateProduct->product_price = $selling_price;
+            }
+        }
+        $updateProduct->save();
+
+        if ($variant_id != NULL) {
+            $updateVariant = ProductVariant::where('id', $variant_id)
+                ->where('product_id', $productId)
+                ->first();
+            $updateVariant->variant_cost = $unit_cost_with_discount;
+            $updateVariant->variant_cost_with_tax = $net_unit_cost;
+            if ($isEditProductPrice == '1') {
+                $updateVariant->variant_profit = $profit;
+                $updateVariant->variant_price = $selling_price;
+            }
+            $updateVariant->is_purchased = 1;
+            $updateVariant->save();
+        }
+    }
+
     public function adjustPurchaseInvoiceAmounts($purchase)
     {
         $totalPurchasePaid = DB::table('purchase_payments')
-        ->where('purchase_payments.purchase_id', $purchase->id)->where('payment_type', 1)
-        ->select(DB::raw('sum(paid_amount) as total_paid'))
-        ->groupBy('purchase_payments.purchase_id')
-        ->get();
+            ->where('purchase_payments.purchase_id', $purchase->id)->where('payment_type', 1)
+            ->select(DB::raw('sum(paid_amount) as total_paid'))
+            ->groupBy('purchase_payments.purchase_id')
+            ->get();
 
         $totalReturnPaid = DB::table('purchase_payments')
-        ->where('purchase_payments.purchase_id', $purchase->id)->where('payment_type', 2)
-        ->select(DB::raw('sum(paid_amount) as total_paid'))
-        ->groupBy('purchase_payments.purchase_id')
-        ->get();
+            ->where('purchase_payments.purchase_id', $purchase->id)->where('payment_type', 2)
+            ->select(DB::raw('sum(paid_amount) as total_paid'))
+            ->groupBy('purchase_payments.purchase_id')
+            ->get();
 
         $return = DB::table('purchase_returns')->where('purchase_id', $purchase->id)->first();
         $returnAmount = $return ? $return->total_return_amount : 0;
 
-        $due = $purchase->total_purchase_amount - $totalPurchasePaid->sum('total_paid') - $returnAmount + $totalReturnPaid->sum('total_paid')  ;
+        $due = $purchase->total_purchase_amount - $totalPurchasePaid->sum('total_paid') - $returnAmount + $totalReturnPaid->sum('total_paid');
 
-        $returnDue = $returnAmount 
-                    - ($purchase->total_purchase_amount - $totalPurchasePaid->sum('total_paid'))
-                    - $totalReturnPaid->sum('total_paid');
+        $returnDue = $returnAmount
+            - ($purchase->total_purchase_amount - $totalPurchasePaid->sum('total_paid'))
+            - $totalReturnPaid->sum('total_paid');
 
         $purchase->paid = $totalPurchasePaid->sum('total_paid');
         $purchase->due = $due;

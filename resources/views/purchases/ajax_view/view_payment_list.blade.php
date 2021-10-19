@@ -95,13 +95,13 @@
         <table class="display data_tbl data__table table-striped">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Voucher No</th>
-                    <th>Amount</th>
-                    <th>Method</th>
-                    <th>Type</th>
-                    <th>Account</th>
-                    <th>Action</th>
+                    <th class="text-start">Date</th>
+                    <th class="text-start">Voucher No</th>
+                    <th class="text-start">Method</th>
+                    <th class="text-start">Type</th>
+                    <th class="text-start">Account</th>
+                    <th class="text-end">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-start">Action</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
@@ -110,21 +110,18 @@
                         <tr data-info="{{ $payment }}">
                             <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
                             <td>{{ $payment->invoice_id }}</td>
-                            <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
-                            </td>
                             <td>{{ $payment->pay_mode }}</td>
                             <td>
-                                @if ($purchase->purchase_status == 3)
-                                    @if($payment->payment_type == 1)
-                                        PO Advance Payment
-                                    @else
-                                        Return Payment
-                                    @endif
+                                @if ($payment->is_advanced == 1)
+                                    <b>PO Advance Payment</b>
                                 @else 
-                                    {{ $payment->payment_type == 1 ? 'Purchase due' : 'Return due' }}
+                                    {{ $payment->payment_type == 1 ? 'Purchase Due Payment' : 'Return Due Payment' }}
                                 @endif
                             </td>
-                            <td>{{ $payment->account ? $payment->account->name : '....' }}</td>
+                            <td>{{ $payment->account ? $payment->account->name.' (A/C:'.$payment->account->account_number.')' : '....' }}</td>
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
+                            </td>
                             <td>
                                 @if ($payment->payment_type == 1)
                                     <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>

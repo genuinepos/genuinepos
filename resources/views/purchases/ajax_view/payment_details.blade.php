@@ -34,14 +34,10 @@
 
     <div class="reference_area pt-3">
         <h6 class="text-navy-blue"><b>Title :</b>
-            @if ($payment->purchase->purchase_status == 3)
-                @if($payment->payment_type == 1)
-                    PO Advance Payment
-                @else
-                    Return Payment
-                @endif
+            @if ($payment->is_advanced == 1)
+                <b>PO Advance Payment</b>
             @else 
-                {{ $payment->payment_type == 1 ? 'Purchase due' : 'Return due' }}
+                {{ $payment->payment_type == 1 ? 'Purchase Due Payment' : 'Return Due Payment' }}
             @endif
         </h6>
         <h6 class="text-navy-blue"><b>P.Invoice ID :</b> {{ $payment->purchase->invoice_id }}</h6>
@@ -57,7 +53,7 @@
                             <th class="text-start" width="50%">Paid Amount :</th>
                             <td width="50%">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $payment->paid_amount }}
+                                {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
                         </tr>
 

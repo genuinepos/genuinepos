@@ -142,10 +142,12 @@
                                         <tr class="bg-primary text-white">
                                             <th>Date</th>
                                             <th>Voucher No</th>
-                                            <th>Amount</th>
                                             <th>Method</th>
                                             <th>Type</th>
                                             <th>Account</th>
+                                            <th>
+                                                Amount({{ json_decode($generalSettings->business, true)['currency'] }})
+                                            </th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -155,20 +157,18 @@
                                                <tr data-info="{{ $payment }}">
                                                    <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
                                                    <td>{{ $payment->invoice_id }}</td>
-                                                   <td>{{json_decode($generalSettings->business, true)['currency'] .' '. $payment->paid_amount }}</td>
                                                    <td>{{ $payment->pay_mode }}</td>
                                                    <td>
-                                                        @if ($purchase->purchase_status == 3)
-                                                            @if($payment->payment_type == 1)
-                                                                PO Advance Payment
-                                                            @else
-                                                                Return Payment
-                                                            @endif
+                                                        @if ($payment->is_advanced == 1)
+                                                            <b>PO Advance Payment</b>
                                                         @else 
-                                                            {{ $payment->payment_type == 1 ? 'Purchase due' : 'Return due' }}
+                                                            {{ $payment->payment_type == 1 ? 'Purchase Due Payment' : 'Return Due Payment' }}
                                                         @endif
                                                     </td>
-                                                    <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
+                                                    <td>
+                                                        {{ $payment->account ? $payment->account->name.' (A/C'.$payment->account->account_number.')' : 'N/A' }}
+                                                    </td>
+                                                    <td>{{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}</td>
                                                     <td>
                                                        @if (auth()->user()->branch_id == $purchase->branch_id)
                                                            @if ($payment->payment_type == 1)
@@ -199,8 +199,9 @@
                             <table class="table modal-table table-sm">
                                 <tr>
                                     <th class="text-start">Net Total Amount</th>
-                                    <td class="text-start"> <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
-                                           {{ $purchase->net_total_amount }} 
+                                    <td class="text-start"> 
+                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }} 
                                    </td>
                                 </tr>
                                 <tr>
@@ -220,14 +221,14 @@
                                 <tr>
                                     <th class="text-start">Shipment Charge</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
-                                           {{ $purchase->shipment_charge }}
+                                           {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                    </td>
                                 </tr>
    
                                 <tr>
                                     <th class="text-start">Purchase Total</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                           {{ $purchase->total_purchase_amount }}
+                                           {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                                    </td>
                                 </tr>
                             </table>

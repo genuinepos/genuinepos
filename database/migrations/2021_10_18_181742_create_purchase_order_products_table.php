@@ -33,7 +33,6 @@ class CreatePurchaseOrderProductsTable extends Migration
             $table->decimal('line_total', 22, 2)->default(0.00);
             $table->decimal('profit_margin', 22, 2)->default(0.00);
             $table->decimal('selling_price', 22, 2)->default(0.00);
-            $table->boolean('is_received')->default(0);
             $table->string('lot_no')->nullable();
             $table->boolean('delete_in_update')->default(0);
             $table->timestamps();

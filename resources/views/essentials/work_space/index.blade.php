@@ -27,7 +27,7 @@
                                                 <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large text-primary"></i> <b>Work Spaces</b></a>
                                             </li>
                                         @endif
-                                        
+
                                         <li>
                                             <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>Todo</b></a>
                                         </li>
@@ -80,7 +80,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-3">
                                                     <label><strong>Priority : </strong></label>
                                                     <select name="priority"
@@ -126,7 +126,7 @@
                     </div>
                     <!-- =========================================top section button=================== -->
 
-                    <div class="row mt-1">
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
@@ -318,7 +318,7 @@
         "processing": true,
         "serverSide": true,
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -355,7 +355,7 @@
         table.ajax.reload();
     });
 
-    //Submit filter form by date-range field blur 
+    //Submit filter form by date-range field blur
     $(document).on('blur', '.submit_able_input', function () {
         setTimeout(function() {
             table.ajax.reload();
@@ -369,7 +369,7 @@
             $('.submit_able_input').blur();
         }, 1000);
     });
-    
+
     // //Show payment view modal with data
     $(document).on('click', '#view', function (e) {
         e.preventDefault();
@@ -379,7 +379,7 @@
         //     url:url,
         //     type:'get',
         //     success:function(date){
-            
+
         //     }
         // });
     });
@@ -400,7 +400,7 @@
     });
 
 
-    // Show add payment modal with date 
+    // Show add payment modal with date
     $(document).on('click', '#edit', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
@@ -430,14 +430,14 @@
             processData: false,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else{
                     $('#add_work_space_form')[0].reset();
                     $(".select2").select2().val('').trigger('change');
                     $('.loading_button').hide();
                     $('.modal').modal('hide');
-                    toastr.success(data); 
+                    toastr.success(data);
                     table.ajax.reload();
                 }
             }
@@ -458,12 +458,12 @@
             processData: false,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else{
                     $('.loading_button').hide();
                     $('.modal').modal('hide');
-                    toastr.success(data); 
+                    toastr.success(data);
                     table.ajax.reload();
                 }
             }
@@ -473,7 +473,7 @@
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
+        $('#deleted_form').attr('action', url);
         $.confirm({
             'title': 'Delete Confirmation',
             'message': 'Are you sure?',
@@ -504,7 +504,7 @@
         e.preventDefault();
         var url = $(this).attr('href');
         var tr = $(this).closest('tr');
-        $('#deleted_doc_form').attr('action', url);           
+        $('#deleted_doc_form').attr('action', url);
         $.confirm({
             'title': 'Delete Confirmation',
             'message': 'Are you sure?',
@@ -559,7 +559,7 @@
     $(document).on('click', '.cancelBtn ', function () {
         $('.daterange').val('');
     });
-    
+
     $('.select2').select2();
     $('[data-magnify=gallery]').magnify();
 

@@ -38,15 +38,15 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-3">
                                                     <label><strong>Asset Type :</strong></label>
                                                     <select name="type_id" class="form-control submit_able" id="filter_type_id" autofocus>
-                                               
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -56,7 +56,7 @@
                             </div>
                         </div>
 
-                        <div class="row mt-1">
+                        <div class="row px-3 mt-1">
                             <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
                             <div class="card">
                                 <div class="card-body">
@@ -138,8 +138,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>  
-                            </div>  
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -205,7 +205,7 @@
                 </div>
                 <div class="modal-body" id="edit_asset_type_modal_body">
                     <!--begin::Form-->
-                    
+
                 </div>
             </div>
         </div>
@@ -326,7 +326,7 @@
 <script>
     var asset_type_table = $('.asset_type_table').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'pdf',text: 'Pdf', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: 'Print', messageTop: '<b>Asset types</b>', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -416,9 +416,9 @@
     });
 
     $(document).on('click', '#delete_type',function(e){
-        e.preventDefault(); 
+        e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_asset_type_form').attr('action', url);       
+        $('#deleted_asset_type_form').attr('action', url);
         $.confirm({
             'title': 'Delete Confirmation',
             'content': 'Are you sure?',
@@ -469,7 +469,7 @@
 <script>
     var asset_table = $('.asset_table').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -572,9 +572,9 @@
     });
 
     $(document).on('click', '#delete_asset',function(e){
-        e.preventDefault(); 
+        e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_asset_form').attr('action', url);       
+        $('#deleted_asset_form').attr('action', url);
         $.confirm({
             'title': 'Delete Confirmation',
             'content': 'Are you sure?',
@@ -606,7 +606,7 @@
     function calculateAddAssetValue() {
         var asset_qty = $('#quantity').val() ? $('#quantity').val() : 0;
         var per_unit_value = $('#per_unit_value').val() ? $('#per_unit_value').val() : 0;
-        var total_value = parseFloat(asset_qty) * parseFloat(per_unit_value); 
+        var total_value = parseFloat(asset_qty) * parseFloat(per_unit_value);
         $('#total_value').val(parseFloat(total_value).toFixed(2))
     }
 
@@ -621,7 +621,7 @@
     function calculateEditAssetValue() {
         var asset_qty = $('#e_quantity').val() ? $('#e_quantity').val() : 0;
         var per_unit_value = $('#e_per_unit_value').val() ? $('#e_per_unit_value').val() : 0;
-        var total_value = parseFloat(asset_qty) * parseFloat(per_unit_value); 
+        var total_value = parseFloat(asset_qty) * parseFloat(per_unit_value);
         $('#e_total_value').val(parseFloat(total_value).toFixed(2))
     }
 

@@ -15,14 +15,24 @@
     @stack('stylesheets')
 
 </head>
+<body id="dashboard-8" class="red-theme">
 
-<body id="dashboard-8" style="background: #EEF0F8!important;">
+    {{-- color changing option  --}}
+    <div class="color_change_wrapper">
+        <ul>
+            <li class="red"></li>
+            <li class="blue"></li>
+            <li class="dark"></li>
+            <li class="light"></li>
+        </ul>
+    </div>
+
     <div class="all__content">
         @include('partials.sidebar')
 
         <div class="main-woaper">
             @include('partials.header')
-            <div style="background: #EEF0F8;">
+            <div class="bg-color-body">
                 @yield('content')
             </div>
         </div>
@@ -86,13 +96,13 @@
             var header = $('.print_today_summery_header').html();
             var footer = $('.print_today_summery_footer').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                removeInline: true, 
-                printDelay: 500, 
-                header: header,  
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                removeInline: true,
+                printDelay: 500,
+                header: header,
                 footer: footer
             });
         });

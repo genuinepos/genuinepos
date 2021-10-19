@@ -56,33 +56,33 @@ function cancel() {
 }
 
 //Key shortcut for cancel
-shortcuts.add('ctrl+m',function() { 
+shortcuts.add('ctrl+m',function() {
     cancel();
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('f2',function() { 
+shortcuts.add('f2',function() {
     $('#action').val(2);
     $('#button_type').val(0);
     $('#pos_submit_form').submit();
 });
 
   //Key shortcut for pic hold invoice
-  shortcuts.add('f4',function() { 
+  shortcuts.add('f4',function() {
     $('#action').val(4);
     $('#button_type').val(0);
     $('#pos_submit_form').submit();
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('f8',function() { 
+shortcuts.add('f8',function() {
     $('#action').val(5);
     $('#button_type').val(0);
     $('#pos_submit_form').submit();
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('f10',function() { 
+shortcuts.add('f10',function() {
     $('#action').val(1);
     $('#button_type').val(1);
     $('#pos_submit_form').submit();
@@ -103,12 +103,12 @@ $(document).on('click', '#cancel_pay_mathod', function (e) {
 });
 
 //Key shortcut for all payment method
-shortcuts.add('ctrl+b',function() { 
+shortcuts.add('ctrl+b',function() {
     $('#otherPaymentMethod').modal('show');
 });
 
 //Key shortcut for credit sale
-shortcuts.add('alt+g',function() { 
+shortcuts.add('alt+g',function() {
     fullDue();
 });
 
@@ -130,24 +130,24 @@ shortcuts.add('alt+s',function() {
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('alt+a',function() { 
+shortcuts.add('alt+a',function() {
     $('#action').val(6);
     $('#button_type').val(0);
     $('#pos_submit_form').submit();
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('alt+z',function() { 
+shortcuts.add('alt+z',function() {
     allSuspends();
 });
 
 //Key shortcut for focus search product input
-shortcuts.add('alt+v',function() { 
+shortcuts.add('alt+v',function() {
     document.getElementById('search_product').focus();
 });
 
 //Key shortcut for show recent transactions
-shortcuts.add('alt+x',function() { 
+shortcuts.add('alt+x',function() {
     showRecentTransectionModal();
 });
 
@@ -157,7 +157,7 @@ $(document).on('click', '#show_stock',function (e) {
  });
 
  //Key shortcut for show current stock
- shortcuts.add('alt+c',function() { 
+ shortcuts.add('alt+c',function() {
      showStock();
  });
 
@@ -193,7 +193,7 @@ $(document).on('click', '#delete',function(e){
     var parentTableRow = $(this).closest('tr');
     tableRowIndex = parentTableRow.index();
     var url = $(this).attr('href');
-    $('#deleted_form').attr('action', url);           
+    $('#deleted_form').attr('action', url);
     $.confirm({
         'title': 'Delete Confirmation',
         'content': 'Are you sure?',
@@ -232,7 +232,7 @@ $(document).on('submit', '#search_inv_form',function(e){
     $('#get_inv_preloader').show();
     var url = $(this).attr('action');
     var request = $(this).serialize();
-    $.ajax({ 
+    $.ajax({
         url:url,
         type:'get',
         data:request,
@@ -299,3 +299,31 @@ $(document).on('click', '#addPosShortcutBtn', function (e) {
  });
 
  // Add Pos Shortcut Menu Script End
+
+ //=================== Color change option ======================
+$(function() {
+    $('.color_change_wrapper ul li').on('click', function() {
+        let cls = this.className;
+        if(cls === 'red') {
+            $('.color_change_wrapper ul li').removeClass('active');
+            this.classList.add('active');
+            $('body').removeClass();
+            $('body').addClass('red-theme');
+        } else if(cls === 'blue') {
+            $('.color_change_wrapper ul li').removeClass('active');
+            this.classList.add('active');
+            $('body').removeClass();
+            $('body').addClass('blue-theme');
+        } else if(cls === 'dark') {
+            $('.color_change_wrapper ul li').removeClass('active');
+            this.classList.add('active');
+            $('body').removeClass();
+            $('body').addClass('dark-theme');
+        } else if(cls === 'light') {
+            $('.color_change_wrapper ul li').removeClass('active');
+            this.classList.add('active');
+            $('body').removeClass();
+            $('body').addClass('light-theme');
+        }
+    })
+});

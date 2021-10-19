@@ -93,8 +93,8 @@
                             </div>
                         </div>
                     </div>
-             
-                    <div class="row mt-1">
+
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="widget_content">
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
@@ -142,7 +142,7 @@
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {
                 extend: 'excel',
                 text: 'Export To Excel',
@@ -202,10 +202,11 @@
     });
 
     $(document).on('click', '#print_report',function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
+        $('.data_preloader').show();
         var branch_id = $('#branch_id').val();
         var department_id = $('#department_id').val();
-        var from_date = $('.from_date').val();
+        var from_date = $('.to_date').val();
         var to_date = $('.to_date').val();
         var url = $(this).attr('href');
         $.ajax({
@@ -214,18 +215,19 @@
             data: { branch_id, department_id, from_date, to_date },
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
-                    removeInline: false, 
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",
+                    removeInline: false,
                     printDelay: 500,
-                    header : null,   
-                    footer : null,      
+                    header : null,
+                    footer : null,
                 });
+                $('.data_preloader').hide();
             }
         });
-    });   
+    });
 </script>
 
 <script type="text/javascript">

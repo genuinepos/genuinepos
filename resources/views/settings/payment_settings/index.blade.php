@@ -20,7 +20,7 @@
                             </a>
                         </div>
 
-                        <div class="row mt-1">
+                        <div class="row px-3 mt-1">
                             <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
                             <div class="card">
                                 <div class="card-body">
@@ -67,8 +67,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>  
-                            </div>  
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
                 </div>
                 <div class="modal-body" id="edit_card_type_modal_body">
                     <!--begin::Form-->
-                    
+
                 </div>
             </div>
         </div>
@@ -150,7 +150,7 @@
 <script>
     var card_types_table = $('.card_type_table').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel', messageTop: 'Payment Card types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'pdf',text: 'Pdf', messageTop: 'Payment Card types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: 'Print', messageTop: '<b>Payment Card types</b>', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -238,9 +238,9 @@
     });
 
     $(document).on('click', '#delete_card_type',function(e){
-        e.preventDefault(); 
+        e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_card_type_form').attr('action', url);       
+        $('#deleted_card_type_form').attr('action', url);
         $.confirm({
             'title': 'Delete Confirmation',
             'content': 'Are you sure?',
@@ -255,7 +255,7 @@
                     'class': 'no btn-modal-primary',
                     'action': function() {
                         // alert('Deleted canceled.')
-                    } 
+                    }
                 }
             }
         });

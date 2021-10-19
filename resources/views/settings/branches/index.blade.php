@@ -19,8 +19,8 @@
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
-                 
-                    <div class="row mt-1">
+
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
@@ -68,7 +68,7 @@
                             </form>
                         </div>
                     </div>
-                  
+
                 </div>
             </div>
         </div>
@@ -205,16 +205,16 @@
                                 <span class="error error_pos_sale_invoice_layout_id"></span>
                             </div>
                         </div>
-                   
+
                         <div class="form-group row mt-1">
                             <div class="col-md-4">
                                 <div class="row">
-                                    <p class="checkbox_input_wrap mt-2"> 
-                                <input type="checkbox" name="purchase_permission" id="purchase_permission" value="1"> &nbsp; <b>Enable purchase permission</b></p> 
+                                    <p class="checkbox_input_wrap mt-2">
+                                <input type="checkbox" name="purchase_permission" id="purchase_permission" value="1"> &nbsp; <b>Enable purchase permission</b></p>
                                 </div>
                             </div>
                         </div>
-                   
+
                         <div class="form-group text-end">
                             <button type="button" class="btn loading_button d-none"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -225,7 +225,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     <!-- Add Modal -->
     <div class="modal fade" id="quickInvSchemaModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -282,7 +282,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -295,12 +295,12 @@
                 </div>
 
                 <div class="modal-body" id="edit-modal-body">
-                  
+
                 </div>
             </div>
         </div>
-    </div> 
-    <!-- Modal--> 
+    </div>
+    <!-- Modal-->
 @endsection
 @push('scripts')
 <script>
@@ -325,7 +325,7 @@
         }
     });
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Add branch by ajax
         $('#add_branch_form').on('submit', function(e){
@@ -334,8 +334,8 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val()
@@ -343,14 +343,14 @@
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
-                } 
+                }
             });
 
             if(countErrorField > 0){
                  $('.loading_button').hide();
                 return;
             }
-            
+
             $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
@@ -389,8 +389,8 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.edit_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val()
@@ -398,14 +398,14 @@
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
-                } 
+                }
             });
-            
+
             if(countErrorField > 0){
                 $('.loading_button').hide();
                 return;
             }
-            
+
             $.ajax({
                 url:url,
                 type:'post',
@@ -423,9 +423,9 @@
         });
 
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);   
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -448,7 +448,7 @@
                 data:request,
                 success:function(data){
                     getAllBranch();
-                    toastr.error(data.errorMsg, 'Error'); 
+                    toastr.error(data.errorMsg, 'Error');
                 }
             });
         });

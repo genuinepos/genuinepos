@@ -85,8 +85,8 @@
                             </div>
                         </div>
                     </div>
-                   
-                    <div class="row mt-1">
+
+                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -133,7 +133,7 @@
                             </form>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -215,7 +215,7 @@
 
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -339,11 +339,11 @@
                 $('.data_preloader').hide();
             });
         });
-      
+
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
@@ -353,7 +353,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
@@ -389,7 +389,7 @@
             }
         });
 
-        //Submit filter form by date-range field blur 
+        //Submit filter form by date-range field blur
         $(document).on('click', '.day-item', function () {
             if ($('.from_date').val()) {
                 setTimeout(function() {
@@ -400,17 +400,17 @@
 
         // Make print
         $(document).on('click', '.print_btn', function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
             var body = $('.purchase_return_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
-                printDelay: 100, 
-                header: null,        
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                removeInline: false,
+                printDelay: 100,
+                header: null,
             });
         });
     </script>

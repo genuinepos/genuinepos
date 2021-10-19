@@ -39,7 +39,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                             
+
                                                 <div class="col-md-2">
                                                     <label><strong>Expense For :</strong></label>
                                                     <select name="admin_id" class="form-control submit_able" id="admin_id" >
@@ -71,7 +71,7 @@
                                                     </div>
                                                 </div>
 
-                                                
+
                                                 <div class="col-md-4">
                                                     <div class="row">
                                                         <div class="col-md-6">
@@ -94,7 +94,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row px-3 mt-2">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -216,7 +216,7 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
             ],
@@ -262,8 +262,8 @@
             var url = $(this).attr('href');
             $.get(url, function(data) {
                 $('#payment_heading').html('Add Payment');
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -276,8 +276,8 @@
             $('#payment_heading').html('Edit Payment');
             $.get(url, function(data) {
                 $('.modal_preloader').hide();
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
             });
         });
 
@@ -319,8 +319,8 @@
 
             var url = $(this).attr('action');
             var inputs = $('.p_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -333,7 +333,7 @@
 
             if(countErrorField > 0){
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
+                toastr.error('Please check again all form fields.','Some thing want wrong.');
                 return;
             }
 
@@ -346,14 +346,14 @@
                 processData: false,
                 success:function(data){
                     if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                     }else{
                         $('.loading_button').hide();
                         $('#paymentModal').modal('hide');
                         $('#paymentViewModal').modal('hide');
                         table.ajax.reload();
-                        toastr.success(data); 
+                        toastr.success(data);
                     }
                 }
             });
@@ -396,8 +396,8 @@
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            var button = $(this);    
-            $('#payment_deleted_form').attr('action', url);    
+            var button = $(this);
+            $('#payment_deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
@@ -407,7 +407,7 @@
                 }
             });
         });
-            
+
         $(document).on('submit', '#payment_deleted_form',function(e){
             e.preventDefault();
             var url = $(this).attr('action');
@@ -426,18 +426,18 @@
 
         // Print single payment details
         $('#print_payment').on('click', function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.sale_payment_print_area').html();
             var header = $('.print_header').html();
             var footer = $('.signature_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                removeInline: true, 
-                printDelay: 500, 
-                header: header,  
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                removeInline: true,
+                printDelay: 500,
+                header: header,
                 footer: footer
             });
         });
@@ -445,7 +445,7 @@
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
@@ -492,22 +492,22 @@
                 data: {branch_id, admin_id, from_date, to_date},
                 success:function(data){
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 500, 
-                        header: "", 
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 500,
+                        header: "",
                         pageTitle: "",
                         // footer: 'Footer Text',
-                        formValues: false,         
-                        canvas: false, 
+                        formValues: false,
+                        canvas: false,
                         beforePrint: null,
-                        afterPrint: null      
+                        afterPrint: null
                     });
                 }
-            }); 
+            });
         });
     </script>
 

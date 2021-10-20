@@ -465,6 +465,56 @@ class PurchaseUtil
         }
     }
 
+    public function addPurchaseOrderProduct($request, $isEditProductPrice, $purchaseId)
+    {
+        $product_ids = $request->product_ids;
+        $variant_ids = $request->variant_ids;
+        $quantities = $request->quantities;
+        $unit_names = $request->unit_names;
+        $discounts = $request->unit_discounts;
+        $unit_costs = $request->unit_costs;
+        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
+        $unit_costs_with_discount = $request->unit_costs_with_discount;
+        $subtotal = $request->subtotals;
+        $tax_percents = $request->tax_percents;
+        $unit_taxes = $request->unit_taxes;
+        $net_unit_costs = $request->net_unit_costs;
+        $linetotals = $request->linetotals;
+        $profits = $request->profits;
+        $selling_prices = $request->selling_prices;
+
+        $index = 0;
+        foreach ($product_ids as $productId) {
+            $addPurchaseProduct = new PurchaseOrderProduct();
+            $addPurchaseProduct->purchase_id = $purchaseId;
+            $addPurchaseProduct->product_id = $productId;
+            $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $addPurchaseProduct->order_quantity = $quantities[$index];
+            $addPurchaseProduct->pending_quantity = $quantities[$index];
+            $addPurchaseProduct->unit = $unit_names[$index];
+            $addPurchaseProduct->unit_cost = $unit_costs[$index];
+            $addPurchaseProduct->unit_discount = $discounts[$index];
+            $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
+            $addPurchaseProduct->subtotal = $subtotal[$index];
+            $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
+            $addPurchaseProduct->unit_tax = $unit_taxes[$index];
+            $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
+            $addPurchaseProduct->line_total = $linetotals[$index];
+
+            if ($isEditProductPrice == '1') {
+                $addPurchaseProduct->profit_margin = $profits[$index];
+                $addPurchaseProduct->selling_price = $selling_prices[$index];
+            }
+
+            if (isset($request->lot_number)) {
+                $addPurchaseProduct->lot_no = $request->lot_number[$index];
+            }
+
+            $addPurchaseProduct->save();
+            $index++;
+        }
+    }
+
     public function updatePurchaseProduct($request, $isEditProductPrice, $purchaseId)
     {
         $product_ids = $request->product_ids;
@@ -542,7 +592,7 @@ class PurchaseUtil
         }
     }
 
-    public function addPurchaseOrderProduct($request, $isEditProductPrice, $purchaseId)
+    public function updatePurchaseOrderProduct($request, $isEditProductPrice, $purchaseId)
     {
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
@@ -550,7 +600,6 @@ class PurchaseUtil
         $unit_names = $request->unit_names;
         $discounts = $request->unit_discounts;
         $unit_costs = $request->unit_costs;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
         $unit_costs_with_discount = $request->unit_costs_with_discount;
         $subtotal = $request->subtotals;
         $tax_percents = $request->tax_percents;
@@ -562,34 +611,88 @@ class PurchaseUtil
 
         $index = 0;
         foreach ($product_ids as $productId) {
-            $addPurchaseProduct = new PurchaseOrderProduct();
-            $addPurchaseProduct->purchase_id = $purchaseId;
-            $addPurchaseProduct->product_id = $productId;
-            $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $addPurchaseProduct->order_quantity = $quantities[$index];
-            $addPurchaseProduct->pending_quantity = $quantities[$index];
-            $addPurchaseProduct->unit = $unit_names[$index];
-            $addPurchaseProduct->unit_cost = $unit_costs[$index];
-            $addPurchaseProduct->unit_discount = $discounts[$index];
-            $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
-            $addPurchaseProduct->subtotal = $subtotal[$index];
-            $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
-            $addPurchaseProduct->unit_tax = $unit_taxes[$index];
-            $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
-            $addPurchaseProduct->line_total = $linetotals[$index];
+            $filterVariantId = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $updatePurchaseProduct = PurchaseOrderProduct::where('purchase_id', $purchaseId)
+                ->where('product_id', $productId)
+                ->where('product_variant_id', $filterVariantId)->first();
+            if ($updatePurchaseProduct) {
+                $updatePurchaseProduct->product_id = $productId;
+                $updatePurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $updatePurchaseProduct->order_quantity = (float)$quantities[$index];
+                $updatePurchaseProduct->pending_quantity = (float)$quantities[$index] - $updatePurchaseProduct->received_quantity;
+                $updatePurchaseProduct->unit = $unit_names[$index];
+                $updatePurchaseProduct->unit_cost = $unit_costs[$index];
+                $updatePurchaseProduct->unit_discount = $discounts[$index];
+                $updatePurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
+                $updatePurchaseProduct->subtotal = $subtotal[$index];
+                $updatePurchaseProduct->unit_tax_percent = $tax_percents[$index];
+                $updatePurchaseProduct->unit_tax = $unit_taxes[$index];
+                $updatePurchaseProduct->net_unit_cost = $net_unit_costs[$index];
+                $updatePurchaseProduct->line_total = $linetotals[$index];
 
-            if ($isEditProductPrice == '1') {
-                $addPurchaseProduct->profit_margin = $profits[$index];
-                $addPurchaseProduct->selling_price = $selling_prices[$index];
+                if ($isEditProductPrice == '1') {
+                    $updatePurchaseProduct->profit_margin = $profits[$index];
+                    $updatePurchaseProduct->selling_price = $selling_prices[$index];
+                }
+
+                if (isset($request->lot_number)) {
+                    $updatePurchaseProduct->lot_no = $request->lot_number[$index];
+                }
+                $updatePurchaseProduct->delete_in_update = 0;
+                $updatePurchaseProduct->save();
+            } else {
+                $addPurchaseProduct = new PurchaseOrderProduct();
+                $addPurchaseProduct->purchase_id = $purchaseId;
+                $addPurchaseProduct->product_id = $productId;
+                $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $addPurchaseProduct->order_quantity = $quantities[$index];
+                $addPurchaseProduct->pending_quantity = $quantities[$index];
+                $addPurchaseProduct->unit = $unit_names[$index];
+                $addPurchaseProduct->unit_cost = $unit_costs[$index];
+                $addPurchaseProduct->unit_discount = $discounts[$index];
+                $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
+                $addPurchaseProduct->subtotal = $subtotal[$index];
+                $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
+                $addPurchaseProduct->unit_tax = $unit_taxes[$index];
+                $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
+                $addPurchaseProduct->line_total = $linetotals[$index];
+
+                if ($isEditProductPrice == '1') {
+                    $addPurchaseProduct->profit_margin = $profits[$index];
+                    $addPurchaseProduct->selling_price = $selling_prices[$index];
+                }
+
+                if (isset($request->lot_number)) {
+                    $addPurchaseProduct->lot_no = $request->lot_number[$index];
+                }
+                $addPurchaseProduct->save();
             }
-
-            if (isset($request->lot_number)) {
-                $addPurchaseProduct->lot_no = $request->lot_number[$index];
-            }
-
-            $addPurchaseProduct->save();
             $index++;
         }
+    }
+
+    public function updatePoInvoiceQtyAndStatusPortion($purchase)
+    {
+        $purchaseOrderProducts = DB::table('purchase_order_products')->where('purchase_id', $purchase->id)
+            ->select(
+                DB::raw('sum(order_quantity) as o_qty'),
+                DB::raw('sum(pending_quantity) as p_qty'),
+                DB::raw('sum(received_quantity) as r_qty')
+            )->groupBy('purchase_id')->get();
+
+        $purchase->po_qty = $purchaseOrderProducts->sum('o_qty');
+        $purchase->po_pending_qty = $purchaseOrderProducts->sum('p_qty');
+        $purchase->po_received_qty = $purchaseOrderProducts->sum('r_qty');
+
+        if ($purchaseOrderProducts->sum('p_qty') == 0) {
+            $purchase->po_receiving_status = 'Completed';
+        } elseif ($purchaseOrderProducts->sum('o_qty') == $purchaseOrderProducts->sum('p_qty')) {
+            $purchase->po_receiving_status = 'Pending';
+        } elseif ($purchaseOrderProducts->sum('r_qty') > 0) {
+            $purchase->po_receiving_status = 'Partial';
+        }
+
+        $purchase->save();
     }
 
     private function createPurchaseAction($row)

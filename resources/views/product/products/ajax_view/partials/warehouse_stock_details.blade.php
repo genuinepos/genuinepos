@@ -19,7 +19,7 @@
                         <td class="text-start">{{ $row->variant_code }}</td>
                         <td class="text-start">{{ $product->name.'-'.$row->variant_name }}</td>
                         <td class="text-start">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</td>
-                        <td class="text-start">{{ $row->variant_quantity.'('.$product->unit->code_name.')' }}</td>
+                        <td class="text-start"><b>{{ $row->variant_quantity.'('.$product->unit->code_name.')' }}</b></td>
                         <td class="text-start">
                             @php
                                 $currentStockValue = $row->variant_cost_with_tax * $row->variant_quantity;

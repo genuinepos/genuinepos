@@ -131,7 +131,3 @@
         </div>
     </div>
 </form>
-
-<script>
-    $('.date-of-birth-picker').datepicker({format: 'yyyy-mm-dd'});
-</script>

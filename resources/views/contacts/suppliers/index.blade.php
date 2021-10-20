@@ -19,8 +19,7 @@
                         <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                     </div>
                 </div>
-                <!-- =========================================top section button=================== -->
-
+                
                 <div class="row px-3">
                     <div class="card">
                         <div class="section-header">
@@ -382,7 +381,7 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-            var inputs = $('.add_input');
+            var inputs = $('.edit_input');
                 $('.error').html('');  
                 var countErrorField = 0;  
             $.each(inputs, function(key, val){
@@ -405,7 +404,6 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                     $('#edit_supplier_form')[0].reset();
@@ -451,7 +449,6 @@
         $(document).on('click', '#change_status',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            console.log(url);
             $.ajax({
                 url:url,
                 type:'get',
@@ -568,54 +565,6 @@
             $('#'+value).show();
         });
 
-        function addValidation() {
-            var inputs = $('.add_input');
-                $('.error').html('');
-                var countErrorField = 0;
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                return;
-            }
-        }
-
-        $(document).on('input', '.add_input', function () {
-            addValidation();
-        });
-
-        function editValidation() {
-            var inputs = $('.edit_input');
-                $('.error').html('');
-                var countErrorField = 0;
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                return;
-            }
-        }
-
-        $(document).on('input', '.edit_input', function () {
-            editValidation();
-        });
-
         $(document).on('click', '#view_payment', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
@@ -689,7 +638,5 @@
             });
         });
     });
-
-    $('.date-of-birth-picker').datepicker({format: 'yyyy-mm-dd'});
 </script>
  @endpush

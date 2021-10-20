@@ -928,6 +928,14 @@
                     toastr.success(data.successMsg); 
                     window.location = "{{route('sales.index2')}}";
                 }
+            },error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                }else{
+                    toastr.error('Server error please contact to the support team.');
+                }
             }
         });
     });

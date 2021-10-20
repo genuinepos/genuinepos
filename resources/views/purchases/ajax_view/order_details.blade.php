@@ -8,7 +8,7 @@
          <div class="modal-content">
              <div class="modal-header">
                  <h5 class="modal-title" id="exampleModalLabel">
-                     Purchase Details (Reference ID : <strong>{{ $purchase->invoice_id }}</strong>)
+                     PO Details (Reference ID : <strong>{{ $purchase->invoice_id }}</strong>)
                  </h5>
                  <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
              </div>
@@ -51,7 +51,15 @@
                             <li><strong>Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>Purchase Status : </strong> <span class="badge bg-primary">Ordered</span></li>
-                            <li><strong>Receiving Status : </strong> <span class="badge bg-danger">Pending</span></li>
+                            <li><strong>Receiving Status : </strong> 
+                                @if ($purchase->po_receiving_status == 'Pending')
+                                    <span class="badge bg-danger">Pending</span>
+                                @elseif ($purchase->po_receiving_status == 'Completed')
+                                    <span class="badge bg-danger">Completed</span>
+                                @else
+                                    <span class="badge bg-danger">Partial</span>
+                                @endif
+                            </li>
                             <li><strong>Payment Status : </strong>
                                 @php
                                     $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
@@ -101,9 +109,9 @@
                                             @endphp
                                             
                                             <td class="text-start">{{ $product->product->name.' '.$variant }}</td>
-                                            <td class="text-start">{{ $product->quantity }}</td>
+                                            <td class="text-start">{{ $product->order_quantity }}</td>
                                             <td class="text-start">
-                                                {{ json_decode($generalSettings->business, true)['currency'].''.$product->unit_cost }}
+                                                {{ App\Utils\Converter::format_in_bdt($product->unit_cost) }}
                                             </td>
                                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->unit_discount) }} </td>
                                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->unit_cost_with_discount) }}</td>
@@ -257,8 +265,26 @@
      </div>
  </div>
  <!-- Details Modal End-->
+ <style>
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
 
- <!-- Purchase print templete-->
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 20px;margin-right: 20px;}
+    .header, .header-space,
+    .footer, .footer-space {height: 20px;}
+    .header {position: fixed;top: 0;}
+    .footer {position: fixed;bottom: 0;}
+    .noBorder {border: 0px !important;}
+    tr.noBorder td {border: 0px !important;}
+    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+</style>
+ <!-- Purchase Order print templete-->
     <div class="purchase_print_template d-none">
         <div class="details_area">
             <div class="heading_area">
@@ -272,7 +298,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h1 class="bill_name">Purchase Bill</h1>
+                            <h1 class="bill_name">Purchase Order Bill</h1>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -331,7 +357,7 @@
                             <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>Purchase Status : </strong>Ordered</li>
-                            <li><strong>Receiving Status : </strong>Pending</li>
+                            <li><strong>Receiving Status : </strong>{{ $purchase->po_receiving_status }}</li>
                             <li><strong>Payment Status : </strong>
                                @php
                                    $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
@@ -398,39 +424,36 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="9" class="text-start"><strong>Net Total Amount :</strong></td>
-                            <td colspan="2" class="text-start">
-                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
+                            <th colspan="11" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td colspan="2" class="text-start"> 
                                     {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="9" class="text-start">Purchase Discount</th>
+                            <th colspan="11" class="text-end">Purchase Discount : 
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                            </th>
                             <td colspan="2" class="text-start">
-                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
                                 {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{$purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="9" class="text-start">Purchase Tax</th>
+                            <th colspan="11" class="text-end">Purchase Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td colspan="2" class="text-start">
-                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
                                 {{ App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount).' ('.$purchase->purchase_tax_percent.'%)' }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th colspan="9" class="text-start">Shipment Charge</th>
+                            <th colspan="11" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td colspan="2" class="text-start">
-                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
                                 {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th colspan="9" class="text-start">Purchase Total</th>
+                            <th colspan="11" class="text-end">Purchase Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td colspan="2" class="text-start">
-                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
                                 {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                             </td>
                         </tr>
@@ -463,6 +486,12 @@
                     </div>
                 </div>
             @endif
+
+            <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
+                <small style="font-size: 5px; float: right;" class="text-end">
+                    Print Date: {{ date('d-m-Y , h:iA') }}
+                </small>
+            </div>
         </div>
     </div>
  <!-- Purchase print templete end-->

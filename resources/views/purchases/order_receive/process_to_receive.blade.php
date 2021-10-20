@@ -125,8 +125,8 @@
                                                                 @foreach ($purchase->purchase_order_products as $row)
                                                                     <tr>
                                                                         <td>
-                                                                            <input type="hidden" id="product_ids[]" value="{{ $row->product_id }}">
-                                                                            <input type="hidden" id="variant_ids[]" value="{{ $row->product_variant_id ? $row->product_variant_id : 'noid' }}">
+                                                                            <input type="hidden" name="product_ids[]" value="{{ $row->product_id }}">
+                                                                            <input type="hidden" name="variant_ids[]" value="{{ $row->product_variant_id ? $row->product_variant_id : 'noid' }}">
                                                                             {{ Str::limit($row->product->name, 25) }} 
                                                                             <b>{{ $row->variant ? ' - '.$row->variant->variant_name : '' }}</b>
                                                                         </td>
@@ -170,8 +170,8 @@
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <input type="hidden" name="total_pending" id="total_pending">
-                                            <input type="hidden" name="total_received" id="total_received">
+                                            <input type="hidden" name="total_pending" id="total_pending" value="{{ $purchase->po_pending_qty }}">
+                                            <input type="hidden" name="total_received" id="total_received" value="{{ $purchase->po_received_qty }}">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><b>Discount :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                 <div class="col-8">
@@ -363,7 +363,6 @@
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
-            $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
                 type:'post',
@@ -376,15 +375,16 @@
                     $('.loading_button').hide();
                     toastr.success(data);
                 },error: function(err) {
-                    $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     $('.error').html('');
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server error please contact to the support.');
+                    }
                 }
             });
         });
-
-
 
         var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
         var _expectedDateFormat = '' ;

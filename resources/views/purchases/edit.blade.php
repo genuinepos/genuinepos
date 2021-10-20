@@ -14,7 +14,7 @@
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form id="edit_purchase_form" action="{{ route('purchases.update') }}" enctype="multipart/form-data" method="POST">
+            <form id="edit_purchase_form" action="{{ route('purchases.update', $editType) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="id" value="{{ $purchaseId }}">
                 <input type="hidden" name="paid" id="paid" value="">

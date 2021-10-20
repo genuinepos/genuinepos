@@ -21,7 +21,7 @@
                             {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                         </td>
 
-                        <td class="text-start">{{ $product_variant->mb_stock . ' (' . $product->unit->code_name . ')' }}</td>
+                        <td class="text-start"><b>{{ $product_variant->mb_stock . ' (' . $product->unit->code_name . ')' }}</b></td>
                         @php
                             $stockValue = $product_variant->mb_stock * $product->product_cost_with_tax;
                         @endphp

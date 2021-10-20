@@ -247,7 +247,7 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::get('edit/purchase/product/{purchaseId}/{productId}/{variantId}', 'PurchaseController@editPurchasedProduct')->name('purchases.product.edit');
     Route::post('update/purchase/product/{purchaseId}', 'PurchaseController@PurchasedProductUpdate')->name('purchases.product.update');
     Route::get('editable/purchase/{purchaseId}/{editType}', 'PurchaseController@editablePurchase')->name('purchases.get.editable.purchase');
-    Route::post('update', 'PurchaseController@update')->name('purchases.update');
+    Route::post('update/{editType}', 'PurchaseController@update')->name('purchases.update');
     Route::get('get/all/supplier', 'PurchaseController@getAllSupplier')->name('purchases.get.all.supplier');
     Route::get('get/all/unit', 'PurchaseController@getAllUnit')->name('purchases.get.all.unites');
     Route::get('get/all/tax', 'PurchaseController@getAllTax')->name('purchases.get.all.taxes');
@@ -278,7 +278,6 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
         Route::get('po/process/receive/{purchaseId}', 'PurchaseOrderReceiveController@processReceive')->name('purchases.po.receive.process');
         Route::post('po/process/receive/store/{purchaseId}', 'PurchaseOrderReceiveController@processReceiveStore')->name('purchases.po.receive.process.store');
     });
-
 
     // Purchase Return route
     Route::group(['prefix' => 'returns'], function () {

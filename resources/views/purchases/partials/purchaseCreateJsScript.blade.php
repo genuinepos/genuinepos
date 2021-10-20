@@ -952,7 +952,11 @@
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 $('.error').html('');
-                toastr.error('Net Connetion Error. Reload This Page.'); 
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                }else{
+                    toastr.error('Server error please contact to the support.');
+                }
             }
         });
     });

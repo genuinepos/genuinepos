@@ -50,6 +50,10 @@
                                                     <select name="supplier_id"
                                                         class="form-control submit_able"
                                                         id="supplier_id" autofocus>
+                                                        <option value="">All</option>
+                                                        @foreach ($suppliers as $sup)
+                                                            <option value="{{ $sup->id }}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -102,7 +106,7 @@
                         </div>
                     </div>
 
-                    <div class="row px-3 mt-1">
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -286,24 +290,6 @@
             },
         });
 
-        // Get all supplier for filter form
-        function setSuppliers() {
-            $.ajax({
-                url: "{{ route('purchases.get.all.supplier') }}",
-                type: 'get',
-                dataType: 'json',
-                success: function(suppliers) {
-                    $('#supplier_id').append('<option value="">All</option>');
-                    $.each(suppliers, function(key, val) {
-                        $('#supplier_id').append('<option value="' + val.id + '">' + val.name + ' (' +
-                            val.phone + ')' + '</option>');
-                    });
-                    $('#supplier_id').val('');
-                }
-            });
-        }
-        setSuppliers();
-
         // Show details modal with data
         $(document).on('click', '.details_button', function(e) {
             e.preventDefault();
@@ -354,6 +340,12 @@
                 success: function(data) {
                     purchase_table.ajax.reload();
                     toastr.error(data);
+                },error: function(err) {
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server Error. Please contact to the support team.'); 
+                    }
                 }
             });
         });
@@ -373,6 +365,12 @@
                     toastr.success(data);
                     $('.loading_button').hide();
                     $('#changeStatusModal').modal('hide');
+                },error: function(err) {
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server Error. Please contact to the support team.'); 
+                    }
                 }
             });
         });
@@ -546,6 +544,12 @@
                     purchase_table.ajax.reload();
                     $('#paymentViewModal').modal('hide');
                     toastr.success(data);
+                },error: function(err) {
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server Error. Please contact to the support team.'); 
+                    }
                 }
             });
         });

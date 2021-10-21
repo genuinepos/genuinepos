@@ -136,14 +136,16 @@
 
             <hr class="m-0">
 
-            <div class="row">
-                <div class="heading">
-                    <label class="p-0 m-0"><strong>ANOTHER BUSINESS LOCATION STOCK DETAILS :</strong></label>
+            @if ($addons->branches == 1)
+                <div class="row">
+                    <div class="heading">
+                        <label class="p-0 m-0"><strong>ANOTHER BUSINESS LOCATION STOCK DETAILS :</strong></label>
+                    </div>
+                    <div class="table-responsive" id="branch_stock_details">
+                        @include('product.products.ajax_view.partials.another_branch_details')
+                    </div>
                 </div>
-                <div class="table-responsive" id="branch_stock_details">
-                    @include('product.products.ajax_view.partials.another_branch_details')
-                </div>
-            </div>
+            @endif
         </div>
 
         <div class="modal-footer text-end">

@@ -13,6 +13,7 @@ use App\Models\PurchaseOrderProduct;
 use App\Utils\AccountUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\ProductStockUtil;
+use App\Utils\PurchaseUtil;
 use App\Utils\SupplierUtil;
 
 class PurchaseOrderReceiveController extends Controller
@@ -21,17 +22,20 @@ class PurchaseOrderReceiveController extends Controller
     protected $invoiceVoucherRefIdUtil;
     protected $supplierUtil;
     protected $productStockUtil;
+    protected $purchaseUtil;
 
     public function __construct(
         AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         SupplierUtil $supplierUtil,
-        ProductStockUtil $productStockUtil
+        ProductStockUtil $productStockUtil,
+        PurchaseUtil $purchaseUtil
     ) {
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->supplierUtil = $supplierUtil;
-        $this->ProductStockUtil = $productStockUtil;
+        $this->productStockUtil = $productStockUtil;
+        $this->purchaseUtil = $purchaseUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -54,7 +58,7 @@ class PurchaseOrderReceiveController extends Controller
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
 
-        $purchase = Purchase::with('purchase_order_products')->where('id', $purchaseId)->first();
+        $purchase = Purchase::where('id', $purchaseId)->first();
         $purchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchases');
         $purchase->po_pending_qty = $request->total_pending;
         $purchase->po_received_qty = $request->total_received;
@@ -79,10 +83,23 @@ class PurchaseOrderReceiveController extends Controller
         }
 
         // Add received product to purchase products table
-        foreach ($purchase->purchase_order_products as $purchase_order_product) {
+        $purchase_order_products = DB::table('purchase_order_products')->where('purchase_id', $purchase->id)->get();
+        foreach ($purchase_order_products as $purchase_order_product) {
             $purchaseProduct = PurchaseProduct::where('purchase_id', $purchase->id)->where('product_order_product_id', $purchase_order_product->id)->first();
             if ($purchaseProduct) {
                 $purchaseProduct->quantity = $purchase_order_product->received_quantity;
+                $purchaseProduct->unit = $purchase_order_product->unit;
+                $purchaseProduct->unit_cost = $purchase_order_product->unit_cost;
+                $purchaseProduct->unit_discount = $purchase_order_product->unit_discount;
+                $purchaseProduct->unit_cost_with_discount = $purchase_order_product->unit_cost_with_discount;
+                $purchaseProduct->unit_tax_percent = $purchase_order_product->unit_tax_percent;
+                $purchaseProduct->unit_tax = $purchase_order_product->unit_tax;
+                $purchaseProduct->net_unit_cost = $purchase_order_product->net_unit_cost;
+                $purchaseProduct->subtotal = $purchase_order_product->received_quantity * $purchase_order_product->unit_cost_with_discount;
+                $purchaseProduct->line_total = $purchase_order_product->received_quantity * $purchase_order_product->net_unit_cost;
+                $purchaseProduct->profit_margin = $purchase_order_product->profit_margin;
+                $purchaseProduct->selling_price = $purchase_order_product->selling_price;
+                $purchaseProduct->lot_no = $purchase_order_product->lot_no;
                 $purchaseProduct->save();
             } else {
                 if ($purchase_order_product->received_quantity != 0) {
@@ -96,11 +113,11 @@ class PurchaseOrderReceiveController extends Controller
                     $addPurchaseProduct->unit_cost = $purchase_order_product->unit_cost;
                     $addPurchaseProduct->unit_discount = $purchase_order_product->unit_discount;
                     $addPurchaseProduct->unit_cost_with_discount = $purchase_order_product->unit_cost_with_discount;
-                    //$addPurchaseProduct->tax_id = $purchase_order_product->tax_id;
                     $addPurchaseProduct->unit_tax_percent = $purchase_order_product->unit_tax_percent;
                     $addPurchaseProduct->unit_tax = $purchase_order_product->unit_tax;
                     $addPurchaseProduct->net_unit_cost = $purchase_order_product->net_unit_cost;
-                    $addPurchaseProduct->line_total = $purchase_order_product->line_total;
+                    $addPurchaseProduct->subtotal = $purchase_order_product->received_quantity * $purchase_order_product->unit_cost_with_discount;
+                    $addPurchaseProduct->line_total = $purchase_order_product->received_quantity * $purchase_order_product->unit_cost;
                     $addPurchaseProduct->profit_margin = $purchase_order_product->profit_margin;
                     $addPurchaseProduct->selling_price = $purchase_order_product->selling_price;
                     $addPurchaseProduct->lot_no = $purchase_order_product->lot_no;
@@ -153,21 +170,23 @@ class PurchaseOrderReceiveController extends Controller
         }
 
         $purchase_products = DB::table('purchase_products')->where('purchase_id', $purchase->id)->get();
+
         if (count($purchase_products) > 0) {
             foreach ($purchase_products as $purchase_product) {
-                $this->ProductStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $purchase_product->product_variant_id);
+                $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $purchase_product->product_variant_id);
                 if ($purchase->warehouse_id) {
                     $this->productStockUtil->addWarehouseProduct($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
-                    $this->ProductStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
+                    $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
                 } else if ($purchase->branch_id) {
-                    $this->ProductStockUtil->addBranchProduct($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
-                    $this->ProductStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
+                    $this->productStockUtil->addBranchProduct($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
+                    $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
                 } else {
-                    $this->ProductStockUtil->adjustMainBranchStock($purchase_product->product_id, $purchase_product->product_variant_id);
+                    $this->productStockUtil->adjustMainBranchStock($purchase_product->product_id, $purchase_product->product_variant_id);
                 }
             }
         }
 
+        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
         return response()->json('Successfully order receiving is modified.');
     }

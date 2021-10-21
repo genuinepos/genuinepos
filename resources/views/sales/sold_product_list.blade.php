@@ -138,7 +138,7 @@
                             </div>
                         </div>
 
-                        <div class="row mt-1">
+                        <div class="row margin_row mt-1">
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="section-header">

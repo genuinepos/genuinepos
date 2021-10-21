@@ -9,7 +9,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-sliders-h"></span>
@@ -81,7 +80,7 @@
                     </div>
 
                     <!-- =========================================top section button=================== -->
-                    <div class="row px-3 mt-1">
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">

@@ -131,7 +131,8 @@ class ProductPurchaseReportController extends Controller
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        return view('reports.product_purchase_report.index', compact('branches'));
+        $suppliers = DB::table('suppliers')->select('id', 'name', 'phone')->get();
+        return view('reports.product_purchase_report.index', compact('branches', 'suppliers'));
     }
 
     public function print(Request $request)

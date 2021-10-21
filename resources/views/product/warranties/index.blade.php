@@ -248,6 +248,14 @@
                         $('.loading_button').hide();
                         getAllWarranty();
                         $('.submit_button').prop('type', 'submit');
+                    },error:function(err){
+                        $('.loading_button').hide();
+                        $('.submit_button').prop('type', 'submit');
+                        if (err.status == 0) {
+                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                        }else{
+                            toastr.error('Server Error, Please contact to the support team.'); 
+                        }
                     }
                 });
             });
@@ -302,6 +310,13 @@
                         getAllWarranty();
                         $('#add_form').show();
                         $('#edit_form').hide();
+                    },error:function(err){
+                        $('.loading_button').hide();
+                        if (err.status == 0) {
+                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                        }else{
+                            toastr.error('Server Error, Please contact to the support team.'); 
+                        }
                     }
                 });
             });
@@ -334,6 +349,12 @@
                         getAllWarranty();
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
+                    },error: function(err) {
+                        if (err.status == 0) {
+                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                        }else{
+                            toastr.error('Server Error. Please contact to the support team.'); 
+                        }
                     }
                 });
             });

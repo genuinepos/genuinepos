@@ -593,6 +593,7 @@ class ProductStockUtil
 
     public function addWarehouseProduct($product_id, $variant_id, $warehouse_id)
     {
+        // dd($product_id, $variant_id, $warehouse_id);
         $checkExistsProductInWarehouse = DB::table('product_warehouses')
             ->where('warehouse_id', $warehouse_id)
             ->where('product_id', $product_id)->first();

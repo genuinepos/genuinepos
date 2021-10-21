@@ -29,7 +29,11 @@
                         <b>Opening Balance</b>    
                     @elseif($cashFlow->transaction_type == 3)  
                         @if($cashFlow->purchase_payment->payment_on == 1)
-                        {{ $cashFlow->purchase_payment->payment_type == 1 ? 'Purchase Payment' : 'Purchase Return' }}  <br>
+                            @if ($cashFlow->purchase_payment->is_advanced == 1)
+                                <b>PO Advance Payment</b><br>
+                            @else
+                                {{ $cashFlow->purchase_payment->payment_type == 1 ? 'Purchase Payment' : 'Purchase Return' }}  <br>
+                            @endif
                             <span class="mt-1">{{ 'Supplier : ' .$cashFlow->purchase_payment->purchase->supplier->name }}</span>  <br>
                             <span class="mt-1">{!! '<b>Purchase Invoice : </b>'. '<span class="text-primary">'.$cashFlow->purchase_payment->purchase->invoice_id.'</span>' !!}</span> <br>
                             <span class="mt-1">{!! '<b>Payment Voucher : </b>'. '<span class="text-primary">'. $cashFlow->purchase_payment->invoice_id.'</span>' !!}</span>

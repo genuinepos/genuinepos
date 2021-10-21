@@ -56,7 +56,7 @@
                             </div>
                         </div>
 
-                        <div class="row mt-1">
+                        <div class="row margin_row mt-1">
                             <div class="report_data_area">
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
                                 <div class="report_data">

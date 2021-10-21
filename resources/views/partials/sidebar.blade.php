@@ -177,6 +177,50 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row">
+                            @if (auth()->user()->permission->product['product_add'] == '1')
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('products.add.view') }}" class="bar-link">
+                                            <span>
+                                                <i class="fas fa-plus-circle"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.add_product')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->product['product_all'] == '1')
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('products.all.product') }}" class="bar-link">
+                                            <span>
+                                                <i class="fas fa-sitemap"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.product_list')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->product['product_add'] == '1')
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('product.import.create') }}" class="bar-link">
+                                            <span>
+                                                <i class="fas fa-file-import"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.import_products')</p>
+                                </div>
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="row">
                             @if (auth()->user()->permission->category['category_all'] == '1')
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                     <div class="switch_bar">
@@ -212,34 +256,6 @@
                                 <p class="switch_text">@lang('menu.units')</p>
                             </div>
 
-                            @if (auth()->user()->permission->product['product_all'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('products.all.product') }}" class="bar-link">
-                                            <span>
-                                                <i class="fas fa-sitemap"></i>
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <p class="switch_text">@lang('menu.product_list')</p>
-                                </div>
-                            @endif
-
-                            @if (auth()->user()->permission->product['product_add'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('products.add.view') }}" class="bar-link">
-                                            <span>
-                                                <i class="fas fa-plus-circle"></i>
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <p class="switch_text">@lang('menu.add_product')</p>
-                                </div>
-                            @endif
-
                             <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('product.variants.index') }}" class="bar-link">
@@ -251,20 +267,20 @@
                                 <p class="switch_text">@lang('menu.variants')</p>
                             </div>
 
-                            @if (auth()->user()->permission->product['product_add'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('product.import.create') }}" class="bar-link">
-                                            <span>
-                                                <i class="fas fa-file-import"></i>
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <p class="switch_text">@lang('menu.import_products')</p>
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('product.warranties.index') }}" class="bar-link">
+                                        <span>
+                                            <i class="fas fa-shield-alt"></i>
+                                        </span>
+                                    </a>
                                 </div>
-                            @endif
+                                <p class="switch_text">@lang('menu.warranties')</p>
+                            </div>
+                        </div>
+                        <hr>
 
+                        <div class="row">
                             <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('product.selling.price.groups.index') }}" class="bar-link">
@@ -276,8 +292,7 @@
                                 <p class="switch_text">@lang('menu.selling_price_group')</p>
                             </div>
 
-                            <div
-                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('barcode.index') }}" class="bar-link">
                                         <span>
@@ -286,18 +301,6 @@
                                     </a>
                                 </div>
                                 <p class="switch_text">@lang('menu.generate_barcode')</p>
-                            </div>
-
-                            <div
-                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('product.warranties.index') }}" class="bar-link">
-                                        <span>
-                                            <i class="fas fa-shield-alt"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.warranties')</p>
                             </div>
                         </div>
                     </div>
@@ -440,9 +443,7 @@
                                         <p class="switch_text">@lang('menu.po_list')</p>
                                     </div>
                                 </div>
-                                
                                 <hr>
-
                                 <div class="row">
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
@@ -522,9 +523,7 @@
                                                 <p class="switch_text">@lang('menu.po_list')</p>
                                             </div>
                                         </div>
-                                        
                                         <hr>
-
                                         <div class="row">
                                             @if (auth()->user()->permission->purchase['purchase_return'] == '1')
                                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -605,7 +604,6 @@
                         </div>
                         <hr>
                         <div class="row">
-
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
                                 @if (auth()->user()->permission->sale['pos_all'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -1022,7 +1020,9 @@
                                         <p class="switch_text">@lang('menu.user_list')</p>
                                     </div>
                                 @endif
-
+                            </div>
+                            <hr>
+                            <div class="row">
                                 @if (auth()->user()->permission->roles['role_add'] == '1')
                                     <div
                                         class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -1047,6 +1047,7 @@
                                     </div>
                                 @endif
                             </div>
+                            <hr>
                         </div>
                     </div>
                 </div>
@@ -1244,7 +1245,6 @@
                 @endif
             @endif
 
-            <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="reports">
                 <div class="sub-menu-width">
                     <div class="model__close bg-secondary-2">
@@ -1460,8 +1460,6 @@
                     </div>
                 </div>
             </div>
-            <!-- ===========================================FILE SIDEBAR=================== -->
-
         </div>
     </div>
 </div>

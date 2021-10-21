@@ -244,7 +244,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><b>Paying :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                 <div class="col-8">
-                                                    <input name="paying_amount" class="form-control" id="paying_amount" value="0.00">
+                                                    <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -345,7 +345,7 @@
                 tr.find('#pending_quantity').val(parseFloat(pending_qty).toFixed(2));
                 calulateTotalReceiveAndPendingQty();
                 if(parseInt(received_qty) > parseInt(ordered_quantity)){
-                    alert('Only - '+ordered_quantity+' '+unit+' is available.');
+                    alert('Only - '+ ordered_quantity +' '+unit+' is available.');
                     $(this).val(ordered_quantity);
                     tr.find('#pending_quantity').val(parseFloat(0).toFixed(2));
                     calulateTotalReceiveAndPendingQty();
@@ -354,36 +354,39 @@
             }
         });
 
-        $(document).on('input', '#paying_amount',function () {
-            var paying_amount = $(this).val() ? $(this).val() : 0;
-        });
-
         //Add receive request by ajax
         $('#receive_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
+            var request = $(this).serialize();
             $.ajax({
                 url:url,
                 type:'post',
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
+                data: request,
                 success:function(data){
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     toastr.success(data);
-                },error: function(err) {
+                    window.location = "{{route('purchases.po.list')}}";
+                }, error: function(err) {
                     $('.loading_button').hide();
                     $('.error').html('');
                     if (err.status == 0) {
                         toastr.error('Net Connetion Error. Reload This Page.'); 
-                    }else{
+                    } else {
                         toastr.error('Server error please contact to the support.');
                     }
                 }
             });
+        });
+
+        // Input paying amount and clculate due amount
+        $(document).on('input', '#paying_amount', function(){
+            var payingAmount = $(this).val() ? $(this).val() : 0;
+            var due = $('#due').val() ? $('#due').val() : 0;
+            var calcDueAmount = parseFloat(due) - parseFloat(payingAmount);
+            $('#purchase_due').val(parseFloat(calcDueAmount).toFixed(2));
         });
 
         var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";

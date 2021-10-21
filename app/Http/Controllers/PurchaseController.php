@@ -63,7 +63,8 @@ class PurchaseController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        return view('purchases.index_v2', compact('branches'));
+        $suppliers = DB::table('suppliers')->select('id', 'name', 'phone')->get();
+        return view('purchases.index_v2', compact('branches', 'suppliers'));
     }
 
     public function purchaseProductList(Request $request)

@@ -94,7 +94,7 @@
                         </div>
                     </div>
 
-                    <div class="row px-3 mt-2">
+                    <div class="row margin_row mt-2">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">

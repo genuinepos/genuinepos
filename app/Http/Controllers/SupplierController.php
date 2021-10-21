@@ -203,7 +203,8 @@ class SupplierController extends Controller
                 'created_by.name as created_name',
                 'created_by.last_name as created_last_name',
             )->where('purchases.branch_id', auth()->user()->branch_id)
-                ->where('supplier_id', $supplierId)
+                ->where('purchases.supplier_id', $supplierId)
+                ->where('purchases.is_purchased', 1)
                 ->orderBy('purchases.report_date', 'desc');
 
             return DataTables::of($purchases)
@@ -214,7 +215,7 @@ class SupplierController extends Controller
                             <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
                     if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
-                        $html .= '<a class="dropdown-item" href="' . route('purchases.edit', $row->id) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
 
                     if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
@@ -281,11 +282,11 @@ class SupplierController extends Controller
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->purchase_status == 1) {
-                        return '<span class="badge bg-success">Received</span>';
+                        return '<span class="text-success"><b>Purchased</b></span>';
                     } elseif ($row->purchase_status == 2) {
-                        return '<span class="badge bg-primary">Panding</span>';
+                        return '<span class="text-secondary"><b>Pending</b></span>';
                     } elseif ($row->purchase_status == 3) {
-                        return '<span class="badge bg-warning text-white">Ordered</span>';
+                        return '<span class="text-primary text-white"><b>Purchased By Order</b></span>';
                     }
                 })
                 ->editColumn('payment_status', function ($row) {

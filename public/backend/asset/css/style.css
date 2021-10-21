@@ -1477,4 +1477,9 @@ table.display tbody tr:hover {
     .menu-list-area ul.list-unstyled {
         grid-template-columns: repeat(2, 1fr);
     }
-} ;
+}
+
+.margin_row{
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}

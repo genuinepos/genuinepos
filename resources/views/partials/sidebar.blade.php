@@ -930,7 +930,9 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.accounts')</p>
                                     </div>
-
+                                </div>
+                                <hr>
+                                <div class="row">
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.assets.index') }}" class="bar-link">
@@ -948,7 +950,9 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.loans')</p>
                                     </div>
-
+                                </div>
+                                <hr>
+                                <div class="row">
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('accounting.balance.sheet') }}" class="bar-link">

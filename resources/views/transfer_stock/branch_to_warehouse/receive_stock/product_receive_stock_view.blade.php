@@ -203,7 +203,6 @@
      // Quantity increase or dicrease and clculate row amount
      $(document).on('input', '#receive_quantity', function(){
         var qty = $(this).val() ? $(this).val() : 0;
-        console.log(qty);
         if (parseFloat(qty) >= 0) {
             var tr = $(this).closest('tr');
             var qty_limit = tr.find('#qty_limit').val();

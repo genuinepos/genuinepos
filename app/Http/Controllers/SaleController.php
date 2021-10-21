@@ -864,7 +864,7 @@ class SaleController extends Controller
     // Check Branch variant product Stock 
     public function checkBranchProductVariant($product_id, $variant_id)
     {
-        $this->nameSearchUtil->checkBranchVariantProductStock($product_id, $variant_id, auth()->user()->branch_id);
+        return $this->nameSearchUtil->checkBranchVariantProductStock($product_id, $variant_id, auth()->user()->branch_id);
     }
 
     public function editShipment($saleId)

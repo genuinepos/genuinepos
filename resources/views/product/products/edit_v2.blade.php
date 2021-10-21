@@ -1438,12 +1438,15 @@
                         toastr.error(data.errorMsg);
                         $('.error').html('');
                     }
-                },
-                error: function(err) {
-                    $('.loading_button').hide();
+                },error: function(err) {
+                    $('.loading_button').addClass('d-none');
+                    $('.error').html('');
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        return;
+                    }
                     toastr.error('Please check again all form fields.',
                         'Some thing want wrong.');
-                    $('.error').html('');
                     $.each(err.responseJSON.errors, function(key, error) {
                         $('.error_' + key + '').html(error[0]);
                     });

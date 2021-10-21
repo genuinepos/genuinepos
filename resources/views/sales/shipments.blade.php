@@ -9,7 +9,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shipping-fast"></span>
@@ -43,7 +42,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>Customer :</strong></label>
                                                     <select name="customer_id"
@@ -99,7 +98,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -149,7 +148,7 @@
     <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content" id="edit_shipment_modal_content">
-                
+
             </div>
         </div>
     </div>
@@ -160,7 +159,7 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -233,8 +232,8 @@
             var request = $(this).serialize();
             $('.loading_button').show();
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -258,7 +257,7 @@
                     table.ajax.reload();
                     toastr.success(data);
                     $('.loading_button').hide();
-                    $('#editShipmentModal').modal('hide'); 
+                    $('#editShipmentModal').modal('hide');
                 }
             });
         });
@@ -274,48 +273,48 @@
                 success:function(data){
                     $('.data_preloader').hide();
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 700, 
-                        header: null,        
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
                     });
                 }
-            }); 
+            });
         });
 
         // Make print
         $(document).on('click', '.print_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.sale_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                removeInline: false,
                 printDelay: 500,
-                header : null,      
-                footer : null,   
+                header : null,
+                footer : null,
             });
         });
 
         $(document).on('click', '.print_challan_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.challan_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
-                printDelay: 800, 
-                header: null,   
-                footer: null,     
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                removeInline: false,
+                printDelay: 800,
+                header: null,
+                footer: null,
             });
         });
     </script>

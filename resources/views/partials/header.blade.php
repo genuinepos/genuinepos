@@ -5,11 +5,11 @@
             <div class=" top-menu">
                 <div class="logo__sec">
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
-                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img"> 
+                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                     </a>
                 </div>
                 <div class="notify-menu">
-                    <small class="text-white float-start d-none d-md-block"><strong>{!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] !!}</strong></small>
+                    <small class="text-white float-start d-none d-md-block branch-name"><strong>{!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] !!}</strong></small>
                     <div class="head__content__sec">
                         <ul class="head__cn">
                             <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
@@ -94,7 +94,7 @@
                                             @else
                                                 {{ auth()->user()->role->name }}
                                             @endif
-                                        </span> 
+                                        </span>
                                     </li>
                                     <li>
                                         <i class="fas fa-eye text-primary"></i><a class="dropdown-item d-block"
@@ -139,6 +139,6 @@
       new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
     }
 </script>
-    
+
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> --}}
 

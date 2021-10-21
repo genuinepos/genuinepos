@@ -70,7 +70,7 @@
 
                                             <div class="form-group row">
                                                 <div class="col-md-3">
-                                                    <label><b>Brand :</b></label> 
+                                                    <label><b>Brand :</b></label>
                                                     <select id="brand_id" name="brand_id"
                                                         class="form-control submit_able">
                                                         <option value="">All</option>
@@ -81,7 +81,7 @@
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <label><b>Status : </b></label> 
+                                                    <label><b>Status : </b></label>
                                                     <select name="status" id="status" class="form-control submit_able">
                                                         <option value="">All</option>
                                                         <option value="1">Active</option>
@@ -101,7 +101,7 @@
                     </div>
 
                     <!-- =========================================top section button=================== -->
-                    <div class="row mt-1">
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
@@ -135,7 +135,7 @@
                                                     <th>Product</th>
                                                     <th>Purchase Cost</th>
                                                     <th>Selling Price</th>
-                                                    <th>Current Stock</th> 
+                                                    <th>Current Stock</th>
                                                     <th>Product Type</th>
                                                     <th>Category</th>
                                                     <th>Brand</th>
@@ -206,7 +206,7 @@
 
     product_table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
             {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -294,9 +294,9 @@
     });
 
     $(document).on('click', '#delete',function(e){
-        e.preventDefault(); 
+        e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);       
+        $('#deleted_form').attr('action', url);
         $.confirm({
             'title': 'Delete Confirmation',
             'content': 'Are you sure, you want to delete?',
@@ -339,8 +339,8 @@
     });
 
     $(document).on('click', '.multipla_delete_btn',function(e){
-        e.preventDefault(); 
-        $('#action').val('multiple_delete');    
+        e.preventDefault();
+        $('#action').val('multiple_delete');
         $.confirm({
             'title': 'Delete Confirmation',
             'content': 'Are you sure, you want to delete?',
@@ -352,8 +352,8 @@
     });
 
     $(document).on('click', '.multipla_deactive_btn',function(e){
-        e.preventDefault(); 
-        $('#action').val('multipla_deactive');      
+        e.preventDefault();
+        $('#action').val('multipla_deactive');
         $.confirm({
             'title': 'Deactive Confirmation',
             'content': 'Are you sure to deactive selected all?',

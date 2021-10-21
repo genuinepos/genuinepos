@@ -5,7 +5,7 @@
         .input-group-text {font-size: 12px !important;}
         .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute; width: 94%;z-index: 9999999;padding: 0;left: 3%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
         .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
-        .select_area ul li a {color: #000000;text-decoration: none;font-size: 13px;padding: 4px 3px;display: block;}
+        .select_area ul li a {color: #000000;text-decoration: none;font-size: 11px; padding: 4px 3px;display: block;}
         .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
         .selectProduct{background-color: #ab1c59; color: #fff!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
@@ -46,7 +46,7 @@
                                                             <option value="">Select Supplier</option>
                                                         </select>
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text add_button" 
+                                                            <span class="input-group-text add_button"
                                                                 id="addSupplier"><i class="fas fa-plus-square text-dark"></i></span>
                                                         </div>
                                                     </div>
@@ -92,7 +92,7 @@
                                                     <label for="inputEmail3" class=" col-4"><b>Status :</b></label>
                                                     <div class="col-8">
                                                         <select class="form-control changeable" name="purchase_status" id="purchase_status">
-                                                            <option value="1">Received</option>
+                                                            <option value="1">Purchase</option>
                                                             <option value="2">Pending</option>
                                                             <option value="3">Ordered</option>
                                                         </select>
@@ -173,7 +173,7 @@
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
 
@@ -201,7 +201,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="purchase_list">
-                                                               
+
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -234,15 +234,15 @@
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                            <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00"> 
+                                                            <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00">
                                                         </div>
-                                                        
+
                                                     </div>
-                                                    <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00"> 
+                                                    <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00">
                                                 </div>
                                             </div>
 
-                                        
+
                                             <div class="input-group mt-1">
                                                 <label for="inputEmail3" class="col-4"><b>Tax :</b><span class="text-danger">*</span></label>
                                                 <div class="col-8">
@@ -258,20 +258,21 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"><b>Ship Cost :</b></label>
                                                 <div class="col-8">
-                                                    <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00"> 
+                                                    <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00">
                                                 </div>
                                             </div>
 
                                             <div class="input-group mt-1">
                                                 <label for="inputEmail3" class=" col-4"><b>Ship Details :</b></label>
                                                 <div class="col-8">
-                                                    <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details"> 
+                                                    <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
+                                                <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
                                                 <label for="inputEmail3" class=" col-4"><b>Total Item :</b> </label>
                                                 <div class="col-8">
                                                     <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
@@ -395,10 +396,10 @@
                                                     <label for="inputEmail3" class=" col-4"><b>Card Type :</b> </label>
                                                     <div class="col-8">
                                                         <select name="card_type" class="form-control"  id="p_card_type">
-                                                            <option value="Credit-Card">Credit Card</option>  
-                                                            <option value="Debit-Card">Debit Card</option> 
-                                                            <option value="Visa">Visa Card</option> 
-                                                            <option value="Master-Card">Master Card</option> 
+                                                            <option value="Credit-Card">Credit Card</option>
+                                                            <option value="Debit-Card">Debit Card</option>
+                                                            <option value="Visa">Visa Card</option>
+                                                            <option value="Master-Card">Master Card</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -505,7 +506,7 @@
 
     <section class="">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row px-3">
                 <div class="section-header">
                     <div class="col-md-10">
                         <h6 class="collapse_table">Last Purchase Products</h6>
@@ -552,9 +553,9 @@
                 <div class="modal-body" id="add_supplier_modal_body"></div>
             </div>
         </div>
-    </div> 
+    </div>
 
-    <!--Add Product Modal--> 
+    <!--Add Product Modal-->
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
@@ -566,7 +567,7 @@
                 <div class="modal-body" id="add_product_body"></div>
             </div>
         </div>
-    </div> 
+    </div>
     <!--Add Product Modal End-->
 @endsection
 @push('scripts')

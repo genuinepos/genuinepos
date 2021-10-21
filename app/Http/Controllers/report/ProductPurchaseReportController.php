@@ -76,7 +76,7 @@ class ProductPurchaseReportController extends Controller
                     'product_variants.variant_code',
                     'product_variants.variant_price',
                     'suppliers.name as supplier_name'
-                )->orderBy('purchases.report_date', 'desc');
+                )->where('purchases.is_purchased', 1)->orderBy('purchases.report_date', 'desc');
             } else {
                 $purchaseProducts = $query->select(
                     'purchase_products.purchase_id',
@@ -95,7 +95,7 @@ class ProductPurchaseReportController extends Controller
                     'product_variants.variant_code',
                     'product_variants.variant_price',
                     'suppliers.name as supplier_name'
-                )->where('purchases.branch_id', auth()->user()->branch_id)
+                )->where('purchases.is_purchased', 1)->where('purchases.branch_id', auth()->user()->branch_id)
                 ->orderBy('purchases.report_date', 'desc');
             }
 
@@ -131,7 +131,8 @@ class ProductPurchaseReportController extends Controller
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        return view('reports.product_purchase_report.index', compact('branches'));
+        $suppliers = DB::table('suppliers')->select('id', 'name', 'phone')->get();
+        return view('reports.product_purchase_report.index', compact('branches', 'suppliers'));
     }
 
     public function print(Request $request)

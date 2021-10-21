@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\PurchaseReturnProduct;
 use App\Models\ProductWarehouseVariant;
+use App\Utils\Converter;
 use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseUtil;
 use App\Utils\SupplierUtil;
@@ -29,19 +30,21 @@ class PurchaseReturnController extends Controller
     protected $productStockUtil;
     protected $supplierUtil;
     protected $purchaseUtil;
+    protected $converter;
     public function __construct(
         PurchaseReturnUtil $purchaseReturnUtil,
         NameSearchUtil $nameSearchUtil,
         ProductStockUtil $productStockUtil,
         SupplierUtil $supplierUtil,
         PurchaseUtil $purchaseUtil,
+        Converter $converter
     ) {
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->productStockUtil = $productStockUtil;
         $this->supplierUtil = $supplierUtil;
         $this->purchaseUtil = $purchaseUtil;
-
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
     // Sale return index view
@@ -58,7 +61,8 @@ class PurchaseReturnController extends Controller
                 ->leftJoin('purchases', 'purchase_returns.purchase_id', 'purchases.id')
                 ->leftJoin('branches', 'purchase_returns.branch_id', 'branches.id')
                 ->leftJoin('warehouses', 'purchase_returns.warehouse_id', 'warehouses.id')
-                ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id');
+                ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id')
+                ->leftJoin('suppliers as p_supplier', 'purchases.supplier_id', 'p_supplier.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
@@ -88,6 +92,7 @@ class PurchaseReturnController extends Controller
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
                     'suppliers.name as sup_name',
+                    'p_supplier.name as ps_name',
                 )->orderBy('purchase_returns.report_date', 'desc');
             } else {
                 $returns = $query->select(
@@ -120,7 +125,7 @@ class PurchaseReturnController extends Controller
                         if ($row->total_return_due > 0) {
                             if($row->purchase_id){
                                 $html .= '<a class="dropdown-item" id="add_return_payment" href="'. route('purchases.return.payment.modal', [$row->purchase_id]) .'"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
-                            }else {
+                            } else {
                                 $html .= '<a class="dropdown-item" id="add_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
                             }
                         }
@@ -132,6 +137,12 @@ class PurchaseReturnController extends Controller
                 })
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
+                })
+                ->editColumn('supplier',  function ($row){
+                    if ($row->sup_name == null) {
+                        return $row->ps_name;
+                    }
+                    return $row->sup_name;
                 })
                 ->editColumn('location',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
@@ -149,26 +160,17 @@ class PurchaseReturnController extends Controller
                         return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
                     }
                 })
-                ->editColumn('total_return_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_return_amount . '</b>';
-                })
-                ->editColumn('total_return_due_received', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_return_due_received . '</b>';
-                })
-                ->editColumn('total_return_due', function ($row) use ($generalSettings) {
-                    return  '<b>'.json_decode($generalSettings->business, true)['currency']. '<span class="text-danger"> ' . ($row->total_return_due >= 0 ? $row->total_return_due :   bcadd(0, 0,2)) . '</span></b>';
-                })
-
+                ->editColumn('total_return_amount', fn ($row) => $this->converter->format_in_bdt($row->total_return_amount))
+                ->editColumn('total_return_due_received', fn ($row) => $this->converter->format_in_bdt($row->total_return_due_received))
+                ->editColumn('total_return_due', fn ($row) => '<span class="text-danger"> ' . ($row->total_return_due >= 0 ? $this->converter->format_in_bdt($row->total_return_due) : $this->converter->format_in_bdt(0)) . '</span></b>')
                 ->editColumn('payment_status', function ($row) {
-                    $html = '';
                     if ($row->total_return_due > 0) {
-                        $html .= '<span class="text-danger"><b>Due</b></span>';
+                        return '<span class="text-danger"><b>Due</b></span>';
                     } else {
-                        $html .= '<span class="text-success"><b>Paid</b></span>';
+                        return '<span class="text-success"><b>Paid</b></span>';
                     }
-                    return $html;
                 })
-                ->rawColumns(['action', 'date', 'return_from', 'location', 'total_return_amount', 'total_return_due_received', 'total_return_due', 'payment_status'])
+                ->rawColumns(['action', 'date', 'supplier', 'return_from', 'location', 'total_return_amount', 'total_return_due_received', 'total_return_due', 'payment_status'])
                 ->make(true);
         }
 
@@ -329,7 +331,6 @@ class PurchaseReturnController extends Controller
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($storeSupplierId);
-
         return response()->json('Successfully purchase return is deleted');
     }
 

@@ -7,8 +7,8 @@
             <th>P.Invoice ID</th>
             <th>Voucher No</th>
             <th>Payment Method</th>
-            <th>Debit</th>
-            <th>Credit</th>
+            <th class="text-end">Debit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th class="text-end">Credit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
         </tr>
     </thead>
 
@@ -29,33 +29,33 @@
                     <td>---</td>
                     <td>---</td>
                     <td>---</td>
-                    <td> 
-                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                        {{ $ledger->purchase->total_purchase_amount }}
+                    <td class="text-end"> 
+                        {{ App\Utils\Converter::format_in_bdt($ledger->purchase->total_purchase_amount) }}
                     </td>
                 @elseif($ledger->row_type == 2)
                     <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->purchase_payment->date)) }}</td> 
                     <td>{{ $ledger->purchase_payment->payment_type == 1 ? 'Cr' : 'Dr' }}</td>
                     <td>
-                        {{ $ledger->purchase_payment->payment_type == 1 ? 'Purchase Payment' : 'Purchase Return Payment' }} <br>
-                        {{ $ledger->purchase_payment->account ? $ledger->purchase_payment->account->name : '' }}
-                        {{ $ledger->purchase_payment->account ? ' A/C '.$ledger->purchase_payment->account->account_number : '' }} 
+                        @if ($ledger->purchase_payment->is_advanced == 1)
+                            <b>PO Advance Payment</b><br>
+                        @else 
+                            <b> {{ $ledger->purchase_payment->payment_type == 1 ? 'Purchase Due Payment' : 'Return Due Payment' }}</b><br>
+                        @endif
+                        {{ $ledger->purchase_payment->account ? $ledger->purchase_payment->account->name.' A/C '.$ledger->purchase_payment->account->account_number : '' }} <br>
                         Payment For :{{ $ledger->purchase_payment->purchase->invoice_id }}
                     </td>
                     <td>---</td>
                     <td>{{ $ledger->purchase_payment->invoice_id }}</td>
                     <td>{{ $ledger->purchase_payment->pay_mode }}</td>
                     @if ($ledger->purchase_payment->payment_type == 1)
-                        <td>
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $ledger->purchase_payment->paid_amount }}
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($ledger->purchase_payment->paid_amount) }}
                         </td>
                         <td>---</td>
                     @else   
                         <td>---</td>
-                        <td>
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $ledger->purchase_payment->paid_amount }}
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($ledger->purchase_payment->paid_amount) }}
                         </td>  
                     @endif
                 @elseif($ledger->row_type == 4)
@@ -73,16 +73,14 @@
                     <td>{{ $ledger->supplier_payment->voucher_no }}</td>
                     <td>{{ $ledger->supplier_payment->pay_mode }}</td>
                     @if ($ledger->supplier_payment->type == 1)
-                        <td>
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $ledger->supplier_payment->paid_amount }}
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($ledger->supplier_payment->paid_amount) }}
                         </td>
                         <td>---</td>
                     @else   
                         <td>---</td>
-                        <td>
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            {{ $ledger->supplier_payment->paid_amount }}
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($ledger->supplier_payment->paid_amount) }}
                         </td>  
                     @endif
                 @else 
@@ -93,9 +91,8 @@
                     <td>---</td>
                     <td>---</td>   
                     <td>---</td> 
-                    <td>
-                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                        {{ $ledger->amount }}
+                    <td class="text-end">
+                        {{ App\Utils\Converter::format_in_bdt($ledger->amount) }}
                     </td>
                 @endif
             </tr>
@@ -109,10 +106,9 @@
         buttons: [ 
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
             {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}",exportOptions: {columns: 'th:not(:first-child)'}},
         ],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-        // "ordering" : "false",
+        ordering : "false",
 
     });
     // ledgerTable.columns(0).data().sort((a, b)=> {return new Date(b.date) - new Date(a.date);});

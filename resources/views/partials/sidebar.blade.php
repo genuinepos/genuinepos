@@ -220,7 +220,6 @@
                             @endif
                         </div>
                         <hr>
-
                         <div class="row">
                             @if (auth()->user()->permission->category['category_all'] == '1')
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
@@ -268,8 +267,7 @@
                                 <p class="switch_text">@lang('menu.variants')</p>
                             </div>
 
-                            <div
-                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('product.warranties.index') }}" class="bar-link">
                                         <span>
@@ -294,8 +292,7 @@
                                 <p class="switch_text">@lang('menu.selling_price_group')</p>
                             </div>
 
-                            <div
-                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                 <div class="switch_bar">
                                     <a href="{{ route('barcode.index') }}" class="bar-link">
                                         <span>
@@ -309,7 +306,7 @@
                     </div>
                 </div>
             </div>
-            <!-- ===========================================FILE SIDEBAR=================== -->
+
             @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
                 @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
                     <div class="sub-menu_t" id="contact">
@@ -418,6 +415,7 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.add_purchase')</p>
                                     </div>
+
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('purchases.index_v2') }}" class="bar-link">
@@ -430,14 +428,22 @@
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('purchases.product.list') }}" class="bar-link">
-                                                <span><i class="fas fa-shopping-cart"></i></span>
+                                                <span><i class="fas fa-list"></i></span>
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.purchase_product_list')</p>
                                     </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('purchases.po.list') }}" class="bar-link">
+                                                <span><i class="fas fa-list"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.po_list')</p>
+                                    </div>
                                 </div>
                                 <hr>
-
                                 <div class="row">
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
@@ -498,9 +504,26 @@
                                                 </div>
                                                 <p class="switch_text">@lang('menu.purchase_list')</p>
                                             </div>
+
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                <div class="switch_bar">
+                                                    <a href="{{ route('purchases.product.list') }}" class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </a>
+                                                </div>
+                                                <p class="switch_text">@lang('menu.purchase_product_list')</p>
+                                            </div>
+
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                <div class="switch_bar">
+                                                    <a href="{{ route('purchases.po.list') }}" class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </a>
+                                                </div>
+                                                <p class="switch_text">@lang('menu.po_list')</p>
+                                            </div>
                                         </div>
                                         <hr>
-
                                         <div class="row">
                                             @if (auth()->user()->permission->purchase['purchase_return'] == '1')
                                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -581,7 +604,6 @@
                         </div>
                         <hr>
                         <div class="row">
-
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
                                 @if (auth()->user()->permission->sale['pos_all'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -998,7 +1020,9 @@
                                         <p class="switch_text">@lang('menu.user_list')</p>
                                     </div>
                                 @endif
-
+                            </div>
+                            <hr>
+                            <div class="row">
                                 @if (auth()->user()->permission->roles['role_add'] == '1')
                                     <div
                                         class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -1023,6 +1047,7 @@
                                     </div>
                                 @endif
                             </div>
+                            <hr>
                         </div>
                     </div>
                 </div>
@@ -1220,7 +1245,6 @@
                 @endif
             @endif
 
-            <!-- ===========================================FILE SIDEBAR=================== -->
             <div class="sub-menu_t" id="reports">
                 <div class="sub-menu-width">
                     <div class="model__close bg-secondary-2">
@@ -1436,8 +1460,6 @@
                     </div>
                 </div>
             </div>
-            <!-- ===========================================FILE SIDEBAR=================== -->
-
         </div>
     </div>
 </div>

@@ -78,7 +78,6 @@
                         </div> --}}
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
@@ -230,12 +229,16 @@
                     $('.submit_button').prop('type', 'submit');
                 },
                 error: function(err) {
+                    $('.submit_button').prop('type', 'submit');
                     $('.loading_button').hide();
                     $('.error').html('');
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        return;
+                    }
                     $.each(err.responseJSON.errors, function(key, error) {
                         $('.error_' + key + '').html(error[0]);
                     });
-                    $('.submit_button').prop('type', 'submit');
                 }
             });
         });
@@ -273,6 +276,10 @@
                 error: function(err) {
                     $('.loading_button').hide();
                     $('.error').html('');
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        return;
+                    }
                     $.each(err.responseJSON.errors, function(key, error) {
                         $('.error_e_' + key + '').html(error[0]);
                     });
@@ -288,18 +295,8 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
@@ -318,6 +315,12 @@
                     toastr.error(data);
                     $('.data_tbl').DataTable().ajax.reload();
                     $('#deleted_form')[0].reset();
+                },error: function(err) {
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server Error. Please contact to the support team.'); 
+                    }
                 }
             });
         });

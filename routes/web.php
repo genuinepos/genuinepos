@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use App\Models\Customer;
 use App\Models\AdminAndUser;
 use Illuminate\Support\Facades\DB;
@@ -237,14 +238,16 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('v2', 'PurchaseController@index_v2')->name('purchases.index_v2');
     Route::get('product/list', 'PurchaseController@purchaseProductList')->name('purchases.product.list');
+    Route::get('po/list', 'PurchaseController@poList')->name('purchases.po.list');
     Route::get('show/{purchaseId}', 'PurchaseController@show')->name('purchases.show');
+    Route::get('order/show/{purchaseId}', 'PurchaseController@showOrder')->name('purchases.show.order');
     Route::get('create', 'PurchaseController@create')->name('purchases.create');
     Route::post('store', 'PurchaseController@store')->name('purchases.store');
-    Route::get('edit/{purchaseId}', 'PurchaseController@edit')->name('purchases.edit');
+    Route::get('edit/{purchaseId}/{editType}', 'PurchaseController@edit')->name('purchases.edit');
     Route::get('edit/purchase/product/{purchaseId}/{productId}/{variantId}', 'PurchaseController@editPurchasedProduct')->name('purchases.product.edit');
     Route::post('update/purchase/product/{purchaseId}', 'PurchaseController@PurchasedProductUpdate')->name('purchases.product.update');
-    Route::get('editable/purchase/{purchaseId}', 'PurchaseController@editablePurchase')->name('purchases.get.editable.purchase');
-    Route::post('update', 'PurchaseController@update')->name('purchases.update');
+    Route::get('editable/purchase/{purchaseId}/{editType}', 'PurchaseController@editablePurchase')->name('purchases.get.editable.purchase');
+    Route::post('update/{editType}', 'PurchaseController@update')->name('purchases.update');
     Route::get('get/all/supplier', 'PurchaseController@getAllSupplier')->name('purchases.get.all.supplier');
     Route::get('get/all/unit', 'PurchaseController@getAllUnit')->name('purchases.get.all.unites');
     Route::get('get/all/tax', 'PurchaseController@getAllTax')->name('purchases.get.all.taxes');
@@ -270,6 +273,11 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::get('payment/details/{paymentId}', 'PurchaseController@paymentDetails')->name('purchases.payment.details');
     Route::delete('payment/delete/{paymentId}', 'PurchaseController@paymentDelete')->name('purchases.payment.delete');
     Route::get('payment/list/{purchaseId}', 'PurchaseController@paymentList')->name('purchase.payment.list');
+
+    Route::group(['prefix' => '/'], function () {
+        Route::get('po/process/receive/{purchaseId}', 'PurchaseOrderReceiveController@processReceive')->name('purchases.po.receive.process');
+        Route::post('po/process/receive/store/{purchaseId}', 'PurchaseOrderReceiveController@processReceiveStore')->name('purchases.po.receive.process.store');
+    });
 
     // Purchase Return route
     Route::group(['prefix' => 'returns'], function () {

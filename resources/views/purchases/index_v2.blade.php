@@ -44,12 +44,16 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>Supplier :</strong></label>
                                                     <select name="supplier_id"
                                                         class="form-control submit_able"
                                                         id="supplier_id" autofocus>
+                                                        <option value="">All</option>
+                                                        @foreach ($suppliers as $sup)
+                                                            <option value="{{ $sup->id }}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -102,7 +106,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -173,7 +177,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
         <!--Payment list modal-->
@@ -198,7 +202,7 @@
             aria-hidden="true">
         </div>
         <!--Add Payment modal-->
-        
+
         <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
             aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -219,7 +223,7 @@
                                     <li class="mt-1" id="payment_attachment"></li>
                                 </ul>
                             </div>
-                            
+
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
                                     <li class="mt-1">
@@ -246,7 +250,7 @@
 
         purchase_table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
@@ -286,24 +290,6 @@
             },
         });
 
-        // Get all supplier for filter form
-        function setSuppliers() {
-            $.ajax({
-                url: "{{ route('purchases.get.all.supplier') }}",
-                type: 'get',
-                dataType: 'json',
-                success: function(suppliers) {
-                    $('#supplier_id').append('<option value="">All</option>');
-                    $.each(suppliers, function(key, val) {
-                        $('#supplier_id').append('<option value="' + val.id + '">' + val.name + ' (' +
-                            val.phone + ')' + '</option>');
-                    });
-                    $('#supplier_id').val('');
-                }
-            });
-        }
-        setSuppliers();
-
         // Show details modal with data
         $(document).on('click', '.details_button', function(e) {
             e.preventDefault();
@@ -329,9 +315,9 @@
         });
 
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
@@ -354,6 +340,12 @@
                 success: function(data) {
                     purchase_table.ajax.reload();
                     toastr.error(data);
+                },error: function(err) {
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server Error. Please contact to the support team.'); 
+                    }
                 }
             });
         });
@@ -373,6 +365,12 @@
                     toastr.success(data);
                     $('.loading_button').hide();
                     $('#changeStatusModal').modal('hide');
+                },error: function(err) {
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server Error. Please contact to the support team.'); 
+                    }
                 }
             });
         });
@@ -519,9 +517,9 @@
         });
 
         $(document).on('click', '#delete_payment',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);       
+            $('#payment_deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
@@ -546,6 +544,12 @@
                     purchase_table.ajax.reload();
                     $('#paymentViewModal').modal('hide');
                     toastr.success(data);
+                },error: function(err) {
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server Error. Please contact to the support team.'); 
+                    }
                 }
             });
         });

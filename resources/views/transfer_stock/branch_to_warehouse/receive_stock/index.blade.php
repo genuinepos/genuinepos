@@ -7,7 +7,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-check-double"></span>
@@ -18,46 +17,43 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Transferred Stocks <small>(From Business Location)</small></h6>
-                                    </div>
+                    <div class="row margin_row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Transferred Stocks <small>(From Business Location)</small></h6>
                                 </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Date</th>
-                                                    <th class="text-start">Reference ID</th>
-                                                    <th class="text-start">Warehouse(From)</th>
-                                                    <th class="text-start">B.Location(To)</th>
-                                                    <th class="text-start">Total Item</th>
-                                                    <th class="text-start">Total Qty</th>
-                                                    <th class="text-start">Status</th>
-                                                    <th class="text-center">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Date</th>
+                                                <th class="text-start">Reference ID</th>
+                                                <th class="text-start">Warehouse(From)</th>
+                                                <th class="text-start">B.Location(To)</th>
+                                                <th class="text-start">Total Item</th>
+                                                <th class="text-start">Total Qty</th>
+                                                <th class="text-start">Status</th>
+                                                <th class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

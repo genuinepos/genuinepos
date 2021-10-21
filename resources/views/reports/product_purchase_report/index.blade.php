@@ -76,6 +76,9 @@
                                                     <label><strong>Supplier :</strong></label>
                                                     <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
                                                         <option value="">All</option>
+                                                        @foreach ($suppliers as $sup)
+                                                            <option value="{{ $sup->id }}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -124,7 +127,7 @@
                             </div>
                         </div>
 
-                        <div class="row mt-1">
+                        <div class="row margin_row mt-1">
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="data_preloader">
@@ -170,19 +173,6 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    function setSuppliers(){
-        $.ajax({
-            url:"{{route('purchases.get.all.supplier')}}",
-            type:'get',
-            success:function(suppliers){
-                $.each(suppliers, function(key, val){
-                    $('#supplier_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
-                });
-            }
-        });
-    }
-    setSuppliers();
-
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [ 

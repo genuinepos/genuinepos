@@ -47,7 +47,7 @@
                         @endif
                     </div>
 
-                    <div class="row mt-1">
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -98,7 +98,7 @@
     </div>
 @endsection
 @push('scripts')
-  
+
     <script>
         // Show session message by toster alert.
         @if (Session::has('successMsg'))
@@ -107,7 +107,7 @@
 
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -141,9 +141,9 @@
         });
 
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -156,12 +156,12 @@
                     },
                     'No': {
                         'class': 'no btn-modal-primary',
-                        'action': function() {console.log('Deleted canceled.');} 
+                        'action': function() {console.log('Deleted canceled.');}
                     }
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();

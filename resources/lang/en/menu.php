@@ -35,6 +35,7 @@ return [
   // Menu childs of Purchases module
   'add_purchase' => 'Add Purchase',
   'purchase_list' => 'Purchase List',
+  'po_list' => 'PO List',
   'purchase_product_list' => 'Purchased Product List',
   'add_return' => 'Add Return',
   'purchase_return_list' => 'Purchase Return List',

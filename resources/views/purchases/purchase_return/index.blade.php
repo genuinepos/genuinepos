@@ -9,7 +9,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-undo-alt"></span>
@@ -85,8 +84,8 @@
                             </div>
                         </div>
                     </div>
-                   
-                    <div class="row mt-1">
+
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -133,7 +132,7 @@
                             </form>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -215,7 +214,7 @@
 
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -242,12 +241,12 @@
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id',name: 'invoice_id'},
                 {data: 'parent_invoice_id',name: 'parent_invoice_id'},
-                {data: 'sup_name',name: 'sup_name'},
-                {data: 'location',name: 'location'},
-                {data: 'return_from',name: 'return_from'},
+                {data: 'supplier', name: 'supplier'},
+                {data: 'location',name: 'branches.name'},
+                {data: 'return_from',name: 'warehouses.name'},
                 {data: 'payment_status',name: 'payment_status'},
-                {data: 'total_return_amount',name: 'total_return_amount'},
-                {data: 'total_return_due',name: 'total_return_due'},
+                {data: 'total_return_amount',name: 'total_return_amount', className: 'text-end'},
+                {data: 'total_return_due',name: 'total_return_due', className: 'text-end'},
                 {data: 'action'},
             ],
         });
@@ -339,11 +338,11 @@
                 $('.data_preloader').hide();
             });
         });
-      
+
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
@@ -353,7 +352,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
@@ -389,7 +388,7 @@
             }
         });
 
-        //Submit filter form by date-range field blur 
+        //Submit filter form by date-range field blur
         $(document).on('click', '.day-item', function () {
             if ($('.from_date').val()) {
                 setTimeout(function() {
@@ -400,17 +399,17 @@
 
         // Make print
         $(document).on('click', '.print_btn', function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
             var body = $('.purchase_return_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
-                printDelay: 100, 
-                header: null,        
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                removeInline: false,
+                printDelay: 100,
+                header: null,
             });
         });
     </script>

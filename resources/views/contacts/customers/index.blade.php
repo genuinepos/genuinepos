@@ -18,7 +18,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
@@ -267,7 +267,7 @@
                             class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="edit-modal-form-body">
-                    
+
                 </div>
             </div>
         </div>
@@ -333,7 +333,7 @@
     </div>
     <!--add money receipt Modal End-->
 
-    <!-- Customer payment view Modal--> 
+    <!-- Customer payment view Modal-->
     <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -347,7 +347,7 @@
     </div>
     <!-- Customer payment view Modal End-->
 
-    <!-- Customer payment details Modal--> 
+    <!-- Customer payment details Modal-->
     <div class="modal fade" id="paymentDatailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -357,7 +357,7 @@
                 </div>
                 <div class="modal-body">
                     <div id="payment_details_body"></div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 text-right">
                             <ul class="list-unstyled">
@@ -370,7 +370,7 @@
                                 <button type="submit" id="print_payment" class="c-btn btn_blue">Print</button>
                             </ul>
                         </div>
-                    </div>   
+                    </div>
                 </div>
             </div>
         </div>
@@ -382,7 +382,7 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -413,7 +413,7 @@
         // Setup ajax for csrf token.
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function() {
             // Add category by ajax
             $('#add_customer_form').on('submit', function(e) {
@@ -508,7 +508,7 @@
             $(document).on('click', '#delete',function(e){
                 e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);           
+                $('#deleted_form').attr('action', url);
                 $.confirm({
                     'title': 'Delete Confirmation',
                     'message': 'Are you sure?',
@@ -622,7 +622,7 @@
                 });
 
                 if (countErrorField > 0) {
-                    toastr.error('Please chack all form fields', 'SOMETHING WANG WRONG'); 
+                    toastr.error('Please chack all form fields', 'SOMETHING WANG WRONG');
                     $('.loading_button').hide();
                     return;
                 }
@@ -649,9 +649,9 @@
             });
 
             $(document).on('click', '#add_payment',function(e){
-                e.preventDefault(); 
+                e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);       
+                $('#deleted_form').attr('action', url);
                 $.confirm({
                     'title': 'Payment Confirmation',
                     'content': 'Are you sure to receive this payment?',
@@ -811,10 +811,10 @@
             });
 
             $(document).on('click', '#delete_receipt',function(e) {
-                e.preventDefault(); 
+                e.preventDefault();
                 var url = $(this).attr('href');
                     var tr = $(this).closest('tr');
-                    $('#receipt_deleted_form').attr('action', url);     
+                    $('#receipt_deleted_form').attr('action', url);
                 $.confirm({
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure?',
@@ -874,18 +874,18 @@
 
             // Print single payment details
             $('#print_payment').on('click', function (e) {
-            e.preventDefault(); 
+            e.preventDefault();
                 var body = $('.sale_payment_print_area').html();
                 var header = $('.header_area').html();
                 var footer = $('.signature_area').html();
                 $(body).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                    removeInline: true, 
-                    printDelay: 500, 
-                    header: header,  
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                    removeInline: true,
+                    printDelay: 500,
+                    header: header,
                     footer: footer
                 });
             });
@@ -893,7 +893,7 @@
             $(document).on('click', '#delete_payment',function(e){
                 e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_payment_form').attr('action', url);           
+                $('#deleted_payment_form').attr('action', url);
                 $.confirm({
                     'title': 'Delete Confirmation',
                     'message': 'Are you sure?',

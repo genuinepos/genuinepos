@@ -22,7 +22,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Add Purchase Return</h5> 
+                                            <h5>Edit Purchase Return</h5> 
                                         </div>
 
                                         <div class="col-6">
@@ -191,7 +191,7 @@
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="btn btn-sm btn-primary float-end">Save</button>
+                            <button type="submit" class="btn btn-sm btn-primary submit_button float-end">Save</button>
                         </div>
                     </div>
                 </div>
@@ -210,7 +210,7 @@
                 type:'get',
                 dataType: 'json',
                 success:function(taxes){
-                    $('#purchase_tax').append('<option value="">No Tax</option>');
+                    $('#purchase_tax').append('<option value="0">No Tax</option>');
                     $.each(taxes, function(key, val){
                         $('#purchase_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
                     });
@@ -288,10 +288,8 @@
                                     tr += '<span class="product_name">'+product.name+'</span>';
                                     tr += '<span class="product_variant"></span>'; 
                                     tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
-                                  ;
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
-        
                                     tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
@@ -369,10 +367,8 @@
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span>';
                                 tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
                                 tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
-                             
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
-                
                                 tr += '<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
                                 tr += '<input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">';
                                 tr += '<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
@@ -487,7 +483,6 @@
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
-                            tr += '</td>';
                             tr += '<input type="hidden" id="qty_limit" value="'+branchQty+'">';
                             tr += '</td>';
 
@@ -579,7 +574,6 @@
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
-                            tr += '</td>';
                             tr += '<input type="hidden" id="qty_limit" value="'+branchVariantQty+'">';
                             tr += '</td>';
 
@@ -682,6 +676,7 @@
         $('#add_purchase_return_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
+            $('.submit_button').prop('type', 'button');
             var url = $(this).attr('action');
             var inputs = $('.add_input');
                 inputs.removeClass('is-invalid');
@@ -711,6 +706,7 @@
                 cache: false,
                 processData: false,
                 success:function(data){
+                    $('.submit_button').prop('type', 'sumbit');
                     if(!$.isEmptyObject(data.errorMsg)){
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();
@@ -719,6 +715,11 @@
                         toastr.success(data); 
                         window.location = "{{ route('purchases.returns.index') }}";
                     }
+                },error: function(err) {
+                    $('.submit_button').prop('type', 'sumbit');
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
                 }
             });
         });

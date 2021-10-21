@@ -30,7 +30,7 @@ class SupplierUtil
             ->groupBy('purchases.supplier_id')->get();
 
         $totalInvoiceReturn = DB::table('purchase_returns')
-            ->leftJoin('purchases', 'purchase_returns.purchase_id', 'purchases.id')
+            ->join('purchases', 'purchase_returns.purchase_id', 'purchases.id')
             ->where('purchases.supplier_id', $supplierId)
             ->select(DB::raw('sum(total_return_amount) as total_inv_return_amt'))
             ->groupBy('purchases.supplier_id')->get();
@@ -42,7 +42,7 @@ class SupplierUtil
                 DB::raw('sum(total_return_amount) as total_sup_return_amt')
             )->groupBy('purchase_returns.supplier_id')->get();
 
-        $totalInvoiceReturnPayment = DB::table('purchase_payments') // Paid on invoice return due.
+        $totalInvoiceReturnPayment = DB::table('purchase_payments') // Paid on purchase return invoice due.
             ->join('purchases', 'purchase_payments.purchase_id', 'purchases.id')
             ->where('purchase_payments.supplier_payment_id', NULL)
             ->where('purchase_payments.payment_type', 2)
@@ -56,7 +56,7 @@ class SupplierUtil
             ->select(DB::raw('sum(paid_amount) as sr_paid'))
             ->groupBy('supplier_id')->get();
 
-        $__totalInvoiceReturnPayment = DB::table('purchase_payments') // Paid on invoice return due.
+        $__totalInvoiceReturnPayment = DB::table('purchase_payments') // Paid on supplier return invoice due.
             ->where('purchase_payments.purchase_id', NULL)
             ->where('purchase_payments.supplier_payment_id', NULL)
             ->where('purchase_payments.payment_type', 2)

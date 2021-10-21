@@ -18,7 +18,7 @@
                     </div>
                     <!-- =========================================top section button=================== -->
 
-                    <div class="row mt-1">
+                    <div class="row px-3 mt-1">
                         <div class="col-md-4">
                             <div class="card" id="add_form">
                                 <div class="section-header">
@@ -36,15 +36,15 @@
                                                 <span class="error error_name"></span>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group row mt-1">
                                             <div class="col-md-12">
-                                                <label><b>Code :</b></label> 
+                                                <label><b>Code :</b></label>
                                                 <input type="text" name="code" class="form-control" data-name="Expanse category Code" placeholder="Code"/>
                                                 <span class="error error_code"></span>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group row mt-2">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -73,7 +73,7 @@
                                                 <span class="error error_e_name"></span>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group row text-right mt-2">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -115,7 +115,7 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -147,7 +147,7 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Add category by ajax
         $('#add_category_form').on('submit', function(e){
@@ -156,8 +156,8 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -206,8 +206,8 @@
             var request = $(this).serialize();
             var inputs = $('.edit_input');
                 inputs.removeClass('is-invalid');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -216,7 +216,7 @@
                     $('#'+inputId).addClass('is-invalid');
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
-                } 
+                }
             });
             if(countErrorField > 0){
                 $('.loading_button').hide();
@@ -240,7 +240,7 @@
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',

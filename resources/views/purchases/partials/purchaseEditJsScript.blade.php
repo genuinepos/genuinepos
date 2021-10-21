@@ -37,9 +37,12 @@
         var quantities = document.querySelectorAll('#quantity');
         var line_totals = document.querySelectorAll('#line_total');
         var total_item = 0;
-        quantities.forEach(function(qty){
-                total_item += 1;
+        var total_qty = 0;
+        quantities.forEach(function(qty) {
+            total_item += 1;
+            total_qty += parseFloat(qty.value)
         });
+        $('#total_qty').val(parseFloat(total_qty));
         $('#total_item').val(parseFloat(total_item));
 
         //Update Net Total Amount 
@@ -831,7 +834,7 @@
     });
 
     // chane purchase tax and clculate total amount
-    $(document).on('change', '#purchase_tax', function(){
+    $(document).on('change', '#purchase_tax', function() {
         var purchaseTax = $(this).val() ? $(this).val() : 0;
         var netTotalAmount = $('#net_total_amount').val();
         var calcPurchaseTaxAmount = parseFloat(netTotalAmount) / 100 * parseFloat(purchaseTax);
@@ -891,10 +894,22 @@
                 if(!$.isEmptyObject(data.errorMsg)){
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
-                }else{
+                } else {
                     $('.loading_button').hide();
                     toastr.success(data); 
-                    window.location = "{{route('purchases.index_v2')}}";
+                    @if ($editType == 'purchased') 
+                        window.location = "{{route('purchases.index_v2')}}";
+                    @else 
+                        window.location = "{{route('purchases.po.list')}}";
+                    @endif
+                }
+            }, error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                }else{
+                    toastr.error('Server error please contact to the support team.');
                 }
             }
         });
@@ -1071,10 +1086,10 @@
 
 
         // Get edit able data
-        function getEditablePurchase(){
+    function getEditablePurchase(){
         $('.data_preloader').show();
         $.ajax({
-            url:"{{route('purchases.get.editable.purchase',$purchaseId)}}",
+            url:"{{route('purchases.get.editable.purchase',[$purchaseId, $editType])}}",
             async:true,
             type:'get',
             dataType: 'json',
@@ -1086,7 +1101,13 @@
                 $('#purchase_status').val(purchase.purchase_status);
                 $('#pay').val(purchase.purchase_status);
                 $('#paid').val(purchase.paid);
-                $.each(purchase.purchase_products,function (key, product) {
+                var product_rows = '';
+                if ($.isEmptyObject(purchase.purchase_products)) {
+                    product_rows = purchase.purchase_order_products;
+                }else{
+                    product_rows = purchase.purchase_products;
+                }
+                $.each(product_rows,function (key, product) {
                     var tr = '';
                     tr += '<tr class="text-start">';
                     tr += '<td>';
@@ -1106,7 +1127,7 @@
                         
                         tr += '</td>';
                         tr += '<td>';
-                        tr += '<input value="'+product.quantity+'" required name="quantities[]" type="number" class="form-control" id="quantity">';
+                        tr += '<input value="'+(product.quantity ? product.quantity : product.order_quantity)+'" required name="quantities[]" type="number" class="form-control" id="quantity">';
                         tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
                         unites.forEach(function(unit) {
                             if (product.unit == unit) {
@@ -1130,11 +1151,11 @@
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<input value="'+product.unit_cost_with_discount+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
+                        tr += '<input readonly value="'+product.unit_cost_with_discount+'" name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<input value="'+product.subtotal+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
+                        tr += '<input readonly value="'+product.subtotal+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
                         tr += '</td>';
 
                         tr += '<td>';
@@ -1149,7 +1170,7 @@
                         tr += '</td>';
 
                         tr += '<td>';
-                        tr += '<input value="'+product.line_total+'" type="text" name="linetotals[]" id="line_total" class="form-control">';
+                        tr += '<input readonly value="'+product.line_total+'" type="text" name="linetotals[]" id="line_total" class="form-control">';
                         tr += '</td>';
 
                         @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')

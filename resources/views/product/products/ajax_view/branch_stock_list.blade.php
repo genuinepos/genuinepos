@@ -22,7 +22,7 @@
                         <td>{{ $product->name }}</td>
                         <td>{{ $product_branch->branch->name .' - '. $product_branch->branch->branch_code }}</td>
                         <td>{{ number_format($product_price_inc_tax, 2) }}</td>
-                        <td>{{ $product_branch->product_quantity .' ('. $product->unit->code_name.')' }}</td>
+                        <td><strong>{{ $product_branch->product_quantity .' ('. $product->unit->code_name.')' }}</strong></td>
                         @php
                             $stockValue = $product_branch->product_quantity * $product_price_inc_tax;
                         @endphp
@@ -61,7 +61,7 @@
                             <td>{{ $product->name.' - '.$product_branch_variant->product_variant->variant_name }}</td>
                             <td>{{ $product_branch->branch->name .' - '. $product_branch->branch->branch_code }}</td>
                             <td>{{ number_format($variant_price_inc_tax, 2) }}</td>
-                            <td>{{ $product_branch_variant->variant_quantity.' ('.$product->unit->code_name.')' }}</td>
+                            <td><strong>{{ $product_branch_variant->variant_quantity.' ('.$product->unit->code_name.')' }}</strong></td>
                             @php
                                 $stockValue = $product_branch_variant->variant_quantity * $variant_price_inc_tax;
                             @endphp

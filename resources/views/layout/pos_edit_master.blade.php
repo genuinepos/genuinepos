@@ -8,6 +8,7 @@
     <!-- Title -->
     <title>Genuine POS</title>
     <!-- Icon -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
 
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.css">
@@ -40,7 +41,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 </head>
 
-<body>
+<body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
     <form id="pos_submit_form" action="{{ route('sales.pos.update') }}" method="POST">
         @csrf
         <div class="pos-body">

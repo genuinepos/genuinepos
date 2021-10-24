@@ -1,14 +1,9 @@
 @extends('layout.app')
-
 @section('title', 'Login - ')
-
     @push('css')
-
+        <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     @endpush
-
 @section('content')
-
-    {{-- <div class="form-wraper" style="background: #448aff"> --}}
     <div class="form-wraper user_login">
         <div class="container">
             <div class="form-content">
@@ -18,8 +13,11 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head">
                                     <div class="head p-1">
-                                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
-                                            alt="POS" class="logo">
+                                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                        @else 
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                        @endif
                                         <span class="head-text">
                                             Genuine POS, Point of Sale software by SpeedDigit
                                         </span>

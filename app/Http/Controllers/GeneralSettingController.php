@@ -89,7 +89,6 @@ class GeneralSettingController extends Controller
             'tax_2_name' => $request->tax_2_name,
             'tax_2_no' => $request->tax_2_no,
             'is_tax_en_purchase_sale' => isset($request->is_tax_en_purchase_sale) ? 1 : 0,
-
         ];
 
         $updateTaxSettings->tax = json_encode($taxSettings);
@@ -210,6 +209,19 @@ class GeneralSettingController extends Controller
         $updatePrefixSettings->prefix = json_encode($prefixSettings);
         $updatePrefixSettings->save();
         return response()->json('Prefix settings updated Successfully');
+    }
+
+    public function systemSettings(Request $request)
+    {
+        $updateSystemSettings = General_setting::first();
+        $SystemSettings = [
+            'theme_color' => $request->theme_color,
+            'datatable_page_entry' => $request->datatable_page_entry,
+        ];
+
+        $updateSystemSettings->system = json_encode($SystemSettings);
+        $updateSystemSettings->save();
+        return response()->json('System settings updated Successfully.');
     }
 
     public function moduleSettings(Request $request)

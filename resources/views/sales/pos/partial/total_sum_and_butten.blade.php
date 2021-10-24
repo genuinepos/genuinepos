@@ -133,7 +133,7 @@
                 <div class="row">
                     <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Pre. Due:</label>
                     <div class="col-sm-9 ">
-                        <input readonly class="form-control" type="number" step="any" name="previous_due" id="previous_due" value="0.00">
+                        <input readonly class="form-control" type="number" step="any" name="previous_due" id="previous_due" value="0.00" autocomplete="off">
                     </div>
                     <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Payable:</label>
                     <div class="col-sm-9 ">
@@ -145,7 +145,7 @@
                 <div class="row">
                     <label for="inputEmail3" class="col-sm-6 col-form-label text-white">Cash Receive:</label>
                     <div class="col-sm-6 ">
-                        <input type="text" name="paying_amount" id="paying_amount" value="0" class="form-control">
+                        <input type="number" step="any" name="paying_amount" id="paying_amount" value="0" class="form-control" autocomplete="off">
                     </div>
                 </div>
 

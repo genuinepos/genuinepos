@@ -20,9 +20,17 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             @if ($defaultLayout->show_shop_logo == 1)
                                 @if ($sale->branch)
-                                    <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
-                                @else
-                                    <img style="height: 60px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                    @if ($sale->branch->logo != 'default.png')
+                                        <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                    @else 
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                    @endif
+                                @else 
+                                    @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                    @else 
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                    @endif
                                 @endif
                             @endif
                         </div>
@@ -433,7 +441,21 @@
                     <thead>
                         <tr>
                             <th class="text-center">
-                                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5> 
+                                @if ($defaultLayout->show_shop_logo == 1)
+                                    @if ($sale->branch)
+                                        @if ($sale->branch->logo != 'default.png')
+                                            <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                        @else 
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray; font-weight: 600;">{{ $sale->branch->name }}</span>
+                                        @endif
+                                    @else 
+                                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                        @else 
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                        @endif
+                                    @endif
+                                @endif
                             </th>
                         </tr>
 
@@ -548,51 +570,45 @@
                 <table class="w-100">
                     <thead>
                         <tr >
-                            <th class="text-end">Discount :</th>
+                            <th class="text-end">Discount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                             <th class="text-end">
                                 <span>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ $sale->order_discount_amount }}
                                 </span>
                             </th>
                         </tr>
                         
                         <tr>
-                            <th class="text-end">Order Tax :</th>
+                            <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                             <th class="text-end">
                                 <span>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{-- {{ $sale->order_tax_amount }} --}}
                                     ({{ $sale->order_tax_percent }} %)
                                 </span>
                             </th>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Previous Due : </th>
+                            <th class="text-end">Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                             <th class="text-end">
                                 <span>
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ number_format($previous_due, 2) }}
                                 </span>
                             </th>
                         </tr>
 
                         <tr>
-                            <th class="text-end"> Payable : </th>
+                            <th class="text-end"> Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <th class="text-end">
                                 <span>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ number_format($total_payable_amount, 2) }}
                                 </span>
                             </th>
                         </tr>
 
                         <tr>
-                            <th class="text-end"> Paid : </th>
+                            <th class="text-end"> Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <th class="text-end">
                                 <span>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ number_format($paying_amount, 2) }}
                                 </span>
                             </th>
@@ -600,19 +616,17 @@
 
                         @if ($change_amount > 0)
                             <tr>
-                                <th class="text-end"> Change Amount : </th>
+                                <th class="text-end"> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                 <th class="total_paid text-end">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
                                 </th>
                             </tr> 
                         @endif
                         
                         <tr>
-                            <th class="text-end"> Due : </th>
+                            <th class="text-end"> Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <th class="text-end">
                                 <span>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ number_format($total_due > 0 ? $total_due : 0, 2) }}
                                 </span>
                             </th>

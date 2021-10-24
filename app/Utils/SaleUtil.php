@@ -364,11 +364,11 @@ class SaleUtil
             ->editColumn('customer',  function ($row) {
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
             })
-            ->editColumn('total_payable_amount', fn ($row) => $this->converter->format_in_bdt($row->total_payable_amount))
-            ->editColumn('paid', fn ($row) => '<span class="text-success">'. $this->converter->format_in_bdt($row->paid). '</span>')
-            ->editColumn('due', fn ($row) =>  '<span class="text-danger">'.$this->converter->format_in_bdt($row->due). '</span>')
-            ->editColumn('sale_return_amount', fn ($row) => $this->converter->format_in_bdt($row->sale_return_amount))
-            ->editColumn('sale_return_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
+            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="'.$row->total_payable_amount.'">'. $this->converter->format_in_bdt($row->total_payable_amount). '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'. $this->converter->format_in_bdt($row->paid). '</span>')
+            ->editColumn('due', fn ($row) =>  '<span class="due text-danger" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due). '</span>')
+            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="'.$row->sale_return_amount.'">' . $this->converter->format_in_bdt($row->sale_return_amount). '</span>')
+            ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="'.$row->sale_return_due.'">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
             ->editColumn('paid_status', function ($row) {
                 $payable = $row->total_payable_amount - $row->sale_return_amount;
                 if ($row->due <= 0) {
@@ -584,7 +584,7 @@ class SaleUtil
         return DataTables::of($saleProducts)
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="#" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('sales.edit.sold.product', [$row->id, $row->product_id,($row->product_variant_id ? $row->product_variant_id : 'NULL')]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
                 $html .= '</div>';
                 return $html;
             })
@@ -608,7 +608,6 @@ class SaleUtil
 
     public function saleDraftTable($request)
     {
-
         $generalSettings = DB::table('general_settings')->first();
 
         $drafts = '';

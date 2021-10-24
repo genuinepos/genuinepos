@@ -7,6 +7,7 @@
     <!-- Title -->
     <title>Genuine POS</title>
     <!-- Icon -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/bootstrap.min.css">
@@ -41,16 +42,16 @@
     <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
 </head>
 
-<body class="red-theme">
+<body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
         {{-- color changing option  --}}
-        <div class="color_change_wrapper">
+        {{-- <div class="color_change_wrapper">
             <ul>
                 <li class="red"></li>
                 <li class="blue"></li>
                 <li class="dark"></li>
                 <li class="light"></li>
             </ul>
-        </div>
+        </div> --}}
 
     <form id="pos_submit_form" action="{{ route('sales.pos.store') }}" method="POST">
         @csrf

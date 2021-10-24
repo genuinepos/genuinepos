@@ -1,3 +1,4 @@
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">

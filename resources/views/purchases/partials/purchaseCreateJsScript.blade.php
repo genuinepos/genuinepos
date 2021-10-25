@@ -199,7 +199,7 @@
                                 var tr = '';
                                 tr += '<tr class="text-start">';
                                 tr += '<td>';
-                                tr += '<span class="product_name">'+product.name+'</span>';
+                                tr += '<span class="product_name">'+product.name.substring(0, 28)+'</span>';
                                 tr += '<span class="product_variant"></span>';  
                                 tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
@@ -230,11 +230,11 @@
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input value="'+product.product_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
+                                tr += '<input readonly value="'+product.product_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input value="'+product.product_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
+                                tr += '<input readonly value="'+product.product_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
                                 tr += '</td>';
 
                                 tr += '<td>';
@@ -244,11 +244,11 @@
 
                                 tr += '<td>';
                                 tr += '<input type="hidden" value="'+product.product_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-                                tr += '<input value="'+product.product_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
+                                tr += '<input readonly value="'+product.product_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input value="'+product.product_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control">';
+                                tr += '<input readonly value="'+product.product_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control">';
                                 tr += '</td>';
 
                                 @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
@@ -363,7 +363,7 @@
                             var tr = '';
                             tr += '<tr class="text-start">';
                             tr += '<td>';
-                            tr += '<span class="product_name">'+variant_product.product.name+'</span>';
+                            tr += '<span class="product_name">'+variant_product.product.name.substring(0, 28)+'</span>';
                             tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
@@ -394,7 +394,7 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<input value="'+variant_product.variant_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
+                            tr += '<input readonly value="'+variant_product.variant_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
                             tr += '</td>';
 
                             tr += '<td>';
@@ -402,13 +402,13 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<input type="text"  name="tax_percents[]" id="tax_percent" class="form-control" id="unit_tax" value="'+tax_percent+'">';
+                            tr += '<input readonly type="text"  name="tax_percents[]" id="tax_percent" class="form-control" id="unit_tax" value="'+tax_percent+'">';
                             tr += '<input type="hidden" value="'+parseFloat(tax_amount).toFixed(2)+'" name="unit_taxes[]" id="unit_tax">';
                             tr += '</td>';
 
                             tr += '<td>';
                             tr += '<input type="hidden" value="'+variant_product.variant_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-                            tr += '<input value="'+variant_product.variant_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
+                            tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
                             tr += '</td>';
 
                             tr += '<td>';
@@ -507,7 +507,7 @@
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<span class="product_name">'+product_name+'</span><br>';
+            tr += '<span class="product_name">'+product_name.substring(0, 28)+'</span><br>';
             tr += '<span class="product_variant"></span>';  
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
@@ -538,11 +538,11 @@
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input value="'+product_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
+            tr += '<input readonly value="'+product_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input value="'+product_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
+            tr += '<input readonly value="'+product_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
             tr += '</td>';
 
             tr += '<td>';
@@ -552,8 +552,8 @@
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input type="hidden" value="'+product_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-            tr += '<input value="'+product_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
+            tr += '<input readonly type="hidden" value="'+product_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
+            tr += '<input readonly value="'+product_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
             tr += '</td>';
 
             tr += '<td>';
@@ -653,7 +653,7 @@
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<span class="product_name">'+product_name+'</span>';
+            tr += '<span class="product_name">'+product_name.substring(0, 28)+'</span>';
             tr += '<span class="product_variant">('+variant_name+')</span>';  
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
@@ -680,11 +680,11 @@
             @endif
             tr += '</td>';
             tr += '<td>';
-            tr += '<input value="0.00" required name="unit_discounts[]" type="number" class="form-control" id="unit_discount">';
+            tr += '<input readonly value="0.00" required name="unit_discounts[]" type="number" class="form-control" id="unit_discount">';
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input value="'+variant_cost+'" required name="unit_costs_with_discount[]" type="number" class="form-control" id="unit_cost_with_discount">';
+            tr += '<input readonly value="'+variant_cost+'" required name="unit_costs_with_discount[]" type="number" class="form-control" id="unit_cost_with_discount">';
             tr += '</td>';
 
             tr += '<td>';
@@ -699,7 +699,7 @@
 
             tr += '<td>';
             tr += '<input type="hidden" value="'+variant_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-            tr += '<input value="'+variant_cost_with_tax+'" name="net_unit_costs[]" type="number" class="form-control" id="net_unit_cost">';
+            tr += '<input readonly value="'+variant_cost_with_tax+'" name="net_unit_costs[]" type="number" class="form-control" id="net_unit_cost">';
             tr += '</td>';
 
             tr += '<td>';
@@ -939,14 +939,26 @@
             processData: false,
             success:function(data){
                 $('.submit_button').prop('type', 'sumbit');
+                $('.loading_button').hide();
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
-                    $('.loading_button').hide();
-                }else{
-                    $('.loading_button').hide();
-                    toastr.success(data); 
+                    toastr.error(data.errorMsg,'ERROR');
+                }else if (data.successMsg) {
+                    toastr.success(data.successMsg); 
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
+                }else{
+                    toastr.success('Successfully Purchase Created.');
+                    $('#add_purchase_form')[0].reset();
+                    $('#purchase_list').empty();
+                    $(data).printThis({
+                        debug: false,                   
+                        importCSS: true,                
+                        importStyle: true,          
+                        loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
+                        removeInline: false, 
+                        printDelay: 1000, 
+                        header: null,        
+                    });
                 }
             },error: function(err) {
                 $('.submit_button').prop('type', 'sumbit');
@@ -959,6 +971,12 @@
                 }
             }
         });
+    });
+
+    $('.submit_button').on('click', function () {
+        var value = $(this).val();
+        var data_action = $(this).data('action');
+        $('#action').val(value); 
     });
 
     setInterval(function(){
@@ -1138,6 +1156,25 @@
     new Litepicker({
         singleMode: true,
         element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('delivery_date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,

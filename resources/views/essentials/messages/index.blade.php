@@ -37,23 +37,11 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Document</b></a>
-                                        </li>
-
-                                        <li>
                                             <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>Memos</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-stopwatch"></i> <b>Remainders</b></a>
-                                        </li>
-
-                                        <li>
                                             <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope text-primary"></i> <b>Messages</b></a>
-                                        </li>
-
-                                        <li>
-                                            <a href="" class="text-white"><i class="fas fa-snowflake"></i> <b>Knowledge Base</b></a>
                                         </li>
                                     </ul>
                                 </div>

@@ -15,7 +15,19 @@
         <div class="col-lg-4 col-sm-12 col-12 nav-left-sec">
             <div class="col-lg-4 col-sm-12 col-12 logo-sec">
                 <div class="pos-logo">
-                    <img src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}" alt="">
+                    @if (auth()->user()->branch)
+                        @if (auth()->user()->branch->logo != 'default.png')
+                            <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->log) }}">
+                        @else 
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
+                        @endif
+                    @else  
+                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                        @else 
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                        @endif
+                    @endif
                 </div>
             </div>
             

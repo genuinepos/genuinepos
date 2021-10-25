@@ -33,23 +33,11 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Document</b></a>
-                                        </li>
-
-                                        <li>
                                             <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>Memos</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Remainders</b></a>
-                                        </li>
-
-                                        <li>
                                             <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>Messages</b></a>
-                                        </li>
-
-                                        <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Knowledge Base</b></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -66,7 +54,7 @@
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-3">
-                                                            <label><strong>Branch :</strong></label>
+                                                            <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>

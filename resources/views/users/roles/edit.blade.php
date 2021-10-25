@@ -991,175 +991,181 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>HRM Permission</b> </p>
-                                    </div>
+                            @if ($addons->hrm == 1)
+                                <div class="col-md-8">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="heading_area">
+                                            <p class="p-1 text-primary"><b>HRM Permission</b> </p>
+                                        </div>
 
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" id="select_all"  data-target="HRMS"> &nbsp; Select All </p> 
-                                                </div>
-                                            </div>
-                
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-2">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->hrms['leave_type'] == '1' ? 'CHECKED' : '' }} name="leave_type" class="HRMS"> &nbsp; Add/Edit/View/Delete leave type</p> 
+                                                        <input type="checkbox" id="select_all"  data-target="HRMS"> &nbsp; Select All </p> 
                                                     </div>
                                                 </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->hrms['view_own_leave'] == '1' ? 'CHECKED' : '' }} name="view_own_leave" class="HRMS"> &nbsp; Add/View own leave</p> 
+                    
+                                                <div class="col-md-6 offset-2">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->hrms['leave_type'] == '1' ? 'CHECKED' : '' }} name="leave_type" class="HRMS"> &nbsp; Add/Edit/View/Delete leave type</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->hrms['leave_approve'] == '1' ? 'CHECKED' : '' }} name="leave_approve" class="HRMS"> &nbsp; Approve Leave</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->hrms['view_own_leave'] == '1' ? 'CHECKED' : '' }} name="view_own_leave" class="HRMS"> &nbsp; Add/View own leave</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->hrms['attendance_all'] == '1' ? 'CHECKED' : '' }} name="attendance_all" class="HRMS"> &nbsp; Add/Edit/View/Delete all attendance</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->hrms['leave_approve'] == '1' ? 'CHECKED' : '' }} name="leave_approve" class="HRMS"> &nbsp; Approve Leave</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->hrms['view_own_attendance'] == '1' ? 'CHECKED' : '' }} name="view_own_attendance" class="HRMS"> &nbsp;  View own attendance</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->hrms['attendance_all'] == '1' ? 'CHECKED' : '' }} name="attendance_all" class="HRMS"> &nbsp; Add/Edit/View/Delete all attendance</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->hrms['view_a_d'] == '1' ? 'CHECKED' : '' }} name="view_a_d" class="HRMS"> &nbsp; View allowance and deduction</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->hrms['view_own_attendance'] == '1' ? 'CHECKED' : '' }} name="view_own_attendance" class="HRMS"> &nbsp;  View own attendance</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->hrms['department'] == '1' ? 'CHECKED' : '' }} name="department" class="HRMS"> &nbsp; Add/Edit/View/Delete department</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->hrms['view_a_d'] == '1' ? 'CHECKED' : '' }} name="view_a_d" class="HRMS"> &nbsp; View allowance and deduction</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->hrms['designation'] == '1' ? 'CHECKED' : '' }} name="designation" class="HRMS"> &nbsp; Add/Edit/View/Delete designation</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->hrms['department'] == '1' ? 'CHECKED' : '' }} name="department" class="HRMS"> &nbsp; Add/Edit/View/Delete department</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->hrms['designation'] == '1' ? 'CHECKED' : '' }} name="designation" class="HRMS"> &nbsp; Add/Edit/View/Delete designation</p> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
 
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Essentials Permission</b> </p>
-                                    </div>
+                            @if ($addons->todo == 1)
+                                <div class="col-md-8">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="heading_area">
+                                            <p class="p-1 text-primary"><b>Essentials Permission</b> </p>
+                                        </div>
 
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" id="select_all"  data-target="Essentials"> &nbsp; Select All </p> 
-                                                </div>
-                                            </div>
-                
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-2">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->essential['assign_todo'] == '1' ? 'CHECKED' : '' }} name="assign_todo" class="Essentials"> &nbsp; Assign To Do's to others</p> 
+                                                        <input type="checkbox" id="select_all"  data-target="Essentials"> &nbsp; Select All </p> 
                                                     </div>
                                                 </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->essential['create_msg'] == '1' ? 'CHECKED' : '' }} name="create_msg" class="Essentials"> &nbsp; Create Message</p> 
+                    
+                                                <div class="col-md-6 offset-2">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->essential['assign_todo'] == '1' ? 'CHECKED' : '' }} name="assign_todo" class="Essentials"> &nbsp; Assign To Do's</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->essential['view_msg'] == '1' ? 'CHECKED' : '' }} name="view_msg" class="Essentials"> &nbsp; View Message</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->essential['create_msg'] == '1' ? 'CHECKED' : '' }} name="create_msg" class="Essentials"> &nbsp; Create Message</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->essential['view_msg'] == '1' ? 'CHECKED' : '' }} name="view_msg" class="Essentials"> &nbsp; View Message</p> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
 
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Manufacturing Permission</b> </p>
-                                    </div>
+                            @if ($addons->manufacturing == 1)
+                                <div class="col-md-8">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="heading_area">
+                                            <p class="p-1 text-primary"><b>Manufacturing Permission</b> </p>
+                                        </div>
 
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" id="select_all" data-target="Manufacturing"> &nbsp; Select All </p> 
-                                                </div>
-                                            </div>
-                
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-2">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->manufacturing['menuf_view'] == '1' ? 'CHECKED' : '' }} name="menuf_view" class=" Manufacturing"> &nbsp; View Recipe</p> 
+                                                        <input type="checkbox" id="select_all" data-target="Manufacturing"> &nbsp; Select All </p> 
                                                     </div>
                                                 </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->manufacturing['menuf_add'] == '1' ? 'CHECKED' : '' }} name="menuf_add" class="Manufacturing"> &nbsp; Add Recipe</p> 
+                    
+                                                <div class="col-md-6 offset-2">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->manufacturing['menuf_view'] == '1' ? 'CHECKED' : '' }} name="menuf_view" class=" Manufacturing"> &nbsp; View Recipe</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->manufacturing['menuf_edit'] == '1' ? 'CHECKED' : '' }} name="menuf_edit" class="Manufacturing"> &nbsp;  Edit Recipe</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->manufacturing['menuf_add'] == '1' ? 'CHECKED' : '' }} name="menuf_add" class="Manufacturing"> &nbsp; Add Recipe</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->manufacturing['menuf_delete'] == '1' ? 'CHECKED' : '' }} name="menuf_delete" class="Manufacturing"> &nbsp; Delete Recipe</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->manufacturing['menuf_edit'] == '1' ? 'CHECKED' : '' }} name="menuf_edit" class="Manufacturing"> &nbsp;  Edit Recipe</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->manufacturing['menuf_delete'] == '1' ? 'CHECKED' : '' }} name="menuf_delete" class="Manufacturing"> &nbsp; Delete Recipe</p> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
 
-                            <div class="col-md-8">
+                            {{-- <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
                                         <p class="p-1 text-primary"><b>Projects Permission</b> </p>
@@ -1206,107 +1212,109 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Repair Permission</b> </p>
-                                    </div>
+                            @if ($addons->service == 1)
+                                <div class="col-md-8">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="heading_area">
+                                            <p class="p-1 text-primary"><b>Service Permission</b> </p>
+                                        </div>
 
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" id="select_all" data-target="Repair"> &nbsp; Select All </p> 
-                                                </div>
-                                            </div>
-                
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-2">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_add_invo'] == '1' ? 'CHECKED' : '' }} name="ripe_add_invo" class=" Repair"> &nbsp; Add Invoice</p> 
+                                                        <input type="checkbox" id="select_all" data-target="Repair"> &nbsp; Select All </p> 
                                                     </div>
                                                 </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_edit_invo'] == '1' ? 'CHECKED' : '' }} name="ripe_edit_invo" class="Repair"> &nbsp; Edit Invoice</p> 
+                    
+                                                <div class="col-md-6 offset-2">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_add_invo'] == '1' ? 'CHECKED' : '' }} name="ripe_add_invo" class=" Repair"> &nbsp; Add Invoice</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_view_invo'] == '1' ? 'CHECKED' : '' }} name="ripe_view_invo" class="Repair"> &nbsp; View Invoice</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_edit_invo'] == '1' ? 'CHECKED' : '' }} name="ripe_edit_invo" class="Repair"> &nbsp; Edit Invoice</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_delete_invo'] == '1' ? 'CHECKED' : '' }} name="ripe_delete_invo" class="Repair"> &nbsp; Delete Invoice</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_view_invo'] == '1' ? 'CHECKED' : '' }} name="ripe_view_invo" class="Repair"> &nbsp; View Invoice</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['change_invo_status'] == '1' ? 'CHECKED' : '' }} name="change_invo_status" class="Repair"> &nbsp; Change Invoice Status</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_delete_invo'] == '1' ? 'CHECKED' : '' }} name="ripe_delete_invo" class="Repair"> &nbsp; Delete Invoice</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_jop_sheet_status'] == '1' ? 'CHECKED' : '' }} name="ripe_jop_sheet_status" class="Repair"> &nbsp; Add/Edit/Delete Job Sheet Status</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['change_invo_status'] == '1' ? 'CHECKED' : '' }} name="change_invo_status" class="Repair"> &nbsp; Change Invoice Status</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_jop_sheet_add'] == '1' ? 'CHECKED' : '' }} name="ripe_jop_sheet_add" class="Repair"> &nbsp; Add job sheet</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_jop_sheet_status'] == '1' ? 'CHECKED' : '' }} name="ripe_jop_sheet_status" class="Repair"> &nbsp; Add/Edit/Delete Job Sheet Status</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_jop_sheet_edit'] == '1' ? 'CHECKED' : '' }} name="ripe_jop_sheet_edit" class="Repair"> &nbsp; Edit Job Sheet</p> 
+                    
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_jop_sheet_add'] == '1' ? 'CHECKED' : '' }} name="ripe_jop_sheet_add" class="Repair"> &nbsp; Add job sheet</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_jop_sheet_delete'] == '1' ? 'CHECKED' : '' }} name="ripe_jop_sheet_delete" class="Repair"> &nbsp; Delete Job Sheet</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_jop_sheet_edit'] == '1' ? 'CHECKED' : '' }} name="ripe_jop_sheet_edit" class="Repair"> &nbsp; Edit Job Sheet</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_only_assinged_job_sheet'] == '1' ? 'CHECKED' : '' }} name="ripe_only_assinged_job_sheet" class="Repair"> &nbsp; View Only Assigned Job Sheet</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_jop_sheet_delete'] == '1' ? 'CHECKED' : '' }} name="ripe_jop_sheet_delete" class="Repair"> &nbsp; Delete Job Sheet</p> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->repair['ripe_view_all_job_sheet'] == '1' ? 'CHECKED' : '' }} name="ripe_view_all_job_sheet" class="Repair"> &nbsp; View All Job Sheets</p> 
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_only_assinged_job_sheet'] == '1' ? 'CHECKED' : '' }} name="ripe_only_assinged_job_sheet" class="Repair"> &nbsp; View Only Assigned Job Sheet</p> 
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->repair['ripe_view_all_job_sheet'] == '1' ? 'CHECKED' : '' }} name="ripe_view_all_job_sheet" class="Repair"> &nbsp; View All Job Sheets</p> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            @endif
+{{-- 
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
@@ -1330,64 +1338,66 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>E-commerce Permission</b> </p>
-                                    </div>
+                            @if ($addons->e_commerce == 1)
+                                <div class="col-md-8">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="heading_area">
+                                            <p class="p-1 text-primary"><b>E-commerce Permission</b> </p>
+                                        </div>
 
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;<p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" id="select_all" data-target="E-commerce"> &nbsp; Select All </p> 
-                                                </div>
-                                            </div>
-                
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-2">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->e_commerce['e_com_sync_pro_cate'] == '1' ? 'CHECKED' : '' }} name="e_com_sync_pro_cate" class="E-commerce"> &nbsp; Sync Product Categories</p> 
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;<p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" id="select_all" data-target="E-commerce"> &nbsp; Select All </p> 
                                                     </div>
                                                 </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->e_commerce['e_com_sync_pro'] == '1' ? 'CHECKED' : '' }} name="e_com_sync_pro" class="E-commerce"> &nbsp; Sync Products</p> 
+                    
+                                                <div class="col-md-6 offset-2">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->e_commerce['e_com_sync_pro_cate'] == '1' ? 'CHECKED' : '' }} name="e_com_sync_pro_cate" class="E-commerce"> &nbsp; Sync Product Categories</p> 
+                                                        </div>
                                                     </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->e_commerce['e_com_sync_pro'] == '1' ? 'CHECKED' : '' }} name="e_com_sync_pro" class="E-commerce"> &nbsp; Sync Products</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->e_commerce['e_com_sync_order'] == '1' ? 'CHECKED' : '' }} name="e_com_sync_order" class="E-commerce"> &nbsp;  Sync Orders</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" {{ $role->permission->e_commerce['e_com_map_tax_rate'] == '1' ? 'CHECKED' : '' }} name="e_com_map_tax_rate" class="E-commerce"> &nbsp; Map Tax Rates</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    {{--<div class="col-md-12">
+                                                        <div class="row">
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;<h6 class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="e_com_map_tax_rate" class="form-control E-commerce"> &nbsp; Access Woocommerce API settings</h6> 
+                                                        </div>
+                                                    </div> --}}
                                                 </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->e_commerce['e_com_sync_order'] == '1' ? 'CHECKED' : '' }} name="e_com_sync_order" class="E-commerce"> &nbsp;  Sync Orders</p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->e_commerce['e_com_map_tax_rate'] == '1' ? 'CHECKED' : '' }} name="e_com_map_tax_rate" class="E-commerce"> &nbsp; Map Tax Rates</p> 
-                                                    </div>
-                                                </div>
-                 
-                                                {{--<div class="col-md-12">
-                                                    <div class="row">
-                                                        &nbsp;&nbsp;&nbsp;&nbsp;<h6 class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="e_com_map_tax_rate" class="form-control E-commerce"> &nbsp; Access Woocommerce API settings</h6> 
-                                                    </div>
-                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            
+                            @endif
+
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">
                                     <button type="button" class="btn loading_button d-none"><i

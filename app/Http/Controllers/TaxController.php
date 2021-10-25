@@ -14,6 +14,10 @@ class TaxController extends Controller
 
     public function index()
     {
+        if (auth()->user()->permission->setup['tax'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         return view('settings.taxes.index');
     }
 

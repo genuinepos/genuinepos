@@ -474,7 +474,7 @@ input#select-gear-selectized {
 }
 
 .form-control:hover {
-    box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+    background: #dddddd36;
 }
 
 select#bootstrap-duallistbox-nonselected-list_assetIdBox option {

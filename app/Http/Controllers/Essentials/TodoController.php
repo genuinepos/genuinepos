@@ -140,6 +140,10 @@ class TodoController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        if (auth()->user()->permission->essential['assign_todo'] == '0') {
+            return response()->json(['errorMsg' => 'You do\'t have any permission to assign the todo.']);
+        }
+
         $this->validate($request, [
             'task' => 'required',
             'priority' => 'required',
@@ -156,7 +160,7 @@ class TodoController extends Controller
         }
 
         $addTodo = Todo::insertGetId([
-            'todo_id' => date('Y/') . $IdNo,
+            'todo_id' => date('my') . $IdNo,
             'branch_id' => auth()->user()->branch_id,
             'task' => $request->task,
             'priority' => $request->priority,

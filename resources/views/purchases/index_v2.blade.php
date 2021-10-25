@@ -62,9 +62,9 @@
                                                     <select name="status" id="status"
                                                         class="form-control  submit_able">
                                                         <option value="">All</option>
-                                                        <option value="1">Received</option>
+                                                        <option value="1">Purchased</option>
                                                         <option value="2">Pending</option>
-                                                        <option value="3">Ordered</option>
+                                                        <option value="3">Purchased By Order</option>
                                                     </select>
                                                 </div>
 
@@ -144,9 +144,18 @@
                                                 <th>Created By</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="7" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                <th id="total_purchase_amount" class="text-white"></th>
+                                                <th id="paid" class="text-white"></th>
+                                                <th id="due" class="text-white"></th>
+                                                <th id="purchase_return_amount" class="text-white"></th>
+                                                <th id="purchase_return_due" class="text-white"></th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -286,9 +295,31 @@
                 {data: 'purchase_return_due',name: 'purchase_return_due', className: 'text-end'},
                 {data: 'created_by',name: 'created_by.name'},
             ],fnDrawCallback: function() {
+                var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
+                $('#total_purchase_amount').text(parseFloat(total_purchase_amount).toFixed(2));
+                var paid = sum_table_col($('.data_tbl'), 'paid');
+                $('#paid').text(parseFloat(paid).toFixed(2));
+                var due = sum_table_col($('.data_tbl'), 'due');
+                $('#due').text(parseFloat(due).toFixed(2));
+                var purchase_return_amount = sum_table_col($('.data_tbl'), 'purchase_return_amount');
+                $('#purchase_return_amount').text(parseFloat(purchase_return_amount).toFixed(2));
+                var purchase_return_due = sum_table_col($('.data_tbl'), 'purchase_return_due');
+                $('#purchase_return_due').text(parseFloat(purchase_return_due).toFixed(2));
                 $('.data_preloader').hide();
-            },
+            }
         });
+
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
         // Show details modal with data
         $(document).on('click', '.details_button', function(e) {

@@ -100,7 +100,7 @@
                         </div>
                     </div>
 
-                    <div class="row px-3 mt-1">
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -256,19 +256,19 @@
                 }
             },
             columnDefs: [{
-                "targets": [0],
+                "targets": [0, 7, 8, 9],
                 "orderable": false,
                 "searchable": false
             }],
             columns: [
                 {data: 'action'},
-                {data: 'date', name: 'date'},
-                {data: 'invoice_id', name: 'invoice_id'},
-                {data: 'from', name: 'from'},
-                {data: 'customer', name: 'customer'},
-                {data: 'total_payable_amount', name: 'total_payable_amount', className: 'text-end'},
-                {data: 'paid', name: 'paid', className: 'text-end'},
-                {data: 'due', name: 'due', className: 'text-end'},
+                {data: 'date', name: 'sales.date'},
+                {data: 'invoice_id', name: 'sales.invoice_id'},
+                {data: 'from', name: 'branches.name'},
+                {data: 'customer', name: 'customers.name'},
+                {data: 'total_payable_amount', name: 'sales.total_payable_amount', className: 'text-end'},
+                {data: 'paid', name: 'sales.paid', className: 'text-end'},
+                {data: 'due', name: 'sale.due', className: 'text-end'},
                 {data: 'paid_status', name: 'paid_status'},
                 {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
                 {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},

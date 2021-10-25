@@ -120,7 +120,6 @@
                                 }
 
                                 var name = product.name.length > 30 ? product.name.substring(0, 30)+'...' : product.name;
-
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td class="serial">1</td>';

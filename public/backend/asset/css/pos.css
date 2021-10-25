@@ -1031,7 +1031,8 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .checkout-input-sec input {
     text-align: right;
-    font-weight: 800;
+    font-weight: 500;
+    font-size: 13px;
 }
 #order_tax {
     direction: rtl;

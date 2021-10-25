@@ -322,6 +322,11 @@ body.red-theme {
     color: #fff;
 }
 
+.red-theme ul.menus_unorder_list .menu_list {
+    border: 1px solid lightgray;
+    background: var(--red-color-gradient);
+}
+
 /* =================Blue theme==========================  */
 body.blue-theme {
     background: #eef0f8 !important;
@@ -582,6 +587,11 @@ body.blue-theme {
     color: #fff;
 }
 
+.blue-theme ul.menus_unorder_list .menu_list {
+    border: 1px solid lightgray;
+    background: var(--blue-color-gradient);
+}
+
 /* =================Dark theme==========================  */
 body.dark-theme {
     background: #eef0f8 !important;
@@ -840,6 +850,11 @@ body.dark-theme {
 .dark-theme .modal-header {
     background: var(--dark-color-gradient);
     color: #fff;
+}
+
+.dark-theme ul.menus_unorder_list .menu_list {
+    border: 1px solid lightgray;
+    background: var(--dark-color-gradient);
 }
 
 /* =================Light theme==========================  */
@@ -1104,4 +1119,9 @@ body.light-theme {
 .light-theme .modal-header {
     background: var(--light-color-gradient);
     color: #fff;
+}
+
+.light-theme ul.menus_unorder_list .menu_list {
+    border: 1px solid lightgray;
+    background: var(--light-color-gradient);
 }

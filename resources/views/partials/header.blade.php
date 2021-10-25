@@ -1,15 +1,26 @@
-{{-- <div id="google_translate_element"></div> --}}
 <header>
     <div class="navigation red_linear_bg">
         <div class="panel__nav">
             <div class=" top-menu">
                 <div class="logo__sec">
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
-                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                        @if (auth()->user()->branch)
+                            @if (auth()->user()->branch->logo != 'default.png')
+                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->log) }}">
+                            @else 
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white; 
+                                letter-spacing:1px;padding-top:15px;">{{ auth()->user()->branch->name }}</span>
+                            @endif
+                        @else  
+                            @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                            @else 
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                            @endif
+                        @endif
                     </a>
                 </div>
                 <div class="notify-menu">
-                    <small class="text-white float-start d-none d-md-block branch-name"><strong>{!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] !!}</strong></small>
                     <div class="head__content__sec">
                         <ul class="head__cn">
                             <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>

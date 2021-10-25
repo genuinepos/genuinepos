@@ -14,7 +14,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
@@ -30,30 +29,18 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Document</b></a>
-                                        </li>
-
-                                        <li>
                                             <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>Memos</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-stopwatch"></i> <b>Remainders</b></a>
-                                        </li>
-
-                                        <li>
                                             <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope"></i> <b>Messages</b></a>
-                                        </li>
-
-                                        <li>
-                                            <a href="" class="text-white"><i class="fas fa-snowflake"></i> <b>Knowledge Base</b></a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
+
                     <div class="row mt-1">
                         <div class="col-md-5">
                             <div class="card" id="add_form">

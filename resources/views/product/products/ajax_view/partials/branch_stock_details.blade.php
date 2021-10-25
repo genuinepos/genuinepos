@@ -23,7 +23,7 @@
 
                         <td class="text-start"><b>{{ $product_variant->mb_stock . ' (' . $product->unit->code_name . ')' }}</b></td>
                         @php
-                            $stockValue = $product_variant->mb_stock * $product->product_cost_with_tax;
+                            $stockValue = $product_variant->mb_stock * $product_variant->variant_cost_with_tax;
                         @endphp
                         <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'] }} 

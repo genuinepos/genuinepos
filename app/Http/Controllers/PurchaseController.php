@@ -217,6 +217,7 @@ class PurchaseController extends Controller
         $addPurchase->po_pending_qty = $request->purchase_status == 1 ? $request->total_qty : 0;
         $addPurchase->po_receiving_status = $request->purchase_status == 1 ? NULL : 'Pending';
         $addPurchase->date = $request->date;
+        $addPurchase->delivery_date = $request->delivery_date;
         $addPurchase->report_date = date('Y-m-d', strtotime($request->date));
         $addPurchase->time = date('h:i:s a');
         $addPurchase->month = date('F');
@@ -306,11 +307,13 @@ class PurchaseController extends Controller
         }
 
         // update main product and variant price
-        $loop = 0;
-        foreach ($product_ids as $productId) {
-            $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
-            $this->purchaseUtil->updateProductAndVariantPrice($productId, $variant_id, $unit_costs_with_discount[$loop], $net_unit_costs[$loop], $profits[$loop], $selling_prices[$loop], $isEditProductPrice);
-            $loop++;
+        if ($request->purchase_status == 1) {
+            $loop = 0;
+            foreach ($product_ids as $productId) {
+                $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
+                $this->purchaseUtil->updateProductAndVariantPrice($productId, $variant_id, $unit_costs_with_discount[$loop], $net_unit_costs[$loop], $profits[$loop], $selling_prices[$loop], $isEditProductPrice);
+                $loop++;
+            }
         }
 
         if ($request->purchase_status == 1) {
@@ -332,9 +335,37 @@ class PurchaseController extends Controller
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($request->supplier_id);
-
-        session()->flash('successMsg', 'Successfully purchase is added');
-        return response()->json('Successfully purchase is added');
+        if ($request->action == 2) {
+            return response()->json(['successMsg' => 'Successfully purchase is created.']);
+        } else {
+            if ($request->purchase_status == 3) {
+                $purchase = Purchase::with([
+                    'warehouse:id,warehouse_name,warehouse_code',
+                    'branch',
+                    'supplier',
+                    'admin:id,prefix,name,last_name',
+                    'purchase_order_products',
+                    'purchase_products.product',
+                    'purchase_products.product.warranty',
+                    'purchase_products.variant',
+                    'purchase_payments',
+                ])->where('id', $addPurchase->id)->first();
+                return view('purchases.save_and_print_template.print_order', compact('purchase'));
+            } else {
+                $purchase = Purchase::with([
+                    'warehouse:id,warehouse_name,warehouse_code',
+                    'branch',
+                    'supplier',
+                    'admin:id,prefix,name,last_name',
+                    'purchase_products',
+                    'purchase_products.product',
+                    'purchase_products.product.warranty',
+                    'purchase_products.variant',
+                    'purchase_payments',
+                ])->where('id', $addPurchase->id)->first();
+                return view('purchases.save_and_print_template.print_purchase', compact('purchase'));
+            }
+        }
     }
 
     // update purchase method
@@ -361,7 +392,8 @@ class PurchaseController extends Controller
         $selling_prices = $request->selling_prices;
 
         // get updatable purchase row
-        $updatePurchase = purchase::with(['purchase_products', 'purchase_order_products','ledger'])->where('id', $request->id)->first();
+        $updatePurchase = purchase::with(['purchase_products', 'purchase_order_products', 'ledger'])
+            ->where('id', $request->id)->first();
         $storedWarehouseId = $updatePurchase->warehouse_id;
         $storePurchaseProducts = $updatePurchase->purchase_products;
 
@@ -445,31 +477,33 @@ class PurchaseController extends Controller
         $updatePurchase->ledger->save();
 
         // update product and variant Price & quantity
-        $loop = 0;
-        foreach ($product_ids as $productId) {
-            $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
-            if ($updatePurchase->is_last_created == 1) {
-                $this->purchaseUtil->updateProductAndVariantPrice($productId, $variant_id, $unit_costs_with_discount[$loop], $net_unit_costs[$loop], $profits[$loop], $selling_prices[$loop], $isEditProductPrice);
+        if ($editType == 'purchased') {
+            $loop = 0;
+            foreach ($product_ids as $productId) {
+                $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
+                if ($updatePurchase->is_last_created == 1) {
+                    $this->purchaseUtil->updateProductAndVariantPrice($productId, $variant_id, $unit_costs_with_discount[$loop], $net_unit_costs[$loop], $profits[$loop], $selling_prices[$loop], $isEditProductPrice);
+                }
+                $loop++;
             }
-            $loop++;
         }
 
         if ($editType == 'purchased') {
             $this->purchaseUtil->updatePurchaseProduct($request, $isEditProductPrice, $updatePurchase->id);
-        }else {
+        } else {
             $this->purchaseUtil->updatePurchaseOrderProduct($request, $isEditProductPrice, $updatePurchase->id);
         }
-        
+
         // deleted not getting previous product
         $deletedUnusedPurchaseOrPoProducts = '';
         if ($editType == 'ordered') {
             $deletedUnusedPurchaseOrPoProducts = PurchaseOrderProduct::where('purchase_id', $updatePurchase->id)
-            ->where('delete_in_update', 1)
-            ->get();
+                ->where('delete_in_update', 1)
+                ->get();
         } else {
             $deletedUnusedPurchaseOrPoProducts = PurchaseProduct::where('purchase_id', $updatePurchase->id)
-            ->where('delete_in_update', 1)
-            ->get();
+                ->where('delete_in_update', 1)
+                ->get();
         }
 
         if (count($deletedUnusedPurchaseOrPoProducts) > 0) {
@@ -514,7 +548,7 @@ class PurchaseController extends Controller
         if ($editType == 'ordered') {
             $this->purchaseUtil->updatePoInvoiceQtyAndStatusPortion($updatePurchase);
         }
-    
+
         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchase->supplier_id);
 

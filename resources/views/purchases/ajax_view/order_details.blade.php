@@ -48,16 +48,17 @@
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                            <li><strong>Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                            <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>PO Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li><strong>Delivery : </strong> {{$purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) : '' }}</li>
                             <li><strong>Purchase Status : </strong> <span class="badge bg-primary">Ordered</span></li>
                             <li><strong>Receiving Status : </strong> 
                                 @if ($purchase->po_receiving_status == 'Pending')
                                     <span class="badge bg-danger">Pending</span>
                                 @elseif ($purchase->po_receiving_status == 'Completed')
-                                    <span class="badge bg-danger">Completed</span>
+                                    <span class="badge bg-success">Completed</span>
                                 @else
-                                    <span class="badge bg-danger">Partial</span>
+                                    <span class="badge bg-primary">Partial</span>
                                 @endif
                             </li>
                             <li><strong>Payment Status : </strong>
@@ -94,8 +95,6 @@
                                          <th class="text-white text-start">SubTotal({{ json_decode($generalSettings->business, true)['currency']}}) (Before Tax)</th>
                                          <th class="text-white text-start">Tax(%)</th>
                                          <th class="text-white text-start">Unit Cost({{ json_decode($generalSettings->business, true)['currency']}}) (After Tax)</th>
-                                         <th class="text-white text-start">Unit Selling Price({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                         <th class="text-white text-start">Lot Number</th>
                                          <th class="text-white text-start">SubTotal({{ json_decode($generalSettings->business, true)['currency']}})</th>
                                          <th class="text-white text-start">Pending Qty</th>
                                          <th class="text-white text-start">Received Qty</th>
@@ -118,9 +117,7 @@
                                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->subtotal) }}</td>
                                             <td class="text-start">{{ $product->unit_tax.'('.$product->unit_tax_percent.'%)' }}</td>
                                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->net_unit_cost) }} </td>
-                                            <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->selling_price) }}</td>
                                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->line_total) }}</td>
-                                            <td class="text-start">{{ $product->lot_no ? $product->lot_no : '' }}</td>
                                             <td class="text-start text-danger">{{ $product->pending_quantity }}</td>
                                             <td class="text-start text-success">{{ $product->received_quantity }}</td>
                                         </tr>
@@ -196,40 +193,52 @@
                          <div class="table-responsive">
                             <table class="table modal-table table-sm">
                                 <tr>
-                                    <th class="text-start">Net Total Amount</th>
-                                    <td class="text-start"> 
-                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
+                                    <th class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }} 
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Purchase Discount</th>
-                                    <td class="text-start">
-                                       <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
-                                           {{ $purchase->order_discount }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
+                                    <th class="text-end">Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
+                                        {{ $purchase->order_discount }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Purchase Tax</th>
-                                    <td class="text-start">
-                                       <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
-                                           {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
+                                    <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end"> 
+                                        {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Shipment Charge</th>
-                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
+                                    <th class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end"><b></b> 
                                            {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                    </td>
                                 </tr>
    
                                 <tr>
-                                    <th class="text-start">Purchase Total</th>
-                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                           {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
+                                    <th class="text-end">Order Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
+                                   </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-end">Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
+                                   </td>
+                                </tr>
+
+                                
+                                <tr>
+                                    <th class="text-end">Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                                    </td>
                                 </tr>
                             </table>
@@ -291,9 +300,17 @@
                 <div class="row">
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         @if ($purchase->branch)
-                            <img style="height: 75px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $purchase->branch->logo) }}">
+                            @if ($purchase->branch->logo != 'default.png')
+                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $purchase->branch->logo) }}">
+                            @else 
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
+                            @endif
                         @else 
-                            <img style="height: 75px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                            @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                            @else 
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                            @endif
                         @endif
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -326,17 +343,16 @@
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                                        Office</b>)
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
                             <li><strong>Ordered Location : </strong>
                                 @if ($purchase->warehouse_id )
-                                    {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_name }}
-                                    (<b>Warehouse</b>)
+                                    {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
+                                    (<b>WH</b>)
                                 @elseif($purchase->branch_id)
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
-                                    (<b>Branch/Concern</b>)
+                                    (<b>B.L</b>)
                                 @else
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
                                 @endif
@@ -354,8 +370,10 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                            <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>Purchase Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li><strong>Delivery Date : </strong>{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
+                            
                             <li><strong>Purchase Status : </strong>Ordered</li>
                             <li><strong>Receiving Status : </strong>{{ $purchase->po_receiving_status }}</li>
                             <li><strong>Payment Status : </strong>
@@ -384,15 +402,10 @@
                         <tr>
                             <th scope="col">Product</th>
                             <th scope="col">Ordered Quantity</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Before Discount)</th>
+                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Bf. Discount)</th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Before Tax)</th>
-                            <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }}) (Before Tax)</th>
                             <th scope="col">Tax(%)</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (After Tax)</th>
-                            <th scope="col">Unit Selling Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Lot Number</th>
                             <th scope="col">Pending Qty</th>
                             <th scope="col">Received Qty</th>
                         </tr>
@@ -404,17 +417,13 @@
                                     $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
                                 @endphp
                                 
-                                <td>{{ $product->product->name.' '.$variant }}</td>
+                                <td>{{ Str::limit($product->product->name, 25).' '.$variant }}</td>
                                 <td>{{ $product->order_quantity }}</td>
                                 <td>
                                     {{ App\Utils\Converter::format_in_bdt($product->unit_cost) }}
                                 </td>
                                 <td>{{ App\Utils\Converter::format_in_bdt($product->unit_discount) }} </td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($product->unit_cost_with_discount) }}</td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($product->subtotal) }}</td>
                                 <td>{{ $product->unit_tax.'('.$product->unit_tax_percent.'%)' }}</td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($product->net_unit_cost) }} </td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($product->selling_price) }}</td>
                                 <td>{{ App\Utils\Converter::format_in_bdt($product->line_total) }}</td>
                                 <td>{{ $product->lot_no ? $product->lot_no : '' }}</td>
                                 <td>{{ $product->pending_quantity }}</td>
@@ -422,43 +431,71 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="11" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                            <td colspan="2" class="text-start"> 
-                                    {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th colspan="11" class="text-end">Purchase Discount : 
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                            </th>
-                            <td colspan="2" class="text-start">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{$purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th colspan="11" class="text-end">Purchase Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                            <td colspan="2" class="text-start">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount).' ('.$purchase->purchase_tax_percent.'%)' }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th colspan="11" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                            <td colspan="2" class="text-start">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th colspan="11" class="text-end">Purchase Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                            <td colspan="2" class="text-start">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
-                            </td>
-                        </tr>
-                    </tfoot>
                 </table>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <p><strong>Order Note :</strong> </p>
+                    <p>{{ $purchase->purchase_note }}</p><br>
+                    <p><strong>Shipment Details :</strong> </p>
+                    <p>{{ $purchase->shipment_details }}</p>
+                </div>
+
+                <div class="col-6">
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="11" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <td colspan="2" class="text-end"> 
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="11" class="text-end">Order Discount : 
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                </th>
+                                <td colspan="2" class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{$purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="11" class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <td colspan="2" class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount).' ('.$purchase->purchase_tax_percent.'%)' }}
+                                </td>
+                            </tr>
+    
+                            <tr>
+                                <th colspan="11" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <td colspan="2" class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
+                                </td>
+                            </tr>
+    
+                            <tr>
+                                <th colspan="11" class="text-end">Order Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <td colspan="2" class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th colspan="11" class="text-end">Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <td colspan="2" class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th colspan="11" class="text-end">Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <td colspan="2" class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
 
             <br>

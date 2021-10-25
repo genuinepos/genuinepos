@@ -16,10 +16,10 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
-                                @if ($sale->branch)
+                                @if ($sale->branch->logo != 'default.png')
                                     <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                 @else 
-                                    <img style="height: 60px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
                                 @endif
                             @endif
                         </div>
@@ -399,7 +399,11 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5> 
+                                    @if ($sale->branch->logo != 'default.png')
+                                        <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                    @else 
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                    @endif
                                 </th>
                             </tr>
 

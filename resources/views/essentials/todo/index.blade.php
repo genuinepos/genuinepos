@@ -16,7 +16,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
@@ -32,23 +31,11 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Document</b></a>
-                                        </li>
-
-                                        <li>
                                             <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>Memos</b></a>
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Remainders</b></a>
-                                        </li>
-
-                                        <li>
                                             <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>Messages</b></a>
-                                        </li>
-
-                                        <li>
-                                            <a href="" class="text-white"><i class="fas fa-th-large"></i> <b>Knowledge Base</b></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -64,7 +51,7 @@
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-3">
-                                                            <label><strong>Branch :</strong></label>
+                                                            <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
@@ -120,8 +107,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
-
+                 
                     <div class="row mt-1">
                         <div class="col-md-3">
                             <div class="card" id="add_form">
@@ -176,7 +162,6 @@
                                             </div>
                                         </div>
 
-                
                                         <div class="form-group mt-1">
                                             <div class="col-md-12">
                                                 <label><b>Due Date : </b></label>
@@ -362,12 +347,15 @@
             cache: false,
             processData: false,
             success:function(data){
-                $('#add_todo_form')[0].reset();
-                $(".select2").select2().val('').trigger('change');
                 $('.loading_button').hide();
-                $('.modal').modal('hide');
-                toastr.success(data); 
-                table.ajax.reload();
+                if (!$.isEmptyObject(data.errorMsg)) {
+                    toastr.error(data.errorMsg); 
+                }else{
+                    $('#add_todo_form')[0].reset();
+                    $(".select2").select2().val('').trigger('change');
+                    toastr.success(data); 
+                    table.ajax.reload();
+                }
             }
         });
     });

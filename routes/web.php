@@ -319,6 +319,8 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::post('store', 'SaleController@store')->name('sales.store');
     Route::get('edit/{saleId}', 'SaleController@edit')->name('sales.edit');
     Route::get('editable/sale/{saleId}', 'SaleController@editableSale')->name('sales.get.editable.sale');
+    Route::get('edit/sold/product/{saleId}/{productId}/{variantId}', 'SaleController@editSoldProduct')->name('sales.edit.sold.product');
+    Route::post('update/sold/product/{saleId}', 'SaleController@updateSoldProduct')->name('sales.update.sold.product');
     Route::post('update/{saleId}', 'SaleController@update')->name('sales.update');
     Route::get('get/all/customer', 'SaleController@getAllCustomer')->name('sales.get.all.customer');
     Route::get('customer_info/{customerId}', 'SaleController@customerInfo');
@@ -651,6 +653,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('purchase/settings', 'GeneralSettingController@purchaseSettings')->name('settings.purchase.settings');
         Route::post('dashboard/settings', 'GeneralSettingController@dashboardSettings')->name('settings.dashboard.settings');
         Route::post('prefix/settings', 'GeneralSettingController@prefixSettings')->name('settings.prefix.settings');
+        Route::post('system/settings', 'GeneralSettingController@systemSettings')->name('settings.system.settings');
         Route::post('module/settings', 'GeneralSettingController@moduleSettings')->name('settings.module.settings');
         Route::post('send/email/sms/settings', 'GeneralSettingController@SendEmailSmsSettings')->name('settings.send.email.sms.settings');
         Route::post('email/settings', 'GeneralSettingController@emailSettings')->name('settings.email.settings');

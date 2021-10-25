@@ -766,7 +766,7 @@
         taxArray.forEach(function (tax) {
             if (tax.tax_percent == unit_tax_percent) {
                 $('#e_unit_tax').append('<option SELECTED value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
-            }else{
+            } else {
                 $('#e_unit_tax').append('<option value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
             }
         });

@@ -57,6 +57,7 @@ class PurchaseOrderReceiveController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'purchase'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
+        $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
 
         $purchase = Purchase::where('id', $purchaseId)->first();
         $purchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchases');
@@ -101,6 +102,11 @@ class PurchaseOrderReceiveController extends Controller
                 $purchaseProduct->selling_price = $purchase_order_product->selling_price;
                 $purchaseProduct->lot_no = $purchase_order_product->lot_no;
                 $purchaseProduct->save();
+
+                // update product and variant Price & quantity
+                if ($purchase->is_last_created == 1) {
+                    $this->purchaseUtil->updateProductAndVariantPrice($purchase_order_product->product_id, $purchase_order_product->product_variant_id, $purchase_order_product->unit_cost_with_discount, $purchase_order_product->net_unit_cost, $purchase_order_product->profit_margin, $purchase_order_product->selling_price, $isEditProductPrice);
+                }
             } else {
                 if ($purchase_order_product->received_quantity != 0) {
                     $addPurchaseProduct = new PurchaseProduct();
@@ -122,6 +128,10 @@ class PurchaseOrderReceiveController extends Controller
                     $addPurchaseProduct->selling_price = $purchase_order_product->selling_price;
                     $addPurchaseProduct->lot_no = $purchase_order_product->lot_no;
                     $addPurchaseProduct->save();
+
+                    if ($purchase->is_last_created == 1) {
+                        $this->purchaseUtil->updateProductAndVariantPrice($purchase_order_product->product_id, $purchase_order_product->product_variant_id, $purchase_order_product->unit_cost_with_discount, $purchase_order_product->net_unit_cost, $purchase_order_product->profit_margin, $purchase_order_product->selling_price, $isEditProductPrice);
+                    }
                 }
             }
         }
@@ -188,6 +198,8 @@ class PurchaseOrderReceiveController extends Controller
 
         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
+
+        $this->purchaseUtil->updatePoInvoiceQtyAndStatusPortion($purchase);
         return response()->json('Successfully order receiving is modified.');
     }
 }

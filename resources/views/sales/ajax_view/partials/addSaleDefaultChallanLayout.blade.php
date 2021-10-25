@@ -19,9 +19,17 @@
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         @if ($defaultLayout->show_shop_logo == 1)
                             @if ($sale->branch)
-                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
-                            @else
-                                <img style="height: 60px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                @if ($sale->branch->logo != 'default.png')
+                                    <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                @else 
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                @endif
+                            @else 
+                                @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                    <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                @else 
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                @endif
                             @endif
                         @endif
                     </div>

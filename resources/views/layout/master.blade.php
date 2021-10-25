@@ -15,17 +15,17 @@
     @stack('stylesheets')
 
 </head>
-<body id="dashboard-8" class="red-theme">
+<body id="dashboard-8" class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
 
     {{-- color changing option  --}}
-    <div class="color_change_wrapper">
+    {{-- <div class="color_change_wrapper">
         <ul>
             <li class="red"></li>
             <li class="blue"></li>
             <li class="dark"></li>
             <li class="light"></li>
         </ul>
-    </div>
+    </div> --}}
 
     <div class="all__content">
         @include('partials.sidebar')

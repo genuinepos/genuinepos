@@ -801,40 +801,43 @@
                                 </form>
 
                                 <form id="system_settings_form" class="setting_form d-none"
-                                action="" method="post">
-                                <div class="form-group">
-                                    <div class="setting_form_heading">
-                                        <h6 class="text-primary">Prefix Settings</h6>
+                                action="{{ route('settings.system.settings') }}" method="post">
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">System Settings</h6>
+                                        </div>
                                     </div>
-                                </div>
-                                @csrf
-                                <div class="form-group row">
-                                    <div class="col-md-4">
-                                        <label><strong>Theme Color :</strong></label>
-                                        <select name="theme_color" class="form-control" id="theme_color">
-                                            <option value="null">Select Theme Color</option>
-                                        </select>
+                                    @csrf
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label><strong>Theme Color :</strong></label>
+                                            <select name="theme_color" class="form-control" id="theme_color">
+                                                <option  {{ json_decode($generalSettings->system, true)['theme_color'] == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
+                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">Blue Theme</option>
+                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Dark Theme</option>
+                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">Light Theme</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>Default datatable page entries :</strong></label>
+                                            <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-4">
-                                        <label><strong>Default datatable page entries :</strong></label>
-                                        <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="row mt-2">
-                                    <div class="col-md-12 text-end">
-                                        <button type="button" class="btn loading_button d-none"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                        <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
 
                                 <form id="point_settings_form" class="setting_form d-none"
                                     action="{{ route('settings.reward.point.settings') }}" method="post">
@@ -1247,7 +1250,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 @push('scripts')
     <script>
@@ -1296,7 +1298,6 @@
                 cache: false,
                 processData: false,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1333,7 +1334,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1370,7 +1370,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1423,7 +1422,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1441,7 +1439,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1459,7 +1456,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1496,7 +1492,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1514,9 +1509,26 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
+                }
+            });
+        });
+
+        $('#system_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success(data);
+                    $('.loading_button').hide();
+                    window.location = "{{ url()->current() }}";
                 }
             });
         });
@@ -1532,7 +1544,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1550,7 +1561,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1567,7 +1577,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1584,7 +1593,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }
@@ -1601,7 +1609,6 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                 }

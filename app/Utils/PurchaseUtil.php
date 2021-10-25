@@ -121,11 +121,11 @@ class PurchaseUtil
                     return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
                 }
             })
-            ->editColumn('total_purchase_amount', fn ($row) => $this->converter->format_in_bdt($row->total_purchase_amount))
-            ->editColumn('paid', fn ($row) => $this->converter->format_in_bdt($row->paid))
-            ->editColumn('due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
-            ->editColumn('purchase_return_amount', fn ($row) => $this->converter->format_in_bdt($row->purchase_return_amount))
-            ->editColumn('purchase_return_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="text-danger">' .  '<span class="due" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span></span>')
+            ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="' . $row->purchase_return_amount . '">' . $this->converter->format_in_bdt($row->purchase_return_amount) . '</span>')
+            ->editColumn('purchase_return_due', fn ($row) => '<span class="purchase_return_due text-danger" data-value="' . $row->purchase_return_due . '">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
             ->editColumn('status', function ($row) {
                 if ($row->purchase_status == 1) {
                     return '<span class="text-success"><b>Purchased</b></span>';
@@ -201,6 +201,7 @@ class PurchaseUtil
                 'purchases.due',
                 'purchases.paid',
                 'purchases.purchase_status',
+                'purchases.po_receiving_status',
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'warehouses.warehouse_name',
@@ -209,7 +210,8 @@ class PurchaseUtil
                 'created_by.prefix as created_prefix',
                 'created_by.name as created_name',
                 'created_by.last_name as created_last_name',
-            )->where('purchase_status', 3)->orderBy('purchases.report_date', 'desc');
+            )->where('purchases.purchase_status', 3)
+                ->orderBy('purchases.report_date', 'desc');
         } else {
             $purchases = $query->select(
                 'purchases.id',
@@ -224,6 +226,7 @@ class PurchaseUtil
                 'purchases.due',
                 'purchases.paid',
                 'purchases.purchase_status',
+                'purchases.po_receiving_status',
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'warehouses.warehouse_name',
@@ -232,7 +235,9 @@ class PurchaseUtil
                 'created_by.prefix as created_prefix',
                 'created_by.name as created_name',
                 'created_by.last_name as created_last_name',
-            )->where('purchases.branch_id', auth()->user()->branch_id)->where('purchase_status', 3)->orderBy('purchases.report_date', 'desc');
+            )->where('purchases.branch_id', auth()->user()->branch_id)
+                ->where('purchases.purchase_status', 3)
+                ->orderBy('purchases.report_date', 'desc');
         }
 
         return DataTables::of($purchases)
@@ -257,12 +262,12 @@ class PurchaseUtil
             ->editColumn('paid', fn ($row) => $this->converter->format_in_bdt($row->paid))
             ->editColumn('due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
             ->editColumn('status', function ($row) {
-                if ($row->purchase_status == 1) {
-                    return '<span class="text-success"><b>Purchased</b></span>';
-                } elseif ($row->purchase_status == 2) {
-                    return '<span class="text-secondary"><b>Pending</b></span>';
-                } elseif ($row->purchase_status == 3) {
-                    return '<span class="text-primary"><b>Ordered</b></span>';
+                if ($row->po_receiving_status == 'Completed') {
+                    return '<span class="text-success"><b>Completed</b></span>';
+                } elseif ($row->po_receiving_status == 'Pending') {
+                    return '<span class="text-danger"><b>Pending</b></span>';
+                } elseif ($row->po_receiving_status == 'Partial') {
+                    return '<span class="text-primary"><b>Partial</b></span>';
                 }
             })->editColumn('payment_status', function ($row) {
                 $payable = $row->total_purchase_amount - $row->purchase_return_amount;
@@ -744,7 +749,7 @@ class PurchaseUtil
         $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a class="dropdown-item details_button" href="' . route('purchases.show.order', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
         if (auth()->user()->branch_id == $row->branch_id) {
-            $html .= '<a class="dropdown-item" href="' . route('purchases.po.receive.process', [$row->id]) . '"><i class="fas fa-check-double text-primary"></i> Process To Receive</a>';
+            $html .= '<a class="dropdown-item" href="' . route('purchases.po.receive.process', [$row->id]) . '"><i class="fas fa-check-double text-primary"></i> PO To Receive</a>';
         }
         $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 

@@ -143,24 +143,26 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="px-1 pt-1 text-primary"><b>HRM Details</b> </p>
-                                    </div>
+                            @if ($addons->hrm == 1)
+                                <div class="col-md-6">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="heading_area">
+                                            <p class="px-1 pt-1 text-primary"><b>HRM Details</b> </p>
+                                        </div>
 
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <p><b>Department :</b> {{$user->department ? $user->department->department_name : 'N/A'}}</p>
-                                                <p><b>Designation :</b> {{$user->designation ? $user->designation->designation_name : 'N/A'}}</p>
-                                                <p><b>Salery : </b> {{ $user->salary }} </p>
-                                                <p><b>Pay Type : </b>{{ $user->salary_type }} </p>
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p><b>Department :</b> {{$user->department ? $user->department->department_name : 'N/A'}}</p>
+                                                    <p><b>Designation :</b> {{$user->designation ? $user->designation->designation_name : 'N/A'}}</p>
+                                                    <p><b>Salery : </b> {{ $user->salary }} </p>
+                                                    <p><b>Pay Type : </b>{{ $user->salary_type }} </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </section>

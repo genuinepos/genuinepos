@@ -12,20 +12,20 @@
                         <div class="col-md-12">
                             <div class="header_text text-center">
                                 <h4>{{ $sale->branch->add_sale_invoice_layout->header_text }}</h4>
-                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_1 }}
-                                    <p/>
-                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_2 }}
-                                    <p/>
-                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_3 }}
-                                    <p/>
+                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_1 }}<p>
+                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_2 }}<p>
+                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_3 }}<p>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
-                                <img height="100" width="200"
-                                    src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                @if ($sale->branch->logo != 'default.png')
+                                    <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                @else 
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                @endif
                             @endif
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
@@ -252,12 +252,9 @@
                         <div class="col-md-12">
                             <div class="header_text text-center">
                                 <h4>{{ $defaultLayout->header_text }}</h4>
-                                <p>{{ $defaultLayout->sub_heading_1 }}
-                                    <p/>
-                                <p>{{ $defaultLayout->sub_heading_2 }}
-                                    <p/>
-                                <p>{{ $defaultLayout->sub_heading_3 }}
-                                    <p/>
+                                <p>{{ $defaultLayout->sub_heading_1 }}</p>
+                                <p>{{ $defaultLayout->sub_heading_2 }}</p>
+                                <p>{{ $defaultLayout->sub_heading_3 }}</p>
                             </div>
                         </div>
                     </div>
@@ -265,9 +262,17 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             @if ($defaultLayout->show_shop_logo == 1)
                                 @if ($sale->branch)
-                                    <img style="height: 70px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
-                                @else
-                                    <img style="height: 70px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                    @if ($sale->branch->logo != 'default.png')
+                                        <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                    @else 
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                    @endif
+                                @else 
+                                    @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                    @else 
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                    @endif
                                 @endif
                             @endif
                         </div>

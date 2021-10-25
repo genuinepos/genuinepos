@@ -133,7 +133,7 @@
                                                 <th>P.Invoice ID</th>
                                                 <th>Purchase From</th>
                                                 <th>Supplier</th>
-                                                <th>Purchase Status</th>
+                                                <th>Receiving Status</th>
                                                 <th>Payment Status</th>
                                                 <th>Grand Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -270,15 +270,15 @@
             columnDefs: [{"targets": [0, 5, 6],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action'},
-                {data: 'date', name: 'date'},
-                {data: 'invoice_id',name: 'invoice_id'},
+                {data: 'date', name: 'purchases.date'},
+                {data: 'invoice_id',name: 'purchases.invoice_id'},
                 {data: 'from',name: 'branches.name'},
                 {data: 'supplier_name', name: 'suppliers.name'},
-                {data: 'status',name: 'status'},
+                {data: 'status',name: 'purchases.po_receiving_status'},
                 {data: 'payment_status',name: 'payment_status'},
                 {data: 'total_purchase_amount',name: 'total_purchase_amount', className: 'text-end'},
-                {data: 'paid',name: 'paid', className: 'text-end'},
-                {data: 'due',name: 'due', className: 'text-end'},
+                {data: 'paid',name: 'purchases.paid', className: 'text-end'},
+                {data: 'due',name: 'purchases.due', className: 'text-end'},
                 {data: 'created_by',name: 'created_by.name'},
             ],fnDrawCallback: function() {
                 $('.data_preloader').hide();

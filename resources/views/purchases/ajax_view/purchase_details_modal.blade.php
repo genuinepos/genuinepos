@@ -58,7 +58,7 @@
                              <li>
                                 <strong>Purchase Status : </strong>
                                 @if ($purchase->purchase_status == 1)
-                                    <span class="badge bg-success">Received</span>
+                                    <span class="badge bg-success">Purchased</span>
                                 @elseif($purchase->purchase_status == 2){
                                     <span class="badge bg-warning text-white">Pending</span>
                                 @else
@@ -291,9 +291,17 @@
                 <div class="row">
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         @if ($purchase->branch)
-                            <img style="height: 75px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $purchase->branch->logo) }}">
+                            @if ($purchase->branch->logo != 'default.png')
+                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $purchase->branch->logo) }}">
+                            @else 
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
+                            @endif
                         @else 
-                            <img style="height: 75px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                            @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                            @else 
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                            @endif
                         @endif
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -326,19 +334,18 @@
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                                        Office</b>)
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
                             <li><strong>Stored Location : </strong>
                                 @if ($purchase->warehouse_id )
-                                    {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_name }}
-                                    (<b>Warehouse</b>)
+                                    {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
+                                    (<b>WH</b>)
                                 @elseif($purchase->branch_id)
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
-                                    (<b>Branch/Concern</b>)
+                                    (<b>B.L</b>)
                                 @else
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
                             <li><strong>Phone : </strong>
@@ -354,12 +361,12 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>Purchase Status : </strong>
                                 <span class="purchase_status">
                                     @if ($purchase->purchase_status == 1)
-                                        Received
+                                        Purchased
                                     @elseif($purchase->purchase_status == 2){
                                         Pending
                                     @else
@@ -393,12 +400,12 @@
                         <tr>
                             <th scope="col">Product</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Before Discount)</th>
+                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Bf. Discount)</th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Before Tax)</th>
-                            <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }}) (Before Tax)</th>
+                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Bf. Tax)</th>
+                            <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }}) (Bf. Tax)</th>
                             <th scope="col">Tax(%)</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (After Tax)</th>
+                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Af. Tax)</th>
                             <th scope="col">Lot Number</th>
                             <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                           
@@ -411,7 +418,7 @@
                                     $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
                                 @endphp
                                 
-                                <td>{{ $product->product->name.' '.$variant }}</td>
+                                <td>{{ Str::limit($product->product->name, 25).' '.$variant }}</td>
                                 <td>{{ $product->quantity }}</td>
                                 <td>
                                     {{ App\Utils\Converter::format_in_bdt($product->unit_cost) }}

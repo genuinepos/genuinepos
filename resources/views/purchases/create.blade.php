@@ -17,6 +17,7 @@
         <div class="container-fluid">
             <form id="add_purchase_form" action="{{ route('purchases.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
+                <input type="hidden" name="action" id="action" value="">
                 <section class="mt-5">
                     <div class="container-fluid">
                         <div class="row">
@@ -112,7 +113,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
+                                                <label for="inputEmail3" class=" col-4"><b>PUR./PO. Date:</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control changeable"
                                                         value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker" placeholder="dd-mm-yyyy" autocomplete="off">
@@ -129,17 +130,29 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
+                                                <label for="inputEmail3" class=" col-4"><b>Delivery Date :</b></label>
+                                                <div class="col-8">
+                                                    <input type="text" name="delivery_date" class="form-control changeable" id="delivery_date" placeholder="DD-MM-YYYY" autocomplete="off">
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group mt-1">
                                                 <label for="inputEmail3" class=" col-4"><b>Pay Term :</b> </label>
                                                 <div class="col-8">
                                                     <div class="row">
-                                                        <input type="text" name="pay_term_number" class="form-control w-25"
-                                                            id="pay_term_number">
-                                                        <select name="pay_term" class="form-control w-75 changeable"
+                                                        <div class="col-5">
+                                                            <input type="text" name="pay_term_number" class="form-control"
+                                                            id="pay_term_number" placeholder="Number">
+                                                        </div>
+                                                        
+                                                        <div class="col-7">
+                                                            <select name="pay_term" class="form-control changeable"
                                                             id="pay_term">
-                                                            <option value="">Select Pay Term</option>
-                                                            <option value="1">Days</option>
-                                                            <option value="2">Months</option>
-                                                        </select>
+                                                                <option value="">Pay Term</option>
+                                                                <option value="1">Days</option>
+                                                                <option value="2">Months</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -186,15 +199,15 @@
                                                                 <tr>
                                                                     <th>Product</th>
                                                                     <th>Quantity</th>
-                                                                    <th>Unit Cost(Before Discount)</th>
+                                                                    <th>Unit Cost(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
                                                                     <th>Discount</th>
-                                                                    <th>Unit Cost(Before Tax)</th>
-                                                                    <th>SubTotal (Before Tax)</th>
+                                                                    <th>Unit Cost(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
+                                                                    <th>SubTotal (BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
                                                                     <th>Unit Tax</th>
                                                                     <th>Net Unit Cost</th>
                                                                     <th>Line Total</th>
                                                                     @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
-                                                                        <th>Profit Margin(%)</th>
+                                                                        <th>xMargin(%)</th>
                                                                         <th>Selling Price</th>
                                                                     @endif
                                                                     <th><i class="fas fa-trash-alt"></i></th>
@@ -282,7 +295,7 @@
                                             <div class="input-group mt-1">
                                                 <label for="inputEmail3" class=" col-4"><b>Order Note :</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="">
+                                                    <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" placeholder="Order Note.">
                                                 </div>
                                             </div>
                                         </div>
@@ -491,55 +504,18 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area py-3">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                <div class="submitBtn">
+                    <div class="row justify-content-center">
+                        <div class="col-12 text-end">
+                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
+                            <button type="submit" data-status="1" class="btn btn-sm btn-primary submit_button">Save & Print </button>
+                            <button type="submit" data-status="2" class="btn btn-sm btn-primary submit_button">Save</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
-    <section class="">
-        <div class="container-fluid">
-            <div class="row px-3">
-                <div class="section-header">
-                    <div class="col-md-10">
-                        <h6 class="collapse_table">Last Purchase Products</h6>
-                    </div>
-                </div>
-
-                <div class="card m-0 last_p_product_list">
-                    <div class="element-body">
-                        <div class="table-responsive" id="data-list">
-                            <table class="display data_tbl data__table">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>P.Code</th>
-                                        <th>Supplier</th>
-                                        <th>P.Invoice ID</th>
-                                        <th>Date</th>
-                                        <th>Quantity</th>
-                                        <th>Unit Cost</th>
-                                        <th>Unit Price</th>
-                                        <th>Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Add Supplier Modal -->
     <div class="modal fade" id="addSupplierModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">

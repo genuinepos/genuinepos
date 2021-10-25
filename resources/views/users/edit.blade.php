@@ -110,7 +110,7 @@
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label for="inputEmail3" class="col-4"> <span
-                                                                class="text-danger">*</span> <b>Role :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all branch." class="fas fa-info-circle tp"></i></label>
+                                                                class="text-danger">*</span> <b>Role :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all business location." class="fas fa-info-circle tp"></i></label>
                                                         <div class="col-8">
                                                             <select name="role_id" id="role_id" class="form-control">
                                                                 <option {{ $user->role_type == 2 ? 'SELECTED' : '' }} value="">Admin</option>
@@ -152,10 +152,11 @@
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-6 access_branch">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Access Branch :</b> </label>
+                                                        <label for="inputEmail3" class="col-4"><b>Access Location :</b> </label>
                                                         <div class="col-8">
                                                             <select name="branch_id" id="branch_id" class="form-control">
-                                                                <option value="">Select Branch</option>
+                                                                <option value="">Select Business Location</option>
+                                                                <option {{ $user->branch_id == NULL ? 'SELECTED' : '' }} value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
                                                                 @endforeach
@@ -168,7 +169,7 @@
                                                 <div class="col-md-6 belonging_branch d-none">
                                                     <div class="input-group">
                                                         <label for="inputEmail3" class="col-4"><span
-                                                                class="text-danger">*</span> <b>Belonging Branch :</b> </label>
+                                                                class="text-danger">*</span> <b>Belonging Location :</b> </label>
                                                         <div class="col-8">
                                                             <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
                                                                 <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
@@ -445,100 +446,102 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="px-1 pt-1 pb-0 text-primary"><b>Human Resource Details</b> </p>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Employee ID :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control" name="emp_id" placeholder="Employee ID" value="{{ $user->emp_id }}">
-                                                        <span class="error error_emp_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Shift :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="shift_id" class="form-control">
-                                                            @foreach ($shifts as $shift)
-                                                                <option {{ $user->shift_id == $shift->id ? 'SELECTED' : '' }} value="{{ $shift->id }}">{{ $shift->shift_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_shift_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            @if ($addons->hrm == 1)
+                                <div class="col-md-8">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="heading_area">
+                                            <p class="px-1 pt-1 pb-0 text-primary"><b>Human Resource Details</b> </p>
                                         </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Department :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="department_id" class="form-control">
-                                                            <option value="">Select Department</option>
-                                                            @foreach ($departments as $department)
-                                                                <option {{ $user->department_id == $department->id ? 'SELECTED' : '' }} value="{{ $department->id }}">{{ $department->department_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_department_id"></span>
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Employee ID :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" name="emp_id" placeholder="Employee ID" value="{{ $user->emp_id }}">
+                                                            <span class="error error_emp_id"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Shift :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="shift_id" class="form-control">
+                                                                @foreach ($shifts as $shift)
+                                                                    <option {{ $user->shift_id == $shift->id ? 'SELECTED' : '' }} value="{{ $shift->id }}">{{ $shift->shift_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_shift_id"></span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Designation :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="designation_id" class="form-control">
-                                                            <option value="">Select Designation</option>
-                                                            @foreach ($designations as $designation)
-                                                                <option {{ $user->designation_id == $designation->id ? 'SELECTED' : '' }} value="{{ $designation->id }}">{{ $designation->designation_name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                            <div class="row mt-1">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Department :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="department_id" class="form-control">
+                                                                <option value="">Select Department</option>
+                                                                @foreach ($departments as $department)
+                                                                    <option {{ $user->department_id == $department->id ? 'SELECTED' : '' }} value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_department_id"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Designation :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="designation_id" class="form-control">
+                                                                <option value="">Select Designation</option>
+                                                                @foreach ($designations as $designation)
+                                                                    <option {{ $user->designation_id == $designation->id ? 'SELECTED' : '' }} value="{{ $designation->id }}">{{ $designation->designation_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>Salary :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="number" step="any" name="salary" id="salary" class="form-control" placeholder="Salary Amount" autocomplete="off" value="{{ $user->salary }}">
-                                                        <span class="error error_salary"></span>
+                                            <div class="row mt-1">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>Salary :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="number" step="any" name="salary" id="salary" class="form-control" placeholder="Salary Amount" autocomplete="off" value="{{ $user->salary }}">
+                                                            <span class="error error_salary"></span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>Pay Type :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="pay_type" class="form-control" id="pay_type">
-                                                            <option value="">Select Pay type</option>
-                                                            <option {{ $user->salary_type == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">Monthly</option>
-                                                            <option {{ $user->salary_type == 'Yearly' ? 'SELECTED' : '' }} value="Yearly">Yearly</option>
-                                                            <option {{ $user->salary_type == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">Daliy</option>
-                                                            <option {{ $user->salary_type == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">Hourly</option>
-                                                        </select>
-                                                        <span class="error error_pay_type"></span>
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>Pay Type :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="pay_type" class="form-control" id="pay_type">
+                                                                <option value="">Select Pay type</option>
+                                                                <option {{ $user->salary_type == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">Monthly</option>
+                                                                <option {{ $user->salary_type == 'Yearly' ? 'SELECTED' : '' }} value="Yearly">Yearly</option>
+                                                                <option {{ $user->salary_type == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">Daliy</option>
+                                                                <option {{ $user->salary_type == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">Hourly</option>
+                                                            </select>
+                                                            <span class="error error_pay_type"></span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
 
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">

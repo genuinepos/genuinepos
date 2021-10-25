@@ -126,35 +126,29 @@ class UserController extends Controller
         $this->validate($request, [
             'first_name' => 'required',
             'email' => 'required|unique:admin_and_users,email',
-            'department_id' => 'required',
-            'shift_id' => 'required',
-            'emp_id' => 'required',
-            'salary' => 'required',
-            'pay_type' => 'required',
-        ],[
-            'department_id.required' => 'Department field is required.',
-            'shift_id.required' => 'Shift field is required.',
-            'emp_id.required' => 'Employee ID field is required.',
         ]);
+
+    
 
         if (isset($request->allow_login)) {
             $this->validate($request, [
                 'username' => 'required|unique:admin_and_users,username',
                 'password' => 'required|confirmed',
             ]);
+        }
 
-            // if ($request->role_id) {
-            //     $this->validate($request, [
-            //         'branch_id' => 'required',
-            //     ], [
-            //         'branch_id.required' => 'Branch field must not be empty.'
-            //     ]);
-            // }
-        }else {
+        $addons = DB::table('addons')->first();
+        if ($addons->hrm == 1) {
             $this->validate($request, [
-                'belonging_branch_id' => 'required',
-            ], [
-                'belonging_branch_id.required' => 'Belonging Branch field must not be empty.'
+                'department_id' => 'required',
+                'shift_id' => 'required',
+                'emp_id' => 'required',
+                'salary' => 'required',
+                'pay_type' => 'required',
+            ],[
+                'department_id.required' => 'Department field is required.',
+                'shift_id.required' => 'Shift field is required.',
+                'emp_id.required' => 'Employee ID field is required.',
             ]);
         }
 
@@ -210,7 +204,7 @@ class UserController extends Controller
         $addUser->shift_id = $request->shift_id;
         $addUser->department_id = $request->department_id;
         $addUser->designation_id = $request->designation_id;
-        $addUser->salary = $request->salary;
+        $addUser->salary = $request->salary ? $request->salary : 0.00;
         $addUser->salary_type = $request->pay_type;
         $addUser->save();
         session()->flash('successMsg', 'User created successfully');
@@ -243,15 +237,6 @@ class UserController extends Controller
         $this->validate($request, [
             'first_name' => 'required',
             'email' => 'required|unique:admin_and_users,email,'.$userId,
-            'department_id' => 'required',
-            'shift_id' => 'required',
-            'emp_id' => 'required',
-            'salary' => 'required',
-            'pay_type' => 'required',
-        ],[
-            'department_id.required' => 'Department field is required.',
-            'shift_id.required' => 'Shift field is required.',
-            'emp_id.required' => 'Employee ID field is required.',
         ]);
 
         $updateUser = AdminAndUser::where('id', $userId)->first();
@@ -271,19 +256,20 @@ class UserController extends Controller
                     'password' => 'sometimes|confirmed',
                 ]);
             }
+        }
 
-            if ($request->role_id) {
-                $this->validate($request, [
-                    'branch_id' => 'required',
-                ], [
-                    'branch_id.required' => 'Branch field must not be empty.'
-                ]);
-            }
-        }else {
+        $addons = DB::table('addons')->first();
+        if ($addons->hrm == 1) {
             $this->validate($request, [
-                'belonging_branch_id' => 'required',
-            ], [
-                'belonging_branch_id.required' => 'Beloging Branch field must not be empty.'
+                'department_id' => 'required',
+                'shift_id' => 'required',
+                'emp_id' => 'required',
+                'salary' => 'required',
+                'pay_type' => 'required',
+            ],[
+                'department_id.required' => 'Department field is required.',
+                'shift_id.required' => 'Shift field is required.',
+                'emp_id.required' => 'Employee ID field is required.',
             ]);
         }
 
@@ -344,7 +330,7 @@ class UserController extends Controller
         $updateUser->shift_id = $request->shift_id;
         $updateUser->department_id = $request->department_id;
         $updateUser->designation_id = $request->designation_id;
-        $updateUser->salary = $request->salary;
+        $updateUser->salary = $request->salary ? $request->salary : 0;
         $updateUser->salary_type = $request->pay_type;
         $updateUser->save();
         session()->flash('successMsg', 'Successfully user updated');

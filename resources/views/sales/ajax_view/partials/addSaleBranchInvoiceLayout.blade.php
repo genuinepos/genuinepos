@@ -339,7 +339,7 @@
             </div>
 
             <div id="footer">
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-md-12">
                         <div class="text-center">
                             <p class="m-0 p-0"><b>Our Sister Concern</b></p>
@@ -368,7 +368,7 @@
                             <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row mt-1">
                     <div class="col-4 text-center">

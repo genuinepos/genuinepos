@@ -195,7 +195,7 @@
                 </table>
             </div>
 
-            @if (count($sale->sale_products) > 6)
+            @if (count($sale->sale_products) > 10)
                 <br>
                 <div class="row page_break">
                     <div class="col-md-12 text-end">
@@ -357,24 +357,24 @@
 
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
+                            <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
                         </div>
                     </div>
     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
+                            <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
                         </div>
                     </div>
                     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
+                            <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
+                            <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                         </div>
                     </div>
                 </div>

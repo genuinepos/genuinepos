@@ -1,5 +1,7 @@
 @extends('layout.master')
-@push('stylesheets') @endpush
+@push('stylesheets') 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endpush
 @section('title', 'Account List - ')
 @section('content')
     <div class="body-woaper">
@@ -7,7 +9,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-money-check-alt"></span>
@@ -17,52 +18,49 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Accounts</h6>
-                                    </div>
-                                  
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
+                    <div class="row margin_row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Accounts</h6>
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    <div class="btn_30_blue float-end">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
                                 </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Name</th>
-                                                    <th class="text-start">Account Number</th>
-                                                    <th class="text-start">Bank Name</th>
-                                                    <th class="text-start">Account Type</th>
-                                                    <th class="text-start">Remark</th>
-                                                    <th class="text-start">Balance</th>
-                                                    <th class="text-start">Created By</th>
-                                                    <th class="text-start">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Name</th>
+                                                <th class="text-start">Account Number</th>
+                                                <th class="text-start">Bank Name</th>
+                                                <th class="text-start">Account Type</th>
+                                                <th class="text-start">Remark</th>
+                                                <th class="text-start">Balance</th>
+                                                <th class="text-start">Created By</th>
+                                                <th class="text-start">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -220,7 +218,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark"></i></span>
                                 </div>
-                                <input type="date" name="date" class="form-control form-control-sm date-picker ft_input" autocomplete="off" id="date" data-name="Date" value="{{ date('Y-m-d') }}">
+                                <input type="text" name="date" class="form-control form-control-sm ft_input" autocomplete="off" id="date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
                             </div>
                             <span class="error error_date"></span>
                         </div>
@@ -241,8 +239,8 @@
         </div>
     </div> 
 
-     <!-- Deposit Modal -->
-     <div class="modal fade" id="depositModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <!-- Deposit Modal -->
+    <div class="modal fade" id="depositModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -277,7 +275,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark"></i></span>
                                 </div>
-                                <input type="date" name="date" class="form-control form-control-sm date-picker dp_input" autocomplete="off" id="dp_date" data-name="Date" value="{{ date('Y-m-d') }}">
+                                <input type="text" name="date" class="form-control form-control-sm dp_input" autocomplete="off" id="dp_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off">
                             </div>
                             <span class="error error_dp_date"></span>
                         </div>
@@ -299,6 +297,7 @@
     </div>
 @endsection
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     // Set all banks into modal form
     function setBanks(){
@@ -360,11 +359,7 @@
     getAllAccount();
 
     // Setup ajax for csrf token.
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
     // call jquery method 
     $(document).ready(function(){
@@ -412,7 +407,6 @@
             $('.form-control').removeClass('is-invalid');
             $('.error').html('');
             var account = $(this).closest('tr').data('info');
-            console.log(account);
             $('#id').val(account.id);
             $('#e_name').val(account.name);
             $('#e_account_number').val(account.account_number);
@@ -458,25 +452,6 @@
             });
         });
 
-        // Show sweet alert for delete
-        // $(document).on('click', '#delete',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     swal({
-        //         title: "Are you sure?",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     })
-        //     .then((willDelete) => {
-        //         if (willDelete) { 
-        //             $('#deleted_form').submit();
-        //         } else {
-        //             swal("Your imaginary file is safe!");
-        //         }
-        //     });
-        // });
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
@@ -485,18 +460,8 @@
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
@@ -517,42 +482,6 @@
                 }
             });
         });
-
-        $(document).on('click', '#change_status',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
-                    getAllAccount();
-                    toastr.success(data);
-                }
-            });
-        });
-
-         //Submit filter form by select input changing
-         $(document).on('change', '.submit_able', function () {
-            $('#filter_account').submit();
-        });
-
-         //Send account filter request
-         $('#filter_account').on('submit', function (e) {
-           e.preventDefault();
-           $('.data_preloader').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            console.log(request);
-            $.ajax({
-                url:url,
-                type:'get',
-                data: request,
-                success:function(data){
-                    $('#data-list').html(data);
-                    $('.data_preloader').hide();
-                }
-            }); 
-        });
     });
 
     // Show fund transfer modal with data
@@ -563,7 +492,7 @@
         var balance = $(this).data('balance'); 
         $('#sender_account_id').val(sender_account_id);
         $('.selected_account').html(sender_account_name);
-        $('.balance').html(balance);
+        $('.balance').html(bdFormat(balance));
         console.log(accountArray);
         $('#receiver_account_id').empty();
         $('#receiver_account_id').append('<option value="">Select Receiver Account</option>');
@@ -583,7 +512,7 @@
         var balance = $(this).data('balance'); 
         $('#dp_receiver_account_id').val(receiver_account_id);
         $('.selected_account').html(receiver_account_name);
-        $('.balance').html(balance);
+        $('.balance').html(bdFormat(balance));
         $('#dp_sender_account_id').empty();
         $('#dp_sender_account_id').append('<option value="">Select Receiver Account</option>');
         $.each(accountArray, function (key, account) {
@@ -652,7 +581,6 @@
             }
         });
 
-        console.log(countErrorField);
         if(countErrorField > 0){
             $('.loading_button').hide();
             return;
@@ -671,6 +599,44 @@
                 $('#depositModal').modal('hide');
             }
         });
+    });
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('dp_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
+    });
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
     });
 </script>
 @endpush

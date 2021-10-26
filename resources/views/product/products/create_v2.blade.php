@@ -1210,6 +1210,7 @@
                 processData: false,
                 success: function(data) {
                     $('.loading_button').addClass('d-none');
+                    $('.submit_button').prop('type', 'submit');
                     $('.error').html('');
                     if ($.isEmptyObject(data.errorMsg)) {
                         toastr.success(data);

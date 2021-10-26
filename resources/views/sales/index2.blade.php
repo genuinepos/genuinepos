@@ -301,15 +301,15 @@
              
             ],fnDrawCallback: function() {
                 var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
-                $('#total_payable_amount').text(parseFloat(total_payable_amount).toFixed(2));
+                $('#total_payable_amount').text(bdFormat(total_payable_amount));
                 var paid = sum_table_col($('.data_tbl'), 'paid');
-                $('#paid').text(parseFloat(paid).toFixed(2));
+                $('#paid').text(bdFormat(paid));
                 var due = sum_table_col($('.data_tbl'), 'due');
-                $('#due').text(parseFloat(due).toFixed(2));
+                $('#due').text(bdFormat(due));
                 var sale_return_amount = sum_table_col($('.data_tbl'), 'sale_return_amount');
-                $('#sale_return_amount').text(parseFloat(sale_return_amount).toFixed(2));
+                $('#sale_return_amount').text(bdFormat(sale_return_amount));
                 var sale_return_due = sum_table_col($('.data_tbl'), 'sale_return_due');
-                $('#sale_return_due').text(parseFloat(sale_return_due).toFixed(2));
+                $('#sale_return_due').text(bdFormat(sale_return_due));
                 $('.data_preloader').hide();
             }
         });

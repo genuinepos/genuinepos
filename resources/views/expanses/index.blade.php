@@ -120,18 +120,24 @@
                                                 <th class="text-start">Actions</th>
                                                 <th class="text-start">Date</th>
                                                 <th class="text-start">Reference ID</th>
-                                                <th class="text-start">Description</th>
                                                 <th class="text-start">B.Location</th>
+                                                <th class="text-start">Description</th>
+                                                <th class="text-start">Expanse For</th>
                                                 <th class="text-start">Payment Status</th>
                                                 <th class="text-start">Tax</th>
                                                 <th class="text-start">Net Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th class="text-start">Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th class="text-start">Expanse For</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="7" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                <th class="text-white">---</th>
+                                                <th id="net_total_amount" class="text-white"></th>
+                                                <th id="due" class="text-white"></th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -232,22 +238,37 @@
                     d.to_date = $('.to_date').val();
                 }
             },
-            columnDefs: [{"targets": [0, 3, 4, 5, 8],"orderable": false,"searchable": false}],
+            columnDefs: [{"targets": [0, 3, 6],"orderable": false,"searchable": false}],
             columns: [
                 { data: 'action', },
                 { data: 'date', name: 'date' },
                 { data: 'invoice_id', name: 'invoice_id'},
-                { data: 'descriptions', name: 'descriptions' },
                 { data: 'from', name: 'branches.name' },
-                { data: 'payment_status', name: 'payment_status' },
-                { data: 'tax_percent', name: 'tax_percent' },
+                { data: 'descriptions', name: 'descriptions' },
+                { data: 'user_name', name: 'admin_and_users.name' },
+                { data: 'payment_status', name: 'payment_status', className: 'text-end'},
+                { data: 'tax_percent', name: 'tax_percent'},
                 { data: 'net_total_amount', name: 'net_total_amount', className: 'text-end'},
                 { data: 'due', name: 'due', className: 'text-end'},
-                { data: 'user_name', name: 'user_name' },
             ],fnDrawCallback: function() {
-                $('.data_preloader').hide();
-            },
+                var net_total_amount = sum_table_col($('.data_tbl'), 'net_total_amount');
+                $('#net_total_amount').text(bdFormat(net_total_amount));
+                var due = sum_table_col($('.data_tbl'), 'due');
+                $('#due').text(bdFormat(due));
+            }
         });
+
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_form', function (e) {

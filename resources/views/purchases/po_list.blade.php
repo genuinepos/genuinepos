@@ -133,17 +133,23 @@
                                                 <th>P.Invoice ID</th>
                                                 <th>Purchase From</th>
                                                 <th>Supplier</th>
+                                                <th>Created By</th>
                                                 <th>Receiving Status</th>
                                                 <th>Payment Status</th>
                                                 <th>Grand Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Created By</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="8" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th class="text-white text-end" id="total_purchase_amount"></th>
+                                                <th class="text-white text-end" id="paid"></th>
+                                                <th class="text-white text-end" id="due"></th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -160,22 +166,6 @@
     </div>
 
     <div id="purchase_details"></div>
-
-    <!-- Change purchase status modal-->
-    <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Update Purchase Status</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="change_status_modal_body">
-                    <!--begin::Form-->
-                </div>
-            </div>
-        </div>
-    </div> 
-
     @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
         <!--Payment list modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
@@ -274,16 +264,34 @@
                 {data: 'invoice_id',name: 'purchases.invoice_id'},
                 {data: 'from',name: 'branches.name'},
                 {data: 'supplier_name', name: 'suppliers.name'},
+                {data: 'created_by',name: 'created_by.name'},
                 {data: 'status',name: 'purchases.po_receiving_status'},
-                {data: 'payment_status',name: 'payment_status'},
+                {data: 'payment_status',name: 'payment_status', className: 'text-end'},
                 {data: 'total_purchase_amount',name: 'total_purchase_amount', className: 'text-end'},
                 {data: 'paid',name: 'purchases.paid', className: 'text-end'},
                 {data: 'due',name: 'purchases.due', className: 'text-end'},
-                {data: 'created_by',name: 'created_by.name'},
             ],fnDrawCallback: function() {
+                var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
+                $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
+                var paid = sum_table_col($('.data_tbl'), 'paid');
+                $('#paid').text(bdFormat(paid));
+                var due = sum_table_col($('.data_tbl'), 'due');
+                $('#due').text(bdFormat(due));
                 $('.data_preloader').hide();
-            },
+            }
         });
+
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
         // Show details modal with data
         $(document).on('click', '.details_button', function(e) {

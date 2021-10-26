@@ -238,10 +238,9 @@
             ],
             fnDrawCallback: function() {
                 var total_qty = sum_table_col($('.data_tbl'), 'qty');
-                $('#total_qty').text(parseFloat(total_qty).toFixed(2));
+                $('#total_qty').text(bdFormat(total_qty));
                 var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
-                var __total_subtotal = parseFloat(total_subtotal).toFixed(2)
-                $('#total_subtotal').text(__total_subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                $('#total_subtotal').text(bdFormat(total_subtotal));
                 $('.data_preloader').hide();
             }
         });

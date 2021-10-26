@@ -1,8 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('title', 'Purchase List - ')
 @section('content')
@@ -11,7 +9,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
@@ -72,8 +69,9 @@
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_i"></i>
+                                                            </span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
                                                             class="form-control from_date"
@@ -85,8 +83,9 @@
                                                     <label><strong>To Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_i"></i>
+                                                            </span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
                                                     </div>
@@ -95,7 +94,9 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start">
+                                                            <i class="fas fa-funnel-dollar"></i> Filter
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -249,7 +250,6 @@
     @endif
 @endsection
 @push('scripts')
-    <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         // Show session message by toster alert.
@@ -296,15 +296,15 @@
                 {data: 'created_by',name: 'created_by.name'},
             ],fnDrawCallback: function() {
                 var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
-                $('#total_purchase_amount').text(parseFloat(total_purchase_amount).toFixed(2));
+                $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
                 var paid = sum_table_col($('.data_tbl'), 'paid');
-                $('#paid').text(parseFloat(paid).toFixed(2));
+                $('#paid').text(bdFormat(paid));
                 var due = sum_table_col($('.data_tbl'), 'due');
-                $('#due').text(parseFloat(due).toFixed(2));
+                $('#due').text(bdFormat(due));
                 var purchase_return_amount = sum_table_col($('.data_tbl'), 'purchase_return_amount');
-                $('#purchase_return_amount').text(parseFloat(purchase_return_amount).toFixed(2));
+                $('#purchase_return_amount').text(bdFormat(purchase_return_amount));
                 var purchase_return_due = sum_table_col($('.data_tbl'), 'purchase_return_due');
-                $('#purchase_return_due').text(parseFloat(purchase_return_due).toFixed(2));
+                $('#purchase_return_due').text(bdFormat(purchase_return_due));
                 $('.data_preloader').hide();
             }
         });

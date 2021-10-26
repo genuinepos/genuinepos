@@ -100,7 +100,7 @@
                         </div>
                     </div>
 
-                    <div class="row px-3 mt-2">
+                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -120,8 +120,8 @@
                                                 <th class="text-start">Expense Category</th>
                                                 <th class="text-start">Reference ID</th>
                                                 <th class="text-start">B.Location</th>
-                                                <th class="text-start">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th class="text-start">Expanse For</th>
+                                                <th class="text-start">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -130,10 +130,8 @@
                                         <tfoot>
                                             <tr class="bg-secondary">
                                                 <th colspan="4" class="text-end text-white">Total :</th>
-                                                <th class="text-white">
-                                                    <span id="total_amount"></span>
-                                                </th>
                                                 <th></th>
+                                                <th class="text-white" id="total_amount"></th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -179,11 +177,11 @@
                 {data: 'category_name', name: 'expanse_categories.name'},
                 {data: 'invoice_id', name: 'invoice_id'},
                 {data: 'from', name: 'branches.name'},
-                {data: 'amount', name: 'amount', className: 'text-end' },
                 {data: 'user_name', name: 'admin_and_users.name'},
+                {data: 'amount', name: 'amount', className: 'text-end' },
             ],fnDrawCallback: function() {
-                var paid = sum_table_col($('.data_tbl'), 'amount');
-                $('#total_amount').text(parseFloat(paid).toFixed(2));
+                var amount = sum_table_col($('.data_tbl'), 'amount');
+                $('#total_amount').text(bdFormat(amount));
                 $('.data_preloader').hide();
             },
         });

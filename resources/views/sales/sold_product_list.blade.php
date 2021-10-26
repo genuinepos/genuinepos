@@ -139,53 +139,51 @@
                         </div>
 
                         <div class="row margin_row mt-1">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="section-header">
-                                        <div class="col-md-10">
-                                            <h6>Sold Product List</h6>
-                                        </div>
-                                        @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                            <div class="col-md-2">
-                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
-                                            </div>
-                                        @endif
+                            <div class="card">
+                                <div class="section-header">
+                                    <div class="col-md-10">
+                                        <h6>Sold Product List</h6>
                                     </div>
+                                    @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                        <div class="col-md-2">
+                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                        </div>
+                                    @endif
+                                </div>
 
-                                    <div class="widget_content">
-                                        <div class="data_preloader">
-                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                        </div>
-                                        <div class="table-responsive" id="data-list">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Date</th>
-                                                        <th>Product</th>
-                                                        <th>P.Code</th>
-                                                        <th>Customer</th>
-                                                        <th>Invoice ID</th>
-                                                        <th>Quantity</th>
-                                                        <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                        <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                                <tfoot>
-                                                    <tr class="bg-secondary">
-                                                        <th colspan="5" class="text-end text-white">Total :{{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                                        <th class="text-white">(<span id="total_qty"></span>)</th>
-                                                        <th class="text-white">---</th>
-                                                        <th class="text-white"> <span id="total_subtotal"></span></th>
-                                                        <th></th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
+                                <div class="widget_content">
+                                    <div class="data_preloader">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                     </div>
-                                </div> 
-                            </div>
+                                    <div class="table-responsive" id="data-list">
+                                        <table class="display data_tbl data__table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Product</th>
+                                                    <th>P.Code</th>
+                                                    <th>Customer</th>
+                                                    <th>Invoice ID</th>
+                                                    <th>Quantity</th>
+                                                    <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            <tfoot>
+                                                <tr class="bg-secondary">
+                                                    <th colspan="5" class="text-end text-white">Total :{{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                    <th class="text-white">(<span id="total_qty"></span>)</th>
+                                                    <th class="text-white">---</th>
+                                                    <th class="text-white"> <span id="total_subtotal"></span></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -234,10 +232,10 @@
         ],
         fnDrawCallback: function() {
             var total_qty = sum_table_col($('.data_tbl'), 'qty');
-            $('#total_qty').text(parseFloat(total_qty).toFixed(2));
+            $('#total_qty').text(bdFormat(total_qty));
             var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
-            var __total_subtotal = parseFloat(total_subtotal).toFixed(2)
-            $('#total_subtotal').text(__total_subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            // $('#total_subtotal').text(__total_subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $('#total_subtotal').text(bdFormat(total_subtotal));
             $('.data_preloader').hide();
         },
     });

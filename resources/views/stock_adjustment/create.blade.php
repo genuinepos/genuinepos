@@ -75,8 +75,7 @@
                                                 <label for="inputEmail3" class=" col-4"><b>Type :</b> <span
                                                     class="text-danger">*</span>  <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
-                                                    <select name="type" data-name="Adjustment type"
-                                                        class="form-control add_input" title="Select branch" id="type">
+                                                    <select required name="type" class="form-control add_input">
                                                         <option value="">Select Type</option>
                                                         <option value="1">Normal</option>
                                                         <option value="2">Abnormal</option>

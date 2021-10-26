@@ -136,9 +136,8 @@ class ExpanseController extends Controller
                 ->editColumn('tax_percent',  function ($row) {
                     return $row->tax_percent . '%';
                 })
-                ->editColumn('net_total_amount', fn ($row) => $this->converter->format_in_bdt($row->net_total_amount) .'</span>')
-                ->editColumn('due', fn ($row) => '<span class="text-danger">'. $this->converter->format_in_bdt($row->due) . '</span>')
-                ->setRowClass('text-start')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">' . $this->converter->format_in_bdt($row->net_total_amount) .'</span>')
+                ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">' . $this->converter->format_in_bdt($row->due) . '</span>')
                 ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'due', 'net_total_amount', 'descriptions'])
                 ->make(true);
         }

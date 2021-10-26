@@ -10,15 +10,18 @@ use App\Models\StockAdjustment;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\StockAdjustmentProduct;
+use App\Utils\Converter;
 use App\Utils\ProductStockUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockAdjustmentController extends Controller
 {
     protected $productStockUtil;
-    public function __construct(ProductStockUtil $productStockUtil)
+    protected $converter;
+    public function __construct(ProductStockUtil $productStockUtil, Converter $converter)
     {
         $this->productStockUtil = $productStockUtil;
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -107,7 +110,7 @@ class StockAdjustmentController extends Controller
                 })
                 ->editColumn('business_location',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
                         return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
                     }
@@ -124,21 +127,11 @@ class StockAdjustmentController extends Controller
                 ->editColumn('type',  function ($row) {
                     return $row->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>';
                 })
-                ->editColumn('net_total_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->net_total_amount . '</b>';
-                })
-                ->editColumn('recovered_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->recovered_amount . '</b>';
-                })
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'. $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
+                ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="'.$row->recovered_amount.'">' . $this->converter->format_in_bdt($row->recovered_amount) . '</span>')
                 ->editColumn('created_by', function ($row) {
                     return $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
                 })
-                ->setRowAttr([
-                    'data-href' => function ($row) {
-                        return route('stock.adjustments.show', [$row->id]);
-                    }
-                ])
-                ->setRowClass('clickable_row')
                 ->rawColumns(['action', 'date', 'invoice_id', 'business_location', 'adjustment_location', 'type', 'net_total_amount', 'recovered_amount', 'created_by'])
                 ->make(true);
         }

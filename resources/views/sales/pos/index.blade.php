@@ -129,15 +129,26 @@
                                                 <th>Invoice ID</th>
                                                 <th>Stock Location</th>
                                                 <th>Customer</th>
-                                                <th>Total Amount</th>
-                                                <th>Total Paid</th>
-                                                <th>Sell Due</th>
-                                                <th>Payment Status</th>
                                                 <th>Return Amount</th>
                                                 <th>Return Due</th>
+                                                <th>Payment Status</th>
+                                                <th>Sell Due</th>
+                                                <th>Total Amount</th>
+                                                <th>Total Paid</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="5" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th id="sale_return_amount" class="text-white text-end"></th>
+                                                <th id="sale_return_due" class="text-white text-end"></th>
+                                                <th class="text-white text-end">---</th>
+                                                <th id="due" class="text-white text-end"></th>
+                                                <th id="total_payable_amount" class="text-white text-end"></th>
+                                                <th id="paid" class="text-white text-end"></th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -266,16 +277,38 @@
                 {data: 'invoice_id', name: 'sales.invoice_id'},
                 {data: 'from', name: 'branches.name'},
                 {data: 'customer', name: 'customers.name'},
-                {data: 'total_payable_amount', name: 'sales.total_payable_amount', className: 'text-end'},
-                {data: 'paid', name: 'sales.paid', className: 'text-end'},
-                {data: 'due', name: 'sale.due', className: 'text-end'},
-                {data: 'paid_status', name: 'paid_status'},
                 {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
                 {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},
+                {data: 'paid_status', name: 'paid_status', className: 'text-end'},
+                {data: 'due', name: 'sale.due', className: 'text-end'},
+                {data: 'total_payable_amount', name: 'sales.total_payable_amount', className: 'text-end'},
+                {data: 'paid', name: 'sales.paid', className: 'text-end'},
             ],fnDrawCallback: function() {
+                var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
+                $('#total_payable_amount').text(bdFormat(total_payable_amount));
+                var paid = sum_table_col($('.data_tbl'), 'paid');
+                $('#paid').text(bdFormat(paid));
+                var due = sum_table_col($('.data_tbl'), 'due');
+                $('#due').text(bdFormat(due));
+                var sale_return_amount = sum_table_col($('.data_tbl'), 'sale_return_amount');
+                $('#sale_return_amount').text(bdFormat(sale_return_amount));
+                var sale_return_due = sum_table_col($('.data_tbl'), 'sale_return_due');
+                $('#sale_return_due').text(bdFormat(sale_return_due));
                 $('.data_preloader').hide();
-            },
+            }
         });
+
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_button', function (e) {

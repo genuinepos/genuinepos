@@ -1,7 +1,7 @@
 @if (isset($mb_product))
     @php
         $tax_percent = $mb_product->tax_id ? $mb_product->tax->tax_percent : 0;
-        $tax_amount = $mb_product->tax ? $mb_product->product_price/100 * $mb_product->tax->tax_percent : 0;
+        $tax_amount = $mb_product->tax ? $mb_product->product_price/100 * $tax_percent : 0;
     @endphp
     <tr>
         <td colspan="2" class="text-start">
@@ -26,13 +26,7 @@
 
         <td>
             <div class="input-group">
-                <div class="input-group-prepend">
-                    <a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>
-                </div>
-                <input value="1.00" required name="quantities[]" type="text" class="form-control text-center " id="quantity">
-                <div class="input-group-prepend">
-                    <a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>
-                </div>
+                <input value="1.00" required name="quantities[]" type="text" class="form-control text-center" id="quantity">
             </div>
         </td>
 

@@ -39,7 +39,7 @@
                 <ul class="list-unstyled">
                     <li class="sale_due">
                         <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                        <span class="card_text total_due">{{ $sale->due }}</span> </li>
+                        <span class="card_text total_due">{{ App\Utils\Converter::format_in_bdt($sale->due) }}</span> </li>
                 </ul>
             </div>
         </div>

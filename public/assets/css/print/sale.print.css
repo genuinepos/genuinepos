@@ -3,7 +3,7 @@ table thead tr th{color: black!important;}
 
 table thead tr{background-color: black!important;}
 
-.row {display: flex;flex-wrap: wrap;}
+.row {display: flex; flex-wrap: wrap;}
 
 .d-block {display: block;}
 

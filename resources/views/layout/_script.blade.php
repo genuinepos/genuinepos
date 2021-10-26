@@ -1,4 +1,5 @@
     <script src="{{asset('public/backend/js/jquery-1.7.1.min.js')}}"></script>
+    <script src="{{asset('public/backend/js/number-bdt-formater.js')}}"></script>
     <!--Jquery Cdn-->
     <script src="{{asset('public/backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Jquery Cdn End-->

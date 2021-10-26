@@ -22,7 +22,6 @@ class Util
         $request->validate(
             [
                 'name' => 'required',
-                'product_code' => 'required',
                 'unit_id' => 'required',
                 'product_price' => 'required',
                 'product_cost' => 'required',
@@ -33,9 +32,15 @@ class Util
             ]
         );
 
+          // generate Customer ID
+          $l = 6;
+          $b = 0;
+          $code = '';
+          while ($b < $l) { $code .= rand(1, 9); $b++; }
+
         $addProduct->type = 1;
         $addProduct->name = $request->name;
-        $addProduct->product_code = $request->product_code;
+        $addProduct->product_code = $request->product_code ? $request->product_code : $code;
         $addProduct->category_id = $request->category_id;
         $addProduct->parent_category_id = $request->child_category_id;
         $addProduct->brand_id = $request->brand_id;
@@ -54,6 +59,7 @@ class Util
         $addProduct->is_purchased = 1;
         $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
         $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
+        $addProduct->quantity = $request->quantity ? $request->quantity : 0;
         $addProduct->mb_stock = !$request->branch_id ? $request->quantity : 0;
         $addProduct->save();
 
@@ -63,7 +69,7 @@ class Util
             $addOpeningStock = new ProductOpeningStock();
             $addOpeningStock->branch_id = $request->branch_id;
             $addOpeningStock->product_id  = $addProduct->id;
-            $addOpeningStock->unit_cost_exc_tax = $request->unit_cost_exc_tax;
+            $addOpeningStock->unit_cost_inc_tax = $request->unit_cost_inc_tax;
             $addOpeningStock->quantity = $request->quantity;
             $addOpeningStock->subtotal = $request->subtotal;
             $addOpeningStock->save();
@@ -74,6 +80,14 @@ class Util
             $addProductBranch->product_id = $addProduct->id;
             $addProductBranch->product_quantity = $request->quantity;
             $addProductBranch->save();
+        }else {
+            //Add opening stock
+            $addOpeningStock = new ProductOpeningStock();
+            $addOpeningStock->product_id  = $addProduct->id;
+            $addOpeningStock->unit_cost_inc_tax = $request->unit_cost_inc_tax;
+            $addOpeningStock->quantity = $request->quantity;
+            $addOpeningStock->subtotal = $request->subtotal;
+            $addOpeningStock->save();
         }
         return response()->json($addProduct);
     }

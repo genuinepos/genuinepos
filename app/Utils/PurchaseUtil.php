@@ -258,9 +258,9 @@ class PurchaseUtil
                     return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
                 }
             })
-            ->editColumn('total_purchase_amount', fn ($row) => $this->converter->format_in_bdt($row->total_purchase_amount))
-            ->editColumn('paid', fn ($row) => $this->converter->format_in_bdt($row->paid))
-            ->editColumn('due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' .$this->converter->format_in_bdt($row->paid). '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
             ->editColumn('status', function ($row) {
                 if ($row->po_receiving_status == 'Completed') {
                     return '<span class="text-success"><b>Completed</b></span>';

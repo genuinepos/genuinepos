@@ -82,7 +82,7 @@
                 @endif
 
                 @if (json_decode($generalSettings->modules, true)['expenses'] == '1')
-                    <li data-menu="expenses" class="{{ request()->is('expanses*') ? 'menu_active' : '' }}">
+                    <li data-menu="expenses" class="{{ request()->is('expenses*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('public/backend/asset/img/icon/budget.svg') }}">
                             <p class="title">@lang('menu.expenses')</p>
@@ -120,7 +120,7 @@
                 @endif
 
                 @if ($addons->manufacturing == 1)
-                    @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1')
+                    {{-- @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1') --}}
                         @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
                             <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
                                 <a href="#">
@@ -129,7 +129,6 @@
                                 </a>
                             </li>
                         @endif
-                    @endif
                 @endif
 
                 @if ($addons->todo == 1)
@@ -192,8 +191,7 @@
                             @endif
 
                             @if (auth()->user()->permission->product['product_all'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('products.all.product') }}" class="bar-link">
                                             <span>
@@ -1189,62 +1187,60 @@
             @endif
 
             @if ($addons->manufacturing == 1)
-                @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1')
-                    @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
-                        <div class="sub-menu_t" id="manufacture">
-                            <div class="sub-menu-width">
-                                <div class="model__close bg-secondary-2">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <p class="text-muted float-start mt-1"><strong>Manufacturing</strong></p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                        </div>
+                @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
+                    <div class="sub-menu_t" id="manufacture">
+                        <div class="sub-menu-width">
+                            <div class="model__close bg-secondary-2">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p class="text-muted float-start mt-1"><strong>Manufacturing</strong></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                     </div>
                                 </div>
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('manufacturing.process.index') }}" class="bar-link">
-                                                    <span><i class="fas fa-dumpster-fire"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">Process</p>
+                            </div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('manufacturing.process.index') }}" class="bar-link">
+                                                <span><i class="fas fa-dumpster-fire"></i></span>
+                                            </a>
                                         </div>
+                                        <p class="switch_text">Process</p>
+                                    </div>
 
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('manufacturing.productions.index') }}" class="bar-link">
-                                                    <span><i class="fas fa-shapes"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">Production</p>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('manufacturing.productions.index') }}" class="bar-link">
+                                                <span><i class="fas fa-shapes"></i></span>
+                                            </a>
                                         </div>
+                                        <p class="switch_text">Production</p>
+                                    </div>
 
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('manufacturing.settings.index') }}" class="bar-link">
-                                                    <span><i class="fas fa-sliders-h"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">Settings</p>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('manufacturing.settings.index') }}" class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
+                                            </a>
                                         </div>
+                                        <p class="switch_text">Settings</p>
+                                    </div>
 
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
-                                            <div class="switch_bar">
-                                                <a href="" class="bar-link">
-                                                    <span><i class="fas fa-file-alt"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">Manufacturing Report</p>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
+                                        <div class="switch_bar">
+                                            <a href="" class="bar-link">
+                                                <span><i class="fas fa-file-alt"></i></span>
+                                            </a>
                                         </div>
+                                        <p class="switch_text">Manufacturing Report</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endif
+                    </div>
                 @endif
             @endif
 

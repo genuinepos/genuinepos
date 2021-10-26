@@ -8,9 +8,8 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Product Code (SKU) :</b> <span class="text-danger">*</span></label>
-            <input type="text" name="product_code" class="form-control" id="sale_product_code" placeholder="Product code"/>
-            <span class="error error_sale_product_code"></span>
+            <label><b>Product Code (SKU) :</b></label>
+            <input type="text" name="product_code" class="form-control" placeholder="Product code"/>
         </div>
 
         <div class="col-md-3">
@@ -38,14 +37,13 @@
     <div class="form-group row mt-1">
         @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
             <div class="col-md-3">
-                <label><b>Category :</b> <span class="text-danger">*</span></label>
+                <label><b>Category :</b> </label>
                 <select class="form-control category" name="category_id" id="sale_category_id">
                     <option value="">Select Category</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
-                <span class="error error_sale_category_id"></span>
             </div>
         @endif
 
@@ -158,7 +156,6 @@
                                     <span class="error error_sale_product_price"></span>
                                 </div>
                             </div>
-                            
                         </td>
                     </tr>
                 </tbody>
@@ -168,14 +165,14 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <h6 class="text-navy-blue"><b>Add Opening Stock</b></h6>
+            <p><strong>Add Opening Stock</strong></p>
             <div class="table-responsive">
                 <table class="table modal-table table-sm">
                     <thead>
                         <tr class="bg-primary text-white">
                             <th>Business Location</th>
                             <th>Quantity</th>
-                            <th>Unit Cost Exc.Tax</th>
+                            <th>Unit Cost Inc.Tax</th>
                             <th>SubTotal</th>
                         </tr>
                     </thead>
@@ -189,11 +186,11 @@
                             </td>
 
                             <td>
-                                <input type="number" name="quantity" id="os_quantity" step="any" class="form-control" value="0.00">
+                                <input required type="number" name="quantity" id="os_quantity" step="any" class="form-control" value="0.00">
                             </td>
 
                             <td>
-                                <input type="number" name="unit_cost_exc_tax"  id="os_unit_cost_exc_tax" step="any" class="form-control os_unit_costs_exc_tax" value="0.00">
+                                <input type="number" name="unit_cost_inc_tax"  id="os_unit_cost_inc_tax" step="any" class="form-control os_unit_costs_inc_tax" value="0.00">
                             </td>
 
                             <td>

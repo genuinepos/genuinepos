@@ -79,7 +79,6 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -107,16 +106,21 @@
                                                 <th class="text-start">Reference No</th>
                                                 <th class="text-start">Adjustment location</th>
                                                 <th class="text-start">Business location</th>
+                                                <th class="text-start">Reason</th>
+                                                <th class="text-start">Created By</th>
                                                 <th class="text-start">Type</th>
                                                 <th class="text-start">Total Amount</th>
                                                 <th class="text-start">Total Recovered Amount</th>
-                                                <th class="text-start">Reason</th>
-                                                <th class="text-start">Created By</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="8" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th id="net_total_amount" class="text-white text-end"></th>
+                                                <th id="recovered_amount" class="text-white text-end"></th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -166,15 +170,32 @@
                 {data: 'invoice_id', name: 'invoice_id'},
                 {data: 'adjustment_location', name: 'adjustment_location'},
                 {data: 'business_location', name: 'branches.name'},
-                {data: 'type', name: 'type'},
-                {data: 'net_total_amount', name: 'net_total_amount'},
-                {data: 'recovered_amount', name: 'recovered_amount'},
                 {data: 'reason', name: 'reason'},
                 {data: 'created_by', name: 'admin_and_users.name'},
+                {data: 'type', name: 'type'},
+                {data: 'net_total_amount', name: 'net_total_amount', className: 'text-end'},
+                {data: 'recovered_amount', name: 'recovered_amount', className: 'text-end'},
+        
             ],fnDrawCallback: function() {
+                var net_total_amount = sum_table_col($('.data_tbl'), 'net_total_amount');
+                $('#net_total_amount').text(bdFormat(net_total_amount));
+                var recovered_amount = sum_table_col($('.data_tbl'), 'recovered_amount');
+                $('#recovered_amount').text(bdFormat(recovered_amount));
                 $('.data_preloader').hide();
-            },
+            }
         });
+
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_form', function (e) {

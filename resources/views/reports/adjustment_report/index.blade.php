@@ -16,7 +16,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-sliders-h"></span>
@@ -147,29 +146,27 @@
                         </div>
 
                         <div class="row margin_row mt-1">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Date</th>
-                                                    <th class="text-start">Reference No</th>
-                                                    <th class="text-start">Adjustment From</th>
-                                                    <th class="text-start">Type</th>
-                                                    <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                    <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                    <th class="text-start">Reason</th>
-                                                    <th class="text-start">Created By</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-    
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div> 
-                            </div>
+                            <div class="card">
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Date</th>
+                                                <th class="text-start">Reference No</th>
+                                                <th class="text-start">Adjustment From</th>
+                                                <th class="text-start">Type</th>
+                                                <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th class="text-start">Reason</th>
+                                                <th class="text-start">Created By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -191,10 +188,10 @@
             data:{ branch_id, from_date, to_date },
             type: 'get',
             success: function(data) {
-                $('.total_normal').html(__currency_symbol+' '+(data[0].total_normal ? data[0].total_normal : parseFloat(0).toFixed(2)));
-                $('.total_abnormal').html(__currency_symbol+' '+(data[0].total_abnormal ? data[0].total_abnormal : parseFloat(0).toFixed(2)));
-                $('.total_adjustment').html(__currency_symbol+' '+(data[0].t_amount ? data[0].t_amount : parseFloat(0).toFixed(2)));
-                $('.total_recovered').html(__currency_symbol+' '+(data[0].t_recovered_amount ? data[0].t_recovered_amount : parseFloat(0).toFixed(2)));
+                $('.total_normal').html(__currency_symbol+' '+(data[0].total_normal ? bdFormat(data[0].total_normal) : parseFloat(0).toFixed(2)));
+                $('.total_abnormal').html(__currency_symbol+' '+(data[0].total_abnormal ? bdFormat(data[0].total_abnormal) : parseFloat(0).toFixed(2)));
+                $('.total_adjustment').html(__currency_symbol+' '+(data[0].t_amount ? bdFormat(data[0].t_amount) : parseFloat(0).toFixed(2)));
+                $('.total_recovered').html(__currency_symbol+' '+(data[0].t_recovered_amount ? bdFormat(data[0].t_recovered_amount) : parseFloat(0).toFixed(2)));
                 $('.data_preloader').hide();
             }
         });

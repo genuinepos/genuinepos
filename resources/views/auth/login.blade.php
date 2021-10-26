@@ -66,7 +66,6 @@
                                 </div>
                             </div>
 
-
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head addr">
                                     <div class="head addr-t pt-4">
@@ -83,9 +82,9 @@
                                             <p class="details"><span>Website:</span> www.speeddigit.com</p>
 
                                             <div class="function-btn">
-                                                <a href="#" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
-                                                <a href="#" target="_blank"><span class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
-                                                <a href="#" target="_blank"><span class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
+                                                <a href="https://www.facebook.com/mygenuinepos" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
+                                                <a href="https://twitter.com/GenuinePos" target="_blank"><span class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
+                                                <a href="https://www.youtube.com/channel/UCaAEw77OeMvjwu5vOjueWmQ" target="_blank"><span class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
                                             </div>
                                         </div>
                                     </div>

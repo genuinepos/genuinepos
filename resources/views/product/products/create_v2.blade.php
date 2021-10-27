@@ -184,8 +184,7 @@
                                                                     </select>
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text add_button" data-bs-toggle="modal"
-                                                                            data-bs-target="#addWarrantyModal"><i
-                                                                                class="fas fa-plus-square input_i"></i><span>
+                                                                            data-bs-target="#addWarrantyModal"><i class="fas fa-plus-square input_i"></i><span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -213,6 +212,32 @@
                                                                 <option value="New">New</option>
                                                                 <option value="Used">Used</option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="input-group mt-1">
+                                                                <div class="col-12">
+                                                                    <div class="row">
+                                                                        <p class="checkbox_input_wrap"> 
+                                                                        <input checked type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>Manage Stock</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p> 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <div class="input-group mt-1">
+                                                                <div class="col-12">
+                                                                    <div class="row">
+                                                                        <p class="checkbox_input_wrap"> 
+                                                                        <input type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> Service/Degital Product</b> </p> 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -758,35 +783,28 @@
             html += '<option value="' + val.id + '">' + val.bulk_variant_name + '</option>';
         });
         html += '</select>';
-        html +=
-            '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control" placeholder="Variant Combination">';
+        html += '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control" placeholder="Variant Combination">';
         html += '</td>';
-        html +=
-            '<td><input type="text" name="variant_codes[]" id="variant_code" class="form-control" placeholder="Variant Code">';
+        html += '<td><input type="text" name="variant_codes[]" id="variant_code" class="form-control" placeholder="Variant Code">';
         html += '</td>';
         html += '<td>';
-        html +=
-            '<input type="number" step="any" name="variant_costings[]" class="form-control" placeholder="Cost" id="variant_costing" value="' +
+        html += '<input type="number" step="any" name="variant_costings[]" class="form-control" placeholder="Cost" id="variant_costing" value="' +
             parseFloat(product_cost).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
-        html +=
-            '<input type="number" step="any" name="variant_costings_with_tax[]" class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax" value="' +
+        html += '<input type="number" step="any" name="variant_costings_with_tax[]" class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax" value="' +
             parseFloat(product_cost_with_tax).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
-        html +=
-            '<input type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="' +
+        html += '<input type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="' +
             parseFloat(profit).toFixed(2) + '" id="variant_profit">';
         html += '</td>';
         html += '<td>';
-        html +=
-            '<input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax" value="' +
+        html += '<input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax" value="' +
             parseFloat(product_price).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
-        html +=
-            '<input type="file" name="variant_image[]" class="form-control" id="variant_image">';
+        html += '<input type="file" name="variant_image[]" class="form-control" id="variant_image">';
         html += '</td>';
         html += '<td><a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a></td>';
         html += '</tr>';
@@ -1440,6 +1458,22 @@
             return totalDays - 1;
         },
         format: _expectedDateFormat,
+    });
+
+    $(document).on('click', '#digital_product',function () {
+        if ($(this).is(':CHECKED')) {
+            $('#is_manage_stock').prop('checked', false);
+        }else{
+            $('#is_manage_stock').prop('checked', true);
+        }
+    });
+
+    $(document).on('click', '#is_manage_stock',function () {
+        if ($(this).is(':CHECKED')) {
+            $('#digital_product').prop('checked', false);
+        }else{
+            $('#digital_product').prop('checked', true);
+        }
     });
 </script>
 @endpush

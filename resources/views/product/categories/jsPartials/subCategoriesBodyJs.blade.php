@@ -42,6 +42,7 @@
                    $('.submit_button').prop('type', 'submit');
                    $('.error').html('');
                },error: function(err) {
+                    $('.submit_button').prop('type', 'submit');
                     $('.loading_button').hide();
                     $('.error').html('');
                     if (err.status == 0) {
@@ -51,7 +52,6 @@
                     $.each(err.responseJSON.errors, function(key, error) {
                         $('.error_sub_' + key + '').html(error[0]);
                     });
-                    $('.submit_button').prop('type', 'submit');
                }
            });
        });

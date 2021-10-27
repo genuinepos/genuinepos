@@ -42,22 +42,22 @@
                 <td class="text-start">{{ $comPro->parentProduct->name.' '.($comPro->product_variant ? $comPro->product_variant->variant_name : '') }}</td>
                 <td class="text-start">
                     @if ($comPro->product_variant_id)
-                        {{ $comPro->product_variant->variant_cost_with_tax }}
+                        {{ App\Utils\Converter::format_in_bdt($comPro->product_variant->variant_cost_with_tax) }}
                     @else
-                        {{ $comPro->parentProduct->product_cost_with_tax }}
+                        {{ App\Utils\Converter::format_in_bdt($comPro->parentProduct->product_cost_with_tax) }}
                     @endif
                 </td>
-                <td class="text-start">{{ $comPro->parentProduct->profit }}%</td>
+                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($comPro->parentProduct->profit) }}%</td>
                 <td class="text-start">
                     @if ($comPro->product_variant_id)
-                        {{ $comPro->product_variant->variant_price }}
+                        {{ App\Utils\Converter::format_in_bdt($comPro->product_variant->variant_price) }}
                     @else
-                        {{ $comPro->parentProduct->product_price }}
+                        {{ App\Utils\Converter::format_in_bdt($comPro->parentProduct->product_price) }}
                     @endif
                 </td>
-                <td class="text-start">{{ bcadd($priceIncTax, 0, 2) }}</td>
-                <td class="text-start">{{ bcadd($comPro->quantity, 0, 2) }}</td>
-                <td class="text-start">{{ bcadd($subTotal, 0, 2) }}</td>
+                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($priceIncTax) }}</td>
+                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($comPro->quantity) }}</td>
+                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($subTotal) }}</td>
             </tr>
         @endforeach
     </tbody>

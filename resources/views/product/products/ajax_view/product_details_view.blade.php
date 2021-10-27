@@ -21,6 +21,7 @@
                         <li><strong>Brand : </strong> {{ $product->brand ? $product->brand->name : 'N/A' }}</li>
                         <li><strong>Unit : </strong> {{ $product->unit->name }}</li>
                         <li><strong>Barcode Type : </strong> {{ $product->barcode_type }}</li>
+                        <li><strong>Manage Stock? : </strong> {!! $product->is_manage_stock == 1 ? '<span class="text-success">YES</span>' : '<span class="text-danger">NO</span>' !!}</li>
                         {{-- <li><strong>Available Branch: </strong>
                             @if (count($product->product_branches))
                                 @foreach ($product->product_branches as $product_branch)
@@ -56,7 +57,9 @@
                         <li><strong>Product Condition : </strong> {{ $product->product_condition }}</li>
                         <li>
                             <strong>Product Type : </strong>
-                            @php  $product_type = ''; @endphp
+                            @php
+                                $product_type = ''; 
+                            @endphp
                             @if ($product->type == 1 && $product->is_variant == 1)
                                 @php $product_type = 'Variant'; @endphp
                             @elseif ($product->type == 1 && $product->is_variant == 0)
@@ -67,6 +70,9 @@
                                 @php  $product_type = 'Digital'; @endphp
                             @endif
                             {{ $product_type }}
+                        </li>
+                        <li>
+                            <strong class="text-primary">{{ $product->is_manage_stock == 0 ? '(Service related/Digital Item)' : '' }}</strong>
                         </li>
                     </ul>
                 </div>
@@ -110,43 +116,45 @@
                 @endif 
             @endif
 
-            <hr class="m-0">
-            
-            <div class="row">
-                <div class="heading">
-                    <label class="p-0 m-0"><strong>WAREHOUSE STOCK DETAILS :</strong></label>
-                </div>
-                <div class="table-responsive" id="warehouse_stock_details">
-                    <!--Warehouse Stock Details-->
-                    @include('product.products.ajax_view.partials.warehouse_stock_details')
-                    <!--Warehouse Stock Details End-->
-                </div>
-            </div>
-
-            <hr class="m-0">
-
-            <div class="row">
-                <div class="heading">
-                    <label class="p-0 m-0"><strong>WON BUSINESS LOCATION STOCK DETAILS :</strong></label>
-                </div>
-                <div class="table-responsive" id="branch_stock_details">
-                    @include('product.products.ajax_view.partials.branch_stock_details')
-                </div>
-            </div>
-
-            <hr class="m-0">
-
-            @if ($addons->branches == 1)
+            @if ($product->is_manage_stock == 1)
+                <hr class="m-0">
+                
                 <div class="row">
                     <div class="heading">
-                        <label class="p-0 m-0"><strong>ANOTHER BUSINESS LOCATION STOCK DETAILS :</strong></label>
+                        <label class="p-0 m-0"><strong>WAREHOUSE STOCK DETAILS :</strong></label>
                     </div>
-                    <div class="table-responsive" id="branch_stock_details">
-                        @include('product.products.ajax_view.partials.another_branch_details')
+                    <div class="table-responsive" id="warehouse_stock_details">
+                        <!--Warehouse Stock Details-->
+                        @include('product.products.ajax_view.partials.warehouse_stock_details')
+                        <!--Warehouse Stock Details End-->
                     </div>
                 </div>
+
+                <hr class="m-0">
+
+                <div class="row">
+                    <div class="heading">
+                        <label class="p-0 m-0"><strong>WON BUSINESS LOCATION STOCK DETAILS :</strong></label>
+                    </div>
+                    <div class="table-responsive" id="branch_stock_details">
+                        @include('product.products.ajax_view.partials.branch_stock_details')
+                    </div>
+                </div>
+
+                <hr class="m-0">
+
+                @if ($addons->branches == 1)
+                    <div class="row">
+                        <div class="heading">
+                            <label class="p-0 m-0"><strong>ANOTHER BUSINESS LOCATION STOCK DETAILS :</strong></label>
+                        </div>
+                        <div class="table-responsive" id="branch_stock_details">
+                            @include('product.products.ajax_view.partials.another_branch_details')
+                        </div>
+                    </div>
+                @endif
+    
             @endif
-        </div>
 
         <div class="modal-footer text-end">
             <div class="row">

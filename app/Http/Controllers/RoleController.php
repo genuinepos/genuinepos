@@ -271,6 +271,7 @@ class RoleController extends Controller
         $permissons = [
             'register_view' => isset($request->register_view) ? 1 : 0,
             'register_close' => isset($request->register_close) ? 1 : 0,
+            'another_register_close' => isset($request->another_register_close) ? 1 : 0,
         ];
 
         return $permissons;

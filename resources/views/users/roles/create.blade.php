@@ -578,6 +578,13 @@
                                                         <input type="checkbox" name="register_close" class="cash_register"> &nbsp; Close Cash Register </p> 
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="another_register_close" class="another_register_close"> &nbsp; Close Another Cash Register </p> 
+                                                    </div>
+                                                </div>
                                             </div>  
                                         </div>
                                     </div>

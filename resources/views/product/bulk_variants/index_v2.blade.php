@@ -241,6 +241,14 @@
                     getAllVariant();
                     $('.more_variant_child_area').empty();
                     $('.submit_button').prop('type', 'submit');
+                },error: function(err) {
+                    $('.loading_button').hide();
+                    $('.submit_button').prop('type', 'submit');
+                    $('.error').html('');
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        return;
+                    }
                 }
             });
         });

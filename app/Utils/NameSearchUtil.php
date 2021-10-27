@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Utils;
+
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
@@ -18,10 +20,18 @@ class NameSearchUtil
         } else {
             return response()->json(['NotFoundMsg' => 'Not Found.']);
         }
-    }  
+    }
 
     public function checkBranchSingleProductStock($product_id, $branch_id)
     {
+        $product = DB::table('products')
+            ->where('id', $product_id)->select('id', 'is_manage_stock')
+            ->first();
+
+        if ($product->is_manage_stock == 0) {
+            return response()->json(PHP_INT_MAX);
+        }
+
         if ($branch_id) {
             $productBranch = DB::table('product_branches')->where('product_id', $product_id)->where('branch_id', $branch_id)->first();
             if ($productBranch) {
@@ -48,6 +58,14 @@ class NameSearchUtil
 
     public function checkBranchVariantProductStock($product_id, $variant_id, $branch_id)
     {
+        $product = DB::table('products')
+            ->where('id', $product_id)->select('id', 'is_manage_stock')
+            ->first();
+
+        if ($product->is_manage_stock == 0) {
+            return response()->json(PHP_INT_MAX);
+        }
+
         if ($branch_id) {
             $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
             if ($productBranch) {

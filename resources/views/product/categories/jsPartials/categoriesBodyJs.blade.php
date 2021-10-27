@@ -44,10 +44,10 @@
                     $('.loading_button').hide();
                     $('.submit_button').prop('type', 'submit');
                     table.ajax.reload();
-                },
-                error: function(err) {
+                },error: function(err) {
                     $('.loading_button').hide();
                     $('.error').html('');
+                    $('.submit_button').prop('type', 'submit');
                     if (err.status == 0) {
                         toastr.error('Net Connetion Error. Reload This Page.'); 
                         return;
@@ -55,7 +55,6 @@
                     $.each(err.responseJSON.errors, function(key, error) {
                         $('.error_' + key + '').html(error[0]);
                     });
-                    $('.submit_button').prop('type', 'submit');
                 }
             });
         });

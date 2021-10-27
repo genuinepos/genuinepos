@@ -55,6 +55,7 @@
         $('.select_area').hide();
         $('#search_product').val("");
         var product_id = e.getAttribute('data-p_id');
+        var is_manage_stock = e.getAttribute('data-is_manage_stock');
         var product_name = e.getAttribute('data-p_name');
         var product_code = e.getAttribute('data-p_code');
         var product_unit = e.getAttribute('data-unit');
@@ -72,7 +73,10 @@
             dataType: 'json',
             success: function(singleProductQty) {
                 if ($.isEmptyObject(singleProductQty.errorMsg)) {
-                    $('#stock_quantity').val(singleProductQty);
+                    if (is_manage_stock == 1) {
+                        $('#stock_quantity').val(singleProductQty);
+                    }
+                    
                     var product_ids = document.querySelectorAll('#product_id');
                     var sameProduct = 0;
                     product_ids.forEach(function(input) {
@@ -196,6 +200,7 @@
         $('.select_area').hide();
         $('#search_product').val("");
         var product_id = e.getAttribute('data-p_id');
+        var is_manage_stock = e.getAttribute('data-is_manage_stock');
         var product_name = e.getAttribute('data-p_name');
         var tax_percent = e.getAttribute('data-tax_percent');
         var product_unit = e.getAttribute('data-unit');
@@ -215,7 +220,10 @@
             dataType: 'json',
             success: function(branchVariantQty) {
                 if ($.isEmptyObject(branchVariantQty.errorMsg)) {
-                    $('#stock_quantity').val(branchVariantQty);
+                    if (is_manage_stock) {
+                        $('#stock_quantity').val(branchVariantQty);
+                    }
+                    
                     var variant_ids = document.querySelectorAll('#variant_id');
                     var sameVariant = 0;
                     variant_ids.forEach(function(input) {

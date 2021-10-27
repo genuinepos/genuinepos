@@ -986,13 +986,7 @@ Route::get('/test', function () {
     // dd($response);
     // $date =  '8/25/2021';
     // return date('Y-m-d', strtotime($date. ' -1 days'));
-
-    // $ledger = CustomerLedger::where('sale_id', '!=', NULL)->get();
-    // foreach ($ledger as $value) {
-    //      $sale = Sale::where('id', $value->sale_id)->first();
-    //      $value->report_date = $sale->report_date;
-    //      $value->save();
-    // }
+    return PHP_INT_MAX;
 });
 
 // All authenticated routes

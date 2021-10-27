@@ -1,13 +1,13 @@
 <table id="single_product_pricing_table" class="table modal-table table-sm">
     <thead>
         <tr class="bg-primary">
-            <th class="text-white text-start">Prodcut cost (Exc.Tax)</th>
-            <th class="text-white text-start">Prodcut cost (Inc.Tax)</th>
+            <th class="text-white text-start">Prodcut cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc.Tax)</th>
+            <th class="text-white text-start">Prodcut cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc.Tax)</th>
             <th class="text-white text-start">Profit Margin(%)</th>
-            <th class="text-white text-start">Default Selling Price (Exc.Tax)</th>
-            <th class="text-white text-start">Default Selling Price (Inc.Tax)</th>
+            <th class="text-white text-start">Default Selling Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc.Tax)</th>
+            <th class="text-white text-start">Default Selling Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc.Tax)</th>
             @if (count($price_groups) > 0)
-                <th class="text-white text-start">Price Group</th>
+                <th class="text-white text-start">Price Group({{ json_decode($generalSettings->business, true)['currency'] }})</th>
             @endif
             @php
                 $priceIncTax = ($product->product_price / 100) * $tax + $product->product_price;
@@ -23,21 +23,19 @@
     <tbody class="single_product_pricing_table_body">
         <tr>
             <td class="text-start">
-                {{ json_decode($generalSettings->business, true)['currency'] }}
-                {{ $product->product_cost }}
+                {{ App\Utils\Converter::format_in_bdt($product->product_cost) }}
             </td>
             <td class="text-start">
-                {{ json_decode($generalSettings->business, true)['currency'] }}
+                
                 {{ $product->product_cost_with_tax }}
             </td>
             <td class="text-start">{{ $product->profit }}</td>
             <td class="text-start">
-                {{ json_decode($generalSettings->business, true)['currency'] }}
-                {{ $product->product_price }}
+                {{ App\Utils\Converter::format_in_bdt($product->product_price) }}
             </td>
             <td class="text-start">
                 {{ json_decode($generalSettings->business, true)['currency'] }}
-                {{ bcadd($priceIncTax, 0, 2) }}
+                {{ App\Utils\Converter::format_in_bdt($priceIncTax) }}
             </td>
             @if (count($price_groups) > 0)
                 <td class="text-start">
@@ -50,7 +48,7 @@
                                 $groupPrice = $price_group_product->price;
                             }
                         @endphp
-                        <p class="p-0 m-0"><strong>{{ $pg->name }}</strong> - {{ json_decode($generalSettings->business, true)['currency'].' '.$groupPrice}}</p>
+                        <p class="p-0 m-0"><strong>{{ $pg->name }}</strong> - {{ App\Utils\Converter::format_in_bdt($groupPrice)}}</p>
                     @endforeach
                 </td>
             @endif

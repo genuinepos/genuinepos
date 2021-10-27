@@ -227,8 +227,7 @@
                     table.ajax.reload();
                     $('#addModal').modal('hide');
                     $('.submit_button').prop('type', 'submit');
-                },
-                error: function(err) {
+                },error: function(err) {
                     $('.submit_button').prop('type', 'submit');
                     $('.loading_button').hide();
                     $('.error').html('');

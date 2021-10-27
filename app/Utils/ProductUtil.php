@@ -106,6 +106,11 @@ class ProductUtil
                 $html .= ' </div>';
                 $html .= '</div>';
                 return $html;
+            })->editColumn('name', function ($row) {
+                $html = '';
+                $html .= $row->name;
+                $html .= $row->is_manage_stock == 0 ? ' <span class="badge bg-primary pt-1"><i class="fas fa-wrench mr-1 text-white"></i></span>' : '';
+                return $html;
             })->editColumn('type', function ($row) {
                 if ($row->type == 1 && $row->is_variant == 1) {
                     return '<span class="text-primary">Variant</span>';
@@ -134,6 +139,7 @@ class ProductUtil
                 'multiple_delete',
                 'photo', 
                 'action',
+                'name', 
                 'type', 
                 'cate_name',
                 'status',

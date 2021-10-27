@@ -55,6 +55,7 @@
         $('.select_area').hide();
         $('#search_product').val("");
         var product_id = e.getAttribute('data-p_id');
+        var is_manage_stock = e.getAttribute('data-is_manage_stock');
         var product_name = e.getAttribute('data-p_name');
         var product_code = e.getAttribute('data-p_code');
         var product_unit = e.getAttribute('data-unit');
@@ -71,6 +72,9 @@
             type: 'get',
             dataType: 'json',
             success: function(singleProductQty) {
+                if (is_manage_stock == 1) {
+                    $('#current_stock').val(parseFloat(branchVariantQty));
+                }
                 if ($.isEmptyObject(singleProductQty.errorMsg)) {
                     var product_ids = document.querySelectorAll('#product_id');
                     var sameProduct = 0;
@@ -191,6 +195,7 @@
         $('.select_area').hide();
         $('#search_product').val("");
         var product_id = e.getAttribute('data-p_id');
+        var is_manage_stock = e.getAttribute('data-is_manage_stock');
         var product_name = e.getAttribute('data-p_name');
         var tax_percent = e.getAttribute('data-tax_percent');
         var product_unit = e.getAttribute('data-unit');
@@ -209,7 +214,10 @@
             dataType: 'json',
             success: function(branchVariantQty) {
                 if ($.isEmptyObject(branchVariantQty.errorMsg)) {
-                    $('#current_stock').val(parseFloat(branchVariantQty));
+                    if (is_manage_stock == 1) {
+                        $('#current_stock').val(parseFloat(branchVariantQty));
+                    }
+                    
                     var variant_ids = document.querySelectorAll('#variant_id');
                     var sameVariant = 0;
                     variant_ids.forEach(function(input) {
@@ -361,13 +369,6 @@
 
     // Input paying amount and clculate due amount
     $(document).on('input', '#paying_amount', function(){
-        // var payingAmount = $(this).val() ? $(this).val() : 0;
-        // var total_payable_amount = $('#total_payable_amount').val() ? $('#total_payable_amount').val() : 0;
-        // var calcDueAmount = parseFloat(total_payable_amount) - parseFloat(payingAmount);
-
-        // var changeAmount = parseFloat(payingAmount) - parseFloat(total_payable_amount);
-        // $('#change_amount').val(parseFloat(changeAmount).toFixed(2));
-        // $('#total_due').val(parseFloat(calcDueAmount).toFixed(2));
         calculateTotalAmount();
     });
 

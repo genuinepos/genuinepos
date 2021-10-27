@@ -114,7 +114,10 @@
                         if(product.product_variants.length == 0){
                             $('.select_area').hide();
                             $('#search_product').val('');
-                            $('#stock_quantity').val(parseFloat(qty_limit).toFixed(2));
+                            if (product.is_manage_stock == 1) {
+                                $('#stock_quantity').val(parseFloat(qty_limit).toFixed(2));
+                            }
+                            
                             product_ids = document.querySelectorAll('#product_id');
                             var sameProduct = 0;
                             product_ids.forEach(function(input){
@@ -170,7 +173,6 @@
                                 tr += '<a href="#" class="text-success" id="edit_product">';
                                 tr += '<span class="product_name">'+ product.name +'</span>';
                                 tr += '<span class="product_variant"></span>'; 
-                                tr += '<span class="product_code">'+ ' ('+product.product_code+')' +'</span>';
                                 tr += '</a><br/><input type="'+ (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                                 tr += '<input value="'+ product.id +'" type="hidden" class="productId-'+ product.id +'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -224,7 +226,7 @@
                                     tax_amount = __tax_amount;
                                 }
                                 li += '<li class="mt-1">';
-                                li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-is_manage_stock="'+product.is_manage_stock+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                 li += '</li>';
                             });
                             $('.variant_list_area').append(li);
@@ -234,7 +236,10 @@
                     }else if(!$.isEmptyObject(product.variant_product)){
                         $('.select_area').hide();
                         $('#search_product').val('');
-                        $('#stock_quantity').val(parseFloat(qty_limit).toFixed(2));
+                        if (product.is_manage_stock == 1) {
+                            $('#stock_quantity').val(parseFloat(qty_limit).toFixed(2));
+                        }
+                        
                         var variant_product = product.variant_product;
                         var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                         var variant_ids = document.querySelectorAll('#variant_id');
@@ -293,7 +298,6 @@
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+variant_product.product.name+'</span>';
                             tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
-                            tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
                             tr += '</a><br/><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
@@ -352,7 +356,7 @@
                                             tax_amount = __tax_amount;
                                         }
                                         li += '<li>';
-                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-description="'+product.is_show_emi_on_pos+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-is_manage_stock="'+product.is_manage_stock+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-description="'+product.is_show_emi_on_pos+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
                                     });
                                 }else{
@@ -367,7 +371,7 @@
                                     }
 
                                     li += '<li>';
-                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'"  data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-is_manage_stock="'+product.is_manage_stock+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'"  data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
                                 }
                             });
@@ -396,6 +400,7 @@
         }
 
         var product_id = e.getAttribute('data-p_id');
+        var is_manage_stock = e.getAttribute('data-is_manage_stock');
         var product_name = e.getAttribute('data-p_name');
         var product_code = e.getAttribute('data-p_code');
         var product_unit = e.getAttribute('data-unit');
@@ -413,7 +418,10 @@
             dataType: 'json',
             success:function(singleProductQty){
                 if($.isEmptyObject(singleProductQty.errorMsg)){
-                    $('#stock_quantity').val(parseFloat(singleProductQty).toFixed(2));
+                    if (is_manage_stock == 1) {
+                        $('#stock_quantity').val(parseFloat(singleProductQty).toFixed(2));
+                    }
+                   
                     var product_ids = document.querySelectorAll('#product_id');
                     var sameProduct = 0;
                     product_ids.forEach(function(input){
@@ -465,7 +473,6 @@
                         tr += '<a href="#" class="text-success" id="edit_product">';
                         tr += '<span class="product_name">'+product_name+'</span>';
                         tr += '<span class="product_variant"></span>'; 
-                        tr += '<span class="product_code">'+' ('+product_code+')'+'</span>';
                         tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                         tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                         tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -534,6 +541,7 @@
         $('#search_product').val("");
         $('#selectVairantModal').modal('hide');
         var product_id = e.getAttribute('data-p_id');
+        var is_manage_stock = e.getAttribute('data-is_manage_stock');
         var product_name = e.getAttribute('data-p_name');
         var tax_percent = e.getAttribute('data-tax_percent');
         var product_unit = e.getAttribute('data-unit');
@@ -554,7 +562,10 @@
             dataType: 'json',
             success:function(branchVariantQty){
                 if($.isEmptyObject(branchVariantQty.errorMsg)){
-                    $('#stock_quantity').val(parseFloat(branchVariantQty).toFixed(2));
+                    if (is_manage_stock == 1) {
+                        $('#stock_quantity').val(parseFloat(branchVariantQty).toFixed(2));
+                    }
+                    
                     var variant_ids = document.querySelectorAll('#variant_id');
                     var sameVariant = 0;
                     variant_ids.forEach(function(input){
@@ -610,7 +621,6 @@
                         tr += '<a href="#" class="text-success" id="edit_product">';
                         tr += '<span class="product_name">'+product_name+'</span>';
                         tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
-                        tr += '<span class="product_code">'+'('+variant_code+')'+'</span>';
                         tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                         tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                         tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
@@ -991,8 +1001,6 @@
                     tr += '<span class="product_name">'+product.product.name+'</span>';
                     var variant = product.product_variant_id != null ? ' -'+product.variant.variant_name+'- ' : '';
                     tr += '<span class="product_variant">'+variant+'</span>'; 
-                    var code = product.product_variant_id != null ? product.variant.variant_code : product.product.product_code;
-                    tr += '<span class="product_code">'+'('+code+')'+'</span>';
                     tr += '</a><br/><input type="'+(product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="'+(product.description ? product.description : '')+'">';
                     tr += '<input value="'+product.product_id+'" type="hidden" class="productId-'+product.product_id+'" id="product_id" name="product_ids[]">';
 

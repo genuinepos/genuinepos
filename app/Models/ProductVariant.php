@@ -31,6 +31,7 @@ class ProductVariant extends Model
             'is_combo',
             'is_variant',
             'is_show_emi_on_pos',
+            'is_manage_stock',
         ]);
     }
 

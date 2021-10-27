@@ -190,13 +190,18 @@
                 </table>
             </div>
 
-            @if (count($sale->sale_products) > 10)
+            @if (count($sale->sale_products) > 15)
                 <br>
                 <div class="row page_break">
                     <div class="col-md-12 text-end">
                         <h6><em>Continued To this next page....</em></h6>
                     </div>
                 </div>
+                @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
+                    @for ($i = 0; $i < $sale->branch->add_sale_invoice_layout->gap_from_top; $i++)
+                        <br/>
+                    @endfor
+                @endif
             @endif
 
             <div class="row">

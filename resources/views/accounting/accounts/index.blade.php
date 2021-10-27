@@ -117,7 +117,7 @@
 
                         <div class="form-group text-right py-2">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn me-0 btn_blue float-end">Save</button>
+                            <button type="submit" class="c-btn me-0 btn_blue submit_button float-end">Save</button>
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                         </div>
                     </form>
@@ -230,7 +230,7 @@
 
                         <div class="form-group text-right py-2">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn me-0 btn_blue float-end">Save</button>
+                            <button type="submit" class="c-btn me-0 btn_blue float-end submit_button">Save</button>
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                         </div>
                     </form>
@@ -287,7 +287,7 @@
 
                         <div class="form-group text-right py-2">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn me-0 btn_blue float-end">Save</button>
+                            <button type="submit" class="c-btn me-0 btn_blue float-end submit_button">Save</button>
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                         </div>
                     </form>
@@ -367,6 +367,7 @@
         $('#add_account_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
+            $('.submit_button').prop('type', 'button');
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
@@ -381,9 +382,10 @@
                     $('.error_'+inputId).html(fieldName+' is required.');
                 }
             });
-            console.log(countErrorField);
+
             if(countErrorField > 0){
                 $('.loading_button').hide();
+                $('.submit_button').prop('type', 'submit');
                 return;
             }
 
@@ -392,11 +394,20 @@
                 type:'post',
                 data: request,
                 success:function(data){
+                    $('.submit_button').prop('type', 'submit');
                     toastr.success(data);
                     $('#add_account_form')[0].reset();
                     $('.loading_button').hide();
                     getAllAccount();
                     $('#addModal').modal('hide');
+                },error: function(err) {
+                    $('.submit_button').prop('type', 'submit');
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        return;
+                    }
                 }
             });
         });
@@ -434,10 +445,12 @@
                     $('.error_'+inputId).html(fieldName+' is required.');
                 } 
             });
+
             if(countErrorField > 0){
                 $('.loading_button').hide();
                 return;
             }
+            
             $.ajax({
                 url:url,
                 type:'post',
@@ -526,6 +539,7 @@
     $('#fund_transfer_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();
+        $('.submit_button').prop('type', 'button');
         var url = $(this).attr('action');
         var request = $(this).serialize();
         var inputs = $('.ft_input');
@@ -541,9 +555,9 @@
             }
         });
 
-        console.log(countErrorField);
         if(countErrorField > 0){
             $('.loading_button').hide();
+            $('.submit_button').prop('type', 'submit');
             return;
         }
 
@@ -552,12 +566,21 @@
             type:'post',
             data: request,
             success:function(data){
+                $('.submit_button').prop('type', 'submit');
                 getAllAccount();
                 setAccount();
                 $('.loading_button').hide();
                 $('#fund_transfer_form')[0].reset();
                 toastr.success(data);
                 $('#fundTransferModal').modal('hide');
+            },error: function(err) {
+                $('.submit_button').prop('type', 'submit');
+                $('.loading_button').hide();
+                $('.error').html('');
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }
             }
         });
     });
@@ -565,6 +588,7 @@
     $('#deposit_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();
+        $('.submit_button').prop('type', 'button');
         var url = $(this).attr('action');
         var request = $(this).serialize();
         var inputs = $('.dp_input');
@@ -583,6 +607,7 @@
 
         if(countErrorField > 0){
             $('.loading_button').hide();
+            $('.submit_button').prop('type', 'submit');
             return;
         }
 
@@ -591,12 +616,21 @@
             type:'post',
             data: request,
             success:function(data){
+                $('.submit_button').prop('type', 'submit');
                 getAllAccount();
                 setAccount();
                 toastr.success(data);
                 $('#fund_transfer_form')[0].reset();
                 $('.loading_button').hide();
                 $('#depositModal').modal('hide');
+            },error: function(err) {
+                $('.submit_button').prop('type', 'submit');
+                $('.loading_button').hide();
+                $('.error').html('');
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }
             }
         });
     });

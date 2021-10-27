@@ -368,7 +368,9 @@ class POSController extends Controller
         $invoiceProducts = SaleProduct::with(['sale', 'product', 'variant'])->where('sale_id', $saleId)->get();
         $qty_limits = [];
         foreach ($invoiceProducts as $sale_product) {
-            if ($sale_product->sale->branch_id) {
+            if ($sale_product->product->is_manage_stock == 0) {
+                $qty_limits[] = PHP_INT_MAX;
+            }elseif ($sale_product->sale->branch_id) {
                 $productBranch = DB::table('product_branches')->where('branch_id', $sale_product->sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {

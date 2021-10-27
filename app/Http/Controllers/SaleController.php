@@ -520,7 +520,9 @@ class SaleController extends Controller
 
         $qty_limits = [];
         foreach ($sale->sale_products as $sale_product) {
-            if ($sale->branch_id) {
+            if ($sale_product->product->is_manage_stock == 0) {
+                $qty_limits[] = PHP_INT_MAX;
+            }elseif ($sale->branch_id) {
                 $productBranch = ProductBranch::where('branch_id', $sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {
@@ -853,10 +855,19 @@ class SaleController extends Controller
                 'tax_id',
                 'tax_type',
                 'is_show_emi_on_pos',
+                'is_manage_stock',
                 'mb_stock',
             ])->first();
 
         if ($product) {
+            if ($product->is_manage_stock == 0) {
+                return response()->json(
+                    [
+                        'product' => $product,
+                        'qty_limit' => PHP_INT_MAX
+                    ]
+                );
+            }
             if ($branch_id) {
                 $productBranch = DB::table('product_branches')
                     ->where('branch_id', $branch_id)
@@ -905,6 +916,13 @@ class SaleController extends Controller
                     'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price', 'mb_stock'
                 ])->first();
             if ($variant_product) {
+                if ($product->is_manage_stock == 0) {
+                    return response()->json([
+                        'variant_product' => $variant_product,
+                        'qty_limit' => PHP_INT_MAX
+                    ]);
+                }
+
                 if ($branch_id) {
                     if ($variant_product) {
                         $productBranch = DB::table('product_branches')
@@ -952,7 +970,6 @@ class SaleController extends Controller
 
         return $this->nameSearchUtil->nameSearching($product_code);
     }
-
 
     // Check Branch Single product Stock
     public function checkBranchSingleProductStock($product_id)

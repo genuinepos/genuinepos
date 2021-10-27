@@ -100,38 +100,34 @@
                         </div>
 
                         <div class="row margin_row mt-1">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Voucher No</th>
-                                                    <th>Customer</th>
-                                                    <th>Payment Method</th>
-                                                    <th>Sale Invoice ID</th>
-                                                    <th>Amount({{json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-    
-                                            </tbody>
-                                            <tfoot>
-                                                <tr class="bg-secondary">
-                                                    <th colspan="5" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                                    <th class="text-start text-white">
-                                                        <span id="paid_amount"></span>
-                                                    </th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div> 
-                            </div>
+                            <div class="card">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Voucher No</th>
+                                                <th>Customer</th>
+                                                <th>Payment Method</th>
+                                                <th>Sale Invoice ID</th>
+                                                <th>Amount({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="5" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                <th class="text-start text-white">
+                                                    <span id="paid_amount"></span>
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -170,7 +166,7 @@
         ],
         fnDrawCallback: function() {
             var paid_amount = sum_table_col($('.data_tbl'), 'paid_amount');
-            $('#paid_amount').text(parseFloat(paid_amount).toFixed(2));
+            $('#paid_amount').text(bdFormat(paid_amount));
             $('.data_preloader').hide();
         },
     });

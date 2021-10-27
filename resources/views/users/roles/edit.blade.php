@@ -573,6 +573,17 @@
                                                         <input type="checkbox" {{ $role->permission->register['register_close'] == '1' ? 'CHECKED' : '' }} name="register_close" class="cash_register"> &nbsp; Close Cash Register </p> 
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" 
+                                                            @if (isset($role->permission->register['another_register_close']))
+                                                                {{ $role->permission->register['another_register_close'] == '1' ? 'CHECKED' : '' }} 
+                                                            @endif
+                                                        name="another_register_close" class="another_register_close"> &nbsp; Close Another Cash Register </p> 
+                                                    </div>
+                                                </div>
                                             </div>  
                                         </div>
                                     </div>

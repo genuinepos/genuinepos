@@ -255,6 +255,7 @@
                 $('#net_total_amount').text(bdFormat(net_total_amount));
                 var due = sum_table_col($('.data_tbl'), 'due');
                 $('#due').text(bdFormat(due));
+                $('.data_preloader').hide();
             }
         });
 

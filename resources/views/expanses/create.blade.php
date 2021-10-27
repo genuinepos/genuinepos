@@ -192,7 +192,7 @@
         // Set accounts in payment and payment edit form
         function setAdmin(){
             $.ajax({
-                url:"{{route('expanses.all.admins')}}",
+                url:"{{ route('expanses.all.admins') }}",
                 async:true,
                 type:'get',
                 dataType: 'json',
@@ -228,7 +228,7 @@
         function setAccount(){
             $.ajax({
                 url:"{{route('accounting.accounts.all.form.account')}}",
-                async:true,
+                async: true,
                 type:'get',
                 dataType: 'json',
                 success:function(accounts){

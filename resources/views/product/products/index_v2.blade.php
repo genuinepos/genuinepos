@@ -8,7 +8,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
@@ -100,7 +99,6 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -232,11 +230,11 @@
             {data: 'multiple_delete',},
             {data: 'photo',name: 'photo'},
             {data: 'action',name: 'action'},
-            {data: 'name',name: 'name'},
-            {data: 'product_cost_with_tax',name: 'product_cost_with_tax'},
-            {data: 'product_price',name: 'product_price'},
-            {data: 'quantity',name: 'quantity'},
-            {data: 'type',name: 'type'},
+            {data: 'name',name: 'products.name'},
+            {data: 'product_cost_with_tax',name: 'products.product_cost_with_tax'},
+            {data: 'product_price',name: 'products.product_price'},
+            {data: 'quantity',name: 'products.quantity'},
+            {data: 'type',name: 'products.type'},
             {data: 'cate_name',name: 'categories.name'},
             {data: 'brand_name',name: 'brands.name'},
             {data: 'tax_name', name: 'taxes.tax_name'},

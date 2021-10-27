@@ -4,11 +4,11 @@
             <th class="text-white text-start">Variations</th>
             <th class="text-white text-start">Variant Code (SKU)</th>
             <th class="text-white text-start">Stock</th>
-            <th class="text-white text-start">Default Purchase Price (Exc. tax)</th>
-            <th class="text-white text-start">Default Purchase Price (Inc. tax)</th>
+            <th class="text-white text-start">Default Purchase Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc. tax)</th>
+            <th class="text-white text-start">Default Purchase Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc. tax)</th>
             <th class="text-white text-start">x Margin(%)</th>
-            <th class="text-white text-start">Default Selling Price (Exc. tax)</th>
-            <th class="text-white text-start">Default Selling Price (Inc. tax)</th>
+            <th class="text-white text-start">Default Selling Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc. tax)</th>
+            <th class="text-white text-start">Default Selling Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc. tax)</th>
             @if (count($price_groups) > 0)
                 <th class="text-white text-start">Price Group</th>
             @endif
@@ -30,18 +30,16 @@
                 <td class="text-start">{{ $variant->variant_name }}</td>
                 <td class="text-start">{{ $variant->variant_code }}</td>
                 <td class="text-start">{{ $variant->variant_quantity }}</td>
-                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $variant->variant_cost }}</td>
-                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $variant->variant_cost_with_tax }}</td>
+                <td class="text-start">{{ $variant->variant_cost }}</td>
+                <td class="text-start">{{ $variant->variant_cost_with_tax }}</td>
                 <td class="text-start"> {{ $variant->variant_profit }}</td>
                 
                 <td class="text-start">
-                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                    {{ bcadd($variant->variant_price, 0, 2) }}
+                    {{ App\Utils\Converter::format_in_bdt($variant->variant_price) }}
                 </td>
 
                 <td class="text-start">
-                    {{ json_decode($generalSettings->business, true)['currency'] }}
-                    {{ bcadd($priceIncTax, 0, 2) }}
+                    {{ App\Utils\Converter::format_in_bdt($priceIncTax) }}
                 </td>
                 
                 @if (count($price_groups) > 0)
@@ -58,7 +56,7 @@
                                     $groupPrice = $price_group_product->price;
                                 }
                             @endphp
-                            <p class="m-0 p-0"><strong>{{ $pg->name }}</strong> - {{ json_decode($generalSettings->business, true)['currency'].' '.$groupPrice}}</p>
+                            <p class="m-0 p-0"><strong>{{ $pg->name }}</strong> - {{ App\Utils\Converter::format_in_bdt($groupPrice) }}</p>
                         @endforeach
                     </td>
                 @endif

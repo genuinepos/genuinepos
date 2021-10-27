@@ -219,6 +219,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group mt-1">
+                                                    <div class="col-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input {{ $product->is_manage_stock == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_manage_stock"> &nbsp; <b>Is Manage Stock</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

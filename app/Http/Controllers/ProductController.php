@@ -110,6 +110,7 @@ class ProductController extends Controller
         $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
         $addProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
         $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
+        $addProduct->is_manage_stock = isset($request->is_manage_stock) ? 1 : 0;
         $addProduct->product_details = $request->product_details;
         $addProduct->is_purchased = 0;
         $addProduct->barcode_type = $request->barcode_type;
@@ -588,8 +589,8 @@ class ProductController extends Controller
         $updateProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
         $updateProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
         $updateProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
+        $updateProduct->is_manage_stock = isset($request->is_manage_stock) ? 1 : 0;
         $updateProduct->product_details = $request->product_details;
-        $updateProduct->is_purchased = 0;
         $updateProduct->barcode_type = $request->barcode_type;
         $updateProduct->warranty_id = $request->warranty_id;
         $updateProduct->weight = $request->weight;
@@ -598,11 +599,11 @@ class ProductController extends Controller
         $updateProduct->custom_field_3 = $request->custom_field_3;
 
         //upload multiple photo for e-commerce
-        if ($request->file('image')) {
-            if (count($request->file('image')) > 2) {
-                return response()->json(['errorMsg' => 'You can upload only 2 product images.']);
-            }
-        }
+        // if ($request->file('image')) {
+        //     if (count($request->file('image')) > 2) {
+        //         return response()->json(['errorMsg' => 'You can upload only 2 product images.']);
+        //     }
+        // }
 
         if ($request->file('image')) {
             if (count($request->file('image')) > 0) {

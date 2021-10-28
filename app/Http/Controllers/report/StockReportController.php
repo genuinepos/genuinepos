@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\report;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -243,6 +242,4 @@ class StockReportController extends Controller
         $branch_id = $branch_id == 'NULL' ? NULL : $branch_id;
         return Warehouse::where('branch_id', $branch_id)->orderBy('id', 'DESC')->get();
     }
-
-    
 }

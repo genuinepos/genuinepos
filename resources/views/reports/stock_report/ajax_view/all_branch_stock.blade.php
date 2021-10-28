@@ -3,7 +3,6 @@
         <tr class="bg-navey-blue">
             <th>P.Code(SKU)</th>
             <th>Product</th>
-            
             <th>B.Location</th>
             <th>Current Stock</th>
             <th>Unit Price Exc.Tax</th>

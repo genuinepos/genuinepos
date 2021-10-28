@@ -60,27 +60,24 @@ class Util
         $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
         $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
         $addProduct->quantity = $request->quantity ? $request->quantity : 0;
-        $addProduct->mb_stock = !$request->branch_id ? $request->quantity : 0;
         $addProduct->save();
 
         //Add opening stock
+        $addOpeningStock = new ProductOpeningStock();
+        $addOpeningStock->branch_id = $request->branch_id;
+        $addOpeningStock->product_id  = $addProduct->id;
+        $addOpeningStock->unit_cost_inc_tax = $request->unit_cost_inc_tax;
+        $addOpeningStock->quantity = $request->quantity;
+        $addOpeningStock->subtotal = $request->subtotal;
+        $addOpeningStock->save();
 
-            //Add opening stock
-            $addOpeningStock = new ProductOpeningStock();
-            $addOpeningStock->branch_id = $request->branch_id;
-            $addOpeningStock->product_id  = $addProduct->id;
-            $addOpeningStock->unit_cost_inc_tax = $request->unit_cost_inc_tax;
-            $addOpeningStock->quantity = $request->quantity;
-            $addOpeningStock->subtotal = $request->subtotal;
-            $addOpeningStock->save();
-
-            // Add product Branch
-            $addProductBranch = new ProductBranch();
-            $addProductBranch->branch_id = $request->branch_id;
-            $addProductBranch->product_id = $addProduct->id;
-            $addProductBranch->product_quantity = $request->quantity;
-            $addProductBranch->save();
-            return response()->json($addProduct);
+        // Add product Branch
+        $addProductBranch = new ProductBranch();
+        $addProductBranch->branch_id = $request->branch_id;
+        $addProductBranch->product_id = $addProduct->id;
+        $addProductBranch->product_quantity = $request->quantity;
+        $addProductBranch->save();
+        return response()->json($addProduct);
     }
 
     public function storeQuickCustomer($request)

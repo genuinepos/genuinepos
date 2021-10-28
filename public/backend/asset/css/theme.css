@@ -210,7 +210,7 @@ body.red-theme {
 }
 
 .red-theme .tab_list_area ul li a {
-    color: white !important;
+    color: white;
     border-bottom: 1px solid lightgray !important;
     background: -webkit-linear-gradient(
         top,
@@ -218,7 +218,7 @@ body.red-theme {
         var(--red-color-1) 50%,
         var(--red-color-2) 51%,
         var(--red-color-2) 100%
-    ) !important;
+    );
     border-right: 2px solid white !important;
 }
 
@@ -483,7 +483,7 @@ body.blue-theme {
 }
 
 .blue-theme .tab_list_area ul li a {
-    color: white !important;
+    color: white;
     border-bottom: 1px solid lightgray !important;
     background: -webkit-linear-gradient(
         top,
@@ -491,7 +491,7 @@ body.blue-theme {
         var(--blue-color-1) 50%,
         var(--blue-color-2) 51%,
         var(--blue-color-2) 100%
-    ) !important;
+    );
     border-right: 2px solid white !important;
 }
 
@@ -748,7 +748,7 @@ body.dark-theme {
 }
 
 .dark-theme .tab_list_area ul li a {
-    color: white !important;
+    color: white;
     border-bottom: 1px solid lightgray !important;
     background: -webkit-linear-gradient(
         top,
@@ -756,7 +756,7 @@ body.dark-theme {
         var(--dark-color-1) 50%,
         var(--dark-color-2) 51%,
         var(--dark-color-2) 100%
-    ) !important;
+    );
     border-right: 2px solid white !important;
 }
 
@@ -1017,7 +1017,7 @@ body.light-theme {
 }
 
 .light-theme .tab_list_area ul li a {
-    color: white !important;
+    color: white;
     border-bottom: 1px solid lightgray !important;
     background: -webkit-linear-gradient(
         top,
@@ -1025,7 +1025,7 @@ body.light-theme {
         var(--light-color-1) 50%,
         var(--light-color-2) 51%,
         var(--light-color-2) 100%
-    ) !important;
+    );
     border-right: 2px solid white !important;
 }
 

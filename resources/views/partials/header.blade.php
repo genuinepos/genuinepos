@@ -23,6 +23,7 @@
                 <div class="notify-menu">
                     <div class="head__content__sec">
                         <ul class="head__cn">
+                            <li class="top-icon d-none d-md-block"><a href="https://help.genuinepos.com/" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
                             <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
@@ -118,19 +119,6 @@
                                     </li>
                                 </ul>
                             </li>
-                            {{-- <li class="user_info me-5"> --}}
-                            {{-- <span class="user_name">
-                                {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}
-
-                                @if (auth()->user()->role_type == 1)
-                                    (Super Admin)
-                                @elseif(auth()->user()->role_type == 2)
-                                    (Admin)
-                                @else
-                                    {{ auth()->user()->role->name }}
-                                @endif
-                            </span> --}}
-                            {{-- <span><a href="#">Need Help?</a></span> --}}
                         </li>
                         <li class="top-icon">
                             <a href="" id="logout_option"><span class="fas fa-power-off" title="Logout"></span></a>

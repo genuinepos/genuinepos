@@ -121,14 +121,14 @@
 
                 @if ($addons->manufacturing == 1)
                     {{-- @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1') --}}
-                        @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
-                            <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
-                                <a href="#">
-                                    <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
-                                    <p class="title">Manufacture</p>
-                                </a>
-                            </li>
-                        @endif
+                    @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
+                        <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
+                            <a href="#">
+                                <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
+                                <p class="title">Manufacture</p>
+                            </a>
+                        </li>
+                    @endif
                 @endif
 
                 @if ($addons->todo == 1)

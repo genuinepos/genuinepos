@@ -771,8 +771,8 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
 
     Route::group(['prefix' => 'stock'], function () {
         Route::get('/', 'StockReportController@index')->name('reports.stock.index');
-        Route::get('all/products', 'StockReportController@allProducts')->name('reports.stock.all.products');
-        Route::get('filter/stock', 'StockReportController@filterStock')->name('reports.stock.filter');
+        Route::get('branch/warehouse/{branch_id}', 'StockReportController@branchWarehouses');
+        Route::get('warehouse/stock', 'StockReportController@warehouseStock')->name('reports.stock.warehouse.stock');
         Route::get('all/parent/categories', 'StockReportController@allParentCategories')->name('reports.stock.all.parent.categories');
     });
 

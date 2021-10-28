@@ -515,7 +515,7 @@ class PurchaseReturnController extends Controller
             if (isset($request->warehouse_id)) {
                 $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $request->warehouse_id);
             } else {
-                $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, auth()->user()->branch_id);
+                $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
             }
             $__index2++;
         }
@@ -556,7 +556,7 @@ class PurchaseReturnController extends Controller
                     $qty_limits[] = $productWarehouse->product_quantity;
                 }
             }
-        } elseif ($purchaseReturn->branch_id) {
+        } else {
             foreach ($purchaseReturn->purchase_return_products as $purchase_return_product) {
                 $productBranch = ProductBranch::where('branch_id', $purchaseReturn->branch_id)
                     ->where('product_id', $purchase_return_product->product_id)->first();
@@ -652,7 +652,7 @@ class PurchaseReturnController extends Controller
                 if ($updatePurchaseReturn->warehouse_id) {
                     $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId,  $updatePurchaseReturn->warehouse_id);
                 } else {
-                    $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId, $updatePurchaseReturn->branch_id);
+                    $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, $updatePurchaseReturn->branch_id);
                 } 
             }
         }
@@ -663,7 +663,7 @@ class PurchaseReturnController extends Controller
             if ($updatePurchaseReturn->warehouse_id) {
                 $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $updatePurchaseReturn->warehouse_id);
             } else {
-                $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $updatePurchaseReturn->branch_id);
+                $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $updatePurchaseReturn->branch_id);
             } 
         }
 

@@ -324,7 +324,7 @@ class PurchaseController extends Controller
                 if (isset($request->warehouse_id)) {
                     $this->productStockUtil->addWarehouseProduct($productId, $variant_id, $request->warehouse_id);
                     $this->productStockUtil->adjustWarehouseStock($productId, $variant_id, $request->warehouse_id);
-                } else if (auth()->user()->branch_id) {
+                } else {
                     $this->productStockUtil->addBranchProduct($productId, $variant_id, auth()->user()->branch_id);
                     $this->productStockUtil->adjustBranchStock($productId, $variant_id, auth()->user()->branch_id);
                 } 

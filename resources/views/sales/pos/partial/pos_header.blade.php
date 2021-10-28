@@ -47,7 +47,7 @@
                     </p>
                 @else 
                     <p class="store-name">
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HEAD OFFICE)</b>
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
                     </p>
                     <p class="address-name">
                         {{ Str::limit(json_decode($generalSettings->business, true)['address'], 45) }}

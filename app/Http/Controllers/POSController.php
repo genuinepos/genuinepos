@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Utils\Util;
 use App\Models\Sale;
 use App\Utils\SmsUtil;
-use App\Models\Product;
 use App\Utils\SaleUtil;
 use App\Models\CashFlow;
 use App\Models\Customer;
@@ -17,7 +16,6 @@ use App\Models\CashRegister;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
-use App\Models\ProductVariant;
 use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
@@ -1465,7 +1463,7 @@ class POSController extends Controller
         // Add new payment 
         if ($request->paying_amount > 0) {
             $addSalePayment = new SalePayment();
-            $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+            $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SP') . date('my') . $invoiceId;
             $addSalePayment->sale_id = $request->ex_sale_id;
             $addSalePayment->customer_id = $request->customer_id ? $request->customer_id : NULL;
             $addSalePayment->account_id = $request->account_id;

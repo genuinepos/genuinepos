@@ -216,11 +216,7 @@ class SaleReturnController extends Controller
 
             foreach ($sale->sale_products as $sale_product) {
                 $this->productStockUtil->adjustMainProductAndVariantStock($sale_product->product_id, $sale_product->product_variant_id);
-                if ($sale->branch_id) {
-                    $this->productStockUtil->adjustBranchStock($sale_product->product_id, $sale_product->product_variant_id, $sale->branch_id);
-                } else {
-                    $this->productStockUtil->adjustMainBranchStock($sale_product->product_id, $sale_product->product_variant_id);
-                }
+                $this->productStockUtil->adjustBranchStock($sale_product->product_id, $sale_product->product_variant_id, $sale->branch_id);
             }
 
             $this->saleUtil->adjustSaleInvoiceAmounts($sale);
@@ -273,11 +269,7 @@ class SaleReturnController extends Controller
 
             foreach ($sale->sale_products as $sale_product) {
                 $this->productStockUtil->adjustMainProductAndVariantStock($sale_product->product_id, $sale_product->product_variant_id);
-                if ($sale->branch_id) {
-                    $this->productStockUtil->adjustBranchStock($sale_product->product_id, $sale_product->product_variant_id, $sale->branch_id);
-                } else {
-                    $this->productStockUtil->adjustMainBranchStock($sale_product->product_id, $sale_product->product_variant_id);
-                }
+                $this->productStockUtil->adjustBranchStock($sale_product->product_id, $sale_product->product_variant_id, $sale->branch_id);
             }
 
             $this->saleUtil->adjustSaleInvoiceAmounts($sale);
@@ -305,11 +297,7 @@ class SaleReturnController extends Controller
         $saleReturn->delete();
         foreach ($storedReturnedProducts as $return_product) {
             $this->productStockUtil->adjustMainProductAndVariantStock($return_product->product_id, $return_product->product_variant_id);
-            if ($storedBranchId) {
-                $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storedBranchId);
-            } else {
-                $this->productStockUtil->adjustMainBranchStock($return_product->product_id, $return_product->product_variant_id);
-            }
+            $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storedBranchId);
         }
 
         $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);

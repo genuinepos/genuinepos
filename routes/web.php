@@ -3,7 +3,9 @@
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\AdminAndUser;
+use App\Models\ProductBranch;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProductBranchVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -879,7 +881,25 @@ Route::get('pin_login', function () {
 });
 
 Route::get('/test', function () {
-
+    $products = Product::with('product_variants')->get();
+    foreach ($products as $product) {
+        $addProductBranch = new ProductBranch();
+        $addProductBranch->product_id = $product->id;
+        $addProductBranch->product_quantity = $product->mb_stock;
+        $addProductBranch->total_sale = $product->mb_total_sale;
+        $addProductBranch->save();
+        if ($product->product_variants) {
+            foreach ($product->product_variants as $product_variant) {
+                $addProductBranchVariant = new ProductBranchVariant();
+                $addProductBranchVariant->product_branch_id = $addProductBranch->id;
+                $addProductBranchVariant->product_id = $product->id;
+                $addProductBranchVariant->product_variant_id = $product_variant->id;
+                $addProductBranchVariant->variant_quantity = $product_variant->mb_stock;
+                $addProductBranchVariant->total_sale = $product_variant->mb_total_sale;
+                $addProductBranchVariant->save();
+            }
+        }
+    }
 });
 
 // All authenticated routes

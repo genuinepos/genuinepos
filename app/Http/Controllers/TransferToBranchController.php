@@ -307,11 +307,7 @@ class TransferToBranchController extends Controller
 
             foreach ($storedTransferredProducts as $transfer_product) {
                 $this->productStockUtil->adjustWarehouseStock($transfer_product->product_id, $transfer_product->product_variant_id, $storedWarehouseId);
-                if ($storedBranchId) {
-                    $this->productStockUtil->adjustBranchStock($transfer_product->product_id, $transfer_product->product_variant_id, $storedBranchId);
-                } else {
-                    $this->productStockUtil->adjustMainBranchStock($transfer_product->product_id, $transfer_product->product_variant_id);
-                }
+                $this->productStockUtil->adjustBranchStock($transfer_product->product_id, $transfer_product->product_variant_id, $storedBranchId);
             }
         }
 

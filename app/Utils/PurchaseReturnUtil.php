@@ -37,7 +37,7 @@ class PurchaseReturnUtil
         //Update purchase and supplier purchase return due
         $purchaseDue = $purchase->total_purchase_amount - $purchase->paid;
         $purchaseReturnDue = $request->total_return_amount - $purchaseDue;
-       
+
         // Update purchase return
         $purchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
         if ($purchase->warehouse_id) {
@@ -51,7 +51,7 @@ class PurchaseReturnUtil
 
         if ($purchaseReturnDue > 0) {
             $purchaseReturn->total_return_due = $purchaseReturnDue - $purchaseReturn->total_return_due_received;
-        }else {
+        } else {
             $purchaseReturn->total_return_due = 0;
         }
 
@@ -76,10 +76,8 @@ class PurchaseReturnUtil
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $purchase_product->product_variant_id);
             if ($purchase->warehouse_id) {
                 $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $purchase->warehouse_id);
-            }elseif ($purchase->branch_id) {
+            } else {
                 $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, $purchase->branch_id);
-            }else {
-                $this->productStockUtil->adjustMainBranchStock($purchase_product->product_id, $purchase_product->product_variant_id);
             }
         }
 
@@ -98,7 +96,7 @@ class PurchaseReturnUtil
         $purchase->is_return_available = 1;
         $purchaseDue = $purchase->total_purchase_amount - $purchase->paid;
         $purchaseReturnDue = $request->total_return_amount - $purchaseDue;
- 
+
         $addPurchaseReturn = new PurchaseReturn();
         $addPurchaseReturn->purchase_id = $purchase->id;
         $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
@@ -112,7 +110,7 @@ class PurchaseReturnUtil
         $addPurchaseReturn->total_return_amount = $request->total_return_amount;
         if ($purchaseReturnDue > 0) {
             $addPurchaseReturn->total_return_due = $purchaseReturnDue;
-        }else {
+        } else {
             $addPurchaseReturn->total_return_due = 0;
         }
 
@@ -145,10 +143,8 @@ class PurchaseReturnUtil
 
             if ($purchase->warehouse_id) {
                 $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $purchase->warehouse_id);
-            }elseif ($purchase->branch_id) {
+            } else {
                 $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, $purchase->branch_id);
-            }else {
-                $this->productStockUtil->adjustMainBranchStock($purchase_product->product_id, $purchase_product->product_variant_id);
             }
         }
 

@@ -32,11 +32,11 @@ class Util
             ]
         );
 
-          // generate Customer ID
-          $l = 6;
-          $b = 0;
-          $code = '';
-          while ($b < $l) { $code .= rand(1, 9); $b++; }
+        // generate Customer ID
+        $l = 6;
+        $b = 0;
+        $code = '';
+        while ($b < $l) { $code .= rand(1, 9); $b++; }
 
         $addProduct->type = 1;
         $addProduct->name = $request->name;
@@ -64,7 +64,7 @@ class Util
         $addProduct->save();
 
         //Add opening stock
-        if ($request->branch_id) {
+
             //Add opening stock
             $addOpeningStock = new ProductOpeningStock();
             $addOpeningStock->branch_id = $request->branch_id;
@@ -80,16 +80,7 @@ class Util
             $addProductBranch->product_id = $addProduct->id;
             $addProductBranch->product_quantity = $request->quantity;
             $addProductBranch->save();
-        }else {
-            //Add opening stock
-            $addOpeningStock = new ProductOpeningStock();
-            $addOpeningStock->product_id  = $addProduct->id;
-            $addOpeningStock->unit_cost_inc_tax = $request->unit_cost_inc_tax;
-            $addOpeningStock->quantity = $request->quantity;
-            $addOpeningStock->subtotal = $request->subtotal;
-            $addOpeningStock->save();
-        }
-        return response()->json($addProduct);
+            return response()->json($addProduct);
     }
 
     public function storeQuickCustomer($request)

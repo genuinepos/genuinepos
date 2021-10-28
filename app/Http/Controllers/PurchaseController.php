@@ -327,9 +327,7 @@ class PurchaseController extends Controller
                 } else if (auth()->user()->branch_id) {
                     $this->productStockUtil->addBranchProduct($productId, $variant_id, auth()->user()->branch_id);
                     $this->productStockUtil->adjustBranchStock($productId, $variant_id, auth()->user()->branch_id);
-                } else {
-                    $this->productStockUtil->adjustMainBranchStock($productId, $variant_id);
-                }
+                } 
                 $__index++;
             }
         }
@@ -515,11 +513,9 @@ class PurchaseController extends Controller
                 $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
                 if (isset($request->warehouse_id)) {
                     $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId, $request->warehouse_id);
-                } else if (auth()->user()->branch_id) {
-                    $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
                 } else {
-                    $this->productStockUtil->adjustMainBranchStock($storedProductId, $storedVariantId);
-                }
+                    $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
+                } 
             }
         }
 
@@ -530,11 +526,9 @@ class PurchaseController extends Controller
                 if (isset($request->warehouse_id)) {
                     $this->productStockUtil->addWarehouseProduct($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
                     $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
-                } else if (auth()->user()->branch_id) {
+                } else {
                     $this->productStockUtil->addBranchProduct($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
                     $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
-                } else {
-                    $this->productStockUtil->adjustMainBranchStock($purchase_product->product_id, $purchase_product->product_variant_id);
                 }
             }
 
@@ -655,10 +649,8 @@ class PurchaseController extends Controller
         // update Business location or Warehouse product and variant quantity for adjustment
         if ($updatePurchase->warehouse_id) {
             $this->productStockUtil->adjustWarehouseStock($request->product_id, $variantId, $updatePurchase->warehouse_id);
-        } elseif ($updatePurchase->branch_id) {
-            $this->productStockUtil->adjustBranchStock($request->product_id, $variantId, $updatePurchase->branch_id);
         } else {
-            $this->productStockUtil->adjustMainBranchStock($request->product_id, $variantId);
+            $this->productStockUtil->adjustBranchStock($request->product_id, $variantId, $updatePurchase->branch_id);
         }
 
         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
@@ -739,11 +731,9 @@ class PurchaseController extends Controller
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $variant_id);
             if ($storedWarehouseId) {
                 $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $variant_id, $storedWarehouseId);
-            } elseif ($storedBranchId) {
-                $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $variant_id, $storedBranchId);
             } else {
-                $this->productStockUtil->adjustMainBranchStock($purchase_product->product_id, $variant_id);
-            }
+                $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $variant_id, $storedBranchId);
+            } 
         }
 
         if (count($storedPayments) > 0) {

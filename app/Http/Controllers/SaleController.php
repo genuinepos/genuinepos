@@ -265,7 +265,6 @@ class SaleController extends Controller
         $addSale->month = date('F');
         $addSale->year = date('Y');
 
-
         // Update customer due
         if ($request->status == 1) {
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0;
@@ -317,7 +316,6 @@ class SaleController extends Controller
         $unit_prices = $request->unit_prices;
         $subtotals = $request->subtotals;
         $descriptions = $request->descriptions;
-
         // update product quantity and add sale product
         $branch_id = auth()->user()->branch_id;
 
@@ -451,7 +449,7 @@ class SaleController extends Controller
         ->select(
             'sales.*',
             'customers.name as c_name'
-            )
+        )
         ->first();
 
         $sold_product = DB::table('sale_products')

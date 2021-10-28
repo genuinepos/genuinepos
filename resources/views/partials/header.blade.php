@@ -88,6 +88,7 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li class="top-icon"><a href="https://help.genuinepos.com/"><b><span class="far fa-question-circle"></span></b></a></li>
                             <li class="dropdown dp__top top-icon">
                                 <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown" title="User">
                                     <span class="fas fa-user"></span>

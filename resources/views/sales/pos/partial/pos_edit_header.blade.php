@@ -17,7 +17,7 @@
                 <div class="pos-logo">
                     @if (auth()->user()->branch)
                         @if (auth()->user()->branch->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->log) }}">
+                            <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
                         @else 
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
                         @endif

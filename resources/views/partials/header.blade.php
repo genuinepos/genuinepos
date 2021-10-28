@@ -6,7 +6,7 @@
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
                         @if (auth()->user()->branch)
                             @if (auth()->user()->branch->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->log) }}">
+                                <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
                             @else 
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white; 
                                 letter-spacing:1px;padding-top:15px;">{{ auth()->user()->branch->name }}</span>

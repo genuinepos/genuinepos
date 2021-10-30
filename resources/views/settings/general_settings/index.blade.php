@@ -1015,7 +1015,7 @@
                                             </div>
                                         </div>
 
-                                        @if ($addons->manufacturing == 1)
+                                        @if ($addons->hrm == 1)
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">

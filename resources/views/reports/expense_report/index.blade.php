@@ -97,54 +97,52 @@
                         </div>
 
                         <div class="row margin_row mt-1">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Date</th>
-                                                    <th class="text-start">Reference ID</th>
-                                                    <th class="text-start">B.Location</th>
-                                                    <th class="text-start">Expanse For</th>
-                                                    <th class="text-start">Payment Status</th>
-                                                    <th class="text-start">Tax({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                    <th class="text-start">Net Total({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                    <th class="text-start">Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                    <th class="text-start">Payment Due({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-    
-                                            </tbody>
-                                            <tfoot>
-                                                <tr class="bg-secondary">
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th class="text-start text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                                    <th class="text-start text-white">
-                                                        <span id="tax_amount"></span>
-                                                    </th>
-                                                    <th class="text-start text-white">
-                                                        <span id="net_total"></span>
-                                                    </th>
-                                                    <th class="text-start text-white">
-                                                        <span id="paid"></span>
-                                                    </th>
-                                                    <th class="text-start text-white">
-                                                        <span id="due"></span>
-                                                    </th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div> 
-                            </div>
+                            <div class="card">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Date</th>
+                                                <th class="text-start">Reference ID</th>
+                                                <th class="text-start">B.Location</th>
+                                                <th class="text-start">Expanse For</th>
+                                                <th class="text-start">Payment Status</th>
+                                                <th class="text-start">Tax({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th class="text-start">Net Total({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th class="text-start">Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th class="text-start">Payment Due({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th class="text-start text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                <th class="text-start text-white">
+                                                    <span id="tax_amount"></span>
+                                                </th>
+                                                <th class="text-start text-white">
+                                                    <span id="net_total"></span>
+                                                </th>
+                                                <th class="text-start text-white">
+                                                    <span id="paid"></span>
+                                                </th>
+                                                <th class="text-start text-white">
+                                                    <span id="due"></span>
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </div>

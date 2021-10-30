@@ -10,49 +10,6 @@
         </tr>
     </thead>
     <tbody>
-        <!-- Main Branch single product Stock -->
-        @if (auth()->user()->branch_id)
-            @if ($product->product_variants)
-                @foreach ($product->product_variants as $product_variant)
-                    <tr>
-                        <td class="text-start">{{ $product_variant->variant_code }}</td>
-                        <td class="text-start">{{ $product->name.' - '.$product_variant->variant_name }}</td>
-                        <td class="text-start">
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
-                        </td>
-
-                        <td class="text-start">{{ $product_variant->mb_stock . ' (' . $product->unit->code_name . ')' }}</td>
-                        @php
-                            $stockValue = $product_variant->mb_stock * $product->product_cost_with_tax;
-                        @endphp
-                        <td class="text-start">
-                            {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            {{ App\Utils\Converter::format_in_bdt($stockValue) }}
-                        </td>
-                        <td>{{ $product_variant->mb_total_sale }}</td>
-                    </tr>
-                @endforeach
-            @else 
-                <tr>
-                    <td class="text-start">{{ $product->product_code }}</td>
-                    <td class="text-start">{{ $product->name }}</td>
-                    <td class="text-start">
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
-                    </td>
-
-                    <td class="text-start">{{ $product->mb_stock . ' (' . $product->unit->code_name . ')' }}</td>
-                    @php
-                        $stockValue = $product->mb_stock * $product->product_cost_with_tax;
-                    @endphp
-                    <td class="text-start">
-                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                        {{ App\Utils\Converter::format_in_bdt($stockValue) }}
-                    </td>
-                    <td>{{ $product->mb_total_sale }}</td>
-                </tr>    
-            @endif
-        @endif
-        
         @foreach ($another_branch_stocks as $row)
             @if ($row->variant_name)
                 <tr>

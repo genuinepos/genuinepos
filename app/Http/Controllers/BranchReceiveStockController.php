@@ -137,16 +137,12 @@ class BranchReceiveStockController extends Controller
                 ->first();
             $updateTransferProduct->received_qty = $receive_quantities[$index];
             $updateTransferProduct->save();
-
-            $this->productStockUtil->addWarehouseProduct($product_id, $variant_id, $updateSandStocks->warehouse_id);
+            
             $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $updateSandStocks->warehouse_id);
 
-            if ($updateSandStocks->branch_id) {
-                $this->productStockUtil->addBranchProduct($product_id, $variant_id, $updateSandStocks->branch_id);
-                $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $updateSandStocks->branch_id);
-            } else {
-                $this->productStockUtil->adjustMainBranchStock($product_id, $variant_id);
-            }
+            $this->productStockUtil->addBranchProduct($product_id, $variant_id, $updateSandStocks->branch_id);
+            $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $updateSandStocks->branch_id);
+           
             $index++;
         }
 

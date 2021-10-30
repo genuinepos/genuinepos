@@ -23,7 +23,9 @@
                 <div class="notify-menu">
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon d-none d-md-block"><a href="https://help.genuinepos.com/" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
+                            @if ($addons->e_commerce == 1)
+                                <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
+                            @endif
                             <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
                             <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')

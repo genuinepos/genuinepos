@@ -31,9 +31,11 @@ class AppServiceProvider extends ServiceProvider
         try {
             $generalSettings = DB::table('general_settings')->first();
             $addons = DB::table('addons')->first();
-            if (isset($generalSettings) && isset($addons)) {
+            $warehouseCount = DB::table('warehouses')->count();
+            if (isset($generalSettings) && isset($addons) && isset($warehouseCount)) {
                 view()->share('generalSettings', $generalSettings);
                 view()->share('addons', $addons);
+                view()->share('warehouseCount', $warehouseCount);
             }
         } catch (Exception $e) {
             echo $e->getMessage() . PHP_EOL;

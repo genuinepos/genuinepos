@@ -26,14 +26,14 @@ class StockReportController extends Controller
             $generalSettings = DB::table('general_settings')->first();
             $branch_stock = '';
             $query = DB::table('product_branches')
-            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
-            ->leftJoin('products', 'product_branches.product_id', 'products.id')
-            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
-            ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('brands', 'products.brand_id', 'brands.id')
-            ->leftJoin('taxes', 'products.tax_id', 'taxes.id');
+                ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+                ->leftJoin('products', 'product_branches.product_id', 'products.id')
+                ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+                ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
+                ->leftJoin('units', 'products.unit_id', 'units.id')
+                ->leftJoin('categories', 'products.category_id', 'categories.id')
+                ->leftJoin('brands', 'products.brand_id', 'brands.id')
+                ->leftJoin('taxes', 'products.tax_id', 'taxes.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
@@ -99,7 +99,7 @@ class StockReportController extends Controller
 
             return DataTables::of($branch_stock)
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
-                ->editColumn('name',  fn ($row) => $row->name.' '.$row->variant_name)
+                ->editColumn('name',  fn ($row) => $row->name . ' ' . $row->variant_name)
                 ->editColumn('branch',  function ($row) use ($generalSettings) {
                     if ($row->b_name) {
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
@@ -107,16 +107,16 @@ class StockReportController extends Controller
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
-                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' .($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) .'('.$row->code_name.')</span>')
+                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '(' . $row->code_name . ')</span>')
 
                 ->editColumn('price',  fn ($row) => $row->variant_price ? $row->variant_price : $row->product_price)
-                ->editColumn('stock_value',  function ($row) use($converter) {
+                ->editColumn('stock_value',  function ($row) use ($converter) {
                     $price = $row->variant_cost_with_tax ? $row->variant_cost_with_tax : $row->product_cost_with_tax;
                     $stock = $row->variant_quantity ? $row->variant_quantity : $row->product_quantity;
                     $currentStockValue = $price * $stock;
                     return '<span class="stock_value" data-value="' . $currentStockValue . '">' . $converter->format_in_bdt($currentStockValue) . '</span>';
                 })
-                ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="' . ($row->v_total_sale ? $row->v_total_sale : $row->total_sale) . '">' .($row->v_total_sale ? $row->v_total_sale : $row->total_sale) .'('.$row->code_name.')</span>')
+                ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="' . ($row->v_total_sale ? $row->v_total_sale : $row->total_sale) . '">' . ($row->v_total_sale ? $row->v_total_sale : $row->total_sale) . '(' . $row->code_name . ')</span>')
                 ->rawColumns(['product_code', 'name', 'branch', 'stock', 'price', 'stock_value', 'total_sale'])
                 ->make(true);
         }
@@ -136,15 +136,15 @@ class StockReportController extends Controller
             $generalSettings = DB::table('general_settings')->first();
             $branch_stock = '';
             $query = DB::table('product_warehouses')
-            ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
-            ->leftJoin('products', 'product_warehouses.product_id', 'products.id')
-            ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
-            ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
-            ->leftJoin('branches', 'warehouses.branch_id', 'branches.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('brands', 'products.brand_id', 'brands.id')
-            ->leftJoin('taxes', 'products.tax_id', 'taxes.id');
+                ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
+                ->leftJoin('products', 'product_warehouses.product_id', 'products.id')
+                ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
+                ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
+                ->leftJoin('branches', 'warehouses.branch_id', 'branches.id')
+                ->leftJoin('units', 'products.unit_id', 'units.id')
+                ->leftJoin('categories', 'products.category_id', 'categories.id')
+                ->leftJoin('brands', 'products.brand_id', 'brands.id')
+                ->leftJoin('taxes', 'products.tax_id', 'taxes.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
@@ -214,7 +214,7 @@ class StockReportController extends Controller
 
             return DataTables::of($branch_stock)
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
-                ->editColumn('name',  fn ($row) => $row->name.' '.$row->variant_name)
+                ->editColumn('name',  fn ($row) => $row->name . ' ' . $row->variant_name)
                 ->editColumn('branch',  function ($row) use ($generalSettings) {
                     if ($row->b_name) {
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
@@ -222,10 +222,10 @@ class StockReportController extends Controller
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
-                ->editColumn('warehouse', fn ($row) =>$row->w_name . '/' . $row->w_code)
-                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' .($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) .'('.$row->code_name.')</span>')
+                ->editColumn('warehouse', fn ($row) => $row->w_name . '/' . $row->w_code)
+                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '(' . $row->code_name . ')</span>')
                 ->editColumn('price',  fn ($row) => $row->variant_price ? $row->variant_price : $row->product_price)
-                ->editColumn('stock_value',  function ($row) use($converter) {
+                ->editColumn('stock_value',  function ($row) use ($converter) {
                     $price = $row->variant_cost_with_tax ? $row->variant_cost_with_tax : $row->product_cost_with_tax;
                     $stock = $row->variant_quantity ? $row->variant_quantity : $row->product_quantity;
                     $currentStockValue = $price * $stock;
@@ -241,5 +241,87 @@ class StockReportController extends Controller
     {
         $branch_id = $branch_id == 'NULL' ? NULL : $branch_id;
         return Warehouse::where('branch_id', $branch_id)->orderBy('id', 'DESC')->get();
+    }
+
+    // Print Branch Stock
+    public function printBranchStock(Request $request)
+    {
+        $branch_id = $request->branch_id;
+        $branch_stock = '';
+        $query = DB::table('product_branches')
+            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+            ->leftJoin('products', 'product_branches.product_id', 'products.id')
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+            ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->leftJoin('categories', 'products.category_id', 'categories.id')
+            ->leftJoin('brands', 'products.brand_id', 'brands.id')
+            ->leftJoin('taxes', 'products.tax_id', 'taxes.id');
+
+        if ($request->branch_id) {
+            if ($request->branch_id == 'NULL') {
+                $query->where('product_branches.branch_id', NULL);
+            } else {
+                $query->where('product_branches.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->category_id) {
+            $query->where('products.category_id', $request->category_id);
+        }
+
+        if ($request->brand_id) {
+            $query->where('products.brand_id', $request->brand_id);
+        }
+
+        if ($request->unit_id) {
+            $query->where('products.unit_id', $request->unit_id);
+        }
+
+        if ($request->tax_id) {
+            $query->where('products.tax_id', $request->tax_id);
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $branch_stock = $query->select(
+                'units.code_name',
+                'branches.name as b_name',
+                'branches.branch_code',
+                'products.name',
+                'products.product_code',
+                'products.product_cost_with_tax',
+                'products.product_price',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'product_branches.product_quantity',
+                'product_branches.total_sale',
+                'product_branch_variants.variant_quantity',
+                'product_branch_variants.total_sale as v_total_sale',
+            )->get();
+        } else {
+            $branch_stock = $query->select(
+                'units.code_name',
+                'branches.name as b_name',
+                'branches.branch_code',
+                'products.name',
+                'products.product_code',
+                'products.product_cost_with_tax',
+                'products.product_price',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'product_branches.product_quantity',
+                'product_branches.total_sale',
+                'product_branch_variants.variant_quantity',
+                'product_branch_variants.total_sale as v_total_sale',
+            )->where('product_branches.branch_id', auth()->user()->branch_id)->get();
+        }
+
+
+
+        return view('reports.stock_report.ajax_view.branch_stock_print', compact('branch_stock', 'branch_id'));
     }
 }

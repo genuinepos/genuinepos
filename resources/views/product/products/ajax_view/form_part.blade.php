@@ -36,7 +36,7 @@
         <div class="input-group">
             <label for="inputEmail3" class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
             <div class="col-8">
-                <input type="text" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax" value="0.00">
+                <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax" value="">
             <span class="error error_product_price"></span>    
             </div>
         </div>

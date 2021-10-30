@@ -246,34 +246,37 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <div class="form_element m-0 mt-2">
-                                        <div class="element-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-2"> <b>Description :</b> </label>
-                                                        <div class="col-10">
-                                                            <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;"></textarea>
+                                @if ($addons->e_commerce == 1)
+                                    <div class="col-md-12">
+                                        <div class="form_element m-0 mt-2">
+                                            <div class="element-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-2"> <b>Description :</b> </label>
+                                                            <div class="col-10">
+                                                                <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;"></textarea>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="row mt-2">
-                                                <div class="col-md-12">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
-                                                        <div class="col-10">
-                                                            <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
-                                                            <span class="error error_image"></span>
+                                                <div class="row mt-2">
+                                                    <div class="col-md-12">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
+                                                            <div class="col-10">
+                                                                <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
+                                                                <span class="error error_image"></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </div> 
+                                @endif
+                                
 
                                 <div class="col-md-12">
                                     <div class="form_element m-0 mt-2">
@@ -442,7 +445,7 @@
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
-                                                                <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax" value="">
+                                                                <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax">
                                                             <span class="error error_product_price"></span>    
                                                             </div>
                                                         </div>

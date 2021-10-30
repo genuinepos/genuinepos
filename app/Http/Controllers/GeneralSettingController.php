@@ -238,6 +238,8 @@ class GeneralSettingController extends Controller
             'contacts' => isset($request->contacts) ? 1 : 0,
             'hrms' => isset($request->hrms) ? 1 : 0,
             'requisite' => isset($request->requisite) ? 1 : 0,
+            'manufacturing' => isset($request->manufacturing) ? 1 : 0,
+            'service' => isset($request->service) ? 1 : 0,
         ];
 
         $updateModuleSettings->modules = json_encode($moduleSettings);

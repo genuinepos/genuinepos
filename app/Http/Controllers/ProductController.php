@@ -422,7 +422,7 @@ class ProductController extends Controller
                     $addProductBranchVariant->save();
                 }
             }
-            
+
             $index++;
         }
 
@@ -760,7 +760,19 @@ class ProductController extends Controller
     // delete product
     public function delete(Request $request, $productId)
     {
-        $deleteProduct = Product::with(['product_images', 'product_variants'])->where('id', $productId)->first();
+
+        $deleteProduct = Product::with(
+            [
+                'product_images',
+                'product_variants',
+                'purchase_products',
+                'sale_products',
+                'order_products',
+                'transfer_to_branch_products',
+                'transfer_to_warehouse_products',
+            ]
+        )->where('id', $productId)->first();
+
         if (!is_null($deleteProduct)) {
             if ($deleteProduct->thumbnail_photo !== 'default.png') {
                 if (file_exists(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo))) {
@@ -879,34 +891,6 @@ class ProductController extends Controller
         } else {
             return response()->json(['errorMsg' => 'This product yet to be purchased.']);
         }
-    }
-
-    // Get product warehouse stock ** requested by ajax
-    public function warehouseStock($productId)
-    {
-        $product = Product::with([
-            'tax',
-            'unit',
-            'product_warehouses',
-            'product_warehouses.warehouse',
-            'product_warehouses.product_warehouse_variants',
-            'product_warehouses.product_warehouse_variants.product_variant'
-        ])->where('id', $productId)->first();
-        return view('product.products.ajax_view.warehouse_stock_list', compact('product'));
-    }
-
-    // Get product branch stock ** requested by ajax
-    public function branchStock($productId)
-    {
-        $product = Product::with([
-            'tax',
-            'unit',
-            'product_branches',
-            'product_branches.branch',
-            'product_branches.product_branch_variants',
-            'product_branches.product_branch_variants.product_variant'
-        ])->where('id', $productId)->first();
-        return view('product.products.ajax_view.branch_stock_list', compact('product'));
     }
 
     // Add Category from add product

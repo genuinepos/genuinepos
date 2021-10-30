@@ -117,7 +117,7 @@
                                                         </div>
 
                                                         <div class="col-md-6 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="branch_stock_print_report"><i class="fas fa-print "></i> Print</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -433,6 +433,39 @@
         var show_content = $(this).data('show');
         $('.' + show_content).show();
         $(this).addClass('tab_active');
+    });
+
+        //Print purchase Payment report
+    $(document).on('click', '#branch_stock_print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('reports.stock.print.branch.stock') }}";
+        var branch_id = $('#branch_id').val();
+        var category_id = $('#category_id').val();
+        var brand_id = $('#brand_id').val();
+        var unit_id = $('#unit_id').val();
+        var tax_id = $('#tax_id').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {branch_id, category_id, brand_id, unit_id, tax_id},
+            success:function(data){
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 500, 
+                    header: "", 
+                    pageTitle: "",
+                    // footer: 'Footer Text',
+                    formValues: false,         
+                    canvas: false, 
+                    beforePrint: null,
+                    afterPrint: null      
+                });
+            }
+        }); 
     });
 </script>
 @endpush

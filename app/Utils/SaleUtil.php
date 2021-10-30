@@ -259,14 +259,7 @@ class SaleUtil
             foreach ($storedSaleProducts as $saleProduct) {
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
-                $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
-                $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
-                
-                if ($storedBranchId) {
-                    $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, $storedBranchId);
-                } else {
-                    $this->productStockUtil->adjustMainBranchStock($saleProduct->product_id, $variant_id);
-                }
+                $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, $storedBranchId);
             }
         }
 

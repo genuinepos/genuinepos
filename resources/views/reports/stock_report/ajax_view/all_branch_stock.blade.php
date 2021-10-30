@@ -3,7 +3,6 @@
         <tr class="bg-navey-blue">
             <th>P.Code(SKU)</th>
             <th>Product</th>
-            
             <th>B.Location</th>
             <th>Current Stock</th>
             <th>Unit Price Exc.Tax</th>
@@ -63,7 +62,7 @@
                         @endphp
                         {{ App\Utils\Converter::format_in_bdt($currentStockValue) }}
                     </td>
-                    <td>{{ $row->variant_quantity.'('.$row->code_name.')' }}</td>
+                    <td>{{ $row->v_total_sale.'('.$row->code_name.')' }}</td>
                     <td>0.00</td>
                 </tr>
             @else 
@@ -79,7 +78,7 @@
                         @endphp
                         {{ App\Utils\Converter::format_in_bdt($currentStockValue) }}
                     </td>
-                    <td>{{ $row->product_quantity.'('.$row->code_name.')' }}</td>
+                    <td>{{ $row->total_sale.'('.$row->code_name.')' }}</td>
                     <td>0.00</td>
                 </tr>
             @endif
@@ -95,6 +94,7 @@
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         ordering: false,
     });
 </script>

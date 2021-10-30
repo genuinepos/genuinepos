@@ -1,28 +1,18 @@
 @foreach ($ingredients as $ingredient)
     @php
         $stock = 0;
-        if(auth()->user()->branch_id){
-            if ($ingredient->variant_id) {
-                $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
-                ->where('product_id', $ingredient->product_id)->first();
-                if ($productBranch) {
-                    $productBranchVariant = DB::table('product_branch_variants')->where('product_branch_id', $productBranch->id)
-                    ->where('product_variant_id', $ingredient->variant_id)->first();
-                    $stock = $productBranchVariant ? $productBranchVariant->variant_quantity : 0;
-                }
-            }else {
-                $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
-                ->where('product_id', $ingredient->product_id)->first();
-                $stock = $productBranch ? $productBranch->product_quantity : 0;
+        if ($ingredient->variant_id) {
+            $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
+            ->where('product_id', $ingredient->product_id)->first();
+            if ($productBranch) {
+                $productBranchVariant = DB::table('product_branch_variants')->where('product_branch_id', $productBranch->id)
+                ->where('product_variant_id', $ingredient->variant_id)->first();
+                $stock = $productBranchVariant ? $productBranchVariant->variant_quantity : 0;
             }
-        } else {
-            if ($ingredient->variant_id) {
-                $mb_v_stock = DB::table('product_variants')->where('id', $ingredient->variant_id)->first();
-                $stock = $mb_v_stock ? $mb_v_stock->mb_stock : 0;
-            }else {
-                $mb_p_stock = DB::table('products')->where('id', $ingredient->product_id)->first();
-                $stock = $mb_p_stock ? $mb_p_stock->mb_stock : 0;
-            }
+        }else {
+            $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
+            ->where('product_id', $ingredient->product_id)->first();
+            $stock = $productBranch ? $productBranch->product_quantity : 0;
         }
     @endphp
     <tr class="text-start">

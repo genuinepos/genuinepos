@@ -13,6 +13,8 @@ return [
     'users' => 'ব্যবহারকারী',
     'hrm' => 'মানব সম্পদ',
     'essentials' => 'প্রয়োজনীয়',
+    'e_commerce' => 'ইকমার্স',
+    'service' => 'সেবা',
     'reports' => 'রিপোর্ট',
     // Menu child of Products module
     'categories' => 'বিভাগ',

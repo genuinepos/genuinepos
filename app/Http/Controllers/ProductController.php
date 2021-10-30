@@ -278,7 +278,7 @@ class ProductController extends Controller
             ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
             ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
             ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
-            ->where('product_branches.branch_id', '!=',auth()->user()->branch_id)
+            ->where('product_branches.branch_id', '!=', auth()->user()->branch_id)
             ->where('product_branches.product_id', $productId)
             ->select(
                 'branches.name as b_name',
@@ -343,29 +343,17 @@ class ProductController extends Controller
                     $productVariant->save();
                 }
 
-                if ($branch_id) {
-                    $productBranch = ProductBranch::where('branch_id', $branch_id)
+                $productBranch = ProductBranch::where('branch_id', $branch_id)
+                    ->where('product_id', $openingStock->product_id)
+                    ->first();
+                $productBranch->product_quantity -= $openingStock->quantity;
+                $productBranch->save();
+
+                if ($openingStock->product_variant_id) {
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
                         ->where('product_id', $openingStock->product_id)
-                        ->first();
-                    $productBranch->product_quantity -= $openingStock->quantity;
-                    $productBranch->save();
-
-                    if ($openingStock->product_variant_id) {
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                            ->where('product_id', $openingStock->product_id)
-                            ->where('product_variant_id', $openingStock->product_variant_id)->first();
-                        $productBranchVariant->variant_quantity -= $openingStock->quantity;
-                    }
-                } else {
-                    $mbProduct = Product::where('id', $product_id)->first();
-                    $mbProduct->mb_stock -= $openingStock->quantity;
-                    $mbProduct->save();
-
-                    if ($openingStock->product_variant_id) {
-                        $mbProductVariant = ProductVariant::where('id', $openingStock->product_variant_id)->first();
-                        $mbProductVariant->mb_stock -= $openingStock->quantity;
-                        $mbProductVariant->save();
-                    }
+                        ->where('product_variant_id', $openingStock->product_variant_id)->first();
+                    $productBranchVariant->variant_quantity -= $openingStock->quantity;
                 }
 
                 $openingStock->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
@@ -393,42 +381,25 @@ class ProductController extends Controller
                 $productVariant->save();
             }
 
-            if ($branch_id) {
-                // update branch product qty
-                $productBranch = ProductBranch::where('branch_id', $branch_id)
-                    ->where('product_id', $product_id)
-                    ->first();
+            // update branch product qty
+            $productBranch = ProductBranch::where('branch_id', $branch_id)
+                ->where('product_id', $product_id)
+                ->first();
 
-                if ($productBranch) {
-                    $productBranch->product_quantity += (float)$quantities[$index];
-                    $productBranch->save();
-                    if ($variant_ids[$index] != 'noid') {
-                        $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                            ->where('product_id', $product_id)
-                            ->where('product_variant_id', $variant_id)->first();
+            if ($productBranch) {
+                $productBranch->product_quantity += (float)$quantities[$index];
+                $productBranch->save();
+                if ($variant_ids[$index] != 'noid') {
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
+                        ->where('product_id', $product_id)
+                        ->where('product_variant_id', $variant_id)->first();
 
-                        if ($productBranchVariant) {
-                            $productBranchVariant->variant_quantity += (float)$quantities[$index];
-                            $productBranchVariant->save();
-                        } else {
-                            $addProductBranchVariant = new ProductBranchVariant();
-                            $addProductBranchVariant->product_branch_id = $productBranch->id;
-                            $addProductBranchVariant->product_id = $product_id;
-                            $addProductBranchVariant->product_variant_id = $variant_id;
-                            $addProductBranchVariant->variant_quantity = $quantities[$index];
-                            $addProductBranchVariant->save();
-                        }
-                    }
-                } else {
-                    $addBranchProduct = new ProductBranch();
-                    $addBranchProduct->branch_id = $branch_id;
-                    $addBranchProduct->product_id = $product_id;
-                    $addBranchProduct->product_quantity = $quantities[$index];
-                    $addBranchProduct->save();
-
-                    if ($variant_ids[$index] != 'noid') {
+                    if ($productBranchVariant) {
+                        $productBranchVariant->variant_quantity += (float)$quantities[$index];
+                        $productBranchVariant->save();
+                    } else {
                         $addProductBranchVariant = new ProductBranchVariant();
-                        $addProductBranchVariant->product_branch_id = $addBranchProduct->id;
+                        $addProductBranchVariant->product_branch_id = $productBranch->id;
                         $addProductBranchVariant->product_id = $product_id;
                         $addProductBranchVariant->product_variant_id = $variant_id;
                         $addProductBranchVariant->variant_quantity = $quantities[$index];
@@ -436,17 +407,22 @@ class ProductController extends Controller
                     }
                 }
             } else {
-                $mbProduct = Product::where('id', $product_id)->first();
-                $mbProduct->mb_stock += $quantities[$index];
-                $mbProduct->save();
+                $addBranchProduct = new ProductBranch();
+                $addBranchProduct->branch_id = $branch_id;
+                $addBranchProduct->product_id = $product_id;
+                $addBranchProduct->product_quantity = $quantities[$index];
+                $addBranchProduct->save();
 
                 if ($variant_ids[$index] != 'noid') {
-                    $mbProductVariant = ProductVariant::where('id', $variant_id)->first();
-                    $mbProductVariant->mb_stock += (float)$quantities[$index];
-                    $mbProductVariant->save();
+                    $addProductBranchVariant = new ProductBranchVariant();
+                    $addProductBranchVariant->product_branch_id = $addBranchProduct->id;
+                    $addProductBranchVariant->product_id = $product_id;
+                    $addProductBranchVariant->product_variant_id = $variant_id;
+                    $addProductBranchVariant->variant_quantity = $quantities[$index];
+                    $addProductBranchVariant->save();
                 }
             }
-
+            
             $index++;
         }
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Utils\Util;
 use App\Models\Sale;
 use App\Utils\SmsUtil;
-use App\Models\Product;
 use App\Utils\SaleUtil;
 use App\Models\CashFlow;
 use App\Models\Customer;
@@ -17,7 +16,6 @@ use App\Models\CashRegister;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
-use App\Models\ProductVariant;
 use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
@@ -38,7 +36,7 @@ class POSController extends Controller
         SmsUtil $smsUtil,
         Util $util,
         CustomerUtil $customerUtil,
-        AccountUtil $accountUtil, 
+        AccountUtil $accountUtil,
         ProductStockUtil $productStockUtil
     ) {
         $this->saleUtil = $saleUtil;
@@ -136,7 +134,7 @@ class POSController extends Controller
         if ($lastSale) {
             $invoiceId = ++$lastSale->id;
         }
-        
+
         $addSale = new Sale();
         $addSale->invoice_id = $invoicePrefix . $invoiceId;
         $addSale->admin_id = auth()->user()->id;
@@ -232,7 +230,7 @@ class POSController extends Controller
 
         // update product quantity and add sale product
         $branch_id = auth()->user()->branch_id;
-     
+
         $__index = 0;
         foreach ($product_ids as $product_id) {
             $addSaleProduct = new SaleProduct();
@@ -260,11 +258,7 @@ class POSController extends Controller
             foreach ($product_ids as $product_id) {
                 $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
-                if ($branch_id) {
-                    $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
-                } else {
-                    $this->productStockUtil->adjustMainBranchStock($product_id, $variant_id);
-                }
+                $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
                 $__index++;
             }
         }
@@ -370,7 +364,7 @@ class POSController extends Controller
         foreach ($invoiceProducts as $sale_product) {
             if ($sale_product->product->is_manage_stock == 0) {
                 $qty_limits[] = PHP_INT_MAX;
-            }elseif ($sale_product->sale->branch_id) {
+            } else {
                 $productBranch = DB::table('product_branches')->where('branch_id', $sale_product->sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {
@@ -384,20 +378,6 @@ class POSController extends Controller
                     $qty_limits[] = $productBranchVariant->variant_quantity;
                 } else {
                     $qty_limits[] = $productBranch->product_quantity;
-                }
-            } else {
-                $mbProduct = DB::table('products')
-                    ->where('id', $sale_product->product_id)->first();
-                if ($sale_product->product->type == 2) {
-                    $qty_limits[] = 500000;
-                } elseif ($sale_product->product_variant_id) {
-                    $mbProductVariant = DB::table('product_variants')
-                        ->where('id', $sale_product->product_variant_id)
-                        ->where('product_id', $sale_product->product_id)
-                        ->first();
-                    $qty_limits[] = $mbProductVariant->mb_stock;
-                } else {
-                    $qty_limits[] = $mbProduct->mb_stock;
                 }
             }
         }
@@ -538,21 +518,13 @@ class POSController extends Controller
             $storedVariantId = $deleteNotFoundSaleProduct->product_variant_id;
             $deleteNotFoundSaleProduct->delete();
             $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
-            if (auth()->user()->branch_id) {
-                $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
-            } else {
-                $this->productStockUtil->adjustMainBranchStock($storedProductId, $storedVariantId);
-            }
+            $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
         }
 
         $saleProducts = DB::table('sale_products')->where('sale_id', $updateSale->id)->get();
         foreach ($saleProducts as $saleProduct) {
             $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $saleProduct->product_variant_id);
-            if (auth()->user()->branch_id) {
-                $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $saleProduct->product_variant_id, auth()->user()->branch_id);
-            } else {
-                $this->productStockUtil->adjustMainBranchStock($saleProduct->product_id, $saleProduct->product_variant_id);
-            }
+            $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $saleProduct->product_variant_id, auth()->user()->branch_id);
         }
 
         // Add new payment 
@@ -709,29 +681,16 @@ class POSController extends Controller
     public function getRecentProduct($product_id)
     {
         $branch_id = auth()->user()->branch_id;
-        if ($branch_id) {
-            $product = ProductBranch::with(['product', 'product.tax', 'product.unit'])
-                ->where('branch_id', $branch_id)
-                ->where('product_id', $product_id)
-                ->first();
-            if ($product->product_quantity > 0) {
-                return view('sales.pos.ajax_view.recent_product_view', compact('product'));
-            } else {
-                return response()->json([
-                    'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this branch/shop.'
-                ]);
-            }
+        $product = ProductBranch::with(['product', 'product.tax', 'product.unit'])
+            ->where('branch_id', $branch_id)
+            ->where('product_id', $product_id)
+            ->first();
+        if ($product->product_quantity > 0) {
+            return view('sales.pos.ajax_view.recent_product_view', compact('product'));
         } else {
-            $mbProduct = Product::with(['tax', 'unit'])
-                ->where('id', $product_id)
-                ->first();
-            if ($mbProduct->mb_stock > 0) {
-                return view('sales.pos.ajax_view.recent_product_view', compact('mbProduct'));
-            } else {
-                return response()->json([
-                    'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in branch/shop.'
-                ]);
-            }
+            return response()->json([
+                'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this branch/shop.'
+            ]);
         }
     }
 
@@ -1294,37 +1253,21 @@ class POSController extends Controller
     public function branchStock(Request $request)
     {
         $products = '';
-        if (auth()->user()->branch_id) {
-            $products = DB::table('product_branches')
-                ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
-                ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
-                ->leftJoin('products', 'product_branches.product_id', 'products.id')
-                ->leftJoin('units', 'products.unit_id', 'units.id')
-                ->select(
-                    'product_branches.product_quantity',
-                    'products.name as pro_name',
-                    'products.product_code as pro_code',
-                    'product_variants.variant_name as var_name',
-                    'product_variants.variant_code as var_code',
-                    'product_branch_variants.variant_quantity',
-                    'units.code_name as u_code',
-                )
-                ->where('branch_id', auth()->user()->branch_id)->get();
-        } else {
-            $products = DB::table('products')
-                ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
-                ->leftJoin('units', 'products.unit_id', 'units.id')
-                ->select(
-                    'products.name as pro_name',
-                    'products.product_code as pro_code',
-                    'products.mb_stock as product_quantity',
-                    'product_variants.variant_name as var_name',
-                    'product_variants.variant_code as var_code',
-                    'product_variants.mb_stock as variant_quantity',
-                    'units.code_name as u_code',
-                )->get();
-        }
-
+        $products = DB::table('product_branches')
+            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+            ->leftJoin('products', 'product_branches.product_id', 'products.id')
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->select(
+                'product_branches.product_quantity',
+                'products.name as pro_name',
+                'products.product_code as pro_code',
+                'product_variants.variant_name as var_name',
+                'product_variants.variant_code as var_code',
+                'product_branch_variants.variant_quantity',
+                'units.code_name as u_code',
+            )
+            ->where('branch_id', auth()->user()->branch_id)->get();
         return view('sales.pos.ajax_view.stock', compact('products'));
     }
 
@@ -1379,31 +1322,17 @@ class POSController extends Controller
 
         $qty_limits = [];
         foreach ($ex_items as $sale_product) {
-            if ($sale_product->sale->branch_id) {
-                $productBranch = ProductBranch::where('branch_id', $sale_product->sale->branch_id)
-                    ->where('product_id', $sale_product->product_id)->first();
-                if ($sale_product->product->type == 2) {
-                    $qty_limits[] = 500000;
-                } elseif ($sale_product->product_variant_id) {
-                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $sale_product->product_id)
-                        ->where('product_variant_id', $sale_product->product_variant_id)
-                        ->first();
-                    $qty_limits[] = $productBranchVariant->variant_quantity;
-                } else {
-                    $qty_limits[] = $productBranch->product_quantity;
-                }
+            $productBranch = ProductBranch::where('branch_id', $sale_product->sale->branch_id)
+                ->where('product_id', $sale_product->product_id)->first();
+            if ($sale_product->product->type == 2) {
+                $qty_limits[] = 500000;
+            } elseif ($sale_product->product_variant_id) {
+                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $sale_product->product_id)
+                    ->where('product_variant_id', $sale_product->product_variant_id)
+                    ->first();
+                $qty_limits[] = $productBranchVariant->variant_quantity;
             } else {
-                $mbProduct = Product::where('id', $sale_product->product_id)->first();
-                if ($sale_product->product->type == 2) {
-                    $qty_limits[] = 500000;
-                } elseif ($sale_product->product_variant_id) {
-                    $mbProductVariant = ProductVariant::where('product_id', $sale_product->product_id)
-                        ->where('id', $sale_product->product_variant_id)
-                        ->first();
-                    $qty_limits[] = $mbProductVariant->mb_stock;
-                } else {
-                    $qty_limits[] = $mbProduct->mb_stock;
-                }
+                $qty_limits[] = $productBranch->product_quantity;
             }
         }
 
@@ -1459,32 +1388,18 @@ class POSController extends Controller
             $saleProduct = SaleProduct::where('sale_id', $request->ex_sale_id)
                 ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
 
-            if ($updateSale->branch_id) {
-                $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
+            $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
+                ->where('product_id', $product_id)
+                ->first();
+            $productBranch->product_quantity -= $quantities[$index];
+            $productBranch->save();
+            if ($variant_id) {
+                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
                     ->where('product_id', $product_id)
+                    ->where('product_variant_id', $variant_id)
                     ->first();
-                $productBranch->product_quantity -= $quantities[$index];
-                $productBranch->save();
-                if ($variant_id) {
-                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                        ->where('product_id', $product_id)
-                        ->where('product_variant_id', $variant_id)
-                        ->first();
-                    $productBranchVariant->variant_quantity -= $quantities[$index];
-                    $productBranchVariant->save();
-                }
-            } else {
-                $mbProduct = Product::where('id', $product_id)
-                    ->first();
-                $mbProduct->mb_stock -= (float)$quantities[$index];
-                $mbProduct->save();
-                if ($variant_id) {
-                    $mbProductVariant = ProductVariant::where('product_id', $product_id)
-                        ->where('id', $variant_id)
-                        ->first();
-                    $mbProductVariant->mb_stock -= (float)$quantities[$index];
-                    $mbProductVariant->save();
-                }
+                $productBranchVariant->variant_quantity -= $quantities[$index];
+                $productBranchVariant->save();
             }
 
             if ($saleProduct) {
@@ -1548,7 +1463,7 @@ class POSController extends Controller
         // Add new payment 
         if ($request->paying_amount > 0) {
             $addSalePayment = new SalePayment();
-            $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+            $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SP') . date('my') . $invoiceId;
             $addSalePayment->sale_id = $request->ex_sale_id;
             $addSalePayment->customer_id = $request->customer_id ? $request->customer_id : NULL;
             $addSalePayment->account_id = $request->account_id;

@@ -13,6 +13,8 @@ return [
   'users' => 'Users',
   'hrm' => 'HRM',
   'essentials' => 'Requisites',
+  'e_commerce' => 'Ecommerce',
+  'service' => 'Service',
   'reports' => 'Reports',
   // Menu childs of Products module
   'categories' => 'Categories',

@@ -121,14 +121,14 @@
 
                 @if ($addons->manufacturing == 1)
                     {{-- @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1') --}}
-                        @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
-                            <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
-                                <a href="#">
-                                    <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
-                                    <p class="title">Manufacture</p>
-                                </a>
-                            </li>
-                        @endif
+                    @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
+                        <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
+                            <a href="#">
+                                <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
+                                <p class="title">Manufacture</p>
+                            </a>
+                        </li>
+                    @endif
                 @endif
 
                 @if ($addons->todo == 1)
@@ -140,6 +140,24 @@
                             </a>
                         </li>
                     @endif
+                @endif
+
+                @if ($addons->service == 1)
+                    <li class="">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/service.svg') }}">
+                            <p class="title">@lang('menu.service')</p>
+                        </a>
+                    </li>
+                @endif
+
+                @if ($addons->e_commerce == 1)
+                    <li class="">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/ecommerce2.svg') }}">
+                            <p class="title">@lang('menu.e_commerce')</p>
+                        </a>
+                    </li>
                 @endif
 
                 <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">

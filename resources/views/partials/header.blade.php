@@ -6,7 +6,7 @@
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
                         @if (auth()->user()->branch)
                             @if (auth()->user()->branch->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->log) }}">
+                                <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
                             @else 
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white; 
                                 letter-spacing:1px;padding-top:15px;">{{ auth()->user()->branch->name }}</span>
@@ -23,6 +23,7 @@
                 <div class="notify-menu">
                     <div class="head__content__sec">
                         <ul class="head__cn">
+                            <li class="top-icon d-none d-md-block"><a href="https://help.genuinepos.com/" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
                             <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
@@ -88,6 +89,7 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li class="top-icon d-none d-md-block"><a href="https://help.genuinepos.com/" target="_blank"><b><span class="far fa-question-circle"></span></b></a></li>
                             <li class="dropdown dp__top top-icon">
                                 <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown" title="User">
                                     <span class="fas fa-user"></span>
@@ -117,26 +119,11 @@
                                     </li>
                                 </ul>
                             </li>
-                            {{-- <li class="user_info me-5"> --}}
-                            {{-- <span class="user_name">
-                                {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}
-
-                                @if (auth()->user()->role_type == 1)
-                                    (Super Admin)
-                                @elseif(auth()->user()->role_type == 2)
-                                    (Admin)
-                                @else
-                                    {{ auth()->user()->role->name }}
-                                @endif
-                            </span> --}}
-                            {{-- <span><a href="#">Need Help?</a></span> --}}
                         </li>
                         <li class="top-icon">
                             <a href="" id="logout_option"><span class="fas fa-power-off" title="Logout"></span></a>
                         </li>
-
                         </ul>
-
                     </div>
 
                 </div>

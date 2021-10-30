@@ -6,7 +6,9 @@
         .dataTables_filter {width: 50%!important;}
         .dataTables_filter input {width: 50%;}
     </style>
+ 
     <link href="{{ asset('public/backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
+ 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('content')
@@ -277,7 +279,6 @@
                                     </div> 
                                 @endif
                                 
-
                                 <div class="col-md-12">
                                     <div class="form_element m-0 mt-2">
                                         <div class="element-body">
@@ -615,7 +616,7 @@
     var myEditorObj = $('#myEditor').cleditor();
     function clearEditor() {
         $("#myEditor").cleditor({width:800, height:300, updateTextArea:function (){}})[0].clear();
-    }
+    }  
 
     // Set parent category in parent category form field
     $('.combo_price').hide();
@@ -1238,7 +1239,9 @@
                         if (action_direction == 'save') {
                             window.location = "{{ route('products.all.product') }}";
                         } else {
-                            clearEditor();
+                            @if ($addons->e_commerce == 1) 
+                                clearEditor();
+                            @endif
                             $('#add_product_form')[0].reset();
                             get_form_part(1);
                             $('#profit').val(parseFloat(defaultProfit).toFixed(2));

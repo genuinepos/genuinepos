@@ -15,6 +15,7 @@ use App\Models\ProductVariant;
 use App\Models\PurchaseProduct;
 use App\Models\ProductWarehouse;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TransferStockToWarehouseProduct;
 
 class Product extends Model
 {
@@ -54,6 +55,21 @@ class Product extends Model
     public function sale_products()
     {
         return $this->hasMany(SaleProduct::class, 'product_id');
+    }
+
+    public function order_products()
+    {
+        return $this->hasMany(PurchaseProduct::class);
+    }
+
+    public function transfer_to_branch_products()
+    {
+        return $this->hasMany(TransferStockToBranchProduct::class);
+    }
+
+    public function transfer_to_warehouse_products()
+    {
+        return $this->hasMany(TransferStockToWarehouseProduct::class);
     }
     
     public function category()

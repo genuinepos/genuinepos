@@ -1015,15 +1015,17 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <div class="row">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['hrms'] == '1' ? 'CHECKED' : '' }}
-                                                        name="hrms" autocomplete="off"> &nbsp; <b>Human Resource Management</b> 
-                                                </p>
+                                        @if ($addons->manufacturing == 1)
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <p class="checkbox_input_wrap">
+                                                        <input type="checkbox"
+                                                            {{ json_decode($generalSettings->modules, true)['hrms'] == '1' ? 'CHECKED' : '' }}
+                                                            name="hrms" autocomplete="off"> &nbsp; <b>Human Resource Management</b> 
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
 
                                     <div class="form-group row mt-2">
@@ -1034,6 +1036,36 @@
                                                 </p>
                                             </div>
                                         </div>
+
+                                        @if ($addons->manufacturing == 1)
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <p class="checkbox_input_wrap">
+                                                        <input type="checkbox"
+                                                            @if (isset(json_decode($generalSettings->modules, true)['manufacturing']))
+                                                                {{ json_decode($generalSettings->modules, true)['manufacturing'] == '1' ? 'CHECKED' : '' }}
+                                                            @endif
+                                                            name="manufacturing" autocomplete="off"> 
+                                                        &nbsp;<b>Manufacture</b> 
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        @if ($addons->service == 1)
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <p class="checkbox_input_wrap">
+                                                        <input type="checkbox"
+                                                            @if (isset(json_decode($generalSettings->modules, true)['service']))
+                                                                {{ json_decode($generalSettings->modules, true)['service'] == '1' ? 'CHECKED' : '' }}
+                                                            @endif
+                                                            name="service" autocomplete="off"> 
+                                                        &nbsp;<b>Service</b> 
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
 
                                     <div class="row mt-2">

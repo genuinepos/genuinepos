@@ -904,6 +904,11 @@
         document.getElementById('search_product').focus();
     });
 
+    $('.submit_button').on('click', function () {
+        var value = $(this).val();
+        $('#action').val(value); 
+    });
+
     //Add purchase request by ajax
     $('#add_purchase_form').on('submit', function(e){
         e.preventDefault();
@@ -973,13 +978,7 @@
         });
     });
 
-    $('.submit_button').on('click', function () {
-        var value = $(this).val();
-        var data_action = $(this).data('action');
-        $('#action').val(value); 
-    });
-
-    setInterval(function(){
+    setInterval(function() {
         $('#search_product').removeClass('is-invalid');
     }, 500); 
 
@@ -1046,7 +1045,7 @@
             var split = tax.split('-');
             tax_percent = split[1];
             console.log(split);
-        }else{
+        } else {
             tax_percent = 0;
         }
     });

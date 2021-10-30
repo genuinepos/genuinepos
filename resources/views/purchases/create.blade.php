@@ -213,9 +213,7 @@
                                                                     <th><i class="fas fa-trash-alt"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="purchase_list">
-
-                                                            </tbody>
+                                                            <tbody id="purchase_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -508,8 +506,8 @@
                     <div class="row justify-content-center">
                         <div class="col-12 text-end">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" data-status="1" class="btn btn-sm btn-primary submit_button">Save & Print </button>
-                            <button type="submit" data-status="2" class="btn btn-sm btn-primary submit_button">Save</button>
+                            <button type="submit" value="1" class="btn btn-sm btn-primary submit_button">Save & Print </button>
+                            <button type="submit" value="2" class="btn btn-sm btn-primary submit_button">Save</button>
                         </div>
                     </div>
                 </div>

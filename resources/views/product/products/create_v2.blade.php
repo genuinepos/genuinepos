@@ -248,118 +248,6 @@
                                     </div>
                                 </div>
 
-                                @if ($addons->e_commerce == 1)
-                                    <div class="col-md-12">
-                                        <div class="form_element m-0 mt-2">
-                                            <div class="element-body">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="input-group">
-                                                            <label for="inputEmail3" class="col-2"> <b>Description :</b> </label>
-                                                            <div class="col-10">
-                                                                <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-2">
-                                                    <div class="col-md-12">
-                                                        <div class="input-group">
-                                                            <label for="inputEmail3" class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
-                                                            <div class="col-10">
-                                                                <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
-                                                                <span class="error error_image"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                @endif
-                                
-                                <div class="col-md-12">
-                                    <div class="form_element m-0 mt-2">
-                                        <div class="element-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"> <b>Weight :</b> </label>
-                                                        <div class="col-8">
-                                                            <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Custom Field1 :</b> </label>
-                                                        <div class="col-8">
-                                                            <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mt-2">
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Custom Field2 :</b> </label>
-                                                        <div class="col-8">
-                                                            <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Custom Field3 :</b> </label>
-                                                        <div class="col-8">
-                                                            <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mt-2">
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <div class="col-12">
-                                                            <div class="row">
-                                                                <p class="checkbox_input_wrap"> 
-                                                                <input type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p> 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <div class="col-12">
-                                                            <div class="row">
-                                                                <p class="checkbox_input_wrap"> 
-                                                                <input type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p> 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <div class="col-12">
-                                                            <div class="row">
-                                                                <p class="checkbox_input_wrap"> 
-                                                                <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p> 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="col-md-12">
                                     <div class="form_element m-0 mt-2">
                                         <div class="element-body">
@@ -552,6 +440,116 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"> <b>Weight :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Custom Field1 :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Custom Field2 :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Custom Field3 :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <p class="checkbox_input_wrap"> 
+                                                                <input type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <p class="checkbox_input_wrap"> 
+                                                                <input type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <p class="checkbox_input_wrap"> 
+                                                                <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form_element m-0 mt-2">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-2"> <b>Description :</b> </label>
+                                                        <div class="col-10">
+                                                            <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
+                                                        <div class="col-10">
+                                                            <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
+                                                            <span class="error error_image"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            
                                 <div class="col-md-12 text-end mt-1">
                                     <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
                                     <button type="submit" name="action" value="save_and_new"

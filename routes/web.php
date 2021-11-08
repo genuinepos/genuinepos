@@ -882,24 +882,21 @@ Route::get('pin_login', function () {
 });
 
 Route::get('/test', function () {
-    $products = Product::with('product_variants')->get();
-    foreach ($products as $product) {
-        $addProductBranch = new ProductBranch();
-        $addProductBranch->product_id = $product->id;
-        $addProductBranch->product_quantity = $product->mb_stock;
-        $addProductBranch->total_sale = $product->mb_total_sale;
-        $addProductBranch->save();
-        if ($product->product_variants) {
-            foreach ($product->product_variants as $product_variant) {
-                $addProductBranchVariant = new ProductBranchVariant();
-                $addProductBranchVariant->product_branch_id = $addProductBranch->id;
-                $addProductBranchVariant->product_id = $product->id;
-                $addProductBranchVariant->product_variant_id = $product_variant->id;
-                $addProductBranchVariant->variant_quantity = $product_variant->mb_stock;
-                $addProductBranchVariant->total_sale = $product_variant->mb_total_sale;
-                $addProductBranchVariant->save();
-            }
+    $productsCodes = DB::table('products')->select('id','product_code')->get();
+     
+
+    foreach ($productsCodes as $productsCode) {
+            // generate ID
+        $i = 7;
+        $a = 0;
+        $id = '';
+        while ($a < $i) {
+            $id .= rand(1, 9);
+            $a++;
         }
+        $updateCode = Product::where('id', $productsCode->id)->first();
+        $updateCode->product_code = 'BS'.$id;
+        $updateCode->save();
     }
 });
 

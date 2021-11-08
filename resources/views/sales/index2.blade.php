@@ -282,7 +282,7 @@
                 }
             },
             columnDefs: [{
-                "targets": [0, 5],
+                "targets": [0, 7],
                 "orderable": false,
                 "searchable": false
             }],

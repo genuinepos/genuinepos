@@ -257,7 +257,7 @@
                     d.to_date = $('.to_date').val();
                 }
             },
-            columnDefs: [{"targets": [0, 5, 6],"orderable": false,"searchable": false}],
+            columnDefs: [{"targets": [0, 5, 6, 7],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'purchases.date'},

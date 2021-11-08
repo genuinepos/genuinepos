@@ -25,7 +25,6 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
                     <div class="row mt-1">
                         <div class="card">
                             <div class="card ">
@@ -34,12 +33,56 @@
                                     @csrf
                                 </form>
                                 <!--begin::Form-->
-                                <form id="preview" action="{{ route('barcode.preview') }}" method="get" target="_blank">
+                                <form action="{{ route('barcode.preview') }}" method="POST" target="_blank">
                                     @csrf
                                     <div class="card-body">
                                         <input type="hidden" id="business_name"
                                             value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
-                                        <div class="form-group row">
+                                            <div class="form-group row">
+                                                <div class="col-md-5">
+                                                    <label><b>Barcode Setting :</b></label>
+                                                    <select name="br_setting_id" class="form-control">
+                                                        @foreach ($bc_settings as $bc_setting)
+                                                            <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
+                                                                {{ $bc_setting->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        <div class="extra_label mt-1">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <ul class="list-unstyled">
+                                                        <li>
+                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price Price. &nbsp;</p>
+                                                        </li>
+
+                                                        <li>
+                                                            <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name &nbsp; </p>
+                                                        </li>
+
+                                                        <li>
+                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Product Variant &nbsp; </p>
+                                                        </li>
+
+                                                        <li>
+                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Product Tax &nbsp; </p>
+                                                        </li>
+
+                                                        <li>
+                                                            <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name &nbsp; </p>
+                                                        </li>
+
+                                                        <li>
+                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix &nbsp; </p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mt-3 row">
                                             <div class="col-md-8 offset-2">
                                                 <div class="input-group ">
                                                     <div class="input-group-prepend">
@@ -72,7 +115,6 @@
                                                             <th class="text-start">Product</th>
                                                             <th class="text-start">Supplier</th>
                                                             <th class="text-start">Quantity</th>
-                                                            <th class="text-start">Packing Date</th>
                                                             <th class="text-start">Action</th>
                                                         </tr>
                                                     </thead>
@@ -85,51 +127,6 @@
                                                         </tr>
                                                     </tfoot>
                                                 </table>
-                                            </div>
-                                        </div>
-
-                                        <div class="extra_label">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <ul class="list-unstyled">
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price Price. &nbsp;</p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Product Variant &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Product Tax &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix &nbsp; </p>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-3">
-                                            <div class="col-md-4">
-                                                <label><b>Barcode Setting :</b></label>
-                                                <select name="br_setting_id" class="form-control">
-                                                    @foreach ($bc_settings as $bc_setting)
-                                                        <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
-                                                            {{ $bc_setting->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
                                             </div>
                                         </div>
 
@@ -227,9 +224,6 @@
                             tr += '<td class="text-start">';
                             tr += '<input type="number" name="left_qty[]" id="left_qty" class="form-control " value="'+product.label_qty+'">';
                             tr += '<input type="hidden" name="barcode_type[]" value="'+product.product.barcode_type+'">';
-                            tr += '</td>';
-                            tr += '<td class="text-start">';
-                            tr += '<input type="date" name="packing_date[]" class="form-control">';
                             tr += '</td>';
                             tr += '<td class="text-start">';
                             tr += '<a href="#" class="btn btn-sm btn-success completed_btn">Generate Completed</a>';
@@ -382,11 +376,8 @@
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
-                        tr += '<input type="number" name="left_qty" class="form-control " id="left_qty" value="'+1+'">';
+                        tr += '<input type="number" name="left_qty[]" class="form-control " id="left_qty" value="'+1+'">';
                         tr += '<input type="hidden" name="barcode_type[]" id="barcode_type" value="'+ sProduct.product.barcode_type +'">';
-                        tr += '</td>';
-                        tr += '<td class="text-start">';
-                        tr += '<input type="date" name="packing_date[]" class="form-control">';
                         tr += '</td>';
                         tr += '<td class="text-start">';
                         tr += '<a href="#" class="btn btn-sm btn-danger remove_btn float-right ms-1">X</a>';
@@ -489,9 +480,6 @@
                         tr += '<input type="hidden" name="barcode_type[]" id="barcode_type" value="'+sProduct.product.barcode_type+'">';
                         tr += '</td>';
                         tr += '<td class="text-start">';
-                        tr += '<input type="date" name="packing_date[]" class="form-control">';
-                        tr += '</td>';
-                        tr += '<td class="text-start">';
                         tr += '<a href="#" class="btn btn-sm btn-danger remove_btn ms-1">X</a>';
                         tr += '</td>';
                         tr += '</tr>';
@@ -530,7 +518,7 @@
                 'No': {
                     'class': 'no btn-danger',
                     'action': function() {
-                        // alert('Deleted canceled.')
+                        console.log('Deleted canceled.');
                     } 
                 }
             }

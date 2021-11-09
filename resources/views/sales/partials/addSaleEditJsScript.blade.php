@@ -382,8 +382,8 @@
                     }
                 }else{
                     $('#search_product').addClass('is-invalid');
-                    $('#search_product').val('');
                     toastr.error('Product not found.', 'Failed'); 
+                    $('#search_product').select();
                 }
             }
         });

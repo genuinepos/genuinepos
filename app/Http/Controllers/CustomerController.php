@@ -121,19 +121,11 @@ class CustomerController extends Controller
             'phone' => 'required',
         ]);
 
-        // generate prefix dode ID
-        $i = 5;
-        $a = 0;
-        $id = '';
-        while ($a < $i) {
-            $id .= rand(1, 9);
-            $a++;
-        }
         $generalSettings = DB::table('general_settings')->first('prefix');
         $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
         $addCustomer = Customer::create([
             'type' => $request->contact_type,
-            'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . $id,
+            'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,

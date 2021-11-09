@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\CashRegisterTransaction;
 use App\Utils\AccountUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\ProductStockUtil;
 
 class POSController extends Controller
@@ -31,13 +32,15 @@ class POSController extends Controller
     protected $customerUtil;
     protected $accountUtil;
     protected $productStockUtil;
+    protected $invoiceVoucherRefIdUtil;
     public function __construct(
         SaleUtil $saleUtil,
         SmsUtil $smsUtil,
         Util $util,
         CustomerUtil $customerUtil,
         AccountUtil $accountUtil,
-        ProductStockUtil $productStockUtil
+        ProductStockUtil $productStockUtil,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->saleUtil = $saleUtil;
         $this->smsUtil = $smsUtil;
@@ -45,6 +48,7 @@ class POSController extends Controller
         $this->customerUtil = $customerUtil;
         $this->accountUtil = $accountUtil;
         $this->productStockUtil = $productStockUtil;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -530,7 +534,7 @@ class POSController extends Controller
         // Add new payment 
         if ($request->paying_amount > 0) {
             $addSalePayment = new SalePayment();
-            $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+            $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
             $addSalePayment->sale_id = $updateSale->id;
             $addSalePayment->customer_id = $updateSale->customer_id ? $updateSale->customer_id : NULL;
             $addSalePayment->account_id = $request->account_id;

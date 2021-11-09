@@ -1,11 +1,6 @@
 <?php
 
-use App\Models\Product;
-use App\Models\Customer;
 use App\Models\AdminAndUser;
-use App\Models\ProductBranch;
-use Illuminate\Support\Facades\DB;
-use App\Models\ProductBranchVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -119,10 +114,9 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
     // Barcode route group
     Route::group(['prefix' => 'barcode'], function () {
         Route::get('/', 'BarcodeController@index')->name('barcode.index');
-        Route::get('preview', 'BarcodeController@preview')->name('barcode.preview');
+        Route::post('preview', 'BarcodeController@preview')->name('barcode.preview');
         Route::get('supplier/products', 'BarcodeController@supplierProduct')->name('barcode.supplier.get.products');
-        Route::get('generate/completed', 'BarcodeController@genereateCompleted')->name('barcode.genereate.completed');
-        Route::post('multiple/generate/completed', 'BarcodeController@multipleGenereateCompleted')->name('barcode.multiple.genereate.completed');
+        Route::post('multiple/generate/completed', 'BarcodeController@multipleGenerateCompleted')->name('barcode.multiple.generate.completed');
         Route::get('search/product/{searchKeyword}', 'BarcodeController@searchProduct');
         Route::get('get/selected/product/{productId}', 'BarcodeController@getSelectedProduct');
         Route::get('get/selected/product/variant/{productId}/{variantId}', 'BarcodeController@getSelectedProductVariant');
@@ -862,9 +856,13 @@ Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controller
 
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
 
+Route::get('maintenance/mode', function () {
+    return view('maintenance/maintenance');
+})->name('maintenance.mode');
+
 Route::get('add-user', function () {
     $addAdmin = new AdminAndUser();
-    $addAdmin->prefix = 'Mr.';
+    $addAdmin->prefix = 'Mr.'; 
     $addAdmin->name = 'Super';
     $addAdmin->last_name = 'Admin';
     $addAdmin->email = 'superadmin@gmail.com';
@@ -882,25 +880,7 @@ Route::get('pin_login', function () {
 });
 
 Route::get('/test', function () {
-    $products = Product::with('product_variants')->get();
-    foreach ($products as $product) {
-        $addProductBranch = new ProductBranch();
-        $addProductBranch->product_id = $product->id;
-        $addProductBranch->product_quantity = $product->mb_stock;
-        $addProductBranch->total_sale = $product->mb_total_sale;
-        $addProductBranch->save();
-        if ($product->product_variants) {
-            foreach ($product->product_variants as $product_variant) {
-                $addProductBranchVariant = new ProductBranchVariant();
-                $addProductBranchVariant->product_branch_id = $addProductBranch->id;
-                $addProductBranchVariant->product_id = $product->id;
-                $addProductBranchVariant->product_variant_id = $product_variant->id;
-                $addProductBranchVariant->variant_quantity = $product_variant->mb_stock;
-                $addProductBranchVariant->total_sale = $product_variant->mb_total_sale;
-                $addProductBranchVariant->save();
-            }
-        }
-    }
+    return str_pad(10, 10, "0", STR_PAD_LEFT);
 });
 
 // All authenticated routes

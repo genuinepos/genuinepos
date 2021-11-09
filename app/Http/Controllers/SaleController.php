@@ -851,7 +851,7 @@ class SaleController extends Controller
                     'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price'
                 ])->first();
             if ($variant_product) {
-                if ($product->is_manage_stock == 0) {
+                if ($variant_product->product->is_manage_stock == 0) {
                     return response()->json([
                         'variant_product' => $variant_product,
                         'qty_limit' => PHP_INT_MAX

@@ -55,7 +55,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>Payment Status :</strong></label>
-                                                    <select name="payment_status" id="payment_status" class="form-control submit_able">
+                                                    <select name="payment_status" id="payment_status" class="form-control">
                                                         <option value="">All</option>
                                                         <option value="1">Paid</option>
                                                         <option value="2">Due</option>

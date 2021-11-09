@@ -588,8 +588,8 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row">
-                            @if (json_decode($generalSettings->modules, true)['add_sale'] == '1')
-                                @if (auth()->user()->permission->sale['sale_access'] == '1')
+                            @if (auth()->user()->permission->sale['sale_access'] == '1')
+                                @if (json_decode($generalSettings->modules, true)['add_sale'] == '1')
                                     <div
                                         class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
@@ -608,16 +608,15 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.add_sale_list')</p>
                                     </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('sales.product.list') }}" class="bar-link">
-                                                <span><i class="fas fa-tasks"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.sold_product_list')</p>
-                                    </div>
                                 @endif
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('sales.product.list') }}" class="bar-link">
+                                            <span><i class="fas fa-tasks"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.sold_product_list')</p>
+                                </div>
                             @endif
                         </div>
                         <hr>

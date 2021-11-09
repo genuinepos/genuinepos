@@ -531,6 +531,10 @@ class SaleUtil
             $query->where('products.parent_category_id', $request->sub_category_id);
         }
 
+        if ($request->sold_by) {
+            $query->where('sales.created_by', $request->sold_by);
+        }
+
         if ($request->from_date) {
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
@@ -584,7 +588,8 @@ class SaleUtil
             ->editColumn('product', function ($row) {
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
                 return $row->name . $variant;
-            })->editColumn('sku', function ($row) {
+            })->editColumn('sold_by', fn($row) => $row->created_by == 1 ? '<span class="text-info">ADD SALE</span>' : '<span class="text-success">POS</span>')
+            ->editColumn('sku', function ($row) {
                 return $row->variant_code ? $row->variant_code : $row->product_code;
             })->editColumn('date', function ($row) use ($generalSettings) {
                 return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
@@ -594,7 +599,7 @@ class SaleUtil
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
             })->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
             ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . $this->converter->format_in_bdt($row->subtotal) . '</span>')
-            ->rawColumns(['product', 'sku', 'date', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal', 'action'])
+            ->rawColumns(['product', 'sku', 'date', 'sold_by','quantity', 'branch', 'unit_price_inc_tax', 'subtotal', 'action'])
             ->make(true);
         
     }

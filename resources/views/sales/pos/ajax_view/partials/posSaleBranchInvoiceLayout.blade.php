@@ -431,7 +431,11 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5> 
+                                    @if ($sale->branch->logo != 'default.png')
+                                        <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                    @else 
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                    @endif
                                 </th>
                             </tr>
 

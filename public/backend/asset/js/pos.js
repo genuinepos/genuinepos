@@ -4,9 +4,9 @@ $(document).on('click', '#submit_btn', function (e) {
     var button_type = $(this).data('button_type');
     if (action == 1) {
         actionMessage = 'Sale created Successfully.';
-    }else if (action == 2) {
+    } else if (action == 2) {
         actionMessage = ' Draft created successfully.';
-    }else if (action == 4) {
+    } else if (action == 4) {
         actionMessage = 'Quotation created Successfully.';
     }
     $('#action').val(action);
@@ -37,7 +37,7 @@ function cancel() {
         'buttons': {
             'Yes': {
                 'class': 'yes btn-modal-primary',
-                'action': function() {
+                'action': function () {
                     $('#product_list').empty();
                     $('.payment_method').hide();
                     $('#pos_submit_form')[0].reset();
@@ -50,46 +50,46 @@ function cancel() {
                     activeSelectedItems();
                 }
             },
-            'No': {'class': 'no btn-danger','action': function() { console.log('Deleted canceled.');}}
+            'No': { 'class': 'no btn-danger', 'action': function () { console.log('Deleted canceled.'); } }
         }
     });
 }
 
 //Key shortcut for cancel
-shortcuts.add('ctrl+m',function() {
+shortcuts.add('ctrl+m', function () {
     cancel();
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('f2',function() {
+shortcuts.add('f2', function () {
     $('#action').val(2);
     $('#button_type').val(0);
     $('#pos_submit_form').submit();
 });
 
-  //Key shortcut for pic hold invoice
-  shortcuts.add('f4',function() {
+//Key shortcut for pic hold invoice
+shortcuts.add('f4', function () {
     $('#action').val(4);
     $('#button_type').val(0);
     $('#pos_submit_form').submit();
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('f8',function() {
+shortcuts.add('f8', function () {
     $('#action').val(5);
     $('#button_type').val(0);
     $('#pos_submit_form').submit();
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('f10',function() {
+shortcuts.add('f10', function () {
     $('#action').val(1);
     $('#button_type').val(1);
     $('#pos_submit_form').submit();
 });
 
 $('.other_payment_method').on('click', function (e) {
-   e.preventDefault();
+    e.preventDefault();
     $('#otherPaymentMethod').modal('show');
 });
 
@@ -103,17 +103,17 @@ $(document).on('click', '#cancel_pay_mathod', function (e) {
 });
 
 //Key shortcut for all payment method
-shortcuts.add('ctrl+b',function() {
+shortcuts.add('ctrl+b', function () {
     $('#otherPaymentMethod').modal('show');
 });
 
 //Key shortcut for credit sale
-shortcuts.add('alt+g',function() {
+shortcuts.add('alt+g', function () {
     fullDue();
 });
 
 //Key shortcut for quick payment
-shortcuts.add('alt+s',function() {
+shortcuts.add('alt+s', function () {
     var total_payable = $('#total_payable_amount').val();
     var paying_amount = $('#paying_amount').val();
     var change = $('#change_amount').val();
@@ -123,43 +123,43 @@ shortcuts.add('alt+s',function() {
     $('#modal_change_amount').val(parseFloat(change).toFixed(2));
     $('#modal_total_due').val(parseFloat(due).toFixed(2));
     $('#cashReceiveMethod').modal('show');
-    setTimeout(function (){
+    setTimeout(function () {
         $('#modal_paying_amount').focus();
         $('#modal_paying_amount').select();
     }, 500);
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('alt+a',function() {
+shortcuts.add('alt+a', function () {
     $('#action').val(6);
     $('#button_type').val(0);
     $('#pos_submit_form').submit();
 });
 
 //Key shortcut for pic hold invoice
-shortcuts.add('alt+z',function() {
+shortcuts.add('alt+z', function () {
     allSuspends();
 });
 
 //Key shortcut for focus search product input
-shortcuts.add('alt+v',function() {
+shortcuts.add('alt+v', function () {
     document.getElementById('search_product').focus();
 });
 
 //Key shortcut for show recent transactions
-shortcuts.add('alt+x',function() {
+shortcuts.add('alt+x', function () {
     showRecentTransectionModal();
 });
 
-$(document).on('click', '#show_stock',function (e) {
+$(document).on('click', '#show_stock', function (e) {
     e.preventDefault();
     showStock();
- });
+});
 
- //Key shortcut for show current stock
- shortcuts.add('alt+c',function() {
-     showStock();
- });
+//Key shortcut for show current stock
+shortcuts.add('alt+c', function () {
+    showStock();
+});
 
 // After submitting form successfully this function will be executed.
 function afterSubmitForm() {
@@ -175,7 +175,7 @@ function afterSubmitForm() {
     activeSelectedItems();
 }
 
-$(document).keypress(".scanable",function(event){
+$(document).keypress(".scanable", function (event) {
     if (event.which == '10' || event.which == '13') {
         event.preventDefault();
     }
@@ -184,11 +184,11 @@ $(document).keypress(".scanable",function(event){
 $('#payment_method').on('change', function () {
     var value = $(this).val();
     $('.payment_method').hide();
-    $('#'+value).show();
+    $('#' + value).show();
 });
 
 var tableRowIndex = 0;
-$(document).on('click', '#delete',function(e){
+$(document).on('click', '#delete', function (e) {
     e.preventDefault();
     var parentTableRow = $(this).closest('tr');
     tableRowIndex = parentTableRow.index();
@@ -200,23 +200,23 @@ $(document).on('click', '#delete',function(e){
         'buttons': {
             'Yes': {
                 'class': 'yes btn-modal-primary',
-                'action': function() {$('#deleted_form').submit();$('#recent_trans_preloader').show();}
+                'action': function () { $('#deleted_form').submit(); $('#recent_trans_preloader').show(); }
             },
-            'No': {'class': 'no btn-danger','action': function() { console.log('Deleted canceled.')}}
+            'No': { 'class': 'no btn-danger', 'action': function () { console.log('Deleted canceled.') } }
         }
     });
 });
 
 //data delete by ajax
-$(document).on('submit', '#deleted_form',function(e){
+$(document).on('submit', '#deleted_form', function (e) {
     e.preventDefault();
     var url = $(this).attr('action');
     var request = $(this).serialize();
     $.ajax({
-        url:url,
-        type:'post',
-        data:request,
-        success:function(data){
+        url: url,
+        type: 'post',
+        data: request,
+        success: function (data) {
             toastr.error(data);
             $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
             $('#recent_trans_preloader').hide();
@@ -227,21 +227,21 @@ $(document).on('submit', '#deleted_form',function(e){
 });
 
 //data delete by ajax
-$(document).on('submit', '#search_inv_form',function(e){
+$(document).on('submit', '#search_inv_form', function (e) {
     e.preventDefault();
     $('#get_inv_preloader').show();
     var url = $(this).attr('action');
     var request = $(this).serialize();
     $.ajax({
-        url:url,
-        type:'get',
-        data:request,
-        success:function(data){
+        url: url,
+        type: 'get',
+        data: request,
+        success: function (data) {
             $('#get_inv_preloader').hide();
             $('#invoice_description').empty();
             if (!$.isEmptyObject(data.errorMsg)) {
                 toastr.error(data.errorMsg);
-            }else{
+            } else {
                 $('#invoice_description').html(data);
             }
         }
@@ -255,71 +255,71 @@ $('#submit_form_btn').on('click', function (e) {
 
 $('#exchange_btn').on('click', function (e) {
     e.preventDefault();
-    $('#invoice_description').empty();$('#invoice_id').val('');
+    $('#invoice_description').empty(); $('#invoice_id').val('');
 });
 
 $('.calculator-bg__main button').prop('type', 'button');
 
 function activeSelectedItems() {
     $('.product-name').removeClass('ac_item');
-    $('#product_list').find('tr').each(function() {
+    $('#product_list').find('tr').each(function () {
         var p_id = $(this).find('#product_id').val();
         var v_id = $(this).find('#variant_id').val();
-        var id = p_id+v_id;
-        $('#'+id).addClass('ac_item');
+        var id = p_id + v_id;
+        $('#' + id).addClass('ac_item');
     });
 }
 
 // Add Pos Shortcut Menu Script
 $(document).on('click', '#addPosShortcutBtn', function (e) {
     e.preventDefault();
-     var url = $(this).attr('href');
-     $.get(url, function(data) {
-         $('#modal-body_shortcuts').html(data);
-         $('#shortcutMenuModal').modal('show');
-     });
- });
+    var url = $(this).attr('href');
+    $.get(url, function (data) {
+        $('#modal-body_shortcuts').html(data);
+        $('#shortcutMenuModal').modal('show');
+    });
+});
 
- $(document).on('change', '#check_menu', function () {
-     $('#add_pos_shortcut_menu').submit();
- });
+$(document).on('change', '#check_menu', function () {
+    $('#add_pos_shortcut_menu').submit();
+});
 
- $(document).on('submit', '#add_pos_shortcut_menu', function (e) {
-     e.preventDefault();
-     var url = $(this).attr('action');
-     var request = $(this).serialize();
-     $.ajax({
-         url: url,
-         type: 'post',
-         data: request,
-         success: function(data) {
-             allPosShortcutMenus();
-         }
-     });
- });
+$(document).on('submit', '#add_pos_shortcut_menu', function (e) {
+    e.preventDefault();
+    var url = $(this).attr('action');
+    var request = $(this).serialize();
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: request,
+        success: function (data) {
+            allPosShortcutMenus();
+        }
+    });
+});
 
- // Add Pos Shortcut Menu Script End
+// Add Pos Shortcut Menu Script End
 
- //=================== Color change option ======================
-$(function() {
-    $('.color_change_wrapper ul li').on('click', function() {
+//=================== Color change option ======================
+$(function () {
+    $('.color_change_wrapper ul li').on('click', function () {
         let cls = this.className;
-        if(cls === 'red') {
+        if (cls === 'red') {
             $('.color_change_wrapper ul li').removeClass('active');
             this.classList.add('active');
             $('body').removeClass();
             $('body').addClass('red-theme');
-        } else if(cls === 'blue') {
+        } else if (cls === 'blue') {
             $('.color_change_wrapper ul li').removeClass('active');
             this.classList.add('active');
             $('body').removeClass();
             $('body').addClass('blue-theme');
-        } else if(cls === 'dark') {
+        } else if (cls === 'dark') {
             $('.color_change_wrapper ul li').removeClass('active');
             this.classList.add('active');
             $('body').removeClass();
             $('body').addClass('dark-theme');
-        } else if(cls === 'light') {
+        } else if (cls === 'light') {
             $('.color_change_wrapper ul li').removeClass('active');
             this.classList.add('active');
             $('body').removeClass();
@@ -327,3 +327,12 @@ $(function() {
         }
     })
 });
+
+
+// POS read manual button
+$('#readDocument').click(function () {
+    if ($('#readDocument div.doc').css('display', 'none')) {
+        $('#readDocument div.doc').toggleClass('d-block')
+    }
+})
+

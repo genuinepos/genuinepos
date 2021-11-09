@@ -618,5 +618,6 @@
     setInterval(function(){
         $('#search_product').removeClass('is-valid');
     }, 1000);
+
 </script>
 @endpush

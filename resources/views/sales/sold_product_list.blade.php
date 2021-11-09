@@ -92,8 +92,17 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>Sub-Category :</strong></label>
-                                                    <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
+                                                    <select name="sub_category_id" class="form-control" id="sub_category_id">
                                                         <option value="">All</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>Sold By :</strong></label>
+                                                    <select name="sold_by" id="sold_by" class="form-control">
+                                                        <option value="">All</option>
+                                                        <option value="1">Add Sale</option>
+                                                        <option value="2">POS</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -164,6 +173,7 @@
                                                     <th>P.Code</th>
                                                     <th>Customer</th>
                                                     <th>Invoice ID</th>
+                                                    <th>Sold By</th>
                                                     <th>Quantity</th>
                                                     <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                     <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -217,6 +227,8 @@
                 d.customer_id = $('#customer_id').val();
                 d.from_date = $('.from_date').val();
                 d.to_date = $('.to_date').val();
+                d.sold_by = $('#sold_by').val();
+                
             }
         },
         columns: [
@@ -225,6 +237,7 @@
             {data: 'sku', name: 'products.product_code'},
             {data: 'customer', name: 'customers.name'},
             {data: 'invoice_id', name: 'sales.invoice_id'},
+            {data: 'sold_by', name: 'sold_by', className:'text-end'},
             {data: 'quantity', name: 'quantity', className:'text-end'},
             {data: 'unit_price_inc_tax', name: 'unit_price_inc_tax', className:'text-end'},
             {data: 'subtotal', name: 'subtotal', className:'text-end'},
@@ -234,7 +247,6 @@
             var total_qty = sum_table_col($('.data_tbl'), 'qty');
             $('#total_qty').text(bdFormat(total_qty));
             var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
-            // $('#total_subtotal').text(__total_subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
             $('#total_subtotal').text(bdFormat(total_subtotal));
             $('.data_preloader').hide();
         },

@@ -375,6 +375,7 @@
                     }
                 } else {
                     $('#search_product').addClass('is-invalid');
+                    $('#search_product').select();
                 }
             }
         });

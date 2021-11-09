@@ -5,7 +5,7 @@ body {
 .container-fluid {
     /* overflow: hidden; */
 }
-/* =========================================body search bar==================================== */
+
 .main__content {
     margin-top: 62px;
 }
@@ -1406,9 +1406,11 @@ ul.add_sale_ex_btn li {
 
 .extra_label ul li {
     display: inline-block;
-    margin-right: 9px;
-    margin-top: 4px;
+    margin-right: 0px;
+    padding: 4px 3px;
+    border-radius: 2px;
 }
+
 .extra_label ul li p {
     font-size: 12px;
     font-weight: 600;

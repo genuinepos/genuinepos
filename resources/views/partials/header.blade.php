@@ -6,15 +6,15 @@
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
                         @if (auth()->user()->branch)
                         @if (auth()->user()->branch->logo != 'default.png')
-                        <img style="height: 40px; width:140px;"
+                        <img style="height: 40px; width:120px;"
                             src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
                         @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;
-                                letter-spacing:1px;padding-top:15px;">{{ auth()->user()->branch->name }}</span>
+                                    letter-spacing:1px;padding-top:15px;">{{ auth()->user()->branch->name }}</span>
                         @endif
                         @else
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                        <img style="height: 40px; width:140px;"
+                        <img style="height: 40px; width:120px;"
                             src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
                             alt="logo" class="logo__img">
                         @else
@@ -32,7 +32,7 @@
                             <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span
                                             class="fas fa-globe"></span></b></a></li>
                             @endif
-                            <li class="top-icon" id="get_mail" title="Communicate"><a href="#"><b><i
+                            <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
                                             class="fas fa-th-large"></i></b></a>
                                 <ul class="lists">
                                     <li><a href="#"><i class="fas fa-bell"></i><span class="title">Notice

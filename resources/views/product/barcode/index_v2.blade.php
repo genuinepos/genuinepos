@@ -155,25 +155,23 @@
                                     <div class="heading">
                                         <p><strong>Purchased Product List</strong></p>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="display data_tbl data__table table-hover" id="data">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start"><input type="checkbox" id="chack_all">All</th>
-                                                    <th class="text-start">Product</th>
-                                                    <th class="text-start">Supplier</th>
-                                                    <th class="text-start">Quantity</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="purchased_product_list"></tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th colspan="3" class="text-end">Total Pending Qty :</th>
-                                                    <th colspan="3" class="text-end">0</th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
+                                    <table class="display data_tbl data__table table-hover" id="data">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start"><input type="checkbox" id="chack_all">All</th>
+                                                <th class="text-start">Product</th>
+                                                <th class="text-start">Supplier</th>
+                                                <th class="text-start">Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="purchased_product_list"></tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="3" class="text-end">Total Pending Qty :</th>
+                                                <th colspan="3" class="text-end">0</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
                             </div>
                         </div>

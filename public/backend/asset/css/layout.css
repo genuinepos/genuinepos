@@ -148,7 +148,7 @@ img.logo__img {
     height: 58px;
     position: fixed;
     width: 79.5%;
-    z-index: 1;
+    z-index: 99;
     padding: 0px;
     left: 0px;
     padding-left: 142px;
@@ -699,7 +699,7 @@ footer img.logo {
 
 #calculatorModal.modal.show .modal-dialog {
     /* width: 287px; */
-    top: 34px;
+    top: 1px;
     height: 100%;
     position: absolute;
     right: 6%;

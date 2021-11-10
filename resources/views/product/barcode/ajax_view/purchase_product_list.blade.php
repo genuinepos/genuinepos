@@ -4,7 +4,7 @@
             <th class="text-start"><input type="checkbox" id="chack_all">All</th>
             <th class="text-start">Product</th>
             <th class="text-start">Supplier</th>
-            <th class="text-end">Pending Qty</th>
+            <th class="text-end">Quantity</th>
         </tr>
     </thead>
     <tbody id="purchased_product_list">
@@ -42,7 +42,7 @@
                 >
                     <td class="text-start"><input type="checkbox" class="check"></td>
                     <td class="text-start">
-                        <span class="span_product_name">{{ $s_product->product->name }}</span>  
+                        <span class="span_product_name">{{ Str::limit($s_product->product->name, 20, '') }}</span>  
                         @if ($s_product->product_variant_id != null) 
                             <span class="span_variant_name">{{' - '.$s_product->variant->variant_name }}</span>
                         @endif

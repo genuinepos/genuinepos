@@ -148,7 +148,7 @@ img.logo__img {
     height: 58px;
     position: fixed;
     width: 79.5%;
-    z-index: 99;
+    z-index: 1;
     padding: 0px;
     left: 0px;
     padding-left: 142px;

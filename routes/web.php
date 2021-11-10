@@ -1,11 +1,6 @@
 <?php
 
-use App\Models\Product;
-use App\Models\Customer;
 use App\Models\AdminAndUser;
-use App\Models\ProductBranch;
-use Illuminate\Support\Facades\DB;
-use App\Models\ProductBranchVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -121,8 +116,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('/', 'BarcodeController@index')->name('barcode.index');
         Route::post('preview', 'BarcodeController@preview')->name('barcode.preview');
         Route::get('supplier/products', 'BarcodeController@supplierProduct')->name('barcode.supplier.get.products');
-        Route::get('generate/completed', 'BarcodeController@genereateCompleted')->name('barcode.genereate.completed');
-        Route::post('multiple/generate/completed', 'BarcodeController@multipleGenereateCompleted')->name('barcode.multiple.genereate.completed');
+        Route::post('multiple/generate/completed', 'BarcodeController@multipleGenerateCompleted')->name('barcode.multiple.generate.completed');
         Route::get('search/product/{searchKeyword}', 'BarcodeController@searchProduct');
         Route::get('get/selected/product/{productId}', 'BarcodeController@getSelectedProduct');
         Route::get('get/selected/product/variant/{productId}/{variantId}', 'BarcodeController@getSelectedProductVariant');
@@ -246,8 +240,6 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::get('create', 'PurchaseController@create')->name('purchases.create');
     Route::post('store', 'PurchaseController@store')->name('purchases.store');
     Route::get('edit/{purchaseId}/{editType}', 'PurchaseController@edit')->name('purchases.edit');
-    Route::get('edit/purchase/product/{purchaseId}/{productId}/{variantId}', 'PurchaseController@editPurchasedProduct')->name('purchases.product.edit');
-    Route::post('update/purchase/product/{purchaseId}', 'PurchaseController@PurchasedProductUpdate')->name('purchases.product.update');
     Route::get('editable/purchase/{purchaseId}/{editType}', 'PurchaseController@editablePurchase')->name('purchases.get.editable.purchase');
     Route::post('update/{editType}', 'PurchaseController@update')->name('purchases.update');
     Route::get('get/all/supplier', 'PurchaseController@getAllSupplier')->name('purchases.get.all.supplier');
@@ -321,8 +313,6 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::post('store', 'SaleController@store')->name('sales.store');
     Route::get('edit/{saleId}', 'SaleController@edit')->name('sales.edit');
     Route::get('editable/sale/{saleId}', 'SaleController@editableSale')->name('sales.get.editable.sale');
-    Route::get('edit/sold/product/{saleId}/{productId}/{variantId}', 'SaleController@editSoldProduct')->name('sales.edit.sold.product');
-    Route::post('update/sold/product/{saleId}', 'SaleController@updateSoldProduct')->name('sales.update.sold.product');
     Route::post('update/{saleId}', 'SaleController@update')->name('sales.update');
     Route::get('get/all/customer', 'SaleController@getAllCustomer')->name('sales.get.all.customer');
     Route::get('customer_info/{customerId}', 'SaleController@customerInfo');
@@ -862,9 +852,13 @@ Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controller
 
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
 
+Route::get('maintenance/mode', function () {
+    return view('maintenance/maintenance');
+})->name('maintenance.mode');
+
 Route::get('add-user', function () {
     $addAdmin = new AdminAndUser();
-    $addAdmin->prefix = 'Mr.';
+    $addAdmin->prefix = 'Mr.'; 
     $addAdmin->name = 'Super';
     $addAdmin->last_name = 'Admin';
     $addAdmin->email = 'superadmin@gmail.com';
@@ -882,22 +876,7 @@ Route::get('pin_login', function () {
 });
 
 Route::get('/test', function () {
-    $productsCodes = DB::table('products')->select('id','product_code')->get();
-     
-
-    foreach ($productsCodes as $productsCode) {
-            // generate ID
-        $i = 7;
-        $a = 0;
-        $id = '';
-        while ($a < $i) {
-            $id .= rand(1, 9);
-            $a++;
-        }
-        $updateCode = Product::where('id', $productsCode->id)->first();
-        $updateCode->product_code = 'BS'.$id;
-        $updateCode->save();
-    }
+    return str_pad(10, 10, "0", STR_PAD_LEFT);
 });
 
 // All authenticated routes

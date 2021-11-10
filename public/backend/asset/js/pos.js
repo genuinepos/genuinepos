@@ -113,7 +113,8 @@ shortcuts.add('alt+g', function () {
 });
 
 //Key shortcut for quick payment
-shortcuts.add('alt+s', function () {
+shortcuts.add('alt+s',function() {
+    console.log('OK');
     var total_payable = $('#total_payable_amount').val();
     var paying_amount = $('#paying_amount').val();
     var change = $('#change_amount').val();

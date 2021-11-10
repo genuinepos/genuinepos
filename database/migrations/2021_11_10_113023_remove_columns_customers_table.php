@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNewColumnsProductBranchesTable extends Migration
+class RemoveColumnsCustomersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddNewColumnsProductBranchesTable extends Migration
      */
     public function up()
     {
-        Schema::table('product_branches', function (Blueprint $table) {
-            $table->decimal('total_sale')->after('product_quantity')->default(0);
+        Schema::table('customers', function (Blueprint $table) {
+            $table->dropColumn('type');
         });
     }
 
@@ -25,7 +25,7 @@ class AddNewColumnsProductBranchesTable extends Migration
      */
     public function down()
     {
-        Schema::table('product_branches', function (Blueprint $table) {
+        Schema::table('customers', function (Blueprint $table) {
             //
         });
     }

@@ -405,9 +405,9 @@
                             <tr>
                                 <th class="text-center">
                                     @if ($sale->branch->logo != 'default.png')
-                                        <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                        <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                     @else 
-                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ $sale->branch->name }}</span>
                                     @endif
                                 </th>
                             </tr>
@@ -541,7 +541,7 @@
                 </div>
 
                 <div class="footer_text_area mt-2">
-                    <table class="w-100 ">
+                    <table class="w-100">
                         <thead>
                             <tr>
                                 <th class="text-center">

@@ -58,20 +58,11 @@ class SupplierController extends Controller
             'phone' => 'required',
         ]);
 
-        // generate ID
-        $i = 5;
-        $a = 0;
-        $id = '';
-        while ($a < $i) {
-            $id .= rand(1, 9);
-            $a++;
-        }
         $generalSettings = DB::table('general_settings')->first('prefix');
         $firstLetterOfSupplier = str_split($request->name)[0];
         $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
         $addSupplier = Supplier::create([
-            'type' => $request->contact_type,
-            'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix . $id,
+            'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,
@@ -88,7 +79,7 @@ class SupplierController extends Controller
             'country' => $request->country,
             'state' => $request->state,
             'shipping_address' => $request->shipping_address,
-            'prefix' => $request->prefix ? $request->prefix : $firstLetterOfSupplier . $id,
+            'prefix' => $request->prefix ? $request->prefix : $firstLetterOfSupplier . $this->invoiceVoucherRefIdUtil->getLastId('suppliers'),
             'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
             'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
@@ -122,17 +113,8 @@ class SupplierController extends Controller
             'phone' => 'required',
         ]);
 
-        // generate prefix dode ID
-        $i = 6;
-        $a = 0;
-        $code = '';
-        while ($a < $i) {
-            $code .= rand(1, 9);
-            $a++;
-        }
-        $firstLetterOfSupplier = str_split($request->name)[0];
+       
         Supplier::where('id', $request->id)->update([
-            'type' => $request->contact_type,
             'contact_id' => $request->contact_id,
             'name' => $request->name,
             'business_name' => $request->business_name,
@@ -149,7 +131,6 @@ class SupplierController extends Controller
             'zip_code' => $request->zip_code,
             'country' => $request->country,
             'state' => $request->state,
-            'prefix' => $request->prefix ? $request->prefix : $firstLetterOfSupplier . $code,
             'shipping_address' => $request->shipping_address,
         ]);
         return response()->json('Supplier updated successfully');

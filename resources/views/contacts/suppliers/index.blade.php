@@ -9,7 +9,6 @@
         <div class="row">
             <div class="border-class">
                 <div class="main__content">
-                    <!-- =====================================================================BODY CONTENT================== -->
                     <div class="sec-name">
                         <div class="name-head">
                             <span class="fas fa-users"></span>
@@ -57,9 +56,7 @@
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -90,17 +87,13 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <b>Contact Type :</b>
-                                <select name="contact_type" class="form-control ">
-                                    <option value="">Select contact type</option>
-                                    <option value="1">Supplier</option>
-                                    <option value="2">Customer</option>
-                                    <option value="3">Both (Supplier - Customer)</option>
-                                </select>
+                                <b>Name :</b>  <span class="text-danger">*</span>
+                                <input type="text" name="name" class="form-control  add_input" data-name="Supplier name" id="name" placeholder="Supplier name"/>
+                                <span class="error error_name" style="color: red;"></span>
                             </div>
 
                             <div class="col-md-3">
-                              <b>Supplier ID <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</b>
+                              <b>Supplier ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i>
                                 <input type="text" name="contact_id" class="form-control" placeholder="Contact ID"/>
                             </div>
 
@@ -110,19 +103,13 @@
                             </div>
 
                             <div class="col-md-3">
-                                <b>Name :</b>  <span class="text-danger">*</span>
-                                <input type="text" name="name" class="form-control  add_input" data-name="Supplier name" id="name" placeholder="Supplier name"/>
-                                <span class="error error_name" style="color: red;"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
                                 <b>Phone :</b> <span class="text-danger">*</span>
                                 <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
                                 <span class="error error_phone"></span>
                             </div>
+                        </div>
 
+                        <div class="form-group row mt-1">
                             <div class="col-md-3">
                                <b>Alternative Number :</b>
                                 <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number"/>
@@ -137,19 +124,19 @@
                                 <b>Email :</b>
                                 <input type="text" name="email" class="form-control " placeholder="Email address"/>
                             </div>
-                        </div>
 
-                        <div class="form-group row mt-1">
                             <div class="col-md-3">
                                 <b>Date Of Birth :</b>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                     </div>
-                                    <input type="text" name="date_of_birth" class="form-control date-of-birth-picker" autocomplete="off"  placeholder="yyyy-mm-dd">
+                                    <input type="text" name="date_of_birth" class="form-control date-of-birth-picker" autocomplete="off"  placeholder="YYYY-MM-DD">
                                 </div>
                             </div>
+                        </div>
 
+                        <div class="form-group row mt-1">
                             <div class="col-md-3">
                                 <b>Tax Number :</b>
                                 <input type="text" name="tax_number" class="form-control " placeholder="Tax number"/>

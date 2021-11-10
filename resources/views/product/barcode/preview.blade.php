@@ -12,41 +12,14 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/bootstrap.min.css') }}">
 
     <style>
-        p {
-            margin: 0px;
-            padding: 0px;
-            font-size: 7px;
-        }
-
-        p.sku {
-            font-size: 7px;
-            margin: 0px;
-            padding: 0;
-            font-weight: 700;
-            margin-bottom: 1px;
-        }
-
-        .company_name {
-            margin: 0;
-        }
-
-        .div {
-            page-break-after: always;
-        }
-
-        .company_name  {
-            font-size: 10px !important;
-            font-weight: bolder;
-            margin: 0;
-            padding: 0;
-        }
-
-        .barcode {
-            margin-bottom: -2px;
-        }
+        p {margin: 0px;padding: 0px;font-size: 7px;}
+        p.sku {font-size: 7px;margin: 0px;padding: 0;font-weight: 700;margin-bottom: 1px;}
+        .company_name {margin: 0;}
+        .div {page-break-after: always;}
+        .company_name {font-size: 10px !important;font-weight: bolder;margin: 0;padding: 0;}
+        .barcode {margin-bottom: -2px;}
 
         @page {
-
             /* size: auto; */
             .print_area: {
                 height: 100%;
@@ -57,11 +30,6 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
             size: 38mm 25mm;
             margin: 5px 0px;
             /* margin: 0mm 15mm 0mm 15mm; */
-
-            /* .company_name {
-                margin-top: 80px !important;
-            } */
-
         }
 
 
@@ -78,31 +46,11 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
             font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
 
-        .justify-center {
-            /* display: flex;
-            justify-self: center;
-            align-items: center; */
-        }
+        .product_name {font-size: 9px;font-weight: 600;}
+        .product_price {font-size: 10px;letter-spacing: 0px !important;}
+        .product_code {font-size: 10px;font-weight: 600;}
+        th {padding: 0px;letter-spacing: 1px;}
 
-        .product_name{
-            font-size: 9px;
-            font-weight: 600;
-        }
-
-        .product_price{
-            font-size: 10px;
-            letter-spacing: 0px!important;
-        }
-
-        .product_code{
-            font-size: 10px;
-            font-weight: 600;
-        }
-
-        th{
-            padding: 0px;
-            letter-spacing: 1px;
-        }
     </style>
 </head>
 
@@ -138,6 +86,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                     <img style="width: 45mm; height:7mm;"
                                         src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
                                 </div>
+
                                 <div class="row justify-content-center">
                                     <table>
                                         <thead>
@@ -168,15 +117,14 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                             <th class="product_price">
                                                 @if (isset($req->is_price))
                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                    
                                                     {{ App\Utils\Converter::format_in_bdt($req->product_price[$index]) }}
-                                                    {{ isset($req->is_tax) ? '+ ' .$req->product_tax[$index] . '% VAT' : '' }}
+                                                    {{ isset($req->is_tax) ? '+ ' . $req->product_tax[$index] . '% VAT' : '' }}
                                                 @endif
                                             </th>
                                         </tr>
                                     </thead>
                                 </table>
-         
+
                             </div>
                         </div>
                     </div>
@@ -187,55 +135,57 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
             <div class="row justify-content-center">
                 @php $index = 0; @endphp
                 @foreach ($req->product_ids as $product)
-                    @php $qty = $req->left_qty[$index] ? (int)$req->left_qty[$index] : 0 @endphp
+                    @php $qty = isset($req->left_qty[$index]) ? $req->left_qty[$index] : 0; @endphp
                     @for ($i = 0; $i < $qty; $i++)
-                        <div class="barcode_area text-center" style="margin-bottom: {{ $br_setting->top_margin }}in;>
-                            <div class=" barcode">
-                            <div class="company_name row">
-                                <small class="p-0 m-0">
-                                    <strong>
-                                        @if (isset($req->is_business_name))
-                                            {{ auth()->user()->branch ? auth()->user()->branch->name : json_decode($generalSettings->business, true)['shop_name'] }}
-                                        @endif
-                                    </strong>
-                                </small>
-                            </div>
-                            <div class="row justify-content-center">
-                                <img style="height:width: 35mm; height:10mm;"
-                                    src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
-                            </div>
-                            <div class="row justify-content-center">
-                                <p class="sku">{{ $req->product_code[$index] }}</p>
-                            </div>
-                        </div>
-                        <div class="product_details_area row">
-                            @if (isset($req->is_product_name))
-                                <p class="pro_details">
-                                    @php
-                                        $variant = isset($req->is_product_variant) ? $req->product_variant[$index] : '';
-                                    @endphp
-                                    {{ Str::limit($req->product_name[$index] . ' ' . $variant, 40) }}
-                                    :{{ isset($req->is_supplier_prefix) ? $req->supplier_prefix[$index] : '' }}
-                                </p>
-                            @endif
+                        <div class="barcode_area text-center" style="margin-bottom: {{ $br_setting->top_margin }}in;width:auto;">
+                            <div class="barcode">
+                                <div class="company_name row">
+                                    <small class="p-0 m-0">
+                                        <strong>
+                                            @if (isset($req->is_business_name))
+                                                {{ auth()->user()->branch ? auth()->user()->branch->name : json_decode($generalSettings->business, true)['shop_name'] }}
+                                            @endif
+                                        </strong>
+                                    </small>
+                                </div>
 
-                            @if (isset($req->is_price))
-                                <p class="price_details">
-                                    <b>Price :
-                                        {{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                    {{ bcadd($req->product_price[$index], 0, 2) }}
-                                    {{ isset($req->is_tax) ? '+ ' . bcadd($req->product_tax[$index], 0, 2) . '% Tax' : '' }}
-                                    {!! $req->packing_date[$index] ? '<b>Packing Date: ' . $req->packing_date[$index] : '' !!}
-                                </p>
-                            @endif
+                                <div class="row justify-content-center">
+                                    <img style="width: 35mm; height:10mm;"
+                                        src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
+                                </div>
+                                <div class="row justify-content-center">
+                                    <p class="sku">{{ $req->product_code[$index] }}</p>
+                                </div>
+                            </div>
+
+                            <div class="product_details_area row">
+                                @if (isset($req->is_product_name))
+                                    <p class="pro_details">
+                                        @php
+                                            $variant = isset($req->is_product_variant) ? $req->product_variant[$index] : '';
+                                        @endphp
+                                        {{ Str::limit($req->product_name[$index] . ' ' . $variant, 40) }}
+                                        :{{ isset($req->is_supplier_prefix) ? $req->supplier_prefix[$index] : '' }}
+                                    </p>
+                                @endif
+
+                                @if (isset($req->is_price))
+                                    <p class="price_details">
+                                        <b>Price :
+                                            {{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        {{ bcadd($req->product_price[$index], 0, 2) }}
+                                        {{ isset($req->is_tax) ? '+ ' . bcadd($req->product_tax[$index], 0, 2) . '% Tax' : '' }}
+                                    </p>
+                                @endif
+                            </div>
                         </div>
+                    @endfor
+                    @php $index++; @endphp
+                @endforeach
             </div>
-        @endfor
-        @php $index++; @endphp
-        @endforeach
+        @endif
     </div>
-    @endif
-    </div>
+
     {{-- <button class="btn btn-success" onclick="window.print()">Print</button> --}}
 </body>
 <!--Jquery Cdn-->
@@ -249,4 +199,5 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
         auto_print();
     }, 300);
 </script>
+
 </html>

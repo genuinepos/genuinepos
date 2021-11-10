@@ -92,8 +92,17 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>Sub-Category :</strong></label>
-                                                    <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
+                                                    <select name="sub_category_id" class="form-control" id="sub_category_id">
                                                         <option value="">All</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>Sold By :</strong></label>
+                                                    <select name="sold_by" id="sold_by" class="form-control">
+                                                        <option value="">All</option>
+                                                        <option value="1">Add Sale</option>
+                                                        <option value="2">POS</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -164,10 +173,10 @@
                                                     <th>P.Code</th>
                                                     <th>Customer</th>
                                                     <th>Invoice ID</th>
+                                                    <th>Sold By</th>
                                                     <th>Quantity</th>
                                                     <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                     <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -190,6 +199,7 @@
             </div>
         </div>
     </div>
+    <div id="sale_details"></div>
 @endsection
 @push('scripts')
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
@@ -217,6 +227,7 @@
                 d.customer_id = $('#customer_id').val();
                 d.from_date = $('.from_date').val();
                 d.to_date = $('.to_date').val();
+                d.sold_by = $('#sold_by').val();
             }
         },
         columns: [
@@ -225,16 +236,14 @@
             {data: 'sku', name: 'products.product_code'},
             {data: 'customer', name: 'customers.name'},
             {data: 'invoice_id', name: 'sales.invoice_id'},
+            {data: 'sold_by', name: 'sales.created_by', className:'text-end'},
             {data: 'quantity', name: 'quantity', className:'text-end'},
             {data: 'unit_price_inc_tax', name: 'unit_price_inc_tax', className:'text-end'},
             {data: 'subtotal', name: 'subtotal', className:'text-end'},
-            {data: 'action'},
-        ],
-        fnDrawCallback: function() {
+        ],fnDrawCallback: function() {
             var total_qty = sum_table_col($('.data_tbl'), 'qty');
             $('#total_qty').text(bdFormat(total_qty));
             var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
-            // $('#total_subtotal').text(__total_subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
             $('#total_subtotal').text(bdFormat(total_subtotal));
             $('.data_preloader').hide();
         },
@@ -322,6 +331,19 @@
         }
     });
 
+    // Show details modal with data
+    $(document).on('click', '.details_button', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $.get(url, function(data) {
+            $('#sale_details').html(data);
+            $('.data_preloader').hide();
+            $('#detailsModal').modal('show');
+            $('.action_hideable').hide();
+        });
+    });
+
     $(document).on('mouseenter', '#list>li>a',function () {
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
@@ -346,13 +368,69 @@
                     debug: false,                   
                     importCSS: true,                
                     importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
                     removeInline: false, 
                     printDelay: 700, 
                     header: null,        
                 });
             }
         }); 
+    });
+
+        // Make print
+    $(document).on('click', '.print_btn',function (e) {
+        e.preventDefault();
+        var body = $('.sale_print_template').html();
+        var header = $('.heading_area').html();
+        $(body).printThis({
+            debug: false,
+            importCSS: true,
+            importStyle: true,
+            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+            removeInline: false,
+            printDelay: 500,
+            header : null,
+            footer : null,
+        });
+    });
+
+    $(document).on('click', '.print_challan_btn',function (e) {
+        e.preventDefault();
+        var body = $('.challan_print_template').html();
+        var header = $('.heading_area').html();
+        $(body).printThis({
+            debug: false,
+            importCSS: true,
+            importStyle: true,
+            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+            removeInline: false,
+            printDelay: 800,
+            header: null,
+            footer: null,
+        });
+    });
+
+    // Print Packing slip
+    $(document).on('click', '#print_packing_slip', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        var url = $(this).attr('href');
+        $.ajax({
+            url:url,
+            type:'get',
+            success:function(data){
+                $('.data_preloader').hide();
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
+                });
+            }
+        });
     });
 </script>
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\BarcodeSetting;
 use App\Models\Product;
 use App\Models\PurchaseProduct;
-use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Models\SupplierProduct;
 use Illuminate\Support\Facades\DB;
@@ -39,34 +38,31 @@ class BarcodeController extends Controller
     // Get all supplier products
     public function supplierProduct()
     {
-        return Supplier::with(['supplier_products', 'supplier_products.product', 'supplier_products.product.tax', 'supplier_products.variant'])
+        $supplier_products = SupplierProduct::with(['supplier', 'product', 'product.tax', 'variant'])
+            ->where('label_qty', '>', 0)
             ->get();
+        return view('product.barcode.ajax_view.purchase_product_list', compact('supplier_products'));
     }
 
-    // Get all supplier products
-    public function genereateCompleted(Request $request)
-    {
-        $variant_id = $request->variant_id != 'noid' ? $request->variant_id : NULL;
-        $supplierProduct = SupplierProduct::where('supplier_id', $request->supplier_id)
-            ->where('product_id', $request->product_id)
-            ->where('product_variant_id', $variant_id)
-            ->first();
 
-        if ($supplierProduct->label_qty > 0) {
-            $supplierProduct->label_qty -= $request->label_qty;
-            $supplierProduct->save();
-        }
-        return response()->json(['successMsg' => 'Successfully barcode genereated Completed']);
-    }
-
-    public function multipleGenereateCompleted(Request $request)
+    public function multipleGenerateCompleted(Request $request)
     {
-        $supplierProducts = SupplierProduct::where('label_qty', '>', 0)->get();
-        foreach ($supplierProducts as $supplierProduct) {
-            $supplierProduct->label_qty = 0;
-            $supplierProduct->save();
+        //return $request->all();
+        $index = 0;
+        foreach ($request->product_ids as $product_id) {
+            $variant_id = $request->product_variant_ids[$index] != 'null' ? $request->product_variant_ids[$index] : NULL;
+            $supplierProduct = SupplierProduct::where('supplier_id', $request->supplier_ids[$index])
+                ->where('product_id', $product_id)
+                ->where('product_variant_id', $variant_id)
+                ->first();
+            if ($supplierProduct) {
+                $supplierProduct->label_qty = 0;
+                $supplierProduct->save();
+            }
+            $index++;
         }
-        return response()->json(['Successfully barcode genereate Completed all']);
+
+        return response()->json(['Successfully completed barcode row is deleted.']);
     }
 
     // Search product

@@ -73,7 +73,7 @@
             dataType: 'json',
             success: function(singleProductQty) {
                 if (is_manage_stock == 1) {
-                    $('#current_stock').val(parseFloat(branchVariantQty));
+                    $('#stock_quantity').val(parseFloat(singleProductQty));
                 }
                 if ($.isEmptyObject(singleProductQty.errorMsg)) {
                     var product_ids = document.querySelectorAll('#product_id');
@@ -215,7 +215,7 @@
             success: function(branchVariantQty) {
                 if ($.isEmptyObject(branchVariantQty.errorMsg)) {
                     if (is_manage_stock == 1) {
-                        $('#current_stock').val(parseFloat(branchVariantQty));
+                        $('#stock_quantity').val(parseFloat(branchVariantQty));
                     }
                     
                     var variant_ids = document.querySelectorAll('#variant_id');

@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Utils\AccountUtil;
 use App\Utils\CustomerUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\ProductStockUtil;
 
 class SaleController extends Controller
@@ -34,6 +35,7 @@ class SaleController extends Controller
     protected $customerUtil;
     protected $productStockUtil;
     protected $accountUtil;
+    protected $invoiceVoucherRefIdUtil;
     public function __construct(
         NameSearchUtil $nameSearchUtil,
         SaleUtil $saleUtil,
@@ -41,7 +43,8 @@ class SaleController extends Controller
         Util $util,
         CustomerUtil $customerUtil,
         ProductStockUtil $productStockUtil,
-        AccountUtil $accountUtil
+        AccountUtil $accountUtil,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->saleUtil = $saleUtil;
@@ -50,6 +53,7 @@ class SaleController extends Controller
         $this->customerUtil = $customerUtil;
         $this->productStockUtil = $productStockUtil;
         $this->accountUtil = $accountUtil;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -180,7 +184,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $prefixSettings = DB::table('general_settings')
-            ->select(['id', 'prefix', 'contact_default_cr_limit', 'send_es_settings'])
+            ->select(['id', 'prefix', 'send_es_settings'])
             ->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
@@ -215,23 +219,12 @@ class SaleController extends Controller
             return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
         }
 
-        if ($request->total_due > $prefixSettings->contact_default_cr_limit) {
-            return response()->json(['errorMsg' => 'Due amount exceeds to default credit limit.']);
-        }
-
-        // generate invoice ID
-        $invoiceId = 1;
-        $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
-        if ($lastSale) {
-            $invoiceId = ++$lastSale->id;
-        }
-
         $this->validate($request, [
             'status' => 'required',
         ]);
 
         $addSale = new Sale();
-        $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $invoiceId;
+        $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $this->invoiceVoucherRefIdUtil->getLastId('sales');
         $addSale->admin_id = auth()->user()->id;
         $addSale->branch_id = auth()->user()->branch_id;
 
@@ -354,7 +347,7 @@ class SaleController extends Controller
         ])->where('id', $addSale->id)->first();
 
         if ($request->status == 1) {
-            $this->saleUtil->__getSalePaymentForAddSaleStore($request, $sale, $paymentInvoicePrefix, $invoiceId);
+            $this->saleUtil->__getSalePaymentForAddSaleStore($request, $sale, $paymentInvoicePrefix, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'));
             if ($sale->customer_id) {
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
             }
@@ -435,54 +428,6 @@ class SaleController extends Controller
         return view('sales.edit', compact('saleId', 'sale', 'price_groups'));
     }
 
-    public function editSoldProduct($saleId, $productId, $variantId)
-    {
-        $qty_limit = 0;
-        $variantId = $variantId != 'NULL' ? $variantId : NULL;
-        $sale = DB::table('sales')->where('sales.id', $saleId)
-        ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-        ->select(
-            'sales.*',
-            'customers.name as c_name'
-        )
-        ->first();
-
-        $sold_product = DB::table('sale_products')
-            ->where('sale_products.sale_id', $saleId)
-            ->where('sale_products.product_id', $productId)
-            ->where('sale_products.product_variant_id', $variantId)
-            ->leftJoin('products', 'sale_products.product_id', 'products.id')
-            ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
-            ->select(
-                'sale_products.*',
-                'products.name as p_name',
-                'products.type',
-                'products.tax_type',
-                'products.is_show_emi_on_pos',
-                'products.product_code',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-            )->first();
-
-   
-            $productBranch = DB::table('product_branches')->where('branch_id', $sale->branch_id)
-                ->where('product_id', $sold_product->product_id)->first();
-            if ($sold_product->type == 2) {
-                $qty_limit = 500000;
-            } elseif ($sold_product->product_variant_id) {
-                $productBranchVariant = DB::table('product_branch_variants')->where('product_branch_id', $productBranch->id)->where('product_id', $sold_product->product_id)
-                    ->where('product_variant_id', $sold_product->product_variant_id)
-                    ->first();
-                $qty_limit = $productBranchVariant->variant_quantity;
-            } else {
-                $qty_limit = $productBranch->product_quantity;
-            }
-            
-            $taxes = DB::table('taxes')->select('tax_name', 'tax_percent')->get();
-            $units = DB::table('units')->select('name')->get();
-            return view('sales.edit_sold_product', compact('sale', 'sold_product', 'qty_limit', 'taxes', 'units'));
-    }
-
     // Get editable sale
     public function editableSale($saleId)
     {
@@ -519,47 +464,6 @@ class SaleController extends Controller
         return response()->json(['sale' => $sale, 'qty_limits' => $qty_limits]);
     }
 
-    public function updateSoldProduct(Request $request, $saleId)
-    {
-        $variantId = $request->variant_id != 'noid' ? $request->variant_id : NULL;
-   
-        $updateSaleProduct = SaleProduct::where('sale_id', $saleId)
-        ->where('product_id', $request->product_id)
-        ->where('product_variant_id', $variantId)->first();
-
-        $updateSale = Sale::where('id', $saleId)->first();
-        $updateSale->date = date('d-m-Y', strtotime($request->date));
-        $updateSale->report_date = date('Y-m-d', strtotime($request->date));
-        $updateSale->total_payable_amount -= $updateSaleProduct->subtotal;
-        $updateSale->total_payable_amount += $request->subtotal;
-
-        $updateSaleProduct->quantity = $request->quantity;
-        $updateSaleProduct->unit_cost_inc_tax = $request->unit_cost_inc_tax;
-        $updateSaleProduct->unit_price_exc_tax = $request->unit_price_exc_tax;
-        $updateSaleProduct->unit_price_inc_tax = $request->unit_price;
-        $updateSaleProduct->unit_discount_type = $request->unit_discount_type;
-        $updateSaleProduct->unit_discount = $request->unit_discount;
-        $updateSaleProduct->unit_discount_amount = $request->unit_discount_amount;
-        $updateSaleProduct->unit_tax_percent = $request->unit_tax_percent;
-        $updateSaleProduct->unit_tax_amount = $request->unit_tax_amount;
-        $updateSaleProduct->unit = $request->unit;
-        $updateSaleProduct->subtotal = $request->subtotal;
-        $updateSaleProduct->description = $request->description ? $request->description : NULL;
-        $updateSaleProduct->save();
-
-        // update Business location or Warehouse product and variant quantity for adjustment
-        $this->productStockUtil->adjustBranchStock($request->product_id, $variantId, $updateSale->branch_id);
-    
-        $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
-        $this->productStockUtil->adjustMainProductAndVariantStock($request->product_id, $variantId);
-        if ($updateSale->customer_id) {
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
-        }
-
-        session()->flash('successMsg', 'Successfully Sold Product is updated');
-        return response()->json('Successfully Sold Product is updated');
-    }
-
     // Update Sale 
     public function update(Request $request, $saleId)
     {
@@ -586,14 +490,7 @@ class SaleController extends Controller
             $sale_product->save();
         }
 
-        // generate invoice ID
-        $invoiceId = 1;
-        $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
-        if ($lastSale) {
-            $invoiceId = ++$lastSale->id;
-        }
-
-        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
+        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('sales');
         $updateSale->status = $request->status;
         $updateSale->pay_term = $request->pay_term;
         $updateSale->date = $request->date;
@@ -935,15 +832,9 @@ class SaleController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
         $sale = Sale::where('id', $saleId)->first();
-        // generate invoice ID
-        $invoiceId = 1;
-        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
-        if ($lastSalePayment) {
-            $invoiceId = ++$lastSalePayment->id;
-        }
 
         // Add sale payment
-        $this->saleUtil->addPayment($paymentInvoicePrefix, $request, $request->amount, $invoiceId, $saleId);
+        $this->saleUtil->addPayment($paymentInvoicePrefix, $request, $request->amount, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), $saleId);
         if ($sale->customer_id) {
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
         }
@@ -1076,16 +967,9 @@ class SaleController extends Controller
             $sale->sale_return->save();
         }
 
-        // generate invoice ID
-        $invoiceId = 1;
-        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
-        if ($lastSalePayment) {
-            $invoiceId = ++$lastSalePayment->id;
-        }
-
         // Add sale payment
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = 'SRPV' . date('my') . $invoiceId;
+        $addSalePayment->invoice_id = 'SRPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
         $addSalePayment->sale_id = $sale->id;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;

@@ -6,7 +6,7 @@
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
                         @if (auth()->user()->branch)
                         @if (auth()->user()->branch->logo != 'default.png')
-                        <img style="height: 40px; width:200px;"
+                        <img style="height: 40px; width:140px;"
                             src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
                         @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;
@@ -14,7 +14,8 @@
                         @endif
                         @else
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                        <img style="height: 40px; width:140px;"
+                            src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
                             alt="logo" class="logo__img">
                         @else
                         <span

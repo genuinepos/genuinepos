@@ -699,7 +699,7 @@ footer img.logo {
 
 #calculatorModal.modal.show .modal-dialog {
     /* width: 287px; */
-    top: 34px;
+    top: 1px;
     height: 100%;
     position: absolute;
     right: 6%;

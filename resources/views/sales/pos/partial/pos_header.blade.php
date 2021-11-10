@@ -1,11 +1,53 @@
 <style>
-    .search_item_area{position: relative;}
-    .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 100%;z-index: 9999999;padding: 0;left: 0%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
-    .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
-    .select_area ul li a {color:#464343;text-decoration: none;font-size: 12px;padding: 2px 3px;display: block;line-height: 15px;border: 1px solid #968e92;font-weight: 400;}
-    .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
-    .selectProduct {background-color: #ab1c59;color: #fff !important;}
-    .text-info {color: #0795a5!important;}
+    .search_item_area {
+        position: relative;
+    }
+
+    .select_area {
+        position: relative;
+        background: #ffffff;
+        box-sizing: border-box;
+        position: absolute;
+        width: 100%;
+        z-index: 9999999;
+        padding: 0;
+        left: 0%;
+        display: none;
+        border: 1px solid #7e0d3d;
+        margin-top: 1px;
+        border-radius: 0px;
+    }
+
+    .select_area ul {
+        list-style: none;
+        margin-bottom: 0;
+        padding: 4px 4px;
+    }
+
+    .select_area ul li a {
+        color: #464343;
+        text-decoration: none;
+        font-size: 12px;
+        padding: 2px 3px;
+        display: block;
+        line-height: 15px;
+        border: 1px solid #968e92;
+        font-weight: 400;
+    }
+
+    .select_area ul li a:hover {
+        background-color: #ab1c59;
+        color: #fff;
+    }
+
+    .selectProduct {
+        background-color: #ab1c59;
+        color: #fff !important;
+    }
+
+    .text-info {
+        color: #0795a5 !important;
+    }
 </style>
 
 <div class="head-pos">
@@ -20,58 +62,65 @@
             <div class="col-lg-4 col-sm-12 col-12 logo-sec">
                 <div class="pos-logo">
                     @if (auth()->user()->branch)
-                        @if (auth()->user()->branch->logo != 'default.png')
-                            <img style="height: 40px; width:100px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
-                        @else 
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
-                        @endif
-                    @else  
-                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                        @else 
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
-                        @endif
+                    @if (auth()->user()->branch->logo != 'default.png')
+                    <img style="height: 40px; width:100px;"
+                        src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                    @else
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
+                        auth()->user()->branch->name }}</span>
+                    @endif
+                    @else
+                    @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                    <img style="height: 40px; width:100px;"
+                        src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                        alt="logo" class="logo__img">
+                    @else
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
+                        json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                    @endif
                     @endif
                 </div>
             </div>
-            
+
             <div class="col-lg-8 col-sm-12 col-12 address">
                 @if ($openedCashRegister->branch)
-                    <p class="store-name">
-                        {{ $openedCashRegister->branch->name.'-'.$openedCashRegister->branch->branch_code }}
-                    </p>
-                    <p class="address-name">
-                        {{ $openedCashRegister->branch->city ? $openedCashRegister->branch->city.', ' : ''}}
-                        {{ $openedCashRegister->branch->state ? $openedCashRegister->branch->state.', ' : ''}}
-                        {{ $openedCashRegister->branch->country ? ', '.$openedCashRegister->branch->country : ''}}
-                    </p>
-                @else 
-                    <p class="store-name">
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
-                    </p>
-                    <p class="address-name">
-                        {{ Str::limit(json_decode($generalSettings->business, true)['address'], 45) }}
-                    </p>
+                <p class="store-name">
+                    {{ $openedCashRegister->branch->name.'-'.$openedCashRegister->branch->branch_code }}
+                </p>
+                <p class="address-name">
+                    {{ $openedCashRegister->branch->city ? $openedCashRegister->branch->city.', ' : ''}}
+                    {{ $openedCashRegister->branch->state ? $openedCashRegister->branch->state.', ' : ''}}
+                    {{ $openedCashRegister->branch->country ? ', '.$openedCashRegister->branch->country : ''}}
+                </p>
+                @else
+                <p class="store-name">
+                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
+                </p>
+                <p class="address-name">
+                    {{ Str::limit(json_decode($generalSettings->business, true)['address'], 45) }}
+                </p>
                 @endif
                 <small class="login-user-name">
-                    <span class="text-highlight">Loggedin : </span> {{ auth()->user()->prefix.' '.auth()->user()->name.' '.auth()->user()->last_name }}.
-                    <span> 
-                        <span class="text-highlight">C.Register : </span> 
+                    <span class="text-highlight">Loggedin : </span> {{ auth()->user()->prefix.' '.auth()->user()->name.'
+                    '.auth()->user()->last_name }}.
+                    <span>
+                        <span class="text-highlight">C.Register : </span>
                         @if ($openedCashRegister->admin)
-                            @if ($openedCashRegister->admin->role_type == 1)
-                                Super-Admin.
-                            @elseif($openedCashRegister->admin->role_type == 2)
-                                Admin.
-                            @else 
-                                {{ $openedCashRegister->admin->role->name }}.
-                            @endif
+                        @if ($openedCashRegister->admin->role_type == 1)
+                        Super-Admin.
+                        @elseif($openedCashRegister->admin->role_type == 2)
+                        Admin.
+                        @else
+                        {{ $openedCashRegister->admin->role->name }}.
+                        @endif
                         @endif
                     </span>
-                    <span> <span class="text-highlight">Cash Counter : </span> {{ $openedCashRegister->cash_counter ? $openedCashRegister->cash_counter->counter_name : 'N/A' }}.</span>
+                    <span> <span class="text-highlight">Cash Counter : </span> {{ $openedCashRegister->cash_counter ?
+                        $openedCashRegister->cash_counter->counter_name : 'N/A' }}.</span>
                 </small>
-            </div>  
+            </div>
         </div>
-        
+
         <div class="col-lg-8 col-sm-9 col-12 input-buttob-sec">
             <div class="input-section">
                 <div class="row">
@@ -85,7 +134,8 @@
                                     <select name="customer_id" class="form-control form-select" id="customer_id">
                                         <option value="">Walk-In-Customer</option>
                                         @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                        <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')'
+                                            }}</option>
                                         @endforeach
                                     </select>
                                     <div class="input-group-append add_button" id="addCustomer">
@@ -98,36 +148,41 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                         </div>
-                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus autocomplete="off">
+                                        <input type="text" name="search_product" class="form-control"
+                                            id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus
+                                            autocomplete="off">
                                         <div class="input-group-append add_button" id="add_product">
                                             <span class="input-group-text"><i class="fas fa-plus"></i></span>
                                         </div>
                                     </div>
-    
+
                                     <div class="select_area">
                                         <ul id="list" class="variant_list_area">
-                                           
+
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-lg-5 input-value-sec">
-                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1')
-                                    <div class="input-group mb-1">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text valus">Point</span>
-                                        </div>
-                                        <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
-                                        <!-- =============================== -->
-
-                                        <div class="input-group-prepend ms-1">
-                                            <span class="input-group-text valus"> = {{ json_decode($generalSettings->business, true)['currency'] }}</span>
-                                        </div>
-                                        <input readonly type="text" class="form-control" id="trial_point_amount">
+                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] ==
+                                '1')
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text valus">Point</span>
                                     </div>
+                                    <input readonly type="number" step="any" class="form-control" name="earned_point"
+                                        id="earned_point">
+                                    <!-- =============================== -->
+
+                                    <div class="input-group-prepend ms-1">
+                                        <span class="input-group-text valus"> = {{
+                                            json_decode($generalSettings->business, true)['currency'] }}</span>
+                                    </div>
+                                    <input readonly type="text" class="form-control" id="trial_point_amount">
+                                </div>
                                 @endif
-                                
+
 
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend">
@@ -139,7 +194,7 @@
                                         <select name="price_group_id" class="form-control" id="price_group_id">
                                             <option value="">Default Selling Price</option>
                                             @foreach ($price_groups as $pg)
-                                                <option value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                            <option value="{{ $pg->id }}">{{ $pg->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -154,50 +209,94 @@
                         </div>
 
                         <div class="btn-sec">
-                            <a href="" class="pos-btn status" id="suspends"><i class="fas text-warning fa-pause"></i></a>
+                            {{-- Shortcut Manual --}}
+                            <a href="#" class="pos-btn position-relative me-1" id="readDocument"><i
+                                    class="fas fa-file-alt"></i>
+                                <div class="position-absolute doc">
+                                    <ul class="p-2 pt-3">
+                                        <li>
+                                            <span class="icon shortcut">F2</span>
+                                            <span class="desc">Save as draft</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon shortcut">F3</span>
+                                            <span class="desc">View stock</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon shortcut">Ctrl+Q</span>
+                                            <span class="desc">Quick setup</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon shortcut">Ctrl+C</span>
+                                            <span class="desc">Copy Element</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon shortcut">Ctrl+V</span>
+                                            <span class="desc">Paste Copied</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon shortcut">F2</span>
+                                            <span class="desc">Save as draft</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon shortcut">F2</span>
+                                            <span class="desc">Save as draft</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon shortcut">F2</span>
+                                            <span class="desc">Save as draft</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </a>
+                            <a href="" class="pos-btn status" id="suspends"><i
+                                    class="fas text-warning fa-pause"></i></a>
                             <a href="" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal">
                                 <span class="fas fa-calculator"></span>
                             </a>
-                            <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                    <div class="modail-body" id="calculator">
-                                        <div class="calculator-bg">
-                                            <div class="calculator-bg__main">
-                                                <div class="calculator-bg__main__screen">
-                                                    <div class="calculator-bg__main__screen__first"></div>
-                                                    <div class="calculator-bg__main__screen__second">0</div>
+                                        <div class="modail-body" id="calculator">
+                                            <div class="calculator-bg">
+                                                <div class="calculator-bg__main">
+                                                    <div class="calculator-bg__main__screen">
+                                                        <div class="calculator-bg__main__screen__first"></div>
+                                                        <div class="calculator-bg__main__screen__second">0</div>
+                                                    </div>
+                                                    <button class="calculator-bg__main__ac">AC</button>
+                                                    <button class="calculator-bg__main__del">DEL</button>
+                                                    <button class="calculator-bg__main__operator">/</button>
+                                                    <button class="calculator-bg__main__num">7</button>
+                                                    <button class="calculator-bg__main__num">8</button>
+                                                    <button class="calculator-bg__main__num">9</button>
+                                                    <button class="calculator-bg__main__operator">x</button>
+                                                    <button class="calculator-bg__main__num">4</button>
+                                                    <button class="calculator-bg__main__num">5</button>
+                                                    <button class="calculator-bg__main__num">6</button>
+                                                    <button class="calculator-bg__main__operator">+</button>
+                                                    <button class="calculator-bg__main__num">1</button>
+                                                    <button class="calculator-bg__main__num">2</button>
+                                                    <button class="calculator-bg__main__num">3</button>
+                                                    <button class="calculator-bg__main__operator">-</button>
+                                                    <button class="calculator-bg__main__num decimal">.</button>
+                                                    <button class="calculator-bg__main__num">0</button>
+                                                    <button class="calculator-bg__main__result">=</button>
                                                 </div>
-                                                <button class="calculator-bg__main__ac">AC</button>
-                                                <button class="calculator-bg__main__del">DEL</button>
-                                                <button class="calculator-bg__main__operator">/</button>
-                                                <button class="calculator-bg__main__num">7</button>
-                                                <button class="calculator-bg__main__num">8</button>
-                                                <button class="calculator-bg__main__num">9</button>
-                                                <button class="calculator-bg__main__operator">x</button>
-                                                <button class="calculator-bg__main__num">4</button>
-                                                <button class="calculator-bg__main__num">5</button>
-                                                <button class="calculator-bg__main__num">6</button>
-                                                <button class="calculator-bg__main__operator">+</button>
-                                                <button class="calculator-bg__main__num">1</button>
-                                                <button class="calculator-bg__main__num">2</button>
-                                                <button class="calculator-bg__main__num">3</button>
-                                                <button class="calculator-bg__main__operator">-</button>
-                                                <button class="calculator-bg__main__num decimal">.</button>
-                                                <button class="calculator-bg__main__num">0</button>
-                                                <button class="calculator-bg__main__result">=</button>
                                             </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                             </div>
                             @if (auth()->user()->permission->register['register_view'] == '1')
-                                <a href="#" class="pos-btn text-info" id="cash_register_details" title="Register Details"><i class="fas fa-cash-register"></i></a>
+                            <a href="#" class="pos-btn text-info" id="cash_register_details" title="Register Details"><i
+                                    class="fas fa-cash-register"></i></a>
                             @endif
 
                             @if (auth()->user()->permission->register['register_close'] == '1')
-                                <a href="#" class="pos-btn text-danger" id="close_register" title="Close Register"><span class="fas fa-times"></span></a>
+                            <a href="#" class="pos-btn text-danger" id="close_register" title="Close Register"><span
+                                    class="fas fa-times"></span></a>
                             @endif
                             <a href="" class="pos-btn"><span class="fas fa-bell"></span></a>
                             <a href="" class="pos-btn" id="pos_exit_button"><span class="fas fa-backward"></span></a>
@@ -220,7 +319,7 @@
         });
     }
     getPriceGroupProducts();
- 
+
     var rp_settings = {
         enable_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] }}",
         redeem_amount_per_unit_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}",
@@ -286,17 +385,17 @@
 
         var total_invoice_payable = $('#total_invoice_payable').val();
         if (rp_settings.min_order_total_for_redeem && total_invoice_payable < parseFloat(rp_settings.min_order_total_for_redeem)) {
-            toastr.error('Minimum order amount is '+rp_settings.min_order_total_for_redeem+' to redeem the points.'); 
+            toastr.error('Minimum order amount is '+rp_settings.min_order_total_for_redeem+' to redeem the points.');
             return;
         }
 
         if (rp_settings.min_redeem_point && parseFloat(total_redeem_point) < parseFloat(rp_settings.min_redeem_point)) {
             toastr.error('Minimum redeem points is '+rp_settings.min_redeem_point);
-            return; 
+            return;
         }
-        
+
         if (rp_settings.max_redeem_point && parseFloat(total_redeem_point) > parseFloat(rp_settings.max_redeem_point)) {
-            toastr.error('Maximum redeem points is '+rp_settings.max_redeem_point); 
+            toastr.error('Maximum redeem points is '+rp_settings.max_redeem_point);
             return;
         }
 
@@ -334,8 +433,8 @@
         var url = $(this).attr('action');
         var request = $(this).serialize();
         var inputs = $('.c_add_input');
-            $('.error').html('');  
-            var countErrorField = 0;  
+            $('.error').html('');
+            var countErrorField = 0;
         $.each(inputs, function(key, val){
             var inputId = $(val).attr('id');
             var idValue = $('#'+inputId).val();
@@ -421,14 +520,14 @@
     $(document).on('blur', '#os_quantity', function () {
         if ($(this).val() == '') {
             $(this).val(parseFloat(0).toFixed(2));
-        } 
+        }
     });
 
     // Reduce empty opening stock unit cost field
     $(document).on('blur', '#os_unit_cost_exc_tax', function () {
     if ($(this).val() == '') {
         $(this).val(parseFloat(0).toFixed(2));
-    } 
+    }
     });
 
     $(document).on('input', '#os_quantity', function () {

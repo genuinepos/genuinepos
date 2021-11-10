@@ -182,4 +182,7 @@ $(function () {
     // });
 });
 
-
+// Header menubar msg option
+$('#get_mail').on('click', () => {
+    $('#get_mail ul.lists').toggleClass('d-block');
+})

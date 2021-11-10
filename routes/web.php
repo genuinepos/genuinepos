@@ -240,8 +240,6 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::get('create', 'PurchaseController@create')->name('purchases.create');
     Route::post('store', 'PurchaseController@store')->name('purchases.store');
     Route::get('edit/{purchaseId}/{editType}', 'PurchaseController@edit')->name('purchases.edit');
-    Route::get('edit/purchase/product/{purchaseId}/{productId}/{variantId}', 'PurchaseController@editPurchasedProduct')->name('purchases.product.edit');
-    Route::post('update/purchase/product/{purchaseId}', 'PurchaseController@PurchasedProductUpdate')->name('purchases.product.update');
     Route::get('editable/purchase/{purchaseId}/{editType}', 'PurchaseController@editablePurchase')->name('purchases.get.editable.purchase');
     Route::post('update/{editType}', 'PurchaseController@update')->name('purchases.update');
     Route::get('get/all/supplier', 'PurchaseController@getAllSupplier')->name('purchases.get.all.supplier');
@@ -315,8 +313,6 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::post('store', 'SaleController@store')->name('sales.store');
     Route::get('edit/{saleId}', 'SaleController@edit')->name('sales.edit');
     Route::get('editable/sale/{saleId}', 'SaleController@editableSale')->name('sales.get.editable.sale');
-    Route::get('edit/sold/product/{saleId}/{productId}/{variantId}', 'SaleController@editSoldProduct')->name('sales.edit.sold.product');
-    Route::post('update/sold/product/{saleId}', 'SaleController@updateSoldProduct')->name('sales.update.sold.product');
     Route::post('update/{saleId}', 'SaleController@update')->name('sales.update');
     Route::get('get/all/customer', 'SaleController@getAllCustomer')->name('sales.get.all.customer');
     Route::get('customer_info/{customerId}', 'SaleController@customerInfo');

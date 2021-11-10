@@ -167,7 +167,6 @@
                                                 <th>Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -178,7 +177,6 @@
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white"><span id="total_subtotal"></span></th>
-                                                <th></th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -234,7 +232,6 @@
                 {data: 'net_unit_cost', name: 'net_unit_cost', className: 'text-end'},
                 {data: 'price', name: 'purchase_products.selling_price', className: 'text-end'},
                 {data: 'subtotal', name: 'subtotal', className: 'text-end'},
-                {data: 'action', name: 'action'},
             ],
             fnDrawCallback: function() {
                 var total_qty = sum_table_col($('.data_tbl'), 'qty');

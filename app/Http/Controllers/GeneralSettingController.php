@@ -115,14 +115,6 @@ class GeneralSettingController extends Controller
         return response()->json('Product settings updated successfully');
     }
 
-    public function contactSettings(Request $request)
-    {
-        $updateContactDefaultCrLimitSettings = General_setting::first();
-        $updateContactDefaultCrLimitSettings->contact_default_cr_limit = $request->contact_default_cr_limit;
-        $updateContactDefaultCrLimitSettings->save();
-        return response()->json('Contact setting updated successfully');
-    }
-
     // Add tax settings
     public function saleSettings(Request $request)
     {

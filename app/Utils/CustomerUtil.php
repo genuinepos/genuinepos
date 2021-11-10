@@ -3,10 +3,87 @@
 namespace App\Utils;
 
 use App\Models\Customer;
+use App\Utils\Converter;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class CustomerUtil
 {
+    public $converter;
+    public function __construct(
+        Converter $converter,
+    ) {
+        $this->converter = $converter;
+    }
+
+    public function customerListTable()
+    {
+        $customers = DB::table('customers')
+            ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
+            ->select('customers.*', 'customer_groups.group_name');
+        return DataTables::of($customers)
+            ->addColumn('action', function ($row) {
+                $html = '';
+                $html .= '<div class="btn-group" role="group">';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . url('contacts/customers/view', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+
+                if ($row->total_sale_due > 0) {
+                    $html .= '<a class="dropdown-item" id="pay_button" href="' . route('customers.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                }
+
+                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('customers.view.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>';
+
+                if ($row->total_sale_return_due > 0) {
+                    $html .= '<a class="dropdown-item" id="pay_return_button" href="' . route('customers.return.payment', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Due</a>';
+                }
+
+                if (auth()->user()->permission->customers['customer_edit'] == '1') {
+                    $html .= '<a class="dropdown-item" href="' . route('contacts.customer.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
+                }
+
+                if (auth()->user()->permission->customers['customer_delete'] == '1') {
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.customer.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                }
+
+                if ($row->status == 1) {
+                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                } else {
+                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                }
+
+                $html .= '</div>';
+                $html .= '</div>';
+                return $html;
+            })
+            ->editColumn('business_name', function ($row) {
+                return $row->business_name ? $row->business_name : '...';
+            })
+            ->editColumn('tax_number', function ($row) {
+                return $row->tax_number ? $row->tax_number : '...';
+            })
+            ->editColumn('group_name', function ($row) {
+                return $row->group_name ? $row->group_name : '...';
+            })
+            ->editColumn('opening_balance', fn ($row) => '<span class="opening_balance" data-value="'.$row->opening_balance.'">'.$this->converter->format_in_bdt($row->opening_balance). '</span>')
+            ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="'.$row->total_sale.'">' . $this->converter->format_in_bdt($row->total_sale) . '</span>')
+            ->editColumn('total_paid', fn ($row) => '<span class="total_paid text-success" data-value="'.$row->total_paid.'">' . $this->converter->format_in_bdt($row->total_paid) . '</span>')
+            ->editColumn('total_sale_due', fn ($row) => '<span class="total_sale_due text-danger" data-value="'.$row->total_sale_due.'">' . $this->converter->format_in_bdt($row->total_sale_due) . '</span>')
+            ->editColumn('total_return', fn ($row) => '<span class="total_return" data-value="'.$row->total_return.'">' . $this->converter->format_in_bdt($row->total_return) . '</span>')
+            ->editColumn('total_sale_return_due', fn ($row) => '<span class="total_sale_return_due" data-value="'.$row->total_sale_return_due.'">' . $this->converter->format_in_bdt($row->total_sale_return_due) . '</span>')
+            ->editColumn('status', function ($row) {
+                if ($row->status == 1) {
+                    return '<i class="far fa-thumbs-up text-success"></i>';
+                } else {
+                    return '<i class="far fa-thumbs-down text-danger"></i>';
+                }
+            })
+            ->rawColumns(['action', 'business_name', 'tax_number', 'group_name', 'opening_balance', 'total_sale', 'total_paid', 'total_sale_due', 'total_return', 'total_sale_return_due', 'status'])
+            ->make(true);
+    }
+
     public function adjustCustomerAmountForSalePaymentDue($customerId)
     {
         $customer = Customer::where('id', $customerId)->first();

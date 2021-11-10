@@ -6,14 +6,14 @@
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
                         @if (auth()->user()->branch)
                             @if (auth()->user()->branch->logo != 'default.png')
-                                <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                                <img style="height: 40px; width:140px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
                             @else 
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white; 
                                 letter-spacing:1px;padding-top:15px;">{{ auth()->user()->branch->name }}</span>
                             @endif
                         @else  
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                <img style="height: 40px; width:140px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                             @else 
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif

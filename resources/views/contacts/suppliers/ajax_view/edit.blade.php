@@ -2,13 +2,9 @@
     <input type="hidden" name="id" id="id" value="{{ $supplier->id }}">
     <div class="form-group row mt-1">
         <div class="col-md-3">
-            <b>Contact Type :</b>
-            <select name="contact_type" class="form-control " id="e_contact_type">
-                <option value="">Select contact type</option>
-                <option value="1">Supplier</option>
-                <option value="2">Customer</option>
-                <option value="3">Both (Supplier - Customer)</option>
-            </select>
+            <b>Name :</b>  <span class="text-danger">*</span>
+            <input type="text" name="name" class="form-control edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier name" value="{{ $supplier->name }}"/>
+            <span class="error error_e_name"></span>
         </div>
 
         <div class="col-md-3">
@@ -22,19 +18,13 @@
         </div>
 
         <div class="col-md-3">
-            <b>Name :</b>  <span class="text-danger">*</span>
-            <input type="text" name="name" class="form-control edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier name" value="{{ $supplier->name }}"/>
-            <span class="error error_e_name"></span>
+            <b>Phone :</b> <span class="text-danger">*</span>
+            <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number" value="{{ $supplier->phone }}"/>
+            <span class="error error_e_phone"></span>
         </div>
     </div>
 
     <div class="form-group row mt-1">
-        <div class="col-md-3">
-            <b>Phone :</b><span class="text-danger">*</span>
-            <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number" value="{{ $supplier->phone }}"/>
-            <span class="error error_e_phone"></span>
-        </div>
-
         <div class="col-md-3">
             <b>Alternative Number :</b>
             <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number" id="e_alternative_phone" value="{{ $supplier->alternative_phone }}"/>
@@ -49,19 +39,19 @@
             <b>Email :</b>
             <input type="text" name="email" class="form-control" placeholder="Email address" id="e_email" value="{{ $supplier->email }}"/>
         </div>
-    </div>
 
-    <div class="form-group row mt-1">
         <div class="col-md-3">
             <b>Date Of Birth :</b> 
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                 </div>
-                <input type="text" name="date_of_birth" class="form-control date-of-birth-picker" autocomplete="off" id="e_date_of_birth" value="{{ $supplier->date_of_birth }}" placeholder="yyyy-mm-dd">
+                <input type="text" name="date_of_birth" class="form-control date-of-birth-picker" autocomplete="off" id="e_date_of_birth" value="{{ $supplier->date_of_birth }}" placeholder="YYYY-MM-DD">
             </div>
         </div>
+    </div>
 
+    <div class="form-group row mt-1">
         <div class="col-md-3">
             <b>Tax Number :</b>
             <input type="text" name="tax_number" class="form-control " placeholder="Tax number" id="e_tax_number" value="{{ $supplier->tax_number }}"/>

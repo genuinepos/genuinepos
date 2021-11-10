@@ -9,7 +9,7 @@
                     <th class="text-start">Account</th>
                     <th class="text-start">Method</th>
                     <th class="text-start">Type</th>
-                    <th class="text-start">Action</th>
+                    <th class="text-start action_hideable">Action</th>
                 </tr>
             </thead>
             <tbody id="p_details_payment_list">
@@ -26,7 +26,7 @@
                             <td class="text-start">{{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}
                             </td>
                             
-                            <td class="text-start">
+                            <td class="text-start action_hideable">
                                 @if (auth()->user()->branch_id == $sale->branch_id)
                                     @if ($payment->payment_type == 1)
                                         <a href="{{ route('sales.payment.edit', $payment->id) }}"

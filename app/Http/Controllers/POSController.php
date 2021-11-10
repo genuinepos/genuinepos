@@ -84,7 +84,7 @@ class POSController extends Controller
     public function store(Request $request)
     {
         $prefixSettings = DB::table('general_settings')
-            ->select(['id', 'prefix', 'contact_default_cr_limit', 'reward_poing_settings', 'send_es_settings'])
+            ->select(['id', 'prefix', 'reward_poing_settings', 'send_es_settings'])
             ->first();
 
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
@@ -121,10 +121,6 @@ class POSController extends Controller
         if ($request->action == 1) {
             if ($request->paying_amount < $request->total_payable_amount && !$request->customer_id) {
                 return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
-            }
-
-            if ($request->total_due > $prefixSettings->contact_default_cr_limit) {
-                return response()->json(['errorMsg' => 'Due amount exceeds to default credit limit.']);
             }
         }
 

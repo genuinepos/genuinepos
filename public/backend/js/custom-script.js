@@ -107,11 +107,7 @@ $(function () {
         "sDom": '<"table_top"fl<"clear">>,<"table_content"t>'
 
     });
-
-
-
 });
-
 
 /* Formating function for row details */
 function fnFormatDetails(oTable, nTr) {

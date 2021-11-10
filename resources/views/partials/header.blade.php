@@ -5,37 +5,21 @@
                 <div class="logo__sec">
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
                         @if (auth()->user()->branch)
-<<<<<<< HEAD
                             @if (auth()->user()->branch->logo != 'default.png')
-                                <img style="height: 40px; width:140px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
-                            @else 
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white; 
-                                letter-spacing:1px;padding-top:15px;">{{ auth()->user()->branch->name }}</span>
+                                <img style="height: 40px; width:120px;"
+                                src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                            @else
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;
+                                    letter-spacing:1px;padding-top:15px;">{{ auth()->user()->branch->name }}</span>
                             @endif
-                        @else  
+                        @else
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                <img style="height: 40px; width:140px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                            @else 
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                <img style="height: 40px; width:120px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                                alt="logo" class="logo__img">
+                            @else
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{
+                                json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif
-=======
-                        @if (auth()->user()->branch->logo != 'default.png')
-                        <img style="height: 40px; width:200px;"
-                            src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
-                        @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;
-                                letter-spacing:1px;padding-top:15px;">{{ auth()->user()->branch->name }}</span>
-                        @endif
-                        @else
-                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
-                            alt="logo" class="logo__img">
-                        @else
-                        <span
-                            style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{
-                            json_decode($generalSettings->business, true)['shop_name'] }}</span>
-                        @endif
->>>>>>> origin/rashed
                         @endif
                     </a>
                 </div>
@@ -46,7 +30,7 @@
                             <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span
                                             class="fas fa-globe"></span></b></a></li>
                             @endif
-                            <li class="top-icon" id="get_mail" title="Communicate"><a href="#"><b><i
+                            <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
                                             class="fas fa-th-large"></i></b></a>
                                 <ul class="lists">
                                     <li><a href="#"><i class="fas fa-bell"></i><span class="title">Notice
@@ -62,7 +46,7 @@
                             <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
                             <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
-                            <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
+                                <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
                             @endif
                             <li class="top-icon">
                                 <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">

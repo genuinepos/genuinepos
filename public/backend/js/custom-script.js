@@ -107,11 +107,7 @@ $(function () {
         "sDom": '<"table_top"fl<"clear">>,<"table_content"t>'
 
     });
-
-
-
 });
-
 
 /* Formating function for row details */
 function fnFormatDetails(oTable, nTr) {
@@ -182,4 +178,7 @@ $(function () {
     // });
 });
 
-
+// Header menubar msg option
+$('#get_mail').on('click', () => {
+    $('#get_mail ul.lists').toggleClass('d-block');
+})

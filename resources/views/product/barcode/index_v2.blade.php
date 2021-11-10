@@ -162,7 +162,7 @@
                                                     <th class="text-start"><input type="checkbox" id="chack_all">All</th>
                                                     <th class="text-start">Product</th>
                                                     <th class="text-start">Supplier</th>
-                                                    <th class="text-start">Pending Qty</th>
+                                                    <th class="text-start">Quantity</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="purchased_product_list"></tbody>

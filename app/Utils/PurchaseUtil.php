@@ -384,16 +384,6 @@ class PurchaseUtil
         }
 
         return DataTables::of($purchaseProducts)
-            ->addColumn('action', function ($row) {
-                $html = '<div class="dropdown table-dropdown">';
-                if (auth()->user()->branch == $row->branch_id) {
-                    if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
-                        $html .= '<a href="' . route('purchases.product.edit', [$row->purchase_id, $row->product_id, ($row->product_variant_id ? $row->product_variant_id : 'NULL')]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    }
-                }
-                $html .= '</div>';
-                return $html;
-            })
             ->editColumn('product', function ($row) {
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
                 return $row->name . $variant;
@@ -417,7 +407,7 @@ class PurchaseUtil
                 }
                 return $converter->format_in_bdt($row->net_unit_cost);
             })->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->line_total . '">' . $this->converter->format_in_bdt($row->line_total) . '</span>')
-            ->rawColumns(['action', 'product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'price', 'subtotal'])
+            ->rawColumns(['product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'price', 'subtotal'])
             ->make(true);
     }
 

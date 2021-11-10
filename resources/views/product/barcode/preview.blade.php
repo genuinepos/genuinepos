@@ -13,29 +13,23 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
 
     <style>
         p {margin: 0px;padding: 0px;font-size: 7px;}
-
         p.sku {font-size: 7px;margin: 0px;padding: 0;font-weight: 700;margin-bottom: 1px;}
-
-        .company_name { margin: 0;}
-
+        .company_name {margin: 0;}
         .div {page-break-after: always;}
-
-        .company_name  {font-size: 10px !important;font-weight: bolder;margin: 0;padding: 0;}
+        .company_name {font-size: 10px !important;font-weight: bolder;margin: 0;padding: 0;}
         .barcode {margin-bottom: -2px;}
-        @page {
 
+        @page {
             /* size: auto; */
-            .print_area: {height: 100%;width: 100%;}
+            .print_area: {
+                height: 100%;
+                width: 100%;
+            }
 
             /* size: {{ $br_setting->paper_width }}in {{ $br_setting->paper_height }}in; */
             size: 38mm 25mm;
             margin: 5px 0px;
             /* margin: 0mm 15mm 0mm 15mm; */
-
-            /* .company_name {
-                margin-top: 80px !important;
-            } */
-
         }
 
 
@@ -52,31 +46,11 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
             font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
 
-        .justify-center {
-            /* display: flex;
-            justify-self: center;
-            align-items: center; */
-        }
+        .product_name {font-size: 9px;font-weight: 600;}
+        .product_price {font-size: 10px;letter-spacing: 0px !important;}
+        .product_code {font-size: 10px;font-weight: 600;}
+        th {padding: 0px;letter-spacing: 1px;}
 
-        .product_name{
-            font-size: 9px;
-            font-weight: 600;
-        }
-
-        .product_price{
-            font-size: 10px;
-            letter-spacing: 0px!important;
-        }
-
-        .product_code{
-            font-size: 10px;
-            font-weight: 600;
-        }
-
-        th{
-            padding: 0px;
-            letter-spacing: 1px;
-        }
     </style>
 </head>
 
@@ -112,6 +86,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                     <img style="width: 45mm; height:7mm;"
                                         src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
                                 </div>
+
                                 <div class="row justify-content-center">
                                     <table>
                                         <thead>
@@ -143,13 +118,13 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                                 @if (isset($req->is_price))
                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                     {{ App\Utils\Converter::format_in_bdt($req->product_price[$index]) }}
-                                                    {{ isset($req->is_tax) ? '+ ' .$req->product_tax[$index] . '% VAT' : '' }}
+                                                    {{ isset($req->is_tax) ? '+ ' . $req->product_tax[$index] . '% VAT' : '' }}
                                                 @endif
                                             </th>
                                         </tr>
                                     </thead>
                                 </table>
-         
+
                             </div>
                         </div>
                     </div>
@@ -160,9 +135,9 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
             <div class="row justify-content-center">
                 @php $index = 0; @endphp
                 @foreach ($req->product_ids as $product)
-                    @php $qty = isset($req->left_qty[$index]) ? $req->left_qty[$index] : 0 @endphp
+                    @php $qty = isset($req->left_qty[$index]) ? $req->left_qty[$index] : 0; @endphp
                     @for ($i = 0; $i < $qty; $i++)
-                        <div class="barcode_area text-center" style="margin-bottom: {{ $br_setting->top_margin }}in;">
+                        <div class="barcode_area text-center" style="margin-bottom: {{ $br_setting->top_margin }}in;width:auto;">
                             <div class="barcode">
                                 <div class="company_name row">
                                     <small class="p-0 m-0">
@@ -173,6 +148,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                         </strong>
                                     </small>
                                 </div>
+
                                 <div class="row justify-content-center">
                                     <img style="width: 35mm; height:10mm;"
                                         src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
@@ -209,7 +185,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
             </div>
         @endif
     </div>
-    
+
     {{-- <button class="btn btn-success" onclick="window.print()">Print</button> --}}
 </body>
 <!--Jquery Cdn-->
@@ -223,4 +199,5 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
         auto_print();
     }, 300);
 </script>
+
 </html>

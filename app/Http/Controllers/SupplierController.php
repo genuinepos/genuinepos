@@ -62,7 +62,6 @@ class SupplierController extends Controller
         $firstLetterOfSupplier = str_split($request->name)[0];
         $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
         $addSupplier = Supplier::create([
-            'type' => $request->contact_type,
             'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
             'business_name' => $request->business_name,
@@ -116,7 +115,6 @@ class SupplierController extends Controller
 
        
         Supplier::where('id', $request->id)->update([
-            'type' => $request->contact_type,
             'contact_id' => $request->contact_id,
             'name' => $request->name,
             'business_name' => $request->business_name,

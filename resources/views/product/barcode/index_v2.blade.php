@@ -137,8 +137,8 @@
                                             </div>
                                         </div>
                                         <div class="row mt-3">
-                                            <div class="col-md-6">
-                                                <a href="" class="btn btn-sm btn-danger multiple_completed" style=""> DELETE SELECTED ALL</a>
+                                            <div class="col-md-6 multiple_cmp_btn_area">
+                                                <a href="" class="btn btn-sm btn-danger multiple_completed" style=""> DELETE SELECTED ALL </a> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Note : Delete all items from puchased products which is selected for generation the barcodes" class="fas fa-info-circle tp"></i>
                                             </div>
                                             <div class="col-md-6">
                                                 <button type="submit" class="btn btn-sm btn-primary float-end">Preview & Print</button>
@@ -183,7 +183,7 @@
 @endsection
 @push('scripts')
 <script>
-    $('.multiple_completed').hide();
+    $('.multiple_cmp_btn_area').hide();
     // Get all supplier products
     function getSupplierProducts(){
         $.ajax({
@@ -207,8 +207,8 @@
             success:function(products){
                 $('.product_dropdown_list').empty();
                 if (products.length > 0) {
+                    li = '';
                     $.each(products, function(key, product){
-                        li = '';
                         li += '<li>';
                         li += '<a class="select_product" data-p_id="'+product.id+'" href="#">'+product.name+' - '+product.product_code+'</a>';
                         li +='</li>';
@@ -317,6 +317,7 @@
                         tr += '</td>';
                         tr += '</tr>';
                         $('#barcode_product_list').prepend(tr);
+                        calculateQty();
                     }
                 });
             }
@@ -416,22 +417,18 @@
                         tr += '</td>';
                         tr += '</tr>';
                         $('#barcode_product_list').prepend(tr);
+                        calculateQty();
                     }
                 });
             }
         });
     });
 
-    // Dispose Select area 
-    $(document).on('click', '.remove_select_area_btn', function(e){
-        e.preventDefault();
-        $('.select_area').hide();
-    });
-
     // Generate confirm request send by ajax
     $(document).on('click', '.remove_btn',function (e) {
         e.preventDefault();
         var tr = $(this).closest('tr').remove(); 
+        calculateQty();
     })
 
     $(document).on('click', '.multiple_completed',function(e){
@@ -558,9 +555,9 @@
         $('#prepired_qty').html(total_qty);
         
         if (parseFloat(total_qty) > 0) {
-            $('.multiple_completed').show();
+            $('.multiple_cmp_btn_area').show();
         }else{
-            $('.multiple_completed').hide();
+            $('.multiple_cmp_btn_area').hide();
         }
     }
 

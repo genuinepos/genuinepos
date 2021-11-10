@@ -251,22 +251,55 @@
                                 <div class="col-md-12">
                                     <div class="form_element m-0 mt-2">
                                         <div class="element-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
-                                                        <div class="col-8">
-                                                            <select name="type" class="form-control" id="type">
-                                                                <option value="1">General</option>
-                                                                <option value="2">Combo</option>
-                                                            </select>
+                                            <div class="form_part">
+                                                <div class="row mt-1">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" name="product_cost" class="form-control"
+                                                                autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
+                                                                <span class="error error_product_cost"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                                    <div class="col-md-6">    
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax">
+                                                            <span class="error error_product_price"></span>    
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
+                                                <div class="row mt-1">
+                                                    <div class="col-md-6">                
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="0.00">
+                                                                <span class="error error_product_cost_with_tax"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
+                                                                <span class="error error_profit"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                
                                             @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
-                                                <div class="row mt-2">
+                                                <div class="row mt-1">
                                                     <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
@@ -295,53 +328,7 @@
                                                 </div>
                                             @endif
 
-                                            <div class="form_part">
-                                                <div class="row mt-2">
-                                                    <div class="col-md-6">
-                                                        <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
-                                                            <div class="col-8">
-                                                                <input type="number" step="any" name="product_cost" class="form-control"
-                                                                autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
-                                                                <span class="error error_product_cost"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                        
-                                                    <div class="col-md-6">                
-                                                        <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
-                                                            <div class="col-8">
-                                                                <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="0.00">
-                                                                <span class="error error_product_cost_with_tax"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-2">
-                                                    <div class="col-md-6">
-                                                        <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
-                                                            <div class="col-8">
-                                                                <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
-                                                                <span class="error error_profit"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                        
-                                                    <div class="col-md-6">    
-                                                        <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
-                                                            <div class="col-8">
-                                                                <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax">
-                                                            <span class="error error_product_price"></span>    
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-2">                  
+                                                <div class="row mt-1">                  
                                                     <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Thumbnail Photo :</b> </label>
@@ -364,7 +351,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row mt-2">                  
+                                                <div class="row mt-1">                  
                                                     <div class="dynamic_variant_create_area d-none">
                                                         <div class="row">
                                                             <div class="col-md-12">
@@ -446,6 +433,19 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
+                                                        <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="type" class="form-control" id="type">
+                                                                <option value="1">General</option>
+                                                                <option value="2">Combo</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-1">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
                                                         <label for="inputEmail3" class="col-4"> <b>Weight :</b> </label>
                                                         <div class="col-8">
                                                             <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight">
@@ -463,7 +463,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mt-2">
+                                            <div class="row mt-1">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label for="inputEmail3" class="col-4"><b>Custom Field2 :</b> </label>
@@ -483,7 +483,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mt-2">
+                                            <div class="row mt-1">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <div class="col-12">
@@ -522,7 +522,7 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <div class="form_element m-0 mt-2">
+                                    <div class="form_element m-0 mt-1">
                                         <div class="element-body">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -535,7 +535,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mt-2">
+                                            <div class="row mt-1">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
                                                         <label for="inputEmail3" class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>

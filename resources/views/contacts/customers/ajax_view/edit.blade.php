@@ -3,13 +3,10 @@
     <input type="hidden" name="id" value="{{ $customer->id }}">
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>Contact Type</b> : </label>
-            <select name="contact_type" class="form-control" id="e_contact_type">
-                <option value="">Select contact type</option>
-                <option {{ $customer->type == 1 ? 'SELECTED' : ''  }} value="1">Customer</option>
-                <option {{ $customer->type == 2 ? 'SELECTED' : ''  }} value="2">Supplier</option>
-                <option {{ $customer->type == 3 ? 'SELECTED' : ''  }} value="3">Both (Supplier - Customer)</option>
-            </select>
+            <label><b>Name</b> <span class="text-danger">*</span></label>
+            <input type="text" name="name" class="form-control edit_input"
+                data-name="Customer name" id="e_name" placeholder="Customer name" value="{{ $customer->name }}"/>
+            <span class="error error_e_name"></span>
         </div>
 
         <div class="col-md-3">
@@ -25,21 +22,14 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Name</b> <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control edit_input"
-                data-name="Customer name" id="e_name" placeholder="Customer name" value="{{ $customer->name }}"/>
-            <span class="error error_e_name"></span>
-        </div>
-    </div>
-
-    <div class="form-group row mt-1">
-        <div class="col-md-3">
             <label><b>Phone</b> : <span class="text-danger">*</span></label>
             <input type="text" name="phone" class="form-control edit_input"
                 data-name="Phone number" placeholder="Phone number" value="{{ $customer->phone }}"/>
             <span class="error error_e_phone"></span>
         </div>
+    </div>
 
+    <div class="form-group row mt-1">
         <div class="col-md-3">
             <label><b>Alternative Number</b> : </label>
             <input type="text" name="alternative_phone" class="form-control"
@@ -61,19 +51,14 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-3">
-            <label><b>Date Of Birth</b> : </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
-                </div>
-                <input type="date" name="date_of_birth" class="form-control"
-                    autocomplete="off" value="{{ $customer->email }}">
-            </div>
+            <label><b>Tax Number</b> : </label>
+            <input type="text" name="tax_number" class="form-control" placeholder="Tax number" value="{{ $customer->tax_number }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>Tax Number</b> : </label>
-            <input type="text" name="tax_number" class="form-control" placeholder="Tax number" value="{{ $customer->tax_number }}"/>
+            <label><strong>Credit Limit :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
+            <input type="number" step="any" name="credit_limit" class="form-control"
+                placeholder="Credit Limit" value="{{ $customer->credit_limit }}"/>
         </div>
 
         <div class="col-md-3">
@@ -101,7 +86,18 @@
             </select>
         </div>
 
-        <div class="col-md-9">
+        <div class="col-md-3">
+            <label><b>Date Of Birth</b> : </label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
+                </div>
+                <input type="text" name="date_of_birth" class="form-control"
+                    autocomplete="off" value="{{ $customer->date_of_birth }}" placeholder="YYYY-MM-DD">
+            </div>
+        </div>
+
+        <div class="col-md-6">
             <label><b>Address</b> : </label>
             <input type="text" name="address" class="form-control" placeholder="Address" value="{{ $customer->address }}">
         </div>

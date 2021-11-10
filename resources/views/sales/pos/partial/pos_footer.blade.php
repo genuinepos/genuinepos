@@ -1,7 +1,7 @@
 <div class="row">
     <div class="pos-footer">
         <div class="logo_wrapper d-block w-100 text-center">
-            <img src="http://genuine-pos.test/public/backend/images/static/app_logo.png"
+            <img src="{{asset('public/backend')}}/images/static/app_logo.png"
                 style="max-width: 100%; height: 38px; width: auto">
         </div>
         @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '0')
@@ -36,7 +36,7 @@
                     <div class="col-2 text-center">
                         <div class="footer_trasc_btn">
                             @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '0')
-                            <a href="#" class="resent-tn"><span class="fas fa-clock"></span></a>
+                                <a href="#" class="resent-tn"><span class="fas fa-clock"></span></a>
                             @endif
                         </div>
                     </div>

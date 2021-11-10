@@ -60,9 +60,19 @@
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th id="opening_balance" class="text-white text-end"></th>
+                                                <th id="total_sale" class="text-white text-end"></th>
+                                                <th id="total_paid" class="text-white text-end"></th>
+                                                <th id="total_sale_due" class="text-white text-end"></th>
+                                                <th id="total_return" class="text-white text-end"></th>
+                                                <th id="total_sale_return_due" class="text-white text-end"></th>
+                                                <th id="total_sale_return_due" class="text-white text-start">---</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -94,13 +104,10 @@
                         @csrf
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>Contact Type :</strong> </label>
-                                <select name="contact_type" class="form-control">
-                                    <option value="">Select contact type</option>
-                                    <option value="1">Supplier</option>
-                                    <option value="2">Customer</option>
-                                    <option value="3">Both (Supplier - Customer)</option>
-                                </select>
+                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control add_input"
+                                    data-name="Customer name" id="name" placeholder="Customer name" />
+                                <span class="error error_name"></span>
                             </div>
 
                             <div class="col-md-3">
@@ -116,21 +123,14 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control add_input"
-                                    data-name="Customer name" id="name" placeholder="Customer name" />
-                                <span class="error error_name"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
                                 <label><strong>Phone :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="phone" class="form-control add_input"
                                     data-name="Phone number" id="phone" placeholder="Phone number" />
                                 <span class="error error_phone"></span>
                             </div>
+                        </div>
 
+                        <div class="form-group row mt-1">
                             <div class="col-md-3">
                                 <label><strong>Alternative Number :</strong> </label>
                                 <input type="text" name="alternative_phone" class="form-control"
@@ -152,18 +152,6 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>Date Of Birth :</strong></label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i
-                                                class="fas fa-calendar-week input_i"></i></span>
-                                    </div>
-                                    <input type="date" name="date_of_birth" class="form-control"
-                                        autocomplete="off">
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
                                 <label><strong>Tax Number :</strong></label>
                                 <input type="text" name="tax_number" class="form-control"
                                     placeholder="Tax number" />
@@ -173,6 +161,12 @@
                                 <label><strong>Opening Balance :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
                                 <input type="number" step="any" name="opening_balance" class="form-control"
                                     placeholder="Opening balance" value="0.00" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label><strong>Credit Limit :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
+                                <input type="number" step="any" name="credit_limit" class="form-control"
+                                    placeholder="Credit Limit" value=""/>
                             </div>
 
                             <div class="col-md-3">
@@ -203,7 +197,19 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-9">
+                            <div class="col-md-3">
+                                <label><strong>Date Of Birth :</strong></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i
+                                                class="fas fa-calendar-week input_i"></i></span>
+                                    </div>
+                                    <input type="text" name="date_of_birth" class="form-control"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
                                 <label><strong>Address :</strong> </label>
                                 <input type="text" name="address" class="form-control"
                                     placeholder="Address">
@@ -399,7 +405,7 @@
                 {data: 'name',name: 'name'},
                 {data: 'business_name',name: 'business_name'},
                 {data: 'phone',name: 'phone'},
-                {data: 'group_name', name: 'customer_groups.name'},
+                {data: 'group_name', name: 'customer_groups.group_name'},
                 {data: 'opening_balance',name: 'opening_balance', className: 'text-end'},
                 {data: 'total_sale',name: 'total_sale', className: 'text-end'},
                 {data: 'total_paid',name: 'total_paid', className: 'text-end'},
@@ -407,8 +413,33 @@
                 {data: 'total_return',name: 'total_return', className: 'text-end'},
                 {data: 'total_sale_return_due',name: 'total_sale_return_due', className: 'text-end'},
                 {data: 'status',name: 'status'},
-            ],
+            ],fnDrawCallback: function() {
+                var opening_balance = sum_table_col($('.data_tbl'), 'opening_balance');
+                $('#opening_balance').text(bdFormat(opening_balance));
+                var total_sale = sum_table_col($('.data_tbl'), 'total_sale');
+                $('#total_sale').text(bdFormat(total_sale));
+                var total_sale_due = sum_table_col($('.data_tbl'), 'total_sale_due');
+                $('#total_sale_due').text(bdFormat(total_sale_due));
+                var total_paid = sum_table_col($('.data_tbl'), 'total_paid');
+                $('#total_paid').text(bdFormat(total_paid));
+                var total_return = sum_table_col($('.data_tbl'), 'total_return');
+                $('#total_return').text(bdFormat(total_return));
+                var total_sale_return_due = sum_table_col($('.data_tbl'), 'total_sale_return_due');
+                $('#total_sale_return_due').text(bdFormat(total_sale_return_due));
+            }
         });
+
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
         // Setup ajax for csrf token.
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});

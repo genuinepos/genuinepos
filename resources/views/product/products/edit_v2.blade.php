@@ -253,48 +253,6 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" readonly class="form-control" value="{{$product->type == 1 ?'General'  : 'Combo'}}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-2">
-                                            @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
-                                                        <div class="col-8">
-                                                            <select class="form-control" name="tax_id" id="tax_id">
-                                                                <option value="">NoTax</option>
-                                                                @foreach ($taxes as $tax)
-                                                                <option {{ $product->tax_id == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id . '-' . $tax->tax_percent }}">
-                                                                        {{ $tax->tax_name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="tax_type" class="form-control" id="tax_type">
-                                                            <option {{ $product->tax_type == 1 ? 'SELECTED' : '' }} value="1">Exclusive</option>
-                                                            <option {{ $product->tax_type == 2 ? 'SELECTED' : '' }} value="2">Inclusive</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="form_part">
                                             @if ($product->type == 1)
                                                 <div class="row mt-2">
@@ -305,28 +263,6 @@
                                                                 <input type="number" step="any" name="product_cost" class="form-control"
                                                                 autocomplete="off" id="product_cost" placeholder="Unit cost" value="{{ $product->product_cost }}">
                                                                 <span class="error error_product_cost"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                        
-                                                    <div class="col-md-6">                
-                                                        <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
-                                                            <div class="col-8">
-                                                                <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="{{ $product->product_cost_with_tax }}">
-                                                                <span class="error error_product_cost_with_tax"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-2">
-                                                    <div class="col-md-6">
-                                                        <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
-                                                            <div class="col-8">
-                                                                <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $product->profit }}">
-                                                                <span class="error error_profit"></span> 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -342,7 +278,60 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row mt-2">                  
+                                                <div class="row mt-1">
+                                                    <div class="col-md-6">                
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="{{ $product->product_cost_with_tax }}">
+                                                                <span class="error error_product_cost_with_tax"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
+                                                            <div class="col-8">
+                                                                <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $product->profit }}">
+                                                                <span class="error error_profit"></span> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-1">
+                                                    @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+                                                        <div class="col-md-6">
+                                                            <div class="input-group">
+                                                                <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
+                                                                <div class="col-8">
+                                                                    <select class="form-control" name="tax_id" id="tax_id">
+                                                                        <option value="">NoTax</option>
+                                                                        @foreach ($taxes as $tax)
+                                                                        <option {{ $product->tax_id == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id . '-' . $tax->tax_percent }}">
+                                                                                {{ $tax->tax_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+        
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
+                                                            <div class="col-8">
+                                                                <select name="tax_type" class="form-control" id="tax_type">
+                                                                    <option {{ $product->tax_type == 1 ? 'SELECTED' : '' }} value="1">Exclusive</option>
+                                                                    <option {{ $product->tax_type == 2 ? 'SELECTED' : '' }} value="2">Inclusive</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-1">                  
                                                     <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Thumbnail Photo <i data-bs-toggle="tooltip" data-bs-placement="top" title="Previous thumbnail photo (if exists) will be replaced." class="fas fa-info-circle tp"></i> :</b> </label>
@@ -355,7 +344,7 @@
                                                 </div>
                                           
                                                 @if ($product->is_variant == 1)
-                                                    <div class="row mt-2">                  
+                                                    <div class="row mt-1">                  
                                                         <div class="dynamic_variant_create_area">
                                                             <div class="row">
                                                                 <div class="col-md-12">
@@ -436,7 +425,7 @@
                                                     </div>
                                                 @endif
                                             @else
-                                                <div class="row mt-2">
+                                                <div class="row mt-1">
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <div class="col-md-8 offset-2">
@@ -517,9 +506,20 @@
                             </div>
 
                             <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
+                                <div class="form_element m-0 mt-1">
                                     <div class="element-body">
                                         <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-4"><b>Type :</b> </label>
+                                                    <div class="col-8">
+                                                        <input type="text" readonly class="form-control" value="{{$product->type == 1 ?'General'  : 'Combo'}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"> <b>Weight :</b> </label>
@@ -559,7 +559,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-2">
+                                        <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <div class="col-12">
@@ -598,7 +598,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
+                                <div class="form_element m-0 mt-1">
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -611,7 +611,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-2">
+                                        <div class="row mt-1">
                                             <div class="col-md-12">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>

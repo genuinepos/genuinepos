@@ -18,16 +18,19 @@ class SaleUtil
     public $productStockUtil;
     public $accountUtil;
     public $converter;
+    public $invoiceVoucherRefIdUtil;
     public function __construct(
         CustomerUtil $customerUtil,
         ProductStockUtil $productStockUtil,
         AccountUtil $accountUtil,
         Converter $converter,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->customerUtil = $customerUtil;
         $this->productStockUtil = $productStockUtil;
         $this->accountUtil = $accountUtil;
         $this->converter = $converter;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
     }
     public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId)
     {
@@ -49,34 +52,19 @@ class SaleUtil
                             foreach ($dueInvoices as $dueInvoice) {
                                 if ($dueInvoice->due > $dueAmounts) {
                                     if ($dueAmounts > 0) {
-                                        $invoiceId = 1;
-                                        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
-                                        if ($lastSalePayment) {
-                                            $invoiceId = ++$lastSalePayment->id;
-                                        }
-                                        $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
+                                        $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), $dueInvoice->id);
                                         $dueAmounts -= $dueAmounts;
                                         $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
                                 } elseif ($dueInvoice->due == $dueAmounts) {
                                     if ($dueAmounts > 0) {
-                                        $invoiceId = 1;
-                                        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
-                                        if ($lastSalePayment) {
-                                            $invoiceId = ++$lastSalePayment->id;
-                                        }
-                                        $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $invoiceId, $dueInvoice->id);
+                                        $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), $dueInvoice->id);
                                         $dueAmounts -= $dueAmounts;
                                         $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
                                 } elseif ($dueInvoice->due < $dueAmounts) {
                                     if ($dueInvoice->due > 0) {
-                                        $invoiceId = 1;
-                                        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
-                                        if ($lastSalePayment) {
-                                            $invoiceId = ++$lastSalePayment->id;
-                                        }
-                                        $this->addPayment($paymentInvoicePrefix, $request, $dueInvoice->due, $invoiceId, $dueInvoice->id);
+                                        $this->addPayment($paymentInvoicePrefix, $request, $dueInvoice->due, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), $dueInvoice->id);
                                         $dueAmounts = $dueAmounts - $dueInvoice->due;
                                         $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
@@ -86,14 +74,9 @@ class SaleUtil
                         }
 
                         if ($dueAmounts > 0) {
-                            $voucherNo = 1;
-                            $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
-                            if ($lastSalePayment) {
-                                $voucherNo = ++$lastSalePayment->id;
-                            }
                             // Add Customer Payment Record
                             $customerPayment = new CustomerPayment();
-                            $customerPayment->voucher_no = 'CPV' . $voucherNo;
+                            $customerPayment->voucher_no = 'CPV' . $this->invoiceVoucherRefIdUtil->getLastId('customer_payments');
                             $customerPayment->branch_id = auth()->user()->branch_id;
                             $customerPayment->customer_id = $addSale->customer_id;
                             $customerPayment->account_id = $request->account_id;
@@ -164,7 +147,7 @@ class SaleUtil
     {
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV') . date('my') . $invoiceId;
         $addSalePayment->sale_id = $saleId;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;
@@ -552,7 +535,10 @@ class SaleUtil
                     'sale_products.quantity',
                     'units.code_name as unit_code',
                     'sale_products.subtotal',
-                    'sales.*',
+                    'sales.id',
+                    'sales.date',
+                    'sales.invoice_id',
+                    'sales.created_by',
                     'products.name',
                     'products.product_code',
                     'product_variants.variant_name',
@@ -569,7 +555,10 @@ class SaleUtil
                     'sale_products.quantity',
                     'units.code_name as unit_code',
                     'sale_products.subtotal',
-                    'sales.*',
+                    'sales.id',
+                    'sales.date',
+                    'sales.invoice_id',
+                    'sales.created_by',
                     'products.name',
                     'products.product_code',
                     'product_variants.variant_name',
@@ -579,12 +568,6 @@ class SaleUtil
         }
 
         return DataTables::of($saleProducts)
-            ->addColumn('action', function ($row) {
-                $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="'.route('sales.edit.sold.product', [$row->id, $row->product_id,($row->product_variant_id ? $row->product_variant_id : 'NULL')]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '</div>';
-                return $html;
-            })
             ->editColumn('product', function ($row) {
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
                 return $row->name . $variant;
@@ -595,11 +578,12 @@ class SaleUtil
                 return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
             })->editColumn('customer', function ($row) {
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
-            })->editColumn('quantity', function ($row) {
+            })->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="details_button text-danger" title="view" >'.$row->invoice_id.'</a>')
+            ->editColumn('quantity', function ($row) {
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
             })->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
             ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . $this->converter->format_in_bdt($row->subtotal) . '</span>')
-            ->rawColumns(['product', 'sku', 'date', 'sold_by','quantity', 'branch', 'unit_price_inc_tax', 'subtotal', 'action'])
+            ->rawColumns(['product', 'customer', 'invoice_id','sku', 'date', 'sold_by','quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])
             ->make(true);
         
     }

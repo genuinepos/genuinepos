@@ -270,8 +270,16 @@ class ProductController extends Controller
                 'product_variants.variant_price',
                 'product_branches.product_quantity',
                 'product_branches.total_sale',
+                'product_branches.total_purchased',
+                'product_branches.total_adjusted',
+                'product_branches.total_transferred',
+                'product_branches.total_received',
                 'product_branch_variants.variant_quantity',
                 'product_branch_variants.total_sale as v_total_sale',
+                'product_branch_variants.total_purchased as v_total_purchased',
+                'product_branch_variants.total_adjusted as v_total_adjusted',
+                'product_branch_variants.total_transferred as v_total_transferred',
+                'product_branch_variants.total_received as v_total_received',
             )->get();
 
         $another_branch_stocks = DB::table('product_branches')

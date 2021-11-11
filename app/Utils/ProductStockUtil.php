@@ -194,10 +194,15 @@ class ProductStockUtil
                 - $transferred->sum('total_qty')
                 - $adjustment->sum('total_qty')
                 + $received->sum('total_qty');
-
+                
             $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $product_id)->first();
             $productBranch->product_quantity = $currentMbStock;
             $productBranch->total_sale = $productSale->sum('total_sale');
+            $productBranch->total_purchased = $productPurchase->sum('total_purchase');
+            $productBranch->total_adjusted = $adjustment->sum('total_qty');
+            $productBranch->total_transferred = $transferred->sum('total_qty');
+            $productBranch->total_received = $received->sum('total_qty');
+            //$productBranch->total_opening_stock = $productOpeningStock->sum('po_stock');
             $productBranch->save();
 
             if ($variant_id) {
@@ -286,6 +291,7 @@ class ProductStockUtil
                     - $supplierReturn->sum('total_return')
                     - $purchaseReturn->sum('total_return')
                     - $transferred->sum('total_qty')
+                    - $adjustment->sum('total_qty')
                     + $received->sum('total_qty');
 
                 $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
@@ -295,6 +301,11 @@ class ProductStockUtil
 
                 $productBranchVariant->variant_quantity = $currentMbStock;
                 $productBranchVariant->total_sale = $productSale->sum('total_sale');
+                $productBranchVariant->total_purchased = $productPurchase->sum('total_purchase');
+                $productBranchVariant->total_adjusted = $adjustment->sum('total_qty');
+                $productBranchVariant->total_transferred = $transferred->sum('total_qty');
+                $productBranchVariant->total_received = $received->sum('total_qty');
+                //$productBranchVariant->total_opening_stock = $productOpeningStock->sum('po_stock');
                 $productBranchVariant->save();
             }
         }

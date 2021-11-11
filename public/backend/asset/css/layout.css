@@ -151,7 +151,8 @@ img.logo__img {
     z-index: 99;
     padding: 0px;
     left: 0px;
-    padding-left: 142px;
+    margin-left: 142px;
+    padding-right: 142px;
 }
 
 .panel__nav {
@@ -842,6 +843,8 @@ footer img.logo {
         z-index: 999;
         width: 100%;
         padding-left: 0px;
+        margin-left: 0px;
+        padding-right: 0px;
     }
     div#left_bar_toggle {
         margin-right: 20px;

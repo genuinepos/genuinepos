@@ -1056,14 +1056,16 @@ input[type="number"] {
 }
 
 #readDocument > div {
-    width: 200px;
-    top: 30px;
-    left: 0px;
+	width: 261px;
+    top: 34px;
+    left: -80px;
+    padding-left: 10px;
     display: none;
     background: #481530;
     border-radius: 4px;
     box-shadow: 0 3px 1px #000, 0 5px 5px 0 rgb(0 0 0);
     padding-bottom: 10px;
+    padding-right: 5px;
 }
 
 #readDocument > div ul li {

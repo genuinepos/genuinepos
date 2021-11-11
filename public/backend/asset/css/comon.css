@@ -465,3 +465,22 @@ a#print_report {
 .bg-1 {
     background-color: #064492;
 }
+
+.btn_secondary {
+    background: linear-gradient(#aecad3, #6c757d);
+    font-size: 11px;
+    padding: 0 10px;
+    color: #fff;
+    border: #9bacbd 1px solid;
+    text-shadow: 1px 1px 0px #333;
+    margin-right: 5px;
+}
+
+.text-hover {
+    font-weight: 600;
+}
+
+.text-hover:hover {
+    font-weight: 600;
+    color: white!important;
+}

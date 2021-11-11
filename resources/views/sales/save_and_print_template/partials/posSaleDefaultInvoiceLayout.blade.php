@@ -448,13 +448,13 @@
                                         @if ($sale->branch->logo != 'default.png')
                                             <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                         @else 
-                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray; font-weight: 600;">{{ $sale->branch->name }}</span>
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black; font-weight: 600;">{{ $sale->branch->name }}</span>
                                         @endif
                                     @else 
                                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                             <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                                         @else 
-                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                                         @endif
                                     @endif
                                 @endif

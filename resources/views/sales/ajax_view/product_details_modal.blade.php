@@ -257,7 +257,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                @if ($sale->created_by == 1)
+                    <a class="btn btn-sm btn-secondary" href="{{ route('sales.edit', $sale->id) }}"> Edit</a>
+                @else 
+                    <a class="btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}"> Edit</a>
+                @endif
+                
                 <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}"
                     class="btn btn-sm btn-success">Print Packing Slip</button>
                 <button type="button" class="btn btn-sm btn-info print_challan_btn text-white">Print Challan</button>

@@ -578,7 +578,7 @@ class SaleUtil
                 return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
             })->editColumn('customer', function ($row) {
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
-            })->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="details_button text-danger" title="view" >'.$row->invoice_id.'</a>')
+            })->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="details_button text-danger text-hover" title="view" >' . $row->invoice_id . '</a>')
             ->editColumn('quantity', function ($row) {
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
             })->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')

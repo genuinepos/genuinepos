@@ -193,6 +193,8 @@
             </div>
         </div>
     </div>
+
+    <div id="purchase_details"></div>
 @endsection
 @push('scripts')
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
@@ -253,6 +255,19 @@
             });
             return sum;
         }
+
+        
+        // Show details modal with data
+        $(document).on('click', '.details_button', function(e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $.get(url,  function(data) {
+                $('#purchase_details').html(data);
+                $('.data_preloader').hide();
+                $('#detailsModal').modal('show');
+            })
+        });
 
         $('#category_id').on('change', function() {
             var category_id = $(this).val();

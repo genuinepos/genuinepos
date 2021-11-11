@@ -311,7 +311,9 @@ class PurchaseController extends Controller
             $loop = 0;
             foreach ($product_ids as $productId) {
                 $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
-                $this->purchaseUtil->updateProductAndVariantPrice($productId, $variant_id, $unit_costs_with_discount[$loop], $net_unit_costs[$loop], $profits[$loop], $selling_prices[$loop], $isEditProductPrice);
+                $__xMargin = isset($request->profits) ? $profits[$loop] : 0;
+                $__sale_price = isset($request->selling_prices) ? $selling_prices[$loop] : 0; 
+                $this->purchaseUtil->updateProductAndVariantPrice($productId, $variant_id, $unit_costs_with_discount[$loop], $net_unit_costs[$loop], $__xMargin, $__sale_price, $isEditProductPrice);
                 $loop++;
             }
         }

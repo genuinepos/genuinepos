@@ -667,7 +667,7 @@
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
         var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
         var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
-        var __calcProfit = calcProfit ? calcProfit : 0
+        var __calcProfit = calcProfit ? calcProfit : 0;
         $('#profit').val(parseFloat(__calcProfit).toFixed(2));
     });
 

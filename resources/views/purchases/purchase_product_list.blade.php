@@ -266,6 +266,7 @@
                 $('#purchase_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
+                $('.action_hideable').hide();
             })
         });
 

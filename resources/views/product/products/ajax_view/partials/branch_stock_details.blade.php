@@ -5,8 +5,9 @@
             <th class="text-white text-start">Product</th>
             <th class="text-white text-start">Business Location</th>
             <th class="text-white text-start">Current Stock</th>
-            <th class="text-white text-start">Stock Value</th>
+            <th class="text-white text-start">Stock Value({{ json_decode($generalSettings->business, true)['currency'] }})</th>
             <th class="text-white text-start">Total Purchased(+)</th>
+            <th class="text-white text-start">Total Opening Stock(+)</th>
             <th class="text-white text-start">Total received(+)</th>
             <th class="text-white text-start">Total Sale(-)</th>
             <th class="text-white text-start">Total Adjusted(-)</th>
@@ -29,6 +30,7 @@
                             {{ App\Utils\Converter::format_in_bdt($currentStockValue) }}
                         </td>
                         <td class="text-start">{{ $row->v_total_purchased.'('.$product->unit->code_name.')' }}</td>
+                        <td class="text-start">{{ $row->v_total_opening_stock.'('.$product->unit->code_name.')' }}</td>
                         <td class="text-start">{{ $row->v_total_received.'('.$product->unit->code_name.')' }}</td>
                         <td class="text-start">{{ $row->v_total_sale.'('.$product->unit->code_name.')' }}</td>
                         <td class="text-start">{{ $row->v_total_adjusted.'('.$product->unit->code_name.')' }}</td>
@@ -49,6 +51,7 @@
                         </td>
                         
                         <td class="text-start">{{ $row->total_purchased.'('.$product->unit->code_name.')' }}</td>
+                        <td class="text-start">{{ $row->total_opening_stock.'('.$product->unit->code_name.')' }}</td>
                         <td class="text-start">{{ $row->total_received.'('.$product->unit->code_name.')' }}</td>
                         <td class="text-start">{{ $row->total_sale.'('.$product->unit->code_name.')' }}</td>
                         <td class="text-start">{{ $row->total_adjusted.'('.$product->unit->code_name.')' }}</td>

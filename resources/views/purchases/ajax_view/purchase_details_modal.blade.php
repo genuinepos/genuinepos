@@ -32,10 +32,9 @@
                              <li><strong>Purchase From : </strong></li>
                              <li><strong>Business Location : </strong>
                                 @if ($purchase->branch_id)
-                                    {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>Branch/Concern</b>)
+                                    {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>BL</b>)
                                 @else
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                                    Office</b>)
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
                      

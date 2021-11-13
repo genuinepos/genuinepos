@@ -647,7 +647,7 @@ class SupplierController extends Controller
         $addSupplierLedger->save();
 
         $returnPurchases = Purchase::with(['purchase_return'])->where('purchase_return_due', '>', 0)->get();
-        if (count($returnPurchases->purchase_return) > 0) {
+        if (count($returnPurchases) > 0) {
             $index = 0;
             foreach ($returnPurchases as $returnPurchase) {
                 if ($returnPurchase->purchase_return_due > $request->amount) {
@@ -755,7 +755,7 @@ class SupplierController extends Controller
                         $request->amount -= $request->amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($returnPurchase);
                     }
-                } elseif ($returnPurchase->total_return_due < $request->amount) {
+                } elseif ($returnPurchase->purchase_return_due < $request->amount) {
                     if ($request->amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
@@ -765,7 +765,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
                         $addPurchasePayment->pay_mode = $request->payment_method;
-                        $addPurchasePayment->paid_amount = $returnPurchase->total_return_due;
+                        $addPurchasePayment->paid_amount = $returnPurchase->purchase_return_due;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
                         $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
@@ -795,7 +795,7 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
                         $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
                         $addSupplierPaymentInvoice->purchase_id = $returnPurchase->id;
-                        $addSupplierPaymentInvoice->paid_amount = $returnPurchase->total_return_due;
+                        $addSupplierPaymentInvoice->paid_amount = $returnPurchase->purchase_return_due;
                         $addSupplierPaymentInvoice->type = 2;
                         $addSupplierPaymentInvoice->save();
 

@@ -24,7 +24,7 @@ Route::group(['prefix' => 'manufacturing', 'namespace' => 'App\Http\Controllers\
         Route::post('update/{productionId}', 'ProductionController@update')->name('manufacturing.productions.update');
         Route::delete('delete/{productionId}', 'ProductionController@delete')->name('manufacturing.productions.delete');
         Route::get('get/process/{processId}', 'ProductionController@getProcess');
-        Route::get('get/ingredients/{processId}', 'ProductionController@getIngredients');
+        Route::get('get/ingredients/{processId}/{warehouseId}', 'ProductionController@getIngredients');
     });
 
     Route::group(['prefix' => 'settings'], function ()

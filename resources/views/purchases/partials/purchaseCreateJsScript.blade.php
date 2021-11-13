@@ -608,7 +608,6 @@
         var variant_ids = document.querySelectorAll('#variant_id');
         var sameVariant = 0;
         variant_ids.forEach(function(input){
-            console.log(input.value);
             if(input.value != 'noid'){
                 if(input.value == variant_id){
                     sameVariant += 1;

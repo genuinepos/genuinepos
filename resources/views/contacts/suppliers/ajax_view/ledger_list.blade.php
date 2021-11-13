@@ -22,7 +22,7 @@
                     <td>Dr</td>
                     <td><b>Purchase :</b> 
                         @foreach ($ledger->purchase->purchase_products as $item)
-                            {{ Str::limit($item->product->name, 15)  }} {{$item->variant ? $item->variant->variant_name : ''}}, 
+                            {{ Str::limit($item->product->name, 15)  }} {{$item->variant ? $item->variant->variant_name : ''}},<br> 
                         @endforeach
                     </td>
                     <td>{{ $ledger->purchase->invoice_id }}</td>

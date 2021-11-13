@@ -178,6 +178,7 @@ class CustomerController extends Controller
                         'branches.branch_code',
                         'customers.name as customer_name',
                     )->where('sales.customer_id', $customerId)
+                    ->where('sales.status', 1)
                     ->orderBy('id', 'desc');
             } else {
                 $sales = DB::table('sales')
@@ -189,6 +190,7 @@ class CustomerController extends Controller
                         'branches.branch_code',
                         'customers.name as customer_name',
                     )->where('sales.customer_id', $customerId)
+                    ->where('sales.status', 1)
                     ->where('sales.branch_id', auth()->user()->branch_id)
                     ->orderBy('id', 'desc');
             }

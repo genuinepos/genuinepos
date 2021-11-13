@@ -44,8 +44,9 @@ class ProductionController extends Controller
         return response()->json($process);
     }
 
-    public function getIngredients($processId)
+    public function getIngredients($processId, $warehouseId)
     {
+        $warehouseId = $warehouseId;
         $ingredients = DB::table('process_ingredients')
             ->leftJoin('products', 'process_ingredients.product_id', 'products.id')
             ->leftJoin('product_variants', 'process_ingredients.variant_id', 'product_variants.id')
@@ -63,6 +64,6 @@ class ProductionController extends Controller
                 'units.name as u_name',
             )->get();
 
-        return view('manufacturing.production.ajax_view.ingredient_list', compact('ingredients'));
+        return view('manufacturing.production.ajax_view.ingredient_list', compact('ingredients', 'warehouseId'));
     }
 }

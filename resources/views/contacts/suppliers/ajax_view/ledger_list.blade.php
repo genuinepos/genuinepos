@@ -104,12 +104,11 @@
     var ledgerTable = $('.data_tbl2').DataTable({
         dom: "lBfrtip",
         buttons: [ 
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', title : "Supplier Ledger Of {{$supplier->name.' (ID:'.$supplier->contact_id.')'}}", exportOptions: {columns: 'th:not(:first-child)'}},
         ],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         ordering : "false",
-
     });
     // ledgerTable.columns(0).data().sort((a, b)=> {return new Date(b.date) - new Date(a.date);});
 </script>

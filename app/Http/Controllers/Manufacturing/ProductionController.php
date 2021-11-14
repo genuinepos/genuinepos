@@ -36,6 +36,11 @@ class ProductionController extends Controller
         return view('manufacturing.production.create', compact('warehouses', 'products', 'taxes'));
     }
 
+    public function store(Request $request)
+    {
+        return $request->all();
+    }
+
     public function getProcess($processId)
     {
         $process = DB::table('processes')

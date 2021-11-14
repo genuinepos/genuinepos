@@ -1103,13 +1103,14 @@
             $('.loading_button').hide();
             return;
         }
-
+        $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,
             type:'post',
             data: request,
             success:function(data){
-                toastr.success(data);
+                $('.submit_button').prop('type', 'submit');
+                toastr.success('Customer Added Sucessfully.');
                 $('#add_customer_form')[0].reset();
                 $('.loading_button').hide();
                 $('#addCustomerModal').modal('hide');
@@ -1117,6 +1118,15 @@
                 $('#customer_id').val(data.id);
                 $('#previous_due').val(parseFloat(data.total_sale_due).toFixed(2));
                 calculateTotalAmount();
+            },error: function(err) {
+                $('.submit_button').prop('type', 'sumbit');
+                $('.loading_button').hide();
+                $('.error').html('');
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                }else{
+                    toastr.error('Server error please contact to the support team.');
+                }
             }
         });
     });

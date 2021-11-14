@@ -76,7 +76,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark"></i></span>
                             </div>
-                            <input readonly type="date" name="date" class="form-control form-control-sm p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date('Y-m-d') }}">
+                            <input readonly type="text" name="date" class="form-control form-control-sm p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date('Y-m-d') }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>

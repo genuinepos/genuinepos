@@ -24,7 +24,7 @@
                     <td class="text-start">Cr</td>
                     <td class="text-start"><b>Sale :</b>  
                         @foreach ($ledger->sale->sale_products as $item)
-                            {{ Str::limit($item->product->name, 15)  }} {{$item->variant ? $item->variant->variant_name : ''}}, 
+                            {{ Str::limit($item->product->name, 15)  }} {{$item->variant ? $item->variant->variant_name : ''}},<br>
                         @endforeach
                     </td>
                     <td class="text-start">{{ $ledger->sale->invoice_id }}</td>

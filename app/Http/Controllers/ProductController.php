@@ -939,7 +939,8 @@ class ProductController extends Controller
     {
         $type = $type;
         $variants = BulkVariant::with(['bulk_variant_child'])->get();
-        return view('product.products.ajax_view.form_part', compact('type', 'variants'));
+        $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
+        return view('product.products.ajax_view.form_part', compact('type', 'variants', 'taxes'));
     }
 
     public function allFromSubCategory($categoryId)

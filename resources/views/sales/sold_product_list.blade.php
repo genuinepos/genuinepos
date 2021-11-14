@@ -182,11 +182,10 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="5" class="text-end text-white">Total :{{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                    <th colspan="6" class="text-end text-white">Total :{{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                                     <th class="text-white">(<span id="total_qty"></span>)</th>
                                                     <th class="text-white">---</th>
                                                     <th class="text-white"> <span id="total_subtotal"></span></th>
-                                                    <th></th>
                                                 </tr>
                                             </tfoot>
                                         </table>

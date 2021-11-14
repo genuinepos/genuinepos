@@ -111,6 +111,13 @@
                             </div>
 
                             <div class="col-md-3">
+                                <label><strong>Phone :</strong> <span class="text-danger">*</span></label>
+                                <input type="text" name="phone" class="form-control add_input"
+                                    data-name="Phone number" id="phone" placeholder="Phone number" />
+                                <span class="error error_phone"></span>
+                            </div>
+
+                            <div class="col-md-3">
                                 <label><strong>Customer ID :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
                                 <input type="text" name="contact_id" class="form-control"
                                     placeholder="Customer ID"/>
@@ -120,13 +127,6 @@
                                 <label><strong>Business Name :</strong></label>
                                 <input type="text" name="business_name" class="form-control"
                                     placeholder="Business name" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Phone :</strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="phone" class="form-control add_input"
-                                    data-name="Phone number" id="phone" placeholder="Phone number" />
-                                <span class="error error_phone"></span>
                             </div>
                         </div>
 

@@ -17,30 +17,38 @@ class ProductionController extends Controller
     public function create()
     {
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->get();
+        $taxes = DB::table('taxes')->select('id', 'tax_percent', 'tax_name')->get();
         $products =  DB::table('processes')
-        ->leftJoin('products', 'processes.product_id', 'products.id')
-        ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
-        ->select(
-            'processes.id',
-            'processes.total_output_qty',
-            'processes.unit_id',
-            'products.id as p_id',
-            'products.name as p_name',
-            'products.product_code as p_code',
-            'product_variants.id as v_id',
-            'product_variants.variant_name as v_name',
-            'product_variants.variant_code as v_code',
-        )
-        ->get();
-        return view('manufacturing.production.create', compact('warehouses', 'products'));
+            ->leftJoin('products', 'processes.product_id', 'products.id')
+            ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
+            ->select(
+                'processes.id',
+                'processes.total_output_qty',
+                'processes.unit_id',
+                'products.id as p_id',
+                'products.name as p_name',
+                'products.product_code as p_code',
+                'product_variants.id as v_id',
+                'product_variants.variant_name as v_name',
+                'product_variants.variant_code as v_code',
+            )
+            ->get();
+        return view('manufacturing.production.create', compact('warehouses', 'products', 'taxes'));
     }
 
     public function getProcess($processId)
     {
         $process = DB::table('processes')
-        ->leftJoin('units', 'processes.unit_id', 'units.id')
-        ->select('processes.*', 'units.name as u_name')
-        ->where('processes.id', $processId)->first();
+            ->leftJoin('products', 'processes.product_id', 'products.id')
+            ->leftJoin('units', 'processes.unit_id', 'units.id')
+            ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+            ->select(
+                'processes.*',
+                'units.name as u_name',
+                'taxes.id as tax_id',
+                'taxes.tax_percent',
+            )
+            ->where('processes.id', $processId)->first();
         return response()->json($process);
     }
 

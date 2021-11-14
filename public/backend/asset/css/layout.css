@@ -663,7 +663,7 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
-    height: 33px;
+    height: 28px;
     z-index: 9;
 }
 
@@ -672,7 +672,7 @@ footer .logo_wrapper {
 }
 
 footer img.logo {
-    max-height: 30px;
+    max-height: 24px;
     width: auto;
     position: absolute;
     left: 50%;

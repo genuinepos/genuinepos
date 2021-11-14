@@ -1019,19 +1019,29 @@
             $('.loading_button').hide();
             return;
         }
-
+        $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,
             type:'post',
             data: request,
             success:function(data){
-                toastr.success(data);
+                $('.submit_button').prop('type', 'submit');
+                toastr.success('Supplier Added Successfully.');
                 $('#add_supplier_form')[0].reset();
                 $('.loading_button').hide();
                 $('#addSupplierModal').modal('hide');
                 $('#supplier_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
                 $('#supplier_id').val(data.id);
                 document.getElementById('search_product').focus();
+            },error: function(err) {
+                $('.submit_button').prop('type', 'sumbit');
+                $('.loading_button').hide();
+                $('.error').html('');
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                }else{
+                    toastr.error('Server error please contact to the support.');
+                }
             }
         });
     });

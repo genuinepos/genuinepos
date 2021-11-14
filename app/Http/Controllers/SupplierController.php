@@ -307,9 +307,7 @@ class SupplierController extends Controller
     public function paymentList($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->select('name', 'contact_id')->first();
-
         $addSupplierLedgerModelData = SupplierLedger::orderBy('report_date', 'ASC');
-
         $ledgers = $addSupplierLedgerModelData->with(['purchase', 'purchase_payment', 'purchase_payment.purchase', 'supplier_payment'])
             ->where('supplier_id', $supplierId)->get();
 

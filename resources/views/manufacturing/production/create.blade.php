@@ -216,9 +216,9 @@
                                                 <div class="col-8">
                                                     <select class="form-control" name="tax_id" id="tax_id">
                                                         <option value="">NoTax</option>
-                                                        {{-- @foreach ($taxes as $tax)
+                                                        @foreach ($taxes as $tax)
                                                             <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
-                                                        @endforeach --}}
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -251,7 +251,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Cost(Inc.Tax) :</b></label>
                                                 <div class="col-md-8">
-                                                    <input type="text" name="per_unit_cost_inc_tax" id="per_unit_cost" class="form-control" placeholder="Par Unit Cost Inc.Tax" autocomplete="off" value="0.00">
+                                                    <input readonly type="text" name="per_unit_cost_inc_tax" id="per_unit_cost_inc_tax" class="form-control" placeholder="Par Unit Cost Inc.Tax" autocomplete="off" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -281,7 +281,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <p class="float-end is_final"> 
-                                        <input type="checkbox" name="is_final" id="is_final"> &nbsp; <b> Finalize</b> </p> 
+                                        <input type="checkbox" name="is_final" id="is_final"> &nbsp; <b> Finalize</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Once finalized all ingredient stock will be deducted & production item stock will be increased and production item unit cost, price will be updated as well as editing of production will not be allowed." class="fas fa-info-circle tp"></i></p> 
                                 </div>
                             </div>
 
@@ -292,7 +292,6 @@
                                             class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                         <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
                                         <button class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>
-                                       
                                     </div>
                                 </div>
                             </div>
@@ -305,6 +304,22 @@
 @endsection
 @push('scripts')
     <script>
+        var tax_percent = 0;
+        $('#tax_id').on('change', function() {
+            var tax = $(this).val();
+            if (tax) {
+                var split = tax.split('-');
+                tax_percent = split[1];
+            }else{
+                tax_percent = 0;
+            }
+            __productPricingCalculate();
+        });
+
+        $('#tax_type').on('change', function() {
+            __productPricingCalculate();
+        });
+
         //Get process data
         $(document).on('change', '#product_id', function (e) {
             e.preventDefault();
@@ -320,16 +335,20 @@
                 $('#product_id').val(data.product_id);
                 $('#variant_id').val(data.variant_id);
                 $('#output_quantity').val(data.total_output_qty);
+                $('#final_output_quantity').val(data.total_output_qty);
                 $('#parameter_quantity').val(data.total_output_qty);
                 $('#unit_id').val(data.unit_id);
                 $('#production_cost').val(data.production_cost);
                 $('#total_ingredient_cost').val(data.total_ingredient_cost);
                 $('#span_total_ingredient_cost').html(data.total_ingredient_cost);
                 $('#total_cost').val(data.total_cost);
+                var tax = data.tax_id ? data.tax_id+'-'+data.tax_percent : '';
+                tax_percent = data.tax_percent  ? data.tax_percent : 0;
+                $('#tax_id').val(tax);
                 var product_id = data.product_id;
                 var variantId = data.variant_id ? data.variant_id : null;
                 var url = "{{ url('manufacturing/productions/get/ingredients') }}"+"/"+processId+"/"+stockWarehouseId;
-                $.get(url, function(data) {$('#ingredient_list').html(data);});
+                $.get(url, function(data) {$('#ingredient_list').html(data);__calculateTotalAmount();});
             });
         });
 
@@ -396,11 +415,54 @@
             var calsQtyWithWastedQty = parseFloat(output_total_qty) - parseFloat(wast_qty);
             $('#final_output_quantity').val(calsQtyWithWastedQty);
             var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
-            var totalCost = (parseFloat(totalIngredientCost) * (parseFloat(total_qty) + parseFloat(wast_qty))) 
+            var totalCost = (parseFloat(totalIngredientCost) * (parseFloat(output_total_qty) + parseFloat(wast_qty))) 
                             + parseFloat(productionCost);
             $('#total_cost').val(parseFloat(totalCost).toFixed(2));
+            __productPricingCalculate();
         }
 
+        function __productPricingCalculate() {
+            var total_cost = $('#total_cost').val() ? $('#total_cost').val() : 0;
+            var final_output_qty = $('#final_output_quantity').val() ? $('#final_output_quantity').val() : 0;
+            var par_unit_cost = parseFloat(total_cost) / parseFloat(final_output_qty);
+            var tax_type = $('#tax_type').val();
+            var calc_product_cost_tax = parseFloat(par_unit_cost) / 100 * parseFloat(tax_percent);
+            console.log(tax_percent);
+            if (tax_type == 2) {
+                var inclusive_tax_percent = 100 + parseFloat(tax_percent);
+                
+                var calc_tax = parseFloat(par_unit_cost) / parseFloat(inclusive_tax_percent) * 100;
+                
+                calc_product_cost_tax = parseFloat(par_unit_cost) - parseFloat(calc_tax);
+                
+            }
+
+            var per_unit_cost_inc_tax = parseFloat(par_unit_cost) + parseFloat(calc_product_cost_tax);
+            $('#per_unit_cost_exc_tax').val(parseFloat(par_unit_cost).toFixed(2));
+            $('#per_unit_cost_inc_tax').val(parseFloat(per_unit_cost_inc_tax).toFixed(2));
+
+            var xMargin = $('#xMargin').val() ? $('#xMargin').val() : 0;
+            if (xMargin > 0) {
+                var calculate_margin = parseFloat(product_cost) / 100 * parseFloat(xMargin);
+                var selling_price = parseFloat(par_unit_cost) + parseFloat(calculate_profit);
+                $('#selling_price').val(parseFloat(selling_price).toFixed(2));
+            }
+        }
+
+        $('#xMargin').on('input', function() {
+            __productPricingCalculate();
+        });
+
+        $(document).on('input', '#selling_price',function() {
+            var selling_price = $(this).val() ? $(this).val() : 0;
+            var par_unit_cost = $('#per_unit_cost_exc_tax').val() ? $('#per_unit_cost_exc_tax').val() : 0;
+            var profitAmount = parseFloat(selling_price) - parseFloat(par_unit_cost);
+            var __cost = parseFloat(par_unit_cost) > 0 ? parseFloat(par_unit_cost) : parseFloat(profitAmount);
+            var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+            var __calcProfit = calcProfit ? calcProfit : 0;
+            $('#xMargin').val(parseFloat(__calcProfit).toFixed(2));
+        });
+        
         //Add process request by ajax
         $('#add_process_form').on('submit', function(e) {
             e.preventDefault();

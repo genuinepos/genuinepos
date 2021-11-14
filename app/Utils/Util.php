@@ -152,7 +152,7 @@ class Util
             'tax_number' => $request->tax_number,
             'pay_term' => $request->pay_term,
             'pay_term_number' => $request->pay_term_number,
-            'prefix' => $firstLetterOfSupplier . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
+            'prefix' => $firstLetterOfSupplier . $this->invoiceVoucherRefIdUtil->getLastId('suppliers'),
             'address' => $request->address,
             'city' => $request->city,
             'zip_code' => $request->zip_code,

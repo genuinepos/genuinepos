@@ -7,13 +7,14 @@
         .last_section {margin-top: -14px;}
         p.is_final {margin-top: -11px;}
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
             <form id="add_production_form" action="{{ route('manufacturing.productions.store') }}" method="POST">
-                <input type="hidden" id="product_id" value="">
-                <input type="hidden" id="variant_id" value="">
+                <input type="text" id="product_id" class="d-none" value="">
+                <input type="text" id="variant_id" class="d-none" value="">
                 @csrf
                 <section class="mt-5">
                     <div class="container-fluid">
@@ -55,14 +56,14 @@
 
                                         <div class="col-md-2">
                                             <label><b>Date :</b></label>
-                                            <input type="text" name="date" class="form-control changeable" value="{{ date('Y-m-d') }}" id="date">
+                                            <input required type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
                                         </div>
 
                                         <div class="col-md-2">
                                             @if (count($warehouses) > 0)
                                                 <label > <b>Ingredials Stock Location : </b> <span
                                                     class="text-danger">*</span></label>
-                                                <select class="form-control changeable add_input"
+                                                <select required class="form-control changeable add_input"
                                                     name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id">
                                                     <option value="">Select Warehouse</option>
                                                     @foreach ($warehouses as $w)
@@ -78,7 +79,7 @@
 
                                         <div class="col-md-2">
                                             <label><b>Product :</b> <span class="text-danger">*</span></label>
-                                            <select name="process_id" data-name="Product" class="form-control add_input"
+                                            <select required name="process_id" data-name="Product" class="form-control add_input"
                                                 id="product_id">
                                                 <option value="">Select Process</option>
                                                 @foreach ($products as $product)
@@ -132,7 +133,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
+                        <input type="text" class="d-none" name="total_ingredient_cost" id="total_ingredient_cost">
                         <p class="mt-1 float-end clearfix"><strong>Total Ingrediant Cost : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
                     </div>
                 </div>
@@ -149,8 +150,8 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Output Qty :</b></label>
                                                 <div class="col-md-8">
-                                                    <input type="number" step="any" data-name="Quantity" class="form-control add_input" name="output_quantity" id="output_quantity" value="1.00">
-                                                    <input type="hidden" step="any" id="parameter_quantity" value="0.00">
+                                                    <input required type="number" step="any" data-name="Quantity" class="form-control add_input" name="output_quantity" id="output_quantity" value="1.00">
+                                                    <input type="text" name="parameter_quantity" class="d-none" id="parameter_quantity" value="0.00">
                                                     <span class="error error_quantity"></span>
                                                 </div>
                                             </div>
@@ -242,7 +243,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Par Unit Cost :</b></label>
                                                 <div class="col-md-8">
-                                                    <input type="text" name="per_unit_cost_exc_tax" id="per_unit_cost_exc_tax" class="form-control" placeholder="Par Unit Cost Exc.Tax" autocomplete="off" value="0.00">
+                                                    <input required type="text" name="per_unit_cost_exc_tax" id="per_unit_cost_exc_tax" class="form-control" placeholder="Par Unit Cost Exc.Tax" autocomplete="off" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -290,8 +291,8 @@
                                     <div class="col-md-12">
                                         <button type="button" class="btn loading_button d-none"><i
                                             class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                        <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
-                                        <button class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>
+                                        <button value="save" class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                                        <button value="save_and_print" class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>
                                     </div>
                                 </div>
                             </div>
@@ -303,6 +304,7 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         var tax_percent = 0;
         $('#tax_id').on('change', function() {
@@ -388,7 +390,7 @@
             if (regexp.test(parseFloat(inputQty)) == true) {
                 tr.find('#input_qty_error').html('Deciaml value is not allowed.');
                 errorCount++;
-            } else if(parseFloat(inputQty) > parseFloat(limitQty)){
+            } else if(parseFloat(inputQty) > parseFloat(limitQty)) {
                 tr.find('#input_qty_error').html('Only '+limitQty+' '+unitName+' is available.');
                 errorCount++;
             } else {
@@ -430,11 +432,8 @@
             console.log(tax_percent);
             if (tax_type == 2) {
                 var inclusive_tax_percent = 100 + parseFloat(tax_percent);
-                
                 var calc_tax = parseFloat(par_unit_cost) / parseFloat(inclusive_tax_percent) * 100;
-                
                 calc_product_cost_tax = parseFloat(par_unit_cost) - parseFloat(calc_tax);
-                
             }
 
             var per_unit_cost_inc_tax = parseFloat(par_unit_cost) + parseFloat(calc_product_cost_tax);
@@ -443,8 +442,8 @@
 
             var xMargin = $('#xMargin').val() ? $('#xMargin').val() : 0;
             if (xMargin > 0) {
-                var calculate_margin = parseFloat(product_cost) / 100 * parseFloat(xMargin);
-                var selling_price = parseFloat(par_unit_cost) + parseFloat(calculate_profit);
+                var calculate_margin = parseFloat(par_unit_cost) / 100 * parseFloat(xMargin);
+                var selling_price = parseFloat(par_unit_cost) + parseFloat(calculate_margin);
                 $('#selling_price').val(parseFloat(selling_price).toFixed(2));
             }
         }
@@ -464,28 +463,62 @@
         });
         
         //Add process request by ajax
-        $('#add_process_form').on('submit', function(e) {
+        $('#add_production_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
-            $('.submit_button').prop('type', 'button');
             var request = $(this).serialize();
+
+            var allTr = $('#ingredient_list').find('tr');
+            allTr.each(function () {
+                __calculateIngredientsTableAmount($(this));
+            });
+
+            if (errorCount > 0) {
+                $('.loading_button').hide();
+                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                return;
+            }
+
+            $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
                     $('.submit_button').prop('type', 'sumbit');
+                    $('.loading_button').hide();
                     if(!$.isEmptyObject(data.errorMsg)) {
-                        toastr.error(data.errorMsg); 
-                        $('.loading_button').hide();
+                        toastr.error(data.errorMsg);
                     } else {
-                        $('.loading_button').hide();
-                        toastr.success(data); 
-                        window.location = "{{ route('manufacturing.process.index') }}";
+                        toastr.success(data);
                     }
                 }
             });
+        });
+
+        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var _expectedDateFormat = '' ;
+        _expectedDateFormat = dateFormat.replace('d', 'DD');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: _expectedDateFormat,
         });
     </script>
 @endpush

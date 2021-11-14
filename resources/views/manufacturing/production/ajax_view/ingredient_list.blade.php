@@ -2,7 +2,7 @@
     @php
         $stock = 0;
         if ($ingredient->variant_id) {
-            if ($warehouseId != null) {
+            if ($warehouseId != 'null') {
                 $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouseId)
                 ->where('product_id', $ingredient->product_id)->first();
                 if ($productWarehouse) {
@@ -20,7 +20,7 @@
                 }
             }
         }else {
-            if ($warehouseId != null) {
+            if ($warehouseId != 'null') {
                 $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouseId)
                 ->where('product_id', $ingredient->product_id)->first();
                 $stock = $productWarehouse ? $productWarehouse->product_quantity : 0;
@@ -44,11 +44,11 @@
         <td>
             <div class="input-group p-2">
                 <input value="{{ $ingredient->final_qty }}" required name="input_quantities[]" type="number" class="form-control text-center" id="input_quantity">
-                <input value="{{ $ingredient->final_qty }}" type="hidden" id="parameter_input_quantity">
+                <input value="{{ $ingredient->final_qty }}" name="parameter_input_quantities" type="hidden" id="parameter_input_quantity">
                 <div class="input-group-prepend">
                     <span class="input-group-text input-group-text-custom">{{ $ingredient->u_name }}</span>
-                </div>
-                <p class="text-danger m-0 p-0" id="input_qty_error"></p>
+                </div> 
+                  &nbsp;<strong><p class="text-danger m-0 p-0" id="input_qty_error"></p></strong>
             </div>
         </td>
 

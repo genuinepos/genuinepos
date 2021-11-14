@@ -40,7 +40,6 @@
                             <div class="widget_content">
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
                                 <div class="table-responsive" id="data-list">
-
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>

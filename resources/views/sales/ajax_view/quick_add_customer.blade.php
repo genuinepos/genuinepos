@@ -8,6 +8,12 @@
         </div>
 
         <div class="col-md-3">
+            <label><strong>Phone :</strong> <span class="text-danger">*</span></label>
+            <input type="text" name="phone" class="form-control c_add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
+            <span class="error error_phone"></span>
+        </div>
+
+        <div class="col-md-3">
             <label><strong>Contact ID :</strong></label>
             <input type="text" name="contact_id" class="form-control"  placeholder="Contact ID"/>
         </div>
@@ -16,15 +22,9 @@
             <label><strong>Business Name :</strong></label>
             <input type="text" name="business_name" class="form-control" placeholder="Business name"/>
         </div>
-
-        <div class="col-md-3">
-            <label><strong>Phone :</strong> <span class="text-danger">*</span></label>
-            <input type="text" name="phone" class="form-control c_add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
-            <span class="error error_phone"></span>
-        </div>
     </div>
 
-    <div class="form-group row mt-2">
+    <div class="form-group row mt-1">
         <div class="col-md-3">
             <label><strong>Alternative Number :</strong>  </label>
             <input type="text" name="alternative_phone" class="form-control" placeholder="Alternative phone number"/>
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <div class="form-group row mt-2"></div>
+    <div class="form-group row mt-1">
         <div class="col-md-3">
             <label><strong>Tax Number :</strong></label>
             <input type="text" name="tax_number" class="form-control" placeholder="Tax number"/>

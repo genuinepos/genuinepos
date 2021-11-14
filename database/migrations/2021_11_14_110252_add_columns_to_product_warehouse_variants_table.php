@@ -14,7 +14,7 @@ class AddColumnsToProductWarehouseVariantsTable extends Migration
     public function up()
     {
         Schema::table('product_warehouse_variants', function (Blueprint $table) {
-            $table->decimal('total_sale_return', 22, 2)->after('total_opening_stock')->default(0);
+            $table->decimal('total_sale_return', 22, 2)->after('total_received')->default(0);
             $table->decimal('total_purchase_return', 22, 2)->after('total_sale_return')->default(0);
         });
     }

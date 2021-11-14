@@ -10,6 +10,13 @@
         </div>
 
         <div class="col-md-3">
+            <label><b>Phone</b> : <span class="text-danger">*</span></label>
+            <input type="text" name="phone" class="form-control edit_input"
+                data-name="Phone number" placeholder="Phone number" value="{{ $customer->phone }}"/>
+            <span class="error error_e_phone"></span>
+        </div>
+
+        <div class="col-md-3">
             <label><b>Customer ID</b> : </label>
             <input readonly type="text" name="contact_id" class="form-control"
                 placeholder="Customer ID" value="{{ $customer->contact_id }}"/>
@@ -19,13 +26,6 @@
             <label><b>Business Name</b> : </label>
             <input type="text" name="business_name" class="form-control"
                 placeholder="Business name" id="e_business_name" value="{{ $customer->business_name }}"/>
-        </div>
-
-        <div class="col-md-3">
-            <label><b>Phone</b> : <span class="text-danger">*</span></label>
-            <input type="text" name="phone" class="form-control edit_input"
-                data-name="Phone number" placeholder="Phone number" value="{{ $customer->phone }}"/>
-            <span class="error error_e_phone"></span>
         </div>
     </div>
 

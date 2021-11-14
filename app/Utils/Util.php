@@ -9,9 +9,17 @@ use App\Models\CustomerLedger;
 use App\Models\SupplierLedger;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
+use App\Utils\InvoiceVoucherRefIdUtil;
 
 class Util
 {
+    protected $invoiceVoucherRefIdUtil;
+    public function __construct(
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+    ) {
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+
+    }
     public function addQuickProductFromAddSale($request){
         $addProduct = new Product();
         $tax_id = NULL;
@@ -87,16 +95,10 @@ class Util
             'phone' => 'required',
         ]);
 
-        // generate Customer ID
-        $l = 5;
-        $b = 0;
-        $id = '';
-        while ($b < $l) { $id .= rand(1, 9); $b++; }
         $generalSettings = DB::table('general_settings')->first('prefix');
         $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
         $addCustomer = Customer::create([
-            'type' => $request->contact_type,
-            'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . $id,
+            'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,
@@ -135,23 +137,11 @@ class Util
             'phone' => 'required',
         ]);
 
-        // generate prefix id
-        $i = 5;
-        $a = 0;
-        $code = '';
-        while ($a < $i) { $code .= rand(1, 9); $a++; }
-
-        // generate supplier ID
-        $l = 5;
-        $b = 0;
-        $id = '';
-        while ($b < $l) {$id .= rand(1, 9); $b++;}
         $generalSettings = DB::table('general_settings')->first('prefix');
         $subIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
         $firstLetterOfSupplier = str_split($request->name)[0];
         $addSupplier = Supplier::create([
-            'type' => $request->contact_type,
-            'contact_id' =>  $request->contact_id ? $request->contact_id : $subIdPrefix . $id,
+            'contact_id' => $request->contact_id ? $request->contact_id : $subIdPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,
@@ -162,7 +152,7 @@ class Util
             'tax_number' => $request->tax_number,
             'pay_term' => $request->pay_term,
             'pay_term_number' => $request->pay_term_number,
-            'prefix' => $firstLetterOfSupplier . $code,
+            'prefix' => $firstLetterOfSupplier . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'address' => $request->address,
             'city' => $request->city,
             'zip_code' => $request->zip_code,

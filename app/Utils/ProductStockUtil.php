@@ -202,7 +202,7 @@ class ProductStockUtil
             $productBranch->total_adjusted = $adjustment->sum('total_qty');
             $productBranch->total_transferred = $transferred->sum('total_qty');
             $productBranch->total_received = $received->sum('total_qty');
-            //$productBranch->total_opening_stock = $productOpeningStock->sum('po_stock');
+            $productBranch->total_opening_stock = $productOpeningStock->sum('po_stock');
             $productBranch->save();
 
             if ($variant_id) {
@@ -305,7 +305,7 @@ class ProductStockUtil
                 $productBranchVariant->total_adjusted = $adjustment->sum('total_qty');
                 $productBranchVariant->total_transferred = $transferred->sum('total_qty');
                 $productBranchVariant->total_received = $received->sum('total_qty');
-                //$productBranchVariant->total_opening_stock = $productOpeningStock->sum('po_stock');
+                $productBranchVariant->total_opening_stock = $productOpeningStock->sum('po_stock');
                 $productBranchVariant->save();
             }
         }
@@ -371,6 +371,10 @@ class ProductStockUtil
 
             $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)->where('product_id', $product_id)->first();
             $productWarehouse->product_quantity = $currentMbStock;
+            $productWarehouse->total_purchased = $productPurchase->sum('total_purchase');
+            $productWarehouse->total_adjusted = $adjustment->sum('total_qty');
+            $productWarehouse->total_transferred = $transferred->sum('total_qty');
+            $productWarehouse->total_received = $received->sum('total_qty');
             $productWarehouse->save();
 
             if ($variant_id) {
@@ -437,6 +441,10 @@ class ProductStockUtil
                     ->first();
 
                 $productWarehouseVariant->variant_quantity = $currentMbStock;
+                $productWarehouseVariant->total_purchased = $productPurchase->sum('total_purchase');
+                $productWarehouseVariant->total_adjusted = $adjustment->sum('total_qty');
+                $productWarehouseVariant->total_transferred = $transferred->sum('total_qty');
+                $productWarehouseVariant->total_received = $received->sum('total_qty');
                 $productWarehouseVariant->save();
             }
         }

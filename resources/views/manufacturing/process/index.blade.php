@@ -130,13 +130,6 @@
                                 </select>
                             </div>
 
-                            <div class="form-group mt-1">
-                                <label><b>Copy Process</b> :</label>
-                                <select class="form-control" name="" id="">
-                                    <option value="">None</option>
-                                </select>
-                            </div>
-
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
                                     <button type="button" class="btn loading_button d-none"><i

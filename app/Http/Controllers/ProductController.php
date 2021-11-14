@@ -271,12 +271,14 @@ class ProductController extends Controller
                 'product_branches.product_quantity',
                 'product_branches.total_sale',
                 'product_branches.total_purchased',
+                'product_branches.total_opening_stock',
                 'product_branches.total_adjusted',
                 'product_branches.total_transferred',
                 'product_branches.total_received',
                 'product_branch_variants.variant_quantity',
                 'product_branch_variants.total_sale as v_total_sale',
                 'product_branch_variants.total_purchased as v_total_purchased',
+                'product_branch_variants.total_purchased as v_total_opening_stock',
                 'product_branch_variants.total_adjusted as v_total_adjusted',
                 'product_branch_variants.total_transferred as v_total_transferred',
                 'product_branch_variants.total_received as v_total_received',
@@ -315,7 +317,15 @@ class ProductController extends Controller
                 'product_variants.variant_cost_with_tax',
                 'product_variants.variant_price',
                 'product_warehouses.product_quantity',
+                'product_warehouses.total_purchased',
+                'product_warehouses.total_adjusted',
+                'product_warehouses.total_transferred',
+                'product_warehouses.total_received',
                 'product_warehouse_variants.variant_quantity',
+                'product_warehouse_variants.total_purchased as v_total_purchased',
+                'product_warehouse_variants.total_adjusted as v_total_adjusted',
+                'product_warehouse_variants.total_transferred as v_total_transferred',
+                'product_warehouse_variants.total_received as v_total_received',
             )->get();
 
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
@@ -929,7 +939,8 @@ class ProductController extends Controller
     {
         $type = $type;
         $variants = BulkVariant::with(['bulk_variant_child'])->get();
-        return view('product.products.ajax_view.form_part', compact('type', 'variants'));
+        $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
+        return view('product.products.ajax_view.form_part', compact('type', 'variants', 'taxes'));
     }
 
     public function allFromSubCategory($categoryId)

@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use App\Models\Product;
 use App\Utils\Converter;
+use Illuminate\Support\Str;
 use App\Models\ProductVariant;
 use App\Models\PurchaseProduct;
 use Illuminate\Support\Facades\DB;
@@ -386,7 +387,7 @@ class PurchaseUtil
         return DataTables::of($purchaseProducts)
             ->editColumn('product', function ($row) {
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                return $row->name . $variant;
+                return Str::limit($row->name, 25, '') . $variant;
             })->editColumn('product_code', function ($row) {
                 return $row->variant_code ? $row->variant_code : $row->product_code;
             })->editColumn('date', function ($row) {

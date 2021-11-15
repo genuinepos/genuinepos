@@ -158,6 +158,8 @@ class PurchaseController extends Controller
 
         if (!isset($request->product_ids)) {
             return response()->json(['errorMsg' => 'Product table is empty.']);
+        }elseif (count($request->product_ids) > 60) {
+            return response()->json(['errorMsg' => 'Purchase invoice items must be less than 60 or equal.']);
         }
 
         $product_ids = $request->product_ids;
@@ -192,7 +194,7 @@ class PurchaseController extends Controller
 
         // add purchase total information
         $addPurchase = new Purchase();
-        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchases');
+        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') .str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
         $addPurchase->warehouse_id = $request->warehouse_id ? $request->warehouse_id : NULL;
         $addPurchase->branch_id = auth()->user()->branch_id;
         $addPurchase->supplier_id = $request->supplier_id;
@@ -234,6 +236,7 @@ class PurchaseController extends Controller
         $addPurchase->save();
 
         // add purchase or purchase order product
+       
         if ($request->purchase_status == 1) {
             $this->purchaseUtil->addPurchaseProduct($request, $isEditProductPrice, $addPurchase->id);
         } else {
@@ -250,7 +253,7 @@ class PurchaseController extends Controller
         // Add purchase payment
         if ($request->paying_amount > 0) {
             $addPurchasePayment = new PurchasePayment();
-            $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+            $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
             $addPurchasePayment->purchase_id = $addPurchase->id;
             $addPurchasePayment->account_id = $request->account_id;
             $addPurchasePayment->pay_mode = $request->payment_method;
@@ -442,7 +445,7 @@ class PurchaseController extends Controller
         $updatePurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
 
         // update purchase total information
-        $updatePurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchases');
+        $updatePurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);;
         $updatePurchase->pay_term = $request->pay_term;
         $updatePurchase->pay_term_number = $request->pay_term_number;
         $updatePurchase->invoice_id = $request->invoice_id;

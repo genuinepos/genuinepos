@@ -152,7 +152,6 @@ class ProcessController extends Controller
         $updateProcess->product_id = $request->product_id;
         $updateProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : NULL;
         $updateProcess->total_ingredient_cost = $request->total_ingredient_cost;
-        $updateProcess->wastage_percent = $request->wastage_percent;
         $updateProcess->total_output_qty = $request->total_output_qty;
         $updateProcess->unit_id = $request->unit_id;
         $updateProcess->production_cost = $request->production_cost;

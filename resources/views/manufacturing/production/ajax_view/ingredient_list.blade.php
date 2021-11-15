@@ -44,7 +44,7 @@
         <td>
             <div class="input-group p-2">
                 <input value="{{ $ingredient->final_qty }}" required name="input_quantities[]" type="number" class="form-control text-center" id="input_quantity">
-                <input value="{{ $ingredient->final_qty }}" name="parameter_input_quantities" type="hidden" id="parameter_input_quantity">
+                <input value="{{ $ingredient->final_qty }}" name="parameter_input_quantities[]" type="hidden" id="parameter_input_quantity">
                 <div class="input-group-prepend">
                     <span class="input-group-text input-group-text-custom">{{ $ingredient->u_name }}</span>
                 </div> 

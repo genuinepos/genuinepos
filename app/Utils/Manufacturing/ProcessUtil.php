@@ -82,25 +82,29 @@ class ProcessUtil
         if ($variant_id != 'NULL') {
             $v_product = DB::table('product_variants')->where('id', $variant_id)
                 ->leftJoin('products', 'product_variants.product_id', 'products.id')
+                ->leftJoin('units', 'products.unit_id', 'units.id')
                 ->select(
                     'product_variants.id as v_id',
                     'product_variants.variant_name',
                     'product_variants.variant_code',
                     'products.id as p_id',
                     'products.name',
+                    'products.id as unit_id',
                     'products.product_code',
                 )->first();
             $product['p_id'] = $v_product->p_id;
+            $product['unit_id'] = $v_product->p_id;
             $product['p_name'] = $v_product->name;
             $product['p_code'] = $v_product->product_code;
             $product['v_id'] = $v_product->v_id;
             $product['v_name'] = $v_product->variant_name;
             $product['v_code'] = $v_product->variant_code;
         } else {
-            $s_product = Product::where('id', $product_id)
-                ->select('id', 'name', 'product_code')
+            $s_product = Product::with('unit')->where('id', $product_id)
+                ->select('id', 'unit_id','name', 'product_code')
                 ->first();
             $product['p_id'] = $s_product->id;
+            $product['unit_id'] = $s_product->unit->id;
             $product['p_name'] = $s_product->name;
             $product['p_code'] = $s_product->product_code;
             $product['v_id'] = NULL;

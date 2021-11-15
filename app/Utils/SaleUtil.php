@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\CashFlow;
 use App\Models\SalePayment;
 use App\Utils\CustomerUtil;
+use Illuminate\Support\Str;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
 use App\Utils\ProductStockUtil;
@@ -570,7 +571,7 @@ class SaleUtil
         return DataTables::of($saleProducts)
             ->editColumn('product', function ($row) {
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                return $row->name . $variant;
+                return Str::limit($row->name, 25, '') . $variant;
             })->editColumn('sold_by', fn($row) => $row->created_by == 1 ? '<span class="text-info">ADD SALE</span>' : '<span class="text-success">POS</span>')
             ->editColumn('sku', function ($row) {
                 return $row->variant_code ? $row->variant_code : $row->product_code;

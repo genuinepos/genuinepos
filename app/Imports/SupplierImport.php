@@ -31,7 +31,6 @@ class SupplierImport implements ToCollection
                     }
                     $firstLetterOfSupplier = str_split($c[2])[0];
                     $addSupplier = Supplier::create([
-                        'type' => 2,
                         'contact_id' => $c[0] ? $c[0] : $supIdPrefix . $id,
                         'business_name' => $c[1],
                         'name' => $c[2],

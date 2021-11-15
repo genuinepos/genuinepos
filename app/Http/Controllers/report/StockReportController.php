@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\report;
 
+use App\Utils\Converter;
+use App\Models\Warehouse;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Warehouse;
-use App\Utils\Converter;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockReportController extends Controller
@@ -99,7 +100,7 @@ class StockReportController extends Controller
 
             return DataTables::of($branch_stock)
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
-                ->editColumn('name',  fn ($row) => $row->name . ' ' . $row->variant_name)
+                ->editColumn('name',  fn ($row) => Str::limit($row->name, 25, '') . ' ' . $row->variant_name)
                 ->editColumn('branch',  function ($row) use ($generalSettings) {
                     if ($row->b_name) {
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
@@ -214,7 +215,7 @@ class StockReportController extends Controller
 
             return DataTables::of($branch_stock)
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
-                ->editColumn('name',  fn ($row) => $row->name . ' ' . $row->variant_name)
+                ->editColumn('name',  fn ($row) => Str::limit($row->name, 25, '') . ' ' . $row->variant_name)
                 ->editColumn('branch',  function ($row) use ($generalSettings) {
                     if ($row->b_name) {
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
@@ -319,8 +320,6 @@ class StockReportController extends Controller
                 'product_branch_variants.total_sale as v_total_sale',
             )->where('product_branches.branch_id', auth()->user()->branch_id)->get();
         }
-
-
 
         return view('reports.stock_report.ajax_view.branch_stock_print', compact('branch_stock', 'branch_id'));
     }

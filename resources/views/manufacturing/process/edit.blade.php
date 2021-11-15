@@ -97,40 +97,30 @@
                                                                             <span class="product_variant">{{ $ingredient->v_name }}</span>  
                                                                             <input value="{{ $ingredient->p_id }}" type="hidden" class="productId-{{ $ingredient->p_id }}" id="product_id" name="product_ids[]">
                                                                             <input value="{{ $ingredient->v_id ? $ingredient->v_id : 'noid' }}" type="hidden" id="variant_id" name="variant_ids[]">
-                                                                            <input value="{{ $ingredient->unit_cost_inc_tax }}" required name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">
                                                                         </td>
                                     
                                                                         <td>
-                                                                            <div class="input-group p-2">
-                                                                                <input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="{{ $ingredient->wastage_percent }}">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text"><i class="fas fa-percentage text-dark"></i></span>
-                                                                                </div>
-                                                                            </div>
+                                                                            <input value="{{ $ingredient->final_qty }}" required name="final_quantities[]" type="number" step="any" class="form-control text-center" id="final_quantity">
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <select name="unit_ids[]" id="unit_id" class="form-control">
+                                                                                @foreach ($units as $unit)
+                                                                                    <option {{ $ingredient->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option> 
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <input readonly value="{{ $ingredient->unit_cost_inc_tax }}"  name="unit_costs_inc_tax[]" type="text" id="unit_cost_inc_tax" class="form-control text-center">
                                                                         </td>
                                     
                                                                         <td>
-                                                                            <div class="row">
-                                                                                <div class="col-8">
-                                                                                    <input value="{{ $ingredient->final_qty }}" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">
-                                                                                </div>
-                                                                                <div class="col-4">
-                                                                                    <select name="unit_ids[]" id="unit_id" class="form-control">
-                                                                                        @foreach ($units as $unit)
-                                                                                            <option {{ $ingredient->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option> 
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                    
-                                                                        <td>
-                                                                            <input value="{{ $ingredient->subtotal }}" type="hidden" step="any" name="prices[]" id="price">
-                                                                            <span id="span_price">{{ $ingredient->subtotal }}</span>
+                                                                            <input value="{{ $ingredient->subtotal }}" type="text" class="form-control text-center" name="subtotals[]" id="subtotal">
                                                                         </td>
                                     
                                                                         <td class="text-start">
-                                                                            <a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>
+                                                                            <a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash"></span></a>
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach
@@ -278,7 +268,6 @@
                                     tr += '<span class="product_variant"></span>';  
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
-                                    tr += '<input value="'+product.product_cost_with_tax+'" required name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                                     tr += '</td>';
 
                                     tr += '<td>';
@@ -379,7 +368,6 @@
                                 tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
-                                tr += '<input type="hidden" value="'+variant_product.variant_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
                                 tr += '</td>';
 
                                 tr += '<td>';
@@ -471,7 +459,6 @@
                 tr += '<span class="product_variant"></span>';  
                 tr += '<input value="'+productId+'" type="hidden" class="productId-'+productId+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
-                tr += '<input value="'+productCostIncTax+'" required name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                 tr += '</td>';
 
                 tr += '<td>';
@@ -562,7 +549,6 @@
                 tr += '<span class="product_variant">('+variantName+')</span>';  
                 tr += '<input value="'+productId+'" type="hidden" class="productId-'+productId+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="'+variantId+'" type="hidden" class="variantId-'+variantId+'" id="variant_id" name="variant_ids[]">';
-                tr += '<input type="hidden" value="'+variantCost+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
@@ -626,20 +612,15 @@
         function __calculateTotalAmount(){
             var subtotals = document.querySelectorAll('#subtotal');
             var totalIngredientCost = 0;
-            subtotals.forEach(function(price){
-                totalIngredientCost += parseFloat(price.value);
+            subtotals.forEach(function(subtotal){
+                totalIngredientCost += parseFloat(subtotal.value);
             });
 
             $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
-            var total_output_qty = $('#total_output_qty').val();
             var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
-            var totalCost =  +(parseFloat(totalIngredientCost) * parseFloat(total_output_qty))  + parseFloat(productionCost);
+            var totalCost =  parseFloat(totalIngredientCost) + parseFloat(productionCost);
             $('#total_cost').val(parseFloat(totalCost).toFixed(2));
         }
-
-        $(document).on('input', '#total_output_qty', function(){
-            __calculateTotalAmount();
-        });
 
         // Remove product form ingredient list (Table) 
         $(document).on('click', '#remove_product_btn',function(e){

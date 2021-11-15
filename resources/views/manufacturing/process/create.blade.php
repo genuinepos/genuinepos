@@ -157,13 +157,14 @@
 @endsection
 @push('scripts')
     <script>
+        var unit_id = "{{ $product['unit_id'] }}";
         var unites = [];
         function getUnites(){
             $.ajax({
                 url:"{{ route('purchases.get.all.unites') }}",
                 success:function(units){
                     $.each(units, function(key, unit){
-                        $('#unit_id').append('<option value="'+unit.id+'">'+unit.name+'</option>');
+                        $('#unit_id').append('<option '+(unit.id == unit_id ? 'SELECTED' : '')+' value="'+unit.id+'">'+unit.name+'</option>');
                         unites.push({id : unit.id, name : unit.name}); 
                     });
                 }
@@ -232,7 +233,6 @@
                                     tr += '<span class="product_variant"></span>';  
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
-                                    tr += '<input value="'+product.product_cost_with_tax+'" required name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                                     tr += '</td>';
 
                                     tr += '<td>';
@@ -253,7 +253,6 @@
 
                                     tr += '<td>';
                                     tr += '<input readonly value="'+product.product_cost_with_tax+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
-                                    tr += '<span id="span_price">'+product.product_cost_with_tax+'</span>';
                                     tr += '</td>';
 
                                     tr += '<td>';
@@ -333,7 +332,6 @@
                                 tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
-                                tr += '<input type="hidden" value="'+variant_product.variant_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
                                 tr += '</td>';
 
                                 tr += '<td>';
@@ -424,7 +422,6 @@
                 tr += '<span class="product_variant"></span>';  
                 tr += '<input value="'+productId+'" type="hidden" class="productId-'+productId+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
-                tr += '<input value="'+productCostIncTax+'" required name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                 tr += '</td>';
 
                 tr += '<td>';
@@ -585,15 +582,10 @@
 
             $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
             $('#span_total_ingredient_cost').html(parseFloat(totalIngredientCost).toFixed(2));
-            var total_output_qty = $('#total_output_qty').val();
             var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
-            var totalCost =  +(parseFloat(totalIngredientCost) * parseFloat(total_output_qty))  + parseFloat(productionCost);
+            var totalCost =  parseFloat(totalIngredientCost) + parseFloat(productionCost);
             $('#total_cost').val(parseFloat(totalCost).toFixed(2));
         }
-
-        $(document).on('input', '#total_output_qty', function(){
-            __calculateTotalAmount();
-        });
 
         // Remove product form ingredient list (Table) 
         $(document).on('click', '#remove_product_btn',function(e){

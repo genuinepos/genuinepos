@@ -13,8 +13,10 @@
     <div class="body-woaper">
         <div class="container-fluid">
             <form id="add_production_form" action="{{ route('manufacturing.productions.store') }}" method="POST">
-                <input type="text" id="product_id" class="d-none" value="">
-                <input type="text" id="variant_id" class="d-none" value="">
+                <input name="action_type" type="text" id="action_type" class="d-none" value="">
+                <input name="product_id" type="text" id="product_id" class="d-none" value="">
+                <input name="variant_id" type="text" id="variant_id" class="d-none" value="">
+                <input name="unit_id" type="text" id="unit_id" class="d-none" value="">
                 @csrf
                 <section class="mt-5">
                     <div class="container-fluid">
@@ -51,7 +53,7 @@
 
                                         <div class="col-md-2">
                                             <label > <b>Voucher No :</b></label>
-                                            <input type="text" name="reference_no" class="form-control changeable" placeholder="Reference No"/>
+                                            <input type="text" name="reference_no" class="form-control changeable" placeholder="Voucher No"/>
                                         </div>
 
                                         <div class="col-md-2">
@@ -261,7 +263,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>xMargin :</b></label>
+                                                <label class="col-4"><b>xMargin(%) :</b></label>
                                                 <div class="col-md-8">
                                                     <input type="text" name="xMargin" id="xMargin" class="form-control" placeholder="xMargin" autocomplete="off" value="0.00">
                                                 </div>
@@ -397,10 +399,10 @@
                 errorCount = 0;
             }
 
-            tr.find('#final_quantity').val(parseFloat(inputQty).toFixed(2));
             var subtotal = parseFloat(inputQty) * parseFloat(unitCostIncTax);
             tr.find('#subtotal').val(parseFloat(subtotal).toFixed(2));
             tr.find('#span_subtotal').html(parseFloat(subtotal).toFixed(2));
+            __calculateTotalAmount();
         }
 
         function __calculateTotalAmount(){
@@ -412,13 +414,12 @@
 
             $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
             $('#span_total_ingredient_cost').html(parseFloat(totalIngredientCost).toFixed(2));
-            var output_total_qty = $('#output_quantity').val();
-            var wast_qty = $('#wasted_quantity').val();
+            var output_total_qty = $('#output_quantity').val() ? $('#output_quantity').val() : 0;
+            var wast_qty = $('#wasted_quantity').val() ? $('#wasted_quantity').val() : 0;
             var calsQtyWithWastedQty = parseFloat(output_total_qty) - parseFloat(wast_qty);
             $('#final_output_quantity').val(calsQtyWithWastedQty);
             var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
-            var totalCost = (parseFloat(totalIngredientCost) * (parseFloat(output_total_qty) + parseFloat(wast_qty))) 
-                            + parseFloat(productionCost);
+            var totalCost = parseFloat(totalIngredientCost) + parseFloat(productionCost);
             $('#total_cost').val(parseFloat(totalCost).toFixed(2));
             __productPricingCalculate();
         }
@@ -461,6 +462,11 @@
             var __calcProfit = calcProfit ? calcProfit : 0;
             $('#xMargin').val(parseFloat(__calcProfit).toFixed(2));
         });
+
+        $('.submit_button').on('click', function () {
+            var value = $(this).val();
+            $('#action_type').val(value);
+        });
         
         //Add process request by ajax
         $('#add_production_form').on('submit', function(e) {
@@ -490,8 +496,23 @@
                     $('.loading_button').hide();
                     if(!$.isEmptyObject(data.errorMsg)) {
                         toastr.error(data.errorMsg);
-                    } else {
-                        toastr.success(data);
+                    } else if(!$.isEmptyObject(data.successMsg)) {
+                        $('#add_production_form')[0].reset();
+                        $('#ingredient_list').empty();
+                        toastr.success(data.successMsg);
+                    }else {
+                        $('#add_production_form')[0].reset();
+                        $('#ingredient_list').empty();
+                        toastr.success('Successfully production is created.');
+                        $(data).printThis({
+                            debug: false,                   
+                            importCSS: true,                
+                            importStyle: true,          
+                            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                            removeInline: false, 
+                            printDelay: 1000, 
+                            header: null,        
+                        });
                     }
                 }
             });

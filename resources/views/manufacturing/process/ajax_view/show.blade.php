@@ -6,10 +6,10 @@
     <table class="display data_tbl data__table">
         <thead>
             <tr class="bg-primary">
-                <th class="text-start text-white">Ingredient</th>
+                <th class="text-start text-white">Ingredients</th>
                 <th class="text-start text-white">Quantity</th>
-                <th class="text-start text-white">Wastage Percent</th>
-                <th class="text-start text-white">Price</th>
+                <th class="text-start text-white">Cost Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                <th class="text-start text-white">Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
             </tr>
         </thead>
         <tbody>
@@ -19,15 +19,15 @@
                         {{ $ingredient->product->name .' '.($ingredient->variant ? $ingredient->variant->variant_name : '') }}
                     </td>
                     <td class="text-start">{{ $ingredient->final_qty.' '.$ingredient->unit->name }}</td>
-                    <td class="text-start">{{ $ingredient->wastage_percent.'%'  }}</td>
-                    <td class="text-start">{{json_decode($generalSettings->business, true)['currency'].' '. $ingredient->subtotal }}</td>
+                    <td class="text-start">{{ $ingredient->unit_cost_inc_tax }}</td>
+                    <td class="text-start">{{ $ingredient->subtotal }}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot class="display data_tbl data__table">
             <tr>
-                <th colspan="3" class="text-end">Total Ingredients :</th>
-                <th>{{json_decode($generalSettings->business, true)['currency'].' '.$process->total_ingredient_cost }}</th>
+                <th colspan="3" class="text-end">Total Ingredients : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                <th>{{ $process->total_ingredient_cost }}</th>
             </tr>
         </tfoot>
    </table>
@@ -36,11 +36,11 @@
        <div class="col-6">
            <table class="">
                <tbody>
-                   <tr>
-                       <th class="text-start">Wastage : </th>
-                       <td class="text-start"> {{ $process->wastage_percent.'%' }}</td>
-                   </tr>
-                   <tr>
+                    <tr>
+                        <th class="text-start">Wastage : </th>
+                        <td class="text-start"> {{ $process->wastage_percent.'%' }}</td>
+                    </tr>
+                    <tr>
                         <th class="text-start">Total Output Quantity : </th>
                         <td class="text-start"> {{ $process->total_output_qty.' '.$process->unit->name }}</td>
                     </tr>
@@ -52,19 +52,28 @@
            </table>
        </div>
 
-       <div class="col-6">
-        <table class="display data_tbl data__table">
-            <tbody>
-                <tr>
-                    <th class="text-start">Extra : </th>
-                    <td class="text-start"> {{ json_decode($generalSettings->business, true)['currency'].' '.$process->production_cost }}</td>
-                </tr>
-                <tr>
-                     <th class="text-start">Total Cost: </th>
-                     <td class="text-start"> {{ json_decode($generalSettings->business, true)['currency'].' '.$process->total_cost }}</td>
-                 </tr>
-            </tbody>
-        </table>
-    </div>
+        <div class="col-6">
+            <table class="display data_tbl data__table">
+                <tbody>
+                    <tr>
+                        <th class="text-start">Additional Cost : </th>
+                        <td class="text-start"> {{ json_decode($generalSettings->business, true)['currency'].' '.$process->production_cost }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Total Cost: </th>
+                        <td class="text-start"> {{ json_decode($generalSettings->business, true)['currency'].' '.$process->total_cost }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
    </div>
 </div>
+
+<div class="modal-footer">
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit" class="c-btn btn_blue print_btn">Print</button>
+            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+        </div>
+    </div>
+ </div>

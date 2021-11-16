@@ -253,7 +253,6 @@
                                                 </div>
                                             </div>
 
-
                                             <div class="input-group mt-1">
                                                 <label for="inputEmail3" class="col-4"><b>Tax :</b><span class="text-danger">*</span></label>
                                                 <div class="col-8">

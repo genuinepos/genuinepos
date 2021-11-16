@@ -329,11 +329,13 @@
             e.preventDefault();
             var processId = $(this).val();
             var stockWarehouseId = $('#stock_warehouse_id').val() ? $('#stock_warehouse_id').val() : null;
-            if (stockWarehouseId == '') {
-                toastr.error('Ingredials Stock Location must not be empty.'); 
-                var processId = $(this).val('');
-                return;
-            }
+            @if (count($warehouses) > 0)
+                if (stockWarehouseId == null) {
+                    toastr.error('Ingredials Stock Location must not be empty.'); 
+                    var processId = $(this).val('');
+                    return;
+                }
+            @endif
             var url = "{{ url('manufacturing/productions/get/process/') }}"+"/"+processId;
             $.get(url, function(data) {
                 $('#product_id').val(data.product_id);
@@ -371,6 +373,10 @@
         });
 
         $(document).on('input', '#wasted_quantity', function () {
+            __calculateTotalAmount();
+        });
+
+        $(document).on('input', '#production_cost', function () {
             __calculateTotalAmount();
         });
 
@@ -513,6 +519,15 @@
                             printDelay: 1000, 
                             header: null,        
                         });
+                    }
+                },error: function(err) {
+                    $('.submit_button').prop('type', 'sumbit');
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server error please contact to the support.');
                     }
                 }
             });

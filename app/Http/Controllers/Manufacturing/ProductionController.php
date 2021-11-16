@@ -162,8 +162,21 @@ class ProductionController extends Controller
         }
 
         if ($request->action_type == 'save_and_print') {
-            $production = Production::with('ingredients')->where('id', $addProduction->id)->first();
-            return view('manufacturing.production.ajax_view.print', compact('production'));
+            $production = Production::with([
+                'branch',
+                'stock_branch:id,name,branch_code',
+                'warehouse:id,warehouse_name,warehouse_code',
+                'stock_warehouse:id,warehouse_name,warehouse_code',
+                'unit:id,code_name',
+                'tax:id,tax_name,tax_percent',
+                'product:id,name,product_code',
+                'variant:id,variant_name,variant_code',
+                'ingredients',
+                'ingredients.product:id,name,product_code',
+                'ingredients.variant:id,variant_name,variant_code',
+                'ingredients.unit:id,code_name',
+            ])->where('id', $addProduction->id)->first();
+            return view('manufacturing.production.save_and_print_template.print', compact('production'));
         } else {
             return response()->json(['successMsg' => 'Successfully production is created.']);
         }

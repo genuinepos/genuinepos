@@ -242,12 +242,12 @@
                                     tr += '<td>';
                                     tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                                         unites.forEach(function(unit) {
-                                        if (product.unit.id == unit.id) {
-                                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
-                                        }else{
-                                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
-                                        }
-                                    })
+                                            if (product.unit.id == unit.id) {
+                                                tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
+                                            }else{
+                                                tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
+                                            }
+                                        })
                                     tr += '</select>';
                                     tr += '</td>';
 

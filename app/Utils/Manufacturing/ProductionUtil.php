@@ -7,15 +7,20 @@ use App\Utils\Converter;
 use Illuminate\Support\Str;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
+use App\Models\Manufacturing\Production;
+use App\Utils\ProductStockUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductionUtil
 {
     protected $converter;
+    protected $productStockUtil;
     public function __construct(
-        Converter $converter
+        Converter $converter,
+        ProductStockUtil $productStockUtil,
     ) {
         $this->converter = $converter;
+        $this->productStockUtil = $productStockUtil;
     }
 
     public function productionList($request)
@@ -104,6 +109,42 @@ class ProductionUtil
             ->make(true);
     }
 
+    public function deleteProduction($productionId)
+    {
+        $production = Production::with(['ingredients'])->where('id', $productionId)->first();
+        $storedStatus = $production->is_final;
+        $storedProductId = $production->product_id;
+        $storedVariantId = $production->variant_id;
+        $storedBranchId = $production->branch_id;
+        $storedStockBranchId = $production->stock_branch_id;
+        $storedWarehouseId = $production->warehouse_id;
+        $storedStockWarehouseId = $production->stock_warehouse_id;
+        $storeIngredients = $production->ingredients;
+        if (!is_null($production)) {
+            $production->delete();
+        }
+
+        if($storedStatus == 1){
+            $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
+            if ($storedWarehouseId) {
+                $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId, $storedWarehouseId);
+            } else {
+                $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, $storedBranchId);
+            } 
+
+            if (count($storeIngredients) > 0) {
+                foreach ($storeIngredients as $ingredient) {
+                    $this->productStockUtil->adjustMainProductAndVariantStock($ingredient->product_id, $ingredient->variant_id);
+                    if ($storedStockWarehouseId) {
+                        $this->productStockUtil->adjustWarehouseStock($ingredient->product_id, $ingredient->variant_id, $storedStockWarehouseId);
+                    } else {
+                        $this->productStockUtil->adjustBranchStock($ingredient->product_id, $ingredient->variant_id, $storedStockBranchId);
+                    }
+                }
+            }
+        }
+    }
+
     public function updateProductAndVariantPriceByProduction(
         $productId,
         $variant_id,
@@ -149,15 +190,19 @@ class ProductionUtil
             }
         }
 
-        if ($request->status) {
+        if ($request->warehouse_id) {
+            $query->where('productions.warehouse_id', $request->warehouse_id);
+        }
+
+        if ($request->status != '') {
             $query->where('productions.is_final', $request->status);
         }
 
         if ($request->from_date) {
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
-            $query->whereBetween('sales.report_date', $date_range); // Final
+            $date_range = [$from_date, $to_date];
+            $query->whereBetween('productions.report_date', $date_range); // Final
         }
         return $query;
     }

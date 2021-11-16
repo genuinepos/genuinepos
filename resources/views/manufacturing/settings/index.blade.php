@@ -52,15 +52,21 @@
                                         <label><strong>Production Reference prefix :</strong></label>
                                         <input type="text" name="production_ref_prefix" class="form-control"
                                             autocomplete="off" placeholder="Production Reference prefix"
-                                            value="{{ json_decode($generalSettings->mf_settings, true)['production_ref_prefix'] }}">
+                                            value="
+                                                @if(isset(json_decode($generalSettings->mf_settings, true)['production_ref_prefix']))
+                                                    {{ json_decode($generalSettings->mf_settings, true)['production_ref_prefix'] }}
+                                                @endif
+                                            ">
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="row mt-1">
                                             <p class="checkbox_input_wrap mt-4">
                                                 <input type="checkbox"
-                                                    {{ json_decode($generalSettings->mf_settings, true)['disable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
-                                                    name="disable_editing_ingredient_qty"> &nbsp; <b>Disable editing ingredients quantity in production</b> 
+                                                    @if(isset(json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty']))
+                                                        {{ json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
+                                                    @endif
+                                                    name="enable_editing_ingredient_qty"> &nbsp; <b>Enable editing ingredients quantity in production</b> 
                                             </p>
                                         </div>
                                     </div>
@@ -69,8 +75,10 @@
                                         <div class="row mt-1">
                                             <p class="checkbox_input_wrap mt-4">
                                                 <input type="checkbox"
-                                                    {{ json_decode($generalSettings->mf_settings, true)['enable_updating_product_price'] == '1' ? 'CHECKED' : '' }}
-                                                    name="enable_updating_product_price"> &nbsp; <b>Update product purchase price based on production price, on finalizing production</b> 
+                                                    @if(isset(json_decode($generalSettings->mf_settings, true)['enable_updating_product_price']))
+                                                        {{ json_decode($generalSettings->mf_settings, true)['enable_updating_product_price'] == '1' ? 'CHECKED' : '' }}
+                                                    @endif
+                                                    name="enable_updating_product_price"> &nbsp; <b>Update product cost and selling price based on total production cost, on finalizing production</b>
                                             </p>
                                         </div>
                                     </div>

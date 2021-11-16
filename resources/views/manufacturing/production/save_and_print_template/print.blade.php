@@ -22,8 +22,29 @@
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
  <!-- Purchase print templete-->
-    <div class="purchase_print_template">
+    <div class="production_print_template">
         <div class="details_area">
+            <div class="heading_area">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h6>
+                            @if ($production->branch_id)
+                                {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
+                            @else 
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
+                            @endif
+                        </h6>
+                        <p style="width: 60%; margin:0 auto;">
+                            @if ($production->branch_id)
+                                {{ $production->branch->city.', '.$production->branch->state.', '.$production->branch->zip_code.', '.$production->branch->country }}<b>(BL)</b>
+                            @else 
+                                {{ json_decode($generalSettings->business, true)['address'] }}
+                            @endif
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <div class="heading_area">
                 <div class="row">
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -43,32 +64,11 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h1 class="bill_name">Menufacturing Bill</h1>
+                            <p style="margin-top: 10px;" class="bill_name"><strong>Menufacturing Bill</strong></p>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         
-                    </div>
-                </div>
-            </div>
-
-            <div class="heading_area">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <h6>
-                            @if ($production->branch_id)
-                                {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
-                            @else 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
-                            @endif
-                        </h6>
-                        <p style="width: 60%; margin:0 auto;">
-                            @if ($production->branch_id)
-                                {{ $production->branch->city.', '.$production->branch->state.', '.$production->branch->zip_code.', '.$production->branch->country }}<b>(BL)</b>
-                            @else 
-                                {{ json_decode($generalSettings->business, true)['address'] }}<b>(HO)</b>
-                            @endif
-                        </p>
                     </div>
                 </div>
             </div>
@@ -276,4 +276,4 @@
             </div>
         </div>
     </div>
- <!-- Purchase print templete end-->
+ <!-- production print templete end-->

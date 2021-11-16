@@ -24,7 +24,7 @@
                             <div class="form_element">
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
-                                        <div class="col-6"><h5>Production</h5></div>
+                                        <div class="col-6"><h5>Add Production</h5></div>
                                         <div class="col-6">
                                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>

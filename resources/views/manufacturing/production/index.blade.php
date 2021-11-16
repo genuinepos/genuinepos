@@ -1,6 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('title', 'All Process - ')
 @section('content')
@@ -38,7 +39,7 @@
                         <div class="col-md-12">
                             <div class="sec-name">
                                 <div class="col-md-12">
-                                    <form action="" method="get" class="px-2">
+                                    <form id="filter_form" class="px-2">
                                         <div class="form-group row">
                                             @if ($addons->branches == 1)
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -79,6 +80,17 @@
                                                         @endforeach
                                                     </select>
                                                 @endif
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label><strong>Status :</strong></label>
+                                                <div class="input-group">
+                                                    <select name="status" class="form-control" id="status" autofocus>
+                                                        <option value="">All</option>
+                                                        <option value="1">Final</option>
+                                                        <option value="0">Hold</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                             
                                             <div class="col-md-2">
@@ -188,9 +200,12 @@
             </div>
         </div>
     </div>
+
+    <div id="production_details"></div>
 @endsection
 @push('scripts')
-   <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
         var production_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
@@ -205,9 +220,8 @@
                 "url": "{{ route('manufacturing.productions.index') }}",
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
-                    d.customer_id = $('#customer_id').val();
-                    d.payment_status = $('#payment_status').val();
-                    d.user_id = $('#user_id').val();
+                    d.warehouse_id = $('#warehouse_id').val();
+                    d.status = $('#status').val();
                     d.from_date = $('.from_date').val();
                     d.to_date = $('.to_date').val();
                 }
@@ -254,5 +268,129 @@
             });
             return sum;
         }
+
+        @if ($addons->branches == 1)
+            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                $(document).on('change', '#branch_id', function () {
+                    var branch_id = $(this).val();
+                    $.ajax({
+                        url:"{{ url('reports/stock/branch/warehouse') }}"+"/"+branch_id,
+                        type:'get',
+                        success:function(data){
+                            $('#warehouse_id').empty();
+                            $('#warehouse_id').append('<option value="">All</option>');
+                            $.each(data, function (key, val) {
+                                $('#warehouse_id').append('<option value="'+val.id+'">'+val.warehouse_name+'/'+val.warehouse_code+'</option>');
+                            });
+                        }
+                    });
+                })
+            @endif
+        @endif
+
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_form', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            production_table.ajax.reload();
+        });
+
+        // Show details modal with data
+        $(document).on('click', '.details_button', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $.get(url, function(data) {
+                $('#production_details').html(data);
+                $('.data_preloader').hide();
+                $('#detailsModal').modal('show');
+            });
+        });
+
+        // Make print
+        $(document).on('click', '.print_btn', function(e) {
+            e.preventDefault();
+            var body = $('.production_print_template').html();
+            var header = $('.heading_area').html();
+            $(body).printThis({
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{ asset('public/assets/css/print/purchase.print.css') }}",
+                removeInline: false,
+                printDelay: 500,
+                header: null,
+            });
+        });
+
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure?',
+                'buttons': {
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                }
+            });
+        });
+
+        //data delete by ajax
+        $(document).on('submit', '#deleted_form',function(e) {
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url:url,
+                type:'post',
+                data:request,
+                success:function(data){
+                    production_table.ajax.reload();
+                    toastr.error(data);
+                }
+            });
+        });
    </script>
+
+    <script type="text/javascript">
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker2'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+    </script>
 @endpush

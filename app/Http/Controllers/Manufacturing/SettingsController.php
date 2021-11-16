@@ -28,7 +28,7 @@ class SettingsController extends Controller
           $updateTaxSettings = General_setting::first();
           $mfSettings = [
               'production_ref_prefix' => $request->production_ref_prefix,
-              'disable_editing_ingredient_qty' => isset($request->disable_editing_ingredient_qty) ? 1 : 0,
+              'enable_editing_ingredient_qty' => isset($request->disable_editing_ingredient_qty) ? 1 : 0,
               'enable_updating_product_price' => isset($request->enable_updating_product_price) ? 1 : 0,
           ];
   

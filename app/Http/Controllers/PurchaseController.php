@@ -144,7 +144,6 @@ class PurchaseController extends Controller
     // add purchase method
     public function store(Request $request)
     {
-        // return $request->all();
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'purchase'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
@@ -190,6 +189,12 @@ class PurchaseController extends Controller
                 $SupplierProduct->save();
             }
             $i++;
+        }
+
+        $updateLastCreated = Purchase::where('is_last_created', 1)->select('id', 'is_last_created')->first();
+        if ($updateLastCreated) {
+            $updateLastCreated->is_last_created = 0; 
+            $updateLastCreated->save(); 
         }
 
         // add purchase total information

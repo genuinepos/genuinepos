@@ -1,4 +1,4 @@
-<div class="col-lg-3 p-1 pb-0">
+<div class="col-lg-3 p-1">
     <div class="pos-right-inner">
         <div class="check-out-woaper">
             <div class="function-sec">

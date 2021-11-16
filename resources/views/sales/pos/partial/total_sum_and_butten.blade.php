@@ -1,4 +1,4 @@
-<div class="col-lg-3 p-1 pb-0">
+<div class="col-lg-3 p-1">
     <div class="pos-right-inner">
         <div class="check-out-woaper">
             <div class="function-sec">
@@ -8,7 +8,7 @@
                         <div class="btn-bg">
                             <a href="" class="bg-orange function-card" data-button_type="0" data-action_id="2"
                                 id="submit_btn">
-                                <small>Draft</small>
+                                Draft
                                 <p>F2</p>
                             </a>
                         </div>
@@ -20,7 +20,7 @@
                         <div class="btn-bg">
                             <a href="" class="bg-orange function-card" id="submit_btn" data-button_type="0"
                                 data-action_id="4">
-                                <small>Quotation</small>
+                                Quotation
                                 <p>F4</p>
                             </a>
                         </div>
@@ -31,7 +31,7 @@
                         <div class="btn-bg">
                             <a href="" class="bg-orange function-card" id="exchange_btn" data-bs-toggle="modal"
                                 data-bs-target="#exchangeModal">
-                                <small>Exchange</small>
+                                Exchange
                                 <p>F6</p>
                             </a>
                         </div>
@@ -40,7 +40,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="" class="bg-gren function-card" id="show_stock">
-                                <small>Stock</small>
+                                Stock
                                 <p>Alt+C</p>
                             </a>
                         </div>
@@ -51,7 +51,7 @@
                         <div class="btn-bg">
                             <a href="" class="bg-gren function-card" id="submit_btn" data-button_type="0"
                                 data-action_id="5">
-                                <small>Hold Invoice</small>
+                                Hold Invoice
                                 <p>F8</p>
                             </a>
                         </div>
@@ -60,7 +60,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#" class="bg-gren function-card" id="pick_hold_btn">
-                                <small>Pick Hold</small>
+                                Pick Hold
                                 <p>F9</p>
                             </a>
                         </div>
@@ -70,7 +70,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="{{ route('settings.general.index') }}" class="bg-swit function-card">
-                                <small>Setup</small>
+                                Setup
                                 <p>Ctrl+Q</p>
                             </a>
                         </div>
@@ -80,7 +80,7 @@
                         <div class="btn-bg">
                             <a href="" class="bg-swit function-card" id="submit_btn" data-button_type="0"
                                 data-action_id="6">
-                                <small>Suspend</small>
+                                Suspend
                                 <p>Alt+A</p>
                             </a>
                         </div>
@@ -89,7 +89,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#" class="bg-swit function-card" onclick="cancel(); return false;">
-                                <small>Cancel</small>
+                                Cancel
                                 <p>Ctrl+M</p>
                             </a>
                         </div>
@@ -183,7 +183,7 @@
 
                 <div class="sub-btn-sec">
                     <div class="row">
-                        <div class="col-lg-4 col-12 p-1">
+                        <div class="col-lg-4 col-12 p-1 pb-1">
                             @if (json_decode($generalSettings->pos, true)['is_show_credit_sale_button'] == '1')
                             <div class="btn-bg mb-1">
                                 <a href="#" class="bg-orange btn-pos" data-button_type="0" id="full_due_button"><i
@@ -198,7 +198,7 @@
                             @endif
                         </div>
 
-                        <div class="col-lg-4 col-6 p-1 btn-bottom">
+                        <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
                             <div class="btn-bg">
                                 <a href="#" class="bg-parpal function-card other_payment_method">
                                     <small><i class="fas fa-credit-card"></i> Other Method</small>
@@ -207,7 +207,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-6 p-1 btn-bottom">
+                        <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
                             <div class="btn-bg">
                                 <a href="" class="bg-parpal function-card" id="submit_btn" data-button_type="1"
                                     data-action_id="1">

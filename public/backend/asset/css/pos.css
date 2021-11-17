@@ -699,7 +699,7 @@ a.resent-tn:hover {
 
 @media (min-width: 1400px) and (max-width: 1600px) {
     .product-area {
-        /* height: 100vh; */
+        height: 75vh;
         overflow: scroll;
         overflow-x: hidden;
     }
@@ -775,15 +775,16 @@ a.resent-tn:hover {
     /* .check-out-woaper {
         height: 85vh;
     }
-    .product-area {
-        height: 67vh;
-    }
+
     .all-cat {
         height: 74.5vh;
     }
     .show-product {
         height: 75.5vh;
     } */
+    .product-area {
+        height: 68vh;
+    }
     .pos-footer {
     }
     .function-sec {

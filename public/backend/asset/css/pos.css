@@ -783,7 +783,7 @@ a.resent-tn:hover {
         height: 75.5vh;
     } */
     .product-area {
-        height: 68vh;
+        height: 75vh;
     }
     .pos-footer {
     }
@@ -796,6 +796,12 @@ a.resent-tn:hover {
     .function-sec .col-4.px-2.py-1 {
         padding-top: 3px !important;
         padding-bottom: 0px !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .product-area {
+        height: 75vh;
     }
 }
 

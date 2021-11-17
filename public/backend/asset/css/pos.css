@@ -551,7 +551,7 @@ a.resent-tn:hover {
     background: linear-gradient(#dedede, #444444);
     border-radius: 3px;
     position: relative;
-    height: 107%;
+    height: calc(100% + 50px);
 }
 
 .check-out-woaper {

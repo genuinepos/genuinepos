@@ -797,6 +797,9 @@ a.resent-tn:hover {
         padding-top: 3px !important;
         padding-bottom: 0px !important;
     }
+    .cash-btn {
+        padding: 19px 0px;
+    }
 }
 
 @media (max-width: 1200px) {

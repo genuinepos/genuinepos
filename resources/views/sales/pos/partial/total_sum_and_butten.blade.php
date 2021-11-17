@@ -209,9 +209,9 @@
 
                         <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
                             <div class="btn-bg">
-                                <a href="" class="bg-parpal function-card" id="submit_btn" data-button_type="1"
+                                <a href="" class="bg-parpal function-card cash-btn" id="submit_btn" data-button_type="1"
                                     data-action_id="1">
-                                    <small><i class="far fa-money-bill-alt"></i> Cash</small>
+                                    <small><i class="far fa-money-bill-alt"></i> Cash </small>
                                     <p>F10</p>
                                 </a>
                             </div>

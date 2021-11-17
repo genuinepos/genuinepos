@@ -156,6 +156,7 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script>
         var unit_id = "{{ $product['unit_id'] }}";
         var unites = [];
@@ -617,6 +618,19 @@
                     }
                 }
             });
+        });
+
+        $('body').keyup(function(e){
+            if (e.keyCode == 13){  
+                $(".selectProduct").click();
+                $('#list').empty();
+            }
+        });
+
+        $(document).keypress(".scanable",function(event) {
+            if (event.which == '10' || event.which == '13') {
+                event.preventDefault();
+            }
         });
 
         setInterval(function(){$('#search_product').removeClass('is-invalid');}, 500); 

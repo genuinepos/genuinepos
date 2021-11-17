@@ -765,6 +765,9 @@ a.resent-tn:hover {
         justify-content: center;
         align-items: center;
     }
+    .wrapper_input_btn {
+        bottom: 8px;
+    }
 }
 
 @media (min-width: 1200px) and (max-width: 1400px) {
@@ -799,6 +802,9 @@ a.resent-tn:hover {
     }
     .cash-btn {
         padding: 19px 0px;
+    }
+    .wrapper_input_btn {
+        bottom: 8px;
     }
 }
 

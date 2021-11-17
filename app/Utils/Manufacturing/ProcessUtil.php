@@ -80,7 +80,7 @@ class ProcessUtil
         $product_id = $productAndVariantId[0];
         $variant_id = $productAndVariantId[1];
         if ($variant_id != 'NULL') {
-            $v_product = DB::table('product_variants')->where('id', $variant_id)
+            $v_product = DB::table('product_variants')->where('product_variants.id', $variant_id)
                 ->leftJoin('products', 'product_variants.product_id', 'products.id')
                 ->leftJoin('units', 'products.unit_id', 'units.id')
                 ->select(

@@ -653,7 +653,7 @@ a.resent-tn:hover {
         overflow-x: scroll;
     } */
     .product-area {
-        height: 80.5vh;
+        height: calc(100vh - 181px);
         overflow: scroll;
         overflow-x: hidden;
     }
@@ -752,7 +752,7 @@ a.resent-tn:hover {
         padding: 0px 6px;
     }
     .function-card {
-        padding: 12px 0px;
+        padding: 8px 0px;
     }
     .btn-pos {
         text-align: center;

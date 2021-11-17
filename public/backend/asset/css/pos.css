@@ -308,7 +308,7 @@ a.head-tbl-icon {
 }
 
 .product-area {
-    height: 83vh;
+    height: calc(100vh - 181px);
     overflow: scroll;
     /* background-color: #f1f3f6; */
     overflow-x: hidden;
@@ -411,7 +411,7 @@ a.head-tbl-icon {
 .pos-footer {
     background: var(--main-grident);
     position: fixed;
-    bottom: 5px;
+    bottom: 0;
     width: 74.5%;
     height: 41px;
 }
@@ -699,7 +699,7 @@ a.resent-tn:hover {
 
 @media (min-width: 1400px) and (max-width: 1600px) {
     .product-area {
-        height: 75vh;
+        height: calc(100vh - 181px);
         overflow: scroll;
         overflow-x: hidden;
     }
@@ -783,7 +783,7 @@ a.resent-tn:hover {
         height: 75.5vh;
     } */
     .product-area {
-        height: 75vh;
+        height: calc(100vh - 181px);
     }
     .pos-footer {
     }
@@ -804,7 +804,7 @@ a.resent-tn:hover {
 
 @media (max-width: 1200px) {
     .product-area {
-        height: 75vh;
+        height: calc(100vh - 181px);
     }
 }
 

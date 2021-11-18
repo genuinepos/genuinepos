@@ -616,6 +616,15 @@
                         toastr.success(data); 
                         window.location = "{{ route('manufacturing.process.index') }}";
                     }
+                },error: function(err) {
+                    $('.submit_button').prop('type', 'sumbit');
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server error please contact to the support.');
+                    }
                 }
             });
         });

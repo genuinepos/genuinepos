@@ -389,6 +389,7 @@
 
         var errorCount = 0;
         function __calculateIngredientsTableAmount(tr) {
+            errorCount = 0;
             var inputQty = tr.find('#input_quantity').val() ? tr.find('#input_quantity').val() : 0;
             var unitCostIncTax = tr.find('#unit_cost_inc_tax').val();
             var limitQty = tr.find('#qty_limit').val();
@@ -401,9 +402,7 @@
             } else if(parseFloat(inputQty) > parseFloat(limitQty)) {
                 tr.find('#input_qty_error').html('Only '+limitQty+' '+unitName+' is available.');
                 errorCount++;
-            } else {
-                errorCount = 0;
-            }
+            } 
 
             var subtotal = parseFloat(inputQty) * parseFloat(unitCostIncTax);
             tr.find('#subtotal').val(parseFloat(subtotal).toFixed(2));

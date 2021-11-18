@@ -50,13 +50,15 @@
                                 <div class="form-group row">
                                     <div class="col-md-3">
                                         <label><strong>Production Reference prefix :</strong></label>
+                                        @php
+                                            $voucherPrefix = '';
+                                            if(isset(json_decode($generalSettings->mf_settings, true)['production_ref_prefix'])){
+                                                $voucherPrefix = json_decode($generalSettings->mf_settings, true)['production_ref_prefix'];
+                                            }
+                                        @endphp
                                         <input type="text" name="production_ref_prefix" class="form-control"
                                             autocomplete="off" placeholder="Production Reference prefix"
-                                            value="
-                                                @if(isset(json_decode($generalSettings->mf_settings, true)['production_ref_prefix']))
-                                                    {{ json_decode($generalSettings->mf_settings, true)['production_ref_prefix'] }}
-                                                @endif
-                                            ">
+                                            value="{{ $voucherPrefix }}">
                                     </div>
 
                                     <div class="col-md-4">

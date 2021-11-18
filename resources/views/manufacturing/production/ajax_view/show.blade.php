@@ -150,7 +150,7 @@
                                 <tr>
                                     <th class="text-end">Tax : </th>
                                     <td class="text-end">
-                                        {{ $production->tax->tax_percent }}%
+                                        {{ $production->tax ? $production->tax->tax_percent : 0 }}%
                                     </td>
                                 </tr>
     
@@ -405,7 +405,7 @@
                         <tr>
                             <th class="text-end">Tax : </th>
                             <td class="text-end">
-                                {{ $production->tax->tax_percent }}%
+                                {{ $production->tax ? $production->tax->tax_percent : '' }}%
                             </td>
                         </tr>
 

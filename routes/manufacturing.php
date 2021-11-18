@@ -32,4 +32,9 @@ Route::group(['prefix' => 'manufacturing', 'namespace' => 'App\Http\Controllers\
         Route::get('/', 'SettingsController@index')->name('manufacturing.settings.index');
         Route::post('store', 'SettingsController@store')->name('manufacturing.settings.store');
     });
+
+    Route::group(['prefix' => 'report'], function ()
+    {
+        Route::get('/', 'ReportController@index')->name('manufacturing.report.index');
+    });
 });

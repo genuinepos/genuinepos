@@ -19,7 +19,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes text-primary"></i> <b>Production</b></a>
+                                            <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>Production</b></a>
                                         </li>
                                      
                                         <li>
@@ -27,7 +27,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-file-alt"></i> <b>Manufacturing Report</b></a>
+                                            <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>Manufacturing Report</b></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -41,6 +41,18 @@
                                 <div class="col-md-12">
                                     <form id="filter_form" class="px-2">
                                         <div class="form-group row">
+                                            <div class="col-md-2 search_area">
+                                                <label><strong>Search Product :</strong></label>
+                                                <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
+                                                <input type="hidden" name="product_id" id="product_id" value="">
+                                                <input type="hidden" name="variant_id" id="variant_id" value="">
+                                                <div class="search_result d-none">
+                                                    <ul id="list" class="list-unstyled">
+                                                        <li><a id="select_product" class="" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
                                             @if ($addons->branches == 1)
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-md-2">
@@ -83,6 +95,24 @@
                                             </div>
 
                                             <div class="col-md-2">
+                                                <label><strong>Category :</strong></label>
+                                                <select name="category_id" class="form-control submit_able"
+                                                    id="category_id">
+                                                    <option value="">All</option>
+                                                    @foreach ($categories as $category)
+                                                        <option value="{{ $category->id }}">{{$category->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label><strong>Sub-Category :</strong></label>
+                                                <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
+                                                    <option value="">All</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-2">
                                                 <label><strong>Status :</strong></label>
                                                 <div class="input-group">
                                                     <select name="status" class="form-control" id="status" autofocus>
@@ -102,8 +132,7 @@
                                                         </span>
                                                     </div>
                                                     <input type="text" name="from_date" id="datepicker"
-                                                        class="form-control from_date"
-                                                        autocomplete="off">
+                                                        class="form-control from_date" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -158,7 +187,6 @@
                                             <table class="display data_tbl data__table">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-black">Actions</th>
                                                         <th class="text-black">Date</th>
                                                         <th class="text-black">Voucher No</th>
                                                         <th class="text-black">Business Location</th>
@@ -166,6 +194,8 @@
                                                         <th class="text-black">Status</th>
                                                         <th class="text-black">Per Unit Cost(Inc.Tax)</th>
                                                         <th class="text-black">Selling Price(Exc.Tax)</th>
+                                                        <th class="text-black">Output Qty</th>
+                                                        <th class="text-black">Wasted Qty</th>
                                                         <th class="text-black">Final Qty</th>
                                                         <th class="text-black">Total Ingredient Cost</th>
                                                         <th class="text-black">Production Cost</th>
@@ -206,68 +236,68 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        var production_table = $('.data_tbl').DataTable({
-            "processing": true,
-            "serverSide": true,
-            dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
-            ],
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-            "ajax": {
-                "url": "{{ route('manufacturing.productions.index') }}",
-                "data": function(d) {
-                    d.branch_id = $('#branch_id').val();
-                    d.warehouse_id = $('#warehouse_id').val();
-                    d.status = $('#status').val();
-                    d.from_date = $('.from_date').val();
-                    d.to_date = $('.to_date').val();
-                }
-            },
-            columnDefs: [{
-                "targets": [0, 7],
-                "orderable": false,
-                "searchable": false
-            }],
-            columns: [
-                {data: 'action'},
-                {data: 'date', name: 'date'},
-                {data: 'reference_no', name: 'reference_no'},
-                {data: 'from', name: 'branches.name'},
-                {data: 'product', name: 'product.name'},
-                {data: 'status', name: 'productions.is_final'},
-                {data: 'unit_cost_inc_tax', name: 'unit_cost_inc_tax', className: 'text-end'},
-                {data: 'price_exc_tax', name: 'price_exc_tax', className: 'text-end'},
-                {data: 'total_final_quantity', name: 'total_final_quantity', className: 'text-end'},
-                {data: 'total_ingredient_cost', name: 'total_ingredient_cost', className: 'text-end'},
-                {data: 'production_cost', name: 'production_cost', className: 'text-end'},
-                {data: 'total_cost', name: 'total_cost', className: 'text-end'},
-            ],fnDrawCallback: function() {
-                var total_final_quantity = sum_table_col($('.data_tbl'), 'total_final_quantity');
-                $('#total_final_quantity').text(bdFormat(total_final_quantity));
-                var total_ingredient_cost = sum_table_col($('.data_tbl'), 'total_ingredient_cost');
-                $('#total_ingredient_cost').text(bdFormat(total_ingredient_cost));
-                var production_cost = sum_table_col($('.data_tbl'), 'production_cost');
-                $('#production_cost').text(bdFormat(production_cost));
-                var total_cost = sum_table_col($('.data_tbl'), 'total_cost');
-                $('#total_cost').text(bdFormat(total_cost));
-                $('.data_preloader').hide();
-            }
-        });
+        // var production_table = $('.data_tbl').DataTable({
+        //     "processing": true,
+        //     "serverSide": true,
+        //     dom: "lBfrtip",
+        //     buttons: [
+        //         {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        //         {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        //         {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+        //     ],
+        //     "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+        //     "ajax": {
+        //         "url": "{{ route('manufacturing.productions.index') }}",
+        //         "data": function(d) {
+        //             d.branch_id = $('#branch_id').val();
+        //             d.warehouse_id = $('#warehouse_id').val();
+        //             d.status = $('#status').val();
+        //             d.from_date = $('.from_date').val();
+        //             d.to_date = $('.to_date').val();
+        //         }
+        //     },
+        //     columnDefs: [{
+        //         "targets": [0, 7],
+        //         "orderable": false,
+        //         "searchable": false
+        //     }],
+        //     columns: [
+        //         {data: 'action'},
+        //         {data: 'date', name: 'date'},
+        //         {data: 'reference_no', name: 'reference_no'},
+        //         {data: 'from', name: 'branches.name'},
+        //         {data: 'product', name: 'product.name'},
+        //         {data: 'status', name: 'productions.is_final'},
+        //         {data: 'unit_cost_inc_tax', name: 'unit_cost_inc_tax', className: 'text-end'},
+        //         {data: 'price_exc_tax', name: 'price_exc_tax', className: 'text-end'},
+        //         {data: 'total_final_quantity', name: 'total_final_quantity', className: 'text-end'},
+        //         {data: 'total_ingredient_cost', name: 'total_ingredient_cost', className: 'text-end'},
+        //         {data: 'production_cost', name: 'production_cost', className: 'text-end'},
+        //         {data: 'total_cost', name: 'total_cost', className: 'text-end'},
+        //     ],fnDrawCallback: function() {
+        //         var total_final_quantity = sum_table_col($('.data_tbl'), 'total_final_quantity');
+        //         $('#total_final_quantity').text(bdFormat(total_final_quantity));
+        //         var total_ingredient_cost = sum_table_col($('.data_tbl'), 'total_ingredient_cost');
+        //         $('#total_ingredient_cost').text(bdFormat(total_ingredient_cost));
+        //         var production_cost = sum_table_col($('.data_tbl'), 'production_cost');
+        //         $('#production_cost').text(bdFormat(production_cost));
+        //         var total_cost = sum_table_col($('.data_tbl'), 'total_cost');
+        //         $('#total_cost').text(bdFormat(total_cost));
+        //         $('.data_preloader').hide();
+        //     }
+        // });
 
-        function sum_table_col(table, class_name) {
-            var sum = 0;
-            table.find('tbody').find('tr').each(function() {
-                if (parseFloat($(this).find('.' + class_name).data('value'))) {
-                    sum += parseFloat(
-                        $(this).find('.' + class_name).data('value')
-                    );
-                }
-            });
-            return sum;
-        }
+        // function sum_table_col(table, class_name) {
+        //     var sum = 0;
+        //     table.find('tbody').find('tr').each(function() {
+        //         if (parseFloat($(this).find('.' + class_name).data('value'))) {
+        //             sum += parseFloat(
+        //                 $(this).find('.' + class_name).data('value')
+        //             );
+        //         }
+        //     });
+        //     return sum;
+        // }
 
         @if ($addons->branches == 1)
             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -320,36 +350,6 @@
                 removeInline: false,
                 printDelay: 500,
                 header: null,
-            });
-        });
-
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
-                }
-            });
-        });
-
-        //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e) {
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-                    production_table.ajax.reload();
-                    toastr.error(data);
-                }
             });
         });
    </script>

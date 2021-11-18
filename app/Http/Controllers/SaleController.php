@@ -513,6 +513,15 @@ class SaleController extends Controller
         if ($updateSale->ledger) {
             $updateSale->ledger->report_date = $updateSale->report_date;
             $updateSale->ledger->save();
+        }else {
+            if ($updateSale->status == 1 && $updateSale->customer_id) {
+                $addCustomerLedger = new CustomerLedger();
+                $addCustomerLedger->customer_id = $updateSale->customer_id;
+                $addCustomerLedger->sale_id = $updateSale->id;
+                $addCustomerLedger->row_type = 1;
+                $addCustomerLedger->report_date = date('Y-m-d', strtotime($updateSale->date));
+                $addCustomerLedger->save();
+            } 
         }
 
         // update product quantity

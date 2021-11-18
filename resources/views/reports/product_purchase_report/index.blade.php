@@ -2,11 +2,7 @@
 @push('stylesheets')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 <style>
-    .sale_and_purchase_amount_area table tbody tr th,td {color: #32325d;}
-    .sale_purchase_and_profit_area {position: relative;}
     .data_preloader{top:2.3%}
-    .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
-    .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
     /* Search Product area style */
     .selectProduct {background-color: #ab1c59;color: #fff !important;}
     .search_area{position: relative;}

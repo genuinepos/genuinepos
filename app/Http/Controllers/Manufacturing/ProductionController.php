@@ -17,7 +17,6 @@ class ProductionController extends Controller
     protected $invoiceVoucherRefIdUtil;
     protected $productStockUtil;
     protected $productionUtil;
-    protected $converter;
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         ProductStockUtil $productStockUtil,

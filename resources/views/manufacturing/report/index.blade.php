@@ -2,8 +2,20 @@
 @push('stylesheets')
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <style>
+        .data_preloader{top:2.3%}
+        /* Search Product area style */
+        .selectProduct {background-color: #ab1c59;color: #fff !important;}
+        .search_area{position: relative;}
+        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
+            margin-top: 1px;}
+        .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
+        .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
+        .search_result ul li a:hover {color: white;background-color: #ab1c59;}
+        /* Search Product area style end */
+    </style>
 @endpush
-@section('title', 'All Process - ')
+@section('title', 'Manufacturing - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -151,7 +163,7 @@
                                             <div class="col-md-2">
                                                 <label><strong></strong></label>
                                                 <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start">
+                                                    <button type="button" id="filter_button" class="btn text-white btn-sm btn-secondary float-start">
                                                         <i class="fas fa-funnel-dollar"></i> Filter
                                                     </button>
                                                 </div>
@@ -205,7 +217,9 @@
                                                 <tbody></tbody>
                                                 <tfoot>
                                                     <tr class="bg-secondary">
-                                                        <th colspan="8" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                        <th colspan="7" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                        <th id="quantity" class="text-white text-end"></th>
+                                                        <th id="wasted_quantity" class="text-white text-end"></th>
                                                         <th id="total_final_quantity" class="text-white text-end"></th>
                                                         <th id="total_ingredient_cost" class="text-white text-end"></th>
                                                         <th id="production_cost" class="text-white text-end"></th>
@@ -235,69 +249,74 @@
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script>
-        // var production_table = $('.data_tbl').DataTable({
-        //     "processing": true,
-        //     "serverSide": true,
-        //     dom: "lBfrtip",
-        //     buttons: [
-        //         {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-        //         {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-        //         {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
-        //     ],
-        //     "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-        //     "ajax": {
-        //         "url": "{{ route('manufacturing.productions.index') }}",
-        //         "data": function(d) {
-        //             d.branch_id = $('#branch_id').val();
-        //             d.warehouse_id = $('#warehouse_id').val();
-        //             d.status = $('#status').val();
-        //             d.from_date = $('.from_date').val();
-        //             d.to_date = $('.to_date').val();
-        //         }
-        //     },
-        //     columnDefs: [{
-        //         "targets": [0, 7],
-        //         "orderable": false,
-        //         "searchable": false
-        //     }],
-        //     columns: [
-        //         {data: 'action'},
-        //         {data: 'date', name: 'date'},
-        //         {data: 'reference_no', name: 'reference_no'},
-        //         {data: 'from', name: 'branches.name'},
-        //         {data: 'product', name: 'product.name'},
-        //         {data: 'status', name: 'productions.is_final'},
-        //         {data: 'unit_cost_inc_tax', name: 'unit_cost_inc_tax', className: 'text-end'},
-        //         {data: 'price_exc_tax', name: 'price_exc_tax', className: 'text-end'},
-        //         {data: 'total_final_quantity', name: 'total_final_quantity', className: 'text-end'},
-        //         {data: 'total_ingredient_cost', name: 'total_ingredient_cost', className: 'text-end'},
-        //         {data: 'production_cost', name: 'production_cost', className: 'text-end'},
-        //         {data: 'total_cost', name: 'total_cost', className: 'text-end'},
-        //     ],fnDrawCallback: function() {
-        //         var total_final_quantity = sum_table_col($('.data_tbl'), 'total_final_quantity');
-        //         $('#total_final_quantity').text(bdFormat(total_final_quantity));
-        //         var total_ingredient_cost = sum_table_col($('.data_tbl'), 'total_ingredient_cost');
-        //         $('#total_ingredient_cost').text(bdFormat(total_ingredient_cost));
-        //         var production_cost = sum_table_col($('.data_tbl'), 'production_cost');
-        //         $('#production_cost').text(bdFormat(production_cost));
-        //         var total_cost = sum_table_col($('.data_tbl'), 'total_cost');
-        //         $('#total_cost').text(bdFormat(total_cost));
-        //         $('.data_preloader').hide();
-        //     }
-        // });
+        var production_table = $('.data_tbl').DataTable({
+            "processing": true,
+            "serverSide": true,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+            ],
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "ajax": {
+                "url": "{{ route('manufacturing.report.index') }}",
+                "data": function(d) {
+                    d.product_id = $('#product_id').val();
+                    d.variant_id = $('#variant_id').val();
+                    d.branch_id = $('#branch_id').val();
+                    d.warehouse_id = $('#warehouse_id').val();
+                    d.category_id = $('#category_id').val();
+                    d.sub_category_id = $('#sub_category_id').val();
+                    d.status = $('#status').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
+                }
+            },
+            columns: [
+                {data: 'date', name: 'date'},
+                {data: 'reference_no', name: 'reference_no'},
+                {data: 'from', name: 'branches.name'},
+                {data: 'product', name: 'product.name'},
+                {data: 'status', name: 'productions.is_final'},
+                {data: 'unit_cost_inc_tax', name: 'unit_cost_inc_tax', className: 'text-end'},
+                {data: 'price_exc_tax', name: 'price_exc_tax', className: 'text-end'},
+                {data: 'quantity', name: 'quantity', className: 'text-end'},
+                {data: 'wasted_quantity', name: 'wasted_quantity', className: 'text-end'},
+                {data: 'total_final_quantity', name: 'total_final_quantity', className: 'text-end'},
+                {data: 'total_ingredient_cost', name: 'total_ingredient_cost', className: 'text-end'},
+                {data: 'production_cost', name: 'production_cost', className: 'text-end'},
+                {data: 'total_cost', name: 'total_cost', className: 'text-end'},
+            ],fnDrawCallback: function() {
+                var quantity = sum_table_col($('.data_tbl'), 'quantity');
+                $('#quantity').text(bdFormat(quantity));
+                var wasted_quantity = sum_table_col($('.data_tbl'), 'wasted_quantity');
+                $('#wasted_quantity').text(bdFormat(wasted_quantity));
+                var total_final_quantity = sum_table_col($('.data_tbl'), 'total_final_quantity');
+                $('#total_final_quantity').text(bdFormat(total_final_quantity));
+                var total_ingredient_cost = sum_table_col($('.data_tbl'), 'total_ingredient_cost');
+                $('#total_ingredient_cost').text(bdFormat(total_ingredient_cost));
+                var production_cost = sum_table_col($('.data_tbl'), 'production_cost');
+                $('#production_cost').text(bdFormat(production_cost));
+                var total_cost = sum_table_col($('.data_tbl'), 'total_cost');
+                $('#total_cost').text(bdFormat(total_cost));
+                $('.data_preloader').hide();
+            }
+        });
 
-        // function sum_table_col(table, class_name) {
-        //     var sum = 0;
-        //     table.find('tbody').find('tr').each(function() {
-        //         if (parseFloat($(this).find('.' + class_name).data('value'))) {
-        //             sum += parseFloat(
-        //                 $(this).find('.' + class_name).data('value')
-        //             );
-        //         }
-        //     });
-        //     return sum;
-        // }
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
         @if ($addons->branches == 1)
             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -319,7 +338,7 @@
         @endif
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('click', '#filter_button', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
             production_table.ajax.reload();
@@ -352,6 +371,63 @@
                 header: null,
             });
         });
+
+            //Submit filter form by date-range field blur 
+    $(document).on('click', '#search_product', function () {
+        $(this).val('');
+        $('#product_id').val('');
+        $('#variant_id').val('');
+    });
+
+    $('#search_product').on('input', function () {
+        $('.search_result').hide();
+        $('#list').empty();
+        var product_name = $(this).val();
+        if (product_name === '') {
+            $('.search_result').hide();
+            $('#product_id').val('');
+            $('#variant_id').val('');
+            return;
+        }
+
+        $.ajax({
+            url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
+            async:true,
+            type:'get',
+            success:function(data){
+                if (!$.isEmptyObject(data.noResult)) {
+                    $('.search_result').hide();
+                }else{
+                    $('.search_result').show();
+                    $('#list').html(data);
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#select_product', function (e) {
+        e.preventDefault();
+        var product_name = $(this).html();
+        $('#search_product').val(product_name.trim());
+        var product_id = $(this).data('p_id');
+        var variant_id = $(this).data('v_id');
+        $('#product_id').val(product_id);
+        $('#variant_id').val(variant_id);
+        $('.search_result').hide();
+    });
+
+    $('body').keyup(function(e) {
+        if (e.keyCode == 13 || e.keyCode == 9){  
+            $(".selectProduct").click();
+            $('.search_result').hide();
+            $('#list').empty();
+        }
+    });
+
+    $(document).on('mouseenter', '#list>li>a',function () {
+        $('#list>li>a').removeClass('selectProduct');
+        $(this).addClass('selectProduct');
+    });
    </script>
 
     <script type="text/javascript">

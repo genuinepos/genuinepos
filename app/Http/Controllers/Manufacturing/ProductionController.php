@@ -66,7 +66,7 @@ class ProductionController extends Controller
         if ($request->tax_id) {
             $tax_id = explode('-', $request->tax_id)[0];
         }
-
+        
         $this->validate($request, [
             'date' => 'required',
             'output_quantity' => 'required',
@@ -87,6 +87,13 @@ class ProductionController extends Controller
 
         $generalSetting = DB::table('general_settings')->select('mf_settings')->first();
         $referenceNoPrefix = json_decode($generalSetting->mf_settings, true)['production_ref_prefix'];
+
+        $updateLastEntry = Production::where('is_last_entry', 1)->select('id', 'is_last_entry')->first();
+        if ($updateLastEntry) {
+            $updateLastEntry->is_last_entry = 0;
+            $updateLastEntry->save();
+        }
+
         $addProduction = new Production();
         $addProduction->reference_no = $request->reference_no ? $request->reference_no : ($referenceNoPrefix != null ? $referenceNoPrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('productions'), 5, "0", STR_PAD_LEFT);
         $addProduction->branch_id = auth()->user()->branch_id;
@@ -146,7 +153,6 @@ class ProductionController extends Controller
                         }
                     }
                 }
-
                 $index++;
             }
         }
@@ -156,7 +162,8 @@ class ProductionController extends Controller
                 $this->productionUtil->updateProductAndVariantPriceByProduction($request->product_id, $request->variant_id, $request->per_unit_cost_exc_tax, $request->per_unit_cost_inc_tax, $request->xMargin, $request->selling_price, $tax_id, $request->tax_type);
             }
 
-            $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+            $this->productStockUtil->adjustMainProductAndVariantStock($request->product_id, $request->variant_id);
+
             if (isset($request->store_warehouse_id)) {
                 $this->productStockUtil->addWarehouseProduct($request->product_id, $request->variant_id, $request->stock_warehouse_id);
                 $this->productStockUtil->adjustWarehouseStock($request->product_id, $request->variant_id, $request->store_warehouse_id);
@@ -232,7 +239,6 @@ class ProductionController extends Controller
 
     public function update(Request $request, $productionId)
     {
-        //return $request->all();
         $tax_id = NULL;
         if ($request->tax_id) {
             $tax_id = explode('-', $request->tax_id)[0];
@@ -257,12 +263,6 @@ class ProductionController extends Controller
 
         $generalSetting = DB::table('general_settings')->select('mf_settings')->first();
         $referenceNoPrefix = json_decode($generalSetting->mf_settings, true)['production_ref_prefix'];
-
-        $updateLastEntry = Production::where('is_last_entry', 1)->select('id', 'is_last_entry')->first();
-        if ($updateLastEntry) {
-            $updateLastEntry->is_last_entry = 0;
-            $updateLastEntry->save();
-        }
 
         $updateProduction = Production::where('id', $productionId)->first();
         $storedWarehouseId = $updateProduction->warehouse_id;

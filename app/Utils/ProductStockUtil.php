@@ -29,7 +29,7 @@ class ProductStockUtil
                 ->select(DB::raw('sum(quantity) as total_purchase'))
                 ->groupBy('purchase_products.product_id')->get();
 
-            $productionQty = DB::table('productions')->where('is_final', 1)
+            $productionQty = DB::table('productions')->where('productions.is_final', 1)
                 ->where('productions.product_id', $product_id)
                 ->select(DB::raw('sum(total_final_quantity) as total_quantity'))
                 ->groupBy('productions.product_id')->get();

@@ -27,9 +27,9 @@
                 <div class="notify-menu">
                     <div class="head__content__sec">
                         <ul class="head__cn">
+                            <li class="top-icon d-none d-md-block" id="hard_reload"><a href="#" title="Reload"><b><span class="fas fa-redo-alt"></span></b></a></li>
                             @if ($addons->e_commerce == 1)
-                            <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span
-                                            class="fas fa-globe"></span></b></a></li>
+                                <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif
                             <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
                                             class="fas fa-th-large"></i></b></a>
@@ -47,7 +47,7 @@
                             <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
                             <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
-                            <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
+                                <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
                             @endif
                             <li class="top-icon">
                                 <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">

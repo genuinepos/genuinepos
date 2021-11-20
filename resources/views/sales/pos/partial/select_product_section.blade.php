@@ -5,31 +5,33 @@
                 <div class="all-cat">
                     <a href="" data-id="" class="cat-button">All</a>
                     @foreach ($categories as $cate)
-                        <a href="" data-id="{{ $cate->id }}" class="cat-button">{{ $cate->name }}</a>
+                    <a href="" data-id="{{ $cate->id }}" class="cat-button">{{ $cate->name }}</a>
                     @endforeach
                 </div>
             </div>
         </div>
-        <div class="col-lg-8 col-8 p-1">
+        <div class="col-lg-8 col-8 p-1 pb-0">
             <div class="show-product">
                 <div class="product-inner">
                     <div class="category-head">
                         <div class="cat-ban-sec">
                             <div class="row">
                                 <div class="col-6">
-                                    <select name="category_id" id="category_id" class="form-select form-control cat-bg-1 common_submitable">
+                                    <select name="category_id" id="category_id"
+                                        class="form-select form-control cat-bg-1 common_submitable">
                                         <option value="">All Categories</option>
                                         @foreach ($categories as $cate)
-                                            <option value="{{ $cate->id }}">{{ $cate->name }}</option>
+                                        <option value="{{ $cate->id }}">{{ $cate->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="col-6">
-                                    <select id="brand_id" id="brand_id" class="form-select form-control cat-bg-2 bg common_submitable">
+                                    <select id="brand_id" id="brand_id"
+                                        class="form-select form-control cat-bg-2 bg common_submitable">
                                         <option value="">All Brands</option>
                                         @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -42,7 +44,7 @@
                         </div>
                         <div class="product-ctn">
                             <div class="row" id="select_product_list">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -70,7 +72,7 @@
         });
     }
     selectProductList();
-    
+
     //Submit filter form by select input changing
     $(document).on('change', '.common_submitable', function() {
         selectProductList();

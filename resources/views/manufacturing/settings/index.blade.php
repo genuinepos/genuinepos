@@ -29,7 +29,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-file-alt"></i> <b>Manufacturing Report</b></a>
+                                            <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>Manufacturing Report</b></a>
                                         </li>
                                     </ul>
                                 </div>

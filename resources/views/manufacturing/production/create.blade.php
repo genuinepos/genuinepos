@@ -389,7 +389,6 @@
 
         var errorCount = 0;
         function __calculateIngredientsTableAmount(tr) {
-            errorCount = 0;
             var inputQty = tr.find('#input_quantity').val() ? tr.find('#input_quantity').val() : 0;
             var unitCostIncTax = tr.find('#unit_cost_inc_tax').val();
             var limitQty = tr.find('#qty_limit').val();
@@ -476,6 +475,7 @@
         //Add process request by ajax
         $('#add_production_form').on('submit', function(e) {
             e.preventDefault();
+            errorCount = 0;
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();

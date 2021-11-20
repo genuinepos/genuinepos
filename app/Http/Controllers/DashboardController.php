@@ -139,7 +139,7 @@ class DashboardController extends Controller
     public function stockAlert(Request $request)
     {
         if ($request->ajax()) {
-            $products = DB::table('products')->where('quantity', '<=', 'alert_quantity')
+            $products = DB::table('products')
                 ->join('units', 'products.unit_id', 'units.id')
                 ->select(
                     [
@@ -149,19 +149,12 @@ class DashboardController extends Controller
                         'products.quantity',
                         'units.name as unit_name',
                     ]
-                )->get();
+                )->whereColumn('products.quantity', '<=', 'products.alert_quantity')->orderBy('products.id', 'desc')->get();
 
             return DataTables::of($products)
                 ->addIndexColumn()
                 ->editColumn('stock', function ($row) {
-                    $quantity = '';
-                    if ($row->quantity <= 0) {
-                        $quantity = '<span class="text-danger"><b>' . $row->quantity . '</b></span>';
-                    } else {
-                        $quantity = '<b>' . $row->quantity . '</b>';
-                    }
-
-                    return $quantity . ' (' . $row->unit_name . ')';
+                    return $quantity = '<span class="text-danger"><b>' . $row->quantity . '</b></span>';
                 })->rawColumns(['stock'])->make(true);
         }
     }

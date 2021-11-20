@@ -63,7 +63,7 @@
                 <div class="pos-logo">
                     @if (auth()->user()->branch)
                     @if (auth()->user()->branch->logo != 'default.png')
-                    <img style="height: 40px; width:100px;"
+                    <img style="height: auto;width: 99%"
                         src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
                     @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
@@ -71,7 +71,7 @@
                     @endif
                     @else
                     @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                    <img style="height: 40px; width:100px;"
+                    <img style="height: auto;width: 99%"
                         src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
                         alt="logo" class="logo__img">
                     @else
@@ -210,7 +210,7 @@
 
                         <div class="btn-sec">
                             {{-- Shortcut Manual --}}
-                            <a href="#" class="pos-btn position-relative me-1" id="readDocument"><i
+                            <a href="#" class="pos-btn position-relative" id="readDocument"><i
                                     class="fas fa-file-alt"></i>
                                 <div class="position-absolute doc">
                                     <ul class="p-2 pt-3">
@@ -251,7 +251,7 @@
                             </a>
                             <a href="" class="pos-btn status" id="suspends"><i
                                     class="fas text-warning fa-pause"></i></a>
-                            <a href="" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal">
+                            <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
                                 <span class="fas fa-calculator"></span>
                             </a>
                             <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel"

@@ -1,50 +1,52 @@
 @extends('layout.pos_master')
 @section('pos_content')
-    <!-- Pos Header -->
-    @include('sales.pos.partial.pos_header')
-    <!-- Pos Header End-->
-    <div class="body-wraper">
-        <div class="container-fluid">
-            <div class="pos-content">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <div class="row">
-                            <!-- Select Category, Brand and Product Area -->
-                            @include('sales.pos.partial.select_product_section')
-                            <!-- Select Category, Brand and Product Area -->
-                            <div class="col-lg-7 p-1">
-                                <div class="cart-table">
-                                    <div class="cart-table-inner-pos">
-                                        <div class="tbl-head">
-                                            <ul class="tbl-head-shortcut-menus" id="pos-shortcut-menus">
-                                                <li><a href="{{ route('pos.short.menus.modal.form') }}" id="addPosShortcutBtn" class="head-tbl-icon border-none"><span class="fas fa-plus"></span></a></li>
-                                            </ul>
-                                        </div>
-
-                                        <!-- Sale Product Table -->
-                                        @include('sales.pos.partial.sale_product_table')
-                                        <!-- Sale Product Table End -->
-
-                                        <!-- Total Item & Qty section -->
-                                        @include('sales.pos.partial.total_item_and_qty')
-                                        <!-- Total Item & Qty section End-->
+<!-- Pos Header -->
+@include('sales.pos.partial.pos_header')
+<!-- Pos Header End-->
+<div class="body-wraper">
+    <div class="container-fluid h-100">
+        <div class="pos-content">
+            <div class="row h-100">
+                <div class="col-lg-9">
+                    <div class="row">
+                        <!-- Select Category, Brand and Product Area -->
+                        @include('sales.pos.partial.select_product_section')
+                        <!-- Select Category, Brand and Product Area -->
+                        <div class="col-lg-7 p-1 pb-0">
+                            <div class="cart-table">
+                                <div class="cart-table-inner-pos">
+                                    <div class="tbl-head">
+                                        <ul class="tbl-head-shortcut-menus" id="pos-shortcut-menus">
+                                            <li><a href="{{ route('pos.short.menus.modal.form') }}"
+                                                    id="addPosShortcutBtn" class="head-tbl-icon border-none"><span
+                                                        class="fas fa-plus"></span></a></li>
+                                        </ul>
                                     </div>
+
+                                    <!-- Sale Product Table -->
+                                    @include('sales.pos.partial.sale_product_table')
+                                    <!-- Sale Product Table End -->
+
+                                    <!-- Total Item & Qty section -->
+                                    @include('sales.pos.partial.total_item_and_qty')
+                                    <!-- Total Item & Qty section End-->
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Pos Footer -->
-                        @include('sales.pos.partial.pos_footer')
-                        <!-- Pos Footer End -->
                     </div>
 
-                    <!-- Pos Total Sum And Buttons section -->
-                    @include('sales.pos.partial.total_sum_and_butten')
-                    <!-- Pos Total Sum And Buttons section End -->
+                    <!-- Pos Footer -->
+                    @include('sales.pos.partial.pos_footer')
+                    <!-- Pos Footer End -->
                 </div>
+
+                <!-- Pos Total Sum And Buttons section -->
+                @include('sales.pos.partial.total_sum_and_butten')
+                <!-- Pos Total Sum And Buttons section End -->
             </div>
         </div>
     </div>
+</div>
 @endsection
 @push('js')
 <script>
@@ -76,7 +78,7 @@
                     if (is_manage_stock == 1) {
                         $('#stock_quantity').val(singleProductQty);
                     }
-                    
+
                     var product_ids = document.querySelectorAll('#product_id');
                     var sameProduct = 0;
                     product_ids.forEach(function(input) {
@@ -133,7 +135,7 @@
                             p_tax_amount = __tax_amount;
                         }
 
-                        var name = product_name.length > 30 ? product_name.substring(0, 30)+'...' : product_name; 
+                        var name = product_name.length > 30 ? product_name.substring(0, 30)+'...' : product_name;
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
@@ -166,7 +168,7 @@
                         tr += '</td>';
                         tr += '<td>';
                         tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+ '" id="unit_price_exc_tax">';
-                        
+
                         tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                         tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(unitPriceIncTax).toFixed(2)+'</span> </b>';
                         tr += '</td>';
@@ -175,7 +177,7 @@
                         tr += '<input value="'+ parseFloat(unitPriceIncTax).toFixed(2) +'" name="subtotals[]" type="hidden" id="subtotal">';
                         tr += '<b><span class="span_subtotal">'+ parseFloat(unitPriceIncTax).toFixed(2) +'</span></b>';
                         tr += '</td>';
-                        
+
                         tr +='<td><a href="#" class="action-btn c-delete" id="remove_product_btn"><span class="fas fa-trash "></span></a></td>';
                         tr += '</tr>';
                         $('#product_list').prepend(tr);
@@ -195,7 +197,7 @@
     }
 
     // select variant product and add purchase table
-    function salectVariant(e){  
+    function salectVariant(e){
         var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val("");
@@ -223,7 +225,7 @@
                     if (is_manage_stock) {
                         $('#stock_quantity').val(branchVariantQty);
                     }
-                    
+
                     var variant_ids = document.querySelectorAll('#variant_id');
                     var sameVariant = 0;
                     variant_ids.forEach(function(input) {
@@ -281,7 +283,7 @@
                             tax_amount = __tax_amount;
                         }
 
-                        var name = product_name.length > 30 ? product_name.substring(0, 30)+'...' : product_name; 
+                        var name = product_name.length > 30 ? product_name.substring(0, 30)+'...' : product_name;
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
@@ -345,7 +347,7 @@
         if (qty < 0) {
             $(this).val(0);
         }
-        
+
         if (parseFloat(qty) >= 0) {
             var tr = $(this).closest('tr');
             var qty_limit = tr.find('#qty_limit').val();
@@ -357,14 +359,14 @@
                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount();  
+                calculateTotalAmount();
                 return;
             }
             var unitPrice = tr.find('#unit_price_inc_tax').val();
             var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
             tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
             tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-            calculateTotalAmount();  
+            calculateTotalAmount();
         }
     });
 
@@ -454,7 +456,7 @@
         }
     });
 
-    // change unit discount type var productTableRow = 
+    // change unit discount type var productTableRow =
     $('#e_unit_discount_type').on('change', function() {
         var type = $(this).val();
         var discountValue = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
@@ -497,7 +499,7 @@
         var e_unit = $('#e_unit').val();
 
         var productTableRow = $('#product_list tr:nth-child(' + (tableRowIndex + 1) + ')');
-        // calculate unit tax 
+        // calculate unit tax
         productTableRow.find('.span_unit').html(e_unit);
         productTableRow.find('#unit').val(e_unit);
         productTableRow.find('#quantity').val(parseFloat(e_quantity).toFixed(2));
@@ -530,7 +532,7 @@
         $('#editProductModal').modal('hide');
     });
 
-    // Remove product form purchase product list (Table) 
+    // Remove product form purchase product list (Table)
     $(document).on('click', '#remove_product_btn',function(e){
         e.preventDefault();
         $(this).closest('tr').remove();
@@ -546,7 +548,7 @@
         var changeAmount = parseFloat(payingAmount) - parseFloat(totalPayable);
         $('#modal_change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
         var calcTotalDue = parseFloat(totalPayable) - parseFloat(payingAmount);
-        $('#modal_total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2)); 
+        $('#modal_total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
 
         $('#paying_amount').val(parseFloat(payingAmount).toFixed(2));
         $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
@@ -560,7 +562,7 @@
             url:"{{route('purchases.get.all.unites')}}",
             success:function(units){
                 $.each(units, function(key, unit){
-                    unites.push(unit.name); 
+                    unites.push(unit.name);
                 });
             }
         });
@@ -598,7 +600,7 @@
     setAccount();
 
     $('body').keyup(function(e){
-        if (e.keyCode == 13 || e.keyCode == 9){  
+        if (e.keyCode == 13 || e.keyCode == 9){
             $(".selectProduct").click();
             $('#list').empty();
             keyName = e.keyCode;
@@ -610,10 +612,10 @@
         $(this).addClass('selectProduct');
     });
 
-    // Automatic remove searching product is found signal 
+    // Automatic remove searching product is found signal
     setInterval(function(){
         $('#search_product').removeClass('is-invalid');
-    }, 500); 
+    }, 500);
 
     setInterval(function(){
         $('#search_product').removeClass('is-valid');

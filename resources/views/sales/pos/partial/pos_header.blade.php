@@ -173,7 +173,6 @@
                                     </div>
                                     <input readonly type="number" step="any" class="form-control" name="earned_point"
                                         id="earned_point">
-                                    <!-- =============================== -->
 
                                     <div class="input-group-prepend ms-1">
                                         <span class="input-group-text valus"> = {{
@@ -182,7 +181,6 @@
                                     <input readonly type="text" class="form-control" id="trial_point_amount">
                                 </div>
                                 @endif
-
 
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend">
@@ -208,9 +206,11 @@
                             <p>{{ date('d-m-Y') }} <span id="time">6:58 AM</span></p>
                         </div>
 
+                        
+
                         <div class="btn-sec">
                             {{-- Shortcut Manual --}}
-                            <a href="#" class="pos-btn position-relative" id="readDocument"><i
+                            <a href="#" class="pos-btn position-relative" id="readDocument" title="Shortcut button list"><i
                                     class="fas fa-file-alt"></i>
                                 <div class="position-absolute doc">
                                     <ul class="p-2 pt-3">
@@ -249,11 +249,21 @@
                                     </ul>
                                 </div>
                             </a>
-                            <a href="" class="pos-btn status" id="suspends"><i
-                                    class="fas text-warning fa-pause"></i></a>
-                            <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
+
+                            <a href="#" class="pos-btn status" id="suspends"><i class="fas text-warning fa-pause"></i></a>
+
+                            <a href="#" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
                                 <span class="fas fa-calculator"></span>
                             </a>
+
+                            <a href="#" class="pos-btn" id="hard_reload">
+                                <span class="fas fa-redo-alt"></span>
+                            </a>
+
+                            {{-- <a href="#" class="pos-btn d-none d-md-block" id="hard_reload" title="Hard Reload">
+                                <span class="fas fa-redo-alt"></span>
+                            </a> --}}
+
                             <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                                 aria-hidden="true">
                                 <div class="modal-dialog">
@@ -289,6 +299,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             @if (auth()->user()->permission->register['register_view'] == '1')
                             <a href="#" class="pos-btn text-info" id="cash_register_details" title="Register Details"><i
                                     class="fas fa-cash-register"></i></a>
@@ -298,6 +309,7 @@
                             <a href="#" class="pos-btn text-danger" id="close_register" title="Close Register"><span
                                     class="fas fa-times"></span></a>
                             @endif
+
                             <a href="" class="pos-btn"><span class="fas fa-bell"></span></a>
                             <a href="" class="pos-btn" id="pos_exit_button"><span class="fas fa-backward"></span></a>
                         </div>

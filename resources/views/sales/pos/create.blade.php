@@ -621,5 +621,8 @@
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
+    $(document).on('click', '#hard_reload', function () {
+        window.location.reload(true);
+    });
 </script>
 @endpush

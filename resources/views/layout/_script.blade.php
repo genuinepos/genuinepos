@@ -39,9 +39,12 @@
         });
 
         $(document).on('click', '.display tbody tr', function () {
-            console.log('Clicked');
             $('.display tbody tr').removeClass('active_tr'); 
             $(this).addClass('active_tr');
+        });
+        
+        $(document).on('click', '#hard_reload', function () {
+            window.location.reload(true);
         });
     </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>

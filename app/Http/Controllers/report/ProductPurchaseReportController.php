@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\report;
 
 use App\Utils\Converter;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -102,7 +103,7 @@ class ProductPurchaseReportController extends Controller
             return DataTables::of($purchaseProducts)
                 ->editColumn('product', function ($row) {
                     $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                    return $row->name . $variant;
+                    return Str::limit($row->name, 25, '') . $variant;
                 })
                 ->editColumn('product_code', function ($row) {
                     return $row->variant_code ? $row->variant_code : $row->product_code;

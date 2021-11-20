@@ -130,15 +130,15 @@
         ],
         fnDrawCallback: function() {
             var totalPurchase = sum_table_col($('.data_tbl'), 'total_purchase');
-            $('#total_purchase').text(parseFloat(totalPurchase).toFixed(2));
+            $('#total_purchase').text(bdFormat(totalPurchase));
             var totalPaid = sum_table_col($('.data_tbl'), 'total_paid');
-            $('#total_paid').text(parseFloat(totalPaid).toFixed(2));
+            $('#total_paid').text(bdFormat(totalPaid));
             var totalOpeningBalance = sum_table_col($('.data_tbl'), 'opening_balance');
-            $('#total_op_blc_due').text(parseFloat(totalOpeningBalance).toFixed(2));
+            $('#total_op_blc_due').text(bdFormat(totalOpeningBalance));
             var totalDue = sum_table_col($('.data_tbl'), 'total_purchase_due');
-            $('#total_purchase_due').text(parseFloat(totalDue).toFixed(2));
+            $('#total_purchase_due').text(bdFormat(totalDue));
             var totalReturnDue = sum_table_col($('.data_tbl'), 'total_purchase_return_due');
-            $('#total_return_due').text(parseFloat(totalReturnDue).toFixed(2));
+            $('#total_return_due').text(bdFormat(totalReturnDue));
         },
     });
 

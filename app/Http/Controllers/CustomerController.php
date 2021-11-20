@@ -830,7 +830,7 @@ class CustomerController extends Controller
         $customer_payments = DB::table('customer_payments')
             ->leftJoin('accounts', 'customer_payments.account_id', 'accounts.id')
             ->select('customer_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
-            ->where('customer_payments.id', $customerId)
+            ->where('customer_payments.customer_id', $customerId)
             ->orderBy('report_date', 'desc')->get();
         return view('contacts.customers.ajax_view.view_payment_list', compact('customer', 'customer_payments'));
     }

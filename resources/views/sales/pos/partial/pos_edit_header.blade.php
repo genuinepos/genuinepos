@@ -99,8 +99,6 @@
                                             <span class="input-group-text valus">Point</span>
                                         </div>
                                         <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
-                                        <!-- =============================== -->
-
                                         <div class="input-group-prepend ms-1">
                                             <span class="input-group-text valus"> = {{ json_decode($generalSettings->business, true)['currency'] }}</span>
                                         </div>

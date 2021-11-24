@@ -2,16 +2,6 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><strong>Contact Type :</strong> </label>
-            <select name="contact_type" class="form-control">
-                <option value="">Select contact type</option>
-                <option value="1">Supplier</option>
-                <option value="2">Customer</option>
-                <option value="3">Both (Supplier - Customer)</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
             <label><strong>Contact ID :</strong></label>
             <input type="text" name="contact_id" class="form-control"  placeholder="Contact ID"/>
         </div>
@@ -141,3 +131,47 @@
         </div>
     </div>
 </form>
+
+<script>
+    // Add customer by ajax
+    $(document).on('submit', '#add_customer_form', function(e){
+        e.preventDefault();
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        var inputs = $('.c_add_input');
+            $('.error').html('');  
+            var countErrorField = 0;  
+        $.each(inputs, function(key, val){
+            var inputId = $(val).attr('id');
+            var idValue = $('#'+inputId).val();
+            if(idValue == ''){
+                countErrorField += 1;
+                var fieldName = $('#'+inputId).data('name');
+                $('.error_'+inputId).html(fieldName+' is required.');
+            }
+        });
+
+        if(countErrorField > 0){
+            $('.loading_button').hide();
+            return;
+        }
+
+        $.ajax({
+            url:url,
+            type:'post',
+            data: request,
+            success:function(data){
+                toastr.success(data);
+                $('#add_customer_form')[0].reset();
+                $('.loading_button').hide();
+                $('#addCustomerModal').modal('hide');
+                $('#customer_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
+                $('#customer_id').val(data.id);
+                console.log(parseFloat(data.total_sale_due).toFixed(2));
+                $('#previous_due').val(parseFloat(data.total_sale_due).toFixed(2));
+                calculateTotalAmount();
+            }
+        });
+    });
+</script>

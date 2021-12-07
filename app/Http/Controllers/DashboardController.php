@@ -71,13 +71,13 @@ class DashboardController extends Controller
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
                 $purchaseQuery->where('purchases.branch_id', NULL);
-                $saleQuery->where('sales.branch_id', NULL);
+                $saleQuery->where('sales.branch_id', NULL)->where('sales.status', 1);
                 $expenseQuery->where('expanses.branch_id', NULL);
                 $userQuery->where('admin_and_users.branch_id', NULL);
                 $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
             } else {
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
-                $saleQuery->where('sales.branch_id', $request->branch_id);
+                $saleQuery->where('sales.branch_id', $request->branch_id)->where('sales.status', 1);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
                 $userQuery->where('admin_and_users.branch_id', $request->branch_id);
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
@@ -269,7 +269,7 @@ class DashboardController extends Controller
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'customers.name as customer_name',
-                )->where('sales.due', '>', 0)->orderBy('id', 'desc')->get();
+                )->where('sales.due', '>', 0)->where('sales.status', 1)->orderBy('id', 'desc')->get();
             } else {
                 $sales = $query->select(
                     'sales.*',
@@ -277,7 +277,7 @@ class DashboardController extends Controller
                     'branches.name as branch_name',
                     'branches.branch_code',
                     'customers.name as customer_name',
-                )->where('sales.branch_id', auth()->user()->branch_id)->where('sales.due', '>', 0)->get();
+                )->where('sales.branch_id', auth()->user()->branch_id)->where('sales.due', '>', 0)->where('sales.status', 1)->get();
             }
 
             return DataTables::of($sales)
@@ -432,7 +432,7 @@ class DashboardController extends Controller
         if ($request->branch_id) {
             if ($request->branch_id == 'HF') {
                 $purchaseQuery->where('purchases.branch_id', NULL);
-                $saleQuery->where('sales.branch_id', NULL);
+                $saleQuery->where('sales.branch_id', NULL)->where('sales.status', 1);
                 $expenseQuery->where('expanses.branch_id', NULL);
                 $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
                 $purchaseReturnQuery->where('purchase_returns.branch_id', NULL);
@@ -442,7 +442,7 @@ class DashboardController extends Controller
                 $payrollQuery->where('admin_and_users.branch_id', NULL);
             } else {
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
-                $saleQuery->where('sales.branch_id', $request->branch_id);
+                $saleQuery->where('sales.branch_id', $request->branch_id)->where('sales.status', 1);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
                 $purchaseReturnQuery->where('purchase_returns.branch_id', $request->branch_id);

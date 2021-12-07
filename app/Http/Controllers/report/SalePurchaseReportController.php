@@ -23,8 +23,16 @@ class SalePurchaseReportController extends Controller
     // Get sale purchase amounts **requested by ajax**
     public function salePurchaseAmounts()
     {
-        $sales = DB::table('sales')->whereYear('report_date', date('Y'))->get();
-        $purchases = DB::table('purchases')->whereYear('report_date', date('Y'))->get();
+        $sales = '';
+        $purchases = '';
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $sales = DB::table('sales')->where('sales.status', 1)->get();
+            $purchases = DB::table('purchases')->get();
+        } else {
+            $sales = DB::table('sales')->where('sales.status', 1)
+                ->where('sales.branch_id', auth()->user()->branch_id)->get();
+            $purchases = DB::table('purchases')->where('purchases.branch_id', auth()->user()->branch_id)->get();
+        }
         return view('reports.sale_purchase_report.ajax_view.sale_and_purchase_amount', compact('sales', 'purchases'));
     }
 
@@ -61,8 +69,14 @@ class SalePurchaseReportController extends Controller
             $purchase_query->whereBetween('report_date', $date_range);
         }
 
-        $sales = $sale_query->get();
-        $purchases =  $purchase_query->get();
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $sales = $sale_query->where('sales.status', 1)->get();
+            $purchases =  $purchase_query->get();
+        } else {
+            $sales = $sale_query->where('sales.status', 1)->where('sales.branch_id', auth()->user()->branch_id)->get();
+            $purchases =  $purchase_query->where('purchases.branch_id', auth()->user()->branch_id)->get();
+        }
+
         return view('reports.sale_purchase_report.ajax_view.filtered_sale_and_purchase_amount', compact('sales', 'purchases'));
     }
 
@@ -102,8 +116,13 @@ class SalePurchaseReportController extends Controller
             $purchase_query->whereBetween('report_date', $date_range);
         }
 
-        $sales = $sale_query->get();
-        $purchases =  $purchase_query->get();
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $sales = $sale_query->where('sales.status', 1)->get();
+            $purchases =  $purchase_query->get();
+        }else {
+            $sales = $sale_query->where('sales.status', 1)->where('sales.branch_id', auth()->user()->branch_id)->get();
+            $purchases =  $purchase_query->where('purchases.branch_id', auth()->user()->branch_id)->get();
+        }
         return view('reports.sale_purchase_report.ajax_view.printSalePurchase', compact('sales', 'purchases', 'fromDate', 'toDate', 'branch_id'));
     }
 }

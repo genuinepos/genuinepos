@@ -1081,7 +1081,7 @@
     });
 
     // Add customer by ajax
-    $(document).on('submit', '#add_customer_form', function(e){
+    $(document).on('submit', '#add_customer_form', function(e) {
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');

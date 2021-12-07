@@ -42,21 +42,21 @@ class Production extends Model
 
     public function branch()
     {
-        return $this->hasMany(Branch::class, 'id', 'branch_id');
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 
     public function stock_branch() // Ingredient stock branch
     {
-        return $this->hasMany(Branch::class, 'id', 'stock_branch_id');
+        return $this->belongsTo(Branch::class, 'stock_branch_id');
     }
 
     public function warehouse()
     {
-        return $this->hasMany(Warehouse::class, 'id', 'warehouse_id');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }
 
     public function stock_warehouse() // Ingredient stock warehouse
     {
-        return $this->hasMany(Warehouse::class, 'id', 'stock_warehouse_id');
+        return $this->belongsTo(Warehouse::class, 'stock_warehouse_id');
     }
 }

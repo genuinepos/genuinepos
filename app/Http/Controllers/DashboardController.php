@@ -97,13 +97,15 @@ class DashboardController extends Controller
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $sales = $saleQuery->groupBy('sales.id')->get();
+            $sales = $saleQuery->where('sales.status', 1)->groupBy('sales.id')->get();
             $purchases = $purchaseQuery->groupBy('purchases.id')->get();
             $expenses = $expenseQuery->groupBy('expanses.id')->get();
             $users = $userQuery->count();
             $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
         } else {
-            $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)->groupBy('sales.id')->get();
+            $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
+            ->where('sales.status', 1)
+            ->groupBy('sales.id')->get();
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->groupBy('purchases.id')->get();
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->groupBy('expanses.id')->get();
             $users = $userQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->count();

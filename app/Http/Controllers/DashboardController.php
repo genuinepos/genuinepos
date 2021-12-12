@@ -11,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DashboardController extends Controller
 {
-    
+
     protected $converter;
     public function __construct(Converter $converter)
     {
@@ -104,8 +104,8 @@ class DashboardController extends Controller
             $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
         } else {
             $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
-            ->where('sales.status', 1)
-            ->groupBy('sales.id')->get();
+                ->where('sales.status', 1)
+                ->groupBy('sales.id')->get();
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->groupBy('purchases.id')->get();
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->groupBy('expanses.id')->get();
             $users = $userQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->count();
@@ -405,7 +405,8 @@ class DashboardController extends Controller
         $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
             DB::raw('sum(order_discount) as total_discount'),
-            DB::raw('sum(shipment_charge) as total_shipment_charge')
+            DB::raw('sum(shipment_charge) as total_shipment_charge'),
+            DB::raw('sum(order_tax_amount) as total_order_tax')
         );
 
         $saleReturnQuery = DB::table('sale_returns')
@@ -507,6 +508,7 @@ class DashboardController extends Controller
 
         $totalSales = $sales->sum('total_sale');
         $totalSaleDiscount = $sales->sum('total_discount');
+        $totalSaleTax = $sales->sum('total_order_tax');
         $totalSalesReturn = $saleReturn->sum('total_return');
         $totalSalesShipmentCost = $sales->sum('total_shipment_charge');
         $totalPurchase = $purchases->sum('total_purchase');
@@ -519,6 +521,11 @@ class DashboardController extends Controller
 
         $totalPayroll = $payrolls->sum('total_payroll');
         $branch_id = $request->branch_id;
+
+        $parameters = [$total_adjustment, $total_recovered, $totalSales, $totalSalesReturn, $totalSaleTax, $totalExpense, $totalPayroll, $totalTransferShippingCost, $request->branch_id];
+
+        $todayProfit = $this->todayProfit(...$parameters);
+
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('dashboard.ajax_view.today_summery', compact(
             'totalSales',
@@ -536,7 +543,44 @@ class DashboardController extends Controller
             'branches',
             'branch',
             'branch_id',
+            'todayProfit'
         ));
+    }
+
+    public function todayProfit($totalAdjust, $totalRecovered, $totalSale, $totalSalesReturn, $totalOrderTax, $totalExpanse, $totalPayroll, $totalTransferCost, $branch_id)
+    {
+        $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+            ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
+
+        if ($branch_id) {
+            if ($branch_id == 'HF') {
+                $saleProductQuery->where('sales.branch_id', NULL);
+            } else {
+                $saleProductQuery->where('sales.branch_id', $branch_id);
+            }
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $saleProducts = $saleProductQuery->where('sales.status', 1)
+                ->where('sales.report_date', Carbon::today())
+                ->groupBy('sale_products.id')->get();
+        } else {
+            $saleProducts = $saleProductQuery->where('sales.status', 1)
+                ->where('sales.report_date', Carbon::today())
+                ->groupBy('sale_products.id')
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+        }
+
+        $totalTotalUnitCost = $saleProducts->sum('total_unit_cost');
+
+        return $netProfit = ($totalSale + $totalRecovered)
+            - $totalAdjust
+            - $totalExpanse
+            - $totalSalesReturn
+            - $totalOrderTax
+            - $totalPayroll
+            - $totalTotalUnitCost
+            - $totalTransferCost;
     }
 
     public function changeLang($lang)

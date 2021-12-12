@@ -7,7 +7,7 @@ $(document).on('input', '#ex_quantity',function () {
         var sum = parseFloat(soldQty) + parseFloat(ex_qty);
         console.log(sum);
         if (sum < 0) {
-            toastr.error('Exchange quantity substruction value must not be greater then sold quantity.');
+            toastr.error('Exchange quantity subtraction value must not be greater then sold quantity.');
             $(this).val(- parseFloat(soldQty));
         }
     }
@@ -32,6 +32,7 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
             if (data.ex_items.length == 0) {
                 return;
             }
+
             var qty_limits = data.qty_limits;
             var tr = '';
             $.each(data.ex_items, function (key, item) {
@@ -77,6 +78,7 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
                 tr +='<td><a href="#" class="action-btn c-delete"><span class="fas fa-trash text-dark"></span></a></td>';
                 tr += '</tr>';
             });
+
             $('#product_list').empty();
             $('#product_list').prepend(tr);
             $('#pos_submit_form')[0].reset();

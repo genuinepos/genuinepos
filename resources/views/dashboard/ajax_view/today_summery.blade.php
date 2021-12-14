@@ -1,4 +1,7 @@
 <!--begin::Form-->
+@php
+    $currency = json_decode($generalSettings->business, true)['currency'];
+@endphp
 <div class="form-group row">
     @if ($addons->branches == 1)
         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -50,83 +53,93 @@
                     <tbody>
                         <tr>
                             <th class="text-start">Total Purchase :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalPurchase, 0,2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchase) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Adjustment :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($total_adjustment, 0,2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($total_adjustment) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Expense :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalExpense, 0,2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalExpense) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Sale Discount :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSaleDiscount, 0, 2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSaleDiscount) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Transfer Shiping Charge :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalTransferShippingCost, 0, 2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalTransferShippingCost) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Purchanse Shiping Charge :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($purchaseTotalShipmentCost, 0, 2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($purchaseTotalShipmentCost) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Customer Reward :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                            <td class="text-start">{{ $currency }} 0.00 (P)</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Sale Return :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSalesReturn, 0,2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesReturn) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Payroll :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalPayroll, 0,2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>
                         </tr>
 
                     </tbody>
                 </table>
             </div>
+
             <div class="col-md-6">
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
                             <th class="text-start">Current Stock :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
+                            <td class="text-start">{{ $currency }} 0.00</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total sale :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalSales, 0, 2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSales) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Stock Recovered :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($total_recovered, 0, 2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($total_recovered) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Purchase Return :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($totalPurchaseReturn, 0, 2) }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchaseReturn) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Sale Shipping Charge :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $totalSalesShipmentCost }}</td>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesShipmentCost) }}</td>
                         </tr>
 
                         <tr>
                             <th class="text-start">Total Round Off :</th>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                            <td class="text-start">{{ $currency }} 0.00 (P)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table modal-table table-sm">
+                    <tbody>
+                        <tr>
+                            <th class="text-start">Today Net Profit :</th>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($todayProfit) }}</td>
                         </tr>
                     </tbody>
                 </table>

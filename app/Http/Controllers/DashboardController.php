@@ -15,6 +15,7 @@ class DashboardController extends Controller
     protected $converter;
     public function __construct(Converter $converter)
     {
+        define('TODAY', date('Y-m-d 00:00:00'));
         $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
@@ -392,7 +393,7 @@ class DashboardController extends Controller
         $expenses = '';
         $adjustments = '';
         $payrolls = '';
-
+        
         $purchaseQuery = DB::table('purchases')->select(
             DB::raw('sum(total_purchase_amount) as total_purchase'),
             DB::raw('sum(shipment_charge) as total_shipment_charge')
@@ -435,7 +436,7 @@ class DashboardController extends Controller
         if ($request->branch_id) {
             if ($request->branch_id == 'HF') {
                 $purchaseQuery->where('purchases.branch_id', NULL);
-                $saleQuery->where('sales.branch_id', NULL)->where('sales.status', 1);
+                $saleQuery->where('sales.branch_id', NULL);
                 $expenseQuery->where('expanses.branch_id', NULL);
                 $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
                 $purchaseReturnQuery->where('purchase_returns.branch_id', NULL);
@@ -445,7 +446,7 @@ class DashboardController extends Controller
                 $payrollQuery->where('admin_and_users.branch_id', NULL);
             } else {
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
-                $saleQuery->where('sales.branch_id', $request->branch_id)->where('sales.status', 1);
+                $saleQuery->where('sales.branch_id', $request->branch_id);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
                 $purchaseReturnQuery->where('purchase_returns.branch_id', $request->branch_id);
@@ -460,49 +461,49 @@ class DashboardController extends Controller
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $sales = $saleQuery->groupBy('sales.id')->whereDate('report_date', Carbon::today())->get();
-            $purchases = $purchaseQuery->groupBy('purchases.id')->whereDate('report_date', Carbon::today())->get();
-            $expenses = $expenseQuery->groupBy('expanses.id')->whereDate('report_date', Carbon::today())->get();
-            $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->whereDate('report_date_ts', Carbon::today())->get();
-            $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')->whereDate('report_date', Carbon::today())->get();
-            $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')->whereDate('report_date', Carbon::today())->get();
-            $branchTransfer = $branchTransferQuery->groupBy('transfer_stock_to_branches.id')->whereDate('report_date', Carbon::today())->get();
-            $warehouseTransfer = $warehouseTransferQuery->groupBy('transfer_stock_to_warehouses.id')->whereDate('report_date', Carbon::today())->get();
+            $sales = $saleQuery->groupBy('sales.id')->where('sales.status', 1)->whereDate('report_date', TODAY)->get();
+            $purchases = $purchaseQuery->groupBy('purchases.id')->whereDate('report_date', TODAY)->get();
+            $expenses = $expenseQuery->groupBy('expanses.id')->whereDate('report_date', TODAY)->get();
+            $adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->whereDate('report_date_ts', TODAY)->get();
+            $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')->whereDate('report_date', TODAY)->get();
+            $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')->whereDate('report_date', TODAY)->get();
+            $branchTransfer = $branchTransferQuery->groupBy('transfer_stock_to_branches.id')->whereDate('report_date', TODAY)->get();
+            $warehouseTransfer = $warehouseTransferQuery->groupBy('transfer_stock_to_warehouses.id')->whereDate('report_date', TODAY)->get();
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
-                ->whereDate('hrm_payroll_payments.report_date', Carbon::today())->get();
+                ->whereDate('hrm_payroll_payments.report_date', TODAY)->get();
         } else {
-            $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
-                ->groupBy('sales.id')->whereDate('report_date', Carbon::today())->get();
+            $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)->where('sales.status', 1)
+                ->whereDate('report_date', TODAY)->groupBy('sales.id')->get();
 
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)
-                ->groupBy('purchases.id')->whereDate('report_date', Carbon::today())->get();
+                ->groupBy('purchases.id')->whereDate('report_date', TODAY)->get();
 
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)
                 ->groupBy('expanses.id')
-                ->whereDate('report_date', Carbon::today())->get();
+                ->whereDate('report_date', TODAY)->get();
 
             $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)
                 ->groupBy('stock_adjustments.id')
-                ->whereDate('report_date_ts', Carbon::today())->get();
+                ->whereDate('report_date_ts', TODAY)->get();
 
             $purchaseReturn = $purchaseReturnQuery->groupBy('purchase_returns.id')
                 ->where('purchase_returns.branch_id', auth()->user()->branch_id)
-                ->whereDate('report_date', Carbon::today())->get();
+                ->whereDate('report_date', TODAY)->get();
 
             $saleReturn = $saleReturnQuery->groupBy('sale_returns.id')
                 ->where('sale_returns.branch_id', auth()->user()->branch_id)
-                ->whereDate('report_date', Carbon::today())->get();
+                ->whereDate('report_date', TODAY)->get();
 
             $branchTransfer = $branchTransferQuery->groupBy('transfer_stock_to_branches.id')
                 ->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)
-                ->whereDate('report_date', Carbon::today())->get();
+                ->whereDate('report_date', TODAY)->get();
 
             $warehouseTransfer = $warehouseTransferQuery->groupBy('transfer_stock_to_warehouses.id')
                 ->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)
-                ->whereDate('report_date', Carbon::today())->get();
+                ->whereDate('report_date', TODAY)->get();
 
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
-                ->whereDate('hrm_payroll_payments.report_date', Carbon::today())
+                ->whereDate('hrm_payroll_payments.report_date', TODAY)
                 ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
         }
 
@@ -562,11 +563,11 @@ class DashboardController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $saleProducts = $saleProductQuery->where('sales.status', 1)
-                ->where('sales.report_date', Carbon::today())
+                ->where('sales.report_date', TODAY)
                 ->groupBy('sale_products.id')->get();
         } else {
             $saleProducts = $saleProductQuery->where('sales.status', 1)
-                ->where('sales.report_date', Carbon::today())
+                ->where('sales.report_date', TODAY)
                 ->groupBy('sale_products.id')
                 ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
         }

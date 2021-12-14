@@ -174,7 +174,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-3">
                     <div class="image_area text-center">
                         <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
@@ -197,7 +197,7 @@
                         <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                     </div>
                 </div>
-            </div>
+            </div> --}}
             
             <div class="row mt-1">
                 <div class="col-4 text-center">

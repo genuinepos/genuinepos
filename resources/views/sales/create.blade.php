@@ -342,9 +342,7 @@
                                         <div class="row">
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Order Tax :</label>
                                             <div class="col-sm-7">
-                                                <select name="order_tax" class="form-control" id="order_tax">
-                                                    
-                                                </select>
+                                                <select name="order_tax" class="form-control" id="order_tax"></select>
                                                 <input type="number" step="any" class="d-none" name="order_tax_amount" id="order_tax_amount" value="0.00">
                                             </div>
                                         </div>
@@ -596,9 +594,7 @@
 
                         <div class="form-group mt-1">
                             <label><strong>Sale Unit</strong> :</label>
-                            <select class="form-control" id="e_unit">
-
-                            </select>
+                            <select class="form-control" id="e_unit"></select>
                         </div>
 
                         <div class="form-group text-end mt-3">
@@ -620,9 +616,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="add_product_body">
-                    <!--begin::Form-->
-                </div>
+                <div class="modal-body" id="add_product_body"></div>
             </div>
         </div>
     </div> 
@@ -673,9 +667,7 @@
                                                     <th class="text-start">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="data-list" id="transection_list">
-
-                                            </tbody>
+                                            <tbody class="data-list" id="transection_list"></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -705,9 +697,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="stock_modal_body">
-
-                </div>
+                <div class="modal-body" id="stock_modal_body"></div>
             </div>
         </div>
     </div>

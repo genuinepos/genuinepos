@@ -24,12 +24,17 @@ Route::group(['prefix' => 'manufacturing', 'namespace' => 'App\Http\Controllers\
         Route::post('update/{productionId}', 'ProductionController@update')->name('manufacturing.productions.update');
         Route::delete('delete/{productionId}', 'ProductionController@delete')->name('manufacturing.productions.delete');
         Route::get('get/process/{processId}', 'ProductionController@getProcess');
-        Route::get('get/ingredients/{processId}', 'ProductionController@getIngredients');
+        Route::get('get/ingredients/{processId}/{warehouseId}', 'ProductionController@getIngredients');
     });
 
     Route::group(['prefix' => 'settings'], function ()
     {
         Route::get('/', 'SettingsController@index')->name('manufacturing.settings.index');
         Route::post('store', 'SettingsController@store')->name('manufacturing.settings.store');
+    });
+
+    Route::group(['prefix' => 'report'], function ()
+    {
+        Route::get('/', 'ReportController@index')->name('manufacturing.report.index');
     });
 });

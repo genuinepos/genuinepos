@@ -32,10 +32,9 @@
                              <li><strong>Purchase From : </strong></li>
                              <li><strong>Business Location : </strong>
                                 @if ($purchase->branch_id)
-                                    {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>Branch/Concern</b>)
+                                    {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>BL</b>)
                                 @else
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                                    Office</b>)
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
                      
@@ -149,7 +148,7 @@
                                             <th>
                                                 Amount({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </th>
-                                            <th>Action</th>
+                                            <th class="action_hideable">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="p_details_payment_list">
@@ -170,7 +169,7 @@
                                                         {{ $payment->account ? $payment->account->name.' (A/C'.$payment->account->account_number.')' : 'N/A' }}
                                                     </td>
                                                     <td>{{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}</td>
-                                                    <td>
+                                                    <td class="action_hideable">
                                                        @if (auth()->user()->branch_id == $purchase->branch_id)
                                                            @if ($payment->payment_type == 1)
                                                                <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
@@ -256,6 +255,7 @@
              <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12">
+                        <a href="{{ route('purchases.edit', [$purchase->id, 'purchased']) }}" class="c-btn btn_secondary py-1 text-white">Edit</a>
                         <button type="submit" class="c-btn btn_blue print_btn">Print</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
                     </div>

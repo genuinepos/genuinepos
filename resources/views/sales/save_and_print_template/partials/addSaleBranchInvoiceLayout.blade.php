@@ -340,7 +340,7 @@
             </div><br>
 
             <div id="footer">
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-md-12">
                         <div class="heading text-center">
                             <p><strong>Our Sister Concern</strong></p><br>
@@ -369,7 +369,7 @@
                             <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 
                 <div class="row mt-1">
                     <div class="col-4 text-center">
@@ -400,9 +400,9 @@
                             <tr>
                                 <th class="text-center">
                                     @if ($sale->branch->logo != 'default.png')
-                                        <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                        <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                     @else 
-                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ $sale->branch->name }}</span>
                                     @endif
                                 </th>
                             </tr>

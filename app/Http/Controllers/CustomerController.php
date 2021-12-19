@@ -178,6 +178,7 @@ class CustomerController extends Controller
                         'branches.branch_code',
                         'customers.name as customer_name',
                     )->where('sales.customer_id', $customerId)
+                    ->where('sales.status', 1)
                     ->orderBy('id', 'desc');
             } else {
                 $sales = DB::table('sales')
@@ -189,6 +190,7 @@ class CustomerController extends Controller
                         'branches.branch_code',
                         'customers.name as customer_name',
                     )->where('sales.customer_id', $customerId)
+                    ->where('sales.status', 1)
                     ->where('sales.branch_id', auth()->user()->branch_id)
                     ->orderBy('id', 'desc');
             }
@@ -828,6 +830,7 @@ class CustomerController extends Controller
         $customer_payments = DB::table('customer_payments')
             ->leftJoin('accounts', 'customer_payments.account_id', 'accounts.id')
             ->select('customer_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
+            ->where('customer_payments.customer_id', $customerId)
             ->orderBy('report_date', 'desc')->get();
         return view('contacts.customers.ajax_view.view_payment_list', compact('customer', 'customer_payments'));
     }

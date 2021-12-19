@@ -41,47 +41,50 @@ class ProfitLossReportController extends Controller
         $transferStWarehouse = '';
 
         $transferStBranchQuery = DB::table('transfer_stock_to_branches')
-        ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
+            ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
 
         $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
-        ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
+            ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
 
         $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-        ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
+            ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
 
         $adjustmentQuery = DB::table('stock_adjustments')->select(
             DB::raw('sum(net_total_amount) as total_adjustment'),
             DB::raw('sum(recovered_amount) as total_recovered')
         );
-        
-        $saleQuery = DB::table('sales')->select( 
+
+        $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
             DB::raw('sum(sale_return_amount) as total_return'),
             DB::raw('sum(order_tax_amount) as total_order_tax'),
         );
 
         $payrollQuery = DB::table('hrm_payroll_payments')
-        ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-        ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
-        ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
+            ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
+            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+            ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         $expenseQuery = DB::table('expanses')->select(DB::raw('sum(net_total_amount) as total_expense'));
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
-            $sales = $saleQuery->groupBy('sales.id')->get();
+            $sales = $saleQuery->groupBy('sales.id')->where('sales.status', 1)->get();
             $expense = $expenseQuery->groupBy('expanses.id')->get();
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')->get();
-            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->get();
+            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->where('sales.status', 1)->get();
             $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->get();
             $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->get();
         } else {
             $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->where('branch_id', auth()->user()->branch_id)->get();
-            $sales = $saleQuery->groupBy('sales.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $sales = $saleQuery->groupBy('sales.id')->where('branch_id', auth()->user()->branch_id)->where('sales.status', 1)->get();
             $expense = $expenseQuery->groupBy('expanses.id')->where('branch_id', auth()->user()->branch_id)->get();
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
-            ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $saleProducts = $saleProductQuery->groupBy('sale_products.id')
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)
+                ->where('sales.status', 1)
+                ->get();
             $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
             $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
         }
@@ -95,7 +98,7 @@ class ProfitLossReportController extends Controller
         $totalPayroll = $payrolls->sum('total_payroll');
         $totalTotalUnitCost = $saleProducts->sum('total_unit_cost');
         $totalTransferShipmentCost = $transferStBranch->sum('b_total_shipment_charge') + $transferStWarehouse->sum('w_total_shipment_charge');
-        
+
         return view(
             'reports.profit_loss_report.ajax_view.sale_purchase_and_profit_view',
             compact(
@@ -125,20 +128,20 @@ class ProfitLossReportController extends Controller
         $transferStWarehouse = '';
 
         $transferStBranchQuery = DB::table('transfer_stock_to_branches')
-        ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
+            ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
 
         $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
-        ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
+            ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
 
         $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-        ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
+            ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
 
         $adjustmentQuery = DB::table('stock_adjustments')->select(
             DB::raw('sum(net_total_amount) as total_adjustment'),
             DB::raw('sum(recovered_amount) as total_recovered')
         );
-        
-        $saleQuery = DB::table('sales')->select( 
+
+        $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
             DB::raw('sum(sale_return_amount) as total_return'),
             DB::raw('sum(order_tax_amount) as total_order_tax'),
@@ -147,9 +150,9 @@ class ProfitLossReportController extends Controller
         $expenseQuery = DB::table('expanses')->select(DB::raw('sum(net_total_amount) as total_expense'));
 
         $payrollQuery = DB::table('hrm_payroll_payments')
-        ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-        ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
-        ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
+            ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
+            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+            ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
@@ -186,22 +189,28 @@ class ProfitLossReportController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
-            $sales = $saleQuery->groupBy('sales.id')->get();
+            $sales = $saleQuery->where('sales.status', 1)->groupBy('sales.id')->get();
             $expense = $expenseQuery->groupBy('expanses.id')->get();
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')->get();
-            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->get();
+            $saleProducts = $saleProductQuery->where('sales.status', 1)->groupBy('sale_products.id')->get();
             $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->get();
             $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->get();
         } else {
             $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')
                 ->where('branch_id', auth()->user()->branch_id)->get();
-            $sales = $saleQuery->groupBy('sales.id')->where('branch_id', auth()->user()->branch_id)->get();
-            $expense = $expenseQuery->groupBy('expanses.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $sales = $saleQuery->where('sales.status', 1)->groupBy('sales.id')
+                ->where('branch_id', auth()->user()->branch_id)->get();
+            $expense = $expenseQuery->groupBy('expanses.id')
+                ->where('branch_id', auth()->user()->branch_id)->get();
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
-            ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $saleProducts = $saleProductQuery->where('sales.status', 1)
+                ->groupBy('sale_products.id')
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
         }
 
         $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');
@@ -297,20 +306,20 @@ class ProfitLossReportController extends Controller
         $branch_id = $request->branch_id;
 
         $transferStBranchQuery = DB::table('transfer_stock_to_branches')
-        ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
+            ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
 
         $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
-        ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
+            ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
 
         $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-        ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
+            ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
 
         $adjustmentQuery = DB::table('stock_adjustments')->select(
             DB::raw('sum(net_total_amount) as total_adjustment'),
             DB::raw('sum(recovered_amount) as total_recovered')
         );
-        
-        $saleQuery = DB::table('sales')->select( 
+
+        $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
             DB::raw('sum(sale_return_amount) as total_return'),
             DB::raw('sum(order_tax_amount) as total_order_tax'),
@@ -319,9 +328,9 @@ class ProfitLossReportController extends Controller
         $expenseQuery = DB::table('expanses')->select(DB::raw('sum(net_total_amount) as total_expense'));
 
         $payrollQuery = DB::table('hrm_payroll_payments')
-        ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-        ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
-        ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
+            ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
+            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+            ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
@@ -358,20 +367,22 @@ class ProfitLossReportController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')->get();
-            $sales = $saleQuery->groupBy('sales.id')->get();
+            $sales = $saleQuery->where('sales.status', 1)->groupBy('sales.id')->get();
             $expense = $expenseQuery->groupBy('expanses.id')->get();
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')->get();
-            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->get();
+            $saleProducts = $saleProductQuery->where('sales.status', 1)->groupBy('sale_products.id')->get();
             $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->get();
             $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->get();
         } else {
             $stock_adjustments = $adjustmentQuery->groupBy('stock_adjustments.id')
                 ->where('branch_id', auth()->user()->branch_id)->get();
-            $sales = $saleQuery->groupBy('sales.id')->where('branch_id', auth()->user()->branch_id)->get();
+            $sales = $saleQuery->groupBy('sales.id')->where('sales.status', 1)
+                ->where('branch_id', auth()->user()->branch_id)->get();
             $expense = $expenseQuery->groupBy('expanses.id')->where('branch_id', auth()->user()->branch_id)->get();
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
-            ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $saleProducts = $saleProductQuery->groupBy('sale_products.id')->where('sales.status', 1)
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
             $transferStBranch = $transferStBranchQuery->groupBy('transfer_stock_to_branches.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
             $transferStWarehouse = $transferStWarehouseQuery->groupBy('transfer_stock_to_warehouses.id')->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
         }
@@ -403,6 +414,5 @@ class ProfitLossReportController extends Controller
                 'branch_id',
             )
         );
-       
     }
 }

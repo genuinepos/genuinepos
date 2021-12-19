@@ -727,6 +727,17 @@
         calculateTotalAmount();
     });
 
+    $(document).on('input', '#selling_price',function() {
+        var selling_price = $(this).val() ? $(this).val() : 0;
+        var tr = $(this).closest('tr');
+        var product_cost = tr.find('#unit_cost').val() ? tr.find('#unit_cost').val() : 0;
+        var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
+        var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __calcProfit = calcProfit ? calcProfit : 0;
+        tr.find('#profit').val(parseFloat(__calcProfit).toFixed(2));
+    });
+
     // Input discount and clculate row amount
     $(document).on('input', '#unit_discount', function(){
         var unit_discount = $(this).val() ? $(this).val() : 0;

@@ -83,6 +83,7 @@ class POSController extends Controller
     // Store pos sale
     public function store(Request $request)
     {
+        //return $request->all();
         $prefixSettings = DB::table('general_settings')
             ->select(['id', 'prefix', 'reward_poing_settings', 'send_es_settings'])
             ->first();
@@ -445,6 +446,17 @@ class POSController extends Controller
         }
         $updateSale->save();
 
+        if (!$updateSale->ledger) {
+            if ($updateSale->status == 1 && $updateSale->customer_id) {
+                $addCustomerLedger = new CustomerLedger();
+                $addCustomerLedger->customer_id = $updateSale->customer_id;
+                $addCustomerLedger->sale_id = $updateSale->id;
+                $addCustomerLedger->row_type = 1;
+                $addCustomerLedger->report_date = date('Y-m-d', strtotime($updateSale->date));
+                $addCustomerLedger->save();
+            }
+        }
+        
         // Add product quantity for adjustment
         foreach ($updateSale->sale_products as $sale_product) {
             $sale_product->delete_in_update = 1;
@@ -1191,7 +1203,7 @@ class POSController extends Controller
                 $addSalePayment->sale_id = $addSale->id;
                 $addSalePayment->customer_id = $request->customer_id ? $request->customer_id : NULL;
                 $addSalePayment->account_id = $request->account_id;
-                $addSalePayment->paid_amount = $request->paying_amount;
+                $addSalePayment->paid_amount = $paidAmount;
                 $addSalePayment->date = date('d-m-Y');
                 $addSalePayment->time = date('h:i:s a');
                 $addSalePayment->report_date = date('Y-m-d');
@@ -1223,7 +1235,7 @@ class POSController extends Controller
                     // Add cash flow
                     $addCashFlow = new CashFlow();
                     $addCashFlow->account_id = $request->account_id;
-                    $addCashFlow->credit = $request->paying_amount;
+                    $addCashFlow->credit = $paidAmount;
                     $addCashFlow->sale_payment_id = $addSalePayment->id;
                     $addCashFlow->transaction_type = 2;
                     $addCashFlow->cash_type = 2;

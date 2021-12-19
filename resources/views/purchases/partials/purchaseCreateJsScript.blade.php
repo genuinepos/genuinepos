@@ -219,14 +219,14 @@
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input value="'+product.product_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
+                                tr += '<input value="'+product.product_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost" autocomplete="off">';
                                 @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
-                                    tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="">';
+                                    tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
                                 @endif
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input value="0.00" required name="unit_discounts[]" type="text" class="form-control" id="unit_discount">';
+                                tr += '<input value="0.00" required name="unit_discounts[]" type="text" class="form-control" id="unit_discount" autocomplete="off">';
                                 tr += '</td>';
 
                                 tr += '<td>';
@@ -253,11 +253,11 @@
 
                                 @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                                     tr += '<td>';
-                                    tr += '<input value="'+product.profit+'" type="text" name="profits[]" class="form-control" id="profit">';
+                                    tr += '<input value="'+product.profit+'" type="text" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                                     tr += '</td>';
                                 
                                     tr += '<td>';
-                                    tr += '<input value="'+product.product_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price">';
+                                    tr += '<input value="'+product.product_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                                     tr += '</td>';
                                 @endif
 
@@ -385,12 +385,12 @@
                             tr += '<td>';
                             tr += '<input value="'+variant_product.variant_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
                             @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
-                                tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="">';
+                                tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
                             @endif
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<input value="0.00" required name="unit_discounts[]" type="text" class="form-control" id="unit_discount">';
+                            tr += '<input value="0.00" required name="unit_discounts[]" type="text" class="form-control" id="unit_discount" autocomplete="off">';
                             tr += '</td>';
 
                             tr += '<td>';
@@ -417,11 +417,11 @@
 
                             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                                 tr += '<td>';
-                                tr += '<input value="'+variant_product.variant_profit+'" type="text" name="profits[]" class="form-control" id="profit">';
+                                tr += '<input value="'+variant_product.variant_profit+'" type="text" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                                 tr += '</td>';
                             
                                 tr += '<td>';
-                                tr += '<input value="'+variant_product.variant_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price">';
+                                tr += '<input value="'+variant_product.variant_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                                 tr += '</td>';
                             @endif
 
@@ -514,7 +514,7 @@
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
+            tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity" autocomplete="off">';
             tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
                 unites.forEach(function(unit) {
                 if (product_unit == unit) {
@@ -527,14 +527,14 @@
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input value="'+product_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
+            tr += '<input value="'+product_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost" autocomplete="off">';
             @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
-                tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="">';
+                tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
             @endif
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input value="0.00" required name="unit_discounts[]" type="text" class="form-control" id="unit_discount">';
+            tr += '<input value="0.00" required name="unit_discounts[]" type="text" class="form-control" id="unit_discount" autocomplete="off">';
             tr += '</td>';
 
             tr += '<td>';
@@ -562,11 +562,11 @@
 
             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                 tr += '<td>';
-                tr += '<input value="'+product_profit+'" type="text" name="profits[]" class="form-control" id="profit">';
+                tr += '<input value="'+product_profit+'" type="text" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                 tr += '</td>';
             
                 tr += '<td>';
-                tr += '<input value="'+product_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price">';
+                tr += '<input value="'+product_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                 tr += '</td>';
             @endif
 
@@ -608,7 +608,6 @@
         var variant_ids = document.querySelectorAll('#variant_id');
         var sameVariant = 0;
         variant_ids.forEach(function(input){
-            console.log(input.value);
             if(input.value != 'noid'){
                 if(input.value == variant_id){
                     sameVariant += 1;
@@ -660,7 +659,7 @@
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
+            tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity" autocomplete="off">';
             tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
                 unites.forEach(function(unit) {
                 if (product_unit == unit) {
@@ -676,7 +675,7 @@
             tr += '<td>';
             tr += '<input value="'+variant_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
             @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
-                tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="">';
+                tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
             @endif
             tr += '</td>';
             tr += '<td>';
@@ -693,8 +692,8 @@
 
             tr += '<td>';
             
-            tr += '<input readonly type="text" name="tax_percents[]"  id="tax_percent" class="form-control" value="'+tax_percent+'">';
-            tr += '<input type="hidden" value="'+parseFloat(tax_amount).toFixed(2)+'" name="unit_taxes[]" type="text" id="unit_tax">';
+            tr += '<input readonly type="text" name="tax_percents[]"  id="tax_percent" class="form-control" value="'+tax_percent+'">%';
+            tr += '<input type="hidden" value="'+parseFloat(tax_amount).toFixed(2)+'" name="unit_taxes[]" type="text" id="unit_tax" autocomplete="off">';
             tr += '</td>';
 
             tr += '<td>';
@@ -708,11 +707,11 @@
 
             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                 tr += '<td>';
-                tr += '<input value="'+variant_profit+'" type="text" name="profits[]" class="form-control" type="number" id="profit">';
+                tr += '<input value="'+variant_profit+'" type="text" name="profits[]" class="form-control" type="number" id="profit" autocomplete="off">';
                 tr += '</td>';
         
                 tr += '<td class="text-right">';
-                tr += '<input value="'+variant_price+'" type="number" name="selling_prices[]" class="form-control" id="selling_price">';
+                tr += '<input value="'+variant_price+'" type="number" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                 tr += '</td>';
             @endif
 
@@ -782,6 +781,17 @@
         var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profit) + parseFloat(calcUnitCostWithDiscount);
         var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
         calculateTotalAmount();
+    });
+
+    $(document).on('input', '#selling_price',function() {
+        var selling_price = $(this).val() ? $(this).val() : 0;
+        var tr = $(this).closest('tr');
+        var product_cost = tr.find('#unit_cost').val() ? tr.find('#unit_cost').val() : 0;
+        var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
+        var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __calcProfit = calcProfit ? calcProfit : 0;
+        tr.find('#profit').val(parseFloat(__calcProfit).toFixed(2));
     });
 
     // Input discount and clculate row amount
@@ -1009,19 +1019,29 @@
             $('.loading_button').hide();
             return;
         }
-
+        $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,
             type:'post',
             data: request,
             success:function(data){
-                toastr.success(data);
+                $('.submit_button').prop('type', 'submit');
+                toastr.success('Supplier Added Successfully.');
                 $('#add_supplier_form')[0].reset();
                 $('.loading_button').hide();
                 $('#addSupplierModal').modal('hide');
                 $('#supplier_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
                 $('#supplier_id').val(data.id);
                 document.getElementById('search_product').focus();
+            },error: function(err) {
+                $('.submit_button').prop('type', 'sumbit');
+                $('.loading_button').hide();
+                $('.error').html('');
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                }else{
+                    toastr.error('Server error please contact to the support.');
+                }
             }
         });
     });

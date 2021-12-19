@@ -24,7 +24,7 @@
                             @if ($sale->branch->logo != 'default.png')
                                 <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                             @else 
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ $sale->branch->name }}</span>
                             @endif
                         @endif
                     </div>
@@ -174,7 +174,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-3">
                     <div class="image_area text-center">
                         <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
@@ -197,7 +197,7 @@
                         <img style="width: 130px; height:40px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                     </div>
                 </div>
-            </div>
+            </div> --}}
             
             <div class="row mt-1">
                 <div class="col-4 text-center">

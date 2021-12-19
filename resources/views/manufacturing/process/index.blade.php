@@ -26,7 +26,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="" class="text-white"><i class="fas fa-file-alt"></i> <b>Manufacturing Report</b></a>
+                                            <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>Manufacturing Report</b></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -127,13 +127,6 @@
                                         @endphp
                                         <option value="{{ $product->id.'-'.($product->v_id ? $product->v_id : 'NULL') }}">{{ $product->name.' '.$variant_name.' ('.$product_code.')' }}</option>
                                     @endforeach
-                                </select>
-                            </div>
-
-                            <div class="form-group mt-1">
-                                <label><b>Copy Process</b> :</label>
-                                <select class="form-control" name="" id="">
-                                    <option value="">None</option>
                                 </select>
                             </div>
 

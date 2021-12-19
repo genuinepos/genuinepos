@@ -2,7 +2,7 @@
 
 .body-wraper {
     background: #fff;
-    padding-bottom: 10px;
+    height: 92%;
 }
 
 nav.pos-navigation {
@@ -26,9 +26,16 @@ nav.pos-navigation {
 
 .logo-sec {
     height: 100%;
-    display: flex;
-    align-items: center;
+    /* display: flex; */
+    /* align-items: center; */
     border-right: 2px solid #fff;
+}
+
+.logo-sec .pos-logo {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .address {
@@ -37,6 +44,10 @@ nav.pos-navigation {
     line-height: 2px;
     border-right: 2px solid #fff;
     color: #fff;
+    /* padding-top: 9px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 p.store-name {
@@ -67,10 +78,14 @@ span.input-group-text.valus {
 
 .pos-btn {
     border: 2px solid #fff;
-    padding: 4px 6px;
-    font-size: 10px;
+    padding: 0px;
+    font-size: 12px;
     color: #fff;
     border-radius: 6px;
+    width: 29px;
+    display: inline-block;
+    text-align: center;
+    height: 31px;
 }
 
 .pos-btn:hover {
@@ -78,7 +93,7 @@ span.input-group-text.valus {
 }
 
 .btn-sec {
-    margin-top: 8px;
+    margin-top: 2px;
 }
 
 .btn-section {
@@ -267,8 +282,10 @@ a.head-tbl-icon {
 }
 
 .set-height {
-    height: 70.6vh;
+    /* height: 70.6vh; */
     overflow-x: scroll;
+    height: 100%;
+    margin-bottom: -83px;
 }
 
 .set-height::-webkit-scrollbar {
@@ -291,11 +308,13 @@ a.head-tbl-icon {
 }
 
 .product-area {
-    height: 72.6vh;
+    height: calc(100vh - 181px);
     overflow: scroll;
-    background-color: #f1f3f6;
+    /* background-color: #f1f3f6; */
     overflow-x: hidden;
-    position: relative;
+    /* position: relative; */
+    /* height: 100%; */
+    padding-bottom: 0;
 }
 
 .product-area::-webkit-scrollbar {
@@ -392,7 +411,7 @@ a.head-tbl-icon {
 .pos-footer {
     background: var(--main-grident);
     position: fixed;
-    bottom: 5px;
+    bottom: 0;
     width: 74.5%;
     height: 41px;
 }
@@ -448,7 +467,7 @@ p.address-name {
 }
 
 .sub_total {
-    bottom: 52px;
+    /* bottom: 52px; */
     width: 100%;
     overflow: hidden;
     /* position: fixed; */
@@ -464,6 +483,7 @@ a.resent-tn:hover {
 }
 
 .left-cat-pos {
+    height: 100%;
     padding: 3px;
     border-radius: 3px;
     background: linear-gradient(#dedede, #444444);
@@ -487,9 +507,11 @@ a.resent-tn:hover {
     border: 1px solid #000;
     /* padding: 3px; */
     background: #fff;
-    height: 82vh;
+    /* height: 82vh; */
     overflow-y: scroll;
+    height: 100%;
     border-radius: 3px;
+    display: inline-block;
 }
 
 .show-product {
@@ -504,6 +526,8 @@ a.resent-tn:hover {
     border: 1px solid #46142e;
     padding: 2px;
     border-radius: 2px;
+    overflow: hidden;
+    position: relative;
 }
 
 .cart-table {
@@ -511,12 +535,14 @@ a.resent-tn:hover {
     padding: 3px;
     background: linear-gradient(#dedede, #444444);
     border-radius: 3px;
+    height: 100%;
 }
 
 .cart-table-inner-pos {
     background: #fff;
     border: 1px solid #43132d;
     border-radius: 3px;
+    height: 100%;
 }
 
 .pos-right-inner {
@@ -524,12 +550,15 @@ a.resent-tn:hover {
     padding: 3px;
     background: linear-gradient(#dedede, #444444);
     border-radius: 3px;
+    position: relative;
+    height: calc(100% + 50px);
 }
 
 .check-out-woaper {
     background: linear-gradient(#00aebd, #273245);
     border: 1px solid #43132d;
     border-radius: 3px;
+    height: 100%;
 }
 
 .status {
@@ -550,6 +579,8 @@ a.resent-tn:hover {
     background: linear-gradient(#dedede, #444444);
     height: 100vh;
     position: fixed;
+    /* height: 100%; */
+    padding-bottom: 6px;
 }
 
 .head-pos {
@@ -584,7 +615,7 @@ a.resent-tn:hover {
 }
 
 #calculatorModal.modal.show .modal-dialog {
-    top: 50px;
+    top: 17px;
     height: 100%;
     position: absolute;
     right: 24px;
@@ -611,7 +642,7 @@ a.resent-tn:hover {
 }
 
 @media (min-width: 1600px) and (max-width: 2560px) {
-    .check-out-woaper {
+    /* .check-out-woaper {
         height: 92.7vh;
     }
     .show-product {
@@ -620,16 +651,16 @@ a.resent-tn:hover {
     .set-height {
         height: 75.4vh;
         overflow-x: scroll;
-    }
+    } */
     .product-area {
-        height: 81.5vh;
+        height: calc(100vh - 181px);
         overflow: scroll;
         overflow-x: hidden;
     }
     .all-cat {
         border: 1px solid #000;
         background: #fff;
-        height: 85vh;
+        /* height: 85vh; */
         overflow-y: scroll;
         border-radius: 3px;
     }
@@ -655,50 +686,49 @@ a.resent-tn:hover {
         border-radius: 3px;
         color: #fff;
         font-size: 11px;
-        height: 54px;
+        height: 53px;
         display: flex;
         justify-content: center;
         align-items: center;
     }
     .pos-footer {
         width: 74.7%;
-        bottom: 4px;
+        bottom: 0;
     }
 }
 
 @media (min-width: 1400px) and (max-width: 1600px) {
     .product-area {
-        height: 76vh;
+        height: calc(100vh - 181px);
         overflow: scroll;
         overflow-x: hidden;
     }
     .set-height {
-        height: 70vh;
+        /* height: 70vh; */
         overflow-x: scroll;
     }
     .sub_total {
-        bottom: 53px;
     }
     .all-cat {
-        height: 81.2vh;
+        /* height: 81.2vh; */
     }
     .check-out-woaper {
-        height: 85.7vh;
+        /* height: 85.7vh; */
     }
     .show-product {
-        height: 82vh;
     }
     .product-inner {
-        height: 81vh;
+        /* height: 81vh; */
+        height: 100%;
     }
 }
 
 @media (min-width: 900px) and (max-width: 1200px) {
     .set-height {
-        height: 61vh;
+        /* height: 61vh; */
         overflow-x: scroll;
     }
-    .check-out-woaper {
+    /* .check-out-woaper {
         height: 86vh;
     }
     .product-area {
@@ -706,7 +736,7 @@ a.resent-tn:hover {
     }
     .all-cat {
         height: 77.5vh;
-    }
+    } */
     .input-sec {
         display: flex;
         justify-content: center;
@@ -722,7 +752,7 @@ a.resent-tn:hover {
         padding: 0px 6px;
     }
     .function-card {
-        padding: 12px 0px;
+        padding: 9px 0px;
     }
     .btn-pos {
         text-align: center;
@@ -735,37 +765,52 @@ a.resent-tn:hover {
         justify-content: center;
         align-items: center;
     }
+    .wrapper_input_btn {
+        bottom: 8px;
+    }
 }
 
 @media (min-width: 1200px) and (max-width: 1400px) {
     .set-height {
-        height: 60vh;
+        /* height: 60vh; */
         overflow-x: scroll;
     }
-    .check-out-woaper {
+    /* .check-out-woaper {
         height: 85vh;
     }
-    .product-area {
-        height: 67vh;
-    }
+
     .all-cat {
         height: 74.5vh;
     }
     .show-product {
         height: 75.5vh;
+    } */
+    .product-area {
+        height: calc(100vh - 181px);
     }
     .pos-footer {
-        bottom: 3px;
     }
     .function-sec {
         margin-bottom: 3px;
     }
     .function-card {
-        padding: 14px 0px;
+        padding: 10px 0px;
     }
     .function-sec .col-4.px-2.py-1 {
         padding-top: 3px !important;
         padding-bottom: 0px !important;
+    }
+    .cash-btn {
+        padding: 19px 0px;
+    }
+    .wrapper_input_btn {
+        bottom: 8px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .product-area {
+        height: calc(100vh - 181px);
     }
 }
 
@@ -885,6 +930,7 @@ a.resent-tn:hover {
         position: fixed;
         bottom: 0;
         left: 0;
+        z-index: 9;
     }
     #calculatorModal .modal-content {
         right: -285px;
@@ -1053,4 +1099,52 @@ input[type="number"] {
     overflow-x: hidden;
     overflow-y: hidden;
     padding: 5px;
+}
+
+#readDocument > div {
+    width: 261px;
+    top: 34px;
+    left: -80px;
+    padding-left: 10px;
+    display: none;
+    background: #481530;
+    border-radius: 4px;
+    box-shadow: 0 3px 1px #000, 0 5px 5px 0 rgb(0 0 0);
+    padding-bottom: 10px;
+    padding-right: 5px;
+    z-index: 9;
+}
+
+#readDocument > div ul li {
+    text-align: left;
+    display: flex;
+    margin-bottom: 3px;
+}
+
+#readDocument > div ul li span.icon {
+    font-size: 10px;
+    background: #fff;
+    text-align: center;
+    padding: 1px 6px;
+    color: #000;
+    border-radius: 3px;
+    margin-right: 7px;
+    width: 50px;
+    font-weight: 600;
+}
+
+@media (min-width: 982px) {
+    .wrapper_input_btn {
+        position: absolute;
+        padding-right: 26px;
+        bottom: 30px;
+    }
+}
+
+div#calculatorModal {
+    overflow-y: hidden;
+}
+
+.pos-body .form-control:hover {
+    background: #ddddddf7 !important;
 }

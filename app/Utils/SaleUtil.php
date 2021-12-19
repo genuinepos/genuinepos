@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\CashFlow;
 use App\Models\SalePayment;
 use App\Utils\CustomerUtil;
+use Illuminate\Support\Str;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
 use App\Utils\ProductStockUtil;
@@ -570,7 +571,7 @@ class SaleUtil
         return DataTables::of($saleProducts)
             ->editColumn('product', function ($row) {
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                return $row->name . $variant;
+                return Str::limit($row->name, 25, '') . $variant;
             })->editColumn('sold_by', fn($row) => $row->created_by == 1 ? '<span class="text-info">ADD SALE</span>' : '<span class="text-success">POS</span>')
             ->editColumn('sku', function ($row) {
                 return $row->variant_code ? $row->variant_code : $row->product_code;
@@ -578,7 +579,7 @@ class SaleUtil
                 return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
             })->editColumn('customer', function ($row) {
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
-            })->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="details_button text-danger" title="view" >'.$row->invoice_id.'</a>')
+            })->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="details_button text-danger text-hover" title="view" >' . $row->invoice_id . '</a>')
             ->editColumn('quantity', function ($row) {
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
             })->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')

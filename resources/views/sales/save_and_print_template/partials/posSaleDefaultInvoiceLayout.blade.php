@@ -383,7 +383,7 @@
             </div><br>
 
             <div id="footer">
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-md-12">
                         <div class="heading text-center">
                             <p><strong>Our Sister Concern</strong></p>
@@ -412,7 +412,7 @@
                             <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                         </div>
                     </div>
-                </div>
+                </div> --}}
             
                 <div class="row mt-1">
                     <div class="col-4 text-center">
@@ -448,13 +448,13 @@
                                         @if ($sale->branch->logo != 'default.png')
                                             <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                         @else 
-                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray; font-weight: 600;">{{ $sale->branch->name }}</span>
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black; font-weight: 600;">{{ $sale->branch->name }}</span>
                                         @endif
                                     @else 
                                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                             <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                                         @else 
-                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                                         @endif
                                     @endif
                                 @endif

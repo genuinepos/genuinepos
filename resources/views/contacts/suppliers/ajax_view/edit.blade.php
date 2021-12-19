@@ -8,6 +8,12 @@
         </div>
 
         <div class="col-md-3">
+            <b>Phone :</b> <span class="text-danger">*</span>
+            <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number" value="{{ $supplier->phone }}"/>
+            <span class="error error_e_phone"></span>
+        </div>
+
+        <div class="col-md-3">
             <b>Supplier ID :</b>
             <input readonly type="text" name="contact_id" class="form-control"  placeholder="Contact ID" id="e_contact_id" value="{{ $supplier->contact_id }}"/>
         </div>
@@ -15,12 +21,6 @@
         <div class="col-md-3">
             <b>Business Name :</b>
             <input type="text" name="business_name" class="form-control" placeholder="Business name" id="e_business_name" value="{{ $supplier->business_name }}"/>
-        </div>
-
-        <div class="col-md-3">
-            <b>Phone :</b> <span class="text-danger">*</span>
-            <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number" value="{{ $supplier->phone }}"/>
-            <span class="error error_e_phone"></span>
         </div>
     </div>
 

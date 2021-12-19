@@ -18,7 +18,6 @@ class CreateCustomersTable extends Migration {
 			$table->bigInteger('id', true)->unsigned();
 			$table->boolean('type')->nullable()->comment('1=customer,2=supplier,3=both');
 			$table->string('contact_id')->nullable();
-			$table->bigInteger('customer_group_id')->unsigned()->nullable()->index('customers_customer_group_id_foreign');
 			$table->string('name');
 			$table->string('business_name')->nullable();
 			$table->string('phone')->nullable();
@@ -30,6 +29,7 @@ class CreateCustomersTable extends Migration {
 			$table->decimal('opening_balance', 22)->default(0.00);
 			$table->boolean('pay_term')->nullable()->comment('1=months,2=days');
 			$table->integer('pay_term_number')->nullable();
+			$table->unsignedBigInteger('customer_group_id')->nullable();
 			$table->text('address')->nullable();
 			$table->text('shipping_address')->nullable();
 			$table->string('city')->nullable();
@@ -43,6 +43,7 @@ class CreateCustomersTable extends Migration {
 			$table->boolean('status')->default(1);
 			$table->boolean('is_walk_in_customer')->default(0);
 			$table->timestamps();
+			$table->bigInteger('customer_group_id')->unsigned()->nullable()->index('customers_customer_group_id_foreign');
 		});
 	}
 

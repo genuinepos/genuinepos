@@ -260,7 +260,7 @@
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
-                                                                <input type="number" step="any" name="product_cost" class="form-control"
+                                                                <input readonly type="number" step="any" name="product_cost" class="form-control"
                                                                 autocomplete="off" id="product_cost" placeholder="Unit cost" value="{{ $product->product_cost }}">
                                                                 <span class="error error_product_cost"></span>
                                                             </div>
@@ -489,7 +489,7 @@
                                             
                                                 <div class="row">
                                                     <div class="col-md-3 offset-3">
-                                                        <label><b>x Margin :</b></label>
+                                                        <label><b>xMargin :</b></label>
                                                         <input type="text" name="profit" class="form-control form-control-sm" id="profit"
                                                             value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
                                                     </div>

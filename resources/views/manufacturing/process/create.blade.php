@@ -66,9 +66,7 @@
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Ingredient by product code(SKU) / Scan bar code" autofocus>
                                                     </div>
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                        
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div> 
                                             </div>
@@ -82,15 +80,14 @@
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th>Ingredient</th>
-                                                                    <th>Wastage</th>
                                                                     <th>Final Quantity</th>
-                                                                    <th>Price</th>
+                                                                    <th>Unit</th>
+                                                                    <th>Unit Cost</th>
+                                                                    <th>SubTotal</th>
                                                                     <th><i class="fas fa-trash-alt"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="ingredient_list">
-                                                               
-                                                            </tbody>
+                                                            <tbody id="ingredient_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -103,25 +100,19 @@
                     </div>
                 </section>
 
-                <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
-
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
+                        <p class="mt-1 float-end clearfix"><strong>Total Ingrediant Cost : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
+                    </div>
+                </div>
+                
                 <section class="">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
                                 <div class="element-body">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <label><b>Wastage :</b></label>
-                                            <div class="input-group ">
-                                                <input type="number" step="any" name="wastage_percent" class="form-control" autocomplete="off" id="wastage_percent" placeholder="Wastage" value="0.00">
-                                                <div class="input-group-prepend">
-                                                    <span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>
-                                                </div>
-                                                <input type="hidden" name="wastage_amount" id="wastage_amount">
-                                            </div>
-                                        </div>
-
                                         <div class="col-md-3">
                                             <label><b>Total Output Qty :</b></label>
                                             <div class="row">
@@ -136,7 +127,7 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <label><b>Production Cost :</b></label>
+                                            <label><b>Addtional Production Cost :</b></label>
                                             <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="0">
                                         </div>
 
@@ -165,14 +156,16 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script>
+        var unit_id = "{{ $product['unit_id'] }}";
         var unites = [];
         function getUnites(){
             $.ajax({
                 url:"{{ route('purchases.get.all.unites') }}",
                 success:function(units){
                     $.each(units, function(key, unit){
-                        $('#unit_id').append('<option value="'+unit.id+'">'+unit.name+'</option>');
+                        $('#unit_id').append('<option '+(unit.id == unit_id ? 'SELECTED' : '')+' value="'+unit.id+'">'+unit.name+'</option>');
                         unites.push({id : unit.id, name : unit.name}); 
                     });
                 }
@@ -226,8 +219,8 @@
                                         var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
                                         // update subtotal
                                         var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
-                                        closestTr.find('#price').val(parseFloat(totalCost).toFixed(2));
-                                        closestTr.find('#span_price').html(parseFloat(totalCost).toFixed(2));
+                                        closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
+                                        closestTr.find('#span_subtotal').html(parseFloat(totalCost).toFixed(2));
                                         __calculateTotalAmount();
                                         return;
                                     }
@@ -241,40 +234,30 @@
                                     tr += '<span class="product_variant"></span>';  
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
-                                    tr += '<input value="'+product.product_cost_with_tax+'" required name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                                     tr += '</td>';
 
                                     tr += '<td>';
-                                    tr += '<div class="input-group p-2">';
-                                    tr += '<input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="0.00">';
-                                    tr += '<div class="input-group-prepend">';
-                                    tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
-                                    tr += '</div>';
-                                    tr += '</div>';
+                                    tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control text-center" id="final_quantity">';
                                     tr += '</td>';
 
                                     tr += '<td>';
-                                    tr += '<div class="row">';
-                                    tr += '<div class="col-8">';
-                                    tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">';
-                                    tr += '</div>';
-                                    tr += '<div class="col-4">';
                                     tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                                         unites.forEach(function(unit) {
-                                        if (product.unit.id == unit.id) {
-                                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
-                                        }else{
-                                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
-                                        }
-                                    })
+                                            if (product.unit.id == unit.id) {
+                                                tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
+                                            }else{
+                                                tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
+                                            }
+                                        })
                                     tr += '</select>';
-                                    tr += '</div>';
-                                    tr += '</div>';
                                     tr += '</td>';
 
                                     tr += '<td>';
-                                    tr += '<input value="'+product.product_cost_with_tax+'" type="hidden" step="any" name="prices[]" id="price">';
-                                    tr += '<span id="span_price">'+product.product_cost_with_tax+'</span>';
+                                    tr += '<input readonly value="'+product.product_cost_with_tax+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
+                                    tr += '</td>';
+
+                                    tr += '<td>';
+                                    tr += '<input readonly value="'+product.product_cost_with_tax+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
                                     tr += '</td>';
 
                                     tr += '<td class="text-start">';
@@ -285,7 +268,7 @@
                                     $('#ingredient_list').prepend(tr); 
                                     __calculateTotalAmount();  
                                 }
-                            }else{
+                            } else {
                                 var li = "";
                                 $.each(product.product_variants, function(key, variant){
                                     li += '<li>';
@@ -335,8 +318,7 @@
                                         var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
                                         // update subtotal
                                         var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
-                                        closestTr.find('#price').val(parseFloat(totalCost).toFixed(2));
-                                        closestTr.find('#span_price').html(parseFloat(totalCost).toFixed(2));
+                                        closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
                                         __calculateTotalAmount();
                                         return;
                                     }
@@ -351,24 +333,13 @@
                                 tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
-                                tr += '<input type="hidden" value="'+variant_product.variant_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<div class="input-group p-2">';
-                                tr += '<input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="0.00">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
-                                tr += '</div>';
-                                tr += '</div>';
+                                tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control text-start" id="final_quantity">';
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<div class="row">';
-                                tr += '<div class="col-8">';
-                                tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">';
-                                tr += '</div>';
-                                tr += '<div class="col-4">';
                                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                                     unites.forEach(function(unit) {
                                         if (product.unit.id == unit.id) {
@@ -378,14 +349,14 @@
                                         }
                                     });
                                 tr += '</select>';
-                                tr += '</div>';
-                                tr += '</div>';
                                 tr += '</td>';
 
+                                tr += '<td>';
+                                tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-start">';
+                                tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" type="text" name="prices[]" id="price" class="form-control">';
-                                tr += '<span id="span_price">'+variant_product.variant_cost_with_tax+'</span>';
+                                tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-start">';
                                 tr += '</td>';
 
                                 tr += '<td>';
@@ -418,7 +389,7 @@
             var productName = e.getAttribute('data-p_name');
             var productUnit = e.getAttribute('data-unit');
             var productCode = e.getAttribute('data-p_code');
-            var productCostIncTax  = e.getAttribute('data-p_cost_with_tax'); 
+            var productCostIncTax = e.getAttribute('data-p_cost_with_tax'); 
             product_ids = document.querySelectorAll('#product_id');
             var sameProduct = 0;
             product_ids.forEach(function(input){
@@ -433,8 +404,7 @@
                     var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
                     // update subtotal
                     var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
-                    closestTr.find('#price').val(parseFloat(totalCost).toFixed(2));
-                    closestTr.find('#span_price').html(parseFloat(totalCost).toFixed(2));
+                    closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
                     __calculateTotalAmount();
                     if (keyName == 9) {
                         closestTr.find('#final_quantity').focus();
@@ -453,24 +423,13 @@
                 tr += '<span class="product_variant"></span>';  
                 tr += '<input value="'+productId+'" type="hidden" class="productId-'+productId+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
-                tr += '<input value="'+productCostIncTax+'" required name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                 tr += '</td>';
 
                 tr += '<td>';
-                tr += '<div class="input-group p-2">';
-                tr += '<input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="0.00">';
-                tr += '<div class="input-group-prepend">';
-                tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
-                tr += '</div>';
-                tr += '</div>';
+                tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control text-center" id="final_quantity">';
                 tr += '</td>';
 
                 tr += '<td>';
-                tr += '<div class="row">';
-                tr += '<div class="col-8">';
-                tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">';
-                tr += '</div>';
-                tr += '<div class="col-4">';
                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                     unites.forEach(function(unit) {
                         if (productUnit == unit.id) {
@@ -480,13 +439,14 @@
                         }
                     })
                 tr += '</select>';
-                tr += '</div>';
-                tr += '</div>';
                 tr += '</td>';
 
                 tr += '<td>';
-                tr += '<input value="'+productCostIncTax+'" type="hidden" step="any" name="prices[]" id="price">';
-                tr += '<span id="span_price">'+productCostIncTax+'</span>';
+                tr += '<input readonly value="'+productCostIncTax+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
+                tr += '</td>';
+
+                tr += '<td>';
+                tr += '<input readonly value="'+productCostIncTax+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
@@ -512,20 +472,20 @@
             
             $('.select_area').hide();
             $('#search_product').val("");
-            var className = input.getAttribute('class');
-            var closestTr = $('.'+className).closest('tr');
-            // update same product qty 
-            var presentQty = closestTr.find('#final_quantity').val();
-            var updateQty = parseFloat(presentQty) + 1;
-            closestTr.find('#final_quantity').val(updateQty);
-            var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
-            // update subtotal
-            var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
-            closestTr.find('#price').val(parseFloat(totalCost).toFixed(2));
-            closestTr.find('#span_price').html(parseFloat(totalCost).toFixed(2));
+            $('#search_product').val('');
+
+            var productId = e.getAttribute('data-p_id');
+            var productName = e.getAttribute('data-p_name');
+            var productUnit = e.getAttribute('data-unit');
+            var productCode = e.getAttribute('data-p_code');
+            var variantId = e.getAttribute('data-v_id');
+            var variantName = e.getAttribute('data-v_name');
+            var variantCode = e.getAttribute('data-v_code');
+            var variantCost = e.getAttribute('data-v_cost'); 
+            variant_id = document.querySelectorAll('#variant_id');
             __calculateTotalAmount();
             var sameVariant = 0;
-            variant_ids.forEach(function(input){
+            variant_id.forEach(function(input){
                 if(input.value != 'noid'){
                     if(input.value == variantId){
                         sameVariant += 1;
@@ -538,12 +498,7 @@
                         var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
                         // update subtotal
                         var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
-                        var wastage = closestTr.find('#ingredient_wastage_percent').val(); 
-                        var calcWastage = parseFloat(totalCost) / 100 * parseFloat(wastage);
-                        closestTr.find('#ingredient_wastage_amount').val(parseFloat(calcWastage).toFixed(2)); 
-                        var totalPriceWithWastage = parseFloat(calcWastage) + parseFloat(totalCost);
-                        closestTr.find('#price').val(parseFloat(totalPriceWithWastage).toFixed(2));
-                        closestTr.find('#span_price').html(parseFloat(totalPriceWithWastage).toFixed(2));
+                        closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
                         __calculateTotalAmount();
                         return;
                     }
@@ -552,49 +507,40 @@
 
             if(sameVariant == 0){
                 var tr = '';
-                tr += '<tr class="text-center">';
-                tr += '<td>';
-                tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
-                tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
-                tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
-                tr += '<input type="hidden" value="'+variant_product.variant_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
+                tr += '<tr>';
+                tr += '<td class="text-start">';
+                tr += '<span class="product_name">'+productName+'</span>';
+                tr += '<span class="product_variant">('+variantName+')</span>';  
+                tr += '<input value="'+productId+'" type="hidden" class="productId-'+productId+'" id="product_id" name="product_ids[]">';
+                tr += '<input value="'+variantId+'" type="hidden" class="variantId-'+variantId+'" id="variant_id" name="variant_ids[]">';
+                tr += '<input type="hidden" value="'+variantCost+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
                 tr += '</td>';
 
-                tr += '<td>';
-                tr += '<div class="input-group p-2">';
-                tr += '<input type="number" step="any" name="ingredient_wastage_percents[]" class="form-control" id="ingredient_wastage_percent" placeholder="Wastage" value="0.00">';
-                tr += '<div class="input-group-prepend">';
-                tr += '<span id="add_product" class="input-group-text add_button"><i class="fas fa-percentage text-dark"></i></span>';
-                tr += '</div>';
-                tr += '</div>';
+                tr += '<td class="text-start">';
+                tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control text-center" id="final_quantity">';
                 tr += '</td>';
 
-                tr += '<td>';
-                tr += '<div class="row">';
-                tr += '<div class="col-8">';
-                tr += '<input value="1" required name="final_quantities[]" type="number" step="any" class="form-control" id="final_quantity">';
-                tr += '</div>';
-                tr += '<div class="col-4">';
+                tr += '<td class="text-start">';
                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                     unites.forEach(function(unit) {
-                        if (product.unit.id == unit.id) {
+                        if (productUnit == unit.id) {
                             tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
                         } else {
                             tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
                         }
                     });
                 tr += '</select>';
-                tr += '</div>';
-                tr += '</div>';
                 tr += '</td>';
 
-                tr += '<td>';
-                tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" type="text" name="prices[]" id="price" class="form-control">';
-                tr += '<span id="span_price">'+variant_product.variant_cost_with_tax+'</span>';
+                tr += '<td class="text-start">';
+                tr += '<input readonly value="'+variantCost+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
                 tr += '</td>';
 
-                tr += '<td>';
+                tr += '<td class="text-start">';
+                tr += '<input readonly value="'+variantCost+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
+                tr += '</td>';
+
+                tr += '<td class="text-start">';
                 tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash"></span></a>';
                 tr += '</td>';
                 
@@ -614,12 +560,6 @@
             __calculateIngredientsTableAmount(tr);
         });
 
-        // Quantity increase or dicrease and clculate row amount
-        $(document).on('input', '#ingredient_wastage_percent', function(){
-            var tr = $(this).closest('tr');
-            __calculateIngredientsTableAmount(tr);
-        });
-
         $(document).on('input', '#production_cost', function(){
             var tr = $(this).closest('tr');
             __calculateTotalAmount();
@@ -630,20 +570,21 @@
             //Update subtotal 
             var unitCostIncTax = tr.find('#unit_cost_inc_tax').val();
             var totalCost = parseFloat(unitCostIncTax) * parseFloat(qty);
-            var subtotal = tr.find('#price').val(parseFloat(totalCost).toFixed(2));
-            var subtotal = tr.find('#span_price').html(parseFloat(totalCost).toFixed(2));
+            var subtotal = tr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
             __calculateTotalAmount();
         }
 
         function __calculateTotalAmount(){
-            var prices = document.querySelectorAll('#price');
+            var subtotals = document.querySelectorAll('#subtotal');
             var totalIngredientCost = 0;
-            prices.forEach(function(price){
+            subtotals.forEach(function(price){
                 totalIngredientCost += parseFloat(price.value);
             });
+
             $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
+            $('#span_total_ingredient_cost').html(parseFloat(totalIngredientCost).toFixed(2));
             var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
-            var totalCost = parseFloat(productionCost) + parseFloat(parseFloat(totalIngredientCost));
+            var totalCost =  parseFloat(totalIngredientCost) + parseFloat(productionCost);
             $('#total_cost').val(parseFloat(totalCost).toFixed(2));
         }
 
@@ -675,8 +616,30 @@
                         toastr.success(data); 
                         window.location = "{{ route('manufacturing.process.index') }}";
                     }
+                },error: function(err) {
+                    $('.submit_button').prop('type', 'sumbit');
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                    }else{
+                        toastr.error('Server error please contact to the support.');
+                    }
                 }
             });
+        });
+
+        $('body').keyup(function(e){
+            if (e.keyCode == 13){  
+                $(".selectProduct").click();
+                $('#list').empty();
+            }
+        });
+
+        $(document).keypress(".scanable",function(event) {
+            if (event.which == '10' || event.which == '13') {
+                event.preventDefault();
+            }
         });
 
         setInterval(function(){$('#search_product').removeClass('is-invalid');}, 500); 

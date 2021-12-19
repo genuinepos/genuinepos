@@ -638,7 +638,7 @@
         if (tax_type == 2) {
             var __tax_percent = 100 + parseFloat(tax_percent);
             var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
-            var calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
+            calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
         }
         
         var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
@@ -667,7 +667,7 @@
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
         var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
         var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
-        var __calcProfit = calcProfit ? calcProfit : 0
+        var __calcProfit = calcProfit ? calcProfit : 0;
         $('#profit').val(parseFloat(__calcProfit).toFixed(2));
     });
 

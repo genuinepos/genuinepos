@@ -4,12 +4,18 @@ namespace App\Imports;
 
 use App\Models\Customer;
 use App\Models\CustomerLedger;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class CustomerImport implements ToCollection
 {
+    protected $invoiceVoucherRefIdUtil;
+    public function __construct(InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
+    {
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+    }
     /**
      * @param Collection $collection
      */
@@ -21,19 +27,9 @@ class CustomerImport implements ToCollection
         $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
         foreach ($collection as $c) {
             if ($index != 0) {
-                if ($c[2]) {
-                    // generate prefix dode ID
-                    $i = 5;
-                    $a = 0;
-                    $id = '';
-                    while ($a < $i) {
-                        $id .= rand(1, 9);
-                        $a++;
-                    }
-
+                if ($c[2] && $c[3]) {
                     $addCustomer = Customer::create([
-                        'type' => 1,
-                        'contact_id' => $c[0] ? $c[0] : $cusIdPrefix . $id,
+                        'contact_id' => $c[0] ? $c[0] : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
                         'business_name' => $c[1],
                         'name' => $c[2],
                         'phone' => $c[3],
@@ -51,6 +47,7 @@ class CustomerImport implements ToCollection
                         'shipping_address' => $c[15],
                         'pay_term_number' => (float)$c[16],
                         'pay_term' => (float)$c[17],
+                        //'credit_limit' => $c[18],
                         'total_sale_due' => (float)$c[9] ? (float)$c[9] : 0,
                     ]);
 

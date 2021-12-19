@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use App\Models\Product;
 use App\Utils\Converter;
+use Illuminate\Support\Str;
 use App\Models\ProductVariant;
 use App\Models\PurchaseProduct;
 use Illuminate\Support\Facades\DB;
@@ -386,14 +387,14 @@ class PurchaseUtil
         return DataTables::of($purchaseProducts)
             ->editColumn('product', function ($row) {
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                return $row->name . $variant;
+                return Str::limit($row->name, 25, '') . $variant;
             })->editColumn('product_code', function ($row) {
                 return $row->variant_code ? $row->variant_code : $row->product_code;
             })->editColumn('date', function ($row) {
                 return date('d/m/Y', strtotime($row->date));
             })->editColumn('quantity', function ($row) {
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
-            })
+            })->editColumn('invoice_id', fn ($row) => '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="details_button text-danger text-hover" title="view" >'.$row->invoice_id.'</a>')
             ->editColumn('net_unit_cost', fn ($row) => $this->converter->format_in_bdt($row->net_unit_cost))
             ->editColumn('price',  function ($row) use ($converter) {
                 if ($row->selling_price > 0) {
@@ -407,7 +408,7 @@ class PurchaseUtil
                 }
                 return $converter->format_in_bdt($row->net_unit_cost);
             })->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->line_total . '">' . $this->converter->format_in_bdt($row->line_total) . '</span>')
-            ->rawColumns(['product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'price', 'subtotal'])
+            ->rawColumns(['product', 'product_code', 'date', 'quantity', 'invoice_id', 'branch', 'net_unit_cost', 'price', 'subtotal'])
             ->make(true);
     }
 
@@ -696,7 +697,6 @@ class PurchaseUtil
         $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
         $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-
         $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
         if (auth()->user()->branch_id == $row->branch_id) {
@@ -786,10 +786,12 @@ class PurchaseUtil
                 ->first();
             $updateVariant->variant_cost = $unit_cost_with_discount;
             $updateVariant->variant_cost_with_tax = $net_unit_cost;
+
             if ($isEditProductPrice == '1') {
                 $updateVariant->variant_profit = $profit;
                 $updateVariant->variant_price = $selling_price;
             }
+            
             $updateVariant->is_purchased = 1;
             $updateVariant->save();
         }

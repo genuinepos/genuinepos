@@ -75,7 +75,6 @@ class ProcessController extends Controller
         $addProcess->product_id = $request->product_id;
         $addProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : NULL;
         $addProcess->total_ingredient_cost = $request->total_ingredient_cost;
-        $addProcess->wastage_percent = $request->wastage_percent;
         $addProcess->total_output_qty = $request->total_output_qty;
         $addProcess->unit_id = $request->unit_id;
         $addProcess->production_cost = $request->production_cost;
@@ -85,12 +84,11 @@ class ProcessController extends Controller
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
         $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $ingredient_wastage_percents = $request->ingredient_wastage_percents;
         $final_quantities = $request->final_quantities;
         $unit_ids = $request->unit_ids;
-        $prices = $request->prices;
+        $subtotals = $request->subtotals;
 
-        if (count($request->product_ids) > 0) {
+        if (isset($request->product_ids)) {
             $index = 0;
             foreach ($product_ids as $product_id) {
                 $addProcessIngredient = new ProcessIngredient();
@@ -98,10 +96,9 @@ class ProcessController extends Controller
                 $addProcessIngredient->product_id = $product_id;
                 $addProcessIngredient->variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
                 $addProcessIngredient->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                $addProcessIngredient->wastage_percent = $ingredient_wastage_percents[$index];
                 $addProcessIngredient->final_qty = $final_quantities[$index];
                 $addProcessIngredient->unit_id = $unit_ids[$index];
-                $addProcessIngredient->subtotal = $prices[$index];
+                $addProcessIngredient->subtotal = $subtotals[$index];
                 $addProcessIngredient->save();
                 $index++;
             }
@@ -109,8 +106,6 @@ class ProcessController extends Controller
 
         return response()->json('Manufacturing Process created successfully');
     }
-
-
 
     // Edit process view with data
     public function edit($processId)
@@ -157,7 +152,6 @@ class ProcessController extends Controller
         $updateProcess->product_id = $request->product_id;
         $updateProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : NULL;
         $updateProcess->total_ingredient_cost = $request->total_ingredient_cost;
-        $updateProcess->wastage_percent = $request->wastage_percent;
         $updateProcess->total_output_qty = $request->total_output_qty;
         $updateProcess->unit_id = $request->unit_id;
         $updateProcess->production_cost = $request->production_cost;
@@ -173,10 +167,9 @@ class ProcessController extends Controller
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
         $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $ingredient_wastage_percents = $request->ingredient_wastage_percents;
         $final_quantities = $request->final_quantities;
         $unit_ids = $request->unit_ids;
-        $prices = $request->prices;
+        $subtotals = $request->subtotals;
 
         if (count($request->product_ids) > 0) {
             $index = 0;
@@ -187,10 +180,9 @@ class ProcessController extends Controller
                     ->where('variant_id', $variant_id)->first();
                 if ($updateIngredient) {
                     $updateIngredient->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                    $updateIngredient->wastage_percent = $ingredient_wastage_percents[$index];
                     $updateIngredient->final_qty = $final_quantities[$index];
                     $updateIngredient->unit_id = $unit_ids[$index];
-                    $updateIngredient->subtotal = $prices[$index];
+                    $updateIngredient->subtotal = $subtotals[$index];
                     $updateIngredient->is_delete_in_update = 0;
                     $updateIngredient->save();
                 } else {
@@ -199,10 +191,9 @@ class ProcessController extends Controller
                     $addProcessIngredient->product_id = $product_id;
                     $addProcessIngredient->variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
                     $addProcessIngredient->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                    $addProcessIngredient->wastage_percent = $ingredient_wastage_percents[$index];
                     $addProcessIngredient->final_qty = $final_quantities[$index];
                     $addProcessIngredient->unit_id = $unit_ids[$index];
-                    $addProcessIngredient->subtotal = $prices[$index];
+                    $addProcessIngredient->subtotal = $subtotals[$index];
                     $addProcessIngredient->save();
                 }
                 $index++;

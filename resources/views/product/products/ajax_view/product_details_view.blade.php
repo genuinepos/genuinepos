@@ -117,19 +117,20 @@
             @endif
 
             @if ($product->is_manage_stock == 1)
-                <hr class="m-0">
-                
-                <div class="row">
-                    <div class="heading">
-                        <label class="p-0 m-0"><strong>WAREHOUSE STOCK DETAILS :</strong></label>
+                @if (count($won_warehouse_stocks) > 0)
+                    <hr class="m-0">
+                    
+                    <div class="row">
+                        <div class="heading">
+                            <label class="p-0 m-0"><strong>WAREHOUSE STOCK DETAILS :</strong></label>
+                        </div>
+                        <div class="table-responsive" id="warehouse_stock_details">
+                            <!--Warehouse Stock Details-->
+                            @include('product.products.ajax_view.partials.warehouse_stock_details')
+                            <!--Warehouse Stock Details End-->
+                        </div>
                     </div>
-                    <div class="table-responsive" id="warehouse_stock_details">
-                        <!--Warehouse Stock Details-->
-                        @include('product.products.ajax_view.partials.warehouse_stock_details')
-                        <!--Warehouse Stock Details End-->
-                    </div>
-                </div>
-
+                @endif
                 <hr class="m-0">
 
                 <div class="row">

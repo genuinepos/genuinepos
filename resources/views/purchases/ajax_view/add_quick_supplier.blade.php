@@ -2,82 +2,72 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>Contact Type :</b></label>
-            <select name="contact_type" class="form-control">
-                <option value="">Select contact type</option>
-                <option value="1">Supplier</option>
-                <option value="2">Customer</option>
-                <option value="3">Both (Supplier - Customer)</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label><b>Contact ID :</b></label>
-            <input type="text" name="contact_id" class="form-control"  placeholder="Contact ID"/>
-        </div>
-
-        <div class="col-md-3">
-            <label><b>Business Name :</b></label>
-            <input type="text" name="business_name" class="form-control" placeholder="Business name"/>
-        </div>
-
-        <div class="col-md-3">
-            <label><b>Name :</b>  <span class="text-danger">*</span></label>
+            <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control s_add_input" data-name="Supplier name" id="name" placeholder="Supplier name"/>
             <span class="error error_name"></span>
         </div>
-    </div>
 
-    <div class="form-group row">
         <div class="col-md-3">
-            <label><b>Phone :</b>  <span class="text-danger">*</span></label>
+            <label><strong>Phone :</strong>  <span class="text-danger">*</span></label>
             <input type="text" name="phone" class="form-control s_add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
             <span class="error error_phone"></span>
         </div>
 
         <div class="col-md-3">
-            <label><b>Alternative Number :</b>  </label>
+            <label><strong>Supplier ID :</strong></label>
+            <input type="text" name="contact_id" class="form-control"  placeholder="Contact ID"/>
+        </div>
+
+        <div class="col-md-3">
+            <label><strong>Business Name :</strong></label>
+            <input type="text" name="business_name" class="form-control" placeholder="Business name"/>
+        </div>
+    </div>
+
+    <div class="form-group row mt-1">
+        <div class="col-md-3">
+            <label><strong>Alternative Number :</strong>  </label>
             <input type="text" name="alternative_phone" class="form-control" placeholder="Alternative phone number"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>Landline :</b></label>
+            <label><strong>Landline :</strong></label>
             <input type="text" name="landline" class="form-control" placeholder="landline number"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>Email :</b></label>
+            <label><strong>Email :</strong></label>
             <input type="text" name="email" class="form-control" placeholder="Email address"/>
         </div>
-    </div>
 
-    <div class="form-group row">
         <div class="col-md-3">
-            <label><b>Date Of Birth :</b>  </label>
+            <label><strong>Date Of Birth :</strong>  </label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week"></i></span>
                 </div>
-                <input type="date" name="date_of_birth" class="form-control date-picker" autocomplete="off">
+                <input type="text" name="date_of_birth" class="form-control date-picker" autocomplete="off">
             </div>
         </div>
+    </div>
 
+    <div class="form-group row mt-1">
         <div class="col-md-3">
-            <label><b>Tax Number :</b>  </label>
+            <label><strong>Tax Number :</strong>  </label>
             <input type="text" name="tax_number" class="form-control" placeholder="Tax number"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>Opening Balance :</b>  </label>
+            <label><strong>Opening Balance :</strong>  </label>
             <input type="number" name="opening_balance" class="form-control" placeholder="Opening balance"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>Pay Term :</b>  </label>
+            <label><strong>Pay Term :</strong>  </label>
             <div class="col-md-12">
                 <div class="row">
                     <input type="text" name="pay_term_number" class="form-control w-50"/>
-                    <select name="pay_term" class="form-control form-control-sm w-50">
+                    <select name="pay_term" class="form-control w-50">
                         <option value="">Select term</option>
                         <option value="1">Days </option>
                         <option value="2">Months</option>
@@ -87,16 +77,16 @@
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row mt-1">
         <div class="col-md-12">
-            <label><b>Address :</b></label>
+            <label><strong>Address :</strong></label>
             <input type="text" name="address" class="form-control"  placeholder="Address">
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row mt-1">
         <div class="col-md-3">
-            <label><b>City :</b></label>
+            <label><strong>City :</strong></label>
             <input type="text" name="city" class="form-control" placeholder="City"/>
         </div>
 
@@ -106,19 +96,19 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Country :</b></label>
+            <label><strong>Country :</strong></label>
             <input type="text" name="country" class="form-control" placeholder="Country"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>Zip-Code :</b></label>
+            <label><strong>Zip-Code :</strong></label>
             <input type="text" name="zip_code" class="form-control" placeholder="zip_code"/>
         </div>
     </div>
 
     <div class="form-group row">
         <div class="col-md-5">
-            <label><b>Shipping Address :</b></label>
+            <label><strong>Shipping Address :</strong></label>
             <input type="text" name="shipping_address" class="form-control" placeholder="Shipping address"/>
         </div>
     </div>
@@ -127,7 +117,7 @@
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i
                     class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+            <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
             <button type="reset" data-bs-dismiss="modal"
                 class="c-btn btn_orange float-end">Close</button>
         </div>

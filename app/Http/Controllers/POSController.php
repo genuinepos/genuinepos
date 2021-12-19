@@ -68,12 +68,14 @@ class POSController extends Controller
             $brands = DB::table('brands')->get(['id', 'name']);
             $customers = DB::table('customers')->where('status', 1)->get(['id', 'name', 'phone']);
             $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+            $accounts = DB::table('accounts')->select('id', 'name', 'account_number', 'balance')->get();
             return view('sales.pos.create', compact(
                 'openedCashRegister',
                 'categories',
                 'brands',
                 'customers',
-                'price_groups'
+                'price_groups',
+                'accounts',
             ));
         } else {
             return redirect()->route('sales.cash.register.create');

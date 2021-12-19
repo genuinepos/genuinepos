@@ -298,37 +298,6 @@ $(document).on('submit', '#add_pos_shortcut_menu', function (e) {
     });
 });
 
-// Add Pos Shortcut Menu Script End
-
-//=================== Color change option ======================
-$(function () {
-    $('.color_change_wrapper ul li').on('click', function () {
-        let cls = this.className;
-        if (cls === 'red') {
-            $('.color_change_wrapper ul li').removeClass('active');
-            this.classList.add('active');
-            $('body').removeClass();
-            $('body').addClass('red-theme');
-        } else if (cls === 'blue') {
-            $('.color_change_wrapper ul li').removeClass('active');
-            this.classList.add('active');
-            $('body').removeClass();
-            $('body').addClass('blue-theme');
-        } else if (cls === 'dark') {
-            $('.color_change_wrapper ul li').removeClass('active');
-            this.classList.add('active');
-            $('body').removeClass();
-            $('body').addClass('dark-theme');
-        } else if (cls === 'light') {
-            $('.color_change_wrapper ul li').removeClass('active');
-            this.classList.add('active');
-            $('body').removeClass();
-            $('body').addClass('light-theme');
-        }
-    })
-});
-
-
 // POS read manual button
 $('#readDocument').click(function () {
     if ($('#readDocument div.doc').css('display', 'none')) {

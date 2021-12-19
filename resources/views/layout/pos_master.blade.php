@@ -43,16 +43,6 @@
 </head>
 
 <body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
-        {{-- color changing option  --}}
-        {{-- <div class="color_change_wrapper">
-            <ul>
-                <li class="red"></li>
-                <li class="blue"></li>
-                <li class="dark"></li>
-                <li class="light"></li>
-            </ul>
-        </div> --}}
-
     <form id="pos_submit_form" action="{{ route('sales.pos.store') }}" method="POST">
         @csrf
         <div class="pos-body">
@@ -102,6 +92,17 @@
                                     </div>
                                     <select name="account_id" class="form-control"  id="account_id">
                                         <option value="">Select Accout</option>
+                                        @foreach ($accounts as $account)
+                                            <option 
+                                                @if (auth()->user()->branch_id)
+                                                    {{ auth()->user()->branch->default_account_id ? 'SELECTED' : '' }}
+                                                @else
+                                                    {{ $openedCashRegister->account_id ? 'SELECTED' : ''}}
+                                                @endif
+                                            value="{{ $account->id }}">
+                                                {{ $account->name.' (A/C: '.$account->account_number.')'.' (Balance: '.$account->balance.')' }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -214,9 +215,7 @@
                                                     <th class="text-start">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="data-list" id="transection_list">
-
-                                            </tbody>
+                                            <tbody class="data-list" id="transection_list"></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -233,7 +232,7 @@
             </div>
         </div>
     </div>
- <!-- Recent transection list modal end-->
+    <!-- Recent transection list modal end-->
 
     <!-- Hold invoice list modal -->
     <div class="modal fade" id="holdInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -252,9 +251,7 @@
                                 <div class="data_preloader" id="hold_invoice_preloader">
                                     <h6><i class="fas fa-spinner"></i> Processing...</h6>
                                 </div>
-                                <div class="table-responsive" id="hold_invoices">
-
-                                </div>
+                                <div class="table-responsive" id="hold_invoices"></div>
                             </div>
                         </div>
                     </div>
@@ -278,9 +275,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="add_product_body">
-                    <!--begin::Form-->
-                </div>
+                <div class="modal-body" id="add_product_body"></div>
             </div>
         </div>
     </div>
@@ -295,10 +290,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="add_customer_modal_body">
-                    <!--begin::Form-->
-
-                </div>
+                <div class="modal-body" id="add_customer_modal_body"></div>
             </div>
         </div>
     </div>
@@ -316,9 +308,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="suspended_sale_list">
-
-                </div>
+                <div class="modal-body" id="suspended_sale_list"></div>
             </div>
         </div>
     </div>
@@ -416,9 +406,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="stock_modal_body">
-
-                </div>
+                <div class="modal-body" id="stock_modal_body"></div>
             </div>
         </div>
     </div>
@@ -427,9 +415,7 @@
     <!-- Close Register modal -->
     <div class="modal fade" id="closeRegisterModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="close_register_content">
-
-            </div>
+            <div class="modal-content" id="close_register_content"></div>
         </div>
     </div>
     <!-- Close Register modal End-->
@@ -437,9 +423,7 @@
     <!-- Cash Register Details modal -->
     <div class="modal fade" id="cashRegisterDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="cash_register_details_content">
-
-            </div>
+            <div class="modal-content" id="cash_register_details_content"></div>
         </div>
     </div>
     <!-- Cash Register Details modal End-->
@@ -539,9 +523,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-2" id="invoice_description">
-
-                    </div>
+                    <div class="mt-2" id="invoice_description"></div>
                 </div>
             </div>
         </div>

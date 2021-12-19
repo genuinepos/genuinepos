@@ -10,10 +10,35 @@ class NameSearchUtil
     public function nameSearching($keyword)
     {
         $namedProducts = '';
-        $namedProducts = Product::with(['product_variants', 'tax', 'unit'])
+        $namedProducts = Product::with([
+            'product_variants:id,variant_name,variant_code,variant_cost,variant_cost_with_tax,variant_price',
+            'tax:id,tax_name,tax_percent',
+            'unit:id,name,code_name',
+        ])
             ->where('name', 'LIKE',  $keyword . '%')
             ->where('status', 1)->orderBy('id', 'desc')
-            ->get();
+            ->select(
+                'id',
+                'name',
+                'product_code',
+                'is_combo',
+                'is_featured',
+                'is_for_sale',
+                'is_manage_stock',
+                'is_purchased',
+                'is_show_emi_on_pos',
+                'is_variant',
+                'offer_price',
+                'product_cost',
+                'product_cost_with_tax',
+                'product_price',
+                'quantity',
+                'tax_id',
+                'tax_type',
+                'thumbnail_photo',
+                'type',
+                'unit_id',
+            )->get();
 
         if ($namedProducts && count($namedProducts) > 0) {
             return response()->json(['namedProducts' => $namedProducts]);
@@ -42,7 +67,6 @@ class NameSearchUtil
         } else {
             return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
         }
-        
     }
 
     public function checkBranchVariantProductStock($product_id, $variant_id, $branch_id)
@@ -72,6 +96,5 @@ class NameSearchUtil
         } else {
             return response()->json(['errorMsg' => 'This product is not available in this Shop/Business Location.']);
         }
-        
     }
 }

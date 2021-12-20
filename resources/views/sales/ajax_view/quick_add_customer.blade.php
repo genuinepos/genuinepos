@@ -162,13 +162,11 @@
             type:'post',
             data: request,
             success:function(data){
-                toastr.success(data);
-                $('#add_customer_form')[0].reset();
+                toastr.success('Customer added successfully.');
                 $('.loading_button').hide();
                 $('#addCustomerModal').modal('hide');
                 $('#customer_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
                 $('#customer_id').val(data.id);
-                console.log(parseFloat(data.total_sale_due).toFixed(2));
                 $('#previous_due').val(parseFloat(data.total_sale_due).toFixed(2));
                 calculateTotalAmount();
             }

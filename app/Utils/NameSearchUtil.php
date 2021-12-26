@@ -32,6 +32,7 @@ class NameSearchUtil
                 'product_cost',
                 'product_cost_with_tax',
                 'product_price',
+                'profit',
                 'quantity',
                 'tax_id',
                 'tax_type',

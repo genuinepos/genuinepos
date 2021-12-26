@@ -201,6 +201,7 @@
                                 tr += '<td>';
                                 tr += '<span class="product_name">'+product.name.substring(0, 28)+'</span>';
                                 tr += '<span class="product_variant"></span>';  
+                                tr += '<input class="form-control" name="descriptions[]" id="description" placeholder="Description">';
                                 tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
                                 tr += '</td>';
@@ -364,7 +365,8 @@
                             tr += '<tr class="text-start">';
                             tr += '<td>';
                             tr += '<span class="product_name">'+variant_product.product.name.substring(0, 28)+'</span>';
-                            tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
+                            tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';
+                            tr += '<input class="form-control" name="descriptions[]" id="description" placeholder="Description">';  
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
                             tr += '</td>';
@@ -508,7 +510,8 @@
             tr += '<tr class="text-start">';
             tr += '<td>';
             tr += '<span class="product_name">'+product_name.substring(0, 28)+'</span><br>';
-            tr += '<span class="product_variant"></span>';  
+            tr += '<span class="product_variant"></span>';
+            tr += '<input class="form-control" name="descriptions[]" id="description" placeholder="Description">';
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
             tr += '</td>';
@@ -654,6 +657,7 @@
             tr += '<td>';
             tr += '<span class="product_name">'+product_name.substring(0, 28)+'</span>';
             tr += '<span class="product_variant">('+variant_name+')</span>';  
+            tr += '<input class="form-control" name="descriptions[]" id="description" placeholder="Description">';
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
             tr += '</td>';

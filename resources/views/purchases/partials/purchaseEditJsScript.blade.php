@@ -146,6 +146,7 @@
                                 tr += '<td>';
                                 tr += '<span class="product_name">'+product.name+'</span> ';
                                 tr += '<span class="product_variant"></span>';  
+                                tr += '<input class="form-control" name="descriptions[]" id="description" placeholder="Description">';
                                 tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
                                 tr += '</td>';
@@ -308,6 +309,7 @@
                             tr += '<td>';
                             tr += '<span class="product_name">'+variant_product.product.name+'</span> ';
                             tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
+                            tr += '<input class="form-control" name="descriptions[]" id="description" placeholder="Description">';
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
                             tr += '</td>';
@@ -452,6 +454,7 @@
             tr += '<td>';
             tr += '<span class="product_name">'+product_name+'</span> ';
             tr += '<span class="product_variant"></span>';  
+            tr += '<input class="form-control" name="descriptions[]" id="description" placeholder="Description">';
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
             tr += '</td>';
@@ -459,7 +462,7 @@
             tr += '<td>';
             tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
             tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
-                unites.forEach(function(unit) {
+            unites.forEach(function(unit) {
                 if (product_unit == unit) {
                     tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
                 }else{
@@ -597,8 +600,9 @@
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<span class="product_name">'+product_name+'</span> ';
-            tr += '<span class="product_variant">('+variant_name+')</span>';  
+            tr += '<span class="product_name">'+product_name+'</span>';
+            tr += '<span class="product_variant"> ('+variant_name+')</span>';
+            tr += '<input class="form-control" name="descriptions[]" id="description" placeholder="Description">';
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
             tr += '</td>';
@@ -1128,7 +1132,7 @@
                         }else{
                             tr += '<span class="product_variant"></span>'; 
                         }
-                        
+                        tr += '<input class="form-control" name="descriptions[]" value="'+(product.description != null ? product.description : '')+'" id="description" placeholder="Description">';
                         tr += '<input value="'+product.product_id+'" type="hidden" class="productId-'+product.product_id+'" id="product_id" name="product_ids[]">';
                         if (product.product_variant_id != null) {
                             tr += '<input value="'+product.product_variant_id+'" class="variantId-'+product.product_variant_id+'" type="hidden" id="variant_id" name="variant_ids[]">';

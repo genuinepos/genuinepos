@@ -265,6 +265,7 @@
              <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12">
+                        <a href="{{ route('purchases.order.supplier.copy.print', $purchase->id) }}" id="print_supplier_copy" class="c-btn btn_primary py-1 text-white">Print Supplier Copy</a>
                         <button type="submit" class="c-btn btn_blue print_btn">Print</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
                     </div>
@@ -397,7 +398,7 @@
             </div>
 
             <div class="purchase_product_table pt-3 pb-3">
-                <table class="table table-sm table-bordered">
+                <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Product</th>

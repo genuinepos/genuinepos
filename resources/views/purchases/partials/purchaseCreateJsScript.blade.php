@@ -137,7 +137,7 @@
         delay(function() { searchProduct(product_code); }, 200); //sendAjaxical is the name of remote-command
     });
 
-    function searchProduct(product_code){
+    function searchProduct(product_code) {
         $('.variant_list_area').empty();
         $('.select_area').hide();
         $.ajax({
@@ -509,9 +509,9 @@
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<span class="product_name">'+product_name.substring(0, 28)+'</span><br>';
+            tr += '<a class="product_name text-success" id="select_product">'+product_name.substring(0, 28)+'</a>';
             tr += '<span class="product_variant"></span>';
-            tr += '<input class="form-control" name="descriptions[]" id="description" placeholder="Description">';
+            tr += '<input type="hidden" name="descriptions[]" id="description" placeholder="Description" value="">';
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
             tr += '</td>';
@@ -1151,9 +1151,33 @@
         });
     });
 
-    $(document).keypress(".scanable",function(event){
-        if (event.which == '10' || event.which == '13') {
-            event.preventDefault();
+    var lastSelectedTr = '';
+    var is_prevent_default = 1;
+    $(document).on('click', '#select_product', function (e) {
+        e.preventDefault();
+        is_prevent_default = 0;
+        var tr = $(this).closest('tr');
+        lastSelectedTr = tr;
+        var product_name = tr.find('.product_name').html();
+        $('#product_name').html('('+product_name+')');
+        var value = tr.find('#description').val();
+        $('#product_description').val(value);
+        $('#addDescriptionModal').modal('show');
+    });
+
+    $(document).on('click', '#add_description', function () {
+        var value = $('#product_description').val();
+        lastSelectedTr.find('#description').val(value);
+        $('#product_description').val('');
+        $('#addDescriptionModal').modal('hide');
+        is_prevent_default = 1;
+    });
+
+    $(document).keypress(".scanable", function(event) {
+        if (event.which == '13') {
+            if (is_prevent_default == 1) {
+                event.preventDefault();
+            }
         }
     });
 

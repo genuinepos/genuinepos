@@ -519,6 +519,7 @@ class PurchaseUtil
     {
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
+        $descriptions = $request->descriptions;
         $quantities = $request->quantities;
         $unit_names = $request->unit_names;
         $discounts = $request->unit_discounts;
@@ -542,6 +543,7 @@ class PurchaseUtil
                 $updatePurchaseProduct->product_id = $productId;
                 $updatePurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
                 $updatePurchaseProduct->quantity = $quantities[$index];
+                $updatePurchaseProduct->description = $descriptions[$index];
                 $updatePurchaseProduct->unit = $unit_names[$index];
                 $updatePurchaseProduct->unit_cost = $unit_costs[$index];
                 $updatePurchaseProduct->unit_discount = $discounts[$index];
@@ -567,6 +569,7 @@ class PurchaseUtil
                 $addPurchaseProduct->purchase_id = $purchaseId;
                 $addPurchaseProduct->product_id = $productId;
                 $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $addPurchaseProduct->description = $descriptions[$index];
                 $addPurchaseProduct->quantity = $quantities[$index];
                 $addPurchaseProduct->unit = $unit_names[$index];
                 $addPurchaseProduct->unit_cost = $unit_costs[$index];

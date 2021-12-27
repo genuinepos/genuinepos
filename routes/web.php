@@ -239,6 +239,7 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::get('po/list', 'PurchaseController@poList')->name('purchases.po.list');
     Route::get('show/{purchaseId}', 'PurchaseController@show')->name('purchases.show');
     Route::get('order/show/{purchaseId}', 'PurchaseController@showOrder')->name('purchases.show.order');
+    Route::get('order/print/supplier/copy/{purchaseId}', 'PurchaseController@printSupplierCopy')->name('purchases.order.supplier.copy.print');
     Route::get('create', 'PurchaseController@create')->name('purchases.create');
     Route::post('store', 'PurchaseController@store')->name('purchases.store');
     Route::get('edit/{purchaseId}/{editType}', 'PurchaseController@edit')->name('purchases.edit');

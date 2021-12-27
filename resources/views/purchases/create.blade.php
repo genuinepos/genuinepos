@@ -178,7 +178,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
                                                         </div>
-                                                        <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
+                                                        <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
                                                         <div class="input-group-prepend">
                                                             <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
                                                         </div>
@@ -538,6 +538,32 @@
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_product_body"></div>
+            </div>
+        </div>
+    </div>
+    <!--Add Product Modal End-->
+
+     <!--Add Product Modal-->
+     <div class="modal fade" id="addDescriptionModal" tabindex="-1" role="dialog" data-bs-backdrop="static" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog four-col-modal description_modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Add Description <span id="product_name"></span></h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                        class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label><strong>Description :</strong></label>
+                            <textarea name="product_description" id="product_description" class="form-control" cols="30" rows="10" placeholder="Description"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-end mt-3">
+                        <button type="submit" id="add_description" class="c-btn btn_blue float-end me-0">Add</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

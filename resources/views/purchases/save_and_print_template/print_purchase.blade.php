@@ -132,17 +132,15 @@
             </div>
 
             <div class="purchase_product_table pt-3 pb-3">
-                <table class="table table-sm table-bordered">
+                <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Product</th>
+                            <th scope="col">Description</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Bf. Discount)</th>
+                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Bf. Tax)</th>
-                            <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }}) (Bf. Tax)</th>
                             <th scope="col">Tax(%)</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Af. Tax)</th>
+                            <th scope="col">Net Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Lot Number</th>
                             <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                           
@@ -155,14 +153,15 @@
                                     $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
                                 @endphp
                                 
-                                <td>{{ Str::limit($product->product->name, 25).' '.$variant }}</td>
+                                <td>
+                                    {{ Str::limit($product->product->name, 25).' '.$variant }}
+                                    <small>{!! $product->description ? '<br/>'.$product->description : '' !!}</small>
+                                </td>
                                 <td>{{ $product->quantity }}</td>
                                 <td>
                                     {{ App\Utils\Converter::format_in_bdt($product->unit_cost) }}
                                 </td>
                                 <td>{{ App\Utils\Converter::format_in_bdt($product->unit_discount) }} </td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($product->unit_cost_with_discount) }}</td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($product->subtotal) }}</td>
                                 <td>{{ $product->unit_tax.'('.$product->unit_tax_percent.'%)' }}</td>
                                 <td>{{ App\Utils\Converter::format_in_bdt($product->net_unit_cost) }}</td>
                                 <td>{{ $product->lot_no ? $product->lot_no : '' }}</td>
@@ -172,34 +171,36 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="9" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                            <td colspan="1" class="text-end">
+                            <th colspan="7" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                             </td>
                         </tr>
+
                         <tr>
-                            <th colspan="9" class="text-end">Purchase Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                            <td colspan="1" class="text-end"> 
+                            <th colspan="7" class="text-end">Purchase Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td class="text-end"> 
                                 {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{$purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                             </td>
                         </tr>
+
                         <tr>
-                            <th colspan="9" class="text-end">Purchase Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                            <td colspan="1" class="text-end">
+                            <th colspan="7" class="text-end">Purchase Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td class="text-end">
                                 {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th colspan="9" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                            <td colspan="1" class="text-end">
+                            <th colspan="7" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th colspan="9" class="text-end">Purchase Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                            <td colspan="1" class="text-end">
+                            <th colspan="7" class="text-end">Purchase Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                             </td>
                         </tr>

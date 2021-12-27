@@ -416,6 +416,7 @@ class PurchaseUtil
     {
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
+        $descriptions = $request->descriptions;
         $quantities = $request->quantities;
         $unit_names = $request->unit_names;
         $discounts = $request->unit_discounts;
@@ -436,6 +437,7 @@ class PurchaseUtil
             $addPurchaseProduct->purchase_id = $purchaseId;
             $addPurchaseProduct->product_id = $productId;
             $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $addPurchaseProduct->description = $descriptions[$index];
             $addPurchaseProduct->quantity = $quantities[$index];
             $addPurchaseProduct->unit = $unit_names[$index];
             $addPurchaseProduct->unit_cost = $unit_costs[$index];
@@ -465,6 +467,7 @@ class PurchaseUtil
     {
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
+        $descriptions = $request->descriptions;
         $quantities = $request->quantities;
         $unit_names = $request->unit_names;
         $discounts = $request->unit_discounts;
@@ -485,6 +488,7 @@ class PurchaseUtil
             $addPurchaseProduct->purchase_id = $purchaseId;
             $addPurchaseProduct->product_id = $productId;
             $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $addPurchaseProduct->description = $descriptions[$index];
             $addPurchaseProduct->order_quantity = $quantities[$index];
             $addPurchaseProduct->pending_quantity = $quantities[$index];
             $addPurchaseProduct->unit = $unit_names[$index];
@@ -592,6 +596,7 @@ class PurchaseUtil
     {
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
+        $descriptions = $request->descriptions;
         $quantities = $request->quantities;
         $unit_names = $request->unit_names;
         $discounts = $request->unit_discounts;
@@ -614,6 +619,7 @@ class PurchaseUtil
             if ($updatePurchaseProduct) {
                 $updatePurchaseProduct->product_id = $productId;
                 $updatePurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $updatePurchaseProduct->description = $descriptions[$index];
                 $updatePurchaseProduct->order_quantity = (float)$quantities[$index];
                 $updatePurchaseProduct->pending_quantity = (float)$quantities[$index] - $updatePurchaseProduct->received_quantity;
                 $updatePurchaseProduct->unit = $unit_names[$index];
@@ -641,6 +647,7 @@ class PurchaseUtil
                 $addPurchaseProduct->purchase_id = $purchaseId;
                 $addPurchaseProduct->product_id = $productId;
                 $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $addPurchaseProduct->description = $descriptions[$index];
                 $addPurchaseProduct->order_quantity = $quantities[$index];
                 $addPurchaseProduct->pending_quantity = $quantities[$index];
                 $addPurchaseProduct->unit = $unit_names[$index];

@@ -305,6 +305,27 @@
             })
         });
 
+        // Print Packing slip
+        $(document).on('click', '#print_supplier_copy', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url:url,
+                type:'get',
+                success:function(data){
+                    $(data).printThis({
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('public/assets/css/print/purchase.print.css') }}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
+                    });
+                }
+            });
+        });
+
         // Show change status modal and pass actual link in the change status form
         $(document).on('click', '#change_status', function(e) {
             e.preventDefault();

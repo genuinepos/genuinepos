@@ -144,8 +144,8 @@
                                 var tr = '';
                                 tr += '<tr class="text-start>';
                                 tr += '<td>';
-                                tr += '<span class="product_name">'+product.name+'</span> ';
-                                tr += '<span class="product_variant"></span>';  
+                                tr += '<a class="text-success product_name" id="select_product">'+product.name+'</a> '; 
+                                tr += '<input type="hidden" name="descriptions[]" id="description">';
                                 tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
                                 tr += '</td>';
@@ -306,8 +306,8 @@
                             var tr = '';
                             tr += '<tr class="text-start">';
                             tr += '<td>';
-                            tr += '<span class="product_name">'+variant_product.product.name+'</span> ';
-                            tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
+                            tr += '<a class="text-success product_name" id="select_product">'+variant_product.product.name+' - '+variant_product.variant_name+'</a>'; 
+                            tr += '<input type="hidden" name="descriptions[]" id="description">';
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
                             tr += '</td>';
@@ -384,8 +384,8 @@
         });
     }
 
-        // select single product and add purchase table
-        var keyName = 1;
+    // select single product and add purchase table
+    var keyName = 1;
     function singleProduct(e){
         if (keyName == 13 || keyName == 1) {
             document.getElementById('search_product').focus();
@@ -450,8 +450,8 @@
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<span class="product_name">'+product_name+'</span> ';
-            tr += '<span class="product_variant"></span>';  
+            tr += '<a class="text-success product_name" id="select_product">'+product_name.substring(0, 20)+'</a>'; 
+            tr += '<input type="hidden" name="descriptions[]" id="description">';
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
             tr += '</td>';
@@ -459,7 +459,7 @@
             tr += '<td>';
             tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
             tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
-                unites.forEach(function(unit) {
+            unites.forEach(function(unit) {
                 if (product_unit == unit) {
                     tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
                 }else{
@@ -528,8 +528,8 @@
         }
     }
 
-        // select variant product and add purchase table
-        function salectVariant(e){
+    // select variant product and add purchase table
+    function salectVariant(e){
         if (keyName == 13 || keyName == 1) {
             document.getElementById('search_product').focus();
         }
@@ -597,8 +597,8 @@
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<span class="product_name">'+product_name+'</span> ';
-            tr += '<span class="product_variant">('+variant_name+')</span>';  
+            tr += '<a class="text-success product_name" id="select_product">'+product_name.substring(0, 20)+' - '+variant_name+'</a>';
+            tr += '<input type="hidden" name="descriptions[]" id="description" value="">';
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
             tr += '</td>';
@@ -606,10 +606,10 @@
             tr += '<td>';
             tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
             tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
-                unites.forEach(function(unit) {
+            unites.forEach(function(unit) {
                 if (product_unit == unit) {
                     tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
-                }else{
+                } else {
                     tr += '<option value="'+unit+'">'+unit+'</option>';   
                 }
             })
@@ -1075,6 +1075,27 @@
         });
     });
 
+    var lastSelectedTr = '';
+    $(document).on('click', '#select_product', function (e) {
+        e.preventDefault();
+        is_prevent_default = 0;
+        var tr = $(this).closest('tr');
+        lastSelectedTr = tr;
+        var product_name = tr.find('.product_name').html();
+        $('#product_name').html('('+product_name+')');
+        var value = tr.find('#description').val();
+        $('#product_description').val(value);
+        $('#addDescriptionModal').modal('show');
+        //document.getElementById('product_description').focus();
+    });
+
+    $(document).on('click', '#add_description', function () {
+        var value = $('#product_description').val();
+        lastSelectedTr.find('#description').val(value);
+        $('#product_description').val('');
+        $('#addDescriptionModal').modal('hide');
+    });
+
     $(document).keypress(".scanable",function(event){
         if (event.which == '10' || event.which == '13') {
             event.preventDefault();
@@ -1095,8 +1116,7 @@
 
     document.getElementById('search_product').focus();
 
-
-        // Get edit able data
+    // Get edit able data
     function getEditablePurchase(){
         $('.data_preloader').show();
         $.ajax({
@@ -1119,87 +1139,83 @@
                     product_rows = purchase.purchase_products;
                 }
                 $.each(product_rows,function (key, product) {
+                    var variant = product.product_variant_id != null ? ' - '+product.variant.variant_name : '';
                     var tr = '';
                     tr += '<tr class="text-start">';
                     tr += '<td>';
-                        tr += '<span class="product_name">'+product.product.name+'</span> ';
-                        if (product.product_variant_id != null) {
-                            tr += '<span class="product_variant">'+product.variant.variant_name+'</span>'; 
+                    tr += '<a class="text-success product_name" id="select_product">'+product.product.name + variant +'</a> ';
+                    tr += '<input type="hidden" name="descriptions[]" value="'+(product.description != null ? product.description : '')+'" id="description">';
+                    tr += '<input value="'+product.product_id+'" type="hidden" class="productId-'+product.product_id+'" id="product_id" name="product_ids[]">';
+                    if (product.product_variant_id != null) {
+                        tr += '<input value="'+product.product_variant_id+'" class="variantId-'+product.product_variant_id+'" type="hidden" id="variant_id" name="variant_ids[]">';
+                    }else{
+                        tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">'; 
+                    }
+                    
+                    tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input value="'+(product.quantity ? product.quantity : product.order_quantity)+'" required name="quantities[]" type="number" class="form-control" id="quantity">';
+                    tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
+                    unites.forEach(function(unit) {
+                        if (product.unit == unit) {
+                            tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
                         }else{
-                            tr += '<span class="product_variant"></span>'; 
+                            tr += '<option value="'+unit+'">'+unit+'</option>';   
                         }
-                        
-                        tr += '<input value="'+product.product_id+'" type="hidden" class="productId-'+product.product_id+'" id="product_id" name="product_ids[]">';
-                        if (product.product_variant_id != null) {
-                            tr += '<input value="'+product.product_variant_id+'" class="variantId-'+product.product_variant_id+'" type="hidden" id="variant_id" name="variant_ids[]">';
-                        }else{
-                            tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">'; 
-                        }
-                        
-                        tr += '</td>';
-                        tr += '<td>';
-                        tr += '<input value="'+(product.quantity ? product.quantity : product.order_quantity)+'" required name="quantities[]" type="number" class="form-control" id="quantity">';
-                        tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
-                        unites.forEach(function(unit) {
-                            if (product.unit == unit) {
-                                tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
-                            }else{
-                                tr += '<option value="'+unit+'">'+unit+'</option>';   
-                            }
-                        })
-                        tr += '</select>';
-                        tr += '</td>';
+                    })
+                    tr += '</select>';
+                    tr += '</td>';
 
-                        tr += '<td>';
-                        tr += '<input value="'+product.unit_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
-                        @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
-                            tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="'+(product.lot_no ? product.lot_no : '')+'">';
-                        @endif
-                        tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input value="'+product.unit_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
+                    @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
+                        tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="'+(product.lot_no ? product.lot_no : '')+'">';
+                    @endif
+                    tr += '</td>';
 
-                        tr += '<td>';
-                        tr += '<input value="'+product.unit_discount+'" required name="unit_discounts[]" type="text" class="form-control" id="unit_discount">';
-                        tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input value="'+product.unit_discount+'" required name="unit_discounts[]" type="text" class="form-control" id="unit_discount">';
+                    tr += '</td>';
 
-                        tr += '<td>';
-                        tr += '<input readonly value="'+product.unit_cost_with_discount+'" name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
-                        tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input readonly value="'+product.unit_cost_with_discount+'" name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
+                    tr += '</td>';
 
-                        tr += '<td>';
-                        tr += '<input readonly value="'+product.subtotal+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
-                        tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input readonly value="'+product.subtotal+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
+                    tr += '</td>';
 
-                        tr += '<td>';
-                        tr += '<input readonly type="text" name="tax_percents[]"  id="tax_percent" class="form-control" value="'+product.unit_tax_percent+'">'
-                        tr += '<input type="hidden" value="'+product.unit_tax+'" name="unit_taxes[]"   id="unit_tax">';
-                        tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input readonly type="text" name="tax_percents[]"  id="tax_percent" class="form-control" value="'+product.unit_tax_percent+'">'
+                    tr += '<input type="hidden" value="'+product.unit_tax+'" name="unit_taxes[]"   id="unit_tax">';
+                    tr += '</td>';
 
-                        var unit_cost_inc_tax = parseFloat(product.unit_cost) / 100 * parseFloat(product.unit_tax_percent) + parseFloat(product.unit_cost);
-                        tr += '<td>';
-                        tr += '<input type="hidden" value="'+unit_cost_inc_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-                        tr += '<input value="'+product.net_unit_cost+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
-                        tr += '</td>';
+                    var unit_cost_inc_tax = parseFloat(product.unit_cost) / 100 * parseFloat(product.unit_tax_percent) + parseFloat(product.unit_cost);
+                    tr += '<td>';
+                    tr += '<input type="hidden" value="'+unit_cost_inc_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
+                    tr += '<input value="'+product.net_unit_cost+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
+                    tr += '</td>';
 
-                        tr += '<td>';
-                        tr += '<input readonly value="'+product.line_total+'" type="text" name="linetotals[]" id="line_total" class="form-control">';
-                        tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input readonly value="'+product.line_total+'" type="text" name="linetotals[]" id="line_total" class="form-control">';
+                    tr += '</td>';
 
-                        @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
-                            tr += '<td>';
-                            tr += '<input value="'+product.profit_margin+'" type="text" name="profits[]" class="form-control" id="profit">';
-                            tr += '</td>';
-                        
-                            tr += '<td>';
-                            tr += '<input value="'+product.selling_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price">';
-                            tr += '</td>';
-                        @endif 
-
+                    @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                         tr += '<td>';
-                        tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>';
+                        tr += '<input value="'+product.profit_margin+'" type="text" name="profits[]" class="form-control" id="profit">';
                         tr += '</td>';
-                        
-                        tr += '</tr>';
-                        $('#purchase_list').prepend(tr); 
+                    
+                        tr += '<td>';
+                        tr += '<input value="'+product.selling_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price">';
+                        tr += '</td>';
+                    @endif 
+
+                    tr += '<td>';
+                    tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>';
+                    tr += '</td>';
+                    
+                    tr += '</tr>';
+                    $('#purchase_list').prepend(tr); 
                 });
 
                 $('#total_item').val(purchase.total_item);

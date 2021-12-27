@@ -69,14 +69,34 @@ class BarcodeController extends Controller
     public function searchProduct($searchKeyword)
     {
         $products = Product::with(['product_purchased_variants'])
-            ->where('name', 'like', "%$searchKeyword%")
-            ->where('is_purchased', 1)
+            ->where('name', 'like', $searchKeyword. '%')
+            ->where('is_purchased', 1)->select(
+                'id',
+                'name',
+                'product_code',
+                'is_combo',
+                'is_featured',
+                'is_for_sale',
+                'is_manage_stock',
+                'is_purchased',
+                'is_variant',
+                'offer_price',
+                'product_cost',
+                'product_cost_with_tax',
+                'product_price',
+                'profit',
+                'quantity',
+                'tax_id',
+                'tax_type',
+                'type',
+                'unit_id',
+            )->limit(25)
             ->get();
         if ($products->count() > 0) {
             return response()->json($products);
         } else {
             $products = Product::with(['product_purchased_variants'])
-                ->where('product_code', 'LIKE', "%$searchKeyword%")
+                ->where('product_code', $searchKeyword)
                 ->where('is_purchased', 1)
                 ->get();
             return response()->json($products);

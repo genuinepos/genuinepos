@@ -403,7 +403,7 @@
                         <tr>
                             <th scope="col">Product</th>
                             <th scope="col">Ordered Quantity</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Bf. Discount)</th>
+                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>
                             <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -418,7 +418,10 @@
                                     $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
                                 @endphp
                                 
-                                <td>{{ Str::limit($product->product->name, 25).' '.$variant }}</td>
+                                <td>
+                                    {{ Str::limit($product->product->name, 25).' '.$variant }}
+                                    <small>{!! $product->description ? '<br/>'.$product->description : '' !!}</small>
+                                </td>
                                 <td>{{ $product->order_quantity }}</td>
                                 <td>
                                     {{ App\Utils\Converter::format_in_bdt($product->unit_cost) }}

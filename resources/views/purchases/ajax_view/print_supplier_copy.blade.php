@@ -110,7 +110,7 @@
                     <thead>
                         <tr>
                             <th class="text-start">SL</th>
-                            <th class="text-start">Product</th>
+                            <th class="text-start">Description</th>
                             <th scope="col">Ordered Quantity</th>
                         </tr>
                     </thead>
@@ -123,11 +123,12 @@
                                 @endphp
                                 <td class="text-start">{{ $index + 1 }}</td>
                                 <td class="text-start">
-                                    {{ Str::limit($product->product->name, 25).' '.$variant }} <br/>
-                                    <small>{!! $product->description ? $product->description : '' !!}</small>
+                                    {{ Str::limit($product->product->name, 25).' '.$variant }} 
+                                    <small>{!! $product->description ? '<br/>'.$product->description : '' !!}</small>
                                 </td>
                                 <td>{{ $product->order_quantity }}</td>
                             </tr>
+                            @php $index++; @endphp
                         @endforeach
                     </tbody>
                 </table>

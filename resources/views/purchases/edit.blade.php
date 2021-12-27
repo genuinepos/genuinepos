@@ -63,7 +63,7 @@
                                             @else 
                                                 <div class="input-group mt-1">
                                                     <label for="inputEmail3" class=" col-4"><span
-                                                        class="text-danger">*</span> <b>Branch :</b> </label>
+                                                        class="text-danger">*</span> <b>B.Location :</b> </label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}">
                                                     </div>
@@ -320,6 +320,32 @@
             </div>
         </div>
     </div> 
+    <!--Add Product Modal End-->
+
+    <!--Add Product Modal-->
+    <div class="modal fade" id="addDescriptionModal" tabindex="-1" role="dialog" data-bs-backdrop="static" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog four-col-modal description_modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Description <span id="product_name"></span></h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                        class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label><strong>Description :</strong></label>
+                            <textarea name="product_description" id="product_description" class="form-control" cols="30" rows="10" placeholder="Description"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-end mt-3">
+                        <button type="submit" id="add_description" class="c-btn btn_blue float-end me-0">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--Add Product Modal End-->
 @endsection
 @push('scripts')

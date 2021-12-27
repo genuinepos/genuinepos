@@ -34,7 +34,7 @@ class NameSearchUtil
                 'thumbnail_photo',
                 'type',
                 'unit_id',
-            )->orderBy('id', 'desc')->get();
+            )->orderBy('id', 'desc')->limit(25)->get();
 
         if ($namedProducts && count($namedProducts) > 0) {
             return response()->json(['namedProducts' => $namedProducts]);

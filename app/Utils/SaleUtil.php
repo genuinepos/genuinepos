@@ -33,6 +33,7 @@ class SaleUtil
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
     }
+    
     public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId)
     {
         if ($request->paying_amount > 0) {

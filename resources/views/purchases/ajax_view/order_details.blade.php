@@ -265,6 +265,7 @@
              <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12">
+                        <a href="{{ route('purchases.order.supplier.copy.print', $purchase->id) }}" id="print_supplier_copy" class="c-btn btn_primary py-1 text-white">Print Supplier Copy</a>
                         <button type="submit" class="c-btn btn_blue print_btn">Print</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
                     </div>
@@ -397,12 +398,12 @@
             </div>
 
             <div class="purchase_product_table pt-3 pb-3">
-                <table class="table table-sm table-bordered">
+                <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Product</th>
                             <th scope="col">Ordered Quantity</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Bf. Discount)</th>
+                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>
                             <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -417,7 +418,10 @@
                                     $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
                                 @endphp
                                 
-                                <td>{{ Str::limit($product->product->name, 25).' '.$variant }}</td>
+                                <td>
+                                    {{ Str::limit($product->product->name, 25).' '.$variant }}
+                                    <small>{!! $product->description ? '<br/>'.$product->description : '' !!}</small>
+                                </td>
                                 <td>{{ $product->order_quantity }}</td>
                                 <td>
                                     {{ App\Utils\Converter::format_in_bdt($product->unit_cost) }}

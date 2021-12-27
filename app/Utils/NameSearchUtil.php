@@ -12,8 +12,29 @@ class NameSearchUtil
         $namedProducts = '';
         $namedProducts = Product::with(['product_variants', 'tax', 'unit'])
             ->where('name', 'LIKE',  $keyword . '%')
-            ->where('status', 1)->orderBy('id', 'desc')
-            ->get();
+            ->where('status', 1)->select(
+                'id',
+                'name',
+                'product_code',
+                'is_combo',
+                'is_featured',
+                'is_for_sale',
+                'is_manage_stock',
+                'is_purchased',
+                'is_show_emi_on_pos',
+                'is_variant',
+                'offer_price',
+                'product_cost',
+                'product_cost_with_tax',
+                'product_price',
+                'profit',
+                'quantity',
+                'tax_id',
+                'tax_type',
+                'thumbnail_photo',
+                'type',
+                'unit_id',
+            )->orderBy('id', 'desc')->get();
 
         if ($namedProducts && count($namedProducts) > 0) {
             return response()->json(['namedProducts' => $namedProducts]);

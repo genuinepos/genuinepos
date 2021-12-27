@@ -62,7 +62,7 @@ class SupplierController extends Controller
         $firstLetterOfSupplier = str_split($request->name)[0];
         $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
         $addSupplier = Supplier::create([
-            'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
+            'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,
@@ -113,7 +113,7 @@ class SupplierController extends Controller
             'phone' => 'required',
         ]);
 
-       
+
         Supplier::where('id', $request->id)->update([
             'contact_id' => $request->contact_id,
             'name' => $request->name,
@@ -357,7 +357,7 @@ class SupplierController extends Controller
 
         // Add Supplier Payment Record
         $supplierPayment = new SupplierPayment();
-        $supplierPayment->voucher_no = 'SPV' .date('my'). $this->invoiceVoucherRefIdUtil->supplierPaymentVoucherNo();
+        $supplierPayment->voucher_no = 'SPV' . date('my') . $this->invoiceVoucherRefIdUtil->supplierPaymentVoucherNo();
         $supplierPayment->branch_id = auth()->user()->branch_id;
         $supplierPayment->supplier_id = $supplierId;
         $supplierPayment->account_id = $request->account_id;
@@ -579,7 +579,7 @@ class SupplierController extends Controller
     {
         // Add Supplier Payment Record
         $supplierPayment = new SupplierPayment();
-        $supplierPayment->voucher_no = 'RPV' . date('my'). $this->invoiceVoucherRefIdUtil->getLastId('supplier_payments');
+        $supplierPayment->voucher_no = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('supplier_payments');
         $supplierPayment->branch_id = auth()->user()->branch_id;
         $supplierPayment->supplier_id = $supplierId;
         $supplierPayment->account_id = $request->account_id;
@@ -697,7 +697,7 @@ class SupplierController extends Controller
                             $returnPurchase->purchase_return->total_return_due_received += $request->amount;
                             $returnPurchase->purchase_return->save();
                         }
-                      
+
                         $request->amount -= $request->amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($returnPurchase);
                     }
@@ -802,7 +802,7 @@ class SupplierController extends Controller
                             $returnPurchase->purchase_return->total_return_due_received += $returnPurchase->purchase_return_due;
                             $returnPurchase->purchase_return->save();
                         }
-                      
+
                         $request->amount -= $returnPurchase->purchase_return_due;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($returnPurchase);
                     }
@@ -824,7 +824,7 @@ class SupplierController extends Controller
                             $dueSupplierReturnInvoice->total_return_due -= $request->amount;
                             $dueSupplierReturnInvoice->total_return_due_received += $request->amount;
                             $dueSupplierReturnInvoice->save();
-                        
+
                             // Add purchase payment
                             $addPurchasePayment = new PurchasePayment();
                             $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->purchasePaymentVoucherNo();
@@ -978,9 +978,10 @@ class SupplierController extends Controller
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
         $supplier_payments = DB::table('supplier_payments')
-        ->leftJoin('accounts', 'supplier_payments.account_id', 'accounts.id')
-        ->select('supplier_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
-        ->orderBy('report_date', 'desc')->get();
+            ->leftJoin('accounts', 'supplier_payments.account_id', 'accounts.id')
+            ->select('supplier_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
+            ->where('supplier_payments.supplier_id', $supplier->id)
+            ->orderBy('supplier_payments.report_date', 'desc')->get();
         return view('contacts.suppliers.ajax_view.view_payment_list', compact('supplier', 'supplier_payments'));
     }
 

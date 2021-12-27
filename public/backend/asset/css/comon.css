@@ -477,6 +477,16 @@ a#print_report {
     margin-right: 5px;
 }
 
+.btn_primary {
+    background: linear-gradient(#0853a1, #212529f2);
+    font-size: 11px;
+    padding: 0 10px;
+    color: #fff;
+    border: #9bacbd 1px solid;
+    text-shadow: 1px 1px 0px #333;
+    margin-right: 5px;
+}
+
 .text-hover {
     font-weight: 600;
 }

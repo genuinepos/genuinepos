@@ -131,6 +131,19 @@ class PurchaseController extends Controller
         return view('purchases.ajax_view.order_details', compact('purchase'));
     }
 
+    public function printSupplierCopy($purchaseId)
+    {
+        $purchase = Purchase::with([
+            'branch',
+            'supplier',
+            'admin',
+            'purchase_order_products',
+            'purchase_products.product',
+            'purchase_products.variant',
+        ])->where('id', $purchaseId)->first();
+        return view('purchases.ajax_view.print_supplier_copy', compact('purchase'));
+    }
+
     public function create()
     {
         if (auth()->user()->permission->purchase['purchase_add'] == '0') {

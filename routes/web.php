@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\Purchase;
+use App\Models\SupplierPayment;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -880,10 +881,17 @@ Route::get('pin_login', function () {
 
 Route::get('/test', function () {
     //return str_pad(10, 10, "0", STR_PAD_LEFT);
-    $purchases = Purchase::all();
-    foreach ($purchases as $p) {
-        $p->is_last_created = 0;
-        $p->save();
+    // $purchases = Purchase::all();
+    // foreach ($purchases as $p) {
+    //     $p->is_last_created = 0;
+    //     $p->save();
+    // }
+
+    $supplierPayments = DB::table('supplier_payments')->whereNull('report_date')->get();
+    foreach ($supplierPayments as $key => $sp) {
+        $supplierPayment = SupplierPayment::where('id', $sp->id)->first();
+        $supplierPayment->report_date = date('Y-m-d', strtotime($sp->date));
+        $supplierPayment->save();
     }
 });
 

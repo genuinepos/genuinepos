@@ -364,6 +364,7 @@ class SupplierController extends Controller
         $supplierPayment->paid_amount = $request->amount;
         $supplierPayment->pay_mode = $request->payment_method;
         $supplierPayment->date = $request->date;
+        $supplierPayment->report_date = date('Y-m-d', strtotime($request->date));
         $supplierPayment->time = date('h:i:s a');
         $supplierPayment->month = date('F');
         $supplierPayment->year = date('Y');
@@ -981,7 +982,7 @@ class SupplierController extends Controller
             ->leftJoin('accounts', 'supplier_payments.account_id', 'accounts.id')
             ->select('supplier_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
             ->where('supplier_payments.supplier_id', $supplier->id)
-            ->orderBy('supplier_payments.report_date', 'desc')->get();
+            ->orderBy('supplier_payments.date', 'desc')->get();
         return view('contacts.suppliers.ajax_view.view_payment_list', compact('supplier', 'supplier_payments'));
     }
 

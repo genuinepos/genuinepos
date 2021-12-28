@@ -373,6 +373,7 @@ class ProductionController extends Controller
                 'product_variants.id as v_id',
                 'product_variants.variant_name as v_name',
                 'product_variants.variant_code as v_code',
+                'products.product_cost_with_tax as unit_cost_inc_tax',
                 'units.id as u_id',
                 'units.name as u_name',
             )->get();

@@ -474,7 +474,9 @@
                                     @php
                                         $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
                                     @endphp
-                                    <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }} </th>
+                                    <th class="text-start">
+                                        {{ $loop->index + 1 }}. {{ Str::limit($saleProduct->product->name, 25, '').$variant }} 
+                                    </th>
                                     
                                     <th class="text-center">{{ (float)$saleProduct->quantity }}</th>
                                     <th class="text-center">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
@@ -488,7 +490,16 @@
                 <div class="amount_area">
                     <table class="w-100">
                         <thead>
-                            <tr >
+                            <tr>
+                                <th class="text-end">Net Total : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                <th class="text-end">
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
+                                    </span>
+                                </th>
+                            </tr>
+
+                            <tr>
                                 <th class="text-end">Discount : 
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                 </th>
@@ -500,7 +511,6 @@
                             <tr>
                                 <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
-                                    {{-- {{ $sale->order_tax_amount }} --}}
                                     ({{ $sale->order_tax_percent }} %)
                                 </th>
                             </tr>

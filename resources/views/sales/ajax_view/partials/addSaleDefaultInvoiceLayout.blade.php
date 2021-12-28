@@ -519,7 +519,7 @@
                                         $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
                                     @endphp
                                     <th class="text-start">
-                                        {{ $loop->index + 1 }}. {{ App\Utils\Converter::format_in_bdt($saleProduct->product->name, 25, '').$variant }} 
+                                        {{ $loop->index + 1 }}. {{Str::limit($saleProduct->product->name, 25, '').$variant }} 
                                     </th>
                                     
                                     <th class="text-center">{{ (float) $saleProduct->quantity }}</th>

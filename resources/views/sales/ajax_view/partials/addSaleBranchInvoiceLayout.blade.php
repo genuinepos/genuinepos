@@ -480,7 +480,9 @@
                                     @php
                                         $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
                                     @endphp
-                                    <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }} </th>
+                                    <th class="text-start">
+                                        {{ $loop->index + 1 }}. {{ Str::limit($saleProduct->product->name, 25, '').$variant }} 
+                                    </th>
                                     
                                     <th class="text-center">{{ (float) $saleProduct->quantity }}</th>
                                     <th class="text-center">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
@@ -497,43 +499,54 @@
                         <tr >
                             <th class="text-end">Discount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                             <th class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
+                                <span>
+                                    {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
+                                </span>
                             </th>
                         </tr>
                         
                         <tr>
                             <th class="text-end">Order Tax : </th>
                             <th class="text-end">
-                                {{-- {{ $sale->order_tax_amount }} --}}
-                                ({{ $sale->order_tax_percent }} %)
+                                <span>
+                                    ({{ $sale->order_tax_percent }} %)
+                                </span>
                             </th>
                         </tr>
 
                         <tr>
                             <th class="text-end"> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                             <th class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
+                                <span>
+                                    {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
+                                </span>
                             </th>
                         </tr>
 
                         <tr>
                             <th class="text-end">Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <th class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
+                                <span>
+                                    {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
+                                </span>
                             </th>
                         </tr>
 
                         <tr>
                             <th class="text-end">Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                             <th class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($sale->change_amount) }}
+                                <span>
+                                    {{ App\Utils\Converter::format_in_bdt($sale->change_amount) }}
+                                </span>
                             </th>
                         </tr> 
 
                         <tr>
                             <th class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                             <th class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($sale->due) }}
+                                <span>
+                                    {{ App\Utils\Converter::format_in_bdt($sale->due) }}
+                                </span>
                             </th>
                         </tr>
                         </thead>

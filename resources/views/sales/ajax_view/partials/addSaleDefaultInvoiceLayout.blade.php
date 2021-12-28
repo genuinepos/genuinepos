@@ -515,14 +515,16 @@
                           <thead class="d-body">
                               @foreach ($sale->sale_products as $saleProduct)
                                   <tr>
-                                      @php
-                                          $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
-                                      @endphp
-                                      <th class="text-start">{{ $loop->index + 1 }}. {{ $saleProduct->product->name.$variant }} </th>
-                                      
-                                      <th class="text-center">{{ (float) $saleProduct->quantity }}</th>
-                                      <th class="text-center">{{ $saleProduct->unit_price_inc_tax }}</th>
-                                      <th class="text-end">{{ $saleProduct->subtotal }}</th>
+                                    @php
+                                        $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
+                                    @endphp
+                                    <th class="text-start">
+                                        {{ $loop->index + 1 }}. {{ App\Utils\Converter::format_in_bdt($saleProduct->product->name, 25, '').$variant }} 
+                                    </th>
+                                    
+                                    <th class="text-center">{{ (float) $saleProduct->quantity }}</th>
+                                    <th class="text-center">{{ $saleProduct->unit_price_inc_tax }}</th>
+                                    <th class="text-end">{{ $saleProduct->subtotal }}</th>
                                   </tr>
                               @endforeach
                           </thead>
@@ -532,46 +534,68 @@
                   <div class="amount_area">
                       <table class="w-100 float-end">
                           <thead>
-                          <tr >
-                              <th class="text-end">Discount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
-                              <th class="text-end">
-                                  {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
-                              </th>
-                          </tr>
-                          
-                          <tr>
-                              <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
-                              <th class="text-end">
-                                  {{-- {{ $sale->order_tax_amount }} --}}
-                                  ({{ $sale->order_tax_percent }} %)
-                              </th>
-                          </tr>
+                            <tr >
+                                <th class="text-end">Net Total : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                <th class="text-end">
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
+                                    </span>
+                                </th>
+                            </tr>
 
-                          <tr>
-                              <th class="text-end"> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                              <th class="text-end">
-                                  {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
-                              </th>
-                          </tr>
+                            <tr>
+                                <th class="text-end">Discount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                <th class="text-end">
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
+                                    </span>
+                                </th>
+                            </tr>
+                            
+                            <tr>
+                                <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                <th class="text-end">
+                                    <span>
+                                        ({{ $sale->order_tax_percent }} %)
+                                    </span>
+                                </th>
+                            </tr>
 
-                          <tr>
-                              <th class="text-end"> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                              <th class="text-end">
-                                  {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
-                              </th>
-                          </tr>
+                            <tr>
+                                <th class="text-end"> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
+                                    </span>
+                                </th>
+                            </tr>
 
-                          <tr>
-                              <th class="text-end">Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                              <th class="text-end">
-                                      {{ App\Utils\Converter::format_in_bdt($sale->change_amount) }}
-                              </th>
-                          </tr> 
+                            <tr>
+                                <th class="text-end"> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
+                                    </span>
+                                </th>
+                            </tr>
 
-                          <tr>
-                              <th class="text-end"> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                              <th class="text-end">{{ App\Utils\Converter::format_in_bdt($sale->due) }}</th>
-                          </tr>
+                            <tr>
+                                <th class="text-end">Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($sale->change_amount) }}
+                                    </span>
+                                </th>
+                            </tr> 
+
+                            <tr>
+                                <th class="text-end"> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($sale->due) }}
+                                    </span>
+                                </th>
+                            </tr>
                           </thead>
                       </table>
                   </div>
@@ -581,14 +605,18 @@
                           <thead>
                               <tr>
                                   <th class="text-center">
-                                      <span>{{ $defaultLayout->invoice_notice ?  $defaultLayout->invoice_notice : '' }}</span> 
+                                    <span>
+                                        {{ $defaultLayout->invoice_notice ?  $defaultLayout->invoice_notice : '' }}
+                                    </span> 
                                   </th>
                               </tr>
 
                               <tr>
                                   <th class="text-center">
-                                      <br>
-                                      <span>{{ $defaultLayout->footer_text ?  $defaultLayout->footer_text : '' }}</span> 
+                                        <br>
+                                        <span>
+                                            {{ $defaultLayout->footer_text ?  $defaultLayout->footer_text : '' }}
+                                        </span> 
                                   </th>
                               </tr>
                           </thead>

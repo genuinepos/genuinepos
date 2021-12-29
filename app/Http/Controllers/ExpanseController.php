@@ -251,7 +251,6 @@ class ExpanseController extends Controller
             'total_amount' => 'required',
         ]);
 
-   
         // generate invoice ID
         $invoiceId = 1;
         $lastExpense = DB::table('expanses')->orderBy('id', 'desc')->select('id')->first();

@@ -52,12 +52,14 @@ class DashboardController extends Controller
         $purchaseQuery = DB::table('purchases')
             ->select(
                 DB::raw('sum(total_purchase_amount) as total_purchase'),
-                DB::raw('sum(case when due > 0 then due end) as total_due'),
+                //DB::raw('sum(case when due > 0 then due end) as total_due'),
+                DB::raw('sum(due) as total_due'),
             );
 
         $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
-            DB::raw('sum(case when due > 0 then due end) as total_due'),
+            //DB::raw('sum(case when due > 0 then due end) as total_due'),
+            DB::raw('sum(due) as total_due'),
             DB::raw('sum(order_discount) as total_discount')
         );
 

@@ -318,6 +318,7 @@
             }
             calculateTotalAmount();
         });
+        
         calculateTotalAmount();
         document.getElementById('search_product').focus();
     });

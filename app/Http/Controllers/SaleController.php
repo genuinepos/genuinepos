@@ -1275,7 +1275,6 @@ class SaleController extends Controller
                 'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this branch.'
             ]);
         }
-        
     }
 
     // Get sale for printing

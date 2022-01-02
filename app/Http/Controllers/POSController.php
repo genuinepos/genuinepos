@@ -458,7 +458,7 @@ class POSController extends Controller
                 $addCustomerLedger->save();
             }
         }
-        
+
         // Add product quantity for adjustment
         foreach ($updateSale->sale_products as $sale_product) {
             $sale_product->delete_in_update = 1;
@@ -1394,6 +1394,9 @@ class POSController extends Controller
         $index = 0;
         foreach ($product_ids as $product_id) {
             $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $saleProduct = SaleProduct::where('sale_id', $request->ex_sale_id)
+                ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
+                
             if ($saleProduct) {
                 if ($saleProduct->ex_status == 1) {
                     $saleProduct->quantity = $saleProduct->quantity + $quantities[$index];
@@ -1517,7 +1520,7 @@ class POSController extends Controller
                 $addCustomerLedger->save();
             }
         }
-        
+
         $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
         $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])->where('id', $request->ex_sale_id)->first();
         $previous_due = 0;

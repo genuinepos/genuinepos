@@ -3,33 +3,51 @@
         <div class="check-out-woaper">
             <div class="function-sec">
                 <div class="row">
-                    @if (json_decode($generalSettings->pos, true)['is_disable_draft'] == '0')
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="" class="bg-orange function-card" data-action_id="2" id="submit_btn">
-                                <small>Draft</small>
-                                <p>F2</p>
+                            <a href="#" 
+                                @if (json_decode($generalSettings->pos, true)['is_enabled_draft'] == '1')
+                                    data-button_type="0" 
+                                    data-action_id="2"
+                                    id="submit_btn" 
+                                @else 
+                                    onclick="
+                                        event.preventDefault();
+                                        toastr.error('Creating draft is disabled in POS.');
+                                    "
+                                @endif
+                                class="bg-orange function-card">Draft<p>F2</p>
                             </a>
                         </div>
                     </div>
-                    @endif
 
-                    @if (json_decode($generalSettings->pos, true)['is_disable_quotation'] == '0')
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="" class="bg-orange function-card" id="submit_btn" data-action_id="4">
-                                <small>Quotation</small>
-                                <p>F4</p>
+                            <a href="#"
+                                @if (json_decode($generalSettings->pos, true)['is_enabled_quotation'] == '1')
+                                    data-action_id="4" 
+                                    data-button_type="0" 
+                                    id="submit_btn" 
+                                @else 
+                                    onclick="
+                                        event.preventDefault();
+                                        toastr.error('Creating quotaion is disabled in POS.');
+                                    "
+                                @endif
+                                class="bg-orange function-card">Quotation<p>F4</p>
                             </a>
                         </div>
                     </div>
-                    @endif
-
+                    
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="" class="bg-orange function-card">
-                                <small>Challan</small>
-                                <p>F6</p>
+                            <a href="#" 
+                            onclick="
+                                event.preventDefault();
+                                toastr.error('Exchange System is not available in pos sale edit section.');
+                            "
+                            class="bg-orange function-card">
+                                Exchange<p>F6</p>
                             </a>
                         </div>
                     </div>
@@ -37,46 +55,67 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="" class="bg-gren function-card" id="show_stock">
-                                <small>Show Stock</small>
-                                <p>Alt+C</p>
-                            </a>
-                        </div>
-                    </div>
-
-                    @if (json_decode($generalSettings->pos, true)['is_disable_hold_invoice'] == '0')
-                    <div class="col-4 px-2 py-1">
-                        <div class="btn-bg">
-                            <a href="" class="bg-gren function-card" id="submit_btn" data-action_id="5">
-                                <small>Hold Invoice</small>
-                                <p>F8</p>
+                                Stock<p>Alt+C</p>
                             </a>
                         </div>
                     </div>
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="" class="bg-gren function-card" id="pick_hold_btn">
-                                <small>Pick Hold</small>
-                                <p>F9</p>
+                            <a href="#" 
+                                @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
+                                    data-button_type="0"
+                                    data-action_id="5"
+                                    id="submit_btn" 
+                                @else 
+                                    onclick="
+                                        event.preventDefault();
+                                        toastr.error('Hold invoice is disabled in POS.');
+                                    "
+                                @endif
+                                class="bg-gren function-card">Hold Invoice<p>F8</p>
                             </a>
                         </div>
                     </div>
-                    @endif
 
+                    <div class="col-4 px-2 py-1">
+                        <div class="btn-bg">
+                            <a href="#" 
+                                @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
+                                    id="pick_hold_btn"
+                                @else 
+                                    onclick="
+                                        event.preventDefault();
+                                        toastr.error('Hold invoice is disabled in POS.');
+                                    "
+                                @endif
+                                class="bg-gren function-card">Pick Hold <p>F9</p>
+                            </a>
+                        </div>
+                    </div>
+              
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="{{ route('settings.general.index') }}" class="bg-swit function-card">
-                                <small>Setup</small>
-                                <p>Ctrl+Q</p>
+                                Setup <p>Ctrl+Q</p>
                             </a>
                         </div>
                     </div>
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="" class="bg-swit function-card" id="submit_btn" data-action_id="6">
-                                <small>Suspend</small>
-                                <p>Alt+A</p>
+                            <a href="#" 
+                                @if (json_decode($generalSettings->pos, true)['is_enabled_suspend'] == '1')
+                                    data-button_type="0"
+                                    data-action_id="6" 
+                                    id="submit_btn" 
+                                @else 
+                                    onclick="
+                                        event.preventDefault();
+                                        toastr.error('Suspend is disabled in POS.');
+                                    "
+                                @endif
+                                class="bg-swit function-card">Suspend<p>Alt+A</p>
                             </a>
                         </div>
                     </div>
@@ -84,7 +123,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#" class="bg-swit function-card" onclick="cancel(); return false;">
-                                <small>Cancel</small>
+                                Cancel
                                 <p>Ctrl+M</p>
                             </a>
                         </div>
@@ -94,100 +133,109 @@
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label text-white">Total:</label>
-                        <div class="col-sm-10">
-                            <input readonly type="number" class="form-control" name="net_total_amount"
-                                id="net_total_amount" value="{{ $sale->net_total_amount }}">
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white"><b>Total:</b></label>
+                        <div class="col-sm-9">
+                            <input readonly type="number" class="form-control sp-input" name="net_total_amount" id="net_total_amount" value="0.00">
                         </div>
                     </div>
 
-                    @if (json_decode($generalSettings->pos, true)['is_disable_order_tax'] == '0')
-                    <div class="row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Vat/Tax:</label>
-                        <div class="col-sm-9 ">
-                            <select name="order_tax" class="form-control" id="order_tax">
+                    @if (json_decode($generalSettings->pos, true)['is_enabled_order_tax'] == '1')
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Vat/Tax:</label>
+                            <div class="col-sm-9 ">
+                                <select name="order_tax" class="form-control" id="order_tax">
 
-                            </select>
-                            <input type="number" class="d-none" name="order_tax_amount" id="order_tax_amount"
-                                value="{{ $sale->order_tax_amount }}">
+                                </select>
+                                <input type="number" class="d-none" name="order_tax_amount" id="order_tax_amount"
+                                    value="0.00">
+                            </div>
                         </div>
-                    </div>
                     @else
-                    <input name="order_tax" type="hidden" id="order_tax" value="0.00">
-                    <input type="hidden" name="order_tax_amount" id="order_tax_amount" value="0.00">
+                        <input name="order_tax" type="hidden" id="order_tax" value="0.00">
+                        <input type="hidden" name="order_tax_amount" id="order_tax_amount" value="0.00">
                     @endif
 
-                    @if (json_decode($generalSettings->pos, true)['is_disable_discount'] == '0')
-                    <div class="row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Discount:</label>
-                        <div class="col-sm-9 ">
-                            <input name="order_discount" type="number" step="any" class="form-control"
-                                id="order_discount" value="{{ $sale->order_discount }}">
-                            <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
-                                value="{{ $sale->order_discount_amount }}">
-                            <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
+                    @if (json_decode($generalSettings->pos, true)['is_enabled_discount'] == '1')
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Discount:</label>
+                            <div class="col-sm-9 ">
+                                <input name="order_discount" type="number" step="any" class="form-control"
+                                    id="order_discount" value="0.00">
+                                <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                                    value="0.00">
+                                <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
+                            </div>
                         </div>
-                    </div>
                     @else
-                    <input name="order_discount" type="hidden" id="order_discount" value="0.00">
-                    <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
-                        value="0.00">
-                    <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
+                        <input name="order_discount" type="hidden" id="order_discount" value="0.00">
+                        <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                            value="0.00">
+                        <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
                     @endif
 
                     <div class="row">
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Pre. Due:</label>
+                        <div class="col-sm-9 ">
+                            <input readonly class="form-control" type="number" step="any" name="previous_due"
+                                id="previous_due" value="0.00" autocomplete="off">
+                        </div>
                         <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Payable:</label>
                         <div class="col-sm-9 ">
-                            <input type="hidden" step="any" name="previous_paid" id="previous_paid"
-                                value="{{ $sale->paid }}">
-                            <input readonly class="form-control" type="number" step="any" name="total_payable_amount"
-                                id="total_payable_amount" value="{{ $sale->total_payable_amount }}">
+                            <input readonly class="form-control sp-input" type="number" step="any"
+                                name="total_payable_amount" id="total_payable_amount" value="0.00">
+                            <input class="d-none" type="number" step="any" name="total_invoice_payable"
+                                id="total_invoice_payable" value="0.00">
                         </div>
                     </div>
 
                     <div class="row">
                         <label for="inputEmail3" class="col-sm-6 col-form-label text-white">Cash Receive:</label>
                         <div class="col-sm-6 ">
-                            <input type="text" name="paying_amount" id="paying_amount"
-                                value="{{ $sale->total_payable_amount }}" class="form-control">
+                            <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
+                                class="form-control" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="row">
                         <label for="inputEmail3" class="col-sm-6 col-form-label text-white">Change Amount:</label>
                         <div class="col-sm-6 ">
-                            <input type="text" name="change_amount" id="change_amount" value="0.00"
+                            <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
                                 class="form-control">
                         </div>
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">Due:</label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-danger"><b>Due :</b></label>
                         <div class="col-sm-6 ">
-                            <input type="text" name="total_due" id="total_due" value="0.00"
-                                class="form-control text-danger">
+                            <input type="text" readonly name="total_due" id="total_due" value="0.00"
+                                class="form-control sp-input text-danger">
                         </div>
                     </div>
                 </div>
 
                 <div class="sub-btn-sec">
                     <div class="row">
-                        <div class="col-4 p-1">
-                            @if (json_decode($generalSettings->pos, true)['is_show_credit_sale_button'] == '1')
-                            <div class="btn-bg">
-                                <a href="#" class="bg-orange btn-pos" id="full_due_button"><i class="fas fa-check"></i>
-                                    Credit Sale</a>
+                        <div class="col-lg-4 col-12 p-1 pb-1">
+                            <div class="btn-bg mb-1">
+                                <a href="#" class="bg-orange btn-pos"  
+                                    @if (json_decode($generalSettings->pos, true)['is_enabled_credit_full_sale'] == '1')
+                                        data-button_type="0"
+                                        id="full_due_button"
+                                    @else 
+                                        onclick="
+                                            event.preventDefault();
+                                            toastr.error('Full credit sale is disabled.');
+                                        "
+                                    @endif
+                                ><i class="fas fa-check"></i> Credit Sale</a>
                             </div>
-                            @endif
-
-                            @if (json_decode($generalSettings->pos, true)['is_show_partial_sale_button'] == '1')
+                    
                             <div class="btn-bg">
-                                <a href="" class="bg-parpal btn-pos">Reedem Point</a>
+                                <a href="#" class="bg-parpal btn-pos" id="reedem_point_button">Reedem Point</a>
                             </div>
-                            @endif
                         </div>
 
-                        <div class="col-4 p-1">
+                        <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
                             <div class="btn-bg">
                                 <a href="#" class="bg-parpal function-card other_payment_method">
                                     <small><i class="fas fa-credit-card"></i> Other Method</small>
@@ -196,10 +244,11 @@
                             </div>
                         </div>
 
-                        <div class="col-4 p-1">
+                        <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
                             <div class="btn-bg">
-                                <a href="" class="bg-parpal function-card" id="submit_btn" data-action_id="1">
-                                    <small><i class="far fa-money-bill-alt"></i> Cash</small>
+                                <a href="" class="bg-parpal function-card cash-btn" id="submit_btn" data-button_type="1"
+                                    data-action_id="1">
+                                    <small><i class="far fa-money-bill-alt"></i> Cash </small>
                                     <p>F10</p>
                                 </a>
                             </div>
@@ -244,7 +293,7 @@
     }
 
     var actionMessage = 'Successfull data is inserted.';
-        $('#pos_submit_form').on('submit', function(e){
+    $('#pos_submit_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();
         var request = $(this).serialize();
@@ -372,22 +421,22 @@
         showRecentTransectionModal();
     });
 
-    @if (json_decode($generalSettings->pos, true)['is_disable_hold_invoice'] == '0')
+    @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
         //Key shorcut for pic hold invoice
         shortcuts.add('f9',function() {
-            $('#holdInvoiceModal').modal('show');
+            $('#hold_invoice_preloader').show();
             pickHoldInvoice();
         });
 
         // Pick hold invoice
         $(document).on('click', '#pick_hold_btn',function (e) {
             e.preventDefault();
-            $('#holdInvoiceModal').modal('show');
+            $('#hold_invoice_preloader').show();
             pickHoldInvoice();
         });
 
         function pickHoldInvoice() {
-            $('#hold_invoice_preloader').show();
+            $('#holdInvoiceModal').modal('show');
             $.ajax({
                 url:"{{url('sales/pos/pick/hold/invoice/')}}",
                 type:'get',

@@ -567,7 +567,9 @@
                                 <tr>
                                     <th class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></th>
                                     <th class="total_paid text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
+                                        <span>
+                                            {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
+                                        </span>
                                     </th>
                                 </tr> 
                             @endif
@@ -575,6 +577,7 @@
                             <tr>
                                 <th class="text-end"> <strong>Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></th>
                                 <th class="text-end">
+                                    <span>
                                         {{ App\Utils\Converter::format_in_bdt($total_due) }}
                                     </span>
                                 </th>

@@ -1313,6 +1313,21 @@ class POSController extends Controller
         $sold_prices_inc_tax = $request->sold_prices_inc_tax;
         $sold_quantities = $request->sold_quantities;
 
+        $index = 0;
+        foreach ($ex_quantities as $ex_quantity) {
+            $__ex_qty = $ex_quantity ? $ex_quantity : 0;
+            $soldProduct = SaleProduct::where('id', $product_row_ids[$index])->first();
+            if ($__ex_qty != 0) {
+                $soldProduct->ex_quantity = $__ex_qty;
+                $soldProduct->ex_status = 1;
+                $soldProduct->save();
+            } else {
+                $soldProduct->ex_status = 0;
+                $soldProduct->save();
+            }
+            $index++;
+        }
+
         $ex_items = SaleProduct::with('product', 'variant')->where('sale_id', $sale->id)
             ->where('ex_status', 1)->get();
 

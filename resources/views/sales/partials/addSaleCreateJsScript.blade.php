@@ -1359,4 +1359,35 @@
         },
         format: _expectedDateFormat,
     });
+
+    var barcode = '';
+    document.addEventListener("keydown", function(e) {
+        const textInput = e.key || String.fromCharCode(e.keyCode);
+        var focused = $(':focus').val();
+        if (textInput.length === 1){
+            const searchInput = document.querySelector('#search_product');
+            var isActiveSearchInput = searchInput === document.activeElement ? true : false;
+            if (focused != undefined) {
+                console.log('Element has focus!');
+            } else {
+                barcode += textInput;
+                timeing(function() { setBarcode(barcode);}, 200 );
+            } 
+        }
+    });
+
+    var timeing = (function() {
+        var timer = 0;
+        return function(callback, ms) {
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+    function setBarcode(param){
+        $('#search_product').focus();
+        $('#search_product').val(param);
+        delay(function() { searchProduct(param); }, 200);
+        barcode = '';
+    }
 </script>

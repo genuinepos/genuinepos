@@ -601,49 +601,25 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
-                                <th class="text-end">
-                                    <span>
-                                        {{ App\Utils\Converter::format_in_bdt($previous_due) }}
-                                    </span>
-                                </th>
-                            </tr>
-
-                            <tr>
-                                <th class="text-end">Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                <th class="text-end">
-                                    <span>
-                                        {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
-                                    </span>
-                                </th>
-                            </tr>
-
-                            <tr>
                                 <th class="text-end"> Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
-                                    <span>
-                                        {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
-                                    </span>
+                                    {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
                                 </th>
                             </tr>
 
-                            @if ($change_amount > 0)
+                            @if ($sale->ex_status == 0)
                                 <tr>
                                     <th class="text-end"> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                     <th class="total_paid text-end">
-                                        <span>
-                                            {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
-                                        </span>
+                                        {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
                                     </th>
                                 </tr> 
                             @endif
-                            
+
                             <tr>
                                 <th class="text-end"> Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
-                                    <span>
-                                        {{ App\Utils\Converter::format_in_bdt($total_due > 0 ? $total_due : 0) }}
-                                    </span>
+                                    {{ App\Utils\Converter::format_in_bdt($total_due) }}
                                 </th>
                             </tr>
                         </thead>

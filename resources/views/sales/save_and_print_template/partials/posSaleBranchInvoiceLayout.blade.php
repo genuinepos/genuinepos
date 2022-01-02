@@ -498,8 +498,8 @@
                                     @endphp
                                     <th class="text-start">{{ $loop->index + 1 }}. {{ Str::limit($saleProduct->product->name, 25, '').$variant }}{!! $saleProduct->ex_quantity != 0 ? '(<strong>EX:</strong>'.$saleProduct->ex_quantity.')' : '' !!} </th>
                                     <th class="text-center">{{ (float) $saleProduct->quantity }}</th>
-                                    <th class="text-center">{{ $saleProduct->unit_price_inc_tax }}</th>
-                                    <th class="text-end">{{ $saleProduct->subtotal }}</th>
+                                    <th class="text-center">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
+                                    <th class="text-end">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</th>
                                 </tr>
                             @endforeach
                         </thead>
@@ -522,7 +522,7 @@
                                 <th class="text-end">Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
-                                        {{ $sale->order_discount_amount }}
+                                        {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
                                     </span>
                                 </th>
                             </tr>
@@ -540,7 +540,7 @@
                                 <th class="text-end">Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span> 
-                                        {{ number_format($previous_due, 2) }}
+                                        {{ App\Utils\Converter::format_in_bdt($previous_due) }}
                                     </span>
                                 </th>
                             </tr>
@@ -549,7 +549,7 @@
                                 <th class="text-end"> Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
-                                        {{ number_format($total_payable_amount, 2) }}
+                                        {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
                                     </span>
                                 </th>
                             </tr>
@@ -558,16 +558,16 @@
                                 <th class="text-end"> Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
-                                        {{ number_format($paying_amount, 2) }}
+                                        {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
                                     </span>
                                 </th>
                             </tr>
 
-                            @if ($change_amount > 0)
+                            @if ($sale->ex_status == 0)
                                 <tr>
                                     <th class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></th>
                                     <th class="total_paid text-end">
-                                        {{ number_format($change_amount > 0 ? $change_amount : 0, 2) }}
+                                        {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
                                     </th>
                                 </tr> 
                             @endif
@@ -575,7 +575,7 @@
                             <tr>
                                 <th class="text-end"> <strong>Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></th>
                                 <th class="text-end">
-                                        {{ number_format($total_due > 0 ? $total_due : 0, 2) }}
+                                        {{ App\Utils\Converter::format_in_bdt($total_due) }}
                                     </span>
                                 </th>
                             </tr>

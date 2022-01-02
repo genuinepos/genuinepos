@@ -511,6 +511,7 @@ class SaleController extends Controller
         $updateSale->sale_note = $request->sale_note;
         $updateSale->report_date = date('Y-m-d', strtotime($request->date));
         $updateSale->save();
+        
         if ($updateSale->ledger) {
             $updateSale->ledger->report_date = $updateSale->report_date;
             $updateSale->ledger->save();
@@ -1274,7 +1275,6 @@ class SaleController extends Controller
                 'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this branch.'
             ]);
         }
-        
     }
 
     // Get sale for printing

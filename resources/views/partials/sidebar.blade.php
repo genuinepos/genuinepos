@@ -72,7 +72,11 @@
                 @endif
 
                 @if (json_decode($generalSettings->modules, true)['stock_adjustment'] == '1')
-                    @if (auth()->user()->permission->s_adjust['adjustment_all'] == '1')
+                    @if (
+                        auth()->user()->permission->s_adjust['adjustment_all'] == '1' ||
+                        auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '1' || 
+                        auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '1' 
+                    )
                         <li data-menu="adjustment"
                             class="{{ request()->is('stock/adjustments*') ? 'menu_active' : '' }}">
                             <a href="#">
@@ -798,42 +802,44 @@
             @endif
 
             @if (json_decode($generalSettings->modules, true)['stock_adjustment'] == '1')
-                @if (auth()->user()->permission->s_adjust['adjustment_all'] == '1')
-                    <div class="sub-menu_t" id="adjustment">
-                        <div class="sub-menu-width">
-                            <div class="model__close bg-secondary-2">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <p class="text-muted float-start mt-1"><strong>Stock Adjustment</strong></p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                    </div>
+                <div class="sub-menu_t" id="adjustment">
+                    <div class="sub-menu-width">
+                        <div class="model__close bg-secondary-2">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p class="text-muted float-start mt-1"><strong>Stock Adjustment</strong></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="container-fluid">
-                                <div class="row">
-                                    @if (auth()->user()->permission->s_adjust['adjustment_add'] == '1')
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('stock.adjustments.create') }}" class="bar-link">
-                                                    <span><i class="fas fa-plus-square"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.add_stock_adjustment_from_branch')</p>
+                        <div class="container-fluid">
+                            <div class="row">
+                                @if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('stock.adjustments.create') }}" class="bar-link">
+                                                <span><i class="fas fa-plus-square"></i></span>
+                                            </a>
                                         </div>
+                                        <p class="switch_text">@lang('menu.add_stock_adjustment_from_branch')</p>
+                                    </div>
+                                @endif
 
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('stock.adjustments.create.from.warehouse') }}" class="bar-link">
-                                                    <span><i class="fas fa-plus-square"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.add_stock_adjustment_from_warehouse')</p>
+                                @if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('stock.adjustments.create.from.warehouse') }}" class="bar-link">
+                                                <span><i class="fas fa-plus-square"></i></span>
+                                            </a>
                                         </div>
-                                    @endif
+                                        <p class="switch_text">@lang('menu.add_stock_adjustment_from_warehouse')</p>
+                                    </div>
+                                @endif
 
+                                @if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('stock.adjustments.index') }}" class="bar-link">
@@ -842,11 +848,11 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.stock_adjustment_list')</p>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
             @endif
 
             @if (json_decode($generalSettings->modules, true)['expenses'] == '1')

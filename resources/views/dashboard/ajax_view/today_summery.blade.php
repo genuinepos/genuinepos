@@ -91,10 +91,13 @@
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesReturn) }}</td>
                         </tr>
 
-                        <tr>
-                            <th class="text-start">Total Payroll :</th>
-                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>
-                        </tr>
+                        @if ($addons->hrm == 1)
+                            <tr>
+                                <th class="text-start">Total Payroll :</th>
+                                <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>
+                            </tr>
+                        @endif
+                        
 
                     </tbody>
                 </table>

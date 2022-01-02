@@ -10,7 +10,11 @@ class NameSearchUtil
     public function nameSearching($keyword)
     {
         $namedProducts = '';
-        $namedProducts = Product::with(['product_variants', 'tax', 'unit'])
+        $namedProducts = Product::with([
+            'product_variants:id,variant_name,variant_code,variant_cost,variant_cost_with_tax,variant_price',
+            'tax:id,tax_name,tax_percent',
+            'unit:id,name,code_name',
+        ])
             ->where('name', 'LIKE',  $keyword . '%')
             ->where('status', 1)->select(
                 'id',
@@ -63,7 +67,6 @@ class NameSearchUtil
         } else {
             return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
         }
-        
     }
 
     public function checkBranchVariantProductStock($product_id, $variant_id, $branch_id)
@@ -93,6 +96,5 @@ class NameSearchUtil
         } else {
             return response()->json(['errorMsg' => 'This product is not available in this Shop/Business Location.']);
         }
-        
     }
 }

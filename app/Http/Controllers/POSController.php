@@ -68,12 +68,14 @@ class POSController extends Controller
             $brands = DB::table('brands')->get(['id', 'name']);
             $customers = DB::table('customers')->where('status', 1)->get(['id', 'name', 'phone']);
             $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+            $accounts = DB::table('accounts')->select('id', 'name', 'account_number', 'balance')->get();
             return view('sales.pos.create', compact(
                 'openedCashRegister',
                 'categories',
                 'brands',
                 'customers',
-                'price_groups'
+                'price_groups',
+                'accounts',
             ));
         } else {
             return redirect()->route('sales.cash.register.create');
@@ -197,9 +199,14 @@ class POSController extends Controller
             $addSale->save();
 
             if ($customer) {
-                $customer->point = $customer->point - $request->pre_redeemed;
-                $customer->point = $customer->point + $this->calculateCustomerPoint($prefixSettings, $request->total_invoice_payable);
-                $customer->save();
+                if (
+                    json_decode($prefixSettings->reward_poing_settings, true)['enable_cus_point'] ==
+                    '1'
+                ) {
+                    $customer->point = $customer->point - $request->pre_redeemed;
+                    $customer->point = $customer->point + $this->calculateCustomerPoint($prefixSettings, $request->total_invoice_payable);
+                    $customer->save();
+                }
 
                 $addCustomerLedger = new CustomerLedger();
                 $addCustomerLedger->customer_id = $request->customer_id;
@@ -427,23 +434,23 @@ class POSController extends Controller
         $updateSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0.00;
         $updateSale->shipment_charge = 0.00;
         $updateSale->total_payable_amount = $request->total_payable_amount;
-
         $updateSale->change_amount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
 
-        if ($request->action == 1) {
-            if ($request->paying_amount == 0) {
-                $updateSale->due = $request->total_payable_amount;
-            } else {
-                $updateSale->paid = $request->paying_amount;
-                if ($request->total_due > 0) {
-                    $updateSale->due = $request->total_due;
-                } else {
-                    $updateSale->due = 0.00;
-                }
-            }
-        } else {
-            $updateSale->total_payable_amount += $request->total_payable_amount;
-        }
+        // if ($request->action == 1) {
+        //     if ($request->paying_amount == 0) {
+        //         $updateSale->due = $request->total_payable_amount;
+        //     } else {
+        //         $updateSale->paid = $request->paying_amount;
+        //         if ($request->total_due > 0) {
+        //             $updateSale->due = $request->total_due;
+        //         } else {
+        //             $updateSale->due = 0.00;
+        //         }
+        //     }
+        // } else {
+        //     $updateSale->total_payable_amount += $request->total_payable_amount;
+        // }
+
         $updateSale->save();
 
         if (!$updateSale->ledger) {
@@ -456,7 +463,7 @@ class POSController extends Controller
                 $addCustomerLedger->save();
             }
         }
-        
+
         // Add product quantity for adjustment
         foreach ($updateSale->sale_products as $sale_product) {
             $sale_product->delete_in_update = 1;
@@ -603,6 +610,7 @@ class POSController extends Controller
 
         // Update customer due
         if ($request->action == 1) {
+            $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
             if ($updateSale->customer_id) {
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
             }
@@ -1311,14 +1319,10 @@ class POSController extends Controller
         $sold_quantities = $request->sold_quantities;
 
         $index = 0;
-        $exchange_item_total_price = 0;
-        $sold_item_total_price = 0;
         foreach ($ex_quantities as $ex_quantity) {
             $__ex_qty = $ex_quantity ? $ex_quantity : 0;
             $soldProduct = SaleProduct::where('id', $product_row_ids[$index])->first();
             if ($__ex_qty != 0) {
-                $exchange_item_total_price += $__ex_qty * $sold_prices_inc_tax[$index];
-                $sold_item_total_price += $sold_quantities[$index] * $sold_prices_inc_tax[$index];
                 $soldProduct->ex_quantity = $__ex_qty;
                 $soldProduct->ex_status = 1;
                 $soldProduct->save();
@@ -1329,7 +1333,8 @@ class POSController extends Controller
             $index++;
         }
 
-        $ex_items = SaleProduct::with('product', 'variant')->where('sale_id', $sale->id)
+        $ex_items = SaleProduct::with('product', 'variant')
+            ->where('sale_id', $sale->id)
             ->where('ex_status', 1)->get();
 
         $qty_limits = [];
@@ -1351,9 +1356,7 @@ class POSController extends Controller
         return response()->json([
             'sale' => $sale,
             'ex_items' => $ex_items,
-            'qty_limits' => $qty_limits,
-            'exchange_item_total_price' => $exchange_item_total_price,
-            'sold_item_total_price' => $sold_item_total_price
+            'qty_limits' => $qty_limits
         ]);
     }
 
@@ -1374,8 +1377,8 @@ class POSController extends Controller
         $change = $request->change_amount > 0 ? $request->change_amount : 0;
         $updateSale->net_total_amount = $updateSale->net_total_amount + $request->net_total_amount;
         $updateSale->total_payable_amount = $updateSale->total_payable_amount + $request->total_payable_amount;
-        $updateSale->paid = $updateSale->paid + $request->paying_amount - $change;
-        $updateSale->due = $updateSale->due + $request->total_due;
+        //$updateSale->paid = $updateSale->paid + $request->paying_amount - $change;
+        //$updateSale->due = $updateSale->due + $request->total_due;
         $updateSale->change_amount = $updateSale->change_amount + $change;
         $updateSale->ex_status = 1;
         $updateSale->save();
@@ -1400,26 +1403,12 @@ class POSController extends Controller
             $saleProduct = SaleProduct::where('sale_id', $request->ex_sale_id)
                 ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
 
-            $productBranch = ProductBranch::where('branch_id', $updateSale->branch_id)
-                ->where('product_id', $product_id)
-                ->first();
-            $productBranch->product_quantity -= $quantities[$index];
-            $productBranch->save();
-            if ($variant_id) {
-                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                    ->where('product_id', $product_id)
-                    ->where('product_variant_id', $variant_id)
-                    ->first();
-                $productBranchVariant->variant_quantity -= $quantities[$index];
-                $productBranchVariant->save();
-            }
-
             if ($saleProduct) {
                 if ($saleProduct->ex_status == 1) {
-                    $saleProduct->quantity += $quantities[$index];
+                    $saleProduct->quantity = $saleProduct->quantity + $quantities[$index];
                     $saleProduct->ex_quantity = $quantities[$index];
                     $saleProduct->description = $descriptions[$index];
-                    $saleProduct->subtotal += $subtotals[$index];
+                    $saleProduct->subtotal = $saleProduct->subtotal + $subtotals[$index];
                     $saleProduct->ex_status = 2;
                     $saleProduct->save();
                 } else {
@@ -1459,6 +1448,9 @@ class POSController extends Controller
                 $addSaleProduct->subtotal = $subtotals[$index];
                 $addSaleProduct->save();
             }
+
+            $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+            $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
             $index++;
         }
 
@@ -1535,12 +1527,13 @@ class POSController extends Controller
             }
         }
 
+        $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
         $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])->where('id', $request->ex_sale_id)->first();
         $previous_due = 0;
         $total_payable_amount = $sale->total_payable_amount;
         $paying_amount = $sale->paid;
         $total_due = $sale->due;
-        $change_amount = $sale->change_amount;
+        $change_amount = $change;
 
         if ($updateSale->customer_id) {
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);

@@ -1,3 +1,35 @@
+//data delete by ajax
+$(document).on('submit', '#search_inv_form', function (e) {
+    e.preventDefault();
+    $('#get_inv_preloader').show();
+    var url = $(this).attr('action');
+    var request = $(this).serialize();
+    $.ajax({
+        url: url,
+        type: 'get',
+        data: request,
+        success: function (data) {
+            $('#get_inv_preloader').hide();
+            $('#invoice_description').empty();
+            if (!$.isEmptyObject(data.errorMsg)) {
+                toastr.error(data.errorMsg);
+            } else {
+                $('#invoice_description').html(data);
+            }
+        }
+    });
+});
+
+$('#submit_form_btn').on('click', function (e) {
+    e.preventDefault();
+    $('#search_inv_form').submit();
+});
+
+$('#exchange_btn').on('click', function (e) {
+    e.preventDefault();
+    $('#invoice_description').empty(); $('#invoice_id').val('');
+});
+
 $(document).on('input', '#ex_quantity',function () {
     var ex_qty = $(this).val();
     var closestTr = $(this).closest('tr');
@@ -5,7 +37,6 @@ $(document).on('input', '#ex_quantity',function () {
     console.log(soldQty);
     if (parseFloat(ex_qty) < 0) {
         var sum = parseFloat(soldQty) + parseFloat(ex_qty);
-        console.log(sum);
         if (sum < 0) {
             toastr.error('Exchange quantity subtraction value must not be greater then sold quantity.');
             $(this).val(- parseFloat(soldQty));
@@ -23,12 +54,12 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
     e.preventDefault();
     var url = $(this).attr('action');
     var request = $(this).serialize();
+    console.log(request);
     $.ajax({
         url:url,
         type:'post',
         data:request,
         success:function(data){
-            
             if (data.ex_items.length == 0) {
                 return;
             }
@@ -36,10 +67,11 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
             var qty_limits = data.qty_limits;
             var tr = '';
             $.each(data.ex_items, function (key, item) {
+                var name = item.product.name.substring(0, 30);
                 tr += '<tr>';
                 tr += '<td class="serial">'+(key + 1)+'</td>';
                 tr += '<td class="text-start">';
-                tr += '<a class="product-name text-info" title="'+'SKU-'+(item.variant ? item.variant.variant_code : item.product.product_code )+'" id="edit_product" href="#">' + item.product.name +(item.variant ? ' - '+item.variant.variant_name : '') +'</a><br/><input type="'+(item.description ? item.description : '')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info" value="'+(item.description ? item.description : '')+'">';
+                tr += '<a class="product-name text-info" title="'+'SKU-'+(item.variant ? item.variant.variant_code : item.product.product_code )+'" id="edit_product" href="#">' + name +(item.variant ? ' - '+item.variant.variant_name : '') +'</a><br/><input type="'+(item.description ? item.description : '')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info" value="'+(item.description ? item.description : '')+'">';
                 tr += '<input value="'+item.product_id+'" type="hidden" name="product_ids[]">';
                 tr +='<input value="'+(item.product_variant_id ? item.product_variant_id : 'noid')+'" type="hidden" name="variant_ids[]">';
                 tr +='<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+item.unit_tax_percent+'">';
@@ -93,3 +125,4 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
         }
     });
 });
+

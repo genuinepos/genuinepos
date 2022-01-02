@@ -390,7 +390,7 @@
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap "> 
+                                                    <p class="checkbox_input_wrap"> 
                                                     <input type="checkbox" id="select_all" data-target="adjustment" autocomplete="off"> &nbsp; Select All </p> 
                                                 </div>
                                             </div>
@@ -406,7 +406,14 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="adjustment_add" class="adjustment"> &nbsp; Add Adjustment </p> 
+                                                        <input type="checkbox" name="adjustment_add_from_location" class="adjustment"> &nbsp; Add Adjustment From Business Location</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" name="adjustment_add_from_warehouse" class="adjustment"> &nbsp; Add Adjustment From Warehouse</p> 
                                                     </div>
                                                 </div>
                 

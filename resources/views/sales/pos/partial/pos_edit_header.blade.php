@@ -99,8 +99,6 @@
                                             <span class="input-group-text valus">Point</span>
                                         </div>
                                         <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
-                                        <!-- =============================== -->
-
                                         <div class="input-group-prepend ms-1">
                                             <span class="input-group-text valus"> = {{ json_decode($generalSettings->business, true)['currency'] }}</span>
                                         </div>
@@ -289,7 +287,6 @@
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                 $('.error').html('');
                 $.each(err.responseJSON.errors, function(key, error) {
-                    //console.log(key);
                     $('.error_sale_' + key + '').html(error[0]);
                 });
             }

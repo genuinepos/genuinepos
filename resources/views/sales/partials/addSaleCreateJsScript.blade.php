@@ -1080,57 +1080,6 @@
         });
     });
 
-    // Add customer by ajax
-    $(document).on('submit', '#add_customer_form', function(e) {
-        e.preventDefault();
-        $('.loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-        var inputs = $('.c_add_input');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            return;
-        }
-        $('.submit_button').prop('type', 'button');
-        $.ajax({
-            url:url,
-            type:'post',
-            data: request,
-            success:function(data){
-                $('.submit_button').prop('type', 'submit');
-                toastr.success('Customer Added Sucessfully.');
-                $('#add_customer_form')[0].reset();
-                $('.loading_button').hide();
-                $('#addCustomerModal').modal('hide');
-                $('#customer_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
-                $('#customer_id').val(data.id);
-                $('#previous_due').val(parseFloat(data.total_sale_due).toFixed(2));
-                calculateTotalAmount();
-            },error: function(err) {
-                $('.submit_button').prop('type', 'sumbit');
-                $('.loading_button').hide();
-                $('.error').html('');
-                if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
-                }else{
-                    toastr.error('Server error please contact to the support team.');
-                }
-            }
-        });
-    });
-
     $('#add_product').on('click', function () {
         $.ajax({
             url:"{{route('sales.add.product.modal.view')}}",
@@ -1410,4 +1359,35 @@
         },
         format: _expectedDateFormat,
     });
+
+    var barcode = '';
+    document.addEventListener("keydown", function(e) {
+        const textInput = e.key || String.fromCharCode(e.keyCode);
+        var focused = $(':focus').val();
+        if (textInput.length === 1){
+            const searchInput = document.querySelector('#search_product');
+            var isActiveSearchInput = searchInput === document.activeElement ? true : false;
+            if (focused != undefined) {
+                console.log('Element has focus!');
+            } else {
+                barcode += textInput;
+                timeing(function() { setBarcode(barcode);}, 200 );
+            } 
+        }
+    });
+
+    var timeing = (function() {
+        var timer = 0;
+        return function(callback, ms) {
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+    function setBarcode(param){
+        $('#search_product').focus();
+        $('#search_product').val(param);
+        delay(function() { searchProduct(param); }, 200);
+        barcode = '';
+    }
 </script>

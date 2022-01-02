@@ -401,7 +401,14 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" {{ $role->permission->s_adjust['adjustment_add'] == '1' ? 'CHECKED' : '' }} name="adjustment_add" class="adjustment"> &nbsp; Add Adjustment </p> 
+                                                        <input type="checkbox" {{ $role->permission->s_adjust['adjustment_add_from_location'] == '1' ? 'CHECKED' : '' }} name="adjustment_add_from_location" class="adjustment"> &nbsp; Add Adjustment From Business Locaton </p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" {{ $role->permission->s_adjust['adjustment_add_from_warehouse'] == '1' ? 'CHECKED' : '' }} name="adjustment_add_from_warehouse" class="adjustment"> &nbsp; Add Adjustment From Warehouse </p> 
                                                     </div>
                                                 </div>
                 

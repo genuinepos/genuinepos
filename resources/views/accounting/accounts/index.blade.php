@@ -18,6 +18,27 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="sec-name mt-1">
+                                <div class="col-md-12">
+                                    <table class="table modal-table table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-start"> <strong>Capital A/C :</strong> </td>
+                                                <td class="bank_name text-start">0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-start"> <strong>Total Bank A/C Balance:</strong> </td>
+                                                <td class="bank_name text-start">0.00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">

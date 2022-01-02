@@ -37,7 +37,6 @@ $(document).on('input', '#ex_quantity',function () {
     console.log(soldQty);
     if (parseFloat(ex_qty) < 0) {
         var sum = parseFloat(soldQty) + parseFloat(ex_qty);
-        console.log(sum);
         if (sum < 0) {
             toastr.error('Exchange quantity subtraction value must not be greater then sold quantity.');
             $(this).val(- parseFloat(soldQty));
@@ -61,7 +60,6 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
         type:'post',
         data:request,
         success:function(data){
-            console.log(data);
             if (data.ex_items.length == 0) {
                 return;
             }

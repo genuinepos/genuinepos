@@ -287,7 +287,6 @@
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                 $('.error').html('');
                 $.each(err.responseJSON.errors, function(key, error) {
-                    //console.log(key);
                     $('.error_sale_' + key + '').html(error[0]);
                 });
             }

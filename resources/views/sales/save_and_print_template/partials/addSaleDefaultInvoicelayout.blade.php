@@ -612,12 +612,12 @@
                                     </b>
                                 </th>
                             </tr> 
-
+                            
                             <tr>
                                 <th class="text-end"> Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
-                                        {{ App\Utils\Converter::format_in_bdt($total_due > 0 ? $total_due : 0) }}
+                                        {{ App\Utils\Converter::format_in_bdt($total_due) }}
                                     </span>
                                 </th>
                             </tr>

@@ -199,13 +199,15 @@ class POSController extends Controller
             $addSale->save();
 
             if ($customer) {
-                if (json_decode($prefixSettings->reward_poing_settings, true)['enable_cus_point'] ==
-                '1'){
+                if (
+                    json_decode($prefixSettings->reward_poing_settings, true)['enable_cus_point'] ==
+                    '1'
+                ) {
                     $customer->point = $customer->point - $request->pre_redeemed;
                     $customer->point = $customer->point + $this->calculateCustomerPoint($prefixSettings, $request->total_invoice_payable);
                     $customer->save();
                 }
-                
+
                 $addCustomerLedger = new CustomerLedger();
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_id = $addSale->id;
@@ -1331,7 +1333,8 @@ class POSController extends Controller
             $index++;
         }
 
-        $ex_items = SaleProduct::with('product', 'variant')->where('sale_id', $sale->id)
+        $ex_items = SaleProduct::with('product', 'variant')
+            ->where('sale_id', $sale->id)
             ->where('ex_status', 1)->get();
 
         $qty_limits = [];
@@ -1530,7 +1533,7 @@ class POSController extends Controller
         $total_payable_amount = $sale->total_payable_amount;
         $paying_amount = $sale->paid;
         $total_due = $sale->due;
-        $change_amount = $sale->change_amount;
+        $change_amount = $change;
 
         if ($updateSale->customer_id) {
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);

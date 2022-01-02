@@ -4,10 +4,10 @@
             <img src="{{asset('public/backend')}}/images/static/app_logo.png"
                 style="max-width: 100%; height: 38px; width: auto">
         </div>
-        @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '0')
-        <div class="pos-foot-con d-inline-block position-absolute" style="right: 10px; top: 10px;">
-            <a href="#" class="resent-tn"><span class="fas fa-clock"></span> Recent Transaction</a>
-        </div>
+        @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1')
+            <div class="pos-foot-con d-inline-block position-absolute" style="right: 10px; top: 10px;">
+                <a href="#" class="resent-tn"><span class="fas fa-clock"></span> Recent Transaction</a>
+            </div>
         @endif
     </div>
 </div>
@@ -35,7 +35,7 @@
 
                     <div class="col-2 text-center">
                         <div class="footer_trasc_btn">
-                            @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '0')
+                            @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1')
                                 <a href="#" class="resent-tn"><span class="fas fa-clock"></span></a>
                             @endif
                         </div>

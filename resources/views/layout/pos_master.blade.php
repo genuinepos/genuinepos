@@ -39,7 +39,6 @@
     <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
-    <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
 </head>
 
 <body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
@@ -555,6 +554,7 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('public/backend/asset/js/pos.js') }}"></script>
     <script src="{{ asset('public/backend/asset/js/pos-amount-calculation.js') }}"></script>
+    <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
     <script>
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {

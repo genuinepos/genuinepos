@@ -1,53 +1,11 @@
 <style>
-    .search_item_area {
-        position: relative;
-    }
-
-    .select_area {
-        position: relative;
-        background: #ffffff;
-        box-sizing: border-box;
-        position: absolute;
-        width: 100%;
-        z-index: 9999999;
-        padding: 0;
-        left: 0%;
-        display: none;
-        border: 1px solid #7e0d3d;
-        margin-top: 1px;
-        border-radius: 0px;
-    }
-
-    .select_area ul {
-        list-style: none;
-        margin-bottom: 0;
-        padding: 4px 4px;
-    }
-
-    .select_area ul li a {
-        color: #464343;
-        text-decoration: none;
-        font-size: 12px;
-        padding: 2px 3px;
-        display: block;
-        line-height: 15px;
-        border: 1px solid #968e92;
-        font-weight: 400;
-    }
-
-    .select_area ul li a:hover {
-        background-color: #ab1c59;
-        color: #fff;
-    }
-
-    .selectProduct {
-        background-color: #ab1c59;
-        color: #fff !important;
-    }
-
-    .text-info {
-        color: #0795a5 !important;
-    }
+    .search_item_area {position: relative;}
+    .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 100%;z-index: 9999999;padding: 0;left: 0%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
+    .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
+    .select_area ul li a {color: #464343;text-decoration: none;font-size: 12px;padding: 2px 3px;display: block;line-height: 15px;border: 1px solid #968e92;font-weight: 400;}
+    .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
+    .selectProduct {background-color: #ab1c59;color: #fff !important;}
+    .text-info {color: #0795a5 !important;}
 </style>
 
 <div class="head-pos">
@@ -205,8 +163,6 @@
                         <div class="date">
                             <p>{{ date('d-m-Y') }} <span id="time">6:58 AM</span></p>
                         </div>
-
-                        
 
                         <div class="btn-sec">
                             {{-- Shortcut Manual --}}

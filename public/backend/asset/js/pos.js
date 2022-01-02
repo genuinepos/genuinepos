@@ -226,38 +226,6 @@ $(document).on('submit', '#deleted_form', function (e) {
     });
 });
 
-//data delete by ajax
-$(document).on('submit', '#search_inv_form', function (e) {
-    e.preventDefault();
-    $('#get_inv_preloader').show();
-    var url = $(this).attr('action');
-    var request = $(this).serialize();
-    $.ajax({
-        url: url,
-        type: 'get',
-        data: request,
-        success: function (data) {
-            $('#get_inv_preloader').hide();
-            $('#invoice_description').empty();
-            if (!$.isEmptyObject(data.errorMsg)) {
-                toastr.error(data.errorMsg);
-            } else {
-                $('#invoice_description').html(data);
-            }
-        }
-    });
-});
-
-$('#submit_form_btn').on('click', function (e) {
-    e.preventDefault();
-    $('#search_inv_form').submit();
-});
-
-$('#exchange_btn').on('click', function (e) {
-    e.preventDefault();
-    $('#invoice_description').empty(); $('#invoice_id').val('');
-});
-
 $('.calculator-bg__main button').prop('type', 'button');
 
 function activeSelectedItems() {

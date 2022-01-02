@@ -199,10 +199,13 @@ class POSController extends Controller
             $addSale->save();
 
             if ($customer) {
-                $customer->point = $customer->point - $request->pre_redeemed;
-                $customer->point = $customer->point + $this->calculateCustomerPoint($prefixSettings, $request->total_invoice_payable);
-                $customer->save();
-
+                if (json_decode($prefixSettings->reward_poing_settings, true)['enable_cus_point'] ==
+                '1'){
+                    $customer->point = $customer->point - $request->pre_redeemed;
+                    $customer->point = $customer->point + $this->calculateCustomerPoint($prefixSettings, $request->total_invoice_payable);
+                    $customer->save();
+                }
+                
                 $addCustomerLedger = new CustomerLedger();
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_id = $addSale->id;
@@ -1396,7 +1399,7 @@ class POSController extends Controller
             $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
             $saleProduct = SaleProduct::where('sale_id', $request->ex_sale_id)
                 ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
-                
+
             if ($saleProduct) {
                 if ($saleProduct->ex_status == 1) {
                     $saleProduct->quantity = $saleProduct->quantity + $quantities[$index];

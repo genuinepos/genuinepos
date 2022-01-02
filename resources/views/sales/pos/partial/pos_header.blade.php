@@ -123,8 +123,6 @@
                             </div>
 
                             <div class="col-lg-5 input-value-sec">
-                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] ==
-                                '1')
                                 <div class="input-group mb-1">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">Point</span>
@@ -138,7 +136,7 @@
                                     </div>
                                     <input readonly type="text" class="form-control" id="trial_point_amount">
                                 </div>
-                                @endif
+                             
 
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend">
@@ -311,29 +309,33 @@
         var url = "{{ url('sales/customer_info') }}"+'/'+customerId;
         $.get(url, function(data) {
             $('#previous_due').val(data.total_sale_due);
-            $('#earned_point').val(data.point);
             if (rp_settings.enable_rp == '1') {
+                $('#earned_point').val(data.point);
                 var __point_amount = parseFloat(data.point) * parseFloat(rp_settings.redeem_amount_per_unit_rp);
                 $('#trial_point_amount').val(parseFloat(__point_amount).toFixed(2));
             }
             calculateTotalAmount();
         });
-        
+
         calculateTotalAmount();
         document.getElementById('search_product').focus();
     });
 
     $(document).on('click', '#reedem_point_button', function (e) {
         e.preventDefault();
-        if ($('#customer_id').val()) {
-            var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
-            $('#available_point').val(parseFloat(earned_point));
-            $('#redeem_amount').val('');
-            $('#total_redeem_point').val('')
-            $('#pointReedemModal').modal('show');
+        if (rp_settings.enable_rp == '1') {
+            if ($('#customer_id').val()) {
+                var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
+                $('#available_point').val(parseFloat(earned_point));
+                $('#redeem_amount').val('');
+                $('#total_redeem_point').val('')
+                $('#pointReedemModal').modal('show');
+            }else{
+                toastr.error('Select customer first.');
+                return;
+            }
         }else{
-            toastr.error('Select customer first.');
-            return;
+            toastr.error('Reaward pointing system is disabled.');
         }
     });
 

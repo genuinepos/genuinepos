@@ -185,17 +185,15 @@
                     <div class="row">
                         <div class="col-lg-4 col-12 p-1 pb-1">
                             @if (json_decode($generalSettings->pos, true)['is_show_credit_sale_button'] == '1')
-                            <div class="btn-bg mb-1">
-                                <a href="#" class="bg-orange btn-pos" data-button_type="0" id="full_due_button"><i
-                                        class="fas fa-check"></i> Credit Sale</a>
-                            </div>
+                                <div class="btn-bg mb-1">
+                                    <a href="#" class="bg-orange btn-pos" data-button_type="0" id="full_due_button"><i
+                                            class="fas fa-check"></i> Credit Sale</a>
+                                </div>
                             @endif
 
-                            @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1')
                             <div class="btn-bg">
                                 <a href="#" class="bg-parpal btn-pos" id="reedem_point_button">Reedem Point</a>
                             </div>
-                            @endif
                         </div>
 
                         <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">

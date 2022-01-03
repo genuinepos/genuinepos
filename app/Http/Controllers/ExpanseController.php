@@ -32,6 +32,10 @@ class ExpanseController extends Controller
     // Expanse index view
     public function index(Request $request)
     {
+        if (auth()->user()->permission->expense['view_expense'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
             $expenses = '';
@@ -58,25 +62,20 @@ class ExpanseController extends Controller
                 $query->whereBetween('expanses.report_date', $date_range); // Final
             }
 
+            $query->select(
+                'expanses.*',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'admin_and_users.prefix as cr_prefix',
+                'admin_and_users.name as cr_name',
+                'admin_and_users.last_name as cr_last_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $expenses = $query->select(
-                    'expanses.*',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'admin_and_users.prefix as cr_prefix',
-                    'admin_and_users.name as cr_name',
-                    'admin_and_users.last_name as cr_last_name',
-                )->orderBy('expanses.report_date', 'desc');
+                $expenses = $query->orderBy('expanses.report_date', 'desc');
             } else {
-                $expenses = $query->select(
-                    'expanses.*',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'admin_and_users.prefix as cr_prefix',
-                    'admin_and_users.name as cr_name',
-                    'admin_and_users.last_name as cr_last_name',
-                )->where('expanses.branch_id', auth()->user()->branch_id)
-                    ->orderBy('expanses.report_date', 'desc')->get();
+                $expenses = $query->where('expanses.branch_id', auth()->user()->branch_id)
+                    ->orderBy('expanses.report_date', 'desc');
             }
 
             return DataTables::of($expenses)
@@ -84,28 +83,38 @@ class ExpanseController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item" href="' . route('expanses.edit', [$row->id]) . '"><i
-                    class="far fa-edit text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('expanses.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    if (auth()->user()->branch_id == $row->branch_id) {
-                        if ($row->due > 0) {
+
+                    if (auth()->user()->permission->expense['edit_expense'] == '0') :
+                        $html .= '<a class="dropdown-item" href="' . route('expanses.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    endif;
+
+                    if (auth()->user()->permission->expense['delete_expense'] == '0') :
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('expanses.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    endif;
+
+                    if (auth()->user()->branch_id == $row->branch_id) :
+                        if ($row->due > 0) :
                             $html .= '<a class="dropdown-item" id="add_payment" href="' . route('expanses.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
-                        }
+                        endif;
+
                         $html .= '<a class="dropdown-item" id="view_payment" href="' . route('expanses.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
-                    }
+                    endif;
+
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
                 })->editColumn('descriptions', function ($row) use ($generalSettings) {
-                        $expenseDescriptions = DB::table('expense_descriptions')
+                    $expenseDescriptions = DB::table('expense_descriptions')
                         ->where('expense_id', $row->id)
                         ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
                         ->select(
-                            'expanse_categories.name', 'expanse_categories.code', 'expense_descriptions.amount'
-                            )->get();
+                            'expanse_categories.name',
+                            'expanse_categories.code',
+                            'expense_descriptions.amount'
+                        )->get();
                     $html = '';
-                    foreach ($expenseDescriptions as $exDescription){
-                        $html .= '<b>'.$exDescription->name.'('.$exDescription->code.'):</b> '.$exDescription->amount.'</br>';
+                    foreach ($expenseDescriptions as $exDescription) {
+                        $html .= '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b> ' . $exDescription->amount . '</br>';
                     }
                     return $html;
                 })
@@ -136,8 +145,8 @@ class ExpanseController extends Controller
                 ->editColumn('tax_percent',  function ($row) {
                     return $row->tax_percent . '%';
                 })
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">' . $this->converter->format_in_bdt($row->net_total_amount) .'</span>')
-                ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">' . $this->converter->format_in_bdt($row->due) . '</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
+                ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
                 ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'due', 'net_total_amount', 'descriptions'])
                 ->make(true);
         }
@@ -148,6 +157,10 @@ class ExpanseController extends Controller
 
     public function categoryWiseExpense(Request $request)
     {
+        if (auth()->user()->permission->expense['category_wise_expense'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
             $expenses = '';
@@ -180,32 +193,23 @@ class ExpanseController extends Controller
                 $query->whereBetween('expanses.report_date', $date_range); // Final
             }
 
+            $query->select(
+                'expense_descriptions.amount',
+                'expanses.invoice_id',
+                'expanses.date',
+                'expanse_categories.name',
+                'expanse_categories.code',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'admin_and_users.prefix as cr_prefix',
+                'admin_and_users.name as cr_name',
+                'admin_and_users.last_name as cr_last_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $expenses = $query->select(
-                    'expense_descriptions.amount',
-                    'expanses.invoice_id',
-                    'expanses.date',
-                    'expanse_categories.name',
-                    'expanse_categories.code',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'admin_and_users.prefix as cr_prefix',
-                    'admin_and_users.name as cr_name',
-                    'admin_and_users.last_name as cr_last_name',
-                )->orderBy('expanses.report_date', 'desc');
+                $expenses = $query->orderBy('expanses.report_date', 'desc');
             } else {
-                $expenses = $query->select(
-                    'expense_descriptions.amount',
-                    'expanses.invoice_id',
-                    'expanses.date',
-                    'expanse_categories.name',
-                    'expanse_categories.code',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'admin_and_users.prefix as cr_prefix',
-                    'admin_and_users.name as cr_name',
-                    'admin_and_users.last_name as cr_last_name',
-                )->where('expanses.branch_id', auth()->user()->branch_id)
+                $expenses = $query->where('expanses.branch_id', auth()->user()->branch_id)
                     ->orderBy('expanses.report_date', 'desc');
             }
 
@@ -223,12 +227,14 @@ class ExpanseController extends Controller
                 })->editColumn('user_name',  function ($row) {
                     if ($row->cr_name) {
                         return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
-                    }else{ return '---';}
-                    
+                    } else {
+                        return '---';
+                    }
                 })->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
                 ->rawColumns(['date', 'from', 'category_name', 'user_name', 'amount'])
                 ->make(true);
         }
+
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         return view('expanses.category_wise_expense_list', compact('branches'));
     }
@@ -236,13 +242,20 @@ class ExpanseController extends Controller
     // Create expanse view
     public function create()
     {
-        $companies = DB::table('loan_companies')->select('id', 'name')->get();
-        return view('expanses.create', compact('companies'));
+        if (auth()->user()->permission->expense['add_expense'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
+        return view('expanses.create');
     }
 
     // Store Expanse
     public function store(Request $request)
     {
+        if (auth()->user()->permission->expense['add_expense'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['expenses'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['expanse_payment'];
@@ -358,6 +371,10 @@ class ExpanseController extends Controller
     //Delete Expanse
     public function delete(Request $request, $expanseId)
     {
+        if (auth()->user()->permission->expense['delete_expense'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $deleteExpanse = Expanse::where('id', $expanseId)->first();
         if (!is_null($deleteExpanse)) {
             if ($deleteExpanse->paid > 0) {
@@ -371,6 +388,10 @@ class ExpanseController extends Controller
     // Edit view
     public function edit($expenseId)
     {
+        if (auth()->user()->permission->expense['edit_expense'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         $expense = Expanse::with('expense_descriptions')->where('id', $expenseId)->first();
         $categories = DB::table('expanse_categories')->get();
         $taxes = DB::table('taxes')->get();
@@ -389,6 +410,10 @@ class ExpanseController extends Controller
     // Update expanse
     public function update(Request $request, $expenseId)
     {
+        if (auth()->user()->permission->expense['edit_expense'] == '0') {
+            return response()->json('Access Denied');
+        }
+        
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['expenses'];
         $this->validate($request, [

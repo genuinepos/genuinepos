@@ -9,12 +9,24 @@
                     </a>
                 </li>
 
-                <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
-                    <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/package.svg') }}" alt="">
-                        <p class="title">@lang('menu.product')</p>
-                    </a>
-                </li>
+                @if (
+                    auth()->user()->permission->product['product_all'] == '1' ||
+                    auth()->user()->permission->product['product_add'] == '1' || 
+                    auth()->user()->permission->product['categories'] == '1' ||
+                    auth()->user()->permission->product['brand'] == '1' ||
+                    auth()->user()->permission->product['units'] == '1' ||
+                    auth()->user()->permission->product['variant'] == '1' ||
+                    auth()->user()->permission->product['warranties'] == '1' ||
+                    auth()->user()->permission->product['selling_price_group'] == '1' ||
+                    auth()->user()->permission->product['generate_barcode'] == '1'
+                )
+                    <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/package.svg') }}" alt="">
+                            <p class="title">@lang('menu.product')</p>
+                        </a>
+                    </li>
+                @endif
 
                 @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
                     @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
@@ -28,7 +40,6 @@
 
                 @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-
                         <li data-menu="purchases" class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
                             <a href="#" class="">
                                 <img src="{{ asset('public/backend/asset/img/icon/bill.svg') }}">
@@ -130,15 +141,19 @@
                             <p class="title">@lang('menu.hrm')</p>
                         </a>
                     </li>
-                @endif
+                @endif 
 
                 @if ($addons->manufacturing == 1)
-                    {{-- @if (json_decode($generalSettings->modules, true)['manufacturing'] == '1') --}}
-                    @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
+                    @if (
+                        auth()->user()->permission->manufacturing['process_view'] == '1' ||
+                        auth()->user()->permission->manufacturing['production_view'] == '1' ||
+                        auth()->user()->permission->manufacturing['manuf_settings'] == '1' ||
+                        auth()->user()->permission->manufacturing['manuf_report'] == '1'
+                    )
                         <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
-                                <p class="title">Manufacture</p>
+                                <p class="title">@lang('menu.manufacturing')</p>
                             </a>
                         </li>
                     @endif
@@ -146,12 +161,19 @@
 
                 @if ($addons->todo == 1)
                     @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
-                        <li class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
-                            <a href="{{ route('workspace.index') }}">
-                                <img src="{{ asset('public/backend/asset/img/icon/to-do-list.svg') }}">
-                                <p class="title">@lang('menu.essentials')</p>
-                            </a>
-                        </li>
+                        @if (
+                            auth()->user()->permission->essential['assign_todo'] == '1' || 
+                            auth()->user()->permission->essential['work_space'] == '1' ||
+                            auth()->user()->permission->essential['memo'] == '1' ||
+                            auth()->user()->permission->essential['msg'] == '1'
+                        )
+                            <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
+                                <a href="#">
+                                    <img src="{{ asset('public/backend/asset/img/icon/to-do-list.svg') }}">
+                                    <p class="title">@lang('menu.essentials')</p>
+                                </a>
+                            </li>
+                        @endif
                     @endif
                 @endif
 
@@ -250,7 +272,7 @@
                         </div>
                         <hr>
                         <div class="row">
-                            @if (auth()->user()->permission->category['category_all'] == '1')
+                            @if (auth()->user()->permission->product['categories'] == '1')
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.categories.index') }}" class="bar-link">
@@ -263,7 +285,7 @@
                                 </div>
                             @endif
 
-                            @if (auth()->user()->permission->brand['brand_all'] == '1')
+                            @if (auth()->user()->permission->product['brand'] == '1')
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('product.brands.index') }}" class="bar-link">
@@ -276,61 +298,71 @@
                                 </div>
                             @endif
 
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('settings.units.index') }}" class="bar-link">
-                                        <span><i class="fas fa-weight-hanging"></i></span>
-                                    </a>
+                            @if (auth()->user()->permission->product['units'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.units.index') }}" class="bar-link">
+                                            <span><i class="fas fa-weight-hanging"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.units')</p>
                                 </div>
-                                <p class="switch_text">@lang('menu.units')</p>
-                            </div>
+                            @endif
 
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('product.variants.index') }}" class="bar-link">
-                                        <span>
-                                            <i class="fas fa-align-center"></i>
-                                        </span>
-                                    </a>
+                            @if (auth()->user()->permission->product['variant'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('product.variants.index') }}" class="bar-link">
+                                            <span>
+                                                <i class="fas fa-align-center"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.variants')</p>
                                 </div>
-                                <p class="switch_text">@lang('menu.variants')</p>
-                            </div>
+                            @endif
 
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('product.warranties.index') }}" class="bar-link">
-                                        <span>
-                                            <i class="fas fa-shield-alt"></i>
-                                        </span>
-                                    </a>
+                            @if (auth()->user()->permission->product['warranties'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('product.warranties.index') }}" class="bar-link">
+                                            <span>
+                                                <i class="fas fa-shield-alt"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.warranties')</p>
                                 </div>
-                                <p class="switch_text">@lang('menu.warranties')</p>
-                            </div>
+                            @endif
                         </div>
                         <hr>
 
                         <div class="row">
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('product.selling.price.groups.index') }}" class="bar-link">
-                                        <span>
-                                            <i class="fas fa-layer-group"></i>
-                                        </span>
-                                    </a>
+                            @if (auth()->user()->permission->product['selling_price_group'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('product.selling.price.groups.index') }}" class="bar-link">
+                                            <span>
+                                                <i class="fas fa-layer-group"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.selling_price_group')</p>
                                 </div>
-                                <p class="switch_text">@lang('menu.selling_price_group')</p>
-                            </div>
+                            @endif
 
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('barcode.index') }}" class="bar-link">
-                                        <span>
-                                            <i class="fas fa-barcode"></i>
-                                        </span>
-                                    </a>
+                            @if (auth()->user()->permission->product['generate_barcode'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('barcode.index') }}" class="bar-link">
+                                            <span>
+                                                <i class="fas fa-barcode"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.generate_barcode')</p>
                                 </div>
-                                <p class="switch_text">@lang('menu.generate_barcode')</p>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -1229,62 +1261,131 @@
             @endif
 
             @if ($addons->manufacturing == 1)
-                @if (auth()->user()->permission->manufacturing['menuf_view'] == '1')
-                    <div class="sub-menu_t" id="manufacture">
-                        <div class="sub-menu-width">
-                            <div class="model__close bg-secondary-2">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <p class="text-muted float-start mt-1"><strong>Manufacturing</strong></p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                    </div>
+                <div class="sub-menu_t" id="manufacture">
+                    <div class="sub-menu-width">
+                        <div class="model__close bg-secondary-2">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p class="text-muted float-start mt-1"><strong>Manufacturing</strong></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
                             </div>
-                            <div class="container-fluid">
-                                <div class="row">
+                        </div>
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                @if (auth()->user()->permission->manufacturing['process_view'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('manufacturing.process.index') }}" class="bar-link">
                                                 <span><i class="fas fa-dumpster-fire"></i></span>
                                             </a>
                                         </div>
-                                        <p class="switch_text">Process</p>
+                                        <p class="switch_text">@lang('menu.process')</p>
                                     </div>
+                                @endif
 
+                                @if (auth()->user()->permission->manufacturing['production_view'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('manufacturing.productions.index') }}" class="bar-link">
                                                 <span><i class="fas fa-shapes"></i></span>
                                             </a>
                                         </div>
-                                        <p class="switch_text">Production</p>
+                                        <p class="switch_text">@lang('menu.productions')</p>
                                     </div>
+                                @endif
 
+                                @if (auth()->user()->permission->manufacturing['manuf_settings'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('manufacturing.settings.index') }}" class="bar-link">
                                                 <span><i class="fas fa-sliders-h"></i></span>
                                             </a>
                                         </div>
-                                        <p class="switch_text">Settings</p>
+                                       <p class="switch_text">@lang('menu.manufacturing_setting')</p>
                                     </div>
+                                @endif
 
+                                @if (auth()->user()->permission->manufacturing['manuf_report'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('manufacturing.report.index') }}" class="bar-link">
                                                 <span><i class="fas fa-file-alt"></i></span>
                                             </a>
                                         </div>
-                                        <p class="switch_text">Manufacturing Report</p>
+                                        <p class="switch_text">@lang('menu.manufacturing_report')</p>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
             @endif
+
+            <div class="sub-menu_t" id="essentials">
+                <div class="sub-menu-width">
+                    <div class="model__close bg-secondary-2">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="text-muted float-start mt-1"><strong>Task Management</strong></p>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            @if (auth()->user()->permission->essential['assign_todo'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('todo.index') }}" class="bar-link">
+                                            <span><i class="fas fa-th-list"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.todo')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->essential['work_space'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('workspace.index') }}" class="bar-link">
+                                            <span><i class="fas fa-th-large"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.work_space')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->essential['memo'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('memos.index') }}" class="bar-link">
+                                            <span><i class="fas fa-file-alt"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.memo')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->essential['msg'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('messages.index') }}" class="bar-link">
+                                            <span><i class="fas fa-envelope"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.message')</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="sub-menu_t" id="reports">
                 <div class="sub-menu-width">

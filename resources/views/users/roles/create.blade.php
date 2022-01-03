@@ -287,7 +287,7 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="openingStock_add" class="product"> &nbsp; Add Opening Stock </p> 
+                                                        <input type="checkbox" name="openingStock_add" class="product"> &nbsp; Add/Edit Opening Stock </p> 
                                                     </div>
                                                 </div>
                 
@@ -301,7 +301,49 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="pro_unit_cost" class="product"> &nbsp; View Purchase Price </p> 
+                                                        <input type="checkbox" name="categories" class="product"> &nbsp; Categories</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="brand" class="product"> &nbsp; Brands</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="units" class="product"> &nbsp; Unit</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="variant" class="product"> &nbsp; Variants</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="warranties" class="product"> &nbsp; Warranties</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="selling_price_group" class="product"> &nbsp; Selling Price Group</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="generate_barcode" class="product"> &nbsp; Generate Barcode</p> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -598,8 +640,7 @@
                                                         <input type="checkbox" name="edit_discount_pos_screen" class="sale"> &nbsp; Edit Product Discount From POS Screen </p> 
                                                     </div>
                                                 </div>
-                
-                                      
+            
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-2"> 
@@ -664,155 +705,6 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Brands Permission</b> </p>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap "> 
-                                                    <input type="checkbox" id="select_all" data-target="brand" autocomplete="off"> &nbsp;  Select All </p> 
-                                                </div>
-                                            </div>
-                
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="brand_all" class="brand"> &nbsp; View All Brand </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="brand_add" class="brand"> &nbsp; Add Brand </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="brand_edit" class="brand"> &nbsp; Edit Brand </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="brand_delete" class="brand"> &nbsp; Delete Brand </p> 
-                                                    </div>
-                                                </div>
-                                            </div>  
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Categories Permission</b> </p>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap "> 
-                                                    <input type="checkbox" id="select_all" data-target="category" autocomplete="off"> &nbsp;  Select All </p> 
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="category_all" class="category"> &nbsp; View All Category </p> 
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="category_add" class="category"> &nbsp; Add Category </p> 
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="category_edit" class="category"> &nbsp; Edit Category </p> 
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="category_delete" class="category"> &nbsp; Delete Category </p> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Unit Permission</b> </p>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap "> 
-                                                    <input type="checkbox" id="select_all" data-target="unit"> &nbsp; Select All </p> 
-                                                </div>
-                                            </div>
-                
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="unit_all" class="unit"> &nbsp; View All Unit </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="unit_add" class="unit"> &nbsp; Add Unit </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="unit_edit" class="unit"> &nbsp; Edit Unit </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="unit_delete" class="unit"> &nbsp; Delete Unit </p> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
                                         <p class="p-1 text-primary"><b>Peport Permission</b> </p>
                                     </div>
 
@@ -829,105 +721,126 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="loss_profit_report" class="report"> &nbsp; View Profit/Loss Report</p> 
+                                                        <input type="checkbox" name="loss_profit_report" class="report"> &nbsp; Profit/Loss Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="purchase_sale_report" class="report"> &nbsp; View Purchase & Sale Report</p> 
+                                                        <input type="checkbox" name="purchase_sale_report" class="report"> &nbsp; Purchase & Sale Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="tax_report" class="report"> &nbsp; View Tax Report</p> 
+                                                        <input type="checkbox" name="tax_report" class="report"> &nbsp; Tax Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="cus_sup_report" class="report"> &nbsp; View Customer & Supplier Report</p> 
+                                                        <input type="checkbox" name="customer_report" class="report"> &nbsp; Customer Report</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" name="supplier_report" class="report"> &nbsp; Supplier Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="stock_report" class="report"> &nbsp; View stock report</p> 
+                                                        <input type="checkbox" name="stock_report" class="report"> &nbsp; stock Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="stock_adjustment_report" class="report"> &nbsp; Stock adjustment report</p> 
+                                                        <input type="checkbox" name="stock_adjustment_report" class="report"> &nbsp; Stock Adjustment Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="tranding_report" class="report"> &nbsp; View Trending Product Peport</p> 
+                                                        <input type="checkbox" name="pro_purchase_report" class="report"> &nbsp; Product Purchase Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="item_report" class="report"> &nbsp; Item Peport</p> 
+                                                        <input type="checkbox" name="pro_sale_report" class="report"> &nbsp; Product Sale Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="pro_purchase_report" class="report"> &nbsp; Product purchase Peport</p> 
+                                                        <input type="checkbox" name="purchase_payment_report" class="report"> &nbsp; Purchase Payment Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="pro_sale_report" class="report"> &nbsp; Product sale Peport</p> 
+                                                        <input type="checkbox" name="sale_payment_report" class="report"> &nbsp; Receive Payment Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="purchase_payment_report" class="report"> &nbsp; Purchase payment Peport</p> 
+                                                        <input type="checkbox" name="expanse_report" class="report"> &nbsp; Expanse Report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="sale_payment_report" class="report"> &nbsp; Sale payment Peport</p> 
+                                                        <input type="checkbox" name="register_report" class="report"> &nbsp; Cash Register report</p> 
                                                     </div>
                                                 </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="expanse_report" class="report"> &nbsp; View Expanse Report</p> 
+                                                        <input type="checkbox" name="representative_report" class="report"> &nbsp; Sales Representative Report</p> 
                                                     </div>
                                                 </div>
-                
+
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="register_report" class="report"> &nbsp; View register report</p> 
+                                                        <input type="checkbox" name="payroll_report" class="report"> &nbsp; Payroll Report</p> 
                                                     </div>
                                                 </div>
-                
+
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="representative_report" class="report"> &nbsp; View Sales Representative Report</p> 
+                                                        <input type="checkbox" name="payroll_payment_report" class="report"> &nbsp; Payroll Payment Report</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" name="payroll_payment_report" class="report"> &nbsp; Attendance Report</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap"> 
+                                                        <input type="checkbox" name="production_report" class="report"> &nbsp; Production Report</p> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -1153,7 +1066,7 @@
                                 <div class="col-md-8">
                                     <div class="form_element m-0 mt-2">
                                         <div class="heading_area">
-                                            <p class="p-1 text-primary"><b>Essentials Permission</b> </p>
+                                            <p class="p-1 text-primary"><b>Manage Task Permission</b> </p>
                                         </div>
 
                                         <div class="element-body">
@@ -1169,21 +1082,28 @@
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="assign_todo" class="Essentials"> &nbsp; Assign To Do's</p> 
+                                                            <input type="checkbox" name="assign_todo" class="Essentials"> &nbsp; Todo</p> 
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="work_space" class="Essentials"> &nbsp; Work Space</p> 
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="memo" class="Essentials"> &nbsp; Memo</p> 
                                                         </div>
                                                     </div>
                     
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="create_msg" class="Essentials"> &nbsp; Create Message</p> 
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="view_msg" class="Essentials"> &nbsp; View Message</p> 
+                                                            <input type="checkbox" name="msg" class="Essentials"> &nbsp; Message</p> 
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1193,7 +1113,7 @@
                                 </div>
                             @endif
 
-                            @if ($addons->service == 1)
+                            @if ($addons->manufacturing == 1)
                                 <div class="col-md-8">
                                     <div class="form_element m-0 mt-2">
                                         <div class="heading_area">
@@ -1213,28 +1133,70 @@
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="menuf_view" class=" Manufacturing"> &nbsp; View Recipe</p> 
+                                                            <input type="checkbox" name="process_view" class=" Manufacturing"> &nbsp; View Process</p> 
                                                         </div>
                                                     </div>
                     
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="menuf_add" class="Manufacturing"> &nbsp; Add Recipe</p> 
+                                                            <input type="checkbox" name="process_add" class="Manufacturing"> &nbsp; Add Process</p> 
                                                         </div>
                                                     </div>
                     
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="menuf_edit" class="Manufacturing"> &nbsp;  Edit Recipe</p> 
+                                                            <input type="checkbox" name="process_edit" class="Manufacturing"> &nbsp;  Edit Process</p> 
                                                         </div>
                                                     </div>
                     
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="menuf_delete" class="Manufacturing"> &nbsp; Delete Recipe</p> 
+                                                            <input type="checkbox" name="process_delete" class="Manufacturing"> &nbsp; Delete Process</p> 
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="production_view" class=" Manufacturing"> &nbsp; View Production</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="production_add" class="Manufacturing"> &nbsp; Add Production</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="production_edit" class="Manufacturing"> &nbsp;  Edit Production</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="production_delete" class="Manufacturing"> &nbsp; Delete Production</p> 
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="manuf_settings" class="Manufacturing"> &nbsp; Manufacturing Settings</p> 
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="manuf_report" class="Manufacturing"> &nbsp; Manufacturing Report</p> 
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1243,55 +1205,6 @@
                                     </div>
                                 </div>
                             @endif
-
-                            {{-- <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Projects Permission</b> </p>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" id="select_all" data-target="Project"> &nbsp; Select All </p> 
-                                                </div>
-                                            </div>
-                
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="proj_view" class="Project"> &nbsp; View Project</p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="proj_create" class="Project"> &nbsp; Create Project</p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="proj_edit" class="Project"> &nbsp; Edit Project</p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="proj_delete" class="Project"> &nbsp; Delete Project</p> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
 
                             @if ($addons->service == 1)
                                 <div class="col-md-8">
@@ -1394,89 +1307,6 @@
                                 </div>
                             @endif
 
-                            {{-- <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Superadmin Permission</b> </p>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                
-                                            </div>
-
-                                            <div class="col-md-6 offset-2">
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="superadmin_access_pack_subscrip"> &nbsp; Access package subscriptions</p> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
-
-                            @if ($addons->e_commerce == 1)
-                                <div class="col-md-8">
-                                    <div class="form_element m-0 mt-2">
-                                        <div class="heading_area">
-                                            <p class="p-1 text-primary"><b>E-Commerce Permission</b> </p>
-                                        </div>
-
-                                        <div class="element-body">
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <div class="row">
-                                                        &nbsp;&nbsp;&nbsp;&nbsp;<p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" id="select_all" data-target="E-commerce"> &nbsp; Select All </p> 
-                                                    </div>
-                                                </div>
-                    
-                                                <div class="col-md-6 offset-2">
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="e_com_sync_pro_cate" class="E-commerce"> &nbsp; Sync Product Categories</p> 
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="e_com_sync_pro" class="E-commerce"> &nbsp; Sync Products</p> 
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="e_com_sync_order" class="E-commerce"> &nbsp;  Sync Orders</p> 
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="e_com_map_tax_rate" class="E-commerce"> &nbsp; Map Tax Rates</p> 
-                                                        </div>
-                                                    </div>
-                    
-                                                    {{--<div class="col-md-12">
-                                                        <div class="row">
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;<h6 class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="e_com_map_tax_rate" class="form-control E-commerce"> &nbsp; Access Woocommerce API settings</h6> 
-                                                        </div>
-                                                    </div> --}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                          
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">
                                     <button type="button" class="btn loading_button d-none"><i

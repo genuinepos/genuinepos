@@ -21,6 +21,10 @@ class ProcessController extends Controller
     // Process index view method
     public function index(Request $request)
     {
+        if (auth()->user()->permission->manufacturing['process_view'] == '0' ) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $products = DB::table('products')
             ->where('status', 1)
             ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
@@ -32,8 +36,7 @@ class ProcessController extends Controller
                 'product_variants.id as v_id',
                 'product_variants.variant_name',
                 'product_variants.variant_code',
-            )
-            ->get();
+            )->get();
 
         if ($request->ajax()) {
             return $this->processUtil->processTable($request);
@@ -44,6 +47,10 @@ class ProcessController extends Controller
 
     public function show($processId)
     {
+        if (auth()->user()->permission->manufacturing['process_view'] == '0' ) {
+            return response()->json('Access Denied');
+        }
+
         $process = Process::with([
             'product',
             'variant',
@@ -60,6 +67,10 @@ class ProcessController extends Controller
     // Process index view method
     public function create(Request $request)
     {
+        if (auth()->user()->permission->manufacturing['process_add'] == '0' ) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $product = $this->processUtil->getProcessableProductForCreate($request);
         return view('manufacturing.process.create', compact('product'));
     }
@@ -67,6 +78,10 @@ class ProcessController extends Controller
     // Store process
     public function store(Request $request)
     {
+        if (auth()->user()->permission->manufacturing['process_add'] == '0' ) {
+            return response()->json('Access Denied.');
+        }
+
         $this->validate($request, [
             'total_cost' => 'required',
         ]);
@@ -110,6 +125,10 @@ class ProcessController extends Controller
     // Edit process view with data
     public function edit($processId)
     {
+        if (auth()->user()->permission->manufacturing['process_edit'] == '0' ) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $process = DB::table('processes')->where('processes.id', $processId)
             ->leftJoin('products', 'processes.product_id', 'products.id')
             ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
@@ -121,8 +140,7 @@ class ProcessController extends Controller
                 'product_variants.id as v_id',
                 'product_variants.variant_name as v_name',
                 'product_variants.variant_code as v_code',
-            )
-            ->first();
+            )->first();
 
         $units = DB::table('units')->select('id', 'name')->get();
         $processIngredients = DB::table('process_ingredients')
@@ -137,13 +155,16 @@ class ProcessController extends Controller
                 'product_variants.id as v_id',
                 'product_variants.variant_name as v_name',
                 'product_variants.variant_code as v_code',
-            )
-            ->get();
+            )->get();
         return view('manufacturing.process.edit', compact('process', 'units', 'processIngredients'));
     }
 
     public function update(Request $request, $processId)
     {
+        if (auth()->user()->permission->manufacturing['process_edit'] == '0' ) {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'total_cost' => 'required',
         ]);
@@ -211,6 +232,10 @@ class ProcessController extends Controller
 
     public function delete($processId)
     {
+        if (auth()->user()->permission->manufacturing['process_delete'] == '0' ) {
+            return response()->json('Access Denied');
+        }
+
         $process = Process::where('id', $processId)->first();
         if (!is_null($process)) {
             $process->delete();

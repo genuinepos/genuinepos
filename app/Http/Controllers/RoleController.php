@@ -209,7 +209,13 @@ class RoleController extends Controller
             'product_edit' => isset($request->product_edit) ? 1 : 0,
             'openingStock_add' => isset($request->openingStock_add) ? 1 : 0,
             'product_delete' => isset($request->product_delete) ? 1 : 0,
-            'pro_unit_cost' => isset($request->pro_unit_cost) ? 1 : 0,
+            'categories' => isset($request->categories) ? 1 : 0,
+            'brand' => isset($request->brand) ? 1 : 0,
+            'units' => isset($request->units) ? 1 : 0,
+            'variant' => isset($request->variant) ? 1 : 0,
+            'warranties' => isset($request->warranties) ? 1 : 0,
+            'selling_price_group' => isset($request->selling_price_group) ? 1 : 0,
+            'generate_barcode' => isset($request->generate_barcode) ? 1 : 0,
         ];
 
         return $permissions;
@@ -417,8 +423,9 @@ class RoleController extends Controller
     {
         $permissions = [
             'assign_todo' => isset($request->assign_todo) ? 1 : 0,
-            'create_msg' => isset($request->create_msg) ? 1 : 0,
-            'view_msg' => isset($request->view_msg) ? 1 : 0,
+            'work_space' => isset($request->work_space) ? 1 : 0,
+            'memo' => isset($request->memo) ? 1 : 0,
+            'msg' => isset($request->msg) ? 1 : 0,
         ];
         return $permissions;
     }
@@ -427,10 +434,17 @@ class RoleController extends Controller
     private function manufacturingPermission($request)
     {
         $permissions = [
-            'menuf_view' => isset($request->menuf_view) ? 1 : 0,
-            'menuf_add' => isset($request->menuf_add) ? 1 : 0,
-            'menuf_edit' => isset($request->menuf_edit) ? 1 : 0,
-            'menuf_delete' => isset($request->menuf_delete) ? 1 : 0,
+            'process_view' => isset($request->process_view) ? 1 : 0,
+            'process_add' => isset($request->process_add) ? 1 : 0,
+            'process_edit' => isset($request->process_edit) ? 1 : 0,
+            'process_delete' => isset($request->process_delete) ? 1 : 0,
+            'production_view' => isset($request->production_view) ? 1 : 0,
+            'production_add' => isset($request->production_add) ? 1 : 0,
+            'production_edit' => isset($request->production_edit) ? 1 : 0,
+            'production_delete' => isset($request->production_delete) ? 1 : 0,
+            'process_delete' => isset($request->process_delete) ? 1 : 0,
+            'manuf_settings' => isset($request->manuf_settings) ? 1 : 0,
+            'manuf_report' => isset($request->manuf_report) ? 1 : 0,
         ];
         return $permissions;
     }

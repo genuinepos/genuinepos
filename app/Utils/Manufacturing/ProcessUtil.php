@@ -37,11 +37,12 @@ class ProcessUtil
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a id="view" class="dropdown-item" href="' . route('manufacturing.process.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-                if (auth()->user()->permission->manufacturing['menuf_edit'] == '1') :
+                
+                if (auth()->user()->permission->manufacturing['process_edit'] == '1') :
                     $html .= '<a class="dropdown-item" href="' . route('manufacturing.process.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                 endif;
 
-                if (auth()->user()->permission->manufacturing['menuf_delete'] == '1') :
+                if (auth()->user()->permission->manufacturing['process_delete'] == '1') :
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('manufacturing.process.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 endif;
 

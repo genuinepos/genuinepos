@@ -41,31 +41,26 @@ class TodoController extends Controller
                 $query->where('todos.status', $request->status);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                $query->whereBetween('todos.created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->from_date) {
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $query->whereBetween('todos.due_date', $date_range);
             }
 
+            $query->select(
+                'todos.*',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'admin_and_users.prefix',
+                'admin_and_users.name as a_name',
+                'admin_and_users.last_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $todos = $query->select(
-                    'todos.*',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name as a_name',
-                    'admin_and_users.last_name',
-                )->orderBy('todos.id', 'desc');
+                $todos = $query->orderBy('todos.id', 'desc');
             } else {
-                $todos = $query->select(
-                    'todos.*',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name as a_name',
-                    'admin_and_users.last_name',
-                )->where('todos.branch_id', auth()->user()->branch_id)
+                $todos = $query->where('todos.branch_id', auth()->user()->branch_id)
                     ->orderBy('id', 'desc');
             }
 
@@ -81,7 +76,7 @@ class TodoController extends Controller
                     $html .= '<a class="dropdown-item" id="edit" href="' . route('todo.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
 
                     $html .= '<a class="dropdown-item" id="change_status" href="' . route('todo.status.modal', [$row->id]) . '"><i class="fas fa-pen-nib text-primary"></i> Change Status</a>';
-                
+
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('todo.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
@@ -293,7 +288,7 @@ class TodoController extends Controller
         if ($addons->todo == 0) {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $deleteTodo = Todo::where('id', $id)->first();
         if (!is_null($deleteTodo)) {
             $deleteTodo->delete();

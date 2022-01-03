@@ -14,41 +14,46 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
 @endpush
-@section('title', 'Essentials - ')
+@section('title', 'User Messages - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul class="list-unstyled">
                                         @if (auth()->user()->permission->essential['assign_todo'] == '1')
                                             <li>
-                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>Work Spaces</b></a>
+                                                <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
+                                            </li>
+                                        @endif
+                                        
+                                        @if (auth()->user()->permission->essential['work_space'] == '1')
+                                            <li>
+                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>@lang('menu.work_space')</b></a>
                                             </li>
                                         @endif
 
-                                        <li>
-                                            <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>Todo</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->essential['memo'] == '1')
+                                            <li>
+                                                <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.memo')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>Memos</b></a>
-                                        </li>
-
-                                        <li>
-                                            <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope text-primary"></i> <b>Messages</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->essential['msg'] == '1')
+                                            <li>
+                                                <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope text-primary"></i> <b>@lang('menu.message')</b></a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
+
                     <div class="row mt-1">
                         <div class="col-md-12">
                             <div class="card">

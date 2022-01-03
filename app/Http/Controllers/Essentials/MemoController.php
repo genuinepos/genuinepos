@@ -18,6 +18,10 @@ class MemoController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        if (auth()->user()->permission->essential['memo'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $memos = DB::table('memo_users')
                 ->join('memos', 'memo_users.memo_id', 'memos.id')

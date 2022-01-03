@@ -99,8 +99,6 @@
                                             <span class="input-group-text valus">Point</span>
                                         </div>
                                         <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
-                                        <!-- =============================== -->
-
                                         <div class="input-group-prepend ms-1">
                                             <span class="input-group-text valus"> = {{ json_decode($generalSettings->business, true)['currency'] }}</span>
                                         </div>
@@ -171,91 +169,6 @@
         });
     });
 
-    var tax_percent = 0;
-    $(document).on('change', '#sale_tax_id',function() {
-        var tax = $(this).val();
-        if (tax) {
-            var split = tax.split('-');
-            tax_percent = split[1];
-            console.log(split);
-        }else{
-            tax_percent = 0;
-        }
-    });
-
-    function costCalculate() {
-        var product_cost = $('#sale_product_cost').val() ? $('#sale_product_cost').val() : 0;
-        var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent ? tax_percent : 0);
-        var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
-        $('#sale_product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
-        var profit = $('#sale_profit').val() ? $('#sale_profit').val() : 0;
-        var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
-        var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
-        $('#sale_product_price').val(parseFloat(product_price).toFixed(2));
-    }
-
-    $(document).on('input', '#sale_product_cost',function() {
-        $('.os_unit_costs_exc_tax').val(parseFloat($(this).val()).toFixed(2));
-        costCalculate();
-    });
-
-    $(document).on('change', '#sale_tax_id', function() {
-        costCalculate();
-    });
-
-    $(document).on('input', '#sale_profit',function() {
-        costCalculate();
-    });
-
-    // Reduce empty opening stock qty field
-    $(document).on('blur', '#os_quantity', function () {
-        if ($(this).val() == '') {
-            $(this).val(parseFloat(0).toFixed(2));
-        } 
-    });
-
-    // Reduce empty opening stock unit cost field
-    $(document).on('blur', '#os_unit_cost_exc_tax', function () {
-    if ($(this).val() == '') {
-        $(this).val(parseFloat(0).toFixed(2));
-    } 
-    });
-
-    $(document).on('input', '#os_quantity', function () {
-        var qty = $(this).val() ? $(this).val() : 0;
-        var tr = $(this).closest('tr');
-        var unit_cost_exc_tax = tr.find('#os_unit_cost_exc_tax').val() ? tr.find('#os_unit_cost_exc_tax').val() : 0;
-        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_exc_tax);
-        tr.find('.os_span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-        tr.find('#os_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-    });
-
-    $(document).on('input', '#os_unit_cost_exc_tax', function () {
-        var unit_cost_exc_tax = $(this).val() ? $(this).val() : 0;
-        var tr = $(this).closest('tr');
-        var qty = tr.find('#os_quantity').val() ? tr.find('#os_quantity').val() : 0;
-        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_exc_tax);
-        tr.find('.os_span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-        tr.find('#os_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-    });
-
-    $(document).on('change', '#sale_category_id', function () {
-        var category_id = $(this).val();
-        $.ajax({
-            url:"{{url('sales/get/all/sub/category')}}"+"/"+category_id,
-            async:true,
-            type:'get',
-            dataType: 'json',
-            success:function(subcate){
-                $('#sale_child_category_id').empty();
-                $('#sale_child_category_id').append('<option value="">Select Sub-Category</option>');
-                $.each(subcate, function(key, val){
-                    $('#sale_child_category_id').append('<option value="'+val.id+'">'+val.name+'</option>');
-                });
-            }
-        });
-    });
-
     // Add product by ajax
     $(document).on('submit', '#add_product_form', function(e) {
         e.preventDefault();
@@ -272,7 +185,6 @@
                     url:"{{url('sales/pos/get/recent/product')}}"+"/"+data.id,
                     type:'get',
                     success:function(data){
-                        console.log(data);
                         $('.loading_button').hide();
                         $('#addProductModal').modal('hide');
                         if (!$.isEmptyObject(data.errorMsg)) {
@@ -289,7 +201,6 @@
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                 $('.error').html('');
                 $.each(err.responseJSON.errors, function(key, error) {
-                    //console.log(key);
                     $('.error_sale_' + key + '').html(error[0]);
                 });
             }

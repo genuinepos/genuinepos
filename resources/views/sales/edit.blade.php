@@ -168,7 +168,7 @@
                                             <div class="sale-item-sec">
                                                 <div class="sale-item-inner">
                                                     <div class="table-responsive">
-                                                        <table class="display data__table table">
+                                                        <table class="display data__table table sale-product-table">
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th class="text-start">Product</th>

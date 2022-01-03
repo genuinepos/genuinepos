@@ -476,8 +476,8 @@
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap mt-3">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_disable_multiple_pay'] == '1' ? 'CHECKED' : '' }}
-                                                        name="is_disable_multiple_pay"> &nbsp; <b>Disable Multiple Pay</b> 
+                                                        {{ json_decode($generalSettings->pos, true)['is_enabled_multiple_pay'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enabled_multiple_pay"> &nbsp; <b>Enable Multiple Pay</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -486,8 +486,8 @@
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-3">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_disable_draft'] == '1' ? 'CHECKED' : '' }}
-                                                        name="is_disable_draft"> &nbsp; <b>Disable Draft</b> 
+                                                        {{ json_decode($generalSettings->pos, true)['is_enabled_draft'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enabled_draft"> &nbsp; <b>Enable Draft</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -495,7 +495,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-3">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->pos, true)['is_disable_quotation'] == '1' ? 'CHECKED' : '' }} name="is_disable_quotation"> &nbsp; <b>Disable Quotation</b> 
+                                                    <input type="checkbox" {{ json_decode($generalSettings->pos, true)['is_enabled_quotation'] == '1' ? 'CHECKED' : '' }} name="is_enabled_quotation"> &nbsp; <b>Enable Quotation</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -506,8 +506,8 @@
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap mt-3">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_disable_challan'] == '1' ? 'CHECKED' : '' }}
-                                                        name="is_disable_challan"> &nbsp; <b>Disable Challan</b> 
+                                                        {{ json_decode($generalSettings->pos, true)['is_enabled_suspend'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enabled_suspend"> &nbsp; <b>Enable Suspend</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -515,7 +515,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-3">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->pos, true)['is_disable_discount'] == '1' ? 'CHECKED' : '' }} name="is_disable_discount"> &nbsp; <b>Disable Discount</b> 
+                                                    <input type="checkbox" {{ json_decode($generalSettings->pos, true)['is_enabled_discount'] == '1' ? 'CHECKED' : '' }} name="is_enabled_discount"> &nbsp; <b>Enable Order Discount</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -524,7 +524,7 @@
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-3">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_disable_order_tax'] == '1' ? 'CHECKED' : '' }} name="is_disable_order_tax"> &nbsp; <b>Disable order tax</b> 
+                                                        {{ json_decode($generalSettings->pos, true)['is_enabled_order_tax'] == '1' ? 'CHECKED' : '' }} name="is_enabled_order_tax"> &nbsp; <b>Enable order tax</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -535,18 +535,7 @@
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap mt-3">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1' ? 'CHECKED' : '' }} name="is_show_recent_transactions" autocomplete="off"> &nbsp; <b>Don't show recent transactions</b> 
-                                                </p>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-4">
-                                            <div class="row">
-                                                <p class="checkbox_input_wrap mt-3">
-                                                    <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_show_credit_sale_button'] == '1' ? 'CHECKED' : '' }}
-                                                        name="is_show_credit_sale_button"> &nbsp; <b>Show Due Sale Button</b> 
+                                                        {{ json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1' ? 'CHECKED' : '' }} name="is_show_recent_transactions" autocomplete="off"> &nbsp; <b>Show recent transactions</b> 
                                                 </p>
                                             </div>
                                         </div>
@@ -555,20 +544,18 @@
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-3">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->pos, true)['is_disable_hold_invoice'] == '1' ? 'CHECKED' : '' }}
-                                                        name="is_disable_hold_invoice"> &nbsp; <b>Disable Hold Invoice</b> 
+                                                        {{ json_decode($generalSettings->pos, true)['is_enabled_credit_full_sale'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enabled_credit_full_sale"> &nbsp; <b>Enable Full Credit Sale </b> 
                                                 </p>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group row">
                                         <div class="col-md-4">
-                                            <div class="row ">
+                                            <div class="row">
                                                 <p class="checkbox_input_wrap mt-3">
-                                                    <input type="checkbox" name="is_show_partial_sale_button"
-                                                        {{ json_decode($generalSettings->pos, true)['is_show_partial_sale_button'] == '1' ? 'CHECKED' : '' }}>
-                                                    &nbsp; &nbsp; <b>Show Partial Sale Button</b> 
+                                                    <input type="checkbox"
+                                                        {{ json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1' ? 'CHECKED' : '' }}
+                                                        name="is_enabled_hold_invoice"> &nbsp; <b>Enable Hold Invoice</b> 
                                                 </p>
                                             </div>
                                         </div>

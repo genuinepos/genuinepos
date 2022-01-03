@@ -226,38 +226,6 @@ $(document).on('submit', '#deleted_form', function (e) {
     });
 });
 
-//data delete by ajax
-$(document).on('submit', '#search_inv_form', function (e) {
-    e.preventDefault();
-    $('#get_inv_preloader').show();
-    var url = $(this).attr('action');
-    var request = $(this).serialize();
-    $.ajax({
-        url: url,
-        type: 'get',
-        data: request,
-        success: function (data) {
-            $('#get_inv_preloader').hide();
-            $('#invoice_description').empty();
-            if (!$.isEmptyObject(data.errorMsg)) {
-                toastr.error(data.errorMsg);
-            } else {
-                $('#invoice_description').html(data);
-            }
-        }
-    });
-});
-
-$('#submit_form_btn').on('click', function (e) {
-    e.preventDefault();
-    $('#search_inv_form').submit();
-});
-
-$('#exchange_btn').on('click', function (e) {
-    e.preventDefault();
-    $('#invoice_description').empty(); $('#invoice_id').val('');
-});
-
 $('.calculator-bg__main button').prop('type', 'button');
 
 function activeSelectedItems() {
@@ -297,37 +265,6 @@ $(document).on('submit', '#add_pos_shortcut_menu', function (e) {
         }
     });
 });
-
-// Add Pos Shortcut Menu Script End
-
-//=================== Color change option ======================
-$(function () {
-    $('.color_change_wrapper ul li').on('click', function () {
-        let cls = this.className;
-        if (cls === 'red') {
-            $('.color_change_wrapper ul li').removeClass('active');
-            this.classList.add('active');
-            $('body').removeClass();
-            $('body').addClass('red-theme');
-        } else if (cls === 'blue') {
-            $('.color_change_wrapper ul li').removeClass('active');
-            this.classList.add('active');
-            $('body').removeClass();
-            $('body').addClass('blue-theme');
-        } else if (cls === 'dark') {
-            $('.color_change_wrapper ul li').removeClass('active');
-            this.classList.add('active');
-            $('body').removeClass();
-            $('body').addClass('dark-theme');
-        } else if (cls === 'light') {
-            $('.color_change_wrapper ul li').removeClass('active');
-            this.classList.add('active');
-            $('body').removeClass();
-            $('body').addClass('light-theme');
-        }
-    })
-});
-
 
 // POS read manual button
 $('#readDocument').click(function () {

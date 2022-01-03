@@ -551,7 +551,6 @@
                                     {{ App\Utils\Converter::format_in_bdt($total_due > 0 ? $total_due : 0) }}
                                 </th>
                             </tr>
-                     
                         </thead>
                     </table>
                 </div>

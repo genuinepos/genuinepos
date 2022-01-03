@@ -28,7 +28,6 @@ class StockAdjustmentController extends Controller
     // Index view of stock adjustment
     public function index(Request $request)
     {
-
         if (auth()->user()->permission->s_adjust['adjustment_all'] == '0') {
             abort(403, 'Access Forbidden.');
         }
@@ -53,37 +52,27 @@ class StockAdjustmentController extends Controller
             }
 
             if ($request->from_date) {
-                // $date_range = explode('-', $request->date_range);
-                // $form_date = date('Y-m-d', strtotime($date_range[0]));
-                // $to_date = date('Y-m-d', strtotime($date_range[1]));
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
                 $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
                 $query->whereBetween('stock_adjustments.report_date_ts', $date_range); // Final
             }
 
+            $query->select(
+                'stock_adjustments.*',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'admin_and_users.prefix',
+                'admin_and_users.name',
+                'admin_and_users.last_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $adjustments = $query->select(
-                    'stock_adjustments.*',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name',
-                    'admin_and_users.last_name',
-                )->orderBy('id', 'desc');
+                $adjustments = $query->orderBy('id', 'desc');
             } else {
-                $adjustments = $query->select(
-                    'stock_adjustments.*',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name',
-                    'admin_and_users.last_name',
-                )->where('stock_adjustments.branch_id', auth()->user()->branch_id)
+                $adjustments = $query->where('stock_adjustments.branch_id', auth()->user()->branch_id)
                     ->orderBy('stock_adjustments.report_date_ts', 'desc');
             }
 
@@ -139,7 +128,6 @@ class StockAdjustmentController extends Controller
         return view('stock_adjustment.index', compact('branches'));
     }
 
-
     public function show($adjustmentId)
     {
         $adjustment = StockAdjustment::with(
@@ -156,7 +144,7 @@ class StockAdjustmentController extends Controller
     // Stock adjustment create view
     public function create()
     {
-        if (auth()->user()->permission->s_adjust['adjustment_add'] == '0') {
+        if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '0') {
             abort(403, 'Access Forbidden.');
         }
 
@@ -165,7 +153,7 @@ class StockAdjustmentController extends Controller
 
     public function createFromWarehouse()
     {
-        if (auth()->user()->permission->s_adjust['adjustment_add'] == '0') {
+        if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '0') {
             abort(403, 'Access Forbidden.');
         }
 
@@ -179,6 +167,16 @@ class StockAdjustmentController extends Controller
     // Store Stock Adjustment
     public function store(Request $request)
     {
+        if (isset($request->warehouse_id)) {
+            if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '0') {
+                return response()->json('Access Denied.');
+            }
+        } else {
+            if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '0') {
+                return response()->json('Access Denied.');
+            }
+        }
+
         $this->validate($request, [
             'type' => 'required',
         ]);

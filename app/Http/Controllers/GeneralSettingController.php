@@ -136,16 +136,15 @@ class GeneralSettingController extends Controller
     {
         $updatePosSettings = General_setting::first();
         $posSettings = [
-            'is_disable_draft' => isset($request->is_disable_draft) ? 1 : 0,
-            'is_disable_quotation' => isset($request->is_disable_quotation) ? 1 : 0,
-            'is_disable_challan' => isset($request->is_disable_challan) ? 1 : 0,
-            'is_disable_hold_invoice' => isset($request->is_disable_hold_invoice) ? 1 : 0,
-            'is_disable_multiple_pay' => isset($request->is_disable_multiple_pay) ? 1 : 0,
+            'is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
+            'is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,
+            'is_enabled_quotation' => isset($request->is_enabled_quotation) ? 1 : 0,
+            'is_enabled_suspend' => isset($request->is_enabled_suspend) ? 1 : 0,
+            'is_enabled_discount' => isset($request->is_enabled_discount) ? 1 : 0,
+            'is_enabled_order_tax' => isset($request->is_enabled_order_tax) ? 1 : 0,
             'is_show_recent_transactions' => isset($request->is_show_recent_transactions) ? 1 : 0,
-            'is_disable_discount' => isset($request->is_disable_discount) ? 1 : 0,
-            'is_disable_order_tax' => isset($request->is_disable_order_tax) ? 1 : 0,
-            'is_show_credit_sale_button' => isset($request->is_show_credit_sale_button) ? 1 : 0,
-            'is_show_partial_sale_button' => isset($request->is_show_partial_sale_button) ? 1 : 0,
+            'is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
+            'is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
         ];
 
         $updatePosSettings->pos = json_encode($posSettings);

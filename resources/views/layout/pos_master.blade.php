@@ -39,20 +39,9 @@
     <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
-    <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
 </head>
 
 <body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
-        {{-- color changing option  --}}
-        {{-- <div class="color_change_wrapper">
-            <ul>
-                <li class="red"></li>
-                <li class="blue"></li>
-                <li class="dark"></li>
-                <li class="light"></li>
-            </ul>
-        </div> --}}
-
     <form id="pos_submit_form" action="{{ route('sales.pos.store') }}" method="POST">
         @csrf
         <div class="pos-body">
@@ -102,82 +91,18 @@
                                     </div>
                                     <select name="account_id" class="form-control"  id="account_id">
                                         <option value="">Select Accout</option>
+                                        @foreach ($accounts as $account)
+                                            <option 
+                                                @if (auth()->user()->branch_id)
+                                                    {{ auth()->user()->branch->default_account_id ? 'SELECTED' : '' }}
+                                                @else
+                                                    {{ $openedCashRegister->account_id ? 'SELECTED' : ''}}
+                                                @endif
+                                            value="{{ $account->id }}">
+                                                {{ $account->name.' (A/C: '.$account->account_number.')'.' (Balance: '.$account->balance.')' }}
+                                            </option>
+                                        @endforeach
                                     </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group mt-2">
-                            <div class="payment_method d-none" id="Card">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label><strong>Card Number :</strong> </label>
-                                        <input type="text" class="form-control" name="card_no" id="p_card_no" placeholder="Card number">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Holder Name :</strong> </label>
-                                        <input type="text" class="form-control" name="card_holder_name" id="p_card_holder_name" placeholder="Card holder name">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Transaction No :</strong> </label>
-                                        <input type="text" class="form-control" name="card_transaction_no" id="p_card_transaction_no" placeholder="Card transaction no">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Card Type :</strong> </label>
-                                        <select name="card_type" class="form-control"  id="p_card_type">
-                                            <option value="Credit-Card">Credit Card</option>
-                                            <option value="Debit-Card">Debit Card</option>
-                                            <option value="Visa">Visa Card</option>
-                                            <option value="Master-Card">Master Card</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-2">
-                                    <div class="col-md-3">
-                                        <label><strong>Month :</strong> </label>
-                                        <input type="text" class="form-control" name="month" id="p_month" placeholder="Month">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Year :</strong> </label>
-                                        <input type="text" class="form-control" name="year" id="p_year" placeholder="Year">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Secure Code :</strong> </label>
-                                        <input type="text" class="form-control" name="secure_code" id="p_secure_code" placeholder="Secure code">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="payment_method d-none" id="Cheque">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label><strong>Cheque Number :</strong> </label>
-                                        <input type="text" class="form-control" name="cheque_no" id="p_cheque_no" placeholder="Cheque number">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="payment_method d-none" id="Bank-Transfer">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label><strong>Account Number :</strong> </label>
-                                        <input type="text" class="form-control" name="account_no" id="p_account_no" placeholder="Account number">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="payment_method d-none" id="Custom">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label><strong>Transaction No :</strong> </label>
-                                        <input type="text" class="form-control" name="transaction_no" id="p_transaction_no" placeholder="Transaction number">
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -289,9 +214,7 @@
                                                     <th class="text-start">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="data-list" id="transection_list">
-
-                                            </tbody>
+                                            <tbody class="data-list" id="transection_list"></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -308,7 +231,7 @@
             </div>
         </div>
     </div>
- <!-- Recent transection list modal end-->
+    <!-- Recent transection list modal end-->
 
     <!-- Hold invoice list modal -->
     <div class="modal fade" id="holdInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -327,9 +250,7 @@
                                 <div class="data_preloader" id="hold_invoice_preloader">
                                     <h6><i class="fas fa-spinner"></i> Processing...</h6>
                                 </div>
-                                <div class="table-responsive" id="hold_invoices">
-
-                                </div>
+                                <div class="table-responsive" id="hold_invoices"></div>
                             </div>
                         </div>
                     </div>
@@ -353,9 +274,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="add_product_body">
-                    <!--begin::Form-->
-                </div>
+                <div class="modal-body" id="add_product_body"></div>
             </div>
         </div>
     </div>
@@ -370,10 +289,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="add_customer_modal_body">
-                    <!--begin::Form-->
-
-                </div>
+                <div class="modal-body" id="add_customer_modal_body"></div>
             </div>
         </div>
     </div>
@@ -391,9 +307,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="suspended_sale_list">
-
-                </div>
+                <div class="modal-body" id="suspended_sale_list"></div>
             </div>
         </div>
     </div>
@@ -491,9 +405,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="stock_modal_body">
-
-                </div>
+                <div class="modal-body" id="stock_modal_body"></div>
             </div>
         </div>
     </div>
@@ -502,9 +414,7 @@
     <!-- Close Register modal -->
     <div class="modal fade" id="closeRegisterModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="close_register_content">
-
-            </div>
+            <div class="modal-content" id="close_register_content"></div>
         </div>
     </div>
     <!-- Close Register modal End-->
@@ -512,9 +422,7 @@
     <!-- Cash Register Details modal -->
     <div class="modal fade" id="cashRegisterDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="cash_register_details_content">
-
-            </div>
+            <div class="modal-content" id="cash_register_details_content"></div>
         </div>
     </div>
     <!-- Cash Register Details modal End-->
@@ -614,9 +522,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-2" id="invoice_description">
-
-                    </div>
+                    <div class="mt-2" id="invoice_description"></div>
                 </div>
             </div>
         </div>
@@ -648,6 +554,7 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('public/backend/asset/js/pos.js') }}"></script>
     <script src="{{ asset('public/backend/asset/js/pos-amount-calculation.js') }}"></script>
+    <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
     <script>
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {
@@ -712,6 +619,37 @@
             evt.preventDefault();
             scrollContainer.scrollLeft += evt.deltaY;
         });
+
+        var barcode = '';
+        document.addEventListener("keydown", function(e) {
+            const textInput = e.key || String.fromCharCode(e.keyCode);
+            var focused = $(':focus').val();
+            if (textInput.length === 1){
+                const searchInput = document.querySelector('#search_product');
+                var isActiveSearchInput = searchInput === document.activeElement ? true : false;
+                if (focused != undefined) {
+                    console.log('Element has focus!');
+                } else {
+                    barcode += textInput;
+                    timeing(function() { setBarcode(barcode);}, 200 );
+                } 
+            }
+        });
+
+        var timeing = (function() {
+            var timer = 0;
+            return function(callback, ms) {
+                clearTimeout (timer);
+                timer = setTimeout(callback, ms);
+            };
+        })();
+
+        function setBarcode(param){
+            $('#search_product').focus();
+            $('#search_product').val(param);
+            delay(function() { searchProduct(param); }, 200);
+            barcode = '';
+        }
     </script>
     @stack('js')
 </body>

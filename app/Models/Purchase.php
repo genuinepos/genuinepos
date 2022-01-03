@@ -53,7 +53,6 @@ class Purchase extends Model
         return $this->hasOne(PurchaseReturn::class, 'purchase_id');
     }
 
-    
     public function purchase_payments()
     {
         return $this->hasMany(PurchasePayment::class);
@@ -63,5 +62,4 @@ class Purchase extends Model
     {
         return $this->hasOne(SupplierLedger::class);
     }
-
 }

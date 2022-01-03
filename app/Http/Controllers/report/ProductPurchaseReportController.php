@@ -12,7 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 class ProductPurchaseReportController extends Controller
 {
     protected $converter;
-    public function __construct( Converter $converter)
+    public function __construct(Converter $converter)
     {
         $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
@@ -59,45 +59,32 @@ class ProductPurchaseReportController extends Controller
                 $query->whereBetween('purchases.report_date', $date_range);
             }
 
+            $query->select(
+                'purchase_products.purchase_id',
+                'purchase_products.product_id',
+                'purchase_products.product_variant_id',
+                'purchase_products.net_unit_cost',
+                'purchase_products.quantity',
+                'units.code_name as unit_code',
+                'purchase_products.line_total',
+                'purchase_products.selling_price',
+                'purchases.*',
+                'products.name',
+                'products.product_code',
+                'products.product_price',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_variants.variant_price',
+                'suppliers.name as supplier_name'
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
-                $purchaseProducts = $query->select(
-                    'purchase_products.purchase_id',
-                    'purchase_products.product_id',
-                    'purchase_products.product_variant_id',
-                    'purchase_products.net_unit_cost',
-                    'purchase_products.quantity',
-                    'units.code_name as unit_code',
-                    'purchase_products.line_total',
-                    'purchase_products.selling_price',
-                    'purchases.*',
-                    'products.name',
-                    'products.product_code',
-                    'products.product_price',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'product_variants.variant_price',
-                    'suppliers.name as supplier_name'
-                )->where('purchases.is_purchased', 1)->orderBy('purchases.report_date', 'desc');
+                $purchaseProducts = $query->where('purchases.is_purchased', 1)
+                    ->orderBy('purchases.report_date', 'desc');
             } else {
-                $purchaseProducts = $query->select(
-                    'purchase_products.purchase_id',
-                    'purchase_products.product_id',
-                    'purchase_products.product_variant_id',
-                    'purchase_products.net_unit_cost',
-                    'purchase_products.quantity',
-                    'units.code_name as unit_code',
-                    'purchase_products.line_total',
-                    'purchase_products.selling_price',
-                    'purchases.*',
-                    'products.name',
-                    'products.product_code',
-                    'products.product_price',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'product_variants.variant_price',
-                    'suppliers.name as supplier_name'
-                )->where('purchases.is_purchased', 1)->where('purchases.branch_id', auth()->user()->branch_id)
-                ->orderBy('purchases.report_date', 'desc');
+                $purchaseProducts = $query->where('purchases.is_purchased', 1)
+                    ->where('purchases.branch_id', auth()->user()->branch_id)
+                    ->orderBy('purchases.report_date', 'desc');
             }
 
             return DataTables::of($purchaseProducts)
@@ -114,14 +101,14 @@ class ProductPurchaseReportController extends Controller
                 ->editColumn('quantity', function ($row) {
                     return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
                 })
-                ->editColumn('net_unit_cost',  fn ($row) =>'<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' .$this->converter->format_in_bdt($row->net_unit_cost) . '</span>')
+                ->editColumn('net_unit_cost',  fn ($row) => '<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . $this->converter->format_in_bdt($row->net_unit_cost) . '</span>')
                 ->editColumn('price',  function ($row) use ($converter) {
                     if ($row->selling_price > 0) {
                         return $converter->format_in_bdt($row->selling_price);
-                    }else {
+                    } else {
                         if ($row->variant_name) {
                             return $converter->format_in_bdt($row->variant_price);
-                        }else {
+                        } else {
                             return $converter->format_in_bdt($row->product_price);
                         }
                     }
@@ -176,39 +163,27 @@ class ProductPurchaseReportController extends Controller
             $query->whereBetween('purchases.report_date', $date_range);
         }
 
+        $query->select(
+            'purchase_products.purchase_id',
+            'purchase_products.product_id',
+            'purchase_products.product_variant_id',
+            'purchase_products.net_unit_cost',
+            'purchase_products.quantity',
+            'units.code_name as unit_code',
+            'purchase_products.line_total',
+            'purchases.*',
+            'products.name',
+            'products.product_code',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'suppliers.name as supplier_name'
+        );
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
-            $purchaseProducts = $query->select(
-                'purchase_products.purchase_id',
-                'purchase_products.product_id',
-                'purchase_products.product_variant_id',
-                'purchase_products.net_unit_cost',
-                'purchase_products.quantity',
-                'units.code_name as unit_code',
-                'purchase_products.line_total',
-                'purchases.*',
-                'products.name',
-                'products.product_code',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-                'suppliers.name as supplier_name'
-            )->orderBy('purchases.report_date', 'desc')->get();
+            $purchaseProducts = $query->orderBy('purchases.report_date', 'desc')->get();
         } else {
-            $purchaseProducts = $query->select(
-                'purchase_products.purchase_id',
-                'purchase_products.product_id',
-                'purchase_products.product_variant_id',
-                'purchase_products.net_unit_cost',
-                'purchase_products.quantity',
-                'units.code_name as unit_code',
-                'purchase_products.line_total',
-                'purchases.*',
-                'products.name',
-                'products.product_code',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-                'suppliers.name as supplier_name'
-            )->where('purchases.branch_id', auth()->user()->branch_id)
-            ->orderBy('purchases.report_date', 'desc')->get();
+            $purchaseProducts = $query->where('purchases.branch_id', auth()->user()->branch_id)
+                ->orderBy('purchases.report_date', 'desc')->get();
         }
 
         return view('reports.product_purchase_report.ajax_view.print', compact('purchaseProducts', 'fromDate', 'toDate', 'branch_id'));

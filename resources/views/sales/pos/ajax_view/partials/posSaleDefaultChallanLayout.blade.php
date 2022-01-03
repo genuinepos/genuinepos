@@ -1,5 +1,5 @@
 @php
-$defaultLayout = DB::table('invoice_layouts')->where('is_default', 1)->first();
+    $defaultLayout = DB::table('invoice_layouts')->where('is_default', 1)->first();
 @endphp
 <div class="challan_print_template d-none">
     <div class="details_area">
@@ -177,39 +177,6 @@ $defaultLayout = DB::table('invoice_layouts')->where('is_default', 1)->first();
         </div>
 
         <div id="footer">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="heading text-center">
-                        <h6><b>Our Sister Concern</b></h6>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="image_area text-center">
-                        <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="image_area text-center">
-                        <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
-                    </div>
-                </div>
-                
-                <div class="col-md-3">
-                    <div class="image_area text-center">
-                        <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="image_area text-center">
-                        <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
-                    </div>
-                </div>
-            </div>
-            
             <div class="row mt-1">
                 <div class="col-4 text-center">
                     <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>

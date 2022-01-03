@@ -8,7 +8,7 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 6px;margin-right: 6px;}
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 15px;margin-right: 15px;}
     .header, .header-space,
     .footer, .footer-space {height: 20px;}
     .header {position: fixed; top: 0;}

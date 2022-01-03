@@ -22,7 +22,7 @@
     tr.noBorder td {border: 0px !important;}
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
- <!-- Purchase Order print templete-->
+    <!-- Purchase Order print templete-->
     <div class="purchase_print_template">
         <div class="details_area">
             <div class="heading_area">

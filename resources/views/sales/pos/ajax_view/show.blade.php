@@ -141,22 +141,22 @@
                                         @endphp
                                         <td class="text-start">{{ $saleProduct->product->name . $variant }}</td>
                                         <td class="text-start">{{ $saleProduct->quantity }}</td>
-                                        <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_price_exc_tax }}
+                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_exc_tax) }}
                                         </td>
                                         @php
                                             $DiscountType = $saleProduct->unit_discount_type == 1 ? ' (Fixed)' : ' (' . $saleProduct->unit_discount . '%)';
                                         @endphp
                                         <td class="text-start">
-                                            {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_discount_amount . $DiscountType }}
+                                            {{ App\Utils\Converter::format_in_bdt($saleProduct->unit_discount_amount) . $DiscountType }}
                                         </td>
                                         <td class="text-start">
-                                            {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_tax_amount . ' (' . $saleProduct->unit_tax_percent . '%)' }}
+                                            {{ App\Utils\Converter::format_in_bdt($saleProduct->unit_tax_amount) . ' (' . $saleProduct->unit_tax_percent . '%)' }}
                                         </td>
                                         <td class="text-start">
-                                            {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->unit_price_inc_tax }}
+                                            {{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}
                                         </td>
                                         <td class="text-start">
-                                            {{ json_decode($generalSettings->business, true)['currency'] . $saleProduct->subtotal }}
+                                            {{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -188,7 +188,7 @@
                                             @php
                                                 $discount_type = $sale->order_discount_type == 1 ? ' (Fixed)' : '%';
                                             @endphp
-                                            {{ $sale->order_discount_amount . $discount_type }}
+                                            {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) . $discount_type }}
                                         </span>
                                     </td>
                                 </tr>
@@ -197,7 +197,7 @@
                                     <th class="text-start">Order Tax</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="order_tax">
-                                            {{ $sale->order_tax_amount . ' (' . $sale->order_tax_percent . '%)' }}
+                                            {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) . ' (' . $sale->order_tax_percent . '%)' }}
                                         </span>
                                     </td>
                                 </tr>
@@ -206,7 +206,7 @@
                                     <th class="text-start">Shipment Charge</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="shipment_charge">
-                                            {{ $sale->shipment_charge }}
+                                            {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -215,7 +215,7 @@
                                     <th class="text-start">Grand Total</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="total_payable_amount">
-                                            {{ $sale->total_payable_amount }}
+                                            {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -224,7 +224,7 @@
                                     <th class="text-start">Sale Return</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="sale_return_amount">
-                                            {{ $sale->sale_return_amount }}
+                                            {{ App\Utils\Converter::format_in_bdt($sale->sale_return_amount) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -233,7 +233,7 @@
                                     <th class="text-start">Total Paid</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="total_paid">
-                                            {{ $sale->paid }}
+                                            {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -242,7 +242,7 @@
                                     <th class="text-start">Total Due</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="total_due">
-                                            {{ $sale->due }}
+                                            {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                         </span>
                                     </td>
                                 </tr>

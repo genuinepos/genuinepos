@@ -49,12 +49,11 @@ class DashboardController extends Controller
         $adjustments = '';
 
         $userQuery = DB::table('admin_and_users');
-        $purchaseQuery = DB::table('purchases')
-            ->select(
-                DB::raw('sum(total_purchase_amount) as total_purchase'),
-                //DB::raw('sum(case when due > 0 then due end) as total_due'),
-                DB::raw('sum(due) as total_due'),
-            );
+        $purchaseQuery = DB::table('purchases')->select(
+            DB::raw('sum(total_purchase_amount) as total_purchase'),
+            //DB::raw('sum(case when due > 0 then due end) as total_due'),
+            DB::raw('sum(due) as total_due'),
+        );
 
         $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
@@ -190,28 +189,22 @@ class DashboardController extends Controller
                 }
             }
 
+            $query->select(
+                'sales.*',
+                'branches.id as branch_id',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'customers.name as customer_name',
+                'admin_and_users.prefix as c_prefix',
+                'admin_and_users.name as c_name',
+                'admin_and_users.last_name as c_last_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $sales = $query->select(
-                    'sales.*',
-                    'branches.id as branch_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'customers.name as customer_name',
-                    'admin_and_users.prefix as c_prefix',
-                    'admin_and_users.name as c_name',
-                    'admin_and_users.last_name as c_last_name',
-                )->orderBy('id', 'desc')->where('sales.shipment_status', 1)->get();
+                $sales = $query->orderBy('id', 'desc')->where('sales.shipment_status', 1)->get();
             } else {
-                $sales = $query->select(
-                    'sales.*',
-                    'branches.id as branch_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'customers.name as customer_name',
-                    'admin_and_users.prefix as c_prefix',
-                    'admin_and_users.name as c_name',
-                    'admin_and_users.last_name as c_last_name',
-                )->where('sales.branch_id', auth()->user()->branch_id)->where('sales.shipment_status', 1)->get();
+                $sales = $query->where('sales.branch_id', auth()->user()->branch_id)
+                    ->where('sales.shipment_status', 1)->get();
             }
 
             return DataTables::of($sales)
@@ -267,22 +260,19 @@ class DashboardController extends Controller
                 }
             }
 
+            $query->select(
+                'sales.*',
+                'branches.id as branch_id',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'customers.name as customer_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $sales = $query->select(
-                    'sales.*',
-                    'branches.id as branch_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'customers.name as customer_name',
-                )->where('sales.due', '>', 0)->where('sales.status', 1)->orderBy('id', 'desc')->get();
+                $sales = $query->where('sales.due', '>', 0)->where('sales.status', 1)->orderBy('id', 'desc')->get();
             } else {
-                $sales = $query->select(
-                    'sales.*',
-                    'branches.id as branch_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'customers.name as customer_name',
-                )->where('sales.branch_id', auth()->user()->branch_id)->where('sales.due', '>', 0)->where('sales.status', 1)->get();
+                $sales = $query->where('sales.branch_id', auth()->user()->branch_id)
+                    ->where('sales.due', '>', 0)->where('sales.status', 1)->get();
             }
 
             return DataTables::of($sales)
@@ -333,22 +323,19 @@ class DashboardController extends Controller
                 }
             }
 
+            $query->select(
+                'purchases.*',
+                'branches.id as branch_id',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'suppliers.name as sup_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $purchases = $query->select(
-                    'purchases.*',
-                    'branches.id as branch_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'suppliers.name as sup_name',
-                )->where('purchases.due', '!=', 0)->orderBy('id', 'desc')->get();
+                $purchases = $query->where('purchases.due', '!=', 0)->orderBy('id', 'desc')->get();
             } else {
-                $purchases = $query->select(
-                    'purchases.*',
-                    'branches.id as branch_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'suppliers.name as sup_name',
-                )->where('purchases.branch_id', auth()->user()->branch_id)->where('purchases.due', '!=', 0)->get();
+                $purchases = $query->where('purchases.branch_id', auth()->user()->branch_id)
+                    ->where('purchases.due', '!=', 0)->get();
             }
 
             return DataTables::of($purchases)
@@ -395,7 +382,7 @@ class DashboardController extends Controller
         $expenses = '';
         $adjustments = '';
         $payrolls = '';
-        
+
         $purchaseQuery = DB::table('purchases')->select(
             DB::raw('sum(total_purchase_amount) as total_purchase'),
             DB::raw('sum(shipment_charge) as total_shipment_charge')

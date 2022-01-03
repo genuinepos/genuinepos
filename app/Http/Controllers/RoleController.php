@@ -61,9 +61,6 @@ class RoleController extends Controller
         $addRolePermission->expense = $this->expensePermissions($request);
         $addRolePermission->sale = $this->salePermission($request);
         $addRolePermission->register = $this->cashRegisterPermission($request);
-        $addRolePermission->brand = $this->brandPermission($request);
-        $addRolePermission->category = $this->categoryPermission($request);
-        $addRolePermission->unit = $this->unitPermission($request);
         $addRolePermission->report = $this->reportPermission($request);
         $addRolePermission->setup = $this->setupPermission($request);
         $addRolePermission->dashboard = $this->dashboardPermission($request);
@@ -104,8 +101,6 @@ class RoleController extends Controller
         $updateRolePermission->expense = $this->expensePermissions($request);
         $updateRolePermission->sale = $this->salePermission($request);
         $updateRolePermission->register = $this->cashRegisterPermission($request);
-        $updateRolePermission->brand = $this->brandPermission($request);
-        $updateRolePermission->unit = $this->unitPermission($request);
         $updateRolePermission->report = $this->reportPermission($request);
         $updateRolePermission->setup = $this->setupPermission($request);
         $updateRolePermission->dashboard = $this->dashboardPermission($request);
@@ -296,45 +291,6 @@ class RoleController extends Controller
             'register_view' => isset($request->register_view) ? 1 : 0,
             'register_close' => isset($request->register_close) ? 1 : 0,
             'another_register_close' => isset($request->another_register_close) ? 1 : 0,
-        ];
-
-        return $permissions;
-    }
-
-    // Brand permissions
-    private function brandPermission($request)
-    {
-        $permissions = [
-            'brand_all' => isset($request->brand_all) ? 1 : 0,
-            'brand_add' => isset($request->brand_add) ? 1 : 0,
-            'brand_edit' => isset($request->brand_edit) ? 1 : 0,
-            'brand_delete' => isset($request->brand_delete) ? 1 : 0,
-        ];
-
-        return $permissions;
-    }
-
-    // Category permissions
-    private function categoryPermission($request)
-    {
-        $permissions = [
-            'category_all' => isset($request->category_all) ? 1 : 0,
-            'category_add' => isset($request->category_add) ? 1 : 0,
-            'category_edit' => isset($request->category_edit) ? 1 : 0,
-            'category_delete' => isset($request->category_delete) ? 1 : 0,
-        ];
-
-        return $permissions;
-    }
-
-    // Unit permissions
-    private function unitPermission($request)
-    {
-        $permissions = [
-            'unit_all' => isset($request->unit_all) ? 1 : 0,
-            'unit_add' => isset($request->unit_add) ? 1 : 0,
-            'unit_edit' => isset($request->unit_edit) ? 1 : 0,
-            'unit_delete' => isset($request->unit_delete) ? 1 : 0,
         ];
 
         return $permissions;

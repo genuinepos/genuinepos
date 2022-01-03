@@ -202,7 +202,7 @@
                                             <div class="sale-item-sec">
                                                 <div class="sale-item-inner">
                                                     <div class="table-responsive">
-                                                        <table class="display data__table table">
+                                                        <table class="display data__table table sale-product-table">
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th class="text-start">Product</th>
@@ -214,9 +214,7 @@
                                                                     <th><i class="fas fa-minus text-dark"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="sale_list">
-                                                          
-                                                            </tbody>
+                                                            <tbody id="sale_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>

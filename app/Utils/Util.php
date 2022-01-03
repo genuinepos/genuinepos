@@ -18,8 +18,8 @@ class Util
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-
     }
+    
     public function addQuickProductFromAddSale($request){
         $addProduct = new Product();
         $tax_id = NULL;

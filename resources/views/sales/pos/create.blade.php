@@ -404,6 +404,7 @@
     // select single product and add stock adjustment table
     var keyName = 1;
     function singleProduct(e) {
+        $(':focus').blur();
         var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val("");
@@ -548,7 +549,8 @@
     }
 
     // select variant product and add purchase table
-    function salectVariant(e){
+    function salectVariant(e) {
+        $(':focus').blur();
         var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val("");

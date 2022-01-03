@@ -194,27 +194,23 @@
                                 @endif
 
                                 <td class="text-start">
-                                    {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
-                                    {{ $sale_product->unit_price_inc_tax }}
+                                    {{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }}
                                 </td>
 
                                 @if ($sale->branch->pos_sale_invoice_layout->product_discount)
                                     <td class="text-start">
-                                        {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
-                                        {{ $sale_product->unit_discount_amount }}
+                                        {{ App\Utils\Converter::format_in_bdt($sale_product->unit_discount_amount) }}
                                     </td>
                                 @endif
 
                                 @if ($sale->branch->pos_sale_invoice_layout->product_tax)
                                     <td class="text-start">
-                                        {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
                                         {{ $sale_product->unit_tax_percent }}
                                     </td>
                                 @endif
 
                                 <td class="text-start">
-                                    {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
-                                    {{ $sale_product->subtotal }}
+                                    {{ App\Utils\Converter::format_in_bdt($sale_product->subtotal) }}
                                 </td>
                             </tr>
                         @endforeach
@@ -371,37 +367,6 @@
             </div>
 
             <div id="footer">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="text-center">
-                            <p class="m-0 p-0"><b>Our Sister Concern</b></p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="image_area text-center">
-                            <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="image_area text-center">
-                            <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="image_area text-center">
-                            <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="image_area text-center">
-                            <img style="width: 130px; height:35px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="row mt-1">
                     <div class="col-4 text-center">
                         <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
@@ -509,8 +474,8 @@
                                     <th class="text-start">{{ $loop->index + 1 }}. {{ Str::limit($saleProduct->product->name, 25, '').$variant }} </th>
                                     
                                     <th class="text-center">{{ (float) $saleProduct->quantity }}</th>
-                                    <th class="text-center">{{ $saleProduct->unit_price_inc_tax }}</th>
-                                    <th class="text-end">{{ $saleProduct->subtotal }}</th>
+                                    <th class="text-center">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
+                                    <th class="text-end">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</th>
                                 </tr>
                             @endforeach
                         </thead>

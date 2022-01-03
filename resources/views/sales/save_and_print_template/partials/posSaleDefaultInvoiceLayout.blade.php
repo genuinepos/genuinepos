@@ -302,13 +302,15 @@
                                 </td>
                             </tr>
                     
-                            <tr>
-                                <td class="text-end"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                <td class="total_payable text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($previous_due) }}
-                                </td>
-                            </tr>
-
+                            @if ($previous_due > 0)
+                                <tr>
+                                    <td class="text-end"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                    <td class="total_payable text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($previous_due) }}
+                                    </td>
+                                </tr>
+                            @endif
+                            
                             <tr>
                                 <td class="text-end"><strong> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="total_payable text-end">
@@ -383,37 +385,6 @@
             </div><br>
 
             <div id="footer">
-                {{-- <div class="row">
-                    <div class="col-md-12">
-                        <div class="heading text-center">
-                            <p><strong>Our Sister Concern</strong></p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="image_area text-center">
-                            <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="image_area text-center">
-                            <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="image_area text-center">
-                            <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="image_area text-center">
-                            <img style="width: 130px; height:30px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
-                        </div>
-                    </div>
-                </div> --}}
-            
                 <div class="row mt-1">
                     <div class="col-4 text-center">
                         <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
@@ -600,6 +571,17 @@
                                 </th>
                             </tr>
 
+                            @if ($previous_due > 0)
+                                <tr>
+                                    <th class="text-end">Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <th class="text-end">
+                                        <span>
+                                            {{ App\Utils\Converter::format_in_bdt($previous_due) }}
+                                        </span>
+                                    </th>
+                                </tr>
+                            @endif
+                            
                             <tr>
                                 <th class="text-end">Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
@@ -621,10 +603,12 @@
                             @if ($sale->ex_status == 0)
                                 @if ($change_amount > 0)
                                     <tr>
-                                        <td class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                        <td class="total_paid text-end">
-                                            {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
-                                        </td>
+                                        <th class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></th>
+                                        <th class="total_paid text-end">
+                                            <span>
+                                                {{ App\Utils\Converter::format_in_bdt($change_amount) }}
+                                            </span>
+                                        </th>
                                     </tr>
                                 @endif
                             @endif

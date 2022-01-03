@@ -610,14 +610,14 @@
                             </tr>
 
                             @if ($sale->ex_status == 0)
-                                <tr>
-                                    <th class="text-end"> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
-                                    <th class="total_paid text-end">
-                                        <span>
+                                @if ($change_amount > 0)
+                                    <tr>
+                                        <td class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                        <td class="total_paid text-end">
                                             {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
-                                        </span>
-                                    </th>
-                                </tr> 
+                                        </td>
+                                    </tr>
+                                @endif
                             @endif
 
                             <tr>

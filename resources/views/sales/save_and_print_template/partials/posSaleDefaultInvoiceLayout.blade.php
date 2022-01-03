@@ -601,6 +601,15 @@
                             </tr>
 
                             <tr>
+                                <th class="text-end">Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
+                                    </span>
+                                </th>
+                            </tr>
+
+                            <tr>
                                 <th class="text-end"> Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span>

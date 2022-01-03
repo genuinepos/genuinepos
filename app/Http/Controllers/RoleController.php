@@ -58,6 +58,7 @@ class RoleController extends Controller
         $addRolePermission->product = $this->productPermission($request);
         $addRolePermission->purchase = $this->purchasePermission($request);
         $addRolePermission->s_adjust = $this->s_adjustPermission($request);
+        $addRolePermission->expense = $this->expensePermissions($request);
         $addRolePermission->sale = $this->salePermission($request);
         $addRolePermission->register = $this->cashRegisterPermission($request);
         $addRolePermission->brand = $this->brandPermission($request);
@@ -100,6 +101,7 @@ class RoleController extends Controller
         $updateRolePermission->product = $this->productPermission($request);
         $updateRolePermission->purchase = $this->purchasePermission($request);
         $updateRolePermission->s_adjust = $this->s_adjustPermission($request);
+        $updateRolePermission->expense = $this->expensePermissions($request);
         $updateRolePermission->sale = $this->salePermission($request);
         $updateRolePermission->register = $this->cashRegisterPermission($request);
         $updateRolePermission->brand = $this->brandPermission($request);
@@ -237,6 +239,21 @@ class RoleController extends Controller
             'adjustment_add_from_location' => isset($request->adjustment_add_from_location) ? 1 : 0,
             'adjustment_add_from_warehouse' => isset($request->adjustment_add_from_warehouse) ? 1 : 0,
             'adjustment_delete' => isset($request->adjustment_delete) ? 1 : 0,
+        ];
+
+        return $permissions;
+    }
+
+    // Expense permissions
+    private function expensePermissions($request)
+    {
+        $permissions = [
+            'view_expense' => isset($request->view_expense) ? 1 : 0,
+            'add_expense' => isset($request->add_expense) ? 1 : 0,
+            'edit_expense' => isset($request->edit_expense) ? 1 : 0,
+            'delete_expense' => isset($request->delete_expense) ? 1 : 0,
+            'expense_category' => isset($request->expense_category) ? 1 : 0,
+            'category_wise_expense' => isset($request->category_wise_expense) ? 1 : 0,
         ];
 
         return $permissions;

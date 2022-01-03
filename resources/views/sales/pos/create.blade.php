@@ -67,6 +67,7 @@
     });
 
     function searchProduct(product_code) {
+        $('#search_product').focus();
         var price_group_id = $('#price_group_id').val();
         $.ajax({
             url:"{{ url('sales/search/product') }}"+"/"+product_code,
@@ -501,8 +502,7 @@
                         tr +='<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
                         tr +='<input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">';
                         tr +='<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                        tr += '<input value="' + product_cost_inc_tax +
-                            '" name="unit_costs_inc_tax[]" type="hidden" id="unit_costs_inc_tax">';
+                        tr += '<input value="' + product_cost_inc_tax + '" name="unit_costs_inc_tax[]" type="hidden" id="unit_costs_inc_tax">';
                         tr += '<input type="hidden" id="previous_qty" value="0.00">';
                         tr += '<input type="hidden" id="qty_limit" value="' + singleProductQty +
                             '">';
@@ -548,7 +548,7 @@
     }
 
     // select variant product and add purchase table
-    function salectVariant(e){
+    function salectVariant(e) {
         var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val("");

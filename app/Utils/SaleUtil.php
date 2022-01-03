@@ -33,7 +33,7 @@ class SaleUtil
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
     }
-    
+
     public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId)
     {
         if ($request->paying_amount > 0) {
@@ -261,21 +261,21 @@ class SaleUtil
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id');
 
+        $query->select(
+            'sales.*',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'customers.name as customer_name',
+        );
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $sales = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer_name',
-            )->where('sales.status', 1)->where('sales.created_by', 1)->orderBy('sales.report_date', 'desc');
+            $sales = $this->filteredQuery($request, $query)->where('sales.status', 1)
+                ->where('sales.created_by', 1)
+                ->orderBy('sales.report_date', 'desc');
         } else {
-            $sales = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer_name',
-            )->where('sales.branch_id', auth()->user()->branch_id)
-                ->where('sales.status', 1)->where('created_by', 1)->orderBy('sales.report_date', 'desc');
+            $sales = $this->filteredQuery($request, $query)->where('sales.branch_id', auth()->user()->branch_id)->where('sales.status', 1)
+                ->where('created_by', 1)
+                ->orderBy('sales.report_date', 'desc');
         }
 
         return DataTables::of($sales)
@@ -342,11 +342,11 @@ class SaleUtil
             ->editColumn('customer',  function ($row) {
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
             })
-            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="'.$row->total_payable_amount.'">'. $this->converter->format_in_bdt($row->total_payable_amount). '</span>')
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'. $this->converter->format_in_bdt($row->paid). '</span>')
-            ->editColumn('due', fn ($row) =>  '<span class="due text-danger" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due). '</span>')
-            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="'.$row->sale_return_amount.'">' . $this->converter->format_in_bdt($row->sale_return_amount). '</span>')
-            ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="'.$row->sale_return_due.'">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
+            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+            ->editColumn('due', fn ($row) =>  '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
+            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . $row->sale_return_amount . '">' . $this->converter->format_in_bdt($row->sale_return_amount) . '</span>')
+            ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="' . $row->sale_return_due . '">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
             ->editColumn('paid_status', function ($row) {
                 $payable = $row->total_payable_amount - $row->sale_return_amount;
                 if ($row->due <= 0) {
@@ -368,21 +368,20 @@ class SaleUtil
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id');
 
+        $query->select(
+            'sales.*',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'customers.name as customer_name',
+        );
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $sales = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer_name',
-            )->where('sales.status', 1)->where('created_by', 2)
+            $sales = $this->filteredQuery($request, $query)->where('sales.status', 1)->where('created_by', 2)
                 ->orderBy('sales.report_date', 'desc');
         } else {
-            $sales = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer_name',
-            )->where('sales.branch_id', auth()->user()->branch_id)->where('created_by', 2)
+            $sales = $this->filteredQuery($request, $query)
+                ->where('sales.branch_id', auth()->user()->branch_id)
+                ->where('created_by', 2)
                 ->where('sales.status', 1)
                 ->orderBy('sales.report_date', 'desc');
         }
@@ -452,11 +451,11 @@ class SaleUtil
             ->editColumn('customer',  function ($row) {
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
             })
-            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="'.$row->total_payable_amount.'">'.$this->converter->format_in_bdt($row->total_payable_amount). '</span>')
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">' . $this->converter->format_in_bdt($row->paid). '</span>')
-            ->editColumn('due', fn ($row) => '<span class="due text-danger"  data-value="'.$row->due.'">' . $this->converter->format_in_bdt($row->due). '</span>')
-            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount text-danger"  data-value="'.$row->sale_return_amount.'">' . $this->converter->format_in_bdt($row->sale_return_amount). '</span>')
-            ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="'.$row->sale_return_due.'">'.$this->converter->format_in_bdt($row->sale_return_due) . '</span>')
+            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger"  data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
+            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount text-danger"  data-value="' . $row->sale_return_amount . '">' . $this->converter->format_in_bdt($row->sale_return_amount) . '</span>')
+            ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="' . $row->sale_return_due . '">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
             ->editColumn('paid_status', function ($row) {
                 $payable = $row->total_payable_amount - $row->sale_return_amount;
                 if ($row->due <= 0) {
@@ -527,53 +526,37 @@ class SaleUtil
             $query->whereBetween('sales.report_date', $date_range); // Final
         }
 
+        $query->select(
+            'sale_products.sale_id',
+            'sale_products.product_id',
+            'sale_products.product_variant_id',
+            'sale_products.unit_price_inc_tax',
+            'sale_products.quantity',
+            'units.code_name as unit_code',
+            'sale_products.subtotal',
+            'sales.id',
+            'sales.date',
+            'sales.invoice_id',
+            'sales.created_by',
+            'products.name',
+            'products.product_code',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'customers.name as customer_name'
+        );
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
-            $saleProducts = $query
-                ->select(
-                    'sale_products.sale_id',
-                    'sale_products.product_id',
-                    'sale_products.product_variant_id',
-                    'sale_products.unit_price_inc_tax',
-                    'sale_products.quantity',
-                    'units.code_name as unit_code',
-                    'sale_products.subtotal',
-                    'sales.id',
-                    'sales.date',
-                    'sales.invoice_id',
-                    'sales.created_by',
-                    'products.name',
-                    'products.product_code',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'customers.name as customer_name'
-                )->orderBy('sales.report_date', 'desc');
+            $saleProducts = $query->orderBy('sales.report_date', 'desc');
         } else {
-            $saleProducts = $query
-                ->select(
-                    'sale_products.sale_id',
-                    'sale_products.product_id',
-                    'sale_products.product_variant_id',
-                    'sale_products.unit_price_inc_tax',
-                    'sale_products.quantity',
-                    'units.code_name as unit_code',
-                    'sale_products.subtotal',
-                    'sales.id',
-                    'sales.date',
-                    'sales.invoice_id',
-                    'sales.created_by',
-                    'products.name',
-                    'products.product_code',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'customers.name as customer_name'
-                )->where('sales.branch_id', auth()->user()->branch_id)->orderBy('sales.report_date', 'desc');
+            $saleProducts = $query->where('sales.branch_id', auth()->user()->branch_id)
+                ->orderBy('sales.report_date', 'desc');
         }
 
         return DataTables::of($saleProducts)
             ->editColumn('product', function ($row) {
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
                 return Str::limit($row->name, 25, '') . $variant;
-            })->editColumn('sold_by', fn($row) => $row->created_by == 1 ? '<span class="text-info">ADD SALE</span>' : '<span class="text-success">POS</span>')
+            })->editColumn('sold_by', fn ($row) => $row->created_by == 1 ? '<span class="text-info">ADD SALE</span>' : '<span class="text-success">POS</span>')
             ->editColumn('sku', function ($row) {
                 return $row->variant_code ? $row->variant_code : $row->product_code;
             })->editColumn('date', function ($row) use ($generalSettings) {
@@ -585,41 +568,34 @@ class SaleUtil
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
             })->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
             ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . $this->converter->format_in_bdt($row->subtotal) . '</span>')
-            ->rawColumns(['product', 'customer', 'invoice_id','sku', 'date', 'sold_by','quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])
+            ->rawColumns(['product', 'customer', 'invoice_id', 'sku', 'date', 'sold_by', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])
             ->make(true);
-        
     }
 
     public function saleDraftTable($request)
     {
         $generalSettings = DB::table('general_settings')->first();
-
         $drafts = '';
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
             ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
 
+        $query->select(
+            'sales.*',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'customers.name as customer',
+            'admin_and_users.prefix as u_prefix',
+            'admin_and_users.name as u_name',
+            'admin_and_users.last_name as u_last_name',
+        );
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $drafts = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_name',
-                'admin_and_users.last_name as u_last_name',
-            )->where('sales.status', 2)
+            $drafts = $this->filteredQuery($request, $query)
+                ->where('sales.status', 2)
                 ->orderBy('sales.report_date', 'desc');
         } else {
-            $drafts = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_name',
-                'admin_and_users.last_name as u_last_name',
-            )->where('branch_id', auth()->user()->branch_id)
+            $drafts = $this->filteredQuery($request, $query)->where('branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 2)
                 ->orderBy('sales.report_date', 'desc');
         }
@@ -683,27 +659,20 @@ class SaleUtil
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
             ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
 
+        $query->select(
+            'sales.*',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'customers.name as customer',
+            'admin_and_users.prefix as u_prefix',
+            'admin_and_users.name as u_name',
+            'admin_and_users.last_name as u_last_name',
+        );
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $quotations = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_name',
-                'admin_and_users.last_name as u_last_name',
-            )->where('sales.status', 4)->orderBy('sales.report_date', 'desc');
+            $quotations = $this->filteredQuery($request, $query)->where('sales.status', 4)->orderBy('sales.report_date', 'desc');
         } else {
-            $quotations = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_name',
-                'admin_and_users.last_name as u_last_name',
-            )->where('sales.branch_id', auth()->user()->branch_id)
-                ->where('sales.status', 4)->orderBy('sales.report_date', 'desc');
+            $quotations = $this->filteredQuery($request, $query)->where('sales.branch_id', auth()->user()->branch_id)->where('sales.status', 4)->orderBy('sales.report_date', 'desc');
         }
 
         return DataTables::of($quotations)
@@ -764,28 +733,24 @@ class SaleUtil
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
             ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
 
+        $query->select(
+            'sales.*',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'customers.name as customer',
+            'admin_and_users.prefix as cr_prefix',
+            'admin_and_users.name as cr_name',
+            'admin_and_users.last_name as cr_last_name',
+        );
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $sales = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer',
-                'admin_and_users.prefix as cr_prefix',
-                'admin_and_users.name as cr_name',
-                'admin_and_users.last_name as cr_last_name',
-            )->where('sales.created_by', 1)->orderBy('id', 'desc')->where('sales.status', 1)
+            $sales = $this->filteredQuery($request, $query)->where('sales.created_by', 1)
+                ->where('sales.status', 1)
                 ->where('shipment_status', '!=', 'NULL')
                 ->orderBy('sales.report_date', 'desc');
         } else {
-            $sales = $this->filteredQuery($request, $query)->select(
-                'sales.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'customers.name as customer',
-                'admin_and_users.prefix as cr_prefix',
-                'admin_and_users.name as cr_name',
-                'admin_and_users.last_name as cr_last_name',
-            )->where('sales.created_by', 1)->where('branch_id', auth()->user()->branch_id)
+            $sales = $this->filteredQuery($request, $query)
+                ->where('sales.created_by', 1)->where('branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 1)
                 ->where('shipment_status', '!=', 'NULL')
                 ->orderBy('sales.report_date', 'desc');

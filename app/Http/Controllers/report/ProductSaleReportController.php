@@ -59,47 +59,30 @@ class ProductSaleReportController extends Controller
                 $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
                 $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
                 $query->whereBetween('sales.report_date', $date_range);
-            } else {
-                $query->where('sales.year', date('Y'));
             }
 
+            $query->select(
+                'sale_products.sale_id',
+                'sale_products.product_id',
+                'sale_products.product_variant_id',
+                'sale_products.unit_price_inc_tax',
+                'sale_products.quantity',
+                'units.code_name as unit_code',
+                'sale_products.subtotal',
+                'sales.*',
+                'products.name',
+                'products.product_code',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'customers.name as customer_name'
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
-                $saleProducts = $query
-                ->select(
-                    'sale_products.sale_id',
-                    'sale_products.product_id',
-                    'sale_products.product_variant_id',
-                    'sale_products.unit_price_inc_tax',
-                    'sale_products.quantity',
-                    'units.code_name as unit_code',
-                    'sale_products.subtotal',
-                    'sales.*',
-                    'products.name',
-                    'products.product_code',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'customers.name as customer_name'
-                )->orderBy('sales.report_date', 'desc');
-            }else {
-                $saleProducts = $query
-                ->select(
-                    'sale_products.sale_id',
-                    'sale_products.product_id',
-                    'sale_products.product_variant_id',
-                    'sale_products.unit_price_inc_tax',
-                    'sale_products.quantity',
-                    'units.code_name as unit_code',
-                    'sale_products.subtotal',
-                    'sales.*',
-                    'products.name',
-                    'products.product_code',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'customers.name as customer_name'
-                )->where('sales.branch_id', auth()->user()->branch_id)
-                ->orderBy('sales.report_date', 'desc');
+                $saleProducts = $query->orderBy('sales.report_date', 'desc');
+            } else {
+                $saleProducts = $query->where('sales.branch_id', auth()->user()->branch_id)
+                    ->orderBy('sales.report_date', 'desc');
             }
-            
 
             return DataTables::of($saleProducts)
                 ->editColumn('product', function ($row) {
@@ -164,26 +147,31 @@ class ProductSaleReportController extends Controller
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
             $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
             $query->whereBetween('sales.report_date', $date_range);
-        } else {
-            $query->where('sales.year', date('Y'));
         }
 
-        $saleProducts = $query
-            ->select(
-                'sale_products.sale_id',
-                'sale_products.product_id',
-                'sale_products.product_variant_id',
-                'sale_products.unit_price_inc_tax',
-                'sale_products.quantity',
-                'units.code_name as unit_code',
-                'sale_products.subtotal',
-                'sales.*',
-                'products.name',
-                'products.product_code',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-                'customers.name as customer_name'
-            )->orderBy('sales.report_date', 'desc')->get();
+        $saleProducts = $query->select(
+            'sale_products.sale_id',
+            'sale_products.product_id',
+            'sale_products.product_variant_id',
+            'sale_products.unit_price_inc_tax',
+            'sale_products.quantity',
+            'units.code_name as unit_code',
+            'sale_products.subtotal',
+            'sales.*',
+            'products.name',
+            'products.product_code',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'customers.name as customer_name'
+        );
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            $saleProducts = $query->orderBy('sales.report_date', 'desc')->get();
+        } else {
+            $saleProducts = $query->where('sales.branch_id', auth()->user()->branch_id)
+                ->orderBy('sales.report_date', 'desc')->get();
+        }
+        
         return view('reports.product_sale_report.ajax_view.print', compact('saleProducts', 'fromDate', 'toDate', 'branch_id'));
     }
 

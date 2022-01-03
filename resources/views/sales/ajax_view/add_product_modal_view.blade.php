@@ -132,14 +132,14 @@
                             <div class="row">
                                 <div class="col-md-6 text-start">
                                     <label><b>Item Cost Exc.Tax :</b> <span class="text-danger">*</span></label>
-                                    <input type="text" name="product_cost" class="form-control" autocomplete="off" id="sale_product_cost">
+                                    <input type="text" name="product_cost" class="form-control" autocomplete="off" id="sale_product_cost" placeholder="Unit Cost Exc. Tax">
                                     <span class="error error_sale_product_cost"></span>
                                 </div>
                                 <div class="col-md-6 text-start">
                                     <label><b>Item Cost (Inc.Tax) :</b><span class="text-danger">*</span></label>
                                     <input type="text" name="product_cost_with_tax"
                                     class="form-control" autocomplete="off"
-                                    id="sale_product_cost_with_tax">
+                                    id="sale_product_cost_with_tax" placeholder="Unit Cost Inc. Tax">
                                     <span class="error error_sale_product_cost_with_tax"></span>
                                 </div>
                             </div>
@@ -190,7 +190,7 @@
                             </td>
 
                             <td>
-                                <input type="number" name="unit_cost_inc_tax"  id="os_unit_cost_inc_tax" step="any" class="form-control os_unit_costs_inc_tax" value="0.00">
+                                <input type="number" name="unit_cost_inc_tax" id="os_unit_cost_inc_tax" step="any" class="form-control" value="0.00">
                             </td>
 
                             <td>
@@ -212,3 +212,91 @@
         </div>
     </div>
 </form>
+
+<script>
+    var tax_percent = 0;
+    $(document).on('change', '#sale_tax_id',function() {
+        var tax = $(this).val();
+        if (tax) {
+            var split = tax.split('-');
+            tax_percent = split[1];
+        }else{
+            tax_percent = 0;
+        }
+    });
+
+    function costCalculate() {
+        var product_cost = $('#sale_product_cost').val() ? $('#sale_product_cost').val() : 0;
+        var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent ? tax_percent : 0);
+        var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
+        $('#sale_product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
+        var profit = $('#sale_profit').val() ? $('#sale_profit').val() : 0;
+        var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
+        var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
+        $('#sale_product_price').val(parseFloat(product_price).toFixed(2));
+    }
+
+    $(document).on('input', '#sale_product_cost',function() {
+        var unit_cost_exc_tax = $(this).val() ? $(this).val() : 0;
+        var unit_costs_inc_tax = parseFloat(unit_cost_exc_tax) / 100 * parseFloat(tax_percent ? tax_percent : 0) + parseFloat(unit_cost_exc_tax);
+        $('#os_unit_cost_inc_tax').val(parseFloat(unit_costs_inc_tax).toFixed(2));
+        costCalculate();
+    });
+
+    $(document).on('change', '#sale_tax_id', function() {
+        costCalculate();
+    });
+
+    $(document).on('input', '#sale_profit',function() {
+        costCalculate();
+    });
+
+    // Reduce empty opening stock qty field
+    $(document).on('blur', '#os_quantity', function () {
+        if ($(this).val() == '') {
+            $(this).val(parseFloat(0).toFixed(2));
+        }
+    });
+
+    // Reduce empty opening stock unit cost field
+    $(document).on('blur', '#os_unit_cost_inc_tax', function () {
+        if ($(this).val() == '') {
+            $(this).val(parseFloat(0).toFixed(2));
+        }
+    });
+
+    $(document).on('input', '#os_quantity', function () {
+        var qty = $(this).val() ? $(this).val() : 0;
+        var tr = $(this).closest('tr');
+        var unit_cost_exc_tax = tr.find('#os_unit_cost_inc_tax').val() ? tr.find('#os_unit_cost_inc_tax').val() : 0;
+        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_exc_tax);
+        tr.find('.os_span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+        tr.find('#os_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+    });
+
+    $(document).on('input', '#os_unit_cost_inc_tax', function () {
+        var unit_cost_exc_tax = $(this).val() ? $(this).val() : 0;
+        var tr = $(this).closest('tr');
+        var qty = tr.find('#os_quantity').val() ? tr.find('#os_quantity').val() : 0;
+        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_exc_tax);
+        tr.find('.os_span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+        tr.find('#os_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+    });
+
+    $(document).on('change', '#sale_category_id', function () {
+        var category_id = $(this).val();
+        $.ajax({
+            url:"{{url('sales/get/all/sub/category')}}"+"/"+category_id,
+            async:true,
+            type:'get',
+            dataType: 'json',
+            success:function(subcate){
+                $('#sale_child_category_id').empty();
+                $('#sale_child_category_id').append('<option value="">Select Sub-Category</option>');
+                $.each(subcate, function(key, val){
+                    $('#sale_child_category_id').append('<option value="'+val.id+'">'+val.name+'</option>');
+                });
+            }
+        });
+    });
+</script>

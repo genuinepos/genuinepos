@@ -14,6 +14,7 @@ class RolePermission extends Model
         'product' => 'array',
         'purchase' => 'array',
         's_adjust' => 'array',
+        'expense' => 'array',
         'sale' => 'array',
         'register' => 'array',
         'brand' => 'array',

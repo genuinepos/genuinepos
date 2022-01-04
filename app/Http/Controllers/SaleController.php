@@ -59,7 +59,7 @@ class SaleController extends Controller
 
     public function index2(Request $request)
     {
-        if (auth()->user()->permission->sale['sale_access'] == '0') {
+        if (auth()->user()->permission->sale['view_add_sale'] == '0') {
             abort(403, 'Access Forbidden.');
         }
 
@@ -74,7 +74,7 @@ class SaleController extends Controller
 
     public function posList(Request $request)
     {
-        if (auth()->user()->permission->sale['sale_access'] == '0') {
+        if (auth()->user()->permission->sale['pos_all'] == '0') {
             abort(403, 'Access Forbidden.');
         }
 
@@ -167,7 +167,7 @@ class SaleController extends Controller
     // Create sale view
     public function create()
     {
-        if (auth()->user()->permission->sale['sale_access'] == '0') {
+        if (auth()->user()->permission->sale['create_add_sale'] == '0') {
             abort(403, 'Access Forbidden.');
         }
 
@@ -418,7 +418,7 @@ class SaleController extends Controller
     // Sale edit view
     public function edit($saleId)
     {
-        if (auth()->user()->permission->sale['sale_access'] == '0') {
+        if (auth()->user()->permission->sale['edit_add_sale'] == '0') {
             abort(403, 'Access Forbidden.');
         }
 
@@ -467,6 +467,10 @@ class SaleController extends Controller
     // Update Sale 
     public function update(Request $request, $saleId)
     {
+        if (auth()->user()->permission->sale['edit_add_sale'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
         if ($request->product_ids == null) {
@@ -627,6 +631,9 @@ class SaleController extends Controller
     // Delete Sale
     public function delete(Request $request, $saleId)
     {
+        if (auth()->user()->permission->sale['delete_add_sale'] == '0') {
+            return response()->json('Access Denied');
+        }
         $this->saleUtil->deleteSale($request, $saleId);
         return response()->json('Sale deleted successfully');
     }
@@ -641,6 +648,10 @@ class SaleController extends Controller
     // Shipments View
     public function shipments(Request $request)
     {
+        if (auth()->user()->permission->sale['shipment_access'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             return $this->saleUtil->saleShipmentListTable($request);
         }
@@ -652,6 +663,10 @@ class SaleController extends Controller
     // Update shipment
     public function updateShipment(Request $request, $saleId)
     {
+        if (auth()->user()->permission->sale['shipment_access'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $sale = Sale::where('id', $saleId)->first();
         $sale->shipment_details = $request->shipment_details;
         $sale->shipment_address = $request->shipment_address;
@@ -840,6 +855,10 @@ class SaleController extends Controller
 
     public function paymentAdd(Request $request, $saleId)
     {
+        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
         $sale = Sale::where('id', $saleId)->first();
@@ -857,6 +876,10 @@ class SaleController extends Controller
     // Show payment modal
     public function paymentEdit($paymentId)
     {
+        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $accounts =  Account::orderBy('id', 'DESC')->where('status', 1)->get();
         $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch')->where('id', $paymentId)->first();
         return view('sales.ajax_view.edit_payment', compact('payment', 'accounts'));
@@ -865,6 +888,10 @@ class SaleController extends Controller
     // Payment update
     public function paymentUpdate(Request $request, $paymentId)
     {
+        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $updateSalePayment = SalePayment::with(
             'account',
             'customer',
@@ -964,6 +991,10 @@ class SaleController extends Controller
     // Show payment modal
     public function returnPaymentModal($saleId)
     {
+        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
         return view('sales.ajax_view.add_return_payment', compact('sale', 'accounts'));
@@ -971,6 +1002,10 @@ class SaleController extends Controller
 
     public function returnPaymentAdd(Request $request, $saleId)
     {
+        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $sale = Sale::with(['sale_return'])->where('id', $saleId)->first();
         if ($sale->sale_return) {
             $sale->sale_return->total_return_due -= $request->amount;
@@ -1173,6 +1208,10 @@ class SaleController extends Controller
     // payment details
     public function paymentDetails($paymentId)
     {
+        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $payment = SalePayment::with('sale', 'sale.branch', 'sale.customer')->where('id', $paymentId)->first();
         return view('sales.ajax_view.payment_details', compact('payment'));
     }
@@ -1180,6 +1219,10 @@ class SaleController extends Controller
     // Delete sale payment
     public function paymentDelete(Request $request, $paymentId)
     {
+        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+            return response()->json('Access Denied');
+        }
+        
         $deleteSalePayment = SalePayment::with('account', 'customer', 'sale', 'sale.sale_return', 'cashFlow')
             ->where('id', $paymentId)->first();
 

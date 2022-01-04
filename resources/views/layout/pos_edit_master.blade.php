@@ -311,23 +311,25 @@
         </div>
     </div>
     <!-- Edit selling product modal end-->
-
-    <!--Add Product Modal-->
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_product_body">
-                    <!--begin::Form-->
+    
+    @if (auth()->user()->permission->product['product_add'] == '1')
+        <!--Add Product Modal-->
+        <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog four-col-modal" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body" id="add_product_body">
+                        <!--begin::Form-->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--Add Product Modal End-->
+        <!--Add Product Modal End-->
+    @endif
 
     <!--Add Customer Modal-->
     <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -338,10 +340,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="add_customer_modal_body">
-                    <!--begin::Form-->
-
-                </div>
+                <div class="modal-body" id="add_customer_modal_body"></div>
             </div>
         </div>
     </div>
@@ -415,9 +414,7 @@
 
                         <div class="form-group">
                             <label><strong>Sale Unit</strong> :</label>
-                            <select class="form-control form-control-sm" id="e_unit">
-
-                            </select>
+                            <select class="form-control form-control-sm" id="e_unit"></select>
                         </div>
 
                         <div class="form-group row mt-3">
@@ -446,9 +443,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="stock_modal_body">
-
-                </div>
+                <div class="modal-body" id="stock_modal_body"></div>
             </div>
         </div>
     </div>

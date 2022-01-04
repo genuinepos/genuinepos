@@ -29,22 +29,25 @@ class CustomerUtil
 
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . url('contacts/customers/view', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
-                if ($row->total_sale_due > 0) {
-                    $html .= '<a class="dropdown-item" id="pay_button" href="' . route('customers.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                    $html .= '<a class="dropdown-item" id="view_payment" href="' . route('customers.view.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+
+                    if ($row->total_sale_due > 0) {
+                        $html .= '<a class="dropdown-item" id="pay_button" href="' . route('customers.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                    }
+
+                    if ($row->total_sale_return_due > 0) {
+                        $html .= '<a class="dropdown-item" id="pay_return_button" href="' . route('customers.return.payment', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Due</a>';
+                    }
                 }
 
-                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('customers.view.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                 $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>';
 
-                if ($row->total_sale_return_due > 0) {
-                    $html .= '<a class="dropdown-item" id="pay_return_button" href="' . route('customers.return.payment', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Due</a>';
-                }
-
-                if (auth()->user()->permission->customers['customer_edit'] == '1') {
+                if (auth()->user()->permission->contact['customer_edit'] == '1') {
                     $html .= '<a class="dropdown-item" href="' . route('contacts.customer.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
-                if (auth()->user()->permission->customers['customer_delete'] == '1') {
+                if (auth()->user()->permission->contact['customer_delete'] == '1') {
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.customer.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
@@ -67,12 +70,12 @@ class CustomerUtil
             ->editColumn('group_name', function ($row) {
                 return $row->group_name ? $row->group_name : '...';
             })
-            ->editColumn('opening_balance', fn ($row) => '<span class="opening_balance" data-value="'.$row->opening_balance.'">'.$this->converter->format_in_bdt($row->opening_balance). '</span>')
-            ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="'.$row->total_sale.'">' . $this->converter->format_in_bdt($row->total_sale) . '</span>')
-            ->editColumn('total_paid', fn ($row) => '<span class="total_paid text-success" data-value="'.$row->total_paid.'">' . $this->converter->format_in_bdt($row->total_paid) . '</span>')
-            ->editColumn('total_sale_due', fn ($row) => '<span class="total_sale_due text-danger" data-value="'.$row->total_sale_due.'">' . $this->converter->format_in_bdt($row->total_sale_due) . '</span>')
-            ->editColumn('total_return', fn ($row) => '<span class="total_return" data-value="'.$row->total_return.'">' . $this->converter->format_in_bdt($row->total_return) . '</span>')
-            ->editColumn('total_sale_return_due', fn ($row) => '<span class="total_sale_return_due" data-value="'.$row->total_sale_return_due.'">' . $this->converter->format_in_bdt($row->total_sale_return_due) . '</span>')
+            ->editColumn('opening_balance', fn ($row) => '<span class="opening_balance" data-value="' . $row->opening_balance . '">' . $this->converter->format_in_bdt($row->opening_balance) . '</span>')
+            ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="' . $row->total_sale . '">' . $this->converter->format_in_bdt($row->total_sale) . '</span>')
+            ->editColumn('total_paid', fn ($row) => '<span class="total_paid text-success" data-value="' . $row->total_paid . '">' . $this->converter->format_in_bdt($row->total_paid) . '</span>')
+            ->editColumn('total_sale_due', fn ($row) => '<span class="total_sale_due text-danger" data-value="' . $row->total_sale_due . '">' . $this->converter->format_in_bdt($row->total_sale_due) . '</span>')
+            ->editColumn('total_return', fn ($row) => '<span class="total_return" data-value="' . $row->total_return . '">' . $this->converter->format_in_bdt($row->total_return) . '</span>')
+            ->editColumn('total_sale_return_due', fn ($row) => '<span class="total_sale_return_due" data-value="' . $row->total_sale_return_due . '">' . $this->converter->format_in_bdt($row->total_sale_return_due) . '</span>')
             ->editColumn('status', function ($row) {
                 if ($row->status == 1) {
                     return '<i class="far fa-thumbs-up text-success"></i>';

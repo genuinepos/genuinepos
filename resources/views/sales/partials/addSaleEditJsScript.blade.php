@@ -1050,56 +1050,58 @@
     }
     getEditableSale();
 
-    $('#add_product').on('click', function () {
-        $.ajax({
-            url:"{{ route('sales.add.product.modal.view') }}",
-            type:'get',
-            success:function(data){
-                $('#add_product_body').html(data);
-                $('#addProductModal').modal('show');
-            }
+    @if (auth()->user()->permission->product['product_add'] == '1')
+        $('#add_product').on('click', function () {
+            $.ajax({
+                url:"{{ route('sales.add.product.modal.view') }}",
+                type:'get',
+                success:function(data){
+                    $('#add_product_body').html(data);
+                    $('#addProductModal').modal('show');
+                }
+            });
         });
-    });
 
-    // Add product by ajax
-    $(document).on('submit', '#add_product_form', function(e) {
-        e.preventDefault();
-        $('.loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
+        // Add product by ajax
+        $(document).on('submit', '#add_product_form', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
 
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-                toastr.success('Successfully product is added.');
-                $.ajax({
-                    url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
-                    type:'get',
-                    success:function(data){
-                        $('.loading_button').hide();
-                        $('#addProductModal').modal('hide');
-                        if (!$.isEmptyObject(data.errorMsg)) {
-                            toastr.error(data.errorMsg);
-                        }else{
-                            $('#sale_list').prepend(data);
-                            calculateTotalAmount();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success('Successfully product is added.');
+                    $.ajax({
+                        url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
+                        type:'get',
+                        success:function(data){
+                            $('.loading_button').hide();
+                            $('#addProductModal').modal('hide');
+                            if (!$.isEmptyObject(data.errorMsg)) {
+                                toastr.error(data.errorMsg);
+                            }else{
+                                $('#sale_list').prepend(data);
+                                calculateTotalAmount();
+                            }
                         }
-                    }
-                });
-            },
-            error: function(err) {
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
-                $('.error').html('');
-                $.each(err.responseJSON.errors, function(key, error) {
-                    $('.error_sale_' + key + '').html(error[0]);
-                });
-            }
+                    });
+                },
+                error: function(err) {
+                    $('.loading_button').hide();
+                    toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_sale_' + key + '').html(error[0]);
+                    });
+                }
+            });
         });
-    });
-
+    @endif
+    
     $(document).keypress(".scanable",function(event){
         if (event.which == '10' || event.which == '13') {
             event.preventDefault();

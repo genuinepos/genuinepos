@@ -79,15 +79,15 @@
                                             <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                         </div>
                                         <input type="text" name="search_product" class="form-control" id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus>
-                                        <div class="input-group-append add_button" id="add_product">
-                                            <span class="input-group-text"><i class="fas fa-plus"></i></span>
-                                        </div>
+                                        @if (auth()->user()->permission->product['product_add'] == '1')
+                                            <div class="input-group-append add_button" id="add_product">
+                                                <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                                            </div>
+                                        @endif
                                     </div>
     
                                     <div class="select_area">
-                                        <ul id="list" class="variant_list_area">
-                                           
-                                        </ul>
+                                        <ul id="list" class="variant_list_area"></ul>
                                     </div>
                                 </div>
                             </div>

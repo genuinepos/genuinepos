@@ -151,14 +151,14 @@
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
                                                         </div>
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code">
-                                                        <div class="input-group-prepend">
-                                                            <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
-                                                        </div>
+                                                        <@if (auth()->user()->permission->product['product_add'] == '1')
+                                                            <div class="input-group-prepend">
+                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                           
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div> 
                                             </div>
@@ -187,9 +187,7 @@
                                                                     <th><i class="fas fa-trash-alt"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="purchase_list">
-                                                               
-                                                            </tbody>
+                                                            <tbody id="purchase_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -206,7 +204,6 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
-                            
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -224,7 +221,6 @@
                                                     <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00"> 
                                                 </div>
                                             </div>
-
                                         
                                             <div class="input-group mt-1">
                                                 <label for="inputEmail3" class="col-4"><b>Tax :</b></label>

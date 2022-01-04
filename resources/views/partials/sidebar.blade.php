@@ -29,7 +29,15 @@
                 @endif
 
                 @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
-                    @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
+                    @if (
+                        auth()->user()->permission->contact['supplier_all'] == '1' || 
+                        auth()->user()->permission->contact['supplier_add'] == '1' || 
+                        auth()->user()->permission->contact['supplier_import'] == '1' ||
+                        auth()->user()->permission->contact['customer_all'] == '1' ||
+                        auth()->user()->permission->contact['customer_add'] == '1' ||
+                        auth()->user()->permission->contact['customer_import'] == '1' ||
+                        auth()->user()->permission->contact['customer_group'] == '1'
+                    )
                         <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
                             <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/agenda.svg') }}">
                                 <p class="title">@lang('menu.contacts')</p>
@@ -62,7 +70,16 @@
                     @endif
                 @endif
 
-                @if (auth()->user()->permission->sale['pos_all'] == '1' || auth()->user()->permission->sale['sale_access'] == '1')
+                @if (
+                    auth()->user()->permission->sale['pos_all'] == '1' || 
+                    auth()->user()->permission->sale['pos_add'] == '1' || 
+                    auth()->user()->permission->sale['create_add_sale'] == '1' ||
+                    auth()->user()->permission->sale['view_add_sale'] == '1' ||
+                    auth()->user()->permission->sale['sale_draft'] == '1' ||
+                    auth()->user()->permission->sale['sale_quotation'] == '1' ||
+                    auth()->user()->permission->sale['shipment_access'] == '1' ||
+                    auth()->user()->permission->sale['return_access'] == '1'
+                )
                     <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('public/backend/asset/img/icon/shopping-bag.svg') }}">
@@ -125,7 +142,12 @@
                     @endif
                 @endif
 
-                @if (auth()->user()->permission->user['user_view'] == '1')
+                @if (
+                    auth()->user()->permission->user['user_view'] == '1' ||
+                    auth()->user()->permission->user['user_add'] == '1' ||
+                    auth()->user()->permission->user['role_view'] == '1' ||
+                    auth()->user()->permission->user['role_add'] == '1'
+                )
                     <li data-menu="users" class="{{ request()->is('users*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('public/backend/asset/img/icon/team.svg') }}">
@@ -135,12 +157,24 @@
                 @endif
 
                 @if ($addons->hrm)
-                    <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
-                        <a href="{{ route('hrm.dashboard.index') }}">
-                            <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
-                            <p class="title">@lang('menu.hrm')</p>
-                        </a>
-                    </li>
+                    @if (
+                        auth()->user()->permission->hrms['hrm_dashboard'] == '1' ||
+                        auth()->user()->permission->hrms['leave_type'] == '1' ||
+                        auth()->user()->permission->hrms['leave_assign'] == '1' ||
+                        auth()->user()->permission->hrms['shift'] == '1' ||
+                        auth()->user()->permission->hrms['attendance'] == '1' ||
+                        auth()->user()->permission->hrms['view_allowance_and_deduction'] == '1' ||
+                        auth()->user()->permission->hrms['payroll'] == '1' ||
+                        auth()->user()->permission->hrms['department'] == '1' ||
+                        auth()->user()->permission->hrms['designation'] == '1'
+                    )
+                        <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
+                            <a href="#">
+                                <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
+                                <p class="title">@lang('menu.hrm')</p>
+                            </a>
+                        </li>
+                    @endif
                 @endif 
 
                 @if ($addons->manufacturing == 1)
@@ -194,15 +228,47 @@
                         </a>
                     </li>
                 @endif
+                
+                @if (
+                    auth()->user()->permission->report['loss_profit_report'] == '1' ||
+                    auth()->user()->permission->report['purchase_sale_report'] == '1' ||
+                    auth()->user()->permission->report['tax_report'] == '1' ||
+                    auth()->user()->permission->report['customer_report'] == '1' ||
+                    auth()->user()->permission->report['supplier_report'] == '1' ||
+                    auth()->user()->permission->report['stock_report'] == '1' ||
+                    auth()->user()->permission->report['stock_adjustment_report'] == '1' ||
+                    auth()->user()->permission->report['pro_purchase_report'] == '1' ||
+                    auth()->user()->permission->report['pro_sale_report'] == '1' ||
+                    auth()->user()->permission->report['purchase_payment_report'] == '1' ||
+                    auth()->user()->permission->report['sale_payment_report'] == '1' ||
+                    auth()->user()->permission->report['expanse_report'] == '1' ||
+                    auth()->user()->permission->report['c_register_report'] == '1' ||
+                    auth()->user()->permission->report['sale_representative_report'] == '1' ||
+                    auth()->user()->permission->report['payroll_report'] == '1' ||
+                    auth()->user()->permission->report['payroll_payment_report'] == '1' ||
+                    auth()->user()->permission->report['attendance_report'] == '1' ||
+                    auth()->user()->permission->report['production_report'] == '1' ||
+                    auth()->user()->permission->report['financial_report'] == '1'
+                )
+                    <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">
+                            <p class="title">Reports</p>
+                        </a>
+                    </li>
+                @endif
 
-                <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
-                    <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">
-                        <p class="title">Reports</p>
-                    </a>
-                </li>
-
-                @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1' || auth()->user()->permission->setup['p_settings'] == '1' || auth()->user()->permission->setup['inv_sc'] == '1' || auth()->user()->permission->setup['inv_lay'] == '1' || auth()->user()->permission->setup['barcode_settings'] == '1' || auth()->user()->permission->setup['cash_counters'] == '1')
+                @if (
+                    auth()->user()->permission->setup['branch'] == '1' || 
+                    auth()->user()->permission->setup['warehouse'] == '1' || 
+                    auth()->user()->permission->setup['tax'] == '1' || 
+                    auth()->user()->permission->setup['g_settings'] == '1' || 
+                    auth()->user()->permission->setup['p_settings'] == '1' || 
+                    auth()->user()->permission->setup['inv_sc'] == '1' || 
+                    auth()->user()->permission->setup['inv_lay'] == '1' || 
+                    auth()->user()->permission->setup['barcode_settings'] == '1' || 
+                    auth()->user()->permission->setup['cash_counters'] == '1'
+                )
                     <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
@@ -369,86 +435,84 @@
             </div>
 
             @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
-                @if (auth()->user()->permission->supplier['supplier_all'] == '1' || auth()->user()->permission->customers['customer_all'] == '1')
-                    <div class="sub-menu_t" id="contact">
-                        <div class="sub-menu-width">
-                            <div class="model__close bg-secondary-2">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <p class="text-muted float-start mt-1"><strong>Contact Management</strong></p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                    </div>
+                <div class="sub-menu_t" id="contact">
+                    <div class="sub-menu-width">
+                        <div class="model__close bg-secondary-2">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p class="text-muted float-start mt-1"><strong>Contact Management</strong></p>
                                 </div>
-                            </div>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    @if (auth()->user()->permission->supplier['supplier_all'] == '1')
-                                        <div
-                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('contacts.supplier.index') }}" class="bar-link">
-                                                    <span><i class="fas fa-address-card"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.suppliers')</p>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->permission->customers['customer_all'] == '1')
-                                        <div
-                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('contacts.customer.index') }}" class="bar-link">
-                                                    <span><i class="far fa-address-card"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.customers') </p>
-                                        </div>
-
-                                        <div
-                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('contacts.customers.groups.index') }}" class="bar-link">
-                                                    <span><i class="fas fa-users"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.customer_groups')</p>
-                                        </div>
-                                    @endif
-                                </div>
-                                <hr>
-
-                                <div class="row">
-                                    @if (auth()->user()->permission->supplier['supplier_all'] == '1')
-                                        <div
-                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('contacts.suppliers.import.create') }}" class="bar-link">
-                                                    <span><i class="fas fa-file-import"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.import_suppliers')</p>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->permission->customers['customer_all'] == '1')
-                                        <div
-                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('contacts.customers.import.create') }}" class="bar-link">
-                                                    <span><i class="fas fa-file-upload"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.import_customers')</p>
-                                        </div>
-                                    @endif
+                                <div class="col-md-4">
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
                             </div>
                         </div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                @if (auth()->user()->permission->contact['supplier_all'] == '1')
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('contacts.supplier.index') }}" class="bar-link">
+                                                <span><i class="fas fa-address-card"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.suppliers')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->contact['supplier_import'] == '1')
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('contacts.suppliers.import.create') }}" class="bar-link">
+                                                <span><i class="fas fa-file-import"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.import_suppliers')</p>
+                                    </div>
+                                @endif
+                            </div>
+                            <hr>
+                            <div class="row">
+                                @if (auth()->user()->permission->contact['customer_all'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('contacts.customer.index') }}" class="bar-link">
+                                                <span><i class="far fa-address-card"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.customers') </p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->contact['customer_import'] == '1')
+                                    <div
+                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('contacts.customers.import.create') }}" class="bar-link">
+                                                <span><i class="fas fa-file-upload"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.import_customers')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->contact['customer_group'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('contacts.customers.groups.index') }}" class="bar-link">
+                                                <span><i class="fas fa-users"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.customer_groups')</p>
+                                    </div>
+                                @endif
+                            </div>
+                            <hr>
+                        </div>
                     </div>
-                @endif
+                </div>
             @endif
 
             @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
@@ -631,10 +695,9 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row">
-                            @if (auth()->user()->permission->sale['sale_access'] == '1')
-                                @if (json_decode($generalSettings->modules, true)['add_sale'] == '1')
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                            @if (json_decode($generalSettings->modules, true)['add_sale'] == '1')
+                                @if (auth()->user()->permission->sale['create_add_sale'])
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.create') }}" class="bar-link">
                                                 <span><i class="fas fa-cart-plus"></i></span>
@@ -642,7 +705,9 @@
                                         </div>
                                         <p class="switch_text"> @lang('menu.add_sale')</p>
                                     </div>
-
+                                @endif
+                                
+                                @if (auth()->user()->permission->sale['view_add_sale'])
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.index2') }}" class="bar-link">
@@ -652,6 +717,12 @@
                                         <p class="switch_text">@lang('menu.add_sale_list')</p>
                                     </div>
                                 @endif
+                            @endif
+
+                            @if (
+                                auth()->user()->permission->sale['view_add_sale'] || 
+                                auth()->user()->permission->sale['pos_all']
+                            )
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('sales.product.list') }}" class="bar-link">
@@ -662,10 +733,12 @@
                                 </div>
                             @endif
                         </div>
+
                         <hr>
+
                         <div class="row">
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
-                                @if (auth()->user()->permission->sale['pos_all'] == '1')
+                                @if (auth()->user()->permission->sale['pos_add'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.pos.create') }}" class="bar-link">
@@ -674,7 +747,9 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.pos')</p>
                                     </div>
+                                @endif
 
+                                @if (auth()->user()->permission->sale['pos_all'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.pos.list') }}" class="bar-link">
@@ -686,7 +761,9 @@
                                 @endif
                             @endif
                         </div>
+
                         <hr>
+
                         <div class="row">
                             @if (auth()->user()->permission->sale['sale_draft'] == '1')
                                 <div
@@ -1058,208 +1135,338 @@
                 @endif
             @endif
 
-            @if (auth()->user()->permission->user['user_view'] == '1')
-                <div class="sub-menu_t" id="users">
-                    <div class="sub-menu-width">
-                        <div class="model__close bg-secondary-2">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>User Management</strong></p>
-                                </div>
-                                <div class="col-md-4">
-                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                </div>
+            <div class="sub-menu_t" id="users">
+                <div class="sub-menu-width">
+                    <div class="model__close bg-secondary-2">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="text-muted float-start mt-1"><strong>User Management</strong></p>
                             </div>
-                        </div>
-                        <div class="container-fluid">
-                            <div class="row">
-                                @if (auth()->user()->permission->user['user_view'] == '1')
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('users.create') }}" class="bar-link">
-                                                <span><i class="fas fa-user-plus"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.add_user')</p>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->permission->user['user_view'] == '1')
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('users.index') }}" class="bar-link">
-                                                <span><i class="fas fa-list-ol"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.user_list')</p>
-                                    </div>
-                                @endif
+                            <div class="col-md-4">
+                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                             </div>
-                            <hr>
-                            <div class="row">
-                                @if (auth()->user()->permission->roles['role_add'] == '1')
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('users.role.create') }}" class="bar-link">
-                                                <span><i class="fas fa-plus-circle"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.add_role')</p>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->permission->roles['role_view'] == '1')
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('users.role.index') }}" class="bar-link">
-                                                <span><i class="fas fa-th-list"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.role_list')</p>
-                                    </div>
-                                @endif
-                            </div>
-                            <hr>
                         </div>
                     </div>
-                </div>
-            @endif
-
-            @if (auth()->user()->permission->setup['branch'] == '1' || auth()->user()->permission->setup['warehouse'] == '1' || auth()->user()->permission->setup['tax'] == '1' || auth()->user()->permission->setup['g_settings'] == '1' || auth()->user()->permission->setup['p_settings'] == '1' || auth()->user()->permission->setup['inv_sc'] == '1' || auth()->user()->permission->setup['inv_lay'] == '1' || auth()->user()->permission->setup['barcode_settings'] == '1' || auth()->user()->permission->setup['cash_counters'] == '1')
-                <div class="sub-menu_t" id="settings">
-                    <div class="sub-menu-width">
-                        <div class="model__close bg-secondary-2">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>Settings</strong></p>
-                                </div>
-                                <div class="col-md-4">
-                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="container-fluid">
-                            <div class="row">
-                                @if (auth()->user()->permission->setup['g_settings'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('settings.general.index') }}" class="bar-link">
-                                                <span><i class="fas fa-cogs"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.general_settings')</p>
-                                    </div>
-                                @endif
-
-                                @if ($addons->branches == 1)
-                                    @if (auth()->user()->permission->setup['branch'] == '1')
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('settings.branches.index') }}" class="bar-link">
-                                                    <span><i class="fas fa-project-diagram"></i></span>
-                                                </a>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.branches')</p>
-                                        </div>
-                                    @endif
-                                @endif
-
-                                @if (auth()->user()->permission->setup['warehouse'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('settings.warehouses.index') }}" class="bar-link">
-                                                <span><i class="fas fa-warehouse"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.warehouses') </p>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->permission->setup['tax'] == '1')
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('settings.taxes.index') }}" class="bar-link">
-                                                <span><i class="fas fa-percentage"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.taxes')</p>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->permission->setup['p_settings'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('settings.payment.card.types.index') }}" class="bar-link">
-                                                <span><i class="fas fa-credit-card"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.payment_settings')</p>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->permission->setup['inv_sc'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('invoices.schemas.index') }}" class="bar-link">
-                                                <span><i class="fas fa-file-invoice-dollar"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.invoice_schema')</p>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->permission->setup['inv_lay'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('invoices.layouts.index') }}" class="bar-link">
-                                                <span><i class="fas fa-file-invoice"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.invoice_layout')</p>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->permission->setup['barcode_settings'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('settings.barcode.index') }}" class="bar-link">
-                                                <span><i class="fas fa-barcode"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.barcode_settings')</p>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->permission->setup['cash_counters'] == '1')
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('settings.cash.counter.index') }}" class="bar-link">
-                                                <span><i class="fas fa-store"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.cash_counter')</p>
-                                    </div>
-                                @endif
-
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                    <div class="container-fluid">
+                        <div class="row">
+                            @if (auth()->user()->permission->user['user_view'] == '1')
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
-                                        <a href="{{ route('settings.release.note.index') }}" class="bar-link">
-                                            <span><i class="far fa-arrow-alt-circle-up"></i></span>
+                                        <a href="{{ route('users.create') }}" class="bar-link">
+                                            <span><i class="fas fa-user-plus"></i></span>
                                         </a>
                                     </div>
-                                    <p class="switch_text">Version Release Notes</p>
+                                    <p class="switch_text">@lang('menu.add_user')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->user['user_view'] == '1')
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('users.index') }}" class="bar-link">
+                                            <span><i class="fas fa-list-ol"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.user_list')</p>
+                                </div>
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="row">
+                            @if (auth()->user()->permission->user['role_add'] == '1')
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('users.role.create') }}" class="bar-link">
+                                            <span><i class="fas fa-plus-circle"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.add_role')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->user['role_view'] == '1')
+                                <div
+                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('users.role.index') }}" class="bar-link">
+                                            <span><i class="fas fa-th-list"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.role_list')</p>
+                                </div>
+                            @endif
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+          
+            @if ($addons->hrm == 1)
+                <div class="sub-menu_t" id="hrm">
+                    <div class="sub-menu-width">
+                        <div class="model__close bg-secondary-2">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p class="text-muted float-start mt-1"><strong>Human Resource Management System</strong></p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
                             </div>
+                        </div>
+                
+                        <div class="container-fluid">
+                            <div class="row">
+                                @if ( auth()->user()->permission->hrms['hrm_dashboard'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.dashboard.index') }}" class="bar-link">
+                                                <span><i class="fas fa-tachometer-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.hrm_dashboard')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->hrms['leave_type'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.leave.type') }}" class="bar-link">
+                                                <span><i class="fas fa-th-large"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.leave_type')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->hrms['leave_assign'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.leave') }}" class="bar-link">
+                                                <span><i class="fas fa-level-down-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.leave')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->hrms['shift'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.attendance.shift') }}" class="bar-link">
+                                                <span><i class="fas fa-network-wired"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.shift')</p>
+                                    </div>
+                                @endif
+                            </div>
+                            <hr>
+                            <div class="row">
+                                @if (auth()->user()->permission->hrms['attendance'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.attendance') }}" class="bar-link">
+                                                <span><i class="fas fa-paste"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.attendance')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->hrms['view_allowance_and_deduction'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.allowance') }}" class="bar-link">
+                                                <span><i class="fas fa-plus"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.allowance_deduction')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->hrms['payroll'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.payroll.index') }}" class="bar-link">
+                                                <span><i class="far fa-money-bill-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.payroll')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->hrms['holiday'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.holidays') }}" class="bar-link">
+                                                <span><i class="fas fa-toggle-off"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.holiday')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->hrms['department'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.departments') }}" class="bar-link">
+                                                <span><i class="far fa-building"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.department')</p>
+                                    </div>
+                                @endif
+
+                                @if (auth()->user()->permission->hrms['designation'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('hrm.designations') }}" class="bar-link">
+                                                <span><i class="fas fa-map-marker-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.designation')</p>
+                                    </div>
+                                @endif
+                            </div>
+                            <hr>
                         </div>
                     </div>
                 </div>
             @endif
 
+            <div class="sub-menu_t" id="settings">
+                <div class="sub-menu-width">
+                    <div class="model__close bg-secondary-2">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="text-muted float-start mt-1"><strong>Settings</strong></p>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            @if (auth()->user()->permission->setup['g_settings'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.general.index') }}" class="bar-link">
+                                            <span><i class="fas fa-cogs"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.general_settings')</p>
+                                </div>
+                            @endif
+
+                            @if ($addons->branches == 1)
+                                @if (auth()->user()->permission->setup['branch'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('settings.branches.index') }}" class="bar-link">
+                                                <span><i class="fas fa-project-diagram"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.branches')</p>
+                                    </div>
+                                @endif
+                            @endif
+
+                            @if (auth()->user()->permission->setup['warehouse'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.warehouses.index') }}" class="bar-link">
+                                            <span><i class="fas fa-warehouse"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.warehouses') </p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->setup['tax'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.taxes.index') }}" class="bar-link">
+                                            <span><i class="fas fa-percentage"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.taxes')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->setup['p_settings'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.payment.card.types.index') }}" class="bar-link">
+                                            <span><i class="fas fa-credit-card"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.payment_settings')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->setup['inv_sc'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('invoices.schemas.index') }}" class="bar-link">
+                                            <span><i class="fas fa-file-invoice-dollar"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.invoice_schema')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->setup['inv_lay'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('invoices.layouts.index') }}" class="bar-link">
+                                            <span><i class="fas fa-file-invoice"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.invoice_layout')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->setup['barcode_settings'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.barcode.index') }}" class="bar-link">
+                                            <span><i class="fas fa-barcode"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.barcode_settings')</p>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->permission->setup['cash_counters'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.cash.counter.index') }}" class="bar-link">
+                                            <span><i class="fas fa-store"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.cash_counter')</p>
+                                </div>
+                            @endif
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('settings.release.note.index') }}" class="bar-link">
+                                        <span><i class="far fa-arrow-alt-circle-up"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">Version Release Notes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
             @if ($addons->manufacturing == 1)
                 <div class="sub-menu_t" id="manufacture">
                     <div class="sub-menu-width">
@@ -1438,7 +1645,7 @@
                             @endif
 
                             @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
-                                @if (auth()->user()->permission->report['cus_sup_report'] == '1')
+                                @if (auth()->user()->permission->report['supplier_report'] == '1')
                                     <div
                                         class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
@@ -1448,7 +1655,9 @@
                                         </div>
                                         <p class="switch_text">@lang('menu.supplier_report')</p>
                                     </div>
-
+                                @endif
+                                
+                                @if (auth()->user()->permission->report['customer_report'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('reports.customer.index') }}" class="bar-link">
@@ -1529,7 +1738,7 @@
                                 </div>
                             @endif
 
-                            @if (auth()->user()->permission->report['register_report'] == '1')
+                            @if (auth()->user()->permission->report['c_register_report'] == '1')
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.cash.registers.index') }}" class="bar-link">
@@ -1540,7 +1749,7 @@
                                 </div>
                             @endif
 
-                            @if (auth()->user()->permission->report['representative_report'] == '1')
+                            @if (auth()->user()->permission->report['sale_representative_report'] == '1')
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('reports.sale.representive.index') }}" class="bar-link">
@@ -1562,41 +1771,49 @@
                                 </div>
                             @endif
 
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('reports.financial.index') }}" class="bar-link">
-                                        <span><i class="fas fa-money-bill-wave"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">@lang('menu.financial_report')</p>
-                            </div>
-
                             @if ($addons->hrm == 1)
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('reports.payroll') }}" class="bar-link">
-                                            <span><i class="fas fa-money-bill-alt"></i></span>
-                                        </a>
+                                @if (auth()->user()->permission->report['payroll_report'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('reports.payroll') }}" class="bar-link">
+                                                <span><i class="fas fa-money-bill-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.payroll_report')</p>
                                     </div>
-                                    <p class="switch_text">@lang('menu.payroll_report')</p>
-                                </div>
+                                @endif
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('reports.payroll.payment') }}" class="bar-link">
-                                            <span><i class="fas fa-handshake"></i></span>
-                                        </a>
+                                @if (auth()->user()->permission->report['payroll_report'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('reports.payroll.payment') }}" class="bar-link">
+                                                <span><i class="fas fa-money-bill-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.payroll_payment_report')</p>
                                     </div>
-                                    <p class="switch_text">@lang('menu.payroll_payment_report')</p>
-                                </div>
+                                @endif
 
+                                @if (auth()->user()->permission->report['attendance_report'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('reports.attendance') }}" class="bar-link">
+                                                <span><i class="fas fa-paste"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.attendance_report')</p>
+                                    </div>
+                                @endif
+                            @endif
+
+                            @if (auth()->user()->permission->report['financial_report'] == '1')
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
-                                        <a href="{{ route('reports.attendance') }}" class="bar-link">
-                                            <span><i class="fas fa-paste"></i></span>
+                                        <a href="{{ route('reports.financial.index') }}" class="bar-link">
+                                            <span><i class="fas fa-money-bill-wave"></i></span>
                                         </a>
                                     </div>
-                                    <p class="switch_text">@lang('menu.attendance_report')</p>
+                                    <p class="switch_text">@lang('menu.financial_report')</p>
                                 </div>
                             @endif
                         </div>

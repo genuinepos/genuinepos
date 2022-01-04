@@ -11,6 +11,10 @@ class BarcodeSettingController extends Controller
 {
     public function index(Request $request)
     {
+        if (auth()->user()->permission->setup['barcode_settings'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $barcodeSettings = DB::table('barcode_settings')->where('is_fixed', 0)->orderBy('id', 'DESC')->get(['id', 'name', 'description', 'is_default']);
             return DataTables::of($barcodeSettings)

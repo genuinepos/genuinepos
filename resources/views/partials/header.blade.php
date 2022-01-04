@@ -31,24 +31,34 @@
                             @if ($addons->e_commerce == 1)
                                 <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif
-                            <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
-                                            class="fas fa-th-large"></i></b></a>
-                                <ul class="lists">
-                                    <li><a href="#"><i class="fas fa-bell"></i><span class="title">Notice
-                                                Board</span></a> </li>
-                                    <li><a href="#"><i class="fas fa-envelope-open"></i><span class="title">Send
-                                                Email</span></a></li>
-                                    <li><a href="#"><i class="fas fa-comment-alt"></i><span class="title">Send
-                                                SMS</span></a></li>
-                                    <li><a href="#"><i class="fas fa-download"></i><span class="title">Download
-                                                Center</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
+
+                            @if (auth()->user()->permission->others['communication'] == '1')
+                                <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
+                                                class="fas fa-th-large"></i></b></a>
+                                    <ul class="lists">
+                                        <li><a href="#"><i class="fas fa-bell"></i><span class="title">Notice
+                                                    Board</span></a> </li>
+                                        <li><a href="#"><i class="fas fa-envelope-open"></i><span class="title">Send
+                                                    Email</span></a></li>
+                                        <li><a href="#"><i class="fas fa-comment-alt"></i><span class="title">Send
+                                                    SMS</span></a></li>
+                                        <li><a href="#"><i class="fas fa-download"></i><span class="title">Download
+                                                    Center</span></a></li>
+                                    </ul>
+                                </li>
+                            @endif
+
+                            @if (auth()->user()->permission->others['today_summery'] == '1')
+                                <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
+                            @endif
+
                             <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
-                                <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
+                                @if (auth()->user()->permission->sale['pos_add'] == '1')
+                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
+                                @endif
                             @endif
+
                             <li class="top-icon">
                                 <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
                                     <span class="fas fa-calculator"></span>
@@ -122,13 +132,12 @@
                                         <span class="user_name text-primary">
                                             {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' .
                                             auth()->user()->last_name }}
-
                                             @if (auth()->user()->role_type == 1)
-                                            (Super Admin)
+                                                (Super Admin)
                                             @elseif(auth()->user()->role_type == 2)
-                                            (Admin)
+                                                (Admin)
                                             @else
-                                            {{ auth()->user()->role->name }}
+                                                {{ auth()->user()->role->name }}
                                             @endif
                                         </span>
                                     </li>

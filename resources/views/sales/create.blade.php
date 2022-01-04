@@ -169,18 +169,16 @@
                                                                     class="fas fa-barcode text-dark"></i></span>
                                                         </div>
                                                         <input type="text" name="search_product" class="form-control scanable"
-                                                            autocomplete="off" id="search_product"
-                                                            placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                        <div class="input-group-prepend">
-                                                            <span id="add_product" class="input-group-text add_button"><i
-                                                                    class="fas fa-plus-square text-dark"></i></span>
-                                                        </div>
+                                                            autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
+                                                        @if (auth()->user()->permission->product['product_add'] == '1')
+                                                            <div class="input-group-prepend">
+                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            </div> 
+                                                        @endif
                                                     </div>
     
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                           
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div>
                                             </div>
@@ -538,7 +536,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="product_info">Samsung A30 - Black-4GB-64GB - (black-4gb-64gb-85554687)</h6>
+                    <h6 class="modal-title" id="product_info">Samsung A30</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -603,7 +601,7 @@
             </div>
         </div>
     </div> 
-    <!-- Edit selling product modal End-->
+    <!-- Edit selling product modal End--> 
 
     <!--Add Product Modal--> 
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">

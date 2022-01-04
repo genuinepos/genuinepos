@@ -265,20 +265,22 @@
     </div>
     <!-- Hold invoice list modal End-->
 
-    <!--Add Product Modal-->
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+    @if (auth()->user()->permission->product['product_add'] == '1')
+        <!--Add Product Modal-->
+        <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog four-col-modal" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body" id="add_product_body"></div>
                 </div>
-                <div class="modal-body" id="add_product_body"></div>
             </div>
         </div>
-    </div>
-    <!--Add Product Modal End-->
+        <!--Add Product Modal End-->
+    @endif
 
     <!--Add Customer Modal-->
     <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -313,14 +315,14 @@
     </div>
     <!-- Edit selling product modal end-->
 
+ 
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="product_info">Samsung A30</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
@@ -358,9 +360,7 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><strong>Tax</strong> :</label>
-                                <select class="form-control" id="e_unit_tax">
-
-                                </select>
+                                <select class="form-control" id="e_unit_tax"></select>
                             </div>
 
                             <div class="col-md-6">
@@ -374,9 +374,7 @@
 
                         <div class="form-group mt-1">
                             <label><strong>Sale Unit</strong> :</label>
-                            <select class="form-control" id="e_unit">
-
-                            </select>
+                            <select class="form-control" id="e_unit"></select>
                         </div>
 
                         <div class="form-group row mt-3">
@@ -392,6 +390,7 @@
         </div>
     </div>
     <!-- Edit selling product modal end-->
+
 
     <!-- Show stock modal-->
     <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -538,9 +537,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="modal-body_shortcuts">
-                    <!--begin::Form-->
-                </div>
+                <div class="modal-body" id="modal-body_shortcuts"></div>
             </div>
         </div>
     </div>

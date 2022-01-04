@@ -116,7 +116,6 @@
                                 tr += '<td colspan="2" class="text-start">';
                                 tr += '<a href="#" class="text-success" id="edit_product">';
                                 tr += '<span class="product_name">'+name+'</span>';
-                                tr += '<span class="product_variant"></span>'; 
                                 tr += '</a><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
                                 tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+product.tax_type+'" type="hidden" id="tax_type">';
@@ -249,8 +248,7 @@
                             tr += '<tr>';
                             tr += '<td colspan="2" class="text-start">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
-                            tr += '<span class="product_name">'+name+'</span>';
-                            tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'</span>'; 
+                            tr += '<span class="product_name">'+name+' -'+variant_product.variant_name+'</span>';
                             tr += '</a><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable" placeholder="IMEI, Serial number or other info.">';
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
@@ -444,9 +442,7 @@
                         tr += '<td colspan="2" class="text-start">';
                         tr += '<a href="#" class="text-success" id="edit_product">';
                         tr += '<span class="product_name">'+name+'</span>';
-                        tr += '<span class="product_variant"></span>';
                         tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info">';
-                    
                         tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                         tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                         tr += '<input value="'+p_tax_type+'" type="hidden" id="tax_type">';
@@ -584,8 +580,7 @@
                         tr += '<tr>';
                         tr += '<td colspan="2" class="text-start">';
                         tr += '<a href="#" class="text-success" id="edit_product">';
-                        tr += '<span class="product_name">'+name+'</span>';
-                        tr += '<span class="product_variant">'+' -'+variant_name+'</span>'; 
+                        tr += '<span class="product_name">'+name+' -'+variant_name+'</span>';
                         tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
                         tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                         tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
@@ -847,9 +842,8 @@
         var unit_discount_amount = parentTableRow.find('#unit_discount_amount').val();
         var product_unit = parentTableRow.find('#unit').val();
         // Set modal heading
-        var heading = product_name + (product_variant ? product_variant : '') + product_code;
+        var heading = product_name;
         $('#product_info').html(heading);
-        
         $('#e_quantity').val(parseFloat(quantity).toFixed(2));
         $('#e_unit_price').val(parseFloat(unit_price_exc_tax).toFixed(2));
         $('#e_unit_discount_type').val(unit_discount_type);
@@ -1080,55 +1074,56 @@
         });
     });
 
-    $('#add_product').on('click', function () {
-        $.ajax({
-            url:"{{route('sales.add.product.modal.view')}}",
-            type:'get',
-            success:function(data){
-                $('#add_product_body').html(data);
-                $('#addProductModal').modal('show');
-            }
+    @if (auth()->user()->permission->product['product_add'] == '1')
+        $('#add_product').on('click', function () {
+            $.ajax({
+                url:"{{route('sales.add.product.modal.view')}}",
+                type:'get',
+                success:function(data){
+                    $('#add_product_body').html(data);
+                    $('#addProductModal').modal('show');
+                }
+            });
         });
-    });
 
-    // Add product by ajax
-    $(document).on('submit', '#add_product_form',function(e) {
-        e.preventDefault();
-        $('.loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-        
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-                toastr.success('Successfully product is added.');
-                $.ajax({
-                    url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
-                    type:'get',
-                    success:function(data){
-                        $('.loading_button').hide();
-                        $('#addProductModal').modal('hide');
-                        if (!$.isEmptyObject(data.errorMsg)) {
-                            toastr.error(data.errorMsg);
-                        }else{
-                            $('.sale-product-table tbody').prepend(data);
-                            calculateTotalAmount();
+        // Add product by ajax
+        $(document).on('submit', '#add_product_form',function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success('Successfully product is added.');
+                    $.ajax({
+                        url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
+                        type:'get',
+                        success:function(data){
+                            $('.loading_button').hide();
+                            $('#addProductModal').modal('hide');
+                            if (!$.isEmptyObject(data.errorMsg)) {
+                                toastr.error(data.errorMsg);
+                            }else{
+                                $('.sale-product-table tbody').prepend(data);
+                                calculateTotalAmount();
+                            }
                         }
-                    }
-                });
-            },error: function(err) {
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
-                $('.error').html('');
-                $.each(err.responseJSON.errors, function(key, error) {
-                    $('.error_sale_' + key + '').html(error[0]);
-                });
-            }
+                    });
+                },error: function(err) {
+                    $('.loading_button').hide();
+                    toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_sale_' + key + '').html(error[0]);
+                    });
+                }
+            });
         });
-    });
-
+    @endif
     $('#status').on('change', function () {
         if ($(this).val() == 1) {
             $('.payment_body').show();

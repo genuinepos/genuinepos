@@ -7,7 +7,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
 @endpush
-@section('title', 'Essentials - ')
+@section('title', 'All Memos -')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -20,21 +20,27 @@
                                     <ul class="list-unstyled">
                                         @if (auth()->user()->permission->essential['assign_todo'] == '1')
                                             <li>
-                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>Work Spaces</b></a>
+                                                <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
+                                            </li>
+                                        @endif
+                                        
+                                        @if (auth()->user()->permission->essential['work_space'] == '1')
+                                            <li>
+                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>@lang('menu.work_space')</b></a>
                                             </li>
                                         @endif
 
-                                        <li>
-                                            <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>Todo</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->essential['memo'] == '1')
+                                            <li>
+                                                <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>@lang('menu.memo')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>Memos</b></a>
-                                        </li>
-
-                                        <li>
-                                            <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope"></i> <b>Messages</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->essential['msg'] == '1')
+                                            <li>
+                                                <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope"></i> <b>@lang('menu.message')</b></a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
@@ -127,9 +133,7 @@
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-    
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>

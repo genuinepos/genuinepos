@@ -38,7 +38,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->permission->customers['customer_all'] == '0') {
+        if (auth()->user()->permission->contact['customer_all'] == '0') {
             abort(403, 'Access Forbidden.');
         }
 
@@ -52,6 +52,10 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->permission->contact['customer_add'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
@@ -95,6 +99,9 @@ class CustomerController extends Controller
 
     public function edit($customerId)
     {
+        if (auth()->user()->permission->contact['customer_edit'] == '0') {
+            return response()->json('Access Denied');
+        }
         $customer = DB::table('customers')->where('id', $customerId)->first();
         $groups = DB::table('customer_groups')->get();
         return view('contacts.customers.ajax_view.edit', compact('customer', 'groups'));
@@ -108,6 +115,10 @@ class CustomerController extends Controller
 
     public function update(Request $request)
     {
+        if (auth()->user()->permission->contact['customer_edit'] == '0') {
+            return response()->json('Access Denied');
+        }
+        
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
@@ -139,6 +150,10 @@ class CustomerController extends Controller
 
     public function delete(Request $request, $customerId)
     {
+        if (auth()->user()->permission->contact['customer_delete'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $deleteCustomer = Customer::find($customerId);
         if (!is_null($deleteCustomer)) {
             $deleteCustomer->delete();
@@ -583,7 +598,7 @@ class CustomerController extends Controller
 
     public function returnPaymentAdd(Request $request, $customerId)
     {
-        // Add Supplier Payment Record
+        // Add Customer Payment Record
         $customerPayment = new CustomerPayment();
         $customerPayment->voucher_no = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->customerPaymentVoucherNo();
         $customerPayment->branch_id = auth()->user()->branch_id;
@@ -642,13 +657,13 @@ class CustomerController extends Controller
             $addCashFlow->save();
         }
 
-        // Add supplier payment for direct payment
-        $addSupplierLedger = new CustomerLedger();
-        $addSupplierLedger->customer_id = $customerId;
-        $addSupplierLedger->row_type = 5;
-        $addSupplierLedger->customer_payment_id = $customerPayment->id;
-        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
-        $addSupplierLedger->save();
+        // Add Customer payment for direct payment
+        $addCustomerLedger = new CustomerLedger();
+        $addCustomerLedger->customer_id = $customerId;
+        $addCustomerLedger->row_type = 5;
+        $addCustomerLedger->customer_payment_id = $customerPayment->id;
+        $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
+        $addCustomerLedger->save();
 
         $returnSales = Sale::with(['sale_return'])->where('sale_return_due', '>', 0)->get();
         if (count($returnSales) > 0) {
@@ -693,7 +708,7 @@ class CustomerController extends Controller
 
                         // Add customer return Payment invoice
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
-                        $addCustomerPaymentInvoice->supplier_payment_id = $customerPayment->id;
+                        $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
                         $addCustomerPaymentInvoice->sale_id = $returnSale->id;
                         $addCustomerPaymentInvoice->paid_amount = $request->amount;
                         $addCustomerPaymentInvoice->type = 2;
@@ -745,7 +760,7 @@ class CustomerController extends Controller
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->save();
 
-                        // Add Supplier return Payment invoice
+                        // Add Customer return Payment invoice
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
                         $addCustomerPaymentInvoice->sale_id = $returnSale->id;
@@ -798,7 +813,7 @@ class CustomerController extends Controller
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->save();
 
-                        // Add Supplier return Payment invoice
+                        // Add Customer return Payment invoice
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
                         $addCustomerPaymentInvoice->sale_id = $returnSale->id;

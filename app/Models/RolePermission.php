@@ -8,18 +8,13 @@ class RolePermission extends Model
 {
     protected $casts = [
         'user' => 'array',
-        'roles' => 'array',
-        'supplier' => 'array',
-        'customers' => 'array',
+        'contact' => 'array',
         'product' => 'array',
         'purchase' => 'array',
         's_adjust' => 'array',
         'expense' => 'array',
         'sale' => 'array',
         'register' => 'array',
-        'brand' => 'array',
-        'category' => 'array',
-        'unit' => 'array',
         'report' => 'array',
         'setup' => 'array',
         'dashboard' => 'array',
@@ -31,6 +26,7 @@ class RolePermission extends Model
         'repair' => 'array',
         'superadmin' => 'array',
         'e_commerce' => 'array',
+        'others' => 'array',
     ];
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

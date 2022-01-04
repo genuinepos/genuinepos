@@ -12,7 +12,8 @@ return [
   'setup' => 'Setup',
   'users' => 'Users',
   'hrm' => 'HRM',
-  'essentials' => 'Requisites',
+  'manufacturing' => 'Manufacture',
+  'essentials' => 'Manage Task',
   'e_commerce' => 'Ecommerce',
   'service' => 'Service',
   'reports' => 'Reports',
@@ -107,6 +108,16 @@ return [
   'department' => 'Department',
   'designation' => 'Designation',
   'hrm_settings' => 'HRM Settings',
+  // Menu childs of manufacturing
+  'process' => 'Process',
+  'productions' => 'Productions',
+  'manufacturing_setting' => 'Settings',
+  'manufacturing_report' => 'Manufacturing Report',
+  // Menu childs of Essentials
+  'todo' => 'Todo',
+  'work_space' => 'Work Spaces',
+  'memo' => 'Memo',
+  'message' => 'Message',
   // Menu childs of Report module  
   'profit_loss' => 'Profit/Loss Report',
   'purchase_sale' => 'Purchase & Sale',

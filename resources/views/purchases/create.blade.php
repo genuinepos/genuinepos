@@ -47,8 +47,7 @@
                                                             <option value="">Select Supplier</option>
                                                         </select>
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text add_button"
-                                                                id="addSupplier"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            <span class="input-group-text add_button" id="addSupplier"><i class="fas fa-plus-square text-dark"></i></span>
                                                         </div>
                                                     </div>
                                                     <span class="error error_supplier_id"></span>
@@ -179,9 +178,11 @@
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
                                                         </div>
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                        <div class="input-group-prepend">
-                                                            <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
-                                                        </div>
+                                                        @if (auth()->user()->permission->product['product_add'] == '1')
+                                                            <div class="input-group-prepend">
+                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>

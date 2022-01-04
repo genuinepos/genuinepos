@@ -20,45 +20,57 @@ class SubCategoryController extends Controller
     // Get all sub-categories by index page
     public function index(Request $request)
     {
+        if (auth()->user()->permission->product['categories'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $img_url = asset('public/uploads/category/');
         if ($request->ajax()) {
-          $subCategories = DB::table('categories')
-          ->join('categories as parentcat','parentcat.id','categories.parent_category_id')
-          ->select('parentcat.name as parentname','categories.*')
-          ->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC');
-           return DataTables::of($subCategories)
-            ->addIndexColumn()
-            ->editColumn('photo', function ($row) use($img_url) {
-                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="'.$img_url.'/'.$row->photo.'">';
-            })
-            ->addColumn('action', function($row) {
-                // return $action_btn;
-                $html = '<div class="dropdown table-dropdown">';
-                if (auth()->user()->permission->category['category_edit'] == '1'){
-                    $html .= '<a href="javascript:;" class="action-btn c-edit edit_sub_cate" data-id="'.$row->id.'"><span class="fas fa-edit"></span></a>';
-                }
+            $subCategories = DB::table('categories')
+                ->join('categories as parentcat', 'parentcat.id', 'categories.parent_category_id')
+                ->select('parentcat.name as parentname', 'categories.*')
+                ->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC');
+            return DataTables::of($subCategories)
+                ->addIndexColumn()
+                ->editColumn('photo', function ($row) use ($img_url) {
+                    return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $img_url . '/' . $row->photo . '">';
+                })
+                ->addColumn('action', function ($row) {
+                    // return $action_btn;
+                    $html = '<div class="dropdown table-dropdown">';
+                    if (auth()->user()->permission->category['category_edit'] == '1') {
+                        $html .= '<a href="javascript:;" class="action-btn c-edit edit_sub_cate" data-id="' . $row->id . '"><span class="fas fa-edit"></span></a>';
+                    }
 
-                if (auth()->user()->permission->category['category_delete'] == '1'){
-                    $html .= '<a href="' . route('product.subcategories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete_sub_cate" title="Delete"><span class="fas fa-trash "></span></a>';
-                }
-                $html .= '</div>';
-                return $html;
-            })
-            ->rawColumns(['photo', 'action'])
-            ->make(true);
+                    if (auth()->user()->permission->category['category_delete'] == '1') {
+                        $html .= '<a href="' . route('product.subcategories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete_sub_cate" title="Delete"><span class="fas fa-trash "></span></a>';
+                    }
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->rawColumns(['photo', 'action'])
+                ->make(true);
         }
     }
 
     //edit
     public function edit($id)
     {
-        $data = DB::table('categories')->where('id',$id)->first();
-        $category = DB::table('categories')->where('parent_category_id',NULL)->get();
-        return view('product.categories.ajax_view.edit_sub_category',compact('category','data'));
+        if (auth()->user()->permission->product['categories'] == '0') {
+            return response()->json('Access Denied');
+        }
+
+        $data = DB::table('categories')->where('id', $id)->first();
+        $category = DB::table('categories')->where('parent_category_id', NULL)->get();
+        return view('product.categories.ajax_view.edit_sub_category', compact('category', 'data'));
     }
 
     public function store(Request $request)
     {
+        if (auth()->user()->permission->product['categories'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) {
                 return $query->where('parent_category_id', '!=', NULL);
@@ -88,6 +100,10 @@ class SubCategoryController extends Controller
 
     public function update(Request $request)
     {
+        if (auth()->user()->permission->product['categories'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) use ($request) {
                 return $query->where('parent_category_id', '!=', NULL)->where('id', '!=', $request->id);
@@ -124,6 +140,11 @@ class SubCategoryController extends Controller
     public function delete(Request $request, $categoryId)
     {
         return response()->json('Feature is disabled in this demo');
+
+        if (auth()->user()->permission->product['categories'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $deleteCategory = Category::find($categoryId);
         if ($deleteCategory->photo !== 'default.png') {
             if (file_exists(public_path('uploads/category/' . $deleteCategory->photo))) {

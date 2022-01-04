@@ -15,6 +15,10 @@ class BulkVariantController extends Controller
 
     public function index()
     {
+        if (auth()->user()->permission->product['variant'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         return view('product.bulk_variants.index_v2');
     }
 
@@ -26,6 +30,10 @@ class BulkVariantController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->permission->product['variant'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'variant_name' => 'required',
         ]);
@@ -46,6 +54,10 @@ class BulkVariantController extends Controller
     
     public function update(Request $request)
     {
+        if (auth()->user()->permission->product['variant'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $updateVariant =  BulkVariant::with(['bulk_variant_child'])->where('id', $request->id)->first();
         $updateVariant->bulk_variant_name = $request->variant_name;
         $updateVariant->save();
@@ -86,6 +98,10 @@ class BulkVariantController extends Controller
 
     public function delete(Request $request, $variantId)
     {
+        if (auth()->user()->permission->product['bulk_variant'] == '0') {
+            return response()->json('Access Denied');
+        }
+        
         $deleteVariant = BulkVariant::where('id', $variantId)->first();
         if (!is_null($deleteVariant)) {
             $deleteVariant->delete();

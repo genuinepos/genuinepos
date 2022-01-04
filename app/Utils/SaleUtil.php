@@ -273,7 +273,8 @@ class SaleUtil
                 ->where('sales.created_by', 1)
                 ->orderBy('sales.report_date', 'desc');
         } else {
-            $sales = $this->filteredQuery($request, $query)->where('sales.branch_id', auth()->user()->branch_id)->where('sales.status', 1)
+            $sales = $this->filteredQuery($request, $query)->where('sales.branch_id', auth()->user()->branch_id)
+                ->where('sales.status', 1)
                 ->where('created_by', 1)
                 ->orderBy('sales.report_date', 'desc');
         }
@@ -285,15 +286,18 @@ class SaleUtil
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
-                $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
 
+                if (auth()->user()->permission->sale['shipment_access'] == '1') {
+                    $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
+                }
+                
                 if (auth()->user()->permission->sale['shipment_access'] == '1') {
                     $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
-                    if ($row->due > 0) {
-                        if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                    if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                        if ($row->due > 0) {
                             $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
                         }
                     }
@@ -314,8 +318,13 @@ class SaleUtil
                         $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i class="fas fa-undo-alt text-primary"></i> Sale Return</a>';
                     }
 
-                    $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    if (auth()->user()->permission->sale['edit_add_sale'] == '1') {
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    }
+
+                    if (auth()->user()->permission->sale['delete_add_sale'] == '1') {
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    }
                 }
 
                 $html .= '<a class="dropdown-item" id="send_notification" href="' . route('sales.notification.form', [$row->id]) . '"><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
@@ -323,9 +332,7 @@ class SaleUtil
                 $html .= '</div>';
                 return $html;
             })
-            ->editColumn('date', function ($row) use ($generalSettings) {
-                return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
-            })
+            ->editColumn('date', fn ($row) => date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date)))
             ->editColumn('invoice_id', function ($row) {
                 $html = '';
                 $html .= $row->invoice_id;
@@ -339,9 +346,7 @@ class SaleUtil
                     return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                 }
             })
-            ->editColumn('customer',  function ($row) {
-                return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
-            })
+            ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
             ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
             ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
             ->editColumn('due', fn ($row) =>  '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
@@ -376,7 +381,8 @@ class SaleUtil
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $sales = $this->filteredQuery($request, $query)->where('sales.status', 1)->where('created_by', 2)
+            $sales = $this->filteredQuery($request, $query)->where('sales.status', 1)
+                ->where('created_by', 2)
                 ->orderBy('sales.report_date', 'desc');
         } else {
             $sales = $this->filteredQuery($request, $query)
@@ -401,8 +407,8 @@ class SaleUtil
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
-                    if ($row->due > 0) {
-                        if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                    if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                        if ($row->due > 0) {
                             $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
                         }
                     }
@@ -423,8 +429,13 @@ class SaleUtil
                                     class="fas fa-undo-alt text-primary"></i> Sale Return</a>';
                     }
 
-                    $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    if (auth()->user()->permission->sale['pos_edit'] == '1') {
+                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    }
+
+                    if (auth()->user()->permission->sale['pos_delete'] == '1') {
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    }
                 }
 
                 $html .= '<a class="dropdown-item" id="items_notification" href=""><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
@@ -432,9 +443,7 @@ class SaleUtil
                 $html .= '</div>';
                 return $html;
             })
-            ->editColumn('date', function ($row) use ($generalSettings) {
-                return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
-            })
+            ->editColumn('date', fn ($row) => date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date)))
             ->editColumn('invoice_id', function ($row) {
                 $html = '';
                 $html .= $row->invoice_id;
@@ -448,9 +457,7 @@ class SaleUtil
                     return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                 }
             })
-            ->editColumn('customer',  function ($row) {
-                return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
-            })
+            ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
             ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
             ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
             ->editColumn('due', fn ($row) => '<span class="due text-danger"  data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
@@ -653,7 +660,6 @@ class SaleUtil
     public function saleQuotationTable($request)
     {
         $generalSettings = DB::table('general_settings')->first();
-
         $quotations = '';
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')

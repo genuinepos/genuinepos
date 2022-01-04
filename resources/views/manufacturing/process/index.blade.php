@@ -13,21 +13,29 @@
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul>
-                                        <li>
-                                            <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire text-primary"></i> <b>Process</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['process_view'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire text-primary"></i> <b>@lang('menu.process')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>Production</b></a>
-                                        </li>
-                                     
-                                        <li>
-                                            <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>Settings</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['production_view'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>Manufacturing Report</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['manuf_settings'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>@lang('menu.manufacturing_setting')</b></a>
+                                            </li>
+                                        @endif
+
+                                        @if (auth()->user()->permission->manufacturing['manuf_report'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.manufacturing_report')</b></a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
@@ -42,7 +50,7 @@
                                         <h6>Process</h6>
                                     </div>
 
-                                    @if (auth()->user()->permission->manufacturing['menuf_add'] == '1') 
+                                    @if (auth()->user()->permission->manufacturing['process_add'] == '1') 
                                         <div class="col-md-6">
                                             <div class="btn_30_blue float-end">
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
@@ -76,21 +84,12 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
-                                                @if (auth()->user()->permission->manufacturing['menuf_edit'] == '1') 
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th colspan="10">
-                                                                <a href="" class="btn btn-sm btn-danger update_products_button">Update product price</a>
-                                                            </th>
-                                                        </tr>
-                                                    </tfoot>
-                                                @endif
                                             </table>
                                         </form>
                                     </div>
                                 </div>
     
-                                @if (auth()->user()->permission->manufacturing['menuf_delete'] == '1')
+                                @if (auth()->user()->permission->manufacturing['process_delete'] == '1')
                                     <form id="deleted_form" action="" method="post">
                                         @method('DELETE')
                                         @csrf
@@ -104,7 +103,7 @@
         </div>
     </div>
 
-    @if (auth()->user()->permission->manufacturing['menuf_add'] == '1')
+    @if (auth()->user()->permission->manufacturing['process_add'] == '1') 
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog double-col-modal" role="document">

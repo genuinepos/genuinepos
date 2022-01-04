@@ -15,22 +15,30 @@
                         <div class="sec-name">
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul >
-                                        <li>
-                                            <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>Process</b></a>
-                                        </li>
+                                    <ul>
+                                        @if (auth()->user()->permission->manufacturing['process_view'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>@lang('menu.process')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>Production</b></a>
-                                        </li>
-                                     
-                                        <li>
-                                            <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h text-primary"></i> <b>Settings</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['production_view'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>Manufacturing Report</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['manuf_settings'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h text-primary"></i> <b>@lang('menu.manufacturing_setting')</b></a>
+                                            </li>
+                                        @endif
+
+                                        @if (auth()->user()->permission->manufacturing['manuf_report'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.manufacturing_report')</b></a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>

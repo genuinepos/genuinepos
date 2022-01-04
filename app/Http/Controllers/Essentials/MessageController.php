@@ -17,6 +17,10 @@ class MessageController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        if (auth()->user()->permission->essential['msg'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         return view('essentials.messages.index');
     }
 

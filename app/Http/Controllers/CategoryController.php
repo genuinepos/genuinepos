@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
-
 class CategoryController extends Controller
 {
     public function __construct()
@@ -20,7 +19,7 @@ class CategoryController extends Controller
     // Category main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->category['category_all'] == '0') {
+        if (auth()->user()->permission->product['categories'] == '0') {
             abort(403, 'Access Forbidden.');
         }
         
@@ -36,13 +35,8 @@ class CategoryController extends Controller
             })
             ->addColumn('action', function($row) {
                 $html = '<div class="dropdown table-dropdown">';
-                if (auth()->user()->permission->category['category_edit'] == '1'){
-                    $html .= '<a href="javascript:;" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                }
-
-                if (auth()->user()->permission->category['category_delete'] == '1'){
-                    $html .= '<a href="' . route('product.categories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
-                }
+                $html .= '<a href="javascript:;" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="' . route('product.categories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                 $html .= '</div>';
                 return $html;
             })
@@ -59,6 +53,10 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->permission->product['categories'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) {
                 return $query->where('parent_category_id', NULL);
@@ -84,12 +82,20 @@ class CategoryController extends Controller
 
     public function edit($categoryId)
     {
+        if (auth()->user()->permission->product['categories'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $category = DB::table('categories')->where('id', $categoryId)->first();
         return view('product.categories.ajax_view.edit_modal_body', compact('category'));
     }
 
     public function update(Request $request)
     {
+        if (auth()->user()->permission->product['categories'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) use ($request) {
                 return $query->where('parent_category_id', NULL)->where('id', '!=', $request->id);
@@ -123,6 +129,11 @@ class CategoryController extends Controller
     public function delete(Request $request, $categoryId)
     {
         return response()->json('Feature is disabled in this demo');
+
+        if (auth()->user()->permission->product['categories'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $deleteCategory = Category::find($categoryId);
         if ($deleteCategory->photo !== 'default.png') {
             if (file_exists(public_path('uploads/category/'.$deleteCategory->photo))) {

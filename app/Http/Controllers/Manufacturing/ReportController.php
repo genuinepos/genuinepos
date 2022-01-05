@@ -34,7 +34,7 @@ class ReportController extends Controller
                 ->leftJoin('product_variants', 'productions.variant_id', 'product_variants.id')
                 ->leftJoin('units', 'productions.unit_id', 'units.id');
 
-            $this->$query->select(
+            $query->select(
                 'productions.*',
                 'products.name as p_name',
                 'product_variants.variant_name as v_name',
@@ -82,7 +82,7 @@ class ReportController extends Controller
                 ->rawColumns(['date', 'from', 'product', 'unit_cost_inc_tax', 'price_exc_tax', 'quantity', 'wasted_quantity',  'total_final_quantity', 'total_ingredient_cost', 'production_cost', 'total_cost', 'status'])
                 ->make(true);
         }
-        
+
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $categories = DB::table('categories')->select('id', 'name')->get();
         return view('manufacturing.report.index', compact('branches', 'categories'));

@@ -329,7 +329,7 @@
                         header: null,
                     });
                     setTimeout(function () {
-                        window.location = "{{route('sales.pos.create')}}";
+                        window.location = "{{ url()->previous(); }}";
                     }, 2000);
                 }
             }

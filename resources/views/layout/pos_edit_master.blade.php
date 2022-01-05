@@ -569,17 +569,9 @@
                 'buttons': {
                     'Yes': {
                         'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                            $('#recent_trans_preloader').show()
-                        }
+                        'action': function() {$('#deleted_form').submit();$('#recent_trans_preloader').show()}
                     },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
@@ -612,16 +604,9 @@
                 'buttons': {
                     'Yes': {
                         'class': 'yes btn-modal-primary',
-                        'action': function() {
-                            window.location = "{{ route('sales.pos.create') }}";
-                        }
+                        'action': function() {window.location = "{{ route('sales.pos.create') }}";}
                     },
-                    'No': {
-                        'class': 'no btn-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });

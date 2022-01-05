@@ -37,11 +37,11 @@
 
                             <a class="dropdown-item" id="view_payment" href="{{ route('suppliers.view.payment', $supplier->id) }}"><i class="far fa-trash-alt text-primary"></i> View Payments</a>
                             
-                            @if (auth()->user()->permission->supplier['supplier_edit'] == '1')
+                            @if (auth()->user()->permission->contact['supplier_edit'] == '1')
                                 <a class="dropdown-item" href="{{ route('contacts.supplier.edit', $supplier->id) }}" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>
                             @endif
 
-                            @if (auth()->user()->permission->supplier['supplier_delete'] == '1')
+                            @if (auth()->user()->permission->contact['supplier_delete'] == '1')
                                 <a class="dropdown-item" id="delete" href="{{ route('contacts.supplier.delete', $supplier->id) }}"><i class="far fa-trash-alt text-primary"></i> Delete</a>
                             @endif
 

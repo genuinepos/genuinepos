@@ -189,7 +189,7 @@
                                 <div class="section-header">
                                     <div class="col-md-6"><h6>Productions</h6></div>
 
-                                    @if (auth()->user()->permission->manufacturing['menuf_add'] == '1') 
+                                    @if (auth()->user()->permission->manufacturing['production_add'] == '1') 
                                         <div class="col-md-6">
                                             <div class="btn_30_blue float-end">
                                                 <a href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>
@@ -238,13 +238,6 @@
                                         </form>
                                     </div>
                                 </div>
-    
-                                @if (auth()->user()->permission->manufacturing['menuf_delete'] == '1')
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
-                                @endif
                             </div>
                         </div>
                     </div>

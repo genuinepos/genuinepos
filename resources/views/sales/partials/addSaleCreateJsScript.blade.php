@@ -828,9 +828,11 @@
     var tableRowIndex = 0;
     $(document).on('click', '#edit_product', function(e) {
         e.preventDefault();
+        $('#show_cost_section').hide();
         var parentTableRow = $(this).closest('tr');
         tableRowIndex = parentTableRow.index();
         var quantity = parentTableRow.find('#quantity').val();
+        var unit_cost_inc_tax = parentTableRow.find('#unit_cost_inc_tax').val();
         var product_name = parentTableRow.find('.product_name').html();
         var product_variant = parentTableRow.find('.product_variant').html();
         var product_code = parentTableRow.find('.product_code').html();
@@ -844,6 +846,7 @@
         var product_unit = parentTableRow.find('#unit').val();
         // Set modal heading
         var heading = product_name;
+        $('#unit_cost').html(bdFormat(unit_cost_inc_tax));
         $('#product_info').html(heading);
         $('#e_quantity').val(parseFloat(quantity).toFixed(2));
         $('#e_unit_price').val(parseFloat(unit_price_exc_tax).toFixed(2));
@@ -1271,5 +1274,10 @@
         },
         format: _expectedDateFormat,
     });
+
     //const textInput = e.key || String.fromCharCode(e.keyCode);
+    
+    $(document).on('click', '#show_cost_button', function () {
+        $('#show_cost_section').toggle(500);
+    });
 </script>

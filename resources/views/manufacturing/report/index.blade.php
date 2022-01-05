@@ -15,7 +15,7 @@
         /* Search Product area style end */
     </style>
 @endpush
-@section('title', 'Manufacturing - ')
+@section('title', 'Manufacturing Report- ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -183,12 +183,11 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
+                    <div class="row margin_row mt-1">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-6"><h6>Productions</h6></div>
-
                                     @if (auth()->user()->permission->manufacturing['production_add'] == '1') 
                                         <div class="col-md-6">
                                             <div class="btn_30_blue float-end">

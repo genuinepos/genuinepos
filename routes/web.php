@@ -658,11 +658,11 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'payment_settings'], function () {
-        Route::get('/', 'CardTypeController@index')->name('settings.payment.card.types.index');
-        Route::post('store', 'CardTypeController@store')->name('settings.payment.card.types.store');
-        Route::get('edit/{cardTypeId}', 'CardTypeController@edit')->name('settings.payment.card.types.edit');
-        Route::post('update/{cardTypeId}', 'CardTypeController@update')->name('settings.payment.card.types.update');
-        Route::delete('delete/{cardTypeId}', 'CardTypeController@delete')->name('settings.payment.card.types.delete');
+        Route::get('/', 'PaymentMethodController@index')->name('settings.payment.method.index');
+        Route::post('store', 'PaymentMethodController@store')->name('settings.payment.method.store');
+        Route::get('edit/{id}', 'PaymentMethodController@edit')->name('settings.payment.method.edit');
+        Route::post('update/{id}', 'PaymentMethodController@update')->name('settings.payment.method.update');
+        Route::delete('delete/{id}', 'PaymentMethodController@delete')->name('settings.payment.method.delete');
     });
 
     Route::group(['prefix' => 'barcode_settings'], function () {

@@ -273,6 +273,10 @@ class SaleUtil
                 ->where('sales.created_by', 1)
                 ->orderBy('sales.report_date', 'desc');
         } else {
+            if (auth()->user()->permission->sale['view_own_sale'] == '1') {
+                $query->where('sales.admin_id', auth()->user()->id);
+            }
+
             $sales = $this->filteredQuery($request, $query)->where('sales.branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 1)
                 ->where('created_by', 1)
@@ -385,6 +389,10 @@ class SaleUtil
                 ->where('created_by', 2)
                 ->orderBy('sales.report_date', 'desc');
         } else {
+            if (auth()->user()->permission->sale['view_own_sale'] == '1') {
+                $query->where('sales.admin_id', auth()->user()->id);
+            }
+
             $sales = $this->filteredQuery($request, $query)
                 ->where('sales.branch_id', auth()->user()->branch_id)
                 ->where('created_by', 2)
@@ -555,6 +563,10 @@ class SaleUtil
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
             $saleProducts = $query->orderBy('sales.report_date', 'desc');
         } else {
+            if (auth()->user()->permission->sale['view_own_sale'] == '1') {
+                $query->where('sales.admin_id', auth()->user()->id);
+            }
+
             $saleProducts = $query->where('sales.branch_id', auth()->user()->branch_id)
                 ->orderBy('sales.report_date', 'desc');
         }

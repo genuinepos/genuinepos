@@ -1344,7 +1344,7 @@
                     <div class="model__close bg-secondary-2">
                         <div class="row">
                             <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>Settings</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>Set-up</strong></p>
                             </div>
                             <div class="col-md-4">
                                 <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -1402,7 +1402,7 @@
                             @if (auth()->user()->permission->setup['p_settings'] == '1')
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
-                                        <a href="{{ route('settings.payment.card.types.index') }}" class="bar-link">
+                                        <a href="{{ route('settings.payment.method.index') }}" class="bar-link">
                                             <span><i class="fas fa-credit-card"></i></span>
                                         </a>
                                     </div>

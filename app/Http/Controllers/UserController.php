@@ -108,6 +108,7 @@ class UserController extends Controller
         if (auth()->user()->permission->user['user_add'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+
         $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
         $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
         $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
@@ -122,8 +123,6 @@ class UserController extends Controller
             'first_name' => 'required',
             'email' => 'required|unique:admin_and_users,email',
         ]);
-
-
 
         if (isset($request->allow_login)) {
             $this->validate($request, [
@@ -229,6 +228,10 @@ class UserController extends Controller
     // Update user
     public function update(Request $request, $userId)
     {
+        if (auth()->user()->permission->user['user_edit'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'first_name' => 'required',
             'email' => 'required|unique:admin_and_users,email,' . $userId,
@@ -335,9 +338,8 @@ class UserController extends Controller
     // Delete user
     public function delete($userId)
     {
-
         if (auth()->user()->permission->user['user_delete'] == '0') {
-            abort(403, 'Access Forbidden.');
+            return response()->json('Access Denied');
         }
 
         $deleteUser = AdminAndUser::find($userId);

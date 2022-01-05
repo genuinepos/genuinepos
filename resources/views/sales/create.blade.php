@@ -543,6 +543,16 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product" action="">
+                        @if (auth()->user()->permission->sale['view_product_cost_is_sale_screed'] == '1')
+                            <p>
+                                <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
+                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span> 
+                                    <span id="unit_cost">1,200.00</span> 
+                                </span> 
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">Cost</span>
+                            </p>
+                        @endif
+
                         <div class="form-group">
                             <label> <strong>Quantity</strong> : <span class="text-danger">*</span></label>
                             <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
@@ -702,3 +712,5 @@
 @push('scripts')
     @include('sales.partials.addSaleCreateJsScript')
 @endpush
+
+

@@ -8,7 +8,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-user-tag"></span>
@@ -18,8 +17,7 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
-
+                  
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
@@ -30,8 +28,7 @@
 
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
-                                            <a href="{{ route('users.role.create') }}"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
+                                            <a href="{{ route('users.role.create') }}"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
                                     </div>
                                 </div>
@@ -48,9 +45,7 @@
                                                     <th class="text-start">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -89,11 +84,7 @@
     getAllRoles();
 
     // Setup ajax for csrf token.
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
     // call jquery method 
     $(document).ready(function(){
@@ -105,18 +96,8 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no btn-modal-primary',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        } 
-                    }
+                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });

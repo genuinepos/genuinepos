@@ -39,6 +39,7 @@
     <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
+    <script src="{{asset('public/backend/js/number-bdt-formater.js')}}"></script>
 </head>
 
 <body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
@@ -327,6 +328,17 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product">
+                        @if (auth()->user()->permission->sale['view_product_cost_is_sale_screed'] == '1')
+                            <p>
+                                <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
+                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span> 
+                                    <span id="unit_cost">1,200.00</span> 
+                                </span>   
+                                 
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">Cost</span>
+                            </p>
+                        @endif
+
                         <div class="form-group mt-1">
                             <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
                             <input type="number" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" value=""/>
@@ -390,7 +402,6 @@
         </div>
     </div>
     <!-- Edit selling product modal end-->
-
 
     <!-- Show stock modal-->
     <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">

@@ -745,6 +745,7 @@
     var tableRowIndex = 0;
     $(document).on('click', '#edit_product', function(e) {
         e.preventDefault();
+        $('#show_cost_section').hide();
         var parentTableRow = $(this).closest('tr');
         tableRowIndex = parentTableRow.index();
         var quantity = parentTableRow.find('#quantity').val();
@@ -752,6 +753,7 @@
         var product_variant = parentTableRow.find('.product_variant').html();
         var product_code = parentTableRow.find('.product_code').html();
         var unit_price_exc_tax = parentTableRow.find('#unit_price_exc_tax').val();
+        var unit_cost_inc_tax = parentTableRow.find('#unit_cost_inc_tax').val();
         var unit_tax_percent = parentTableRow.find('#unit_tax_percent').val();
         var unit_tax_amount = parentTableRow.find('#unit_tax_amount').val();
         var unit_tax_type = parentTableRow.find('#tax_type').val();
@@ -760,9 +762,9 @@
         var unit_discount_amount = parentTableRow.find('#unit_discount_amount').val();
         var product_unit = parentTableRow.find('#unit').val();
         // Set modal heading
-        var heading = product_name + (product_variant ? product_variant : '') + product_code;
+        var heading = product_name;
         $('#product_info').html(heading);
-        
+        $('#unit_cost').html(bdFormat(unit_cost_inc_tax));
         $('#e_quantity').val(parseFloat(quantity).toFixed(2));
         $('#e_unit_price').val(parseFloat(unit_price_exc_tax).toFixed(2));
         $('#e_unit_discount_type').val(unit_discount_type);
@@ -1114,6 +1116,10 @@
     $(document).on('mouseenter', '#list>li>a',function () {
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
+    });
+
+    $(document).on('click', '#show_cost_button', function () {
+        $('#show_cost_section').toggle(500);
     });
 
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";

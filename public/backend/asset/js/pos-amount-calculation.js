@@ -1,4 +1,4 @@
-// Calculate total amount functionalitie
+// Calculate total amount functionalities
 function calculateTotalAmount() {
     var indexes = document.querySelectorAll('#index');
     indexes.forEach(function (index) {

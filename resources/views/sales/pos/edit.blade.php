@@ -221,7 +221,6 @@
                     var variant_ids = document.querySelectorAll('#variant_id');
                     var sameVariant = 0;
                     variant_ids.forEach(function(input) {
-                        console.log(input.value);
                         if (input.value != 'noid') {
                             if (input.value == variant_id) {
                                 sameVariant += 1;
@@ -237,8 +236,7 @@
                                     return;
                                 }
                                 var updateQty = parseFloat(presentQty) + 1;
-                                closestTr.find('#quantity').val(parseFloat(updateQty)
-                                    .toFixed(2));
+                                closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
 
                                 //Update Subtotal
                                 var unitPrice = closestTr.find('#unit_price_inc_tax').val();
@@ -279,6 +277,7 @@
                             unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
                             tax_amount = __tax_amount;
                         }
+                        
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
@@ -441,7 +440,7 @@
         }
     });
 
-    // change unit discount type var productTableRow =
+    // change unit discount type var productTableRow 
     $('#e_unit_discount_type').on('change', function() {
         var type = $(this).val();
         var discountValue = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;

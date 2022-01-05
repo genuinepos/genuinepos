@@ -94,6 +94,7 @@
 
     // add Sale product by searching product code
     function searchProduct(product_code){
+        $('#search_product').focus();
         var price_group_id = $('#price_group_id').val();
         $('.variant_list_area').empty();
         $('.select_area').hide();
@@ -172,7 +173,6 @@
                                 tr += '<td colspan="2" class="text-start">';
                                 tr += '<a href="#" class="text-success" id="edit_product">';
                                 tr += '<span class="product_name">'+ product.name +'</span>';
-                                tr += '<span class="product_variant"></span>'; 
                                 tr += '</a><br/><input type="'+ (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                                 tr += '<input value="'+ product.id +'" type="hidden" class="productId-'+ product.id +'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -296,8 +296,7 @@
                             tr += '<tr>';
                             tr += '<td colspan="2" class="text-start">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
-                            tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                            tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
+                            tr += '<span class="product_name">'+variant_product.product.name+' -'+variant_product.variant_name+'</span>';
                             tr += '</a><br/><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
@@ -472,7 +471,6 @@
                         tr += '<td colspan="2" class="text-start">';
                         tr += '<a href="#" class="text-success" id="edit_product">';
                         tr += '<span class="product_name">'+product_name+'</span>';
-                        tr += '<span class="product_variant"></span>'; 
                         tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                         tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                         tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -619,8 +617,7 @@
                         tr += '<tr>';
                         tr += '<td colspan="2" class="text-start">';
                         tr += '<a href="#" class="text-success" id="edit_product">';
-                        tr += '<span class="product_name">'+product_name+'</span>';
-                        tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
+                        tr += '<span class="product_name">'+product_name+' - '+variant_name+'</span>';
                         tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                         tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                         tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
@@ -998,9 +995,8 @@
                     tr += '<tr>';
                     tr += '<td colspan="2" class="text-start">';
                     tr += '<a href="#" class="text-success" id="edit_product">';
-                    tr += '<span class="product_name">'+product.product.name+'</span>';
-                    var variant = product.product_variant_id != null ? ' -'+product.variant.variant_name+'- ' : '';
-                    tr += '<span class="product_variant">'+variant+'</span>'; 
+                        var variant = product.product_variant_id != null ? ' -'+product.variant.variant_name+'- ' : '';
+                    tr += '<span class="product_name">'+product.product.name+variant+'</span>';
                     tr += '</a><br/><input type="'+(product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="'+(product.description ? product.description : '')+'">';
                     tr += '<input value="'+product.product_id+'" type="hidden" class="productId-'+product.product_id+'" id="product_id" name="product_ids[]">';
 
@@ -1011,7 +1007,6 @@
                     }   
 
                     tr += '<input type="hidden" id="tax_type" value="'+product.product.tax_type+'">';
-
                     tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+product.unit_tax_percent+'">';
                     tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+product.unit_tax_amount+'">';
                     tr += '<input value="'+product.unit_discount_type+'" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';

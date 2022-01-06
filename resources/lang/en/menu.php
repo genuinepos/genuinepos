@@ -9,7 +9,7 @@ return [
   'adjustment' => 'Adjustment',
   'expenses' => 'Expenses',
   'accounting' => 'Accounting',
-  'setup' => 'Setup',
+  'setup' => 'Set-up',
   'users' => 'Users',
   'hrm' => 'HRM',
   'manufacturing' => 'Manufacture',

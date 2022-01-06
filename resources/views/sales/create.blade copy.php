@@ -382,14 +382,98 @@
                                             <div class="row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Paid By :</label>
                                                 <div class="col-sm-7">
-                                                    <select name="payment_method_id" class="form-control" id="payment_method_id">
-                                                        @foreach ($methods as $method)
-                                                            <option value="{{ $method->id }}" 
-                                                                data-account="{{ $method->account_id }}">
-                                                                {{ $method->name }}
-                                                            </option>
-                                                        @endforeach
+                                                    <select name="payment_method" class="form-control" id="payment_method">
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Advanced">Advanced</option>
+                                                        <option value="Cheque">Cheque</option>
+                                                        <option value="Card">Card</option>
+                                                        <option value="Bank-Transfer">Bank-Transter</option>
+                                                        <option value="Other">Other</option>
+                                                        <option value="Custom">Custom Field</option>
                                                     </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="payment_method d-none" id="Card">
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Card No :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="card_no" id="card_no" placeholder="Card number">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Card Holder :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="card_holder_name" id="card_holder_name" placeholder="Card holder name">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">TrX Number :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="card_transaction_no" id="card_transaction_no" placeholder="Card transaction no">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Card Type :</label>
+                                                    <div class="col-sm-7">
+                                                        <select name="card_type" class="form-control"  id="p_card_type">
+                                                            <option value="Credit-Card">Credit Card</option>  
+                                                            <option value="Debit-Card">Debit Card</option> 
+                                                            <option value="Visa">Visa Card</option> 
+                                                            <option value="Master-Card">Master Card</option> 
+                                                        </select>
+                                                    </div>
+                                                </div> 
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Month :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control " name="month" id="month" placeholder="Month">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Year :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="year" id="year" placeholder="Year">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Secure ID :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="secure_code" id="secure_code" placeholder="Secure code">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="payment_method d-none" id="Cheque">
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Cheque No :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="cheque_no" id="cheque_no" placeholder="Cheque number">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="payment_method d-none" id="Bank-Transfer">
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Account No :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" name="account_no" id="account_no" placeholder="Account number">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="payment_method d-none" id="Custom">
+                                                <div class="row">
+                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">TrX No :</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control " name="transaction_no" id="transaction_no" placeholder="Transaction number">
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -397,7 +481,7 @@
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Pay Account :</label>
                                                 <div class="col-sm-7">
                                                     <select name="account_id" class="form-control" id="account_id">
-                                                        <option value="">Cash-In-Hand</option>
+                                                        <option value="">None</option>
                                                         @foreach ($accounts as $account)
                                                             <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
                                                         @endforeach

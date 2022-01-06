@@ -112,6 +112,7 @@ class SaleController extends Controller
             'sale_products.product.warranty',
             'sale_products.variant',
             'sale_payments',
+            'sale_payments.paymentMethod',
         ])->where('id', $saleId)->first();
         return view('sales.ajax_view.product_details_modal', compact('sale'));
     }
@@ -129,6 +130,7 @@ class SaleController extends Controller
             'sale_products.product.warranty',
             'sale_products.variant',
             'sale_payments',
+            'sale_payments.paymentMethod',
         ])->where('id', $saleId)->first();
         return view('sales.pos.ajax_view.show', compact('sale'));
     }
@@ -174,10 +176,11 @@ class SaleController extends Controller
         $customers = DB::table('customers')
             ->where('status', 1)->select('id', 'name', 'phone')
             ->orderBy('id', 'desc')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
         $invoice_schemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);
         $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-        return view('sales.create', compact('customers', 'accounts', 'price_groups', 'invoice_schemas'));
+        return view('sales.create', compact('customers', 'methods','accounts', 'price_groups', 'invoice_schemas'));
     }
 
     // Add Sale method
@@ -841,7 +844,7 @@ class SaleController extends Controller
 
     public function viewPayment($saleId)
     {
-        $sale = Sale::with(['customer', 'branch', 'sale_payments'])->where('id', $saleId)->first();
+        $sale = Sale::with(['customer', 'branch', 'sale_payments', 'sale_payments.paymentMethod'])->where('id', $saleId)->first();
         return view('sales.ajax_view.payment_view', compact('sale'));
     }
 
@@ -850,7 +853,8 @@ class SaleController extends Controller
     {
         $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
-        return view('sales.ajax_view.add_payment', compact('sale', 'accounts'));
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        return view('sales.ajax_view.add_payment', compact('sale', 'accounts', 'methods'));
     }
 
     public function paymentAdd(Request $request, $saleId)
@@ -1117,30 +1121,13 @@ class SaleController extends Controller
 
         // update sale payment
         $updateSalePayment->account_id = $request->account_id;
-        $updateSalePayment->pay_mode = $request->payment_method;
+        $updateSalePayment->payment_method_id = $request->payment_method_id;
         $updateSalePayment->paid_amount = $request->amount;
         $updateSalePayment->date = $request->date;
         $updateSalePayment->report_date = date('Y-m-d', strtotime($request->date));
         $updateSalePayment->month = date('F');
         $updateSalePayment->year = date('Y');
         $updateSalePayment->note = $request->note;
-
-        if ($request->payment_method == 'Card') {
-            $updateSalePayment->card_no = $request->card_no;
-            $updateSalePayment->card_holder = $request->card_holder_name;
-            $updateSalePayment->card_transaction_no = $request->card_transaction_no;
-            $updateSalePayment->card_type = $request->card_type;
-            $updateSalePayment->card_month = $request->month;
-            $updateSalePayment->card_year = $request->year;
-            $updateSalePayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $updateSalePayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $updateSalePayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $updateSalePayment->transaction_no = $request->transaction_no;
-        }
-
         if ($request->hasFile('attachment')) {
             if ($updateSalePayment->attachment != null) {
                 if (file_exists(public_path('uploads/payment_attachment/' . $updateSalePayment->attachment))) {
@@ -1212,7 +1199,7 @@ class SaleController extends Controller
             return response()->json('Access Denied');
         }
 
-        $payment = SalePayment::with('sale', 'sale.branch', 'sale.customer')->where('id', $paymentId)->first();
+        $payment = SalePayment::with('sale', 'sale.branch', 'sale.customer', 'paymentMethod')->where('id', $paymentId)->first();
         return view('sales.ajax_view.payment_details', compact('payment'));
     }
 

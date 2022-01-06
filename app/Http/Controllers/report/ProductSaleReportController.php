@@ -159,6 +159,7 @@ class ProductSaleReportController extends Controller
             'units.code_name as unit_code',
             'sale_products.subtotal',
             'sales.date',
+            'sales.report_date',
             'sales.invoice_id',
             'products.name',
             'products.product_code',

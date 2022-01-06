@@ -83,28 +83,11 @@ class SaleUtil
                             $customerPayment->customer_id = $addSale->customer_id;
                             $customerPayment->account_id = $request->account_id;
                             $customerPayment->paid_amount = $dueAmounts;
-                            $customerPayment->pay_mode = $request->payment_method;
+                            $customerPayment->payment_method_id = $request->payment_method_id;
                             $customerPayment->date = $request->date;
                             $customerPayment->time = date('h:i:s a');
                             $customerPayment->month = date('F');
                             $customerPayment->year = date('Y');
-
-                            if ($request->payment_method == 'Card') {
-                                $customerPayment->card_no = $request->card_no;
-                                $customerPayment->card_holder = $request->card_holder_name;
-                                $customerPayment->card_transaction_no = $request->card_transaction_no;
-                                $customerPayment->card_type = $request->card_type;
-                                $customerPayment->card_month = $request->month;
-                                $customerPayment->card_year = $request->year;
-                                $customerPayment->card_secure_code = $request->secure_code;
-                            } elseif ($request->payment_method == 'Cheque') {
-                                $customerPayment->cheque_no = $request->cheque_no;
-                            } elseif ($request->payment_method == 'Bank-Transfer') {
-                                $customerPayment->account_no = $request->account_no;
-                            } elseif ($request->payment_method == 'Custom') {
-                                $customerPayment->transaction_no = $request->transaction_no;
-                            }
-
                             $customerPayment->note = $request->note;
                             $customerPayment->save();
 
@@ -153,7 +136,7 @@ class SaleUtil
         $addSalePayment->sale_id = $saleId;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;
-        $addSalePayment->pay_mode = $request->payment_method;
+        $addSalePayment->payment_method_id = $request->payment_method_id;
         $addSalePayment->paid_amount = $payingAmount;
         $addSalePayment->date = $request->date;
         $addSalePayment->time = date('h:i:s a');
@@ -161,23 +144,6 @@ class SaleUtil
         $addSalePayment->month = date('F');
         $addSalePayment->year = date('Y');
         $addSalePayment->note = $request->payment_note;
-
-        if ($request->payment_method == 'Card') {
-            $addSalePayment->card_no = $request->card_no;
-            $addSalePayment->card_holder = $request->card_holder_name;
-            $addSalePayment->card_transaction_no = $request->card_transaction_no;
-            $addSalePayment->card_type = $request->card_type;
-            $addSalePayment->card_month = $request->month;
-            $addSalePayment->card_year = $request->year;
-            $addSalePayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $addSalePayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $addSalePayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $addSalePayment->transaction_no = $request->transaction_no;
-        }
-
         $addSalePayment->admin_id = auth()->user()->id;
         $addSalePayment->save();
 

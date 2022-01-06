@@ -5,10 +5,8 @@
             <th class="text-start">Account Number</th>
             <th class="text-start">Bank Name</th>
             <th class="text-start">Account Type</th>
-            <th class="text-start">Remark</th>
             <th class="text-start">Opening Balance</th>
             <th class="text-start">Balance</th>
-            <th class="text-start">Created By</th>
             <th class="text-start">Action</th>
         </tr>
     </thead>
@@ -19,11 +17,9 @@
                 <td class="text-start">{{ $account->account_number }}</td> 
                 <td class="text-start">{{ $account->bank->name }}({{ $account->bank->branch_name }})</td> 
                 <td class="text-start">{{ $account->account_type ? $account->account_type->name : 'N/A' }}</td>
-                <td class="text-start">{{ $account->remark }}</td>
                 <td class="text-start">{{ App\Utils\Converter::format_in_bdt($account->opening_balance) }}</td>
                 <td class="text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
-                <td class="text-start">{{ $account->admin ? $account->admin->name.' '.$account->admin->last_name : 'N/A' }}</td>
-
+            
                 <td class="text-start"> 
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

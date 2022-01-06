@@ -8,6 +8,7 @@ use App\Models\AccountType;
 use App\Models\CashFlow;
 use App\Utils\AccountUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
 {
@@ -24,7 +25,8 @@ class AccountController extends Controller
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        return view('accounting.accounts.index');
+        $banks = DB::table('banks')->get();
+        return view('accounting.accounts.index', compact('banks'));
     }
 
     // Get all banks by ajax
@@ -34,7 +36,7 @@ class AccountController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $accounts = Account::with(['bank', 'account_type', 'admin', 'admin.role'])->orderBy('id', 'DESC')->where('status', 1)->get();
+        $accounts = Account::with(['bank', 'admin', 'admin.role'])->orderBy('id', 'DESC')->where('status', 1)->get();
         return view('accounting.accounts.ajax_view.account_list', compact('accounts'));
     }
 
@@ -44,7 +46,7 @@ class AccountController extends Controller
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        $account = Account::with(['bank', 'account_type', 'cash_flows'])->where('id', $accountId)->first();
+        $account = Account::with(['bank', 'cash_flows'])->where('id', $accountId)->first();
         return view('accounting.accounts.account_book', compact('account'));
     }
 
@@ -57,15 +59,20 @@ class AccountController extends Controller
             'bank_id' => 'required',
         ]);
 
+        if ($request->account_type == 2) {
+            $this->validate($request, [
+                'bank_id' => 'required',
+            ]);
+        }
+
         $addAccount = Account::insertGetId([
             'name' => $request->name,
             'account_number' => $request->account_number,
             'bank_id' => $request->bank_id,
-            'account_type_id' => $request->account_type_id,
+            'account_type' => $request->account_type,
             'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
             'balance' => $request->opening_balance ? $request->opening_balance : 0,
             'credit' => $request->opening_balance ? $request->opening_balance : 0,
-            'remark' => $request->remark,
             'admin_id' => auth()->user()->id,
         ]);
 
@@ -100,7 +107,7 @@ class AccountController extends Controller
             'name' => $request->name,
             'account_number' => $request->account_number,
             'bank_id' => $request->bank_id,
-            'account_type_id' => $request->account_type_id,
+            'account_type' => $request->account_type,
             'remark' => $request->remark,
         ]);
 

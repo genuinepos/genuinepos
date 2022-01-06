@@ -76,9 +76,9 @@
                             <td>{{ $payment->invoice_id }}</td>
                             <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
                             </td>
-                            <td>{{ $payment->pay_mode }}</td>
+                            <td>{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                             <td>{{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}</td>
-                            <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
+                            <td>{{ $payment->account ? $payment->account->name : 'Cash-In-Hand' }}</td>
                             <td>
                                 @if ($payment->payment_type == 1)
                                     <a href="{{ route('sales.payment.edit', $payment->id) }}" id="edit_payment"

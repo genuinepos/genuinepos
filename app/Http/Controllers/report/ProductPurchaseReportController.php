@@ -173,6 +173,7 @@ class ProductPurchaseReportController extends Controller
             'units.code_name as unit_code',
             'purchase_products.line_total',
             'purchases.date',
+            'purchases.report_date',
             'purchases.invoice_id',
             'products.name',
             'products.product_code',

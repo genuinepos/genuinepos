@@ -25,6 +25,7 @@ class AccountController extends Controller
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+
         $banks = DB::table('banks')->get();
         return view('accounting.accounts.index', compact('banks'));
     }
@@ -55,13 +56,14 @@ class AccountController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'account_number' => 'required',
-            'bank_id' => 'required',
+            
+            'account_type' => 'required',
         ]);
 
         if ($request->account_type == 2) {
             $this->validate($request, [
                 'bank_id' => 'required',
+                'account_number' => 'required',
             ]);
         }
 
@@ -72,7 +74,7 @@ class AccountController extends Controller
             'account_type' => $request->account_type,
             'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
             'balance' => $request->opening_balance ? $request->opening_balance : 0,
-            'credit' => $request->opening_balance ? $request->opening_balance : 0,
+            'debit' => $request->opening_balance ? $request->opening_balance : 0,
             'admin_id' => auth()->user()->id,
         ]);
 

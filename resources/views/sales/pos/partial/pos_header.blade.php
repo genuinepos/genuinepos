@@ -98,7 +98,7 @@
                                     </select>
                                     <div class="input-group-append add_button" id="addCustomer">
                                         <span class="input-group-text"><i class="fas fa-plus"></i></span>
-                                    </div>
+                                    </div>          
                                 </div>
 
                                 <div class="search_item_area">
@@ -109,15 +109,15 @@
                                         <input type="text" name="search_product" class="form-control"
                                             id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus
                                             autocomplete="off">
-                                        <div class="input-group-append add_button" id="add_product">
-                                            <span class="input-group-text"><i class="fas fa-plus"></i></span>
-                                        </div>
+                                        @if (auth()->user()->permission->product['product_add'] == '1')
+                                            <div class="input-group-append add_button" id="add_product">
+                                                <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                                            </div>
+                                        @endif
                                     </div>
 
                                     <div class="select_area">
-                                        <ul id="list" class="variant_list_area">
-
-                                        </ul>
+                                        <ul id="list" class="variant_list_area"></ul>
                                     </div>
                                 </div>
                             </div>
@@ -398,54 +398,56 @@
         });
     });
 
-    $('#add_product').on('click', function() {
-        $.ajax({
-            url:"{{ route('sales.add.product.modal.view') }}",
-            type:'get',
-            success:function(data){
-                $('#add_product_body').html(data);
-                $('#addProductModal').modal('show');
-            }
+    @if (auth()->user()->permission->product['product_add'] == '1')
+        $('#add_product').on('click', function() {
+            $.ajax({
+                url:"{{ route('sales.add.product.modal.view') }}",
+                type:'get',
+                success:function(data){
+                    $('#add_product_body').html(data);
+                    $('#addProductModal').modal('show');
+                }
+            });
         });
-    });
 
-    // Add product by ajax
-    $(document).on('submit', '#add_product_form', function(e) {
-        e.preventDefault();
-        $('.loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-                toastr.success('Successfully product is added.');
-                $.ajax({
-                    url:"{{url('sales/pos/get/recent/product')}}"+"/"+data.id,
-                    type:'get',
-                    success:function(data){
-                        $('.loading_button').hide();
-                        $('#addProductModal').modal('hide');
-                        if (!$.isEmptyObject(data.errorMsg)) {
-                            toastr.error(data.errorMsg);
-                        }else{
-                            $('#product_list').prepend(data);
-                            calculateTotalAmount();
+        // Add product by ajax
+        $(document).on('submit', '#add_product_form', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success('Successfully product is added.');
+                    $.ajax({
+                        url:"{{url('sales/pos/get/recent/product')}}"+"/"+data.id,
+                        type:'get',
+                        success:function(data){
+                            $('.loading_button').hide();
+                            $('#addProductModal').modal('hide');
+                            if (!$.isEmptyObject(data.errorMsg)) {
+                                toastr.error(data.errorMsg);
+                            }else{
+                                $('#product_list').prepend(data);
+                                calculateTotalAmount();
+                            }
                         }
-                    }
-                });
-            },
-            error: function(err) {
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
-                $('.error').html('');
-                $.each(err.responseJSON.errors, function(key, error) {
-                    $('.error_sale_' + key + '').html(error[0]);
-                });
-            }
+                    });
+                },
+                error: function(err) {
+                    $('.loading_button').hide();
+                    toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_sale_' + key + '').html(error[0]);
+                    });
+                }
+            });
         });
-    });
+    @endif
 
     $(document).on('click', '#suspends',function (e) {
         e.preventDefault();

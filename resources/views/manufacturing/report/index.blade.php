@@ -15,7 +15,7 @@
         /* Search Product area style end */
     </style>
 @endpush
-@section('title', 'Manufacturing - ')
+@section('title', 'Manufacturing Report- ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -26,21 +26,29 @@
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul>
-                                        <li>
-                                            <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>Process</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['process_view'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>@lang('menu.process')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>Production</b></a>
-                                        </li>
-                                     
-                                        <li>
-                                            <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>Settings</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['production_view'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>Manufacturing Report</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['manuf_settings'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>@lang('menu.manufacturing_setting')</b></a>
+                                            </li>
+                                        @endif
+
+                                        @if (auth()->user()->permission->manufacturing['manuf_report'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>@lang('menu.manufacturing_report')</b></a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
@@ -175,68 +183,58 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6"><h6>Productions</h6></div>
-
-                                    @if (auth()->user()->permission->manufacturing['menuf_add'] == '1') 
-                                        <div class="col-md-6">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                            </div>
+                    <div class="row margin_row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-6"><h6>Productions</h6></div>
+                                @if (auth()->user()->permission->manufacturing['production_add'] == '1') 
+                                    <div class="col-md-6">
+                                        <div class="btn_30_blue float-end">
+                                            <a href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
-                                    @endif
-                                </div>
-    
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                     </div>
-                                    <div class="table-responsive">
-                                        <form id="update_product_cost_form" action="">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-black">Date</th>
-                                                        <th class="text-black">Voucher No</th>
-                                                        <th class="text-black">Business Location</th>
-                                                        <th class="text-black">Product</th>
-                                                        <th class="text-black">Status</th>
-                                                        <th class="text-black">Per Unit Cost(Inc.Tax)</th>
-                                                        <th class="text-black">Selling Price(Exc.Tax)</th>
-                                                        <th class="text-black">Output Qty</th>
-                                                        <th class="text-black">Wasted Qty</th>
-                                                        <th class="text-black">Final Qty</th>
-                                                        <th class="text-black">Total Ingredient Cost</th>
-                                                        <th class="text-black">Production Cost</th>
-                                                        <th class="text-black">Total Cost</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                                <tfoot>
-                                                    <tr class="bg-secondary">
-                                                        <th colspan="7" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                        <th id="quantity" class="text-white text-end"></th>
-                                                        <th id="wasted_quantity" class="text-white text-end"></th>
-                                                        <th id="total_final_quantity" class="text-white text-end"></th>
-                                                        <th id="total_ingredient_cost" class="text-white text-end"></th>
-                                                        <th id="production_cost" class="text-white text-end"></th>
-                                                        <th id="total_cost" class="text-white text-end"></th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </form>
-                                    </div>
-                                </div>
-    
-                                @if (auth()->user()->permission->manufacturing['menuf_delete'] == '1')
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
                                 @endif
+                            </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive">
+                                    <form id="update_product_cost_form" action="">
+                                        <table class="display data_tbl data__table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-black">Date</th>
+                                                    <th class="text-black">Voucher No</th>
+                                                    <th class="text-black">Business Location</th>
+                                                    <th class="text-black">Product</th>
+                                                    <th class="text-black">Status</th>
+                                                    <th class="text-black">Per Unit Cost(Inc.Tax)</th>
+                                                    <th class="text-black">Selling Price(Exc.Tax)</th>
+                                                    <th class="text-black">Output Qty</th>
+                                                    <th class="text-black">Wasted Qty</th>
+                                                    <th class="text-black">Final Qty</th>
+                                                    <th class="text-black">Total Ingredient Cost</th>
+                                                    <th class="text-black">Production Cost</th>
+                                                    <th class="text-black">Total Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            <tfoot>
+                                                <tr class="bg-secondary">
+                                                    <th colspan="7" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th id="quantity" class="text-white text-end"></th>
+                                                    <th id="wasted_quantity" class="text-white text-end"></th>
+                                                    <th id="total_final_quantity" class="text-white text-end"></th>
+                                                    <th id="total_ingredient_cost" class="text-white text-end"></th>
+                                                    <th id="production_cost" class="text-white text-end"></th>
+                                                    <th id="total_cost" class="text-white text-end"></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

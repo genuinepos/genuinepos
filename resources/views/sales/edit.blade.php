@@ -131,22 +131,18 @@
                                                     <label class="col-form-label">Item Search</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-barcode text-dark"></i></span>
+                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
                                                         </div>
-                                                        <input type="text" name="search_product" class="form-control scanable"
-                                                            autocomplete="off" id="search_product"
-                                                            placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                        <div class="input-group-prepend">
-                                                            <span id="add_product" class="input-group-text add_button"><i
-                                                                    class="fas fa-plus-square text-dark"></i></span>
-                                                        </div>
+                                                        <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
+                                                        @if (auth()->user()->permission->product['product_add'] == '1')
+                                                            <div class="input-group-prepend">
+                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            </div> 
+                                                        @endif
                                                     </div>
     
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                           
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div>
                                             </div>
@@ -341,6 +337,17 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product" action="">
+                        @if (auth()->user()->permission->sale['view_product_cost_is_sale_screed'] == '1')
+                            <p>
+                                <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
+                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span> 
+                                    <span id="unit_cost">1,200.00</span> 
+                                </span>   
+                                 
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">Cost</span>
+                            </p>
+                        @endif
+
                         <div class="form-group">
                             <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
                             <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
@@ -404,23 +411,24 @@
         </div>
     </div> 
     <!-- Edit selling product modal End-->
+ 
 
-    <!--Add Product Modal--> 
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_product_body">
-                    <!--begin::Form-->
+    @if (auth()->user()->permission->product['product_add'] == '1')
+        <!--Add Product Modal--> 
+        <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog four-col-modal" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body" id="add_product_body"></div>
                 </div>
             </div>
-        </div>
-    </div> 
-    <!--Add Product Modal End-->
+        </div> 
+        <!--Add Product Modal End-->
+    @endif
 @endsection
 @push('scripts')
     @include('sales.partials.addSaleEditJsScript')

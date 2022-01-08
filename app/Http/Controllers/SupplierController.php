@@ -39,7 +39,7 @@ class SupplierController extends Controller
 
     public function index()
     {
-        if (auth()->user()->permission->supplier['supplier_all'] == '0') {
+        if (auth()->user()->permission->contact['supplier_all'] == '0') {
             abort(403, 'Access Forbidden.');
         }
         return view('contacts.suppliers.index');

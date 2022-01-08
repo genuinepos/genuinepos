@@ -20,6 +20,10 @@ class GeneralSettingController extends Controller
 
     public function index()
     {
+        if (auth()->user()->permission->setup['g_settings'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         $bussinessSettings = General_setting::first();
         $months = Month::select(['id', 'month'])->get();
         $currencies = Currency::all();
@@ -41,11 +45,11 @@ class GeneralSettingController extends Controller
     // Add business settings
     public function businessSettings(Request $request)
     {
-        $updateBussinessSettings = General_setting::first();
+        $updateBusinessSettings = General_setting::first();
         $business_logo = null;
         if ($request->hasFile('business_logo')) {
-            if (json_decode($updateBussinessSettings->business, true)['business_logo'] != null) {
-                $bLogo = json_decode($updateBussinessSettings->business, true)['business_logo'];
+            if (json_decode($updateBusinessSettings->business, true)['business_logo'] != null) {
+                $bLogo = json_decode($updateBusinessSettings->business, true)['business_logo'];
                 if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
                     unlink(public_path('uploads/business_logo/' . $bLogo));
                 }
@@ -55,7 +59,7 @@ class GeneralSettingController extends Controller
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
         } else {
-            $business_logo = json_decode($updateBussinessSettings->business, true)['business_logo'] != null ? json_decode($updateBussinessSettings->business, true)['business_logo'] : null;
+            $business_logo = json_decode($updateBusinessSettings->business, true)['business_logo'] != null ? json_decode($updateBusinessSettings->business, true)['business_logo'] : null;
         }
 
         $businessSettings = [
@@ -74,8 +78,8 @@ class GeneralSettingController extends Controller
             'timezone' => $request->timezone,
         ];
 
-        $updateBussinessSettings->business = json_encode($businessSettings);
-        $updateBussinessSettings->save();
+        $updateBusinessSettings->business = json_encode($businessSettings);
+        $updateBusinessSettings->save();
         return response()->json('Business settings updated successfully');
     }
 

@@ -39,6 +39,7 @@
     <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
+    <script src="{{asset('public/backend/js/number-bdt-formater.js')}}"></script>
 </head>
 
 <body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
@@ -265,20 +266,22 @@
     </div>
     <!-- Hold invoice list modal End-->
 
-    <!--Add Product Modal-->
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+    @if (auth()->user()->permission->product['product_add'] == '1')
+        <!--Add Product Modal-->
+        <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog four-col-modal" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body" id="add_product_body"></div>
                 </div>
-                <div class="modal-body" id="add_product_body"></div>
             </div>
         </div>
-    </div>
-    <!--Add Product Modal End-->
+        <!--Add Product Modal End-->
+    @endif
 
     <!--Add Customer Modal-->
     <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -313,18 +316,29 @@
     </div>
     <!-- Edit selling product modal end-->
 
+ 
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="product_info">Samsung A30</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product">
+                        @if (auth()->user()->permission->sale['view_product_cost_is_sale_screed'] == '1')
+                            <p>
+                                <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
+                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span> 
+                                    <span id="unit_cost">1,200.00</span> 
+                                </span>   
+                                 
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">Cost</span>
+                            </p>
+                        @endif
+
                         <div class="form-group mt-1">
                             <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
                             <input type="number" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" value=""/>
@@ -358,9 +372,7 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><strong>Tax</strong> :</label>
-                                <select class="form-control" id="e_unit_tax">
-
-                                </select>
+                                <select class="form-control" id="e_unit_tax"></select>
                             </div>
 
                             <div class="col-md-6">
@@ -374,9 +386,7 @@
 
                         <div class="form-group mt-1">
                             <label><strong>Sale Unit</strong> :</label>
-                            <select class="form-control" id="e_unit">
-
-                            </select>
+                            <select class="form-control" id="e_unit"></select>
                         </div>
 
                         <div class="form-group row mt-3">
@@ -538,9 +548,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="modal-body_shortcuts">
-                    <!--begin::Form-->
-                </div>
+                <div class="modal-body" id="modal-body_shortcuts"></div>
             </div>
         </div>
     </div>
@@ -600,10 +608,7 @@
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to exit?',
                 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-modal-primary',
-                        'action': function() {window.location = "{{ route('dashboard.dashboard') }}";}
-                    },
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {window.location = "{{ route('dashboard.dashboard') }}";}},
                     'No': {'class': 'no btn-danger','action': function() { console.log('Deleted canceled.')}}
                 }
             });
@@ -619,37 +624,6 @@
             evt.preventDefault();
             scrollContainer.scrollLeft += evt.deltaY;
         });
-
-        var barcode = '';
-        document.addEventListener("keydown", function(e) {
-            const textInput = e.key || String.fromCharCode(e.keyCode);
-            var focused = $(':focus').val();
-            if (textInput.length === 1){
-                const searchInput = document.querySelector('#search_product');
-                var isActiveSearchInput = searchInput === document.activeElement ? true : false;
-                if (focused != undefined) {
-                    console.log('Element has focus!');
-                } else {
-                    barcode += textInput;
-                    timeing(function() { setBarcode(barcode);}, 200 );
-                } 
-            }
-        });
-
-        var timeing = (function() {
-            var timer = 0;
-            return function(callback, ms) {
-                clearTimeout (timer);
-                timer = setTimeout(callback, ms);
-            };
-        })();
-
-        function setBarcode(param){
-            $('#search_product').focus();
-            $('#search_product').val(param);
-            delay(function() { searchProduct(param); }, 200);
-            barcode = '';
-        }
     </script>
     @stack('js')
 </body>

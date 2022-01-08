@@ -30,6 +30,10 @@ class ProductionController extends Controller
 
     public function index(Request $request)
     {
+        if (auth()->user()->permission->manufacturing['production_view'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         if ($request->ajax()) {
             return $this->productionUtil->productionList($request);
@@ -39,6 +43,10 @@ class ProductionController extends Controller
 
     public function create()
     {
+        if (auth()->user()->permission->manufacturing['production_add'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')
             ->where('branch_id', auth()->user()->branch_id)
             ->get();
@@ -62,6 +70,10 @@ class ProductionController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->permission->manufacturing['production_add'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $tax_id = NULL;
         if ($request->tax_id) {
             $tax_id = explode('-', $request->tax_id)[0];
@@ -196,6 +208,10 @@ class ProductionController extends Controller
 
     public function show($productionId)
     {
+        if (auth()->user()->permission->manufacturing['production_view'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $production = Production::with([
             'branch',
             'stock_branch:id,name,branch_code',
@@ -215,6 +231,10 @@ class ProductionController extends Controller
 
     public function edit($productionId)
     {
+        if (auth()->user()->permission->manufacturing['production_edit'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         $production = Production::with([
             'branch',
             'stock_branch:id,name,branch_code',
@@ -239,6 +259,10 @@ class ProductionController extends Controller
 
     public function update(Request $request, $productionId)
     {
+        if (auth()->user()->permission->manufacturing['production_edit'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $tax_id = NULL;
         if ($request->tax_id) {
             $tax_id = explode('-', $request->tax_id)[0];
@@ -337,6 +361,10 @@ class ProductionController extends Controller
 
     public function delete(Request $request, $productionId)
     {
+        if (auth()->user()->permission->manufacturing['production_delete'] == '0' ) {
+            return response()->json('Access Denied');
+        }
+        
         $this->productionUtil->deleteProduction($productionId);
         return response()->json('Successfully production is deleted');
     }

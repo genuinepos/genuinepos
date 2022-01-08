@@ -23,7 +23,7 @@
                                     <div class="col-md-12">
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><b>Type :</b></label>
                                                     <select name="product_type" id="product_type"
                                                         class="form-control submit_able" autofocus>
@@ -34,7 +34,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><b>Category :</b></label>
                                                     <select id="category_id" name="category_id"
                                                         class="form-control submit_able">
@@ -45,7 +45,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><b>Unit :</b></label>
                                                     <select id="unit_id" name="unit_id"
                                                         class="form-control submit_able">
@@ -56,7 +56,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><b>Tax :</b></label>
                                                     <select id="tax_id" name="tax_id" class="form-control submit_able">
                                                         <option value="">All</option>
@@ -65,10 +65,17 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                            </div>
 
-                                            <div class="form-group row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
+                                                    <label><b>Status : </b></label>
+                                                    <select name="status" id="status" class="form-control submit_able">
+                                                        <option value="">All</option>
+                                                        <option value="1">Active</option>
+                                                        <option value="0">In-Active</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
                                                     <label><b>Brand :</b></label>
                                                     <select id="brand_id" name="brand_id"
                                                         class="form-control submit_able">
@@ -78,16 +85,9 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                            </div>
 
-                                                <div class="col-md-3">
-                                                    <label><b>Status : </b></label>
-                                                    <select name="status" id="status" class="form-control submit_able">
-                                                        <option value="">All</option>
-                                                        <option value="1">Active</option>
-                                                        <option value="0">In-Active</option>
-                                                    </select>
-                                                </div>
-
+                                            <div class="form-group row">
                                                {{-- <div class="col-md-3">
                                                    <p class="mt-4"> <input type="checkbox" name="is_for_sale" class="submit_able me-1" id="is_for_sale" value="1"><b>Not For Selling.</b></p>
                                                 </div>  --}}

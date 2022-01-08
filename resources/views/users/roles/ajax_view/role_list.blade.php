@@ -18,11 +18,11 @@
                 <td class="text-start">{{ $role->name }}</td> 
                 <td class="text-start"> 
                     <div class="dropdown table-dropdown">
-                        @if (auth()->user()->permission->roles['role_edit'] == '1')
+                        @if (auth()->user()->permission->user['role_edit'] == '1')
                             <a href="{{ route('users.role.edit', $role->id) }}" id="edit" title="Edit details" class="action-btn c-edit" id="edit"><span class="fas fa-edit"></span>                            </a>  
                         @endif
                         
-                        @if (auth()->user()->permission->roles['role_delete'] == '1')
+                        @if (auth()->user()->permission->user['role_delete'] == '1')
                             <a href="{{ route('users.role.delete', $role->id) }}" class="action-btn c-delete" id="delete"><span class="fas fa-trash "></span>
                             </a>
                         @endif

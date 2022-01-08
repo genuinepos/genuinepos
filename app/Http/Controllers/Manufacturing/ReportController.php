@@ -20,6 +20,10 @@ class ReportController extends Controller
 
     public function index(Request $request)
     {
+        if (auth()->user()->permission->manufacturing['manuf_report'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
             $productions = '';
@@ -30,28 +34,22 @@ class ReportController extends Controller
                 ->leftJoin('product_variants', 'productions.variant_id', 'product_variants.id')
                 ->leftJoin('units', 'productions.unit_id', 'units.id');
 
+            $query->select(
+                'productions.*',
+                'products.name as p_name',
+                'product_variants.variant_name as v_name',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'units.code_name as u_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $productions = $this->filteredQuery($request, $query)->select(
-                    'productions.*',
-                    'products.name as p_name',
-                    'product_variants.variant_name as v_name',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'units.code_name as u_name',
-                )->orderBy('productions.report_date', 'desc');
+                $productions = $this->filteredQuery($request, $query)->orderBy('productions.report_date', 'desc');
             } else {
-                $productions = $this->filteredQuery($request, $query)->select(
-                    'productions.*',
-                    'products.name as p_name',
-                    'product_variants.variant_name as v_name',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'units.code_name as u_name',
-                )->where('productions.branch_id', auth()->user()->branch_id)
+                $productions = $this->filteredQuery($request, $query)
+                    ->where('productions.branch_id', auth()->user()->branch_id)
                     ->orderBy('productions.report_date', 'desc');
             }
 
@@ -81,9 +79,10 @@ class ReportController extends Controller
                         return '<span class="text-danger"><b>Hold</b></span>';
                     }
                 })
-                ->rawColumns(['date', 'from', 'product', 'unit_cost_inc_tax', 'price_exc_tax','quantity', 'wasted_quantity',  'total_final_quantity', 'total_ingredient_cost', 'production_cost', 'total_cost', 'status'])
+                ->rawColumns(['date', 'from', 'product', 'unit_cost_inc_tax', 'price_exc_tax', 'quantity', 'wasted_quantity',  'total_final_quantity', 'total_ingredient_cost', 'production_cost', 'total_cost', 'status'])
                 ->make(true);
         }
+
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $categories = DB::table('categories')->select('id', 'name')->get();
         return view('manufacturing.report.index', compact('branches', 'categories'));

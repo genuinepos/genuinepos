@@ -1,4 +1,4 @@
-// Calculate total amount functionalitie
+// Calculate total amount functionalities
 function calculateTotalAmount() {
     var indexes = document.querySelectorAll('#index');
     indexes.forEach(function (index) {
@@ -76,6 +76,7 @@ function calculateTotalAmount() {
 var tableRowIndex = 0;
 $(document).on('click', '#edit_product', function (e) {
     e.preventDefault();
+    $('#show_cost_section').hide();
     var parentTableRow = $(this).closest('tr');
     tableRowIndex = parentTableRow.index();
     var quantity = parentTableRow.find('#quantity').val();
@@ -83,6 +84,7 @@ $(document).on('click', '#edit_product', function (e) {
     var product_variant = parentTableRow.find('.product_variant').html();
     var product_code = parentTableRow.find('.product-name').attr('title');
     var unit_price_exc_tax = parentTableRow.find('#unit_price_exc_tax').val();
+    var unit_cost_inc_tax = parentTableRow.find('#unit_costs_inc_tax').val();
     var unit_tax_percent = parentTableRow.find('#unit_tax_percent').val();
     var tax_type = parentTableRow.find('#tax_type').val();
     var unit_tax_amount = parentTableRow.find('#unit_tax_amount').val();
@@ -94,7 +96,7 @@ $(document).on('click', '#edit_product', function (e) {
     var heading = product_name + (product_variant != undefined ? ' - ' + product_variant : '') + ' (' + product_code +
         ')';
     $('#product_info').html(heading);
-
+    $('#unit_cost').html(bdFormat(unit_cost_inc_tax));
     $('#e_quantity').val(parseFloat(quantity).toFixed(2));
     $('#e_unit_price').val(parseFloat(unit_price_exc_tax).toFixed(2));
     $('#e_unit_discount_type').val(unit_discount_type);
@@ -146,7 +148,7 @@ $(document).on('submit', '#update_selling_product', function (e) {
 
     var e_quantity = $('#e_quantity').val();
     var e_unit_price = $('#e_unit_price').val();
-    var e_unit_discount_type = $('#e_unit_discount_type').val();
+    var e_unit_discount_type = $('#e_unit_discount_type').val() ? $('#e_unit_discount_type').val() : 1;
     var e_unit_discount = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
     var e_unit_discount_amount = $('#e_discount_amount').val() ? $('#e_discount_amount').val() : 0.00;
     var e_unit_tax_percent = $('#e_unit_tax').val() ? $('#e_unit_tax').val() : 0.00;

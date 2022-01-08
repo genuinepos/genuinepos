@@ -71,9 +71,10 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
                 tr += '<tr>';
                 tr += '<td class="serial">'+(key + 1)+'</td>';
                 tr += '<td class="text-start">';
-                tr += '<a class="product-name text-info" title="'+'SKU-'+(item.variant ? item.variant.variant_code : item.product.product_code )+'" id="edit_product" href="#">' + name +(item.variant ? ' - '+item.variant.variant_name : '') +'</a><br/><input type="'+(item.description ? item.description : '')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info" value="'+(item.description ? item.description : '')+'">';
+                tr += '<p class="product-name text-dark" title="'+'SKU-'+(item.variant ? item.variant.variant_code : item.product.product_code )+'">' + name +(item.variant ? ' - '+item.variant.variant_name : '') +'</p><input type="hidden" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info" value="'+(item.description ? item.description : '')+'">';
                 tr += '<input value="'+item.product_id+'" type="hidden" name="product_ids[]">';
                 tr +='<input value="'+(item.product_variant_id ? item.product_variant_id : 'noid')+'" type="hidden" name="variant_ids[]">';
+                tr += '<input value="'+ item.product.tax_type +'" type="hidden" id="tax_type">';
                 tr +='<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+item.unit_tax_percent+'">';
                 tr +='<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+item.unit_tax_amount+'">';
                 tr +='<input value="'+item.unit_discount_type+'" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';

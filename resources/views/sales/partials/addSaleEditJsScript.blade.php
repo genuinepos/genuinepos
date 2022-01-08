@@ -94,6 +94,7 @@
 
     // add Sale product by searching product code
     function searchProduct(product_code){
+        $('#search_product').focus();
         var price_group_id = $('#price_group_id').val();
         $('.variant_list_area').empty();
         $('.select_area').hide();
@@ -172,7 +173,6 @@
                                 tr += '<td colspan="2" class="text-start">';
                                 tr += '<a href="#" class="text-success" id="edit_product">';
                                 tr += '<span class="product_name">'+ product.name +'</span>';
-                                tr += '<span class="product_variant"></span>'; 
                                 tr += '</a><br/><input type="'+ (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                                 tr += '<input value="'+ product.id +'" type="hidden" class="productId-'+ product.id +'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -296,8 +296,7 @@
                             tr += '<tr>';
                             tr += '<td colspan="2" class="text-start">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
-                            tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                            tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
+                            tr += '<span class="product_name">'+variant_product.product.name+' -'+variant_product.variant_name+'</span>';
                             tr += '</a><br/><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
@@ -472,7 +471,6 @@
                         tr += '<td colspan="2" class="text-start">';
                         tr += '<a href="#" class="text-success" id="edit_product">';
                         tr += '<span class="product_name">'+product_name+'</span>';
-                        tr += '<span class="product_variant"></span>'; 
                         tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                         tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                         tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -619,8 +617,7 @@
                         tr += '<tr>';
                         tr += '<td colspan="2" class="text-start">';
                         tr += '<a href="#" class="text-success" id="edit_product">';
-                        tr += '<span class="product_name">'+product_name+'</span>';
-                        tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
+                        tr += '<span class="product_name">'+product_name+' - '+variant_name+'</span>';
                         tr += '</a><br/><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here.">';
                         tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                         tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
@@ -748,6 +745,7 @@
     var tableRowIndex = 0;
     $(document).on('click', '#edit_product', function(e) {
         e.preventDefault();
+        $('#show_cost_section').hide();
         var parentTableRow = $(this).closest('tr');
         tableRowIndex = parentTableRow.index();
         var quantity = parentTableRow.find('#quantity').val();
@@ -755,6 +753,7 @@
         var product_variant = parentTableRow.find('.product_variant').html();
         var product_code = parentTableRow.find('.product_code').html();
         var unit_price_exc_tax = parentTableRow.find('#unit_price_exc_tax').val();
+        var unit_cost_inc_tax = parentTableRow.find('#unit_cost_inc_tax').val();
         var unit_tax_percent = parentTableRow.find('#unit_tax_percent').val();
         var unit_tax_amount = parentTableRow.find('#unit_tax_amount').val();
         var unit_tax_type = parentTableRow.find('#tax_type').val();
@@ -763,9 +762,9 @@
         var unit_discount_amount = parentTableRow.find('#unit_discount_amount').val();
         var product_unit = parentTableRow.find('#unit').val();
         // Set modal heading
-        var heading = product_name + (product_variant ? product_variant : '') + product_code;
+        var heading = product_name;
         $('#product_info').html(heading);
-        
+        $('#unit_cost').html(bdFormat(unit_cost_inc_tax));
         $('#e_quantity').val(parseFloat(quantity).toFixed(2));
         $('#e_unit_price').val(parseFloat(unit_price_exc_tax).toFixed(2));
         $('#e_unit_discount_type').val(unit_discount_type);
@@ -998,9 +997,8 @@
                     tr += '<tr>';
                     tr += '<td colspan="2" class="text-start">';
                     tr += '<a href="#" class="text-success" id="edit_product">';
-                    tr += '<span class="product_name">'+product.product.name+'</span>';
-                    var variant = product.product_variant_id != null ? ' -'+product.variant.variant_name+'- ' : '';
-                    tr += '<span class="product_variant">'+variant+'</span>'; 
+                        var variant = product.product_variant_id != null ? ' -'+product.variant.variant_name+'- ' : '';
+                    tr += '<span class="product_name">'+product.product.name+variant+'</span>';
                     tr += '</a><br/><input type="'+(product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="'+(product.description ? product.description : '')+'">';
                     tr += '<input value="'+product.product_id+'" type="hidden" class="productId-'+product.product_id+'" id="product_id" name="product_ids[]">';
 
@@ -1011,7 +1009,6 @@
                     }   
 
                     tr += '<input type="hidden" id="tax_type" value="'+product.product.tax_type+'">';
-
                     tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+product.unit_tax_percent+'">';
                     tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+product.unit_tax_amount+'">';
                     tr += '<input value="'+product.unit_discount_type+'" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
@@ -1050,56 +1047,58 @@
     }
     getEditableSale();
 
-    $('#add_product').on('click', function () {
-        $.ajax({
-            url:"{{ route('sales.add.product.modal.view') }}",
-            type:'get',
-            success:function(data){
-                $('#add_product_body').html(data);
-                $('#addProductModal').modal('show');
-            }
+    @if (auth()->user()->permission->product['product_add'] == '1')
+        $('#add_product').on('click', function () {
+            $.ajax({
+                url:"{{ route('sales.add.product.modal.view') }}",
+                type:'get',
+                success:function(data){
+                    $('#add_product_body').html(data);
+                    $('#addProductModal').modal('show');
+                }
+            });
         });
-    });
 
-    // Add product by ajax
-    $(document).on('submit', '#add_product_form', function(e) {
-        e.preventDefault();
-        $('.loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
+        // Add product by ajax
+        $(document).on('submit', '#add_product_form', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
 
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-                toastr.success('Successfully product is added.');
-                $.ajax({
-                    url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
-                    type:'get',
-                    success:function(data){
-                        $('.loading_button').hide();
-                        $('#addProductModal').modal('hide');
-                        if (!$.isEmptyObject(data.errorMsg)) {
-                            toastr.error(data.errorMsg);
-                        }else{
-                            $('#sale_list').prepend(data);
-                            calculateTotalAmount();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success('Successfully product is added.');
+                    $.ajax({
+                        url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
+                        type:'get',
+                        success:function(data){
+                            $('.loading_button').hide();
+                            $('#addProductModal').modal('hide');
+                            if (!$.isEmptyObject(data.errorMsg)) {
+                                toastr.error(data.errorMsg);
+                            }else{
+                                $('#sale_list').prepend(data);
+                                calculateTotalAmount();
+                            }
                         }
-                    }
-                });
-            },
-            error: function(err) {
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
-                $('.error').html('');
-                $.each(err.responseJSON.errors, function(key, error) {
-                    $('.error_sale_' + key + '').html(error[0]);
-                });
-            }
+                    });
+                },
+                error: function(err) {
+                    $('.loading_button').hide();
+                    toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_sale_' + key + '').html(error[0]);
+                    });
+                }
+            });
         });
-    });
-
+    @endif
+    
     $(document).keypress(".scanable",function(event){
         if (event.which == '10' || event.which == '13') {
             event.preventDefault();
@@ -1117,6 +1116,10 @@
     $(document).on('mouseenter', '#list>li>a',function () {
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
+    });
+
+    $(document).on('click', '#show_cost_button', function () {
+        $('#show_cost_section').toggle(500);
     });
 
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";

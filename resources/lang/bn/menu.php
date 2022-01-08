@@ -12,7 +12,8 @@ return [
     'setup' => 'সেটআপ',
     'users' => 'ব্যবহারকারী',
     'hrm' => 'মানব সম্পদ',
-    'essentials' => 'প্রয়োজনীয়',
+    'essentials' => 'কার্য ব্যবস্থাপনা',
+    'manufacturing' => 'উৎপাদন',
     'e_commerce' => 'ইকমার্স',
     'service' => 'সেবা',
     'reports' => 'রিপোর্ট',
@@ -34,7 +35,7 @@ return [
     'customers' => 'গ্রাহক',
     'import_customers' => 'আমদানি গ্রাহক',
     'customer_groups' => 'গ্রাহক গ্রুপ',
-    // Menu childs of Purchases module
+    // Menu child of Purchases module
     'add_purchase' => 'ক্রয় যুক্ত করুন',
     'purchase_list' => 'ক্রয় তালিকা',
     'po_list' => 'ক্রয় আদেশ তালিকা',
@@ -105,6 +106,16 @@ return [
     'department' => 'বিভাগ',
     'designation' => 'উপাধি',
     'hrm_settings' => 'এইচআরএম সেটিংস',
+     // Menu childs of manufacturing
+    'process' => 'প্রক্রিয়া',
+    'productions' => 'উৎপাদন',
+    'manufacturing_setting' => 'উৎপাদন সেটিং',
+    'manufacturing_report' => 'উৎপাদন রিপোর্ট',
+    // Menu childs of Essentials
+    'todo' => 'করণীয়',
+    'work_space' => 'কর্মক্ষেত্র',
+    'memo' => 'মেমো',
+    'message' => 'বার্তা',
     // Menu child of Report module  
     'profit_loss' => 'লাভ ক্ষতি',
     'purchase_sale' => 'ক্রয় বিক্রয়',

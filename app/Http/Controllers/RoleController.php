@@ -16,7 +16,7 @@ class RoleController extends Controller
     // Role index view
     public function index()
     {
-        if (auth()->user()->permission->roles['role_view'] == '0') {
+        if (auth()->user()->permission->user['role_view'] == '0') {
             abort(403, 'Access Forbidden.');
         }
         return view('users.roles.index');
@@ -32,9 +32,10 @@ class RoleController extends Controller
     // Create cash role
     public function create()
     {
-        if (auth()->user()->permission->roles['role_add'] == '0') {
+        if (auth()->user()->permission->user['role_add'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+
         return view('users.roles.create');
     }
 
@@ -52,18 +53,13 @@ class RoleController extends Controller
         $addRolePermission = new RolePermission();
         $addRolePermission->role_id = $addRole->id;
         $addRolePermission->user = $this->userPermission($request);
-        $addRolePermission->roles = $this->rolePermission($request);
-        $addRolePermission->supplier = $this->supplierPermission($request);
-        $addRolePermission->customers = $this->customerPermission($request);
+        $addRolePermission->contact = $this->contactPermission($request);
         $addRolePermission->product = $this->productPermission($request);
         $addRolePermission->purchase = $this->purchasePermission($request);
         $addRolePermission->s_adjust = $this->s_adjustPermission($request);
         $addRolePermission->expense = $this->expensePermissions($request);
         $addRolePermission->sale = $this->salePermission($request);
         $addRolePermission->register = $this->cashRegisterPermission($request);
-        $addRolePermission->brand = $this->brandPermission($request);
-        $addRolePermission->category = $this->categoryPermission($request);
-        $addRolePermission->unit = $this->unitPermission($request);
         $addRolePermission->report = $this->reportPermission($request);
         $addRolePermission->setup = $this->setupPermission($request);
         $addRolePermission->dashboard = $this->dashboardPermission($request);
@@ -75,6 +71,7 @@ class RoleController extends Controller
         $addRolePermission->repair = $this->repairPermission($request);
         $addRolePermission->superadmin = $this->superadminPermission($request);
         $addRolePermission->e_commerce = $this->eCommercePermission($request);
+        $addRolePermission->others = $this->othersPermission($request);
         $addRolePermission->save();
 
         session()->flash('successMsg', 'Successfully Role is added.');
@@ -95,17 +92,13 @@ class RoleController extends Controller
         $updateRolePermission = RolePermission::where('role_id', $roleId)->first();
         $updateRolePermission->role_id = $updateRole->id;
         $updateRolePermission->user = $this->userPermission($request);
-        $updateRolePermission->roles = $this->rolePermission($request);
-        $updateRolePermission->supplier = $this->supplierPermission($request);
-        $updateRolePermission->customers = $this->customerPermission($request);
+        $updateRolePermission->contact = $this->contactPermission($request);
         $updateRolePermission->product = $this->productPermission($request);
         $updateRolePermission->purchase = $this->purchasePermission($request);
         $updateRolePermission->s_adjust = $this->s_adjustPermission($request);
         $updateRolePermission->expense = $this->expensePermissions($request);
         $updateRolePermission->sale = $this->salePermission($request);
         $updateRolePermission->register = $this->cashRegisterPermission($request);
-        $updateRolePermission->brand = $this->brandPermission($request);
-        $updateRolePermission->unit = $this->unitPermission($request);
         $updateRolePermission->report = $this->reportPermission($request);
         $updateRolePermission->setup = $this->setupPermission($request);
         $updateRolePermission->dashboard = $this->dashboardPermission($request);
@@ -117,6 +110,7 @@ class RoleController extends Controller
         $updateRolePermission->repair = $this->repairPermission($request);
         $updateRolePermission->superadmin = $this->superadminPermission($request);
         $updateRolePermission->e_commerce = $this->eCommercePermission($request);
+        $updateRolePermission->others = $this->othersPermission($request);
         $updateRolePermission->save();
 
         session()->flash('successMsg', 'Successfully Role is updated.');
@@ -126,7 +120,7 @@ class RoleController extends Controller
     // Edit view of role 
     public function edit($roleId)
     {
-        if (auth()->user()->permission->roles['role_edit'] == '0') {
+        if (auth()->user()->permission->user['role_edit'] == '0') {
             abort(403, 'Access Forbidden.');
         }
 
@@ -137,8 +131,8 @@ class RoleController extends Controller
     // Delete Role 
     public function delete(Request $request, $roleId)
     {
-        if (auth()->user()->permission->roles['role_delete'] == '0') {
-            abort(403, 'Access Forbidden.');
+        if (auth()->user()->permission->user['role_delete'] == '0') {
+            return response()->json('Access Denied.');
         }
 
         $deleteRole = Role::find($roleId);
@@ -156,15 +150,6 @@ class RoleController extends Controller
             'user_add' => isset($request->user_add) ? 1 : 0,
             'user_edit' => isset($request->user_edit) ? 1 : 0,
             'user_delete' => isset($request->user_delete) ? 1 : 0,
-        ];
-
-        return $permissions;
-    }
-
-    // Role permissions
-    private function rolePermission($request)
-    {
-        $permissions = [
             'role_view' => isset($request->role_view) ? 1 : 0,
             'role_add' => isset($request->role_add) ? 1 : 0,
             'role_edit' => isset($request->role_edit) ? 1 : 0,
@@ -175,26 +160,20 @@ class RoleController extends Controller
     }
 
     // Supplier permissions
-    private function supplierPermission($request)
+    private function contactPermission($request)
     {
         $permissions = [
             'supplier_all' => isset($request->supplier_all) ? 1 : 0,
             'supplier_add' => isset($request->supplier_add) ? 1 : 0,
+            'supplier_import' => isset($request->supplier_import) ? 1 : 0,
             'supplier_edit' => isset($request->supplier_edit) ? 1 : 0,
             'supplier_delete' => isset($request->supplier_delete) ? 1 : 0,
-        ];
-
-        return $permissions;
-    }
-
-    // Customer permissions
-    private function customerPermission($request)
-    {
-        $permissions = [
             'customer_all' => isset($request->customer_all) ? 1 : 0,
             'customer_add' => isset($request->customer_add) ? 1 : 0,
+            'customer_import' => isset($request->customer_add) ? 1 : 0,
             'customer_edit' => isset($request->customer_edit) ? 1 : 0,
             'customer_delete' => isset($request->customer_delete) ? 1 : 0,
+            'customer_group' => isset($request->customer_group) ? 1 : 0,
         ];
 
         return $permissions;
@@ -209,7 +188,13 @@ class RoleController extends Controller
             'product_edit' => isset($request->product_edit) ? 1 : 0,
             'openingStock_add' => isset($request->openingStock_add) ? 1 : 0,
             'product_delete' => isset($request->product_delete) ? 1 : 0,
-            'pro_unit_cost' => isset($request->pro_unit_cost) ? 1 : 0,
+            'categories' => isset($request->categories) ? 1 : 0,
+            'brand' => isset($request->brand) ? 1 : 0,
+            'units' => isset($request->units) ? 1 : 0,
+            'variant' => isset($request->variant) ? 1 : 0,
+            'warranties' => isset($request->warranties) ? 1 : 0,
+            'selling_price_group' => isset($request->selling_price_group) ? 1 : 0,
+            'generate_barcode' => isset($request->generate_barcode) ? 1 : 0,
         ];
 
         return $permissions;
@@ -267,16 +252,20 @@ class RoleController extends Controller
             'pos_add' => isset($request->pos_add) ? 1 : 0,
             'pos_edit' => isset($request->pos_edit) ? 1 : 0,
             'pos_delete' => isset($request->pos_delete) ? 1 : 0,
-            'sale_access' => isset($request->sale_access) ? 1 : 0,
+            'create_add_sale' => isset($request->create_add_sale) ? 1 : 0,
+            'view_add_sale' => isset($request->view_add_sale) ? 1 : 0,
+            'edit_add_sale' => isset($request->edit_add_sale) ? 1 : 0,
+            'delete_add_sale' => isset($request->delete_add_sale) ? 1 : 0,
             'sale_draft' => isset($request->sale_draft) ? 1 : 0,
             'sale_quotation' => isset($request->sale_quotation) ? 1 : 0,
-            'sale_all_own' => isset($request->sale_all_own) ? 1 : 0,
             'sale_payment' => isset($request->sale_payment) ? 1 : 0,
             'edit_price_sale_screen' => isset($request->edit_price_sale_screen) ? 1 : 0,
             'edit_price_pos_screen' => isset($request->edit_price_pos_screen) ? 1 : 0,
-            'edit_discount_pos_screen' => isset($request->edit_discount_sale_screen) ? 1 : 0,
             'edit_discount_sale_screen' => isset($request->edit_discount_sale_screen) ? 1 : 0,
+            'edit_discount_pos_screen' => isset($request->edit_discount_pos_screen) ? 1 : 0,
             'shipment_access' => isset($request->shipment_access) ? 1 : 0,
+            'view_product_cost_is_sale_screed' => isset($request->view_product_cost_is_sale_screed) ? 1 : 0,
+            'view_own_sale' => isset($request->view_own_sale) ? 1 : 0,
             'return_access' => isset($request->return_access) ? 1 : 0,
         ];
 
@@ -295,45 +284,6 @@ class RoleController extends Controller
         return $permissions;
     }
 
-    // Brand permissions
-    private function brandPermission($request)
-    {
-        $permissions = [
-            'brand_all' => isset($request->brand_all) ? 1 : 0,
-            'brand_add' => isset($request->brand_add) ? 1 : 0,
-            'brand_edit' => isset($request->brand_edit) ? 1 : 0,
-            'brand_delete' => isset($request->brand_delete) ? 1 : 0,
-        ];
-
-        return $permissions;
-    }
-
-    // Category permissions
-    private function categoryPermission($request)
-    {
-        $permissions = [
-            'category_all' => isset($request->category_all) ? 1 : 0,
-            'category_add' => isset($request->category_add) ? 1 : 0,
-            'category_edit' => isset($request->category_edit) ? 1 : 0,
-            'category_delete' => isset($request->category_delete) ? 1 : 0,
-        ];
-
-        return $permissions;
-    }
-
-    // Unit permissions
-    private function unitPermission($request)
-    {
-        $permissions = [
-            'unit_all' => isset($request->unit_all) ? 1 : 0,
-            'unit_add' => isset($request->unit_add) ? 1 : 0,
-            'unit_edit' => isset($request->unit_edit) ? 1 : 0,
-            'unit_delete' => isset($request->unit_delete) ? 1 : 0,
-        ];
-
-        return $permissions;
-    }
-
     // Unit permissions
     private function reportPermission($request)
     {
@@ -341,18 +291,22 @@ class RoleController extends Controller
             'loss_profit_report' => isset($request->loss_profit_report) ? 1 : 0,
             'purchase_sale_report' => isset($request->purchase_sale_report) ? 1 : 0,
             'tax_report' => isset($request->tax_report) ? 1 : 0,
-            'cus_sup_report' => isset($request->cus_sup_report) ? 1 : 0,
+            'customer_report' => isset($request->customer_report) ? 1 : 0,
+            'supplier_report' => isset($request->supplier_report) ? 1 : 0,
             'stock_report' => isset($request->stock_report) ? 1 : 0,
             'stock_adjustment_report' => isset($request->stock_adjustment_report) ? 1 : 0,
-            'tranding_report' => isset($request->tranding_report) ? 1 : 0,
-            'item_report' => isset($request->item_report) ? 1 : 0,
             'pro_purchase_report' => isset($request->pro_purchase_report) ? 1 : 0,
             'pro_sale_report' => isset($request->pro_sale_report) ? 1 : 0,
             'purchase_payment_report' => isset($request->purchase_payment_report) ? 1 : 0,
             'sale_payment_report' => isset($request->sale_payment_report) ? 1 : 0,
             'expanse_report' => isset($request->expanse_report) ? 1 : 0,
-            'register_report' => isset($request->register_report) ? 1 : 0,
-            'representative_report' => isset($request->representative_report) ? 1 : 0,
+            'c_register_report' => isset($request->c_register_report) ? 1 : 0,
+            'sale_representative_report' => isset($request->sale_representative_report) ? 1 : 0,
+            'payroll_report' => isset($request->payroll_report) ? 1 : 0,
+            'payroll_payment_report' => isset($request->payroll_payment_report) ? 1 : 0,
+            'attendance_report' => isset($request->attendance_report) ? 1 : 0,
+            'production_report' => isset($request->production_report) ? 1 : 0,
+            'financial_report' => isset($request->financial_report) ? 1 : 0,
         ];
 
         return $permissions;
@@ -394,19 +348,20 @@ class RoleController extends Controller
         return $permissions;
     }
 
-    // Human Resource mangagement system (HRMS) permissions
+    // Human Resource management system (HRMS) permissions
     private function hrmsPermission($request)
     {
         $permissions = [
+            'hrm_dashboard' => isset($request->hrm_dashboard) ? 1 : 0,
             'leave_type' => isset($request->leave_type) ? 1 : 0,
-            'view_own_leave' => isset($request->view_own_leave) ? 1 : 0,
-            'leave_approve' => isset($request->leave_approve) ? 1 : 0,
-            'attendance_all' => isset($request->attendance_all) ? 1 : 0,
-            'view_own_attendance' => isset($request->view_own_attendance) ? 1 : 0,
-            'view_a_d' => isset($request->view_a_d) ? 1 : 0,
+            'leave_assign' => isset($request->leave_assign) ? 1 : 0,
+            'shift' => isset($request->shift) ? 1 : 0,
+            'attendance' => isset($request->attendance) ? 1 : 0,
+            'view_allowance_and_deduction' => isset($request->view_allowance_and_deduction) ? 1 : 0,
+            'payroll' => isset($request->payroll) ? 1 : 0,
+            'holiday' => isset($request->holiday) ? 1 : 0,
             'department' => isset($request->department) ? 1 : 0,
             'designation' => isset($request->designation) ? 1 : 0,
-            'department' => isset($request->department) ? 1 : 0,
         ];
 
         return $permissions;
@@ -417,8 +372,9 @@ class RoleController extends Controller
     {
         $permissions = [
             'assign_todo' => isset($request->assign_todo) ? 1 : 0,
-            'create_msg' => isset($request->create_msg) ? 1 : 0,
-            'view_msg' => isset($request->view_msg) ? 1 : 0,
+            'work_space' => isset($request->work_space) ? 1 : 0,
+            'memo' => isset($request->memo) ? 1 : 0,
+            'msg' => isset($request->msg) ? 1 : 0,
         ];
         return $permissions;
     }
@@ -427,10 +383,17 @@ class RoleController extends Controller
     private function manufacturingPermission($request)
     {
         $permissions = [
-            'menuf_view' => isset($request->menuf_view) ? 1 : 0,
-            'menuf_add' => isset($request->menuf_add) ? 1 : 0,
-            'menuf_edit' => isset($request->menuf_edit) ? 1 : 0,
-            'menuf_delete' => isset($request->menuf_delete) ? 1 : 0,
+            'process_view' => isset($request->process_view) ? 1 : 0,
+            'process_add' => isset($request->process_add) ? 1 : 0,
+            'process_edit' => isset($request->process_edit) ? 1 : 0,
+            'process_delete' => isset($request->process_delete) ? 1 : 0,
+            'production_view' => isset($request->production_view) ? 1 : 0,
+            'production_add' => isset($request->production_add) ? 1 : 0,
+            'production_edit' => isset($request->production_edit) ? 1 : 0,
+            'production_delete' => isset($request->production_delete) ? 1 : 0,
+            'process_delete' => isset($request->process_delete) ? 1 : 0,
+            'manuf_settings' => isset($request->manuf_settings) ? 1 : 0,
+            'manuf_report' => isset($request->manuf_report) ? 1 : 0,
         ];
         return $permissions;
     }
@@ -483,6 +446,16 @@ class RoleController extends Controller
             'e_com_sync_pro' => isset($request->e_com_sync_pro) ? 1 : 0,
             'e_com_sync_order' => isset($request->e_com_sync_order) ? 1 : 0,
             'e_com_map_tax_rate' => isset($request->e_com_map_tax_rate) ? 1 : 0,
+        ];
+        return $permissions;
+    }
+
+    // E-commerce permissions
+    private function othersPermission($request)
+    {
+        $permissions = [
+            'today_summery' => isset($request->today_summery) ? 1 : 0,
+            'communication' => isset($request->communication) ? 1 : 0,
         ];
         return $permissions;
     }

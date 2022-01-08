@@ -84,11 +84,11 @@ class ExpanseController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-                    if (auth()->user()->permission->expense['edit_expense'] == '0') :
+                    if (auth()->user()->permission->expense['edit_expense'] == '1') :
                         $html .= '<a class="dropdown-item" href="' . route('expanses.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     endif;
 
-                    if (auth()->user()->permission->expense['delete_expense'] == '0') :
+                    if (auth()->user()->permission->expense['delete_expense'] == '1') :
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('expanses.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     endif;
 

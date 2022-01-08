@@ -461,8 +461,7 @@ class DashboardController extends Controller
             $payrolls = $payrollQuery->groupBy('hrm_payroll_payments.id')
                 ->whereDate('hrm_payroll_payments.report_date', TODAY)->get();
         } else {
-            $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)->where('sales.status', 1)
-                ->whereDate('report_date', TODAY)->groupBy('sales.id')->get();
+            $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)->where('sales.status', 1)->whereDate('report_date', TODAY)->groupBy('sales.id')->get();
 
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)
                 ->groupBy('purchases.id')->whereDate('report_date', TODAY)->get();
@@ -539,8 +538,7 @@ class DashboardController extends Controller
 
     public function todayProfit($totalAdjust, $totalRecovered, $totalSale, $totalSalesReturn, $totalOrderTax, $totalExpanse, $totalPayroll, $totalTransferCost, $branch_id)
     {
-        $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-            ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
+        $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
 
         if ($branch_id) {
             if ($branch_id == 'HF') {
@@ -558,7 +556,7 @@ class DashboardController extends Controller
             $saleProducts = $saleProductQuery->where('sales.status', 1)
                 ->where('sales.report_date', TODAY)
                 ->groupBy('sale_products.id')
-                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                ->where('sales.branch_id', auth()->user()->branch_id)->get();
         }
 
         $totalTotalUnitCost = $saleProducts->sum('total_unit_cost');

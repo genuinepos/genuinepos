@@ -19,18 +19,22 @@ class BarcodeController extends Controller
     // Generate barcode index view 
     public function index()
     {
+        if (auth()->user()->permission->product['generate_barcode'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         $bc_settings = DB::table('barcode_settings')->orderBy('is_continuous', 'desc')->get(['id', 'name', 'is_default']);
         return view('product.barcode.index_v2', compact('bc_settings'));
     }
 
     public function preview(Request $request)
     {
-        //return $request->all();
         $req = $request;
         if (!isset($req->product_ids)) {
             session()->flash('errorMsg', 'Product list is empty.');
             return redirect()->back();
         }
+
         $br_setting = BarcodeSetting::where('id', $request->br_setting_id)->first();
         return view('product.barcode.preview', compact('br_setting', 'req'));
     }

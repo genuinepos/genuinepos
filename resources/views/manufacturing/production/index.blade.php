@@ -3,7 +3,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
-@section('title', 'All Process - ')
+@section('title', 'All Productions - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -14,21 +14,29 @@
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul>
-                                        <li>
-                                            <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>Process</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['process_view'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>@lang('menu.process')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes text-primary"></i> <b>Production</b></a>
-                                        </li>
-                                     
-                                        <li>
-                                            <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>Settings</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['production_view'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes text-primary"></i> <b>@lang('menu.productions')</b></a>
+                                            </li>
+                                        @endif
 
-                                        <li>
-                                            <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>Manufacturing Report</b></a>
-                                        </li>
+                                        @if (auth()->user()->permission->manufacturing['manuf_settings'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>@lang('menu.manufacturing_setting')</b></a>
+                                            </li>
+                                        @endif
+
+                                        @if (auth()->user()->permission->manufacturing['manuf_report'] == '1')
+                                            <li>
+                                                <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.manufacturing_report')</b></a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
@@ -139,8 +147,7 @@
                             <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-6"><h6>Productions</h6></div>
-
-                                    @if (auth()->user()->permission->manufacturing['menuf_add'] == '1') 
+                                    @if (auth()->user()->permission->manufacturing['production_add'] == '1')
                                         <div class="col-md-6">
                                             <div class="btn_30_blue float-end">
                                                 <a href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>
@@ -187,7 +194,7 @@
                                     </div>
                                 </div>
     
-                                @if (auth()->user()->permission->manufacturing['menuf_delete'] == '1')
+                                @if (auth()->user()->permission->manufacturing['production_delete'] == '1')
                                     <form id="deleted_form" action="" method="post">
                                         @method('DELETE')
                                         @csrf

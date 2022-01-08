@@ -21,8 +21,8 @@
                             <td class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] . ' ' . App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
-                            <td class="text-start">{{ $payment->account ? $payment->account->name : '----' }}</td>
-                            <td class="text-start">{{ $payment->pay_mode }}</td>
+                            <td class="text-start">{{ $payment->account ? $payment->account->name : 'Cash-In-Hand' }}</td>
+                            <td class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                             <td class="text-start">{{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}
                             </td>
                             

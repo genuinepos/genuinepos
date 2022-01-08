@@ -167,7 +167,9 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        @include('sales.pos.ajax_view.partials.posSaleDetailsPaymentList')
+                        @if (auth()->user()->permission->sale['sale_payment'] == '1') 
+                            @include('sales.pos.ajax_view.partials.posSaleDetailsPaymentList')
+                        @endif
                     </div>
                     <div class="col-md-6">
                         <div class="table-responsive">
@@ -268,8 +270,15 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}"
+                @if (auth()->user()->permission->sale['pos_edit'] == '1') 
+                    <a class="btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}"> Edit</a>
+                @endif
+              
+                @if (auth()->user()->permission->sale['shipment_access'] == '1') 
+                    <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}"
                     class="btn btn-sm btn-success">Print Packing Slip</button>
+                @endif
+
                 <button type="button" class="btn btn-sm btn-info print_challan_btn">Print Challan</button>
                 <button type="button" class="btn btn-sm btn-primary print_btn">Print Invoice</button>
                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button> 

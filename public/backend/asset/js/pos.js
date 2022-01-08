@@ -273,3 +273,7 @@ $('#readDocument').click(function () {
     }
 })
 
+$(document).on('click', '#show_cost_button', function () {
+    $('#show_cost_section').toggle(500);
+});
+

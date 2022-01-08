@@ -13,6 +13,10 @@ class UnitController extends Controller
 
     public function index()
     {
+        if (auth()->user()->permission->product['units'] == '0') {
+            abort(403, 'Access Forbidden.');
+        }
+
         return view('settings.units.index');
     }
 
@@ -24,6 +28,10 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->permission->product['units'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'name' => 'required|unique:units,name',
             'code' => 'required|unique:units,code_name',
@@ -39,6 +47,10 @@ class UnitController extends Controller
     
     public function update(Request $request)
     {
+        if (auth()->user()->permission->product['units'] == '0') {
+            return response()->json('Access Denied');
+        }
+
         $this->validate($request, [
             'name' => 'required|unique:units,name,'.$request->id,
             'code' => 'required|unique:units,code_name,'.$request->id,
@@ -53,6 +65,10 @@ class UnitController extends Controller
 
     public function delete(Request $request, $unitId)
     {
+        if (auth()->user()->permission->product['units'] == '0') {
+            return response()->json('Access Denied');
+        }
+        
         $deleteUnit = Unit::where('id', $unitId)->first();
         if (!is_null($deleteUnit)) {
             $deleteUnit->delete();

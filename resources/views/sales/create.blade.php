@@ -169,18 +169,16 @@
                                                                     class="fas fa-barcode text-dark"></i></span>
                                                         </div>
                                                         <input type="text" name="search_product" class="form-control scanable"
-                                                            autocomplete="off" id="search_product"
-                                                            placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                        <div class="input-group-prepend">
-                                                            <span id="add_product" class="input-group-text add_button"><i
-                                                                    class="fas fa-plus-square text-dark"></i></span>
-                                                        </div>
+                                                            autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
+                                                        @if (auth()->user()->permission->product['product_add'] == '1')
+                                                            <div class="input-group-prepend">
+                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            </div> 
+                                                        @endif
                                                     </div>
     
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                           
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div>
                                             </div>
@@ -384,98 +382,14 @@
                                             <div class="row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Paid By :</label>
                                                 <div class="col-sm-7">
-                                                    <select name="payment_method" class="form-control" id="payment_method">
-                                                        <option value="Cash">Cash</option>
-                                                        <option value="Advanced">Advanced</option>
-                                                        <option value="Cheque">Cheque</option>
-                                                        <option value="Card">Card</option>
-                                                        <option value="Bank-Transfer">Bank-Transter</option>
-                                                        <option value="Other">Other</option>
-                                                        <option value="Custom">Custom Field</option>
+                                                    <select name="payment_method_id" class="form-control" id="payment_method_id">
+                                                        @foreach ($methods as $method)
+                                                            <option value="{{ $method->id }}" 
+                                                                data-account="{{ $method->account_id }}">
+                                                                {{ $method->name }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="payment_method d-none" id="Card">
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Card No :</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control" name="card_no" id="card_no" placeholder="Card number">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Card Holder :</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control" name="card_holder_name" id="card_holder_name" placeholder="Card holder name">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">TrX Number :</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control" name="card_transaction_no" id="card_transaction_no" placeholder="Card transaction no">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Card Type :</label>
-                                                    <div class="col-sm-7">
-                                                        <select name="card_type" class="form-control"  id="p_card_type">
-                                                            <option value="Credit-Card">Credit Card</option>  
-                                                            <option value="Debit-Card">Debit Card</option> 
-                                                            <option value="Visa">Visa Card</option> 
-                                                            <option value="Master-Card">Master Card</option> 
-                                                        </select>
-                                                    </div>
-                                                </div> 
-
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Month :</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control " name="month" id="month" placeholder="Month">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Year :</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control" name="year" id="year" placeholder="Year">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Secure ID :</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control" name="secure_code" id="secure_code" placeholder="Secure code">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="payment_method d-none" id="Cheque">
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Cheque No :</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control" name="cheque_no" id="cheque_no" placeholder="Cheque number">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="payment_method d-none" id="Bank-Transfer">
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">Account No :</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control" name="account_no" id="account_no" placeholder="Account number">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="payment_method d-none" id="Custom">
-                                                <div class="row">
-                                                    <label for="inputEmail3" class="col-sm-5 col-form-label">TrX No :</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control " name="transaction_no" id="transaction_no" placeholder="Transaction number">
-                                                    </div>
                                                 </div>
                                             </div>
 
@@ -483,7 +397,7 @@
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Pay Account :</label>
                                                 <div class="col-sm-7">
                                                     <select name="account_id" class="form-control" id="account_id">
-                                                        <option value="">None</option>
+                                                        <option value="">Cash-In-Hand</option>
                                                         @foreach ($accounts as $account)
                                                             <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
                                                         @endforeach
@@ -538,13 +452,23 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="product_info">Samsung A30 - Black-4GB-64GB - (black-4gb-64gb-85554687)</h6>
+                    <h6 class="modal-title" id="product_info">Samsung A30</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product" action="">
+                        @if (auth()->user()->permission->sale['view_product_cost_is_sale_screed'] == '1')
+                            <p>
+                                <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
+                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span> 
+                                    <span id="unit_cost">1,200.00</span> 
+                                </span> 
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">Cost</span>
+                            </p>
+                        @endif
+
                         <div class="form-group">
                             <label> <strong>Quantity</strong> : <span class="text-danger">*</span></label>
                             <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
@@ -603,7 +527,7 @@
             </div>
         </div>
     </div> 
-    <!-- Edit selling product modal End-->
+    <!-- Edit selling product modal End--> 
 
     <!--Add Product Modal--> 
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -704,3 +628,5 @@
 @push('scripts')
     @include('sales.partials.addSaleCreateJsScript')
 @endpush
+
+

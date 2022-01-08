@@ -34,28 +34,22 @@ class ProductionUtil
             ->leftJoin('product_variants', 'productions.variant_id', 'product_variants.id')
             ->leftJoin('units', 'productions.unit_id', 'units.id');
 
+        $query->select(
+            'productions.*',
+            'products.name as p_name',
+            'product_variants.variant_name as v_name',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'warehouses.warehouse_name',
+            'warehouses.warehouse_code',
+            'units.code_name as u_name',
+        );
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $productions = $this->filteredQuery($request, $query)->select(
-                'productions.*',
-                'products.name as p_name',
-                'product_variants.variant_name as v_name',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'warehouses.warehouse_name',
-                'warehouses.warehouse_code',
-                'units.code_name as u_name',
-            )->orderBy('productions.report_date', 'desc');
+            $productions = $this->filteredQuery($request, $query)->orderBy('productions.report_date', 'desc');
         } else {
-            $productions = $this->filteredQuery($request, $query)->select(
-                'productions.*',
-                'products.name as p_name',
-                'product_variants.variant_name as v_name',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'warehouses.warehouse_name',
-                'warehouses.warehouse_code',
-                'units.code_name as u_name',
-            )->where('productions.branch_id', auth()->user()->branch_id)
+            $productions = $this->filteredQuery($request, $query)
+                ->where('productions.branch_id', auth()->user()->branch_id)
                 ->orderBy('productions.report_date', 'desc');
         }
 
@@ -67,15 +61,15 @@ class ProductionUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('manufacturing.productions.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                if (auth()->user()->branch_id == $row->branch_id) {
-                    if (auth()->user()->permission->manufacturing['menuf_edit'] == '1') {
+                if (auth()->user()->branch_id == $row->branch_id) :
+                    if (auth()->user()->permission->manufacturing['production_edit'] == '1') :
                         $html .= '<a class="dropdown-item" href="' . route('manufacturing.productions.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    }
+                    endif;
 
-                    if (auth()->user()->permission->manufacturing['menuf_delete'] == '1') {
+                    if (auth()->user()->permission->manufacturing['production_delete'] == '1') :
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('manufacturing.productions.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    }
-                }
+                    endif;
+                endif;
 
                 $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
                 $html .= '</div>';
@@ -124,13 +118,13 @@ class ProductionUtil
             $production->delete();
         }
 
-        if($storedStatus == 1){
+        if ($storedStatus == 1) {
             $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
             if ($storedWarehouseId) {
                 $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId, $storedWarehouseId);
             } else {
                 $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, $storedBranchId);
-            } 
+            }
 
             if (count($storeIngredients) > 0) {
                 foreach ($storeIngredients as $ingredient) {

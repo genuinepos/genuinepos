@@ -16,24 +16,51 @@
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="sec-name mt-1">
-                                <div class="col-md-12">
-                                    <table class="table modal-table table-sm">
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-start"> <strong>Capital A/C :</strong> </td>
-                                                <td class="bank_name text-start">0.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-start"> <strong>Total Bank A/C Balance:</strong> </td>
-                                                <td class="bank_name text-start">0.00</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="sec-name">
+                                    <div class="col-md-12">
+                                        <form id="filter_form" class="px-2">
+                                            <div class="form-group row">
+                                                <div class="col-md-2">
+                                                    <label><strong>Account Type :</strong></label>
+                                                    <select name="account_type" id="f_account_type" class="form-control">
+                                                        <option value="">All</option>  
+                                                        <option value="1">Cash-In-Hand</option> 
+                                                        <option value="2">Bank A/C</option> 
+                                                        <option value="3">Purchase A/C</option> 
+                                                        <option value="4">Purchase Return A/C</option> 
+                                                        <option value="5">Sales A/C</option> 
+                                                        <option value="6">Sales Return A/C</option> 
+                                                        <option value="7">Direct Expense</option> 
+                                                        <option value="8">Indirect Expense</option> 
+                                                        <option value="9">Current Assets</option> 
+                                                        <option value="10">Current Liabilities</option> 
+                                                        <option value="11">Misc. Expense</option> 
+                                                        <option value="12">Misc. Income</option> 
+                                                        <option value="13">Loans (Liabilities)</option> 
+                                                        <option value="14">Loans And Advances</option> 
+                                                        <option value="15">Fixed Assets</option> 
+                                                        <option value="16">Investments</option> 
+                                                        <option value="17">Bank OD A/C</option> 
+                                                        <option value="18">Deposit</option> 
+                                                        <option value="19">Provision</option> 
+                                                        <option value="20">Reserves And Surplus</option> 
+                                                        <option value="21">Payroll A/C</option> 
+                                                        <option value="22">Sale Exchange A/C</option> 
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -71,9 +98,7 @@
                                                 <th class="text-start">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -99,41 +124,62 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="add_account_form" action="{{ route('accounting.accounts.store') }}">
+                        <div class="form-group mt-1">
+                            <label><strong>Account Type : <span class="text-danger">*</span></strong></label>
+                            <select name="account_type_id"  class="form-control add_input" data-name="Account Type" id="account_type_id">
+                                <option value="">Select Account type</option>  
+                                <option value="1">Cash-In-Hand</option> 
+                                <option value="2">Bank A/C</option> 
+                                <option value="3">Purchase A/C</option> 
+                                <option value="4">Purchase Return A/C</option> 
+                                <option value="5">Sales A/C</option> 
+                                <option value="6">Sales Return A/C</option> 
+                                <option value="7">Direct Expense</option> 
+                                <option value="8">Indirect Expense</option> 
+                                <option value="9">Current Assets</option> 
+                                <option value="10">Current Liabilities</option> 
+                                <option value="11">Misc. Expense</option> 
+                                <option value="12">Misc. Income</option> 
+                                <option value="13">Loans (Liabilities)</option> 
+                                <option value="14">Loans And Advances</option> 
+                                <option value="15">Fixed Assets</option> 
+                                <option value="16">Investments</option> 
+                                <option value="17">Bank OD A/C</option> 
+                                <option value="18">Deposit</option> 
+                                <option value="19">Provision</option> 
+                                <option value="20">Reserves And Surplus</option> 
+                                <option value="21">Payroll A/C</option> 
+                                <option value="22">Sale Exchange A/C</option> 
+                            </select>
+                            <span class="error error_account_type"></span>
+                        </div>
+
                         <div class="form-group">
-                            <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Type name" id="name" placeholder="account name"/>
+                            <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control add_input" data-name="Type name" id="name" placeholder="account name"/>
                             <span class="error error_name"></span>
                         </div>
 
                         <div class="form-group mt-1">
                             <label><strong>Account Number : </strong><span class="text-danger">*</span></label>
-                            <input type="text" name="account_number" class="form-control form-control-sm add_input" data-name="Type name" id="account_number" placeholder="Account number"/>
+                            <input type="text" name="account_number" class="form-control add_input" data-name="Type name" id="account_number" placeholder="Account number"/>
                             <span class="error error_account_number"></span>
                         </div>
 
-                        <div class="form-group mt-1">
+                        <div class="form-group mt-1 bank_field d-none">
                             <label><strong>Bank Name :</strong> <span class="text-danger">*</span> </label>
-                            <select name="bank_id" class="form-control form-control-sm add_input" data-name="Bank name" id="bank_id">
+                            <select name="bank_id" class="form-control add_input" data-name="Bank name" id="bank_id">
                                 <option value="">Select Bank</option>
+                                @foreach ($banks as $bank)
+                                    <option value="{{ $bank->id }}">{{ $bank->name.' ('.$bank->branch_name.')' }}</option>
+                                @endforeach
                             </select>
                             <span class="error error_bank_id"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong>Account Type :</strong></label>
-                            <select name="account_type_id"  class="form-control form-control-sm" title="Select Type"  id="account_type_id">
-                                <option value="">Select Account type</option>  
-                            </select>
-                        </div>
-
-                        <div class="form-group mt-1">
                             <label><strong>Opening Balance :</strong></label>
-                            <input type="number" name="opening_balance" class="form-control form-control-sm" data-name="Type name" id="opening_balance" value="0.00" step="any"/>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Remark :</strong></label>
-                            <input type="text" name="remark" id="remark" class="form-control form-control-sm" placeholder="Remark Type"/>
+                            <input type="number" name="opening_balance" class="form-control" data-name="Type name" id="opening_balance" value="0.00" step="any"/>
                         </div>
 
                         <div class="form-group text-right py-2">
@@ -155,49 +201,7 @@
                     <h6 class="modal-title" id="exampleModalLabel">Edit Account</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="edit_account_form" action="{{ route('accounting.accounts.update') }}" method="POST">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group">
-                            <label><strong>Name :</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm edit_input" data-name="Type name" id="e_name" placeholder="Account name"/>
-                            <span class="error error_e_name"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Account Number :</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="account_number" class="form-control form-control-sm edit_input" data-name="Type name" id="e_account_number" placeholder="Account number"/>
-                            <span class="error error_e_account_number"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Bank Name :</strong> <span class="text-danger">*</span> </label>
-                            <select name="bank_id" class="form-control form-control-sm edit_input" data-name="Bank name" id="e_bank_id">
-                                <option value="">Select Bank</option>    
-                            </select>
-                            <span class="error error_e_bank_id"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Account Type : </strong></label>
-                            <select name="account_type_id"  class="form-control form-control-sm" title="Select Type"  id="e_account_type_id">
-                                <option value="">Select Account type</option> 
-                            </select>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Remark :</strong></label>
-                            <input type="text" name="remark" id="e_remark" class="form-control form-control-sm" placeholder="Remark Type"/>
-                        </div>
-
-                        <div class="form-group text-end py-2">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn me-0 btn_blue float-end">Update</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                        </div>
-                    </form>
-                </div>
+                <div class="modal-body"></div>
             </div>
         </div>
     </div>  
@@ -320,51 +324,6 @@
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    // Set all banks into modal form
-    function setBanks(){
-        $.ajax({
-            url:"{{route('accounting.accounts.all.banks')}}",
-            type:'get',
-            dataType: 'json',
-            success:function(banks){
-                $.each(banks, function(key, val){
-                    $('#bank_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.branch_name+')'+'</option>');
-                    $('#e_bank_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.branch_name+')'+'</option>');
-                });
-            }
-        });
-    }
-    setBanks();
-
-    var accountArray = '';
-    function setAccount(){
-        $.ajax({
-            url:"{{route('accounting.accounts.all.form.account')}}",
-            type:'get',
-            dataType: 'json',
-            success:function(accounts){
-                accountArray = accounts;
-            }
-        });
-    }
-    setAccount();
-
-    // Set account types into modal form
-    function setAccoutTypes(){
-        $.ajax({
-            url:"{{route('accounting.accounts.all.account.types')}}",
-            type:'get',
-            dataType: 'json',
-            success:function(types){
-                $.each(types, function(key, val){
-                    $('#account_type_id').append('<option value="'+val.id+'">'+ val.name +'</option>');
-                    $('#e_account_type_id').append('<option value="'+val.id+'">'+ val.name +'</option>');
-                });
-            }
-        });
-    }
-    setAccoutTypes();
-
     // Get all account by ajax
     function getAllAccount(){
         $('.data_preloader').show();
@@ -391,25 +350,7 @@
             $('.submit_button').prop('type', 'button');
             var url = $(this).attr('action');
             var request = $(this).serialize();
-            var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                $('.submit_button').prop('type', 'submit');
-                return;
-            }
-
+        
             $.ajax({
                 url:url,
                 type:'post',
@@ -431,21 +372,6 @@
                     }
                 }
             });
-        });
-
-        // pass editable data to edit modal fields
-        $(document).on('click', '#edit', function(e){
-            e.preventDefault();
-            $('.form-control').removeClass('is-invalid');
-            $('.error').html('');
-            var account = $(this).closest('tr').data('info');
-            $('#id').val(account.id);
-            $('#e_name').val(account.name);
-            $('#e_account_number').val(account.account_number);
-            $('#e_bank_id').val(account.bank_id);
-            $('#e_account_type_id').val(account.account_type_id);
-            $('#e_remark').val(account.remark);
-            $('#editModal').modal('show');
         });
 
         // edit account type by ajax

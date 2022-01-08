@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Sale;
 use App\Models\Account;
 use App\Models\Customer;
+use App\Models\PaymentMethod;
 use App\Models\CustomerLedger;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,5 +38,10 @@ class SalePayment extends Model
     public function ledger()
     {
         return $this->hasOne(CustomerLedger::class);
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id', 'id');
     }
 }

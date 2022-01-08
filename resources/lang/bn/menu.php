@@ -35,7 +35,7 @@ return [
     'customers' => 'গ্রাহক',
     'import_customers' => 'আমদানি গ্রাহক',
     'customer_groups' => 'গ্রাহক গ্রুপ',
-    // Menu childs of Purchases module
+    // Menu child of Purchases module
     'add_purchase' => 'ক্রয় যুক্ত করুন',
     'purchase_list' => 'ক্রয় তালিকা',
     'po_list' => 'ক্রয় আদেশ তালিকা',

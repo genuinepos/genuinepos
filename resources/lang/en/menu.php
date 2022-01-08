@@ -9,7 +9,7 @@ return [
   'adjustment' => 'Adjustment',
   'expenses' => 'Expenses',
   'accounting' => 'Accounting',
-  'setup' => 'Setup',
+  'setup' => 'Set-up',
   'users' => 'Users',
   'hrm' => 'HRM',
   'manufacturing' => 'Manufacture',
@@ -17,7 +17,7 @@ return [
   'e_commerce' => 'Ecommerce',
   'service' => 'Service',
   'reports' => 'Reports',
-  // Menu childs of Products module
+  // Menu child of Products module
   'categories' => 'Categories',
   'sub_categories' => 'SubCategories',
   'brand' => 'Brands',
@@ -29,20 +29,20 @@ return [
   'generate_barcode' => 'Generate Barcode',
   'warranties' => 'Warranties',
   'import_products' => 'Import Products',
-  // Menu childs of Contacts module
+  // Menu child of Contacts module
   'suppliers' => 'Suppliers',
   'import_suppliers' => 'Import Suppliers',
   'customers' => 'Customers',
   'import_customers' => 'Import Customers',
   'customer_groups' => 'Customer Groups',
-  // Menu childs of Purchases module
+  // Menu child of Purchases module
   'add_purchase' => 'Add Purchase',
   'purchase_list' => 'Purchase List',
   'po_list' => 'PO List',
   'purchase_product_list' => 'Purchased Product List',
   'add_return' => 'Add Return',
   'purchase_return_list' => 'Purchase Return List',
-  // Menu childs of sales module
+  // Menu child of sales module
   'add_sale' => 'Add Sale',
   'add_sale_list' => 'Manage Add Sale',
   'sold_product_list' => 'Sold Product List',
@@ -54,7 +54,7 @@ return [
   'challan_list' => 'Challan List',
   'sale_return_list' => 'Sale Return List',
   'shipments' => 'Shipments',
-  // Menu childs of Transfer module
+  // Menu child of Transfer module
   'transfer_stock_heading_1' => 'TRANSFER STOCK FROM <b>WAREHOUSE</b> TO <b>BUSINESS LOCATION</b>',
   'transfer_stock_heading_2' => 'TRANSFER STOCK FROM <b>BUSINESS LOCATION</b> TO <b>WAREHOUSE</b>',
   'add_transfer' => 'Add Transfer',
@@ -62,16 +62,16 @@ return [
   'receive_stocks' => 'Receive Stocks',
   'to_branch' => 'To B.Location',
   'to_warehouse' => 'To Warehouse',
-  // Menu childs of Adjustment module 
+  // Menu child of Adjustment module 
   'add_stock_adjustment_from_branch' => 'Add Stock Adjustment <br/>(<small>From B.Location</small>)',
   'add_stock_adjustment_from_warehouse' => 'Add Stock Adjustment <br/>(<small>From warehouse</small>)',
   'stock_adjustment_list' => 'Stock Adjustment List',
-  // Menu childs of Expense module 
+  // Menu child of Expense module 
   'expense_list' => 'Expense List',
   'add_expense' => 'Add Expense',
   'expense_categories' => 'Expense Categories',
   'category_wise_expenses' => 'Category Wise Expenses',
-  // Menu childs of Accounting module  
+  // Menu child of Accounting module  
   'bank' => 'Bank',
   'account_types' => 'Account Types',
   'accounts' => 'Accounts',
@@ -80,7 +80,7 @@ return [
   'balance_sheet' => 'Balance Sheet',
   'trial_balance' => 'Trial Balance',
   'cash_flow' => 'Cash Flow',
-  // Menu childs of Setup module  
+  // Menu child of Setup module  
   'branches' => 'Business Locations',
   'warehouses' => 'Warehouses',
   'units' => 'Units',
@@ -91,12 +91,12 @@ return [
   'invoice_schema' => 'Invoice Schemas',
   'invoice_layout' => 'Invoice Layouts',
   'cash_counter' => 'Cash Counter',
-  // Menu childs of Users module  
+  // Menu child of Users module  
   'add_user' => 'Add User',
   'user_list' => 'User List',
   'add_role' => 'Add Role',
   'role_list' => 'Role List',
-  // Menu childs of HRM module  
+  // Menu child of HRM module  
   'hrm_dashboard' => 'HRM Dashboard',
   'leave_type' => 'Leave Type',
   'leave' => 'Leave',
@@ -108,17 +108,17 @@ return [
   'department' => 'Department',
   'designation' => 'Designation',
   'hrm_settings' => 'HRM Settings',
-  // Menu childs of manufacturing
+  // Menu child of manufacturing
   'process' => 'Process',
   'productions' => 'Productions',
   'manufacturing_setting' => 'Settings',
   'manufacturing_report' => 'Manufacturing Report',
-  // Menu childs of Essentials
+  // Menu child of Essentials
   'todo' => 'Todo',
   'work_space' => 'Work Spaces',
   'memo' => 'Memo',
   'message' => 'Message',
-  // Menu childs of Report module  
+  // Menu child of Report module  
   'profit_loss' => 'Profit/Loss Report',
   'purchase_sale' => 'Purchase & Sale',
   'tax_report' => 'Tax Report',

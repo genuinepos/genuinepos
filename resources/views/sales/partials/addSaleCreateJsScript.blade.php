@@ -13,12 +13,6 @@
     }
     getPriceGroupProducts();
 
-    $('#payment_method').on('change', function () {
-        var value = $(this).val();
-        $('.payment_method').hide();
-        $('#'+value).show();
-    });
-
     var delay = (function() {
         var timer = 0;
         return function(callback, ms) {
@@ -1274,6 +1268,13 @@
         },
         format: _expectedDateFormat,
     });
+
+    $('#payment_method_id').on('change', function () {
+        var account_id = $(this).find('option:selected').data('account');
+        $('#account_id').val(account_id);
+    });
+
+    $('#account_id').val($('#payment_method_id').find('option:selected').data('account'));
 
     //const textInput = e.key || String.fromCharCode(e.keyCode);
     

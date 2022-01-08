@@ -2,8 +2,8 @@
     <thead>
         <tr>
             <th class="text-start">Date</th>
-            <th class="text-start">Description</th>
-            <th class="text-start">Created By</th>
+            <th class="text-start">Particular</th>
+            <th class="text-start">Voucher</th>
             <th class="text-start">Debit</th>
             <th class="text-start">Credit</th>
             <th class="text-start">Balance</th>

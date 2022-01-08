@@ -247,8 +247,11 @@ class Util
             16 => 'Investments',
             17 => 'Bank OD A/C',
             18 => 'Deposit',
-            17 => 'Provision',
-            17 => 'Reserves & Surplus',
+            19 => 'Provision',
+            20 => 'Reserves & Surplus',
+            21 => 'Payroll',
+            22 => 'Stock Adjustment A/C',
+            23 => 'Production A/C',
         ];
 
         return $types[$index];
@@ -275,8 +278,11 @@ class Util
             16 => 'Investments',
             17 => 'Bank OD A/C',
             18 => 'Deposit',
-            17 => 'Provision',
-            17 => 'Reserves & Surplus',
+            19 => 'Provision',
+            20 => 'Reserves & Surplus',
+            21 => 'Payroll A/C',
+            22 => 'Stock Adjustment A/C',
+            23 => 'Production A/C',
         ];
     }
 }

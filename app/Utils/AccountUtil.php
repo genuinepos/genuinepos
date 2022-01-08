@@ -41,7 +41,7 @@ class AccountUtil
         $account = Account::where('id', $account_id)->first();
         $account->debit = $acDebit;
         $account->credit = $totalCredit;
-        $account->balance = $totalCredit - $acDebit;
+        $account->balance =  $acDebit - $totalCredit;
         $account->save();
         return $account->balance;
     }

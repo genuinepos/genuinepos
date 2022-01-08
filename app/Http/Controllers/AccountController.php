@@ -93,6 +93,7 @@ class AccountController extends Controller
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+        
         $account = Account::with(['bank', 'cash_flows'])->where('id', $accountId)->first();
         return view('accounting.accounts.account_book', compact('account'));
     }

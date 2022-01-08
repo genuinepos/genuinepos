@@ -95,10 +95,10 @@ class SaleUtil
                                 // Add cash flow
                                 $addCashFlow = new CashFlow();
                                 $addCashFlow->account_id = $request->account_id;
-                                $addCashFlow->credit = $dueAmounts;
+                                $addCashFlow->debit = $dueAmounts;
                                 $addCashFlow->customer_payment_id = $customerPayment->id;
                                 $addCashFlow->transaction_type = 13;
-                                $addCashFlow->cash_type = 2;
+                                $addCashFlow->cash_type = 1;
                                 $addCashFlow->date = date('d-m-Y', strtotime($request->date));
                                 $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
                                 $addCashFlow->month = date('F');
@@ -151,10 +151,10 @@ class SaleUtil
             // Add cash flow
             $addCashFlow = new CashFlow();
             $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->credit = $payingAmount;
+            $addCashFlow->debit = $payingAmount;
             $addCashFlow->sale_payment_id = $addSalePayment->id;
             $addCashFlow->transaction_type = 2;
-            $addCashFlow->cash_type = 2;
+            $addCashFlow->cash_type = 1;
             $addCashFlow->date = $request->date;
             $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
             $addCashFlow->month = date('F');

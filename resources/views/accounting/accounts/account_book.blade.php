@@ -40,7 +40,7 @@
         
                                                 <tr>
                                                     <td class="text-start"><strong>Account Type :</strong></td>
-                                                    <td class="account_type text-start">{{ $account->account_type ? $account->account_type->name : '' }}</td>
+                                                    <td class="account_type text-start">{{ App\Utils\Util::accountType($account->account_type) }}</td>
                                                 </tr>
         
                                                 <tr>

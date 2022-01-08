@@ -23,7 +23,7 @@
                             </td>
                             <td class="text-start">{{ $payment->account ? $payment->account->name : 'Cash-In-Hand' }}</td>
                             <td class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
-                            <td class="text-start">{{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}
+                            <td class="text-start">{{ $payment->payment_type == 1 ? 'Receive Payment' : 'Return Payment' }}
                             </td>
                             
                             <td class="text-start action_hideable">

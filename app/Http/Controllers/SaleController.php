@@ -864,7 +864,7 @@ class SaleController extends Controller
     // Show payment modal
     public function paymentModal($saleId)
     {
-        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])->orderBy('account_types', 'asc')->get();
+        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])->orderBy('account_type', 'asc')->get();
         $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
         return view('sales.ajax_view.add_payment', compact('sale', 'accounts', 'methods'));
@@ -897,9 +897,10 @@ class SaleController extends Controller
             return response()->json('Access Denied');
         }
 
-        $accounts =  Account::orderBy('id', 'DESC')->where('status', 1)->get();
+        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])->orderBy('account_type', 'asc')->get();
         $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch')->where('id', $paymentId)->first();
-        return view('sales.ajax_view.edit_payment', compact('payment', 'accounts'));
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        return view('sales.ajax_view.edit_payment', compact('payment', 'accounts', 'methods'));
     }
 
     // Payment update

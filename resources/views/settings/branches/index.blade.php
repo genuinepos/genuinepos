@@ -154,7 +154,7 @@
                         </div>
 
                         <div class="form-group row mt-1">
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 <label><strong>Default Account :</strong> </label>
                                 <select name="default_account_id" id="default_account_id" class="form-control ">
                                     <option value="">Select Please</option>
@@ -162,7 +162,7 @@
                                         <option value="{{ $ac->id }}">{{ $ac->name.' (A/C:'.$ac->account_number.')' }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-3">
                                 <label><strong>Add Sale Invoice Scheme :</strong>  <span class="text-danger">*</span></label>

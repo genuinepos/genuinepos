@@ -85,7 +85,6 @@ class POSController extends Controller
     // Store pos sale
     public function store(Request $request)
     {
-        //return $request->all();
         $prefixSettings = DB::table('general_settings')
             ->select(['id', 'prefix', 'reward_poing_settings', 'send_es_settings'])
             ->first();

@@ -31,6 +31,8 @@ class CreateAccountLedgersTable extends Migration
             $table->unsignedBigInteger('payroll_id')->nullable();
             $table->unsignedBigInteger('payroll_payment_id')->nullable();
             $table->unsignedBigInteger('production_id')->nullable();
+            $table->unsignedBigInteger('loan_id')->nullable();
+            $table->unsignedBigInteger('loan_payment_id')->nullable();
             $table->decimal('debit', 22, 2)->default(0);
             $table->decimal('credit', 22, 2)->default(0);
             $table->decimal('running_balance', 22, 2)->default(0);

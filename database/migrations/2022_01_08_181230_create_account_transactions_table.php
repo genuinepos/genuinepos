@@ -31,6 +31,8 @@ class CreateAccountTransactionsTable extends Migration
             $table->unsignedBigInteger('payroll_id')->nullable();
             $table->unsignedBigInteger('payroll_payment_id')->nullable();
             $table->unsignedBigInteger('production_id')->nullable();
+            $table->unsignedBigInteger('loan_id')->nullable();
+            $table->unsignedBigInteger('loan_payment_id')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('expense_id')->references('id')->on('expanses')->onDelete('cascade');
@@ -47,6 +49,7 @@ class CreateAccountTransactionsTable extends Migration
             $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
             $table->foreign('payroll_payment_id')->references('id')->on('hrm_payroll_payments')->onDelete('cascade');
             $table->foreign('production_id')->references('id')->on('productions')->onDelete('cascade');
+            $table->foreign('loan_payment_id')->references('id')->on('loan_payments')->onDelete('cascade');
         });
     }
 

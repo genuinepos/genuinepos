@@ -173,16 +173,27 @@ class SaleController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        $branch_id = auth()->user()->branch_id;
+
         $customers = DB::table('customers')
             ->where('status', 1)->select('id', 'name', 'phone')
             ->orderBy('id', 'desc')->get();
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
         $invoice_schemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);
+
         $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])
-        ->orderBy('account_type', 'asc')->get(['id', 'name', 'account_number', 'account_type', 'balance']);
-        $saleAccounts = DB::table('accounts')->where('account_type', 5)->get(['id', 'name']);
+            ->where('accounts.branch_id', $branch_id)
+            ->orderBy('account_type', 'asc')
+            ->get(['id', 'name', 'account_number', 'account_type', 'balance']);
+
+        $saleAccounts = DB::table('accounts')
+            ->where('accounts.branch_id', $branch_id)
+            ->where('account_type', 5)
+            ->get(['id', 'name']);
+
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-        return view('sales.create', compact('customers', 'methods','accounts', 'saleAccounts','price_groups', 'invoice_schemas'));
+        return view('sales.create', compact('customers', 'methods', 'accounts', 'saleAccounts', 'price_groups', 'invoice_schemas'));
     }
 
     // Add Sale method
@@ -450,7 +461,7 @@ class SaleController extends Controller
         foreach ($sale->sale_products as $sale_product) {
             if ($sale_product->product->is_manage_stock == 0) {
                 $qty_limits[] = PHP_INT_MAX;
-            }else {
+            } else {
                 $productBranch = ProductBranch::where('branch_id', $sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {
@@ -463,7 +474,7 @@ class SaleController extends Controller
                 } else {
                     $qty_limits[] = $productBranch->product_quantity;
                 }
-            } 
+            }
         }
 
         return response()->json(['sale' => $sale, 'qty_limits' => $qty_limits]);
@@ -520,11 +531,11 @@ class SaleController extends Controller
         $updateSale->sale_note = $request->sale_note;
         $updateSale->report_date = date('Y-m-d', strtotime($request->date));
         $updateSale->save();
-        
+
         if ($updateSale->ledger) {
             $updateSale->ledger->report_date = $updateSale->report_date;
             $updateSale->ledger->save();
-        }else {
+        } else {
             if ($updateSale->status == 1 && $updateSale->customer_id) {
                 $addCustomerLedger = new CustomerLedger();
                 $addCustomerLedger->customer_id = $updateSale->customer_id;
@@ -532,7 +543,7 @@ class SaleController extends Controller
                 $addCustomerLedger->row_type = 1;
                 $addCustomerLedger->report_date = date('Y-m-d', strtotime($updateSale->date));
                 $addCustomerLedger->save();
-            } 
+            }
         }
 
         // update product quantity
@@ -747,7 +758,7 @@ class SaleController extends Controller
                     ]
                 );
             }
-         
+
             $productBranch = DB::table('product_branches')
                 ->where('branch_id', $branch_id)
                 ->where('product_id', $product->id)
@@ -853,7 +864,7 @@ class SaleController extends Controller
     // Show payment modal
     public function paymentModal($saleId)
     {
-        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
+        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])->orderBy('account_types', 'asc')->get();
         $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
         return view('sales.ajax_view.add_payment', compact('sale', 'accounts', 'methods'));
@@ -1211,7 +1222,7 @@ class SaleController extends Controller
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
             return response()->json('Access Denied');
         }
-        
+
         $deleteSalePayment = SalePayment::with('account', 'customer', 'sale', 'sale.sale_return', 'cashFlow')
             ->where('id', $paymentId)->first();
 

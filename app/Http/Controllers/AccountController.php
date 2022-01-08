@@ -34,17 +34,30 @@ class AccountController extends Controller
         }
 
         if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
             $accounts = '';
             $query = DB::table('accounts')
-            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
-            ->leftJoin('branches', 'accounts.branch_id', 'branches.id');
+                ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
+                ->leftJoin('branches', 'accounts.branch_id', 'branches.id');
 
             if ($request->account_type) {
                 $query = $query->where('accounts.account_type', $request->account_type);
             }
 
-            $accounts = $query->select('accounts.*', 'banks.name as b_name', 'banks.branch_name as b_branch')
-            ->orderBy('accounts.account_type', 'asc');
+            $query->select(
+                'accounts.*',
+                'banks.name as b_name',
+                'banks.branch_name as b_branch',
+                'branches.name as branch_name',
+                'branches.branch_code',
+            );
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                $accounts = $query->orderBy('accounts.account_type', 'asc');
+            } else {
+                $accounts = $query->where('accounts.branch_id', auth()->user()->branch_id)
+                    ->orderBy('accounts.account_type', 'asc');
+            }
 
             return DataTables::of($accounts)
                 ->addIndexColumn()
@@ -63,9 +76,10 @@ class AccountController extends Controller
                 ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
                 ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name . ' (' . $row->b_branch . ')' : 'Not Applicable')
                 ->editColumn('account_type', fn ($row) => '<b>' . $this->util->accountType($row->account_type) . '</b>')
+                ->editColumn('branch', fn ($row) => '<b>' . ($row->branch_name ? $row->branch_name . '/' . $row->branch_code : json_decode($generalSettings->business, true)['shop_name']) . '</b>')
                 ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
                 ->editColumn('balance', fn ($row) => $this->converter->format_in_bdt($row->balance))
-                ->rawColumns(['action', 'ac_number', 'bank', 'account_type', 'opening_balance', 'balance'])
+                ->rawColumns(['action', 'ac_number', 'bank', 'account_type', 'branch', 'opening_balance', 'balance'])
                 ->make(true);
         }
 

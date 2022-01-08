@@ -79,6 +79,7 @@
                                                 <th class="text-start">A/C Type</th>
                                                 <th class="text-start">A/C Number</th>
                                                 <th class="text-start">Bank </th>
+                                                <th class="text-start">Business Location </th>
                                                 <th class="text-start">Opening Balance</th>
                                                 <th class="text-start">Balance</th>
                                                 <th class="text-start">Action</th>
@@ -356,7 +357,7 @@
                 {data: 'account_type', name: 'account_type'},
                 {data: 'ac_number', name: 'accounts.account_number'},
                 {data: 'bank', name: 'banks.name'},
-                
+                {data: 'branch', name: 'branches.name'},
                 {data: 'opening_balance', name: 'accounts.opening_balance', className: 'text-end'},
                 {data: 'balance', name: 'accounts.balance', className: 'text-end'},
                 {data: 'action'},

@@ -145,6 +145,21 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class="col-5"><b>Sales A/C :</b></label>
+                                                <div class="col-7">
+                                                    <select name="sale_account_id" class="form-control"
+                                                        id="sale_account_id">
+                                                        @foreach ($saleAccounts as $saleAccount)
+                                                            <option value="{{ $saleAccount->id }}">
+                                                                {{ $saleAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_sale_account_id"></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -394,12 +409,18 @@
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Pay Account :</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Debit Account :</label>
                                                 <div class="col-sm-7">
                                                     <select name="account_id" class="form-control" id="account_id">
-                                                        <option value="">Cash-In-Hand</option>
+                                                        <option value="">Select Account</option>
                                                         @foreach ($accounts as $account)
-                                                            <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
+                                                            <option value="{{ $account->id }}">
+                                                                @php
+                                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                                    $balance = ' BL : '.$account->balance;
+                                                                @endphp
+                                                                {{ $account->name.$accountType.$balance}}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>

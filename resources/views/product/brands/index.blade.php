@@ -7,7 +7,6 @@
             <div class="row">
                 <div class=" border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-band-aid"></span>
@@ -16,7 +15,6 @@
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
                     <div class="row mt-1">
                         @if (auth()->user()->permission->brand['brand_add'] == '1')
@@ -61,9 +59,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-area px-3 pb-2" id="edit_form_body">
-
-                                    </div>
+                                    <div class="form-area px-3 pb-2" id="edit_form_body"></div>
                                 </div>
                             </div>
                         @endif
@@ -90,9 +86,7 @@
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>

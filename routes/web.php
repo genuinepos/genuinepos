@@ -529,13 +529,10 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::get('all/account', 'AccountController@allAccounts')->name('accounting.accounts.all.account');
         Route::get('account/book/{accountId}', 'AccountController@accountBook')->name('accounting.accounts.book');
         Route::post('store', 'AccountController@store')->name('accounting.accounts.store');
-        Route::post('update', 'AccountController@update')->name('accounting.accounts.update');
+        Route::get('edit/{id}', 'AccountController@edit')->name('accounting.accounts.edit');
+        Route::post('update/{id}', 'AccountController@update')->name('accounting.accounts.update');
         Route::delete('delete/{accountId}', 'AccountController@delete')->name('accounting.accounts.delete');
-        Route::get('all/banks', 'AccountController@allBanks')->name('accounting.accounts.all.banks');
-        Route::get('all/account/types', 'AccountController@allAccountTypes')->name('accounting.accounts.all.account.types');
-        Route::get('all/form/account', 'AccountController@allFromAccount')->name('accounting.accounts.all.form.account');
         Route::post('fund/transfer', 'AccountController@fundTransfer')->name('accounting.accounts.fund.transfer');
-
         Route::post('deposit', 'AccountController@deposit')->name('accounting.accounts.fund.deposit');
         Route::get('account/cash/flows/{accountId}', 'AccountController@accountCashflows')->name('accounting.accounts.account.cash.flows');
         Route::get('account/cash/flow/filter/{accountId}', 'AccountController@accountCashflowFilter')->name('accounting.accounts.account.cash.flow.filter');

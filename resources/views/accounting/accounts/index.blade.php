@@ -30,28 +30,9 @@
                                                     <label><strong>Account Type :</strong></label>
                                                     <select name="account_type" id="f_account_type" class="form-control">
                                                         <option value="">All</option>
-                                                        <option value="1">Cash-In-Hand</option>
-                                                        <option value="2">Bank A/C</option>
-                                                        <option value="3">Purchase A/C</option>
-                                                        <option value="4">Purchase Return A/C</option>
-                                                        <option value="5">Sales A/C</option>
-                                                        <option value="6">Sales Return A/C</option>
-                                                        <option value="7">Direct Expense</option>
-                                                        <option value="8">Indirect Expense</option>
-                                                        <option value="9">Current Assets</option>
-                                                        <option value="10">Current Liabilities</option>
-                                                        <option value="11">Misc. Expense</option>
-                                                        <option value="12">Misc. Income</option>
-                                                        <option value="13">Loans (Liabilities)</option>
-                                                        <option value="14">Loans And Advances</option>
-                                                        <option value="15">Fixed Assets</option>
-                                                        <option value="16">Investments</option>
-                                                        <option value="17">Bank OD A/C</option>
-                                                        <option value="18">Deposit</option>
-                                                        <option value="19">Provision</option>
-                                                        <option value="20">Reserves And Surplus</option>
-                                                        <option value="21">Payroll A/C</option>
-                                                        <option value="22">Sale Exchange A/C</option>
+                                                        @foreach (App\Utils\Util::allAccountTypes() as $key => $accountType)
+                                                            <option value="{{ $key }}">{{ $accountType }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -94,13 +75,12 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Name</th>
-                                                <th class="text-start">Account Number</th>
-                                                <th class="text-start">Bank Name</th>
-                                                <th class="text-start">Account Type</th>
-                                                <th class="text-start">Remark</th>
+                                                <th class="text-start">A/C Name</th>
+                                                <th class="text-start">A/C Type</th>
+                                                <th class="text-start">A/C Number</th>
+                                                <th class="text-start">Bank </th>
+                                                <th class="text-start">Opening Balance</th>
                                                 <th class="text-start">Balance</th>
-                                                <th class="text-start">Created By</th>
                                                 <th class="text-start">Action</th>
                                             </tr>
                                         </thead>
@@ -135,7 +115,7 @@
                         <div class="form-group">
                             <label><strong>Name :</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control add_input" data-name="Type name" id="name"
-                                placeholder="account name" />
+                                placeholder="Account Name" />
                             <span class="error error_name"></span>
                         </div>
                         
@@ -144,28 +124,9 @@
                             <select name="account_type" class="form-control add_input" data-name="Account Type"
                                 id="account_type">
                                 <option value="">Select Account type</option>
-                                <option value="1">Cash-In-Hand</option>
-                                <option value="2">Bank A/C</option>
-                                <option value="3">Purchase A/C</option>
-                                <option value="4">Purchase Return A/C</option>
-                                <option value="5">Sales A/C</option>
-                                <option value="6">Sales Return A/C</option>
-                                <option value="7">Direct Expense</option>
-                                <option value="8">Indirect Expense</option>
-                                <option value="9">Current Assets</option>
-                                <option value="10">Current Liabilities</option>
-                                <option value="11">Misc. Expense</option>
-                                <option value="12">Misc. Income</option>
-                                <option value="13">Loans (Liabilities)</option>
-                                <option value="14">Loans And Advances</option>
-                                <option value="15">Fixed Assets</option>
-                                <option value="16">Investments</option>
-                                <option value="17">Bank OD A/C</option>
-                                <option value="18">Deposit</option>
-                                <option value="19">Provision</option>
-                                <option value="20">Reserves And Surplus</option>
-                                <option value="21">Payroll A/C</option>
-                                <option value="22">Sale Exchange A/C</option>
+                                @foreach (App\Utils\Util::allAccountTypes() as $key => $accountType)
+                                    <option value="{{ $key }}">{{ $accountType }}</option>
+                                @endforeach
                             </select>
                             <span class="error error_account_type"></span>
                         </div>
@@ -197,6 +158,12 @@
                                 id="opening_balance" value="0.00" step="any" />
                         </div>
 
+                        <div class="form-group mt-1">
+                            <label><strong>Remarks :</strong></label>
+                            <input type="text" name="remark" class="form-control" data-name="Remark"
+                                id="remarks"/>
+                        </div>
+
                         <div class="form-group text-right py-2">
                             <button type="button" class="btn loading_button d-none"><i
                                     class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -219,12 +186,12 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body"></div>
+                <div class="modal-body" id="edit_account_form_body"></div>
             </div>
         </div>
     </div>
 
-    <!-- Fund transfer Modal -->
+    {{-- <!-- Fund transfer Modal -->
     <div class="modal fade" id="fundTransferModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
@@ -356,26 +323,55 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js"
         integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        // Get all account by ajax
-        function getAllAccount() {
-            $('.data_preloader').show();
-            $.ajax({
-                url: "{{ route('accounting.accounts.all.account') }}",
-                type: 'get',
-                success: function(data) {
-                    $('#data-list').html(data);
-                    $('.data_preloader').hide();
+        var accounts_table = $('.data_tbl').DataTable({
+            "processing": true,
+            "serverSide": true,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+            ],
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "ajax": {
+                "url": "{{ route('accounting.accounts.index') }}",
+                "data": function(d) {
+                    d.account_type = $('#f_account_type').val();
                 }
-            });
-        }
-        getAllAccount();
+            },
+            columnDefs: [{
+                "targets": [1, 6],
+                "orderable": false,
+                "searchable": false
+            }],
+            columns: [
+                {data: 'name', name: 'accounts.name'},
+                {data: 'account_type', name: 'account_type'},
+                {data: 'ac_number', name: 'accounts.account_number'},
+                {data: 'bank', name: 'banks.name'},
+                
+                {data: 'opening_balance', name: 'accounts.opening_balance', className: 'text-end'},
+                {data: 'balance', name: 'accounts.balance', className: 'text-end'},
+                {data: 'action'},
+             
+            ],fnDrawCallback: function() {
+                $('.data_preloader').hide();
+            }
+        });
+
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_form', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            accounts_table.ajax.reload();
+        });
 
         // Setup ajax for csrf token.
         $.ajaxSetup({
@@ -403,7 +399,7 @@
                         toastr.success(data);
                         $('#add_account_form')[0].reset();
                         $('.loading_button').hide();
-                        getAllAccount();
+                        accounts_table.ajax.reload();
                         $('#addModal').modal('hide');
                     },
                     error: function(err) {
@@ -423,40 +419,25 @@
                 });
             });
 
-            // edit account type by ajax
-            $('#edit_account_form').on('submit', function(e) {
+            // pass editable data to edit modal fields
+            $(document).on('click', '#edit', function(e) {
                 e.preventDefault();
-                $('.loading_button').show();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                var inputs = $('.edit_input');
-                $('.error').html('');
-                var countErrorField = 0;
-                $.each(inputs, function(key, val) {
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#' + inputId).val();
-                    if (idValue == '') {
-                        countErrorField += 1;
-                        var fieldName = $('#' + inputId).data('name');
-                        $('.error_' + inputId).html(fieldName + ' is required.');
-                    }
-                });
-
-                if (countErrorField > 0) {
-                    $('.loading_button').hide();
-                    return;
-                }
-
+                $('.data_preloader').show();
+                var url = $(this).attr('href');
                 $.ajax({
                     url: url,
-                    type: 'post',
-                    data: request,
+                    type: 'get',
                     success: function(data) {
-                        console.log(data);
-                        toastr.success(data);
-                        $('.loading_button').hide();
-                        getAllAccount();
-                        $('#editModal').modal('hide');
+                        $('#edit_account_form_body').html(data);
+                        $('#editModal').modal('show');
+                        $('.data_preloader').hide();
+                    },error:function(err){
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                        }else{
+                            toastr.error('Server Error, Please contact to the support team.'); 
+                        }
                     }
                 });
             });
@@ -469,18 +450,9 @@
                     'title': 'Delete Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-danger',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
+                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}
                         },
-                        'No': {
-                            'class': 'no btn-modal-primary',
-                            'action': function() {
-                                console.log('Deleted canceled.');
-                            }
-                        }
+                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                     }
                 });
             });
@@ -495,7 +467,7 @@
                     type: 'post',
                     data: request,
                     success: function(data) {
-                        getAllAccount();
+                        accounts_table.ajax.reload();
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
                     }
@@ -503,149 +475,149 @@
             });
         });
 
-        // Show fund transfer modal with data
-        $(document).on('click', '#fund_transfer', function() {
-            $('#fund_transfer_form')[0].reset();
-            var sender_account_id = $(this).data('id');
-            var sender_account_name = $(this).data('ac_name');
-            var balance = $(this).data('balance');
-            $('#sender_account_id').val(sender_account_id);
-            $('.selected_account').html(sender_account_name);
-            $('.balance').html(bdFormat(balance));
-            console.log(accountArray);
-            $('#receiver_account_id').empty();
-            $('#receiver_account_id').append('<option value="">Select Receiver Account</option>');
-            $.each(accountArray, function(key, account) {
-                if (sender_account_id != account.id) {
-                    $('#receiver_account_id').append('<option value="' + account.id + '">' + account.name +
-                        ' (A/C: ' + account.account_number + ')' + ' (Balance:' + account.balance +
-                        ')' + '</option>');
-                }
-            });
-            $('#fundTransferModal').modal('show');
-        });
+        // // Show fund transfer modal with data
+        // $(document).on('click', '#fund_transfer', function() {
+        //     $('#fund_transfer_form')[0].reset();
+        //     var sender_account_id = $(this).data('id');
+        //     var sender_account_name = $(this).data('ac_name');
+        //     var balance = $(this).data('balance');
+        //     $('#sender_account_id').val(sender_account_id);
+        //     $('.selected_account').html(sender_account_name);
+        //     $('.balance').html(bdFormat(balance));
+        //     console.log(accountArray);
+        //     $('#receiver_account_id').empty();
+        //     $('#receiver_account_id').append('<option value="">Select Receiver Account</option>');
+        //     $.each(accountArray, function(key, account) {
+        //         if (sender_account_id != account.id) {
+        //             $('#receiver_account_id').append('<option value="' + account.id + '">' + account.name +
+        //                 ' (A/C: ' + account.account_number + ')' + ' (Balance:' + account.balance +
+        //                 ')' + '</option>');
+        //         }
+        //     });
+        //     $('#fundTransferModal').modal('show');
+        // });
 
-        // Show deposit modal with data
-        $(document).on('click', '#deposit', function() {
-            $('#deposit_form')[0].reset();
-            var receiver_account_id = $(this).data('id');
-            var receiver_account_name = $(this).data('ac_name');
-            var balance = $(this).data('balance');
-            $('#dp_receiver_account_id').val(receiver_account_id);
-            $('.selected_account').html(receiver_account_name);
-            $('.balance').html(bdFormat(balance));
-            $('#dp_sender_account_id').empty();
-            $('#dp_sender_account_id').append('<option value="">Select Receiver Account</option>');
-            $.each(accountArray, function(key, account) {
-                if (receiver_account_id != account.id) {
-                    $('#dp_sender_account_id').append('<option value="' + account.id + '">' + account.name +
-                        ' (A/C: ' + account.account_number + ')' + ' (Balance: ' + account.balance +
-                        ')' + '</option>');
-                }
-            });
-            $('#depositModal').modal('show');
-        });
+        // // Show deposit modal with data
+        // $(document).on('click', '#deposit', function() {
+        //     $('#deposit_form')[0].reset();
+        //     var receiver_account_id = $(this).data('id');
+        //     var receiver_account_name = $(this).data('ac_name');
+        //     var balance = $(this).data('balance');
+        //     $('#dp_receiver_account_id').val(receiver_account_id);
+        //     $('.selected_account').html(receiver_account_name);
+        //     $('.balance').html(bdFormat(balance));
+        //     $('#dp_sender_account_id').empty();
+        //     $('#dp_sender_account_id').append('<option value="">Select Receiver Account</option>');
+        //     $.each(accountArray, function(key, account) {
+        //         if (receiver_account_id != account.id) {
+        //             $('#dp_sender_account_id').append('<option value="' + account.id + '">' + account.name +
+        //                 ' (A/C: ' + account.account_number + ')' + ' (Balance: ' + account.balance +
+        //                 ')' + '</option>');
+        //         }
+        //     });
+        //     $('#depositModal').modal('show');
+        // });
 
-        $('#fund_transfer_form').on('submit', function(e) {
-            e.preventDefault();
-            $('.loading_button').show();
-            $('.submit_button').prop('type', 'button');
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.ft_input');
-            $('.error').html('');
-            var countErrorField = 0;
-            $.each(inputs, function(key, val) {
-                var inputId = $(val).attr('id');
-                var idValue = $('#' + inputId).val();
-                if (idValue == '') {
-                    countErrorField += 1;
-                    var fieldName = $('#' + inputId).data('name');
-                    $('.error_' + inputId).html(fieldName + ' is required.');
-                }
-            });
+        // $('#fund_transfer_form').on('submit', function(e) {
+        //     e.preventDefault();
+        //     $('.loading_button').show();
+        //     $('.submit_button').prop('type', 'button');
+        //     var url = $(this).attr('action');
+        //     var request = $(this).serialize();
+        //     var inputs = $('.ft_input');
+        //     $('.error').html('');
+        //     var countErrorField = 0;
+        //     $.each(inputs, function(key, val) {
+        //         var inputId = $(val).attr('id');
+        //         var idValue = $('#' + inputId).val();
+        //         if (idValue == '') {
+        //             countErrorField += 1;
+        //             var fieldName = $('#' + inputId).data('name');
+        //             $('.error_' + inputId).html(fieldName + ' is required.');
+        //         }
+        //     });
 
-            if (countErrorField > 0) {
-                $('.loading_button').hide();
-                $('.submit_button').prop('type', 'submit');
-                return;
-            }
+        //     if (countErrorField > 0) {
+        //         $('.loading_button').hide();
+        //         $('.submit_button').prop('type', 'submit');
+        //         return;
+        //     }
 
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-                    $('.submit_button').prop('type', 'submit');
-                    getAllAccount();
-                    setAccount();
-                    $('.loading_button').hide();
-                    $('#fund_transfer_form')[0].reset();
-                    toastr.success(data);
-                    $('#fundTransferModal').modal('hide');
-                },
-                error: function(err) {
-                    $('.submit_button').prop('type', 'submit');
-                    $('.loading_button').hide();
-                    $('.error').html('');
-                    if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.');
-                        return;
-                    }
-                }
-            });
-        });
+        //     $.ajax({
+        //         url: url,
+        //         type: 'post',
+        //         data: request,
+        //         success: function(data) {
+        //             $('.submit_button').prop('type', 'submit');
+        //             getAllAccount();
+        //             setAccount();
+        //             $('.loading_button').hide();
+        //             $('#fund_transfer_form')[0].reset();
+        //             toastr.success(data);
+        //             $('#fundTransferModal').modal('hide');
+        //         },
+        //         error: function(err) {
+        //             $('.submit_button').prop('type', 'submit');
+        //             $('.loading_button').hide();
+        //             $('.error').html('');
+        //             if (err.status == 0) {
+        //                 toastr.error('Net Connetion Error. Reload This Page.');
+        //                 return;
+        //             }
+        //         }
+        //     });
+        // });
 
-        $('#deposit_form').on('submit', function(e) {
-            e.preventDefault();
-            $('.loading_button').show();
-            $('.submit_button').prop('type', 'button');
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.dp_input');
-            $('.error').html('');
-            var countErrorField = 0;
-            $.each(inputs, function(key, val) {
-                var inputId = $(val).attr('id');
-                var idValue = $('#' + inputId).val();
-                if (idValue == '') {
-                    countErrorField += 1;
-                    var fieldName = $('#' + inputId).data('name');
-                    console.log(fieldName);
-                    $('.error_' + inputId).html(fieldName + ' is required.');
-                }
-            });
+        // $('#deposit_form').on('submit', function(e) {
+        //     e.preventDefault();
+        //     $('.loading_button').show();
+        //     $('.submit_button').prop('type', 'button');
+        //     var url = $(this).attr('action');
+        //     var request = $(this).serialize();
+        //     var inputs = $('.dp_input');
+        //     $('.error').html('');
+        //     var countErrorField = 0;
+        //     $.each(inputs, function(key, val) {
+        //         var inputId = $(val).attr('id');
+        //         var idValue = $('#' + inputId).val();
+        //         if (idValue == '') {
+        //             countErrorField += 1;
+        //             var fieldName = $('#' + inputId).data('name');
+        //             console.log(fieldName);
+        //             $('.error_' + inputId).html(fieldName + ' is required.');
+        //         }
+        //     });
 
-            if (countErrorField > 0) {
-                $('.loading_button').hide();
-                $('.submit_button').prop('type', 'submit');
-                return;
-            }
+        //     if (countErrorField > 0) {
+        //         $('.loading_button').hide();
+        //         $('.submit_button').prop('type', 'submit');
+        //         return;
+        //     }
 
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-                    $('.submit_button').prop('type', 'submit');
-                    getAllAccount();
-                    setAccount();
-                    toastr.success(data);
-                    $('#fund_transfer_form')[0].reset();
-                    $('.loading_button').hide();
-                    $('#depositModal').modal('hide');
-                },
-                error: function(err) {
-                    $('.submit_button').prop('type', 'submit');
-                    $('.loading_button').hide();
-                    $('.error').html('');
-                    if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.');
-                        return;
-                    }
-                }
-            });
-        });
+        //     $.ajax({
+        //         url: url,
+        //         type: 'post',
+        //         data: request,
+        //         success: function(data) {
+        //             $('.submit_button').prop('type', 'submit');
+        //             getAllAccount();
+        //             setAccount();
+        //             toastr.success(data);
+        //             $('#fund_transfer_form')[0].reset();
+        //             $('.loading_button').hide();
+        //             $('#depositModal').modal('hide');
+        //         },
+        //         error: function(err) {
+        //             $('.submit_button').prop('type', 'submit');
+        //             $('.loading_button').hide();
+        //             $('.error').html('');
+        //             if (err.status == 0) {
+        //                 toastr.error('Net Connetion Error. Reload This Page.');
+        //                 return;
+        //             }
+        //         }
+        //     });
+        // });
 
         $(document).on('change', '#account_type', function() {
             var account_type = $(this).val();

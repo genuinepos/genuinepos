@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utils;
 
 use App\Models\Product;
@@ -19,8 +20,9 @@ class Util
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
     }
-    
-    public function addQuickProductFromAddSale($request){
+
+    public function addQuickProductFromAddSale($request)
+    {
         $addProduct = new Product();
         $tax_id = NULL;
         if ($request->tax_id) {
@@ -44,7 +46,10 @@ class Util
         $l = 6;
         $b = 0;
         $code = '';
-        while ($b < $l) { $code .= rand(1, 9); $b++; }
+        while ($b < $l) {
+            $code .= rand(1, 9);
+            $b++;
+        }
 
         $addProduct->type = 1;
         $addProduct->name = $request->name;
@@ -126,7 +131,7 @@ class Util
         $addCustomerLedger->report_date = date('Y-m-d');
         $addCustomerLedger->amount = $request->opening_balance ? $request->opening_balance : 0.00;
         $addCustomerLedger->save();
-        
+
         return response()->json($addCustomer);
     }
 
@@ -141,7 +146,7 @@ class Util
         $subIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
         $firstLetterOfSupplier = str_split($request->name)[0];
         $addSupplier = Supplier::create([
-            'contact_id' => $request->contact_id ? $request->contact_id : $subIdPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
+            'contact_id' => $request->contact_id ? $request->contact_id : $subIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,
@@ -218,5 +223,60 @@ class Util
         $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
         $addProduct->save();
         return response()->json($addProduct);
+    }
+
+    public static function accountType($index)
+    {
+        $types = [
+            0 => 'N/A',
+            1 => 'Cash-In-Hand',
+            2 => 'Bank A/C',
+            3 => 'Purchase A/C',
+            4 => 'Purchase Return A/C',
+            5 => 'Sales A/C',
+            6 => 'Sales Return A/C',
+            7 => 'Direct Expense',
+            8 => 'Indirect Expense',
+            9 => 'Current Assets',
+            10 => 'Current liabilities',
+            11 => 'Misc. Expense',
+            12 => 'Misc. Income',
+            13 => 'Loans (Liabilities)',
+            14 => 'Loans & Advances',
+            15 => 'Fixed Asset',
+            16 => 'Investments',
+            17 => 'Bank OD A/C',
+            18 => 'Deposit',
+            17 => 'Provision',
+            17 => 'Reserves & Surplus',
+        ];
+
+        return $types[$index];
+    }
+
+    public static function allAccountTypes()
+    {
+        return  [
+            1 => 'Cash-In-Hand',
+            2 => 'Bank A/C',
+            3 => 'Purchase A/C',
+            4 => 'Purchase Return A/C',
+            5 => 'Sales A/C',
+            6 => 'Sales Return A/C',
+            7 => 'Direct Expense',
+            8 => 'Indirect Expense',
+            9 => 'Current Assets',
+            10 => 'Current liabilities',
+            11 => 'Misc. Expense',
+            12 => 'Misc. Income',
+            13 => 'Loans (Liabilities)',
+            14 => 'Loans & Advances',
+            15 => 'Fixed Asset',
+            16 => 'Investments',
+            17 => 'Bank OD A/C',
+            18 => 'Deposit',
+            17 => 'Provision',
+            17 => 'Reserves & Surplus',
+        ];
     }
 }

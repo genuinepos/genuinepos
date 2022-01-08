@@ -2,43 +2,75 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\Util;
 use App\Models\Bank;
 use App\Models\Account;
-use App\Models\AccountType;
 use App\Models\CashFlow;
+use App\Utils\Converter;
 use App\Utils\AccountUtil;
+use App\Models\AccountType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class AccountController extends Controller
 {
     protected $accountUtil;
-    public function __construct(AccountUtil $accountUtil)
+    protected $util;
+    protected $converter;
+    public function __construct(AccountUtil $accountUtil, Util $util, Converter $converter)
     {
         $this->accountUtil = $accountUtil;
+        $this->util = $util;
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
     // Bank main page/index page
-    public function index()
+    public function index(Request $request)
     {
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
+        }
+
+        if ($request->ajax()) {
+            $accounts = '';
+            $query = DB::table('accounts')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
+            ->leftJoin('branches', 'accounts.branch_id', 'branches.id');
+
+            if ($request->account_type) {
+                $query = $query->where('accounts.account_type', $request->account_type);
+            }
+
+            $accounts = $query->select('accounts.*', 'banks.name as b_name', 'banks.branch_name as b_branch')
+            ->orderBy('accounts.account_type', 'asc');
+
+            return DataTables::of($accounts)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+                    $html .= '<a id="edit" class="dropdown-item" href="' . route('accounting.accounts.edit', [$row->id]) . '" ><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('accounting.accounts.book', [$row->id]) . '"><i class="fas fa-book text-primary"></i> Account Book</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('accounting.accounts.delete', [$row->id]) . '" id="delete"><i class="fas fa-trash text-primary"></i> Delete</a>';
+                    $html .= '</div>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
+                ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name . ' (' . $row->b_branch . ')' : 'Not Applicable')
+                ->editColumn('account_type', fn ($row) => '<b>' . $this->util->accountType($row->account_type) . '</b>')
+                ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
+                ->editColumn('balance', fn ($row) => $this->converter->format_in_bdt($row->balance))
+                ->rawColumns(['action', 'ac_number', 'bank', 'account_type', 'opening_balance', 'balance'])
+                ->make(true);
         }
 
         $banks = DB::table('banks')->get();
         return view('accounting.accounts.index', compact('banks'));
-    }
-
-    // Get all banks by ajax
-    public function allAccounts()
-    {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
-            abort(403, 'Access Forbidden.');
-        }
-
-        $accounts = Account::with(['bank', 'admin', 'admin.role'])->orderBy('id', 'DESC')->where('status', 1)->get();
-        return view('accounting.accounts.ajax_view.account_list', compact('accounts'));
     }
 
     //Get account book
@@ -56,7 +88,6 @@ class AccountController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            
             'account_type' => 'required',
         ]);
 
@@ -69,13 +100,15 @@ class AccountController extends Controller
 
         $addAccount = Account::insertGetId([
             'name' => $request->name,
-            'account_number' => $request->account_number,
-            'bank_id' => $request->bank_id,
+            'account_number' => $request->account_type == 2 ? $request->account_number : null,
+            'bank_id' => $request->account_type == 2 ? $request->bank_id : null,
             'account_type' => $request->account_type,
             'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
             'balance' => $request->opening_balance ? $request->opening_balance : 0,
             'debit' => $request->opening_balance ? $request->opening_balance : 0,
+            'remark' => $request->remark,
             'admin_id' => auth()->user()->id,
+            'branch_id' => auth()->user()->branch_id,
         ]);
 
         $addCashflow = new CashFlow();
@@ -95,20 +128,32 @@ class AccountController extends Controller
         return response()->json('Account created successfully');
     }
 
+    public function edit($id)
+    {
+        $account = DB::table('accounts')->where('id', $id)->first();
+        $banks = DB::table('banks')->get();
+        return view('accounting.accounts.ajax_view.edit_account', compact('account', 'banks'));
+    }
+
     // Update bank
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'name' => 'required',
-            'account_number' => 'required',
-            'bank_id' => 'required',
         ]);
 
-        $updateBank = Account::where('id', $request->id)->first();
+        if ($request->account_type == 2) {
+            $this->validate($request, [
+                'bank_id' => 'required',
+                'account_number' => 'required',
+            ]);
+        }
+
+        $updateBank = Account::where('id', $id)->first();
         $updateBank->update([
             'name' => $request->name,
-            'account_number' => $request->account_number,
-            'bank_id' => $request->bank_id,
+            'account_number' => $request->account_type == 2 ? $request->account_number : null,
+            'bank_id' => $request->account_type == 2 ? $request->bank_id : null,
             'account_type' => $request->account_type,
             'remark' => $request->remark,
         ]);
@@ -126,105 +171,84 @@ class AccountController extends Controller
         return response()->json('Account deleted successfully');
     }
 
-    public function allBanks()
-    {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
-            abort(403, 'Access Forbidden.');
-        }
-        $banks = Bank::select('id', 'name', 'branch_name')->get();
-        return response()->json($banks);
-    }
+    // public function fundTransfer(Request $request)
+    // {
+    //     $cashFlow1 = new CashFlow();
+    //     $cashFlow1->account_id = $request->sender_account_id;
+    //     $cashFlow1->receiver_account_id = $request->receiver_account_id;
+    //     $cashFlow1->debit = $request->amount;
+    //     $cashFlow1->transaction_type = 4;
+    //     $cashFlow1->cash_type = 1;
+    //     $cashFlow1->date = $request->date;
+    //     $cashFlow1->report_date = date('Y-m-d', strtotime($request->date));
+    //     $cashFlow1->month = date('F');
+    //     $cashFlow1->year = date('Y');
+    //     $cashFlow1->admin_id = auth()->user()->id;
+    //     $cashFlow1->save();
+    //     $cashFlow1->balance = $this->accountUtil->adjustAccountBalance($request->sender_account_id);
+    //     $cashFlow1->save();
 
-    public function allAccountTypes()
-    {
-        $types = AccountType::where('status', 1)->get();
-        return response()->json($types);
-    }
+    //     $cashFlow2 = new CashFlow();
+    //     $cashFlow2->account_id = $request->receiver_account_id;
+    //     $cashFlow2->sender_account_id = $request->sender_account_id;
+    //     $cashFlow2->credit = $request->amount;
+    //     $cashFlow2->transaction_type = 4;
+    //     $cashFlow2->cash_type = 2;
+    //     $cashFlow2->date = $request->date;
+    //     $cashFlow2->report_date = date('Y-m-d', strtotime($request->date));
+    //     $cashFlow2->month = date('F');
+    //     $cashFlow2->year = date('Y');
+    //     $cashFlow2->related_cash_flow_id = $cashFlow1->id;
+    //     $cashFlow2->admin_id = auth()->user()->id;
+    //     $cashFlow2->save();
+    //     $cashFlow2->balance = $this->accountUtil->adjustAccountBalance($request->receiver_account_id);
+    //     $cashFlow2->save();
 
-    public function allFromAccount()
-    {
-        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        return response()->json($accounts);
-    }
+    //     $cashFlow1->related_cash_flow_id = $cashFlow2->id;
+    //     $cashFlow1->save();
 
-    public function fundTransfer(Request $request)
-    {
-        $cashFlow1 = new CashFlow();
-        $cashFlow1->account_id = $request->sender_account_id;
-        $cashFlow1->receiver_account_id = $request->receiver_account_id;
-        $cashFlow1->debit = $request->amount;
-        $cashFlow1->transaction_type = 4;
-        $cashFlow1->cash_type = 1;
-        $cashFlow1->date = $request->date;
-        $cashFlow1->report_date = date('Y-m-d', strtotime($request->date));
-        $cashFlow1->month = date('F');
-        $cashFlow1->year = date('Y');
-        $cashFlow1->admin_id = auth()->user()->id;
-        $cashFlow1->save();
-        $cashFlow1->balance = $this->accountUtil->adjustAccountBalance($request->sender_account_id);
-        $cashFlow1->save();
+    //     return response()->json('Successfully account fund transfer is created.');
+    // }
 
-        $cashFlow2 = new CashFlow();
-        $cashFlow2->account_id = $request->receiver_account_id;
-        $cashFlow2->sender_account_id = $request->sender_account_id;
-        $cashFlow2->credit = $request->amount;
-        $cashFlow2->transaction_type = 4;
-        $cashFlow2->cash_type = 2;
-        $cashFlow2->date = $request->date;
-        $cashFlow2->report_date = date('Y-m-d', strtotime($request->date));
-        $cashFlow2->month = date('F');
-        $cashFlow2->year = date('Y');
-        $cashFlow2->related_cash_flow_id = $cashFlow1->id;
-        $cashFlow2->admin_id = auth()->user()->id;
-        $cashFlow2->save();
-        $cashFlow2->balance = $this->accountUtil->adjustAccountBalance($request->receiver_account_id);
-        $cashFlow2->save();
+    // public function deposit(Request $request)
+    // {
+    //     $cashFlow1 = new CashFlow();
+    //     $cashFlow1->account_id = $request->receiver_account_id;
+    //     $cashFlow1->sender_account_id = $request->sender_account_id ? $request->sender_account_id : NULL;
+    //     $cashFlow1->credit = $request->amount;
+    //     $cashFlow1->transaction_type = 5;
+    //     $cashFlow1->cash_type = 2;
+    //     $cashFlow1->date = $request->date;
+    //     $cashFlow1->report_date = date('Y-m-d', strtotime($request->date));
+    //     $cashFlow1->month = date('F');
+    //     $cashFlow1->year = date('Y');
+    //     $cashFlow1->admin_id = auth()->user()->id;
+    //     $cashFlow1->save();
+    //     $cashFlow1->balance = $this->accountUtil->adjustAccountBalance($request->receiver_account_id);
+    //     $cashFlow1->save();
 
-        $cashFlow1->related_cash_flow_id = $cashFlow2->id;
-        $cashFlow1->save();
+    //     if ($request->sender_account_id) {
+    //         $cashFlow2 = new CashFlow();
+    //         $cashFlow2->account_id = $request->sender_account_id;
+    //         $cashFlow2->receiver_account_id = $request->receiver_account_id;
+    //         $cashFlow2->debit = $request->amount;
+    //         $cashFlow2->transaction_type = 4;
+    //         $cashFlow2->cash_type = 1;
+    //         $cashFlow2->date = $request->date;
+    //         $cashFlow2->report_date = date('Y-m-d', strtotime($request->date));
+    //         $cashFlow2->month = date('F');
+    //         $cashFlow2->year = date('Y');
+    //         $cashFlow2->related_cash_flow_id = $cashFlow1->id;
+    //         $cashFlow2->admin_id = auth()->user()->id;
+    //         $cashFlow2->save();
+    //         $cashFlow2->balance = $this->accountUtil->adjustAccountBalance($request->sender_account_id);
+    //         $cashFlow2->save();
 
-        return response()->json('Successfully account fund transfer is created.');
-    }
-
-    public function deposit(Request $request)
-    {
-        $cashFlow1 = new CashFlow();
-        $cashFlow1->account_id = $request->receiver_account_id;
-        $cashFlow1->sender_account_id = $request->sender_account_id ? $request->sender_account_id : NULL;
-        $cashFlow1->credit = $request->amount;
-        $cashFlow1->transaction_type = 5;
-        $cashFlow1->cash_type = 2;
-        $cashFlow1->date = $request->date;
-        $cashFlow1->report_date = date('Y-m-d', strtotime($request->date));
-        $cashFlow1->month = date('F');
-        $cashFlow1->year = date('Y');
-        $cashFlow1->admin_id = auth()->user()->id;
-        $cashFlow1->save();
-        $cashFlow1->balance = $this->accountUtil->adjustAccountBalance($request->receiver_account_id);
-        $cashFlow1->save();
-
-        if ($request->sender_account_id) {
-            $cashFlow2 = new CashFlow();
-            $cashFlow2->account_id = $request->sender_account_id;
-            $cashFlow2->receiver_account_id = $request->receiver_account_id;
-            $cashFlow2->debit = $request->amount;
-            $cashFlow2->transaction_type = 4;
-            $cashFlow2->cash_type = 1;
-            $cashFlow2->date = $request->date;
-            $cashFlow2->report_date = date('Y-m-d', strtotime($request->date));
-            $cashFlow2->month = date('F');
-            $cashFlow2->year = date('Y');
-            $cashFlow2->related_cash_flow_id = $cashFlow1->id;
-            $cashFlow2->admin_id = auth()->user()->id;
-            $cashFlow2->save();
-            $cashFlow2->balance = $this->accountUtil->adjustAccountBalance($request->sender_account_id);
-            $cashFlow2->save();
-
-            $cashFlow1->related_cash_flow_id = $cashFlow2->id;
-            $cashFlow1->save();
-        }
-        return response()->json('Successfully account deposit is created.');
-    }
+    //         $cashFlow1->related_cash_flow_id = $cashFlow2->id;
+    //         $cashFlow1->save();
+    //     }
+    //     return response()->json('Successfully account deposit is created.');
+    // }
 
     public function accountCashflows($accountId)
     {
@@ -326,8 +350,8 @@ class AccountController extends Controller
                 }
             }
             if ($deleteCashflow->related_cash_flow_id) {
-                $realatedCashFlow = CashFlow::where('id', $deleteCashflow->related_cash_flow_id)->first();
-                $realatedCashFlow->delete();
+                $relatedCashFlow = CashFlow::where('id', $deleteCashflow->related_cash_flow_id)->first();
+                $relatedCashFlow->delete();
             }
             $deleteCashflow->delete();
         }

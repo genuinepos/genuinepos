@@ -178,9 +178,11 @@ class SaleController extends Controller
             ->orderBy('id', 'desc')->get();
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
         $invoice_schemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);
-        $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
+        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])
+        ->orderBy('account_type', 'asc')->get(['id', 'name', 'account_number', 'account_type', 'balance']);
+        $saleAccounts = DB::table('accounts')->where('account_type', 5)->get(['id', 'name']);
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-        return view('sales.create', compact('customers', 'methods','accounts', 'price_groups', 'invoice_schemas'));
+        return view('sales.create', compact('customers', 'methods','accounts', 'saleAccounts','price_groups', 'invoice_schemas'));
     }
 
     // Add Sale method

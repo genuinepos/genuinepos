@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\Util;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
@@ -10,12 +11,17 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PaymentMethodController extends Controller
 {
+    protected $util;
+    public function __construct(Util $util) {
+        $this->util = $util;
+        $this->middleware('auth:admin_and_user');
+    }
     public function index(Request $request)
     {
         if ($request->ajax()) {
             $methods = DB::table('payment_methods')
                 ->leftJoin('accounts', 'payment_methods.account_id', 'accounts.id')
-                ->select('payment_methods.*', 'accounts.name as ac_name', 'accounts.account_number')
+                ->select('payment_methods.*', 'accounts.name as ac_name', 'accounts.account_type')
                 ->orderBy('id', 'desc')
                 ->get();
             return DataTables::of($methods)
@@ -27,11 +33,11 @@ class PaymentMethodController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('account', fn ($row) => $row->ac_name ? $row->ac_name . ' (A/C' . $row->account_number . ')' : 'Cash-In-Hand')
+                ->editColumn('account', fn ($row) => $row->ac_name.' (<b>'.$this->util->accountType($row->account_type).'</b>)')
                 ->rawColumns(['action', 'account'])
                 ->make(true);
         }
-        $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
+        $accounts = DB::table('accounts')->orderBy('account_type', 'asc')->get(['id', 'name', 'account_number', 'account_type']);
         return view('settings.payment_settings.index', compact('accounts'));
     }
 
@@ -39,6 +45,9 @@ class PaymentMethodController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:payment_methods,name',
+            'account_id' => 'required',
+        ],[
+            'account_id.required' => 'Please select a default account',
         ]);
 
         PaymentMethod::insert([
@@ -60,6 +69,9 @@ class PaymentMethodController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:payment_methods,name,' . $id,
+            'account_id' => 'required',
+        ],[
+            'account_id.required' => 'Please select a default account',
         ]);
 
         $updatePayment = PaymentMethod::where('id', $id)->first();

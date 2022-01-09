@@ -1405,10 +1405,12 @@ class POSController extends Controller
 
             if ($saleProduct) {
                 if ($saleProduct->ex_status == 1) {
-                    $saleProduct->quantity = $saleProduct->quantity + $quantities[$index];
+                    //$saleProduct->quantity = $saleProduct->quantity + $quantities[$index];
+                    $saleProduct->quantity = $quantities[$index];
                     $saleProduct->ex_quantity = $quantities[$index];
                     $saleProduct->description = $descriptions[$index];
-                    $saleProduct->subtotal = $saleProduct->subtotal + $subtotals[$index];
+                    //$saleProduct->subtotal = $saleProduct->subtotal + $subtotals[$index];
+                    $saleProduct->subtotal = $subtotals[$index];
                     $saleProduct->ex_status = 2;
                     $saleProduct->save();
                 } else {

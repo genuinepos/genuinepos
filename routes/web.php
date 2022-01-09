@@ -883,6 +883,7 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
+    $testQuery = DB::table('accounts')->first();
 });
 
 // All authenticated routes

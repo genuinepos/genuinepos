@@ -40,6 +40,14 @@ class AccountController extends Controller
                 ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
                 ->leftJoin('branches', 'accounts.branch_id', 'branches.id');
 
+            if ($request->branch_id) {
+                if ($request->branch_id == 'NULL') {
+                    $query->where('accounts.branch_id', NULL);
+                } else {
+                    $query->where('accounts.branch_id', $request->branch_id);
+                }
+            }
+    
             if ($request->account_type) {
                 $query = $query->where('accounts.account_type', $request->account_type);
             }
@@ -84,7 +92,8 @@ class AccountController extends Controller
         }
 
         $banks = DB::table('banks')->get();
-        return view('accounting.accounts.index', compact('banks'));
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('accounting.accounts.index', compact('banks', 'branches'));
     }
 
     //Get account book

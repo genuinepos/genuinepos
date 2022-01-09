@@ -30,25 +30,29 @@
     
                                     <div class="element-body">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Reference No :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Voucher :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                     <div class="col-8">
                                                         <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" autofocus>
                                                     </div>
                                                 </div>
 
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Date :</b> <span
-                                                        class="text-danger">*</span></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Ex. A/C :</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control changeable"
-                                                            value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                                        <select required name="ex_account_id" class="form-control" id="ex_account_id">
+                                                            @foreach ($expenseAccounts as $exAc)
+                                                                <option value="{{ $exAc->id }}">
+                                                                    {{ $exAc->name.' ('.App\Utils\Util::accountType($exAc->account_type).')' }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
                                      
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class=" col-4"><b>Expanse For :</b></label>
                                                     <div class="col-8">
@@ -59,9 +63,20 @@
                                                 </div>
 
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Attachment :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Expense related any file.Ex: Scanned cheque, payment prove file etc. Max File Size 2MB." class="fas fa-info-circle tp"></i></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Attachment :</b> </label>
                                                     <div class="col-8">
                                                         <input type="file" name="attachment" class="form-control ">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="input-group mt-1">
+                                                    <label for="inputEmail3" class=" col-4"><b>Date :</b> <span
+                                                        class="text-danger">*</span></label>
+                                                    <div class="col-8">
+                                                        <input required type="text" name="date" class="form-control changeable"
+                                                            value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
                                                     </div>
                                                 </div>
                                             </div>
@@ -223,24 +238,6 @@
             });
         }
         getTaxes();
-
-        // Set accounts in payment and payment edit form
-        function setAccount(){
-            $.ajax({
-                url:"{{route('accounting.accounts.all.form.account')}}",
-                async: true,
-                type:'get',
-                dataType: 'json',
-                success:function(accounts){
-                    $.each(accounts, function (key, account) {
-                        $('#account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                    });
-
-                    $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
-                }
-            });
-        }
-        setAccount();
 
          // Calculate amount
          function calculateAmount() {

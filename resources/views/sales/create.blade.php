@@ -409,10 +409,9 @@
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Debit Account :</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Debit A/C :</label>
                                                 <div class="col-sm-7">
                                                     <select name="account_id" class="form-control" id="account_id">
-                                                        <option value="">Select Account</option>
                                                         @foreach ($accounts as $account)
                                                             <option value="{{ $account->id }}">
                                                                 @php

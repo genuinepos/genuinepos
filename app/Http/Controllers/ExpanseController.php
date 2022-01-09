@@ -96,7 +96,6 @@ class ExpanseController extends Controller
                         if ($row->due > 0) :
                             $html .= '<a class="dropdown-item" id="add_payment" href="' . route('expanses.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                         endif;
-
                         $html .= '<a class="dropdown-item" id="view_payment" href="' . route('expanses.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
                     endif;
 
@@ -246,7 +245,16 @@ class ExpanseController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        return view('expanses.create');
+        $expenseAccounts = DB::table('accounts')->whereIn('account_type', [7, 8, 9, 10, 15])
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->select('id', 'name', 'account_type')->get();
+
+        $accounts =  DB::table('accounts')->whereIn('account_type', [1, 2])
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->select('id', 'name', 'account_type', 'balance')->orderBy('account_type', 'asc')->get();
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        return view('expanses.create', compact('expenseAccounts', 'accounts', 'methods'));
     }
 
     // Store Expanse
@@ -341,25 +349,28 @@ class ExpanseController extends Controller
             } elseif ($request->payment_method == 'Custom') {
                 $addExpansePayment->transaction_no = $request->transaction_no;
             }
+
             $addExpansePayment->admin_id = auth()->user()->id;
             $addExpansePayment->save();
 
             if ($request->account_id) {
                 // Add cash flow
-                $addCashFlow = new CashFlow();
-                $addCashFlow->account_id = $request->account_id;
-                $addCashFlow->debit = $request->paying_amount;
-                $addCashFlow->expanse_payment_id = $addExpansePayment->id;
-                $addCashFlow->transaction_type = 6;
-                $addCashFlow->cash_type = 1;
-                $addCashFlow->date = $request->date;
-                $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                $addCashFlow->month = date('F');
-                $addCashFlow->year = date('Y');
-                $addCashFlow->admin_id = auth()->user()->id;
-                $addCashFlow->save();
-                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-                $addCashFlow->save();
+                // $addCashFlow = new CashFlow();
+                // $addCashFlow->account_id = $request->account_id;
+                // $addCashFlow->debit = $request->paying_amount;
+                // $addCashFlow->expanse_payment_id = $addExpansePayment->id;
+                // $addCashFlow->transaction_type = 6;
+                // $addCashFlow->cash_type = 1;
+                // $addCashFlow->date = $request->date;
+                // $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+                // $addCashFlow->month = date('F');
+                // $addCashFlow->year = date('Y');
+                // $addCashFlow->admin_id = auth()->user()->id;
+                // $addCashFlow->save();
+                // $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                // $addCashFlow->save();
+
+                // Add account Ledger
             }
         }
 
@@ -413,7 +424,7 @@ class ExpanseController extends Controller
         if (auth()->user()->permission->expense['edit_expense'] == '0') {
             return response()->json('Access Denied');
         }
-        
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['expenses'];
         $this->validate($request, [

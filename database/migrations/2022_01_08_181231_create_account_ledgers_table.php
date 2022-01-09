@@ -33,6 +33,7 @@ class CreateAccountLedgersTable extends Migration
             $table->unsignedBigInteger('production_id')->nullable();
             $table->unsignedBigInteger('loan_id')->nullable();
             $table->unsignedBigInteger('loan_payment_id')->nullable();
+            $table->string('voucher_type', 50)->nullable();
             $table->decimal('debit', 22, 2)->default(0);
             $table->decimal('credit', 22, 2)->default(0);
             $table->decimal('running_balance', 22, 2)->default(0);
@@ -52,7 +53,8 @@ class CreateAccountLedgersTable extends Migration
             $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
             $table->foreign('payroll_payment_id')->references('id')->on('hrm_payroll_payments')->onDelete('cascade');
             $table->foreign('production_id')->references('id')->on('productions')->onDelete('cascade');
-            $table->timestamps();
+            $table->foreign('loan_id')->references('id')->on('loans')->onDelete('cascade');
+            $table->foreign('loan_payment_id')->references('id')->on('loan_payments')->onDelete('cascade');
         });
     }
 

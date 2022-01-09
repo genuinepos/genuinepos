@@ -26,6 +26,23 @@
                                     <div class="col-md-12">
                                         <form id="filter_form" class="px-2">
                                             <div class="form-group row">
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-2">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id"
+                                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
                                                 <div class="col-md-2">
                                                     <label><strong>Account Type :</strong></label>
                                                     <select name="account_type" id="f_account_type" class="form-control">
@@ -344,6 +361,7 @@
             "ajax": {
                 "url": "{{ route('accounting.accounts.index') }}",
                 "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
                     d.account_type = $('#f_account_type').val();
                 }
             },

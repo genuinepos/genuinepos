@@ -1271,11 +1271,19 @@
 
     $('#payment_method_id').on('change', function () {
         var account_id = $(this).find('option:selected').data('account');
-        $('#account_id').val(account_id);
+        setDefaultAccount(account_id);
     });
 
-    $('#account_id').val($('#payment_method_id').find('option:selected').data('account'));
+    function setDefaultAccount(account_id) {
+        if (account_id) {
+            $('#account_id').val(account_id);
+        }else{
+            $('#payment_method_id option:first-child').attr("selected", "selected");
+        }
+    }
 
+    setDefaultAccount($('#payment_method_id').find('option:selected').data('account'));
+    
     //const textInput = e.key || String.fromCharCode(e.keyCode);
     
     $(document).on('click', '#show_cost_button', function () {

@@ -483,11 +483,11 @@ a.resent-tn:hover {
 }
 
 .left-cat-pos {
-    height: 100%;
     padding: 3px;
     border-radius: 3px;
     background: linear-gradient(#dedede, #444444);
     border: 1px solid #6f5a5a !important;
+    height: 79.6vh;
 }
 
 .all-cat::-webkit-scrollbar {
@@ -505,11 +505,10 @@ a.resent-tn:hover {
 
 .all-cat {
     border: 1px solid #000;
-    /* padding: 3px; */
+    padding: 3px;
     background: #fff;
-    /* height: 82vh; */
+    height: 78.4vh;
     overflow-y: scroll;
-    height: 100%;
     border-radius: 3px;
     display: inline-block;
 }

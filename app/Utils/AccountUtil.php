@@ -3,64 +3,70 @@
 namespace App\Utils;
 
 use App\Models\Account;
+use App\Models\AccountLedger;
 use Illuminate\Support\Facades\DB;
 
 class AccountUtil
 {
-    public function adjustAccountBalance($account_id)
-    {
-        $cashFlowD = DB::table('cash_flows')->where('cash_type', 1)
-            ->where('account_id', $account_id)
-            ->where('debit', '!=', NULL)
-            ->select(DB::raw('sum(debit) as t_debit'))
-            ->get();
+    // public function adjustAccountBalance($account_id)
+    // {
+    //     $cashFlowD = DB::table('cash_flows')->where('cash_type', 1)
+    //         ->where('account_id', $account_id)
+    //         ->where('debit', '!=', NULL)
+    //         ->select(DB::raw('sum(debit) as t_debit'))
+    //         ->get();
 
-        $totalDebit = $cashFlowD->sum('t_debit') ? $cashFlowD->sum('t_debit') : 0;
+    //     $totalDebit = $cashFlowD->sum('t_debit') ? $cashFlowD->sum('t_debit') : 0;
 
-        $expenseLoan = DB::table('cash_flows')
-            ->where('cash_flows.account_id', $account_id)
-            ->where('loan_id', '!=', NULL)
-            ->where('debit', '!=', NULL)
-            ->leftJoin('loans', 'cash_flows.loan_id', 'loans.id')
-            ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(debit) as t_debit'))
-            ->groupBy('loans.loan_by')
-            ->get();
+    //     $expenseLoan = DB::table('cash_flows')
+    //         ->where('cash_flows.account_id', $account_id)
+    //         ->where('loan_id', '!=', NULL)
+    //         ->where('debit', '!=', NULL)
+    //         ->leftJoin('loans', 'cash_flows.loan_id', 'loans.id')
+    //         ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(debit) as t_debit'))
+    //         ->groupBy('loans.loan_by')
+    //         ->get();
 
-        $totalExpenseLoan = $expenseLoan->sum('t_debit') ? $expenseLoan->sum('t_debit') : 0;
+    //     $totalExpenseLoan = $expenseLoan->sum('t_debit') ? $expenseLoan->sum('t_debit') : 0;
 
-        $acDebit = $totalDebit - $totalExpenseLoan;
+    //     $acDebit = $totalDebit - $totalExpenseLoan;
 
-        $cashFlowC = DB::table('cash_flows')->where('cash_type', 2)
-            ->where('credit', '!=', NULL)
-            ->where('cash_flows.account_id', $account_id)
-            ->select(DB::raw('sum(credit) as t_credit'))
-            ->get();
+    //     $cashFlowC = DB::table('cash_flows')->where('cash_type', 2)
+    //         ->where('credit', '!=', NULL)
+    //         ->where('cash_flows.account_id', $account_id)
+    //         ->select(DB::raw('sum(credit) as t_credit'))
+    //         ->get();
 
-        $totalCredit = $cashFlowC->sum('t_credit') ? $cashFlowC->sum('t_credit') : 0;
+    //     $totalCredit = $cashFlowC->sum('t_credit') ? $cashFlowC->sum('t_credit') : 0;
 
-        $account = Account::where('id', $account_id)->first();
-        $account->debit = $acDebit;
-        $account->credit = $totalCredit;
-        $account->balance = $acDebit - $totalCredit;
-        $account->save();
-        return $account->balance;
-    }
+    //     $account = Account::where('id', $account_id)->first();
+    //     $account->debit = $acDebit;
+    //     $account->credit = $totalCredit;
+    //     $account->balance = $acDebit - $totalCredit;
+    //     $account->save();
+    //     return $account->balance;
+    // }
 
-    public function adjustDebitBalanceAccount($balanceType, $account_id)
+    public function adjustAccountBalance($balanceType, $account_id)
     {
         $ac_ledger = DB::table('account_ledgers')
             ->where('account_ledgers.account_id', $account_id)
             ->select(
                 DB::raw('sum(debit) as t_debit'),
                 DB::raw('sum(credit) as t_credit')
-            )
-            ->groupBy('account_ledgers.account_id')
-            ->get();
+            )->groupBy('account_ledgers.account_id')->get();
+
+        $currentBalance = 0;
+        if ($balanceType == 'debit') {
+            $currentBalance = $ac_ledger->sum('t_debit') - $ac_ledger->sum('t_credit');
+        } else if ($balanceType == 'credit') {
+            $currentBalance = $ac_ledger->sum('t_credit') - $ac_ledger->sum('t_debit');
+        }
 
         $account = Account::where('id', $account_id)->first();
         $account->debit = $ac_ledger->sum('t_debit');
         $account->credit = $ac_ledger->sum('t_credit');
-        $account->balance = $ac_ledger->sum('t_debit') - $ac_ledger->sum('t_credit');
+        $account->balance = $currentBalance;
         $account->save();
         return $account->balance;
     }
@@ -101,32 +107,72 @@ class AccountUtil
             8 => 'Stock Adjustment RCV AMT',
             9 => 'Expense Payment',
             10 => 'Receive Payment',
+            10 => 'Receive From Customer',
             11 => 'Paid To Supplier',
-            12 => 'Return Payment',
-            13 => 'Loan',
-            14 => 'Loan Ins. Payment',
-            15 => 'Loan Ins. Receive',
+            12 => 'Sale Return Payment',
+            13 => 'Loan Get',
+            14 => 'Loan Pay',
+            15 => 'Loan Ins. Payment',
+            16 => 'Loan Ins. Receive',
+            17 => 'Purchase Return Receive',
         ];
     }
 
-    public static function voucherType()
+    public function voucherType($voucher_type_id)
     {
-        return [
-            1 => ['name' => 'Sales', 'voucher_no' => 'sale_inv_id'],
-            2 => ['name' => 'Sale Return', 'voucher_no' => 'sale_return_inv'],
-            3 => ['name' => 'Purchase', 'voucher_no' => 'purchase_inv_id'],
-            4 => 'Purchase Return',
-            5 => 'Expense',
-            6 => 'Production',
-            7 => 'Stock Adjustment',
-            8 => 'Stock Adjustment RCV AMT',
-            9 => 'Expense Payment',
-            10 => 'Receive Payment',
-            11 => 'Paid To Supplier',
-            12 => 'Return Payment',
-            13 => 'Loan',
-            14 => 'Loan Ins. Payment',
-            15 => 'Loan Ins. Receive',
+        $data =  [
+            0 => ['name' => 'Opening_balance', 'voucher_no' => null, 'id' => null, 'amt' => 'debit/credit'],
+            1 => ['name' => 'Sales', 'voucher_no' => 'sale_inv_id', 'id' => 'sale_id', 'amt' => 'credit'],
+            2 => ['name' => 'Sale Return', 'voucher_no' => 'sale_return_inv', 'id' => 'sale_return_id', 'amt' => 'debit'],
+            3 => ['name' => 'Purchase', 'voucher_no' => 'purchase_inv_id', 'id' => 'purchase_id', 'amt' => 'debit'],
+            4 => ['name' => 'Purchase Return', 'voucher_no' => 'pur_return_invoice', 'id' => 'purchase_return_id', 'amt' => 'credit'],
+            5 => ['name' => 'Expense', 'voucher_no' => 'exp_voucher_no', 'id' => 'expense_id', 'amt' => 'debit'],
+            6 => ['name' => 'Production', 'voucher_no' => 'production_voucher', 'id' => 'production_id', 'amt' => 'debit'],
+            7 => ['name' => 'Stock Adjustment', 'voucher_no' => 'sa_voucher', 'id' => 'stock_adjustment_id', 'amt' => 'credit'],
+            8 => ['name' => 'Adjustment Recovered', 'voucher_no' => 'sar_amt_voucher', 'id' => 'recovered_id', 'amt' => 'debit'],
+            9 => ['name' => 'Expense Payment', 'voucher_no' => 'exp_payment_voucher', 'id' => 'expense_payment_id', 'amt' => 'credit'],
+            10 => ['name' => 'Receive Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'debit'],
+            11 => ['name' => 'Purchase Payment', 'voucher_no' => 'pur_payment_voucher', 'id', 'purchase_payment_id', 'amt' => 'credit'],
+            12 => ['name' => 'Sale Return Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'credit'],
+            13 => ['name' => 'Loan Get', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit'],
+            14 => ['name' => 'Loan Pay', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit'],
+            15 => ['name' => 'Loan Ins. Payment', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'credit'],
+            16 => ['name' => 'Loan Ins. Receive', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'debit'],
+            17 => ['name' => 'Purchase Return Receive', 'voucher_no' => 'purchase_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'debit'],
         ];
+
+        return $data[$voucher_type_id];
+    }
+
+    public function addAccountLedger($voucher_type_id, $date, $account_id, $trans_id, $amount, $balance_type)
+    {
+        $voucherType = $this->voucherType($voucher_type_id);
+        $add = new AccountLedger();
+        $add->date = date('Y-m-d', strtotime($date));
+        $add->account_id = $account_id;
+        $add->voucher_type = $voucher_type_id;
+        $add->{$voucherType['id']} = $trans_id;
+        $add->{$voucherType['amt']} = $amount;
+        $add->amount_type = $voucherType['amt'];
+        $add->save();
+        $add->running_balance = $this->adjustAccountBalance($balance_type, $account_id);
+        $add->save();
+    }
+
+    public function updateAccountLedger($voucher_type_id, $date, $account_id, $trans_id, $amount, $balance_type)
+    {
+        $voucherType = $this->voucherType($voucher_type_id);
+        $update = AccountLedger::where($voucherType['id'], $trans_id)->first();
+        $previousAccountId = $update->account_id;
+        $update->date = date('Y-m-d', strtotime($date));
+        $update->account_id = $account_id;
+        $update->{$voucherType['amt']} = $amount;
+        $update->save();
+        $update->running_balance = $this->adjustAccountBalance($balance_type, $account_id);
+        $update->save();
+
+        if ($previousAccountId != $account_id) {
+            $this->adjustAccountBalance($balance_type, $account_id);
+        }
     }
 }

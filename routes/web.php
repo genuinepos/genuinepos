@@ -883,7 +883,30 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-    $testQuery = DB::table('accounts')->first();
+    // $testQuery = DB::table('accounts')->first();
+
+    $data =  [
+        0 => ['name' => 'Opening_balance', 'voucher_no' => null, 'id' => null, 'amt' => 'debit/credit'],
+        1 => ['name' => 'Sales', 'voucher_no' => 'sale_inv_id', 'id' => 'sale_id', 'amt' => 'credit'],
+        2 => ['name' => 'Sale Return', 'voucher_no' => 'sale_return_inv', 'id' => 'sale_return_id', 'amt' => 'debit'],
+        3 => ['name' => 'Purchase', 'voucher_no' => 'purchase_inv_id', 'id' => 'purchase_id', 'amt' => 'debit'],
+        4 => ['name' => 'Purchase Return', 'voucher_no' => 'pur_return_invoice', 'id' => 'purchase_return_id', 'amt' => 'credit'],
+        5 => ['name' => 'Expense', 'voucher_no' => 'exp_voucher_no', 'id' => 'expense_id', 'amt' => 'debit'],
+        6 => ['name' => 'Production', 'voucher_no' => 'production_voucher', 'id' => 'production_id', 'amt' => 'debit'],
+        7 => ['name' => 'Stock Adjustment', 'voucher_no' => 'sa_voucher', 'id' => 'stock_adjustment_id', 'amt' => 'credit'],
+        8 => ['name' => 'Adjustment Recovered', 'voucher_no' => 'sar_amt_voucher', 'id' => 'recovered_id', 'amt' => 'debit'],
+        9 => ['name' => 'Expense Payment', 'voucher_no' => 'exp_payment_voucher', 'id' => 'expense_payment_id', 'amt' => 'credit'],
+        10 => ['name' => 'Receive Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'debit'],
+        11 => ['name' => 'Purchase Payment', 'voucher_no' => 'pur_payment_voucher', 'id', 'purchase_payment_id', 'amt' => 'credit'],
+        12 => ['name' => 'Sale Return Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'credit'],
+        13 => ['name' => 'Loan Get', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit'],
+        14 => ['name' => 'Loan Pay', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit'],
+        15 => ['name' => 'Loan Ins. Payment', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'credit'],
+        16 => ['name' => 'Loan Ins. Receive', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'debit'],
+        17 => ['name' => 'Purchase Return Receive', 'voucher_no' => 'purchase_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'debit'],
+    ];
+
+    return $data[1]['id'];
 });
 
 // All authenticated routes

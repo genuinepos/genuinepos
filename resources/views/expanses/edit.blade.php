@@ -9,7 +9,7 @@
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form id="add_expanse_form" action="{{ route('expanses.update', $expense->id) }}" enctype="multipart/form-data" method="POST">
+            <form id="edit_expanse_form" action="{{ route('expanses.update', $expense->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <section class="mt-5">
                     <div class="container-fluid">
@@ -35,24 +35,36 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Reference No :</b> </label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Voucher :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
-                                                        <input type="hidden" name="description_ids" id="description_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
+                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
                                                     </div>
                                                 </div>
 
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Date :</b> </label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Expense A/C :</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control datepicker changeable"
-                                                            value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime( $expense->date)) }}" id="datepicker">
+                                                        <select required name="ex_account_id" class="form-control" id="ex_account_id">
+                                                            @foreach ($expenseAccounts as $exAc)
+                                                                <option {{ $exAc->id == $expense->expense_account_id ? 'SELECTED' : '' }} value="{{ $exAc->id }}">
+                                                                    {{ $exAc->name.' ('.App\Utils\Util::accountType($exAc->account_type).')' }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
                                      
                                             <div class="col-md-6">
-                                                <div class="input-group">
+                                                <div class="input-group mt-1">
+                                                    <label for="inputEmail3" class=" col-4"><b>Expense Date :</b> </label>
+                                                    <div class="col-8">
+                                                        <input required type="text" name="date" class="form-control datepicker changeable"
+                                                            value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime( $expense->date)) }}" id="datepicker">
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group mt-1">
                                                     <label for="inputEmail3" class=" col-4"><b>Expanse For :</b></label>
                                                     <div class="col-8">
                                                         <select name="admin_id" class="form-control" id="admin_id">
@@ -61,13 +73,6 @@
                                                                 <option {{ $user->id == $expense->admin_id ? 'SELECTED' : '' }} value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
                                                             @endforeach
                                                         </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Attachment :</b></label>
-                                                    <div class="col-8">
-                                                        <input type="file" name="attachment" class="form-control ">
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,9 +164,7 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
                                                     <div class="col-8">
-                                                        <select name="tax" class="form-control" id="tax">
-                                                          
-                                                        </select>
+                                                        <select name="tax" class="form-control" id="tax"></select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,24 +238,6 @@
         }
         getTaxes();
 
-        // Set accounts in payment and payment edit form
-        function setAccount(){
-            $.ajax({
-                url:"{{route('accounting.accounts.all.form.account')}}",
-                async:true,
-                type:'get',
-                dataType: 'json',
-                success:function(accounts){
-                    $.each(accounts, function (key, account) {
-                        $('#account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                    });
-
-                    $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
-                }
-            });
-        }
-        setAccount();
-
          // Calculate amount
          function calculateAmount() {
             var indexs = document.querySelectorAll('#index');
@@ -298,7 +283,7 @@
         });
 
         //Add purchase request by ajax
-        $('#add_expanse_form').on('submit', function(e){
+        $('#edit_expanse_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');

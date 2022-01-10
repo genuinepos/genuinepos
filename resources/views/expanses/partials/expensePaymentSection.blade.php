@@ -9,7 +9,7 @@
                                 <div class="input-group">
                                     <label for="inputEmail3" class=" col-4"><b>Paying : ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
                                     <div class="col-8">
-                                        <input name="paying_amount" class="form-control" id="paying_amount" value="0.00">
+                                        <input required name="paying_amount" class="form-control" id="paying_amount" value="">
                                         <span class="error error_paying_amount"></span>
                                     </div>
                                 </div>
@@ -19,7 +19,7 @@
                                 <div class="input-group mt-1">
                                     <label for="inputEmail3" class="col-4"><b>Pay Method :</b></label>
                                     <div class="col-8">
-                                        <select name="payment_method" class="form-control" id="payment_method">
+                                        <select name="payment_method_id" class="form-control" id="payment_method_id">
                                             @foreach ($methods as $method)
                                                 <option value="{{ $method->id }}" 
                                                     data-account="{{ $method->account_id }}">
@@ -35,7 +35,7 @@
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-4"><b>Credit A/C :</b></label>
+                                    <label for="inputEmail3" class="col-4"><b>Credit Account :</b></label>
                                     <div class="col-8">
                                         <select required name="account_id" class="form-control" id="account_id">
                                             @foreach ($accounts as $account)

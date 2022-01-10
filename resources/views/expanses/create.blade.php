@@ -30,16 +30,16 @@
     
                                     <div class="element-body">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Voucher :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Voucher No:</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                     <div class="col-8">
                                                         <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" autofocus>
                                                     </div>
                                                 </div>
 
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Ex. A/C :</b> <span class="text-danger">*</span></label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Expense A/C :</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <select required name="ex_account_id" class="form-control" id="ex_account_id">
                                                             @foreach ($expenseAccounts as $exAc)
@@ -52,31 +52,22 @@
                                                 </div>
                                             </div>
                                      
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <div class="input-group">
+                                                    <label for="inputEmail3" class=" col-4"><b>Expense Date :</b> <span
+                                                        class="text-danger">*</span></label>
+                                                    <div class="col-8">
+                                                        <input required type="text" name="date" class="form-control changeable"
+                                                            value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group mt-1">
                                                     <label for="inputEmail3" class=" col-4"><b>Expanse For :</b></label>
                                                     <div class="col-8">
                                                         <select name="admin_id" class="form-control" id="admin_id">
                                                             <option value="">None</option>
                                                         </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Attachment :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="file" name="attachment" class="form-control ">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Date :</b> <span
-                                                        class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control changeable"
-                                                            value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
                                                     </div>
                                                 </div>
                                             </div>
@@ -259,8 +250,7 @@
             var tax_amount = parseFloat(totalAmount) / 100 * parseFloat(tax_percent);
             var netTotalAmount = parseFloat(totalAmount) + parseFloat(tax_amount); 
             $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
-            $('#paying_amount').val(parseFloat(netTotalAmount).toFixed(2));
-            $('#loan_amount').val(parseFloat(netTotalAmount).toFixed(2));
+           // $('#paying_amount').val(parseFloat(netTotalAmount).toFixed(2));
             var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
             var totalDue = parseFloat(netTotalAmount) - parseFloat(payingAmount);
             $('#total_due').val(parseFloat(totalDue).toFixed(2));
@@ -381,20 +371,6 @@
             $('#description_body').append(html);
             calculateAmount();
             index++;
-        });
-
-        $('#payment_method').on('change', function () {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#'+value).show();
-        });
-
-        $('#is_loan').on('change', function () {
-            if ($(this).is(':CHECKED', true)) {
-                $('.loan_amount_field').show();
-            } else {
-                $('.loan_amount_field').hide();
-            }
         });
 
         $(document).on('click', '.submit_button',function () {

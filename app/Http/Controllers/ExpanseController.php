@@ -131,7 +131,7 @@ class ExpanseController extends Controller
             account_id: $request->ex_account_id,
             trans_id: $addExpanse->id,
             amount: $request->net_total_amount,
-            balance_type: 'credit'
+            balance_type: 'debit'
         );
 
         if ($request->paying_amount > 0) {
@@ -191,7 +191,7 @@ class ExpanseController extends Controller
                 $this->accountUtil->adjustAccountBalance('debit', $storedExpenseAccountId);
             }
         }
-        
+
         return response()->json('Successfully expanse is deleted');
     }
 
@@ -205,14 +205,12 @@ class ExpanseController extends Controller
         $expense = Expanse::with('expense_descriptions')->where('id', $expenseId)->first();
         $categories = DB::table('expanse_categories')->get();
         $taxes = DB::table('taxes')->get();
-        $users = '';
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $users = DB::table('admin_and_users')->get(['id', 'prefix', 'name', 'last_name']);
-        } else {
-            $users = DB::table('admin_and_users')
-                ->where('branch_id', auth()->user()->branch_id)
-                ->get(['id', 'prefix', 'name', 'last_name']);
-        }
+
+
+        $users = DB::table('admin_and_users')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->get(['id', 'prefix', 'name', 'last_name']);
+
 
         $expenseAccounts = DB::table('accounts')->whereIn('account_type', [7, 8, 9, 10, 15])
             ->where('accounts.branch_id', auth()->user()->branch_id)
@@ -292,7 +290,7 @@ class ExpanseController extends Controller
             account_id: $request->ex_account_id,
             trans_id: $updateExpanse->id,
             amount: $request->net_total_amount,
-            balance_type: 'credit'
+            balance_type: 'debit'
         );
 
         return response()->json(['successMsg' => 'Successfully expense is updated']);
@@ -308,14 +306,14 @@ class ExpanseController extends Controller
     // Payment view method
     public function paymentView($expanseId)
     {
-        $expense = Expanse::with(['branch',  'expense_payments'])->where('id', $expanseId)->first();
+        $expense = Expanse::with(['branch',  'expense_payments', 'expense_payments.payment_method'])->where('id', $expanseId)->first();
         return view('expanses.ajax_view.payment_view', compact('expense'));
     }
 
     // Payment details
     public function paymentDetails($paymentId)
     {
-        $payment = ExpansePayment::with(['expense', 'expense.expense_descriptions', 'expense.expense_descriptions.category', 'expense.admin'])->where('id', $paymentId)->first();
+        $payment = ExpansePayment::with(['expense', 'payment_method', 'expense.expense_descriptions', 'expense.expense_descriptions.category', 'expense.admin'])->where('id', $paymentId)->first();
         return view('expanses.ajax_view.payment_details', compact('payment'));
     }
 
@@ -338,39 +336,6 @@ class ExpanseController extends Controller
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['expanse_payment'];
         $expense = Expanse::where('id', $expenseId)->first();
-        // Update expanse
-
-        // generate invoice ID
-        // $i = 5;
-        // $a = 0;
-        // $invoiceId = '';
-        // while ($a < $i) {
-        //     $invoiceId .= rand(1, 9);
-        //     $a++;
-        // }
-
-        // // Add Expanse payment
-        // $addExpansePayment = new ExpansePayment();
-        // $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'EPI') . date('ymd') . $invoiceId;
-        // $addExpansePayment->expanse_id = $expanse->id;
-        // $addExpansePayment->account_id = $request->account_id;
-        // $addExpansePayment->pay_mode = $request->payment_method;
-        // $addExpansePayment->paid_amount = $request->amount;
-        // $addExpansePayment->date = $request->date;
-        // $addExpansePayment->report_date = date('Y-m-d', strtotime($request->date));
-        // $addExpansePayment->month = date('F');
-        // $addExpansePayment->year = date('Y');
-        // $addExpansePayment->note = $request->note;
-        // $addExpansePayment->admin_id = auth()->user()->id;
-
-        // if ($request->hasFile('attachment')) {
-        //     $expansePaymentAttachment = $request->file('attachment');
-        //     $expansePaymentAttachmentName = uniqid() . '-' . '.' . $expansePaymentAttachment->getClientOriginalExtension();
-        //     $expansePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expansePaymentAttachmentName);
-        //     $addExpansePayment->attachment = $expansePaymentAttachmentName;
-        // }
-
-        // $addExpansePayment->save();
 
         $addPaymentGetId = $this->expenseUtil->addPaymentGetId(
             voucher_prefix: $paymentInvoicePrefix,
@@ -379,24 +344,6 @@ class ExpanseController extends Controller
         );
 
         $this->expenseUtil->adjustExpenseAmount($expense);
-
-        // if ($request->account_id) {
-        //     // Add cash flow
-        //     $addCashFlow = new CashFlow();
-        //     $addCashFlow->account_id = $request->account_id;
-        //     $addCashFlow->debit = $request->amount;
-        //     $addCashFlow->expanse_payment_id = $addExpansePayment->id;
-        //     $addCashFlow->transaction_type = 6;
-        //     $addCashFlow->cash_type = 1;
-        //     $addCashFlow->date = $request->date;
-        //     $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-        //     $addCashFlow->month = date('F');
-        //     $addCashFlow->year = date('Y');
-        //     $addCashFlow->admin_id = auth()->user()->id;
-        //     $addCashFlow->save();
-        //     $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-        //     $addCashFlow->save();
-        // }
 
         // Add Bank/Cash-in-hand Account Ledger
         $this->accountUtil->addAccountLedger(
@@ -427,100 +374,12 @@ class ExpanseController extends Controller
     // Update payment
     public function paymentUpdate(Request $request, $paymentId)
     {
-        $updateExpansePayment = ExpansePayment::where('id', $paymentId)->first();
-        $this->expenseUtil->updatePaymentGet($updateExpansePayment->id, $request);
-        $expense = Expanse::where('id', $updateExpansePayment->expanse_id)->first();
+        $updateExpansePayment = ExpansePayment::with('expense')->where('id', $paymentId)->first();
+        $this->expenseUtil->updatePayment($updateExpansePayment->id, $request);
+        $expense = Expanse::where('id', $updateExpansePayment->expanse_id)
+            ->select('id', 'net_total_amount', 'paid', 'due')->first();
+
         $this->expenseUtil->adjustExpenseAmount($expense);
-
-        // // Update Expanse 
-        // $updateExpansePayment->expense->paid -= $updateExpansePayment->paid_amount;
-        // $updateExpansePayment->expense->due += $updateExpansePayment->paid_amount;
-        // $updateExpansePayment->expense->paid += $request->amount;
-        // $updateExpansePayment->expense->due -= $request->amount;
-        // $updateExpansePayment->expense->save();
-
-        // // update Expanse payment
-        // $updateExpansePayment->account_id = $request->account_id;
-        // $updateExpansePayment->pay_mode = $request->payment_method;
-        // $updateExpansePayment->paid_amount = $request->amount;
-        // $updateExpansePayment->date = $request->date;
-        // $updateExpansePayment->report_date = date('Y-m-d', strtotime($request->date));
-        // $updateExpansePayment->month = date('F');
-        // $updateExpansePayment->year = date('Y');
-        // $updateExpansePayment->note = $request->note;
-
-        // if ($request->payment_method == 'Card') {
-        //     $updateExpansePayment->card_no = $request->card_no;
-        //     $updateExpansePayment->card_holder = $request->card_holder_name;
-        //     $updateExpansePayment->card_transaction_no = $request->card_transaction_no;
-        //     $updateExpansePayment->card_type = $request->card_type;
-        //     $updateExpansePayment->card_month = $request->month;
-        //     $updateExpansePayment->card_year = $request->year;
-        //     $updateExpansePayment->card_secure_code = $request->secure_code;
-        // } elseif ($request->payment_method == 'Cheque') {
-        //     $updateExpansePayment->cheque_no = $request->cheque_no;
-        // } elseif ($request->payment_method == 'Bank-Transfer') {
-        //     $updateExpansePayment->account_no = $request->account_no;
-        // } elseif ($request->payment_method == 'Custom') {
-        //     $updateExpansePayment->transaction_no = $request->transaction_no;
-        // }
-
-        // if ($request->hasFile('attachment')) {
-        //     if ($updateExpansePayment->attachment != null) {
-        //         if (file_exists(public_path('uploads/payment_attachment/' . $updateExpansePayment->attachment))) {
-        //             unlink(public_path('uploads/payment_attachment/' . $updateExpansePayment->attachment));
-        //         }
-        //     }
-        //     $expansePaymentAttachment = $request->file('attachment');
-        //     $expansePaymentAttachmentName = uniqid() . '-' . '.' . $expansePaymentAttachment->getClientOriginalExtension();
-        //     $expansePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expansePaymentAttachmentName);
-        //     $updateExpansePayment->attachment = $expansePaymentAttachmentName;
-        // }
-        // $updateExpansePayment->save();
-
-        // if ($request->account_id) {
-        //     // Add or update cash flow
-        //     $cashFlow = CashFlow::where('account_id', $request->account_id)
-        //         ->where('expanse_payment_id', $updateExpansePayment->id)->first();
-        //     if ($cashFlow) {
-        //         $cashFlow->debit = $request->amount;
-        //         $cashFlow->date = $request->date;
-        //         $cashFlow->report_date = date('Y-m-d', strtotime($request->date));
-        //         $cashFlow->month = date('F');
-        //         $cashFlow->year = date('Y');
-        //         $cashFlow->admin_id = auth()->user()->id;
-        //         $cashFlow->save();
-        //         $cashFlow->balance = $this->accountUtil->adjustAccountBalance($cashFlow->account_id);
-        //         $cashFlow->save();
-        //     } else {
-        //         if ($updateExpansePayment->cashFlow) {
-        //             $storedAccountId = $updateExpansePayment->cashFlow->account_id;
-        //             $updateExpansePayment->cashFlow->delete();
-        //             $this->accountUtil->adjustAccountBalance($storedAccountId);
-        //         }
-
-        //         $addCashFlow = new CashFlow();
-        //         $addCashFlow->account_id = $request->account_id;
-        //         $addCashFlow->debit = $request->amount;
-        //         $addCashFlow->expanse_payment_id = $updateExpansePayment->id;
-        //         $addCashFlow->transaction_type = 6;
-        //         $addCashFlow->cash_type = 1;
-        //         $addCashFlow->date = $request->date;
-        //         $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-        //         $addCashFlow->month = date('F');
-        //         $addCashFlow->year = date('Y');
-        //         $addCashFlow->admin_id = auth()->user()->id;
-        //         $addCashFlow->save();
-        //         $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-        //         $addCashFlow->save();
-        //     }
-        // } else {
-        //     if ($updateExpansePayment->cashFlow) {
-        //         $storedAccountId = $updateExpansePayment->cashFlow->account_id;
-        //         $updateExpansePayment->cashFlow->delete();
-        //         $this->accountUtil->adjustAccountBalance($storedAccountId);
-        //     }
-        // }
 
         // Update Bank/Cash-In-Hand account Ledger
         $this->accountUtil->updateAccountLedger(
@@ -564,15 +423,11 @@ class ExpanseController extends Controller
     public function allAdmins()
     {
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $admins = AdminAndUser::select(['id', 'prefix', 'name', 'last_name'])->orderBy('id', 'asc')
-                //  ->where('allow_login', 1)
-                ->get();
+            $admins = AdminAndUser::select(['id', 'prefix', 'name', 'last_name'])->orderBy('id', 'asc')->get();
             return response()->json($admins);
         } else {
             $admins = AdminAndUser::select(['id', 'prefix', 'name', 'last_name'])->orderBy('id', 'asc')
-                ->where('branch_id', auth()->user()->branch_id)
-                //  ->where('allow_login', 1)
-                ->get();
+                ->where('branch_id', auth()->user()->branch_id)->get();
             return response()->json($admins);
         }
     }

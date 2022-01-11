@@ -13,7 +13,7 @@
                 <ul class="list-unstyled">
                     <li><strong> Voucher No : </strong>{{ $expense->invoice_id }} </li>
                     <li><strong>Business Location : </strong>
-                        {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : 'Head Office' }}
+                        {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}
                     </li>
                 </ul>
             </div>

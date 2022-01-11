@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Models\Customer;
+use App\Models\CustomerLedger;
 use App\Utils\Converter;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -140,5 +141,55 @@ class CustomerUtil
         $customer->total_return = $totalReturn;
         $customer->total_sale_return_due = $totalReturnDue > 0 ? $totalReturnDue : 0;;
         $customer->save();
+        return $totalDue;
+    }
+
+    public function voucherTypes()
+    {
+        return [
+            1 => 'Sale',
+            2 => 'Sale Return',
+            3 => 'Received Payment',
+            4 => 'Return Payment',
+        ];
+    }
+
+    public function voucherType($voucher_type_id)
+    {
+        $data = [
+            1 => ['name' => 'Sale', 'id' => 'sale_id', 'voucher_no' => 'sale_inv_id', 'amt'=> 'debit'],
+            2 => ['name' => 'Sale Return', 'id' => 'sale_return_id', 'voucher_no' => 'return_inv_id', 'amt' => 'credit'],
+            3 => ['name' => 'Received Payment', 'id' => 'sale_payment_id', 'voucher_no' => 'received_voucher_no', 'amt' => 'credit'],
+            4 => ['name' => 'Return Payment', 'id' => 'sale_payment_id', 'return_pay_voucher_no', 'amt' => 'debit'],
+            5 => ['name' => 'Receive From Customer', 'id' => 'customer_payment_id', 'customer_payment_voucher', 'amt' => 'credit'],
+            6 => ['name' => 'Paid To Customer', 'id' => 'customer_payment_id', 'customer_return_payment_voucher', 'amt' => 'debit'],
+        ];
+
+        return $data[$voucher_type_id];
+    }
+
+    public function addCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount)
+    {
+        $voucher_type = $this->voucherType($voucher_type_id);
+        $addCustomerLedger = new CustomerLedger();
+        $addCustomerLedger->customer_id = $customer_id;
+        $addCustomerLedger->report_date = date('Y-m-d', strtotime($date));
+        $addCustomerLedger->{$voucher_type['id']} = $trans_id;
+        $addCustomerLedger->{$voucher_type['amt']} = $amount;
+        $addCustomerLedger->amount_type = $voucher_type['amt'];
+        $addCustomerLedger->voucher_type = $voucher_type_id;
+        $addCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);
+        $addCustomerLedger->save();
+    }
+
+    public function updateCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount)
+    {
+        $voucher_type = $this->voucherType($voucher_type_id);
+        $updateCustomerLedger = CustomerLedger::where($voucherType['id'], $trans_id)->first();
+        $updateCustomerLedger->customer_id = $customer_id;
+        $updateCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
+        $updateCustomerLedger->{$voucher_type['amt']} = $amount;
+        $updateCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);
+        $updateCustomerLedger->save();
     }
 }

@@ -381,7 +381,7 @@ class CustomerController extends Controller
         $customerPayment->customer_id = $customerId;
         $customerPayment->account_id = $request->account_id;
         $customerPayment->paid_amount = $request->amount;
-        $customerPayment->pay_mode = $request->payment_method;
+        $customerPayment->payment_method_id = $request->payment_method_id;
         $customerPayment->report_date = date('Y-m-d', strtotime($request->date));
         $customerPayment->date = $request->date;
         $customerPayment->time = date('h:i:s a');
@@ -414,23 +414,23 @@ class CustomerController extends Controller
         $customerPayment->note = $request->note;
         $customerPayment->save();
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->credit = $request->amount;
-            $addCashFlow->customer_payment_id = $customerPayment->id;
-            $addCashFlow->transaction_type = 13;
-            $addCashFlow->cash_type = 2;
-            $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->user()->id;
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+        // if ($request->account_id) {
+        //     // Add cash flow
+        //     $addCashFlow = new CashFlow();
+        //     $addCashFlow->account_id = $request->account_id;
+        //     $addCashFlow->credit = $request->amount;
+        //     $addCashFlow->customer_payment_id = $customerPayment->id;
+        //     $addCashFlow->transaction_type = 13;
+        //     $addCashFlow->cash_type = 2;
+        //     $addCashFlow->date = date('d-m-Y', strtotime($request->date));
+        //     $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+        //     $addCashFlow->month = date('F');
+        //     $addCashFlow->year = date('Y');
+        //     $addCashFlow->admin_id = auth()->user()->id;
+        //     $addCashFlow->save();
+        //     $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+        //     $addCashFlow->save();
+        // }
 
         // Add customer payment for direct payment
         $addCustomerLedger = new CustomerLedger();
@@ -459,23 +459,6 @@ class CustomerController extends Controller
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->pay_mode = $request->payment_method;
-
-                        if ($request->payment_method == 'Card') {
-                            $addSalePayment->card_no = $request->card_no;
-                            $addSalePayment->card_holder = $request->card_holder_name;
-                            $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                            $addSalePayment->card_type = $request->card_type;
-                            $addSalePayment->card_month = $request->month;
-                            $addSalePayment->card_year = $request->year;
-                            $addSalePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addSalePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addSalePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addSalePayment->transaction_no = $request->transaction_no;
-                        }
-
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->payment_on = 1;
                         $addSalePayment->save();

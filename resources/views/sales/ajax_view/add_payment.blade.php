@@ -26,7 +26,7 @@
                             @if ($sale->branch)
                                 {{ $sale->branch->name.'/'.$sale->branch->branch_code }}
                             @else
-                                {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>) 
+                                {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>HO</b>) 
                             @endif
                         </span>  
                     </li>
@@ -78,7 +78,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
                 </div>
-                <select name="payment_method" class="form-control"  id="p_payment_method">
+                <select required name="payment_method" class="form-control" id="p_payment_method">
                     @foreach ($methods as $method)
                         <option value="{{ $method->id }}">
                             {{ $method->name }}
@@ -97,7 +97,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
                 </div>
-                <select name="account_id" class="form-control"  id="p_account_id">
+                <select required name="account_id" class="form-control add_input" id="p_account_id">
                     @foreach ($accounts as $account)
                         <option value="{{ $account->id }}">
                             @php
@@ -108,6 +108,7 @@
                         </option>
                     @endforeach
                 </select>
+                <span class="error error_p_account_id"></span>
             </div>
         </div>
 

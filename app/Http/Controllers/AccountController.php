@@ -135,19 +135,19 @@ class AccountController extends Controller
             'branch_id' => auth()->user()->branch_id,
         ]);
 
-        $addCashflow = new CashFlow();
-        $addCashflow->account_id = $addAccount;
-        $addCashflow->transaction_type = 7;
-        $addCashflow->cash_type = 2;
-        $addCashflow->credit = $request->opening_balance ? $request->opening_balance : 0;
-        $addCashflow->report_date = date('Y-m-d');
-        $addCashflow->date = date('Y-m-d');
-        $addCashflow->month = date('F');
-        $addCashflow->year = date('Y');
-        $addCashflow->admin_id = auth()->user()->id;
-        $addCashflow->save();
-        $addCashflow->balance = $this->accountUtil->adjustAccountBalance($addAccount);
-        $addCashflow->save();
+        // $addCashflow = new CashFlow();
+        // $addCashflow->account_id = $addAccount;
+        // $addCashflow->transaction_type = 7;
+        // $addCashflow->cash_type = 2;
+        // $addCashflow->credit = $request->opening_balance ? $request->opening_balance : 0;
+        // $addCashflow->report_date = date('Y-m-d');
+        // $addCashflow->date = date('Y-m-d');
+        // $addCashflow->month = date('F');
+        // $addCashflow->year = date('Y');
+        // $addCashflow->admin_id = auth()->user()->id;
+        // $addCashflow->save();
+        // $addCashflow->balance = $this->accountUtil->adjustAccountBalance($addAccount);
+        // $addCashflow->save();
 
         return response()->json('Account created successfully');
     }

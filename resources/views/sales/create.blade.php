@@ -99,10 +99,11 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
+                                                <label for="inputEmail3" class=" col-4"><b>Date : <span
+                                                    class="text-danger">*</span></b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="date" class="form-control datepicker"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="datepicker">
+                                                    <input type="text" name="date" class="form-control add_input" data-name="Date"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="date">
                                                         <span class="error error_date"></span>
                                                 </div>
                                             </div>
@@ -147,10 +148,11 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-5"><b>Sales A/C :</b></label>
+                                                <label for="inputEmail3" class="col-5"><b>Sales A/C : <span
+                                                    class="text-danger">*</span></b></label>
                                                 <div class="col-7">
-                                                    <select name="sale_account_id" class="form-control"
-                                                        id="sale_account_id">
+                                                    <select name="sale_account_id" class="form-control add_input"
+                                                        id="sale_account_id" data-name="Sale A/C">
                                                         @foreach ($saleAccounts as $saleAccount)
                                                             <option value="{{ $saleAccount->id }}">
                                                                 {{ $saleAccount->name }}
@@ -409,9 +411,10 @@
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Debit A/C :</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Debit A/C : <span
+                                                    class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
-                                                    <select name="account_id" class="form-control" id="account_id">
+                                                    <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
                                                         @foreach ($accounts as $account)
                                                             <option value="{{ $account->id }}">
                                                                 @php
@@ -422,6 +425,7 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="error error_account_id"></span>
                                                 </div>
                                             </div>
 

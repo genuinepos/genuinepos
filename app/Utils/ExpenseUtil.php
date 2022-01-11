@@ -249,7 +249,7 @@ class ExpenseUtil
         return $addExpensePayment->id;
     }
 
-    public function updatePaymentGet($expense_payment_id, $request)
+    public function updatePayment($expense_payment_id, $request)
     {
         $updateExpensePayment = ExpansePayment::where('id', $expense_payment_id)->first();
         $updateExpensePayment->account_id = $request->account_id;

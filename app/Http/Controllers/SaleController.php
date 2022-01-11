@@ -199,6 +199,16 @@ class SaleController extends Controller
     // Add Sale method
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'status' => 'required',
+            'date' => 'required',
+            'sale_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'sale_account_id.required' => 'Sale A/C is required',
+            'account_id.required' => 'Debit A/C is required',
+        ]);
+
         $prefixSettings = DB::table('general_settings')
             ->select(['id', 'prefix', 'send_es_settings'])
             ->first();
@@ -234,10 +244,6 @@ class SaleController extends Controller
         if ($request->paying_amount < $request->total_payable_amount && !$request->customer_id) {
             return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
         }
-
-        $this->validate($request, [
-            'status' => 'required',
-        ]);
 
         $addSale = new Sale();
         $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $this->invoiceVoucherRefIdUtil->getLastId('sales');
@@ -275,10 +281,13 @@ class SaleController extends Controller
         $addSale->year = date('Y');
 
         // Update customer due
+        $invoicePayable = 0;
         if ($request->status == 1) {
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $paidAmount = $request->paying_amount - $changedAmount;
+
             if ($request->previous_due > 0) {
+                $invoicePayable = $request->total_invoice_payable;
                 $addSale->total_payable_amount = $request->total_invoice_payable;
                 if ($paidAmount >= $request->total_invoice_payable) {
                     $addSale->paid = $request->total_invoice_payable;
@@ -290,6 +299,7 @@ class SaleController extends Controller
                     $addSale->due = $calcDue;
                 }
             } else {
+                $invoicePayable = $request->total_payable_amount;
                 $addSale->total_payable_amount = $request->total_payable_amount;
                 $addSale->paid = $request->change_amount > 0 ? $request->total_invoice_payable : $request->paying_amount;
                 $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
@@ -297,13 +307,24 @@ class SaleController extends Controller
             }
             $addSale->save();
 
+            // Add sales A/C ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 1,
+                date: $request->date,
+                account_id: $request->sale_account_id,
+                trans_id: $addSale->id,
+                amount: $invoicePayable,
+                balance_type: 'credit'
+            );
+
             if ($customer_id) {
-                $addCustomerLedger = new CustomerLedger();
-                $addCustomerLedger->customer_id = $customer_id;
-                $addCustomerLedger->sale_id = $addSale->id;
-                $addCustomerLedger->row_type = 1;
-                $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
-                $addCustomerLedger->save();
+                $this->customerUtil->addCustomerLedger(
+                    voucher_type_id: 1,
+                    customer_id: $request->customer_id,
+                    date: $request->date,
+                    trans_id: $addSale->id,
+                    amount: $invoicePayable
+                );
             }
         } else {
             $addSale->total_payable_amount = $request->total_invoice_payable;
@@ -363,10 +384,12 @@ class SaleController extends Controller
         ])->where('id', $addSale->id)->first();
 
         if ($request->status == 1) {
-            $this->saleUtil->__getSalePaymentForAddSaleStore($request, $sale, $paymentInvoicePrefix, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'));
-            if ($sale->customer_id) {
-                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
-            }
+            $this->saleUtil->__getSalePaymentForAddSaleStore(
+                $request,
+                $sale,
+                $paymentInvoicePrefix,
+                $this->invoiceVoucherRefIdUtil->getLastId('sale_payments')
+            );
 
             $__index = 0;
             foreach ($product_ids as $product_id) {
@@ -876,15 +899,28 @@ class SaleController extends Controller
             return response()->json('Access Denied');
         }
 
+        $this->validate($request, [
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ]);
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
         $sale = Sale::where('id', $saleId)->first();
 
         // Add sale payment
-        $this->saleUtil->addPayment($paymentInvoicePrefix, $request, $request->amount, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), $saleId);
-        if ($sale->customer_id) {
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
-        }
+        $this->saleUtil->addPaymentGetId(
+            invoicePrefix : $paymentInvoicePrefix,
+            request : $request,
+            payingAmount : $request->amount,
+            invoiceId : $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+            saleId : $saleId,
+            customerPaymentId : NULL
+        );
+
+        // if ($sale->customer_id) {
+        //     $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
+        // }
 
         $this->saleUtil->adjustSaleInvoiceAmounts($sale);
         return response()->json('Payment added successfully.');
@@ -919,29 +955,13 @@ class SaleController extends Controller
 
         // update sale payment
         $updateSalePayment->account_id = $request->account_id;
-        $updateSalePayment->pay_mode = $request->payment_method;
+        $updateSalePayment->payment_method_id = $request->payment_method_id;
         $updateSalePayment->paid_amount = $request->amount;
         $updateSalePayment->date = $request->date;
         $updateSalePayment->report_date = date('Y-m-d', strtotime($request->date));
         $updateSalePayment->month = date('F');
         $updateSalePayment->year = date('Y');
         $updateSalePayment->note = $request->note;
-
-        if ($request->payment_method == 'Card') {
-            $updateSalePayment->card_no = $request->card_no;
-            $updateSalePayment->card_holder = $request->card_holder_name;
-            $updateSalePayment->card_transaction_no = $request->card_transaction_no;
-            $updateSalePayment->card_type = $request->card_type;
-            $updateSalePayment->card_month = $request->month;
-            $updateSalePayment->card_year = $request->year;
-            $updateSalePayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $updateSalePayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $updateSalePayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $updateSalePayment->transaction_no = $request->transaction_no;
-        }
 
         if ($request->hasFile('attachment')) {
             if ($updateSalePayment->attachment != null) {

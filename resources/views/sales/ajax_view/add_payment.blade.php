@@ -56,9 +56,9 @@
                     <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
                 </div>
                 <input type="hidden" id="available_amount" value="{{ $sale->due }}">
-                <input type="number" name="amount" class="form-control p_input" step="any" data-name="Amount" id="p_amount" value="{{ $sale->due }}"/>
+                <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="{{ $sale->due }}"/>
             </div>
-            <span class="error error_p_amount"></span>
+            <span class="error error_p_paying_amount"></span>
         </div>
 
         <div class="col-md-4">
@@ -78,14 +78,14 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
                 </div>
-                <select required name="payment_method" class="form-control" id="p_payment_method">
+                <select required name="payment_method_id" class="form-control" id="p_payment_method">
                     @foreach ($methods as $method)
                         <option value="{{ $method->id }}">
                             {{ $method->name }}
                         </option>
                     @endforeach
                 </select>
-                <span class="error error_p_payment_method"></span>
+                <span class="error error_p_payment_method_id"></span>
             </div>
         </div>
     </div>
@@ -134,36 +134,18 @@
 
 <script>
     //sale payment request by ajax
-    $('#sale_payment_form').on('submit', , function(e){
+    $('#sale_payment_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();
         var available_amount = $('#available_amount').val();
-        var paying_amount = $('#p_amount').val();
+        var paying_amount = $('#p_paying_amount').val();
         if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-            $('.error_p_amount').html('Paying amount must not be greater then due amount.');
+            $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
             $('.loading_button').hide();
             return;
         }
 
-        // var url = $(this).attr('action');
-        // var inputs = $('.p_input');
-        //     $('.error').html('');
-        //     var countErrorField = 0;
-        // $.each(inputs, function(key, val){
-        //     var inputId = $(val).attr('id');
-        //     var idValue = $('#'+inputId).val();
-        //     if(idValue == ''){
-        //         countErrorField += 1;
-        //         var fieldName = $('#'+inputId).data('name');
-        //         $('.error_'+inputId).html(fieldName+' is required.');
-        //     }
-        // });
-
-        // if(countErrorField > 0){
-        //     $('.loading_button').hide();
-        //     toastr.error('Please check again all form fields.','Some thing want wrong.');
-        //     return;
-        // }
+        var url = $(this).attr('action');
 
         $.ajax({
             url:url,

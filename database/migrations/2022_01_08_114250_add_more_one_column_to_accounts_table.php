@@ -14,9 +14,7 @@ class AddMoreOneColumnToAccountsTable extends Migration
     public function up()
     {
         Schema::table('accounts', function (Blueprint $table) {
-            Schema::table('accounts', function (Blueprint $table) {
-                $table->integer('account_type')->after('bank_id')->nullable();
-            });
+            $table->integer('account_type')->after('bank_id')->nullable();
         });
     }
 

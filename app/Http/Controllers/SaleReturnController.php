@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\SaleReturnProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\SalePayment;
+use App\Utils\AccountUtil;
 use App\Utils\Converter;
 use App\Utils\CustomerUtil;
 use App\Utils\ProductStockUtil;
@@ -19,12 +20,19 @@ class SaleReturnController extends Controller
 {
     protected $productStockUtil;
     protected $saleUtil;
+    protected $accountUtil;
     protected $customerUtil;
     protected $converter;
-    public function __construct(ProductStockUtil $productStockUtil, SaleUtil $saleUtil, CustomerUtil $customerUtil, Converter $converter)
-    {
+    public function __construct(
+        ProductStockUtil $productStockUtil,
+        SaleUtil $saleUtil,
+        AccountUtil $accountUtil,
+        CustomerUtil $customerUtil,
+        Converter $converter
+    ) {
         $this->productStockUtil = $productStockUtil;
         $this->saleUtil = $saleUtil;
+        $this->accountUtil = $accountUtil;
         $this->customerUtil = $customerUtil;
         $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
@@ -37,7 +45,13 @@ class SaleReturnController extends Controller
             abort(403, 'Access Forbidden.');
         }
         $saleId = $saleId;
-        return view('sales.sale_return.create', compact('saleId'));
+
+        $saleReturnAccounts = DB::table('accounts')
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->where('account_type', 6)
+            ->get(['id', 'name']);
+
+        return view('sales.sale_return.create', compact('saleId', 'saleReturnAccounts'));
     }
 
     // Sale return index view
@@ -56,26 +70,20 @@ class SaleReturnController extends Controller
                 ->leftJoin('warehouses', 'sale_returns.warehouse_id', 'warehouses.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id');
 
+            $query->select(
+                'sale_returns.*',
+                'sales.invoice_id as parent_invoice_id',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'customers.name as cus_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $returns = $query->select(
-                    'sale_returns.*',
-                    'sales.invoice_id as parent_invoice_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'customers.name as cus_name',
-                )->orderBy('id', 'desc');
+                $returns = $query->orderBy('id', 'desc');
             } else {
-                $returns = $query->select(
-                    'sale_returns.*',
-                    'sales.invoice_id as parent_invoice_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'customers.name as cus_name',
-                )->where('sale_returns.branch_id', auth()->user()->branch_id)
+                $returns = $query->where('sale_returns.branch_id', auth()->user()->branch_id)
                     ->orderBy('id', 'desc');
             }
 
@@ -152,6 +160,13 @@ class SaleReturnController extends Controller
 
     public function store(Request $request, $saleId)
     {
+        $this->validate($request, [
+            'date' => 'required',
+            'sale_return_account_id' => 'required',
+        ], [
+            'sale_return_account_id.required' => 'Sale Return A/C is required',
+        ]);
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_return'];
 
@@ -180,6 +195,7 @@ class SaleReturnController extends Controller
 
         $saleReturn = SaleReturn::where('sale_id', $saleId)->first();
         $sale = Sale::where('id', $saleId)->first();
+
         if ($saleReturn) {
             //Update purchase and supplier purchase return due
             $saleDue = $sale->total_payable_amount - $sale->paid;
@@ -206,7 +222,8 @@ class SaleReturnController extends Controller
             $index = 0;
             foreach ($sale_product_ids as $sale_product_id) {
                 $returnProduct = SaleReturnProduct::where('sale_return_id', $saleReturn->id)
-                    ->where('sale_product_id', $sale_product_id)->first();
+                    ->where('sale_product_id', $sale_product_id)
+                    ->first();
                 $returnProduct->return_qty = $return_quantities[$index];
                 $returnProduct->unit = $units[$index];
                 $returnProduct->return_subtotal = $return_subtotals[$index];
@@ -219,9 +236,25 @@ class SaleReturnController extends Controller
                 $this->productStockUtil->adjustBranchStock($sale_product->product_id, $sale_product->product_variant_id, $sale->branch_id);
             }
 
-            $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+            // Update Sale Return A/C ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 2,
+                date: $request->date,
+                account_id: $request->sale_return_account_id,
+                trans_id: $saleReturn->id,
+                amount: $request->total_return_amount,
+                balance_type: 'debit'
+            );
+
             if ($sale->customer_id) {
-                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
+                // Update Customer Ledger
+                $this->customerUtil->updateCustomerLedger(
+                    voucher_type_id: 2,
+                    customer_id: $sale->customer_id,
+                    date: $request->date,
+                    trans_id: $saleReturn->id,
+                    amount: $request->total_return_amount
+                );
             }
         } else {
             $sale->is_return_available = 1;
@@ -231,7 +264,7 @@ class SaleReturnController extends Controller
 
             $addSaleReturn = new SaleReturn();
             $addSaleReturn->sale_id = $sale->id;
-            $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
+            $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
 
             $addSaleReturn->branch_id = $sale->branch_id;
             $addSaleReturn->admin_id = auth()->user()->id;
@@ -273,12 +306,37 @@ class SaleReturnController extends Controller
             }
 
             $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+
+            // Add Sale Return A/C ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 2,
+                date: $request->date,
+                account_id: $request->sale_return_account_id,
+                trans_id: $addSaleReturn->id,
+                amount: $request->total_return_amount,
+                balance_type: 'debit'
+            );
+
+            $this->saleUtil->adjustSaleInvoiceAmounts($sale);
             if ($sale->customer_id) {
-                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
+                $this->customerUtil->addCustomerLedger(
+                    voucher_type_id: 2,
+                    customer_id: $sale->customer_id,
+                    date: $request->date,
+                    trans_id: $addSaleReturn->id,
+                    amount: $request->total_return_amount
+                );
             }
         }
 
-        $saleReturn = SaleReturn::with(['sale', 'branch', 'sale.customer', 'sale_return_products', 'sale_return_products.sale_product'])->where('sale_id', $saleId)->first();
+        $saleReturn = SaleReturn::with([
+            'sale',
+            'branch',
+            'sale.customer',
+            'sale_return_products',
+            'sale_return_products.sale_product'
+        ])->where('sale_id', $saleId)->first();
+        
         if ($saleReturn) {
             return view('sales.sale_return.save_and_print_template.sale_return_print_view', compact('saleReturn'));
         }

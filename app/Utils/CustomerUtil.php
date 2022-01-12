@@ -185,9 +185,9 @@ class CustomerUtil
     public function updateCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
-        $updateCustomerLedger = CustomerLedger::where($voucherType['id'], $trans_id)->first();
-        $updateCustomerLedger->customer_id = $customer_id;
-        $updateCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
+        $updateCustomerLedger = CustomerLedger::where($voucher_type['id'], $trans_id)->first();
+        //$updateCustomerLedger->customer_id = $customer_id;
+        $updateCustomerLedger->report_date = date('Y-m-d', strtotime($date));
         $updateCustomerLedger->{$voucher_type['amt']} = $amount;
         $updateCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);
         $updateCustomerLedger->save();

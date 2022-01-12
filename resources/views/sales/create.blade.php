@@ -46,7 +46,7 @@
                                                 <div class="col-8">
                                                     <div class="input-group width-60">
                                                         <select name="customer_id" class="form-control" id="customer_id">
-                                                            <option value="0">Walk-In-Customer</option>
+                                                            <option value="">Walk-In-Customer</option>
                                                             @foreach ($customers as $customer)
                                                                 <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
                                                             @endforeach
@@ -383,7 +383,7 @@
                                         </div>
                                         <div class="payment_body">
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive:</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive: >></label>
                                                 <div class="col-sm-7">
                                                     <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00">
                                                 </div>

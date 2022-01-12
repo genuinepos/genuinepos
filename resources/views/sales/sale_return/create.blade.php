@@ -3,7 +3,7 @@
     <style>
         .input-group-text {font-size: 12px !important;}
     </style>
-    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -31,7 +31,6 @@
                                     <hr class="m-1">
                                     <div class="row">
                                         <div class="col-md-6">
-                                             
                                            <p class="m-0"><strong>Invoice ID: </strong> <span class="sale_invoice_id">SI-14252-45525588</span> </p> 
                                            <p class="m-0"><strong>Date: </strong> <span class="sale_date">05-12-2020</span></p> 
                                         </div>
@@ -45,19 +44,39 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Reference ID :</b> <span
-                                                        class="text-danger">*</span></label>
+                                                <label for="inputEmail3" class=" col-4"><b>Return Invoice ID :</b> </label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" class="form-control" id="invoice_id">
+                                                    <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="Return Invoice ID">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2"><b>Date :</b> </label>
+                                                <label for="inputEmail3" class=" col-2"><b>Date : <span
+                                                    class="text-danger">*</span></b> </label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control datepicker" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                                                    <input type="text" name="date" class="form-control add_input" id="date" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                                                    <span class="error error_date"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class="col-5"><b>Sales Return A/C : <span
+                                                    class="text-danger">*</span></b></label>
+                                                <div class="col-7">
+                                                    <select name="sale_return_account_id" class="form-control add_input"
+                                                        id="sale_return_account_id" data-name="Sale Return A/C">
+                                                        @foreach ($saleReturnAccounts as $saleReturnAccount)
+                                                            <option value="{{ $saleReturnAccount->id }}">
+                                                                {{ $saleReturnAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_sale_return_account_id"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,9 +108,7 @@
                                                                     <th>Return Subtotal</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="sale_return_list">
-                                                               
-                                                            </tbody>
+                                                            <tbody id="sale_return_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -171,7 +188,7 @@
 @endsection
 @push('scripts')
 <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
-<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     function getSaleReturn() {
         $.ajax({
@@ -335,7 +352,7 @@
             $('.span_total_return_discount_amount').html(parseFloat(returnDiscount).toFixed(2)); 
             $('#total_return_discount_amount').val(parseFloat(returnDiscount).toFixed(2)); 
             calculateTotalAmount();
-        }else{
+        } else {
             var calsReturnDiscount = parseFloat(netTotalAmount) / 100 * parseFloat(returnDiscount);
             $('.span_total_return_discount_amount').html(parseFloat(calsReturnDiscount).toFixed(2)); 
             $('#total_return_discount_amount').val(parseFloat(calsReturnDiscount).toFixed(2));
@@ -369,7 +386,6 @@
                 tr.find('.span_return_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                 calculateTotalAmount(); 
             }
-             
         }
     });
 
@@ -379,31 +395,13 @@
         $('.loading_button').show();
         var request = $(this).serialize();
         var url = $(this).attr('action');
-        var inputs = $('.add_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-            return;
-        }
-
+      
         $.ajax({
             url:url,
             type:'post',
             data: request,
             success:function(data){
+                $('.error').html('');
                 if(!$.isEmptyObject(data.errorMsg)){
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
@@ -420,15 +418,46 @@
                         header: null,        
                     });
                 }
+            },error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+                
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }
+
+                toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_' + key + '').html(error[0]);
+                });
             }
         });
     });
 
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
     var _expectedDateFormat = '' ;
-    _expectedDateFormat = dateFormat.replace('d', 'dd');
-    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
-    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-    $('.datepicker').datepicker({format: _expectedDateFormat});
+    _expectedDateFormat = dateFormat.replace('d', 'DD');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
 </script>
 @endpush

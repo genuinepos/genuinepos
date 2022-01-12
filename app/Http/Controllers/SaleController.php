@@ -248,10 +248,9 @@ class SaleController extends Controller
         $addSale = new Sale();
         $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $this->invoiceVoucherRefIdUtil->getLastId('sales');
         $addSale->admin_id = auth()->user()->id;
+        $addSale->sale_account_id = $request->sale_account_id;
         $addSale->branch_id = auth()->user()->branch_id;
-
-        $customer_id = $request->customer_id != 0 ? $request->customer_id : NULL;
-        $addSale->customer_id = $customer_id;
+        $addSale->customer_id = $request->customer_id;
         $addSale->status = $request->status;
 
         if ($request->status == 1) {
@@ -317,7 +316,7 @@ class SaleController extends Controller
                 balance_type: 'credit'
             );
 
-            if ($customer_id) {
+            if ($request->customer_id) {
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 1,
                     customer_id: $request->customer_id,
@@ -331,42 +330,27 @@ class SaleController extends Controller
             $addSale->save();
         }
 
-        // update product quantity
-        $quantities = $request->quantities;
-        $units = $request->units;
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $unit_discount_types = $request->unit_discount_types;
-        $unit_discounts = $request->unit_discounts;
-        $unit_discount_amounts = $request->unit_discount_amounts;
-        $unit_tax_percents = $request->unit_tax_percents;
-        $unit_tax_amounts = $request->unit_tax_amounts;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $unit_prices_exc_tax = $request->unit_prices_exc_tax;
-        $unit_prices = $request->unit_prices;
-        $subtotals = $request->subtotals;
-        $descriptions = $request->descriptions;
         // update product quantity and add sale product
         $branch_id = auth()->user()->branch_id;
 
         $__index = 0;
-        foreach ($product_ids as $product_id) {
+        foreach ($request->product_ids as $product_id) {
             $addSaleProduct = new SaleProduct();
             $addSaleProduct->sale_id = $addSale->id;
             $addSaleProduct->product_id = $product_id;
-            $addSaleProduct->product_variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
-            $addSaleProduct->quantity = $quantities[$__index];
-            $addSaleProduct->unit_discount_type = $unit_discount_types[$__index];
-            $addSaleProduct->unit_discount = $unit_discounts[$__index];
-            $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$__index];
-            $addSaleProduct->unit_tax_percent = $unit_tax_percents[$__index];
-            $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$__index];
-            $addSaleProduct->unit = $units[$__index];
-            $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$__index];
-            $addSaleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$__index];
-            $addSaleProduct->unit_price_inc_tax = $unit_prices[$__index];
-            $addSaleProduct->subtotal = $subtotals[$__index];
-            $addSaleProduct->description = $descriptions[$__index] ? $descriptions[$__index] : NULL;
+            $addSaleProduct->product_variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+            $addSaleProduct->quantity = $request->quantities[$__index];
+            $addSaleProduct->unit_discount_type = $request->unit_discount_types[$__index];
+            $addSaleProduct->unit_discount = $request->unit_discounts[$__index];
+            $addSaleProduct->unit_discount_amount = $request->unit_discount_amounts[$__index];
+            $addSaleProduct->unit_tax_percent = $request->unit_tax_percents[$__index];
+            $addSaleProduct->unit_tax_amount = $request->unit_tax_amounts[$__index];
+            $addSaleProduct->unit = $request->units[$__index];
+            $addSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$__index];
+            $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
+            $addSaleProduct->unit_price_inc_tax = $request->unit_prices[$__index];
+            $addSaleProduct->subtotal = $request->subtotals[$__index];
+            $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
             $addSaleProduct->save();
             $__index++;
         }
@@ -392,8 +376,8 @@ class SaleController extends Controller
             );
 
             $__index = 0;
-            foreach ($product_ids as $product_id) {
-                $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+            foreach ($request->product_ids as $product_id) {
+                $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
                 $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
                 $__index++;
@@ -464,7 +448,12 @@ class SaleController extends Controller
         $saleId = $saleId;
         $sale = Sale::where('id', $saleId)->select(['id', 'date', 'branch_id'])->first();
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get();
-        return view('sales.edit', compact('saleId', 'sale', 'price_groups'));
+        $saleAccounts = DB::table('accounts')
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->where('account_type', 5)
+            ->get(['id', 'name']);
+
+        return view('sales.edit', compact('saleId', 'sale', 'price_groups', 'saleAccounts'));
     }
 
     // Get editable sale
@@ -509,6 +498,14 @@ class SaleController extends Controller
         if (auth()->user()->permission->sale['edit_add_sale'] == '0') {
             return response()->json('Access Denied');
         }
+
+        $this->validate($request, [
+            'status' => 'required',
+            'date' => 'required',
+            'sale_account_id' => 'required',
+        ], [
+            'sale_account_id.required' => 'Sale A/C is required',
+        ]);
 
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
@@ -555,18 +552,23 @@ class SaleController extends Controller
         $updateSale->report_date = date('Y-m-d', strtotime($request->date));
         $updateSale->save();
 
-        if ($updateSale->ledger) {
-            $updateSale->ledger->report_date = $updateSale->report_date;
-            $updateSale->ledger->save();
-        } else {
-            if ($updateSale->status == 1 && $updateSale->customer_id) {
-                $addCustomerLedger = new CustomerLedger();
-                $addCustomerLedger->customer_id = $updateSale->customer_id;
-                $addCustomerLedger->sale_id = $updateSale->id;
-                $addCustomerLedger->row_type = 1;
-                $addCustomerLedger->report_date = date('Y-m-d', strtotime($updateSale->date));
-                $addCustomerLedger->save();
-            }
+        $this->accountUtil->updateAccountLedger(
+            voucher_type_id: 1,
+            date: $request->date,
+            account_id: $request->sale_account_id,
+            trans_id: $updateSale->id,
+            amount: $request->total_payable_amount,
+            balance_type: 'credit'
+        );
+
+        if ($updateSale->status == 1 && $updateSale->customer_id) {
+            $this->customerUtil->updateCustomerLedger(
+                voucher_type_id: 1,
+                customer_id: $updateSale->customer_id,
+                date: $request->date,
+                trans_id: $updateSale->id,
+                amount: $request->total_payable_amount
+            );
         }
 
         // update product quantity
@@ -584,12 +586,11 @@ class SaleController extends Controller
         $unit_prices = $request->unit_prices;
         $subtotals = $request->subtotals;
         $descriptions = $request->descriptions;
-        $index = 0;
 
         // Update sale product rows
         $__index = 0;
         foreach ($product_ids as $product_id) {
-            $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
             $saleProduct = SaleProduct::where('sale_id', $updateSale->id)->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
 
@@ -900,29 +901,51 @@ class SaleController extends Controller
         }
 
         $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
-        $sale = Sale::where('id', $saleId)->first();
+        if ($request->paying_amount > 0) {
+            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+            $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+            $sale = Sale::where('id', $saleId)->first();
 
-        // Add sale payment
-        $this->saleUtil->addPaymentGetId(
-            invoicePrefix : $paymentInvoicePrefix,
-            request : $request,
-            payingAmount : $request->amount,
-            invoiceId : $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
-            saleId : $saleId,
-            customerPaymentId : NULL
-        );
+            // Add sale payment
+            $addPaymentGetId = $this->saleUtil->addPaymentGetId(
+                invoicePrefix: $paymentInvoicePrefix,
+                request: $request,
+                payingAmount: $request->paying_amount,
+                invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                saleId: $sale->id,
+                customerPaymentId: NULL
+            );
 
-        // if ($sale->customer_id) {
-        //     $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
-        // }
+            // Add bank/cash-in-hand A/C ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 10,
+                date: $request->date,
+                account_id: $request->account_id,
+                trans_id: $addPaymentGetId,
+                amount: $request->paying_amount,
+                balance_type: 'debit'
+            );
 
-        $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+            if ($sale->customer_id) {
+                // add customer ledger
+                $this->customerUtil->addCustomerLedger(
+                    voucher_type_id: 3,
+                    customer_id: $sale->customer_id,
+                    date: $request->date,
+                    trans_id: $addPaymentGetId,
+                    amount: $request->paying_amount
+                );
+            }
+
+            $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+        }
+
         return response()->json('Payment added successfully.');
     }
 
@@ -946,81 +969,36 @@ class SaleController extends Controller
             return response()->json('Access Denied');
         }
 
-        $updateSalePayment = SalePayment::with(
-            'account',
-            'customer',
-            'sale',
-            'cashFlow'
-        )->where('id', $paymentId)->first();
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ]);
 
-        // update sale payment
-        $updateSalePayment->account_id = $request->account_id;
-        $updateSalePayment->payment_method_id = $request->payment_method_id;
-        $updateSalePayment->paid_amount = $request->amount;
-        $updateSalePayment->date = $request->date;
-        $updateSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-        $updateSalePayment->month = date('F');
-        $updateSalePayment->year = date('Y');
-        $updateSalePayment->note = $request->note;
+        $payment = SalePayment::with(['sale'])->where('id', $paymentId)->first();
+        $this->saleUtil->updatePayment($request, $payment);
 
-        if ($request->hasFile('attachment')) {
-            if ($updateSalePayment->attachment != null) {
-                if (file_exists(public_path('uploads/payment_attachment/' . $updateSalePayment->attachment))) {
-                    unlink(public_path('uploads/payment_attachment/' . $updateSalePayment->attachment));
-                }
-            }
-            $salePaymentAttachment = $request->file('attachment');
-            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
-            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
-            $updateSalePayment->attachment = $salePaymentAttachmentName;
-        }
-        $updateSalePayment->save();
+        // Update Bank/Cash-In-Hand ledger
+        $this->accountUtil->updateAccountLedger(
+            voucher_type_id: 10,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $payment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
-        if ($request->account_id) {
-            // Add or update cash flow
-            $cashFlow = CashFlow::where('account_id', $request->account_id)->where('sale_payment_id', $updateSalePayment->id)->first();
-            if ($cashFlow) {
-                $cashFlow->credit = $request->amount;
-                $cashFlow->date = $request->date;
-                $cashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                $cashFlow->month = date('F');
-                $cashFlow->year = date('Y');
-                $cashFlow->save();
-                $cashFlow->balance = $this->accountUtil->adjustAccountBalance($updateSalePayment->account_id);
-                $cashFlow->save();
-            } else {
-                if ($updateSalePayment->cashFlow) {
-                    $storedAccountId = $updateSalePayment->cashFlow->account_id;
-                    $updateSalePayment->cashFlow->delete();
-                    $this->accountUtil->adjustAccountBalance($storedAccountId);
-                }
-
-                $addCashFlow = new CashFlow();
-                $addCashFlow->account_id = $request->account_id;
-                $addCashFlow->credit = $request->amount;
-                $addCashFlow->sale_payment_id = $updateSalePayment->id;
-                $addCashFlow->transaction_type = 2;
-                $addCashFlow->cash_type = 2;
-                $addCashFlow->date = $request->date;
-                $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                $addCashFlow->month = date('F');
-                $addCashFlow->year = date('Y');
-                $addCashFlow->admin_id = auth()->user()->id;
-                $addCashFlow->save();
-                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-                $addCashFlow->save();
-            }
-        } else {
-            if ($updateSalePayment->cashFlow) {
-                $storedAccountId = $updateSalePayment->cashFlow->account_id;
-                $updateSalePayment->cashFlow->delete();
-                $this->accountUtil->adjustAccountBalance($storedAccountId);
-            }
-        }
-
-        $this->saleUtil->adjustSaleInvoiceAmounts($updateSalePayment->sale);
-        if ($updateSalePayment->sale->customer_id) {
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSalePayment->sale->customer_id);
+        $this->saleUtil->adjustSaleInvoiceAmounts($payment->sale);
+        if ($payment->sale->customer_id) {
+            // Update customer ledger
+            $this->customerUtil->updateCustomerLedger(
+                voucher_type_id: 3,
+                customer_id: $payment->sale->customer_id,
+                date: $request->date,
+                trans_id: $payment->id,
+                amount: $request->paying_amount
+            );
         }
 
         return response()->json('Payment updated successfully.');
@@ -1033,9 +1011,10 @@ class SaleController extends Controller
             return response()->json('Access Denied');
         }
 
-        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
-        return view('sales.ajax_view.add_return_payment', compact('sale', 'accounts'));
+        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])->orderBy('account_type', 'asc')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        return view('sales.ajax_view.add_return_payment', compact('sale', 'accounts', 'methods'));
     }
 
     public function returnPaymentAdd(Request $request, $saleId)
@@ -1044,84 +1023,45 @@ class SaleController extends Controller
             return response()->json('Access Denied');
         }
 
-        $sale = Sale::with(['sale_return'])->where('id', $saleId)->first();
-        if ($sale->sale_return) {
-            $sale->sale_return->total_return_due -= $request->amount;
-            $sale->sale_return->total_return_due_pay += $request->amount;
-            $sale->sale_return->save();
-        }
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ]);
 
-        // Add sale payment
-        $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = 'SRPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
-        $addSalePayment->sale_id = $sale->id;
-        $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
-        $addSalePayment->account_id = $request->account_id;
-        $addSalePayment->pay_mode = $request->payment_method;
-        $addSalePayment->payment_type = 2;
-        $addSalePayment->paid_amount = $request->amount;
-        $addSalePayment->date = $request->date;
-        $addSalePayment->time = date('h:i:s a');
-        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-        $addSalePayment->month = date('F');
-        $addSalePayment->year = date('Y');
-        $addSalePayment->note = $request->note;
+        if ($request->paying_amount > 0) {
+            $sale = Sale::with(['sale_return'])->where('id', $saleId)->first();
+            if ($sale->sale_return) {
+                $sale->sale_return->total_return_due -= $request->paying_amount;
+                $sale->sale_return->total_return_due_pay += $request->paying_amount;
+                $sale->sale_return->save();
+            }
 
-        if ($request->payment_method == 'Card') {
-            $addSalePayment->card_no = $request->card_no;
-            $addSalePayment->card_holder = $request->card_holder_name;
-            $addSalePayment->card_transaction_no = $request->card_transaction_no;
-            $addSalePayment->card_type = $request->card_type;
-            $addSalePayment->card_month = $request->month;
-            $addSalePayment->card_year = $request->year;
-            $addSalePayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $addSalePayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $addSalePayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $addSalePayment->transaction_no = $request->transaction_no;
-        }
-        $addSalePayment->admin_id = auth()->user()->id;
+            $saleReturnPaymentGetId = $this->saleUtil->saleReturnPaymentGetId($request, $sale);
 
-        if ($request->hasFile('attachment')) {
-            $salePaymentAttachment = $request->file('attachment');
-            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
-            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
-            $addSalePayment->attachment = $salePaymentAttachmentName;
-        }
-        $addSalePayment->save();
+            // Add bank A/C ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 12,
+                date: $request->date,
+                account_id: $request->account_id,
+                trans_id: $saleReturnPaymentGetId,
+                amount: $request->paying_amount,
+                balance_type: 'debit'
+            );
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->debit = $request->amount;
-            $addCashFlow->sale_payment_id = $addSalePayment->id;
-            $addCashFlow->transaction_type = 2;
-            $addCashFlow->cash_type = 1;
-            $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->user()->id;
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+            $this->saleUtil->adjustSaleInvoiceAmounts($sale);
 
-        $this->saleUtil->adjustSaleInvoiceAmounts($sale);
-        if ($sale->customer_id) {
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($sale->customer_id);
-        }
-
-        if ($sale->customer_id) {
-            $addCustomerLedger = new CustomerLedger();
-            $addCustomerLedger->customer_id = $sale->customer_id;
-            $addCustomerLedger->sale_payment_id = $addSalePayment->id;
-            $addCustomerLedger->row_type = 2;
-            $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
-            $addCustomerLedger->save();
+            if ($sale->customer_id) {
+                // add customer ledger
+                $this->customerUtil->addCustomerLedger(
+                    voucher_type_id: 4,
+                    customer_id: $sale->customer_id,
+                    date: $request->date,
+                    trans_id: $saleReturnPaymentGetId,
+                    amount: $request->paying_amount
+                );
+            }
         }
 
         return response()->json('Return amount paid successfully.');
@@ -1129,100 +1069,61 @@ class SaleController extends Controller
 
     public function returnPaymentEdit($paymentId)
     {
-        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
         $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch')->where('id', $paymentId)->first();
-        return view('sales.ajax_view.edit_return_payment', compact('payment', 'accounts'));
+        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])->orderBy('account_type', 'asc')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        return view('sales.ajax_view.edit_return_payment', compact('payment', 'accounts', 'methods'));
     }
 
     public function returnPaymentUpdate(Request $request, $paymentId)
     {
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ]);
+
         $updateSalePayment = SalePayment::with(
             'account',
             'customer',
             'sale',
             'sale.sale_return',
-            'cashFlow'
         )->where('id', $paymentId)->first();
 
         // Update sale return
         if ($updateSalePayment->sale->sale_return) {
             $updateSalePayment->sale->sale_return->total_return_due += $updateSalePayment->paid_amount;
-            $updateSalePayment->sale->sale_return->total_return_due -= $request->amount;
+            $updateSalePayment->sale->sale_return->total_return_due -= $request->paying_amount;
             $updateSalePayment->sale->sale_return->total_return_due_pay += $updateSalePayment->paid_amount;
-            $updateSalePayment->sale->sale_return->total_return_due_pay -= $request->amount;
+            $updateSalePayment->sale->sale_return->total_return_due_pay -= $request->paying_amount;
             $updateSalePayment->sale->sale_return->save();
         }
 
-        // update sale payment
-        $updateSalePayment->account_id = $request->account_id;
-        $updateSalePayment->payment_method_id = $request->payment_method_id;
-        $updateSalePayment->paid_amount = $request->amount;
-        $updateSalePayment->date = $request->date;
-        $updateSalePayment->report_date = date('Y-m-d', strtotime($request->date));
-        $updateSalePayment->month = date('F');
-        $updateSalePayment->year = date('Y');
-        $updateSalePayment->note = $request->note;
-        if ($request->hasFile('attachment')) {
-            if ($updateSalePayment->attachment != null) {
-                if (file_exists(public_path('uploads/payment_attachment/' . $updateSalePayment->attachment))) {
-                    unlink(public_path('uploads/payment_attachment/' . $updateSalePayment->attachment));
-                }
-            }
-            $salePaymentAttachment = $request->file('attachment');
-            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
-            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
-            $updateSalePayment->attachment = $salePaymentAttachmentName;
-        }
-        $updateSalePayment->save();
-        $updateSalePayment->ledger->report_date = $updateSalePayment->report_date;
-        $updateSalePayment->ledger->save();
+        $this->saleUtil->updateSaleReturnPayment($request, $updateSalePayment);
 
-        if ($request->account_id) {
-            // Add or update cash flow
-            $cashFlow = CashFlow::where('account_id', $request->account_id)->where('sale_payment_id', $updateSalePayment->id)->first();
-            if ($cashFlow) {
-                $cashFlow->debit = $request->amount;
-                $cashFlow->date = $request->date;
-                $cashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                $cashFlow->month = date('F');
-                $cashFlow->year = date('Y');
-                $cashFlow->save();
-                $cashFlow->balance = $this->accountUtil->adjustAccountBalance($updateSalePayment->account_id);
-                $cashFlow->save();
-            } else {
-                if ($updateSalePayment->cashFlow) {
-                    $storedAccountId = $updateSalePayment->cashFlow->account_id;
-                    $updateSalePayment->cashFlow->delete();
-                    $this->accountUtil->adjustAccountBalance($storedAccountId->account_id);
-                }
+        // Update Bank/Cash-in-Hand A/C ledger
+        $this->accountUtil->updateAccountLedger(
+            voucher_type_id: 12,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $payment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
-                $addCashFlow = new CashFlow();
-                $addCashFlow->account_id = $request->account_id;
-                $addCashFlow->debit = $request->amount;
-                $addCashFlow->sale_payment_id = $updateSalePayment->id;
-                $addCashFlow->transaction_type = 2;
-                $addCashFlow->cash_type = 1;
-                $addCashFlow->date = $request->date;
-                $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                $addCashFlow->month = date('F');
-                $addCashFlow->year = date('Y');
-                $addCashFlow->admin_id = auth()->user()->id;
-                $addCashFlow->save();
-                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-                $addCashFlow->save();
-            }
-        } else {
-            if ($updateSalePayment->cashFlow) {
-                $storedAccountId = $updateSalePayment->cashFlow->account_id;
-                $updateSalePayment->cashFlow->delete();
-                $this->accountUtil->adjustAccountBalance($storedAccountId->account_id);
-            }
+        if ($updateSalePayment->sale->customer_id) {
+            // Update customer ledger
+            $this->customerUtil->updateCustomerLedger(
+                voucher_type_id: 4,
+                customer_id: $updateSalePayment->sale->customer_id,
+                date: $request->date,
+                trans_id: $updateSalePayment->id,
+                amount: $request->paying_amount
+            );
         }
 
         $this->saleUtil->adjustSaleInvoiceAmounts($updateSalePayment->sale);
-        if ($updateSalePayment->sale->customer_id) {
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSalePayment->sale->customer_id);
-        }
         return response()->json('Payment is updated successfully.');
     }
 
@@ -1268,7 +1169,7 @@ class SaleController extends Controller
                 }
 
                 if ($storedAccountId) {
-                    $this->accountUtil->adjustAccountBalance($storedAccountId);
+                    $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
                 }
             } elseif ($deleteSalePayment->payment_type == 2) {
                 $storedCustomerId = $deleteSalePayment->sale->customer_id;
@@ -1288,13 +1189,13 @@ class SaleController extends Controller
 
                 $deleteSalePayment->delete();
 
-                $this->saleUtil->adjustSaleInvoiceAmounts($storedSale);
+                $this->saleUtil->adjustSaleInvoiceAmounts('debit', $storedSale);
                 if ($storedCustomerId) {
                     $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
                 }
 
                 if ($storedAccountId) {
-                    $this->accountUtil->adjustAccountBalance($storedAccountId);
+                    $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
                 }
             }
         }

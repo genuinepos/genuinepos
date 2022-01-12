@@ -133,6 +133,72 @@
 </form>
 
 <script>
+    //sale payment request by ajax
+    $('#sale_payment_form').on('submit', , function(e){
+        e.preventDefault();
+        $('.loading_button').show();
+        var available_amount = $('#available_amount').val();
+        var paying_amount = $('#p_amount').val();
+        if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
+            $('.error_p_amount').html('Paying amount must not be greater then due amount.');
+            $('.loading_button').hide();
+            return;
+        }
+
+        // var url = $(this).attr('action');
+        // var inputs = $('.p_input');
+        //     $('.error').html('');
+        //     var countErrorField = 0;
+        // $.each(inputs, function(key, val){
+        //     var inputId = $(val).attr('id');
+        //     var idValue = $('#'+inputId).val();
+        //     if(idValue == ''){
+        //         countErrorField += 1;
+        //         var fieldName = $('#'+inputId).data('name');
+        //         $('.error_'+inputId).html(fieldName+' is required.');
+        //     }
+        // });
+
+        // if(countErrorField > 0){
+        //     $('.loading_button').hide();
+        //     toastr.error('Please check again all form fields.','Some thing want wrong.');
+        //     return;
+        // }
+
+        $.ajax({
+            url:url,
+            type:'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success:function(data){
+                if(!$.isEmptyObject(data.errorMsg)){
+                    toastr.error(data.errorMsg,'ERROR');
+                    $('.loading_button').hide();
+                } else {
+                    $('.loading_button').hide();
+                    $('#paymentModal').modal('hide');
+                    $('#paymentViewModal').modal('hide');
+                    sales_table.ajax.reload();
+                    toastr.success(data);
+                }
+            },error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_p_' + key + '').html(error[0]);
+                });
+            }
+        });
+    });
+
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');

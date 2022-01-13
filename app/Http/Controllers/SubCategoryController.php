@@ -38,13 +38,8 @@ class SubCategoryController extends Controller
                 ->addColumn('action', function ($row) {
                     // return $action_btn;
                     $html = '<div class="dropdown table-dropdown">';
-                    if (auth()->user()->permission->category['category_edit'] == '1') {
-                        $html .= '<a href="javascript:;" class="action-btn c-edit edit_sub_cate" data-id="' . $row->id . '"><span class="fas fa-edit"></span></a>';
-                    }
-
-                    if (auth()->user()->permission->category['category_delete'] == '1') {
-                        $html .= '<a href="' . route('product.subcategories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete_sub_cate" title="Delete"><span class="fas fa-trash "></span></a>';
-                    }
+                    $html .= '<a href="javascript:;" class="action-btn c-edit edit_sub_cate" data-id="' . $row->id . '"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="' . route('product.subcategories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete_sub_cate" title="Delete"><span class="fas fa-trash "></span></a>';
                     $html .= '</div>';
                     return $html;
                 })

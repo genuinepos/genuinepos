@@ -42,9 +42,7 @@
                 </div>
             </div>
 
-            <div class="form-area px-3 pb-2" id="edit_cate_form_body">
-
-            </div>
+            <div class="form-area px-3 pb-2" id="edit_cate_form_body"></div>
         </div>
     </div>
 
@@ -70,9 +68,7 @@
                                 <th class="text-black">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>

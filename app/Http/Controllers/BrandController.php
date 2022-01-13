@@ -18,7 +18,7 @@ class BrandController extends Controller
     // Brand main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->brand['brand_all'] == '0') {
+        if (auth()->user()->permission->product['brand'] == '0') {
             abort(403, 'Access Forbidden.');
         }
         
@@ -33,21 +33,11 @@ class BrandController extends Controller
             ->addColumn('action', function($row) {
                 // return $action_btn;
                 $html = '<div class="dropdown table-dropdown">';
-                if (auth()->user()->permission->brand['brand_delete'] == '1'){
-                    $html .= '<a href="javascript:;" class="action-btn c-edit edit" data-id="'.$row->id.'"><span class="fas fa-edit"></span></a>';
-                }
-
-                if (auth()->user()->permission->brand['brand_delete'] == '1'){
-                    $html .= '<a href="' . route('product.brands.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
-                }
+                $html .= '<a href="'.route('product.brands.edit', [$row->id]).'" class="action-btn c-edit edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="' . route('product.brands.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                 $html .= '</div>';
                 return $html;
             })
-            ->setRowAttr([
-                'data-href' => function ($row) {
-                    return route('product.categories.edit', $row->id);
-                }
-            ])
             ->rawColumns(['photo', 'action'])
             ->make(true);
         }

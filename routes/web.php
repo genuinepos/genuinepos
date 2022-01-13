@@ -57,7 +57,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::post('store', 'BrandController@store')->name('product.brands.store');
         Route::post('update', 'BrandController@update')->name('product.brands.update');
         Route::delete('delete/{brandId}', 'BrandController@delete')->name('product.brands.delete');
-        Route::get('edit/{id}', 'BrandController@edit');
+        Route::get('edit/{id}', 'BrandController@edit')->name('product.brands.edit');
     });
 
     // products route group

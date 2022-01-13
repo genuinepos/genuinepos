@@ -297,7 +297,7 @@ class SaleUtil
     {
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV') . date('my') . $invoiceId;
+        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV'). $invoiceId;
         $addSalePayment->sale_id = $saleId;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;

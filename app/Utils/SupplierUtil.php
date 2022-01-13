@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Models\Supplier;
+use App\Models\SupplierLedger;
 use Illuminate\Support\Facades\DB;
 
 class SupplierUtil
@@ -82,5 +83,56 @@ class SupplierUtil
         $supplier->total_return = $totalReturn;
         $supplier->total_purchase_return_due = $returnDue > 0 ? $returnDue : 0;
         $supplier->save();
+    }
+
+    public function voucherTypes()
+    {
+        return [
+            1 => 'Purchases',
+            2 => 'Purchase Return',
+            3 => 'Payment',
+            4 => 'Return Payment',
+            5 => 'Paid To Supplier',
+            6 => 'Received From Supplier',
+        ];
+    }
+
+    public function voucherType($voucher_type_id)
+    {
+        $data = [
+            1 => ['name' => 'Purchase', 'id' => 'purchase_id', 'voucher_no' => 'sale_inv_id', 'amt'=> 'credit'],
+            2 => ['name' => 'Purchase Return', 'id' => 'purchase_return_id', 'voucher_no' => 'return_inv_id', 'amt' => 'debit'],
+            3 => ['name' => 'Payment', 'id' => 'purchase_payment_id', 'voucher_no' => 'received_voucher_no', 'amt' => 'debit'],
+            4 => ['name' => 'Return Payment', 'id' => 'purchase_payment_id', 'return_pay_voucher_no', 'amt' => 'credit'],
+            5 => ['name' => 'Paid To Supplier', 'id' => 'supplier_payment_id', 'supplier_payment_voucher', 'amt' => 'debit'],
+            6 => ['name' => 'Received From Supplier', 'id' => 'customer_payment_id', 'customer_return_payment_voucher', 'amt' => 'credit'],
+        ];
+
+        return $data[$voucher_type_id];
+    }
+
+    public function addSupplierLedger($voucher_type_id, $supplier_id, $date, $trans_id, $amount)
+    {
+        $voucher_type = $this->voucherType($voucher_type_id);
+        $addSupplierLedger = new SupplierLedger();
+        $addSupplierLedger->customer_id = $customer_id;
+        $addSupplierLedger->report_date = date('Y-m-d', strtotime($date));
+        $addSupplierLedger->{$voucher_type['id']} = $trans_id;
+        $addSupplierLedger->{$voucher_type['amt']} = $amount;
+        $addSupplierLedger->amount_type = $voucher_type['amt'];
+        $addSupplierLedger->voucher_type = $voucher_type_id;
+        $addSupplierLedger->running_balance = $this->adjustSupplierForSalePaymentDue($supplier_id);
+        $addSupplierLedger->save();
+    }
+
+    public function updateSupplierLedger($voucher_type_id, $supplier_id, $date, $trans_id, $amount)
+    {
+        $voucher_type = $this->voucherType($voucher_type_id);
+        $updateSupplierLedger = SupplierLedger::where($voucher_type['id'], $trans_id)->first();
+        //$updateSupplierLedger->customer_id = $customer_id;
+        $updateSupplierLedger->report_date = date('Y-m-d', strtotime($date));
+        $updateSupplierLedger->{$voucher_type['amt']} = $amount;
+        $updateSupplierLedger->running_balance = $this->adjustSupplierForSalePaymentDue($supplier_id);
+        $updateSupplierLedger->save();
     }
 }

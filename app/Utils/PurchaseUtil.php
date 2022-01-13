@@ -14,9 +14,11 @@ use Yajra\DataTables\Facades\DataTables;
 class PurchaseUtil
 {
     public $converter;
-    public function __construct(Converter $converter)
+    public $invoiceVoucherRefIdUtil;
+    public function __construct(Converter $converter, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->converter = $converter;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
     }
 
     public function purchaseListTable($request)
@@ -780,5 +782,34 @@ class PurchaseUtil
         $purchase->purchase_return_amount = $returnAmount;
         $purchase->purchase_return_due = $returnDue > 0 ? $returnDue : 0;
         $purchase->save();
+    }
+
+    public function addPurchasePaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $purchase, $supplierPaymentId,)
+    {
+        // Add purchase payment
+        $addPurchasePayment = new PurchasePayment();
+        $addPurchasePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'PPV') . $invoiceId;
+        $addPurchasePayment->purchase_id = $purchaseId;
+        $addPurchasePayment->is_advanced = $purchase->is_purchased == 0 ? 1 : 0;
+        $addPurchasePayment->account_id = $request->account_id;
+        $addPurchasePayment->payment_method_id = $request->payment_method_id;
+        $addPurchasePayment->paid_amount = $payingAmount;
+        $addPurchasePayment->date = $request->date;
+        $addPurchasePayment->time = date('h:i:s a');
+        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+        $addPurchasePayment->month = date('F');
+        $addPurchasePayment->year = date('Y');
+        $addPurchasePayment->note = $request->note;
+        $addPurchasePayment->admin_id = auth()->user()->id;
+
+        if ($request->hasFile('attachment')) {
+            $purchasePaymentAttachment = $request->file('attachment');
+            $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
+            $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
+            $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
+        }
+
+        $addPurchasePayment->save();
+        return $addPurchasePayment->id;
     }
 }

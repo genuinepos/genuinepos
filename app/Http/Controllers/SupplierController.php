@@ -113,7 +113,6 @@ class SupplierController extends Controller
             'phone' => 'required',
         ]);
 
-
         Supplier::where('id', $request->id)->update([
             'contact_id' => $request->contact_id,
             'name' => $request->name,
@@ -133,6 +132,7 @@ class SupplierController extends Controller
             'state' => $request->state,
             'shipping_address' => $request->shipping_address,
         ]);
+
         return response()->json('Supplier updated successfully');
     }
 
@@ -369,22 +369,6 @@ class SupplierController extends Controller
         $supplierPayment->month = date('F');
         $supplierPayment->year = date('Y');
 
-        if ($request->payment_method == 'Card') {
-            $supplierPayment->card_no = $request->card_no;
-            $supplierPayment->card_holder = $request->card_holder_name;
-            $supplierPayment->card_transaction_no = $request->card_transaction_no;
-            $supplierPayment->card_type = $request->card_type;
-            $supplierPayment->card_month = $request->month;
-            $supplierPayment->card_year = $request->year;
-            $supplierPayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $supplierPayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $supplierPayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $supplierPayment->transaction_no = $request->transaction_no;
-        }
-
         if ($request->hasFile('attachment')) {
             $PaymentAttachment = $request->file('attachment');
             $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
@@ -395,31 +379,31 @@ class SupplierController extends Controller
         $supplierPayment->note = $request->note;
         $supplierPayment->save();
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->debit = $request->amount;
-            $addCashFlow->supplier_payment_id = $supplierPayment->id;
-            $addCashFlow->transaction_type = 12;
-            $addCashFlow->cash_type = 1;
-            $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->user()->id;
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+        // if ($request->account_id) {
+        //     // Add cash flow
+        //     $addCashFlow = new CashFlow();
+        //     $addCashFlow->account_id = $request->account_id;
+        //     $addCashFlow->debit = $request->amount;
+        //     $addCashFlow->supplier_payment_id = $supplierPayment->id;
+        //     $addCashFlow->transaction_type = 12;
+        //     $addCashFlow->cash_type = 1;
+        //     $addCashFlow->date = date('d-m-Y', strtotime($request->date));
+        //     $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+        //     $addCashFlow->month = date('F');
+        //     $addCashFlow->year = date('Y');
+        //     $addCashFlow->admin_id = auth()->user()->id;
+        //     $addCashFlow->save();
+        //     $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+        //     $addCashFlow->save();
+        // }
 
-        // Add supplier payment for direct payment
-        $addSupplierLedger = new SupplierLedger();
-        $addSupplierLedger->supplier_id = $supplierId;
-        $addSupplierLedger->row_type = 4;
-        $addSupplierLedger->supplier_payment_id = $supplierPayment->id;
-        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
-        $addSupplierLedger->save();
+        // // Add supplier payment for direct payment
+        // $addSupplierLedger = new SupplierLedger();
+        // $addSupplierLedger->supplier_id = $supplierId;
+        // $addSupplierLedger->row_type = 4;
+        // $addSupplierLedger->supplier_payment_id = $supplierPayment->id;
+        // $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
+        // $addSupplierLedger->save();
 
         $dueInvoices = Purchase::where('supplier_id', $supplierId)
             ->where('due', '>', 0)
@@ -440,23 +424,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->pay_mode = $request->payment_method;
-
-                        if ($request->payment_method == 'Card') {
-                            $addPurchasePayment->card_no = $request->card_no;
-                            $addPurchasePayment->card_holder = $request->card_holder_name;
-                            $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                            $addPurchasePayment->card_type = $request->card_type;
-                            $addPurchasePayment->card_month = $request->month;
-                            $addPurchasePayment->card_year = $request->year;
-                            $addPurchasePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addPurchasePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addPurchasePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addPurchasePayment->transaction_no = $request->transaction_no;
-                        }
-
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->payment_on = 1;
                         $addPurchasePayment->save();
@@ -486,22 +453,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->pay_mode = $request->payment_method;
 
-                        if ($request->payment_method == 'Card') {
-                            $addPurchasePayment->card_no = $request->card_no;
-                            $addPurchasePayment->card_holder = $request->card_holder_name;
-                            $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                            $addPurchasePayment->card_type = $request->card_type;
-                            $addPurchasePayment->card_month = $request->month;
-                            $addPurchasePayment->card_year = $request->year;
-                            $addPurchasePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addPurchasePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addPurchasePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addPurchasePayment->transaction_no = $request->transaction_no;
-                        }
-
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->payment_on = 1;
                         $addPurchasePayment->save();
@@ -528,23 +479,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->pay_mode = $request->payment_method;
-
-                        if ($request->payment_method == 'Card') {
-                            $addPurchasePayment->card_no = $request->card_no;
-                            $addPurchasePayment->card_holder = $request->card_holder_name;
-                            $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                            $addPurchasePayment->card_type = $request->card_type;
-                            $addPurchasePayment->card_month = $request->month;
-                            $addPurchasePayment->card_year = $request->year;
-                            $addPurchasePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addPurchasePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addPurchasePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addPurchasePayment->transaction_no = $request->transaction_no;
-                        }
-
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->payment_on = 1;
                         $addPurchasePayment->save();
@@ -592,22 +526,6 @@ class SupplierController extends Controller
         $supplierPayment->time = date('h:i:s a');
         $supplierPayment->month = date('F');
         $supplierPayment->year = date('Y');
-
-        if ($request->payment_method == 'Card') {
-            $supplierPayment->card_no = $request->card_no;
-            $supplierPayment->card_holder = $request->card_holder_name;
-            $supplierPayment->card_transaction_no = $request->card_transaction_no;
-            $supplierPayment->card_type = $request->card_type;
-            $supplierPayment->card_month = $request->month;
-            $supplierPayment->card_year = $request->year;
-            $supplierPayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $supplierPayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $supplierPayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $supplierPayment->transaction_no = $request->transaction_no;
-        }
 
         if ($request->hasFile('attachment')) {
             $PaymentAttachment = $request->file('attachment');
@@ -667,21 +585,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
 
-                        if ($request->payment_method == 'Card') {
-                            $addPurchasePayment->card_no = $request->card_no;
-                            $addPurchasePayment->card_holder = $request->card_holder_name;
-                            $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                            $addPurchasePayment->card_type = $request->card_type;
-                            $addPurchasePayment->card_month = $request->month;
-                            $addPurchasePayment->card_year = $request->year;
-                            $addPurchasePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addPurchasePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addPurchasePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addPurchasePayment->transaction_no = $request->transaction_no;
-                        }
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->save();
 
@@ -720,21 +623,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
 
-                        if ($request->payment_method == 'Card') {
-                            $addPurchasePayment->card_no = $request->card_no;
-                            $addPurchasePayment->card_holder = $request->card_holder_name;
-                            $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                            $addPurchasePayment->card_type = $request->card_type;
-                            $addPurchasePayment->card_month = $request->month;
-                            $addPurchasePayment->card_year = $request->year;
-                            $addPurchasePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addPurchasePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addPurchasePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addPurchasePayment->transaction_no = $request->transaction_no;
-                        }
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->save();
 
@@ -772,21 +660,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
 
-                        if ($request->payment_method == 'Card') {
-                            $addPurchasePayment->card_no = $request->card_no;
-                            $addPurchasePayment->card_holder = $request->card_holder_name;
-                            $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                            $addPurchasePayment->card_type = $request->card_type;
-                            $addPurchasePayment->card_month = $request->month;
-                            $addPurchasePayment->card_year = $request->year;
-                            $addPurchasePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addPurchasePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addPurchasePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addPurchasePayment->transaction_no = $request->transaction_no;
-                        }
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->save();
 
@@ -842,21 +715,6 @@ class SupplierController extends Controller
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
 
-                            if ($request->payment_method == 'Card') {
-                                $addPurchasePayment->card_no = $request->card_no;
-                                $addPurchasePayment->card_holder = $request->card_holder_name;
-                                $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                                $addPurchasePayment->card_type = $request->card_type;
-                                $addPurchasePayment->card_month = $request->month;
-                                $addPurchasePayment->card_year = $request->year;
-                                $addPurchasePayment->card_secure_code = $request->secure_code;
-                            } elseif ($request->payment_method == 'Cheque') {
-                                $addPurchasePayment->cheque_no = $request->cheque_no;
-                            } elseif ($request->payment_method == 'Bank-Transfer') {
-                                $addPurchasePayment->account_no = $request->account_no;
-                            } elseif ($request->payment_method == 'Custom') {
-                                $addPurchasePayment->transaction_no = $request->transaction_no;
-                            }
                             $addPurchasePayment->admin_id = auth()->user()->id;
                             $addPurchasePayment->save();
 
@@ -890,21 +748,6 @@ class SupplierController extends Controller
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
 
-                            if ($request->payment_method == 'Card') {
-                                $addPurchasePayment->card_no = $request->card_no;
-                                $addPurchasePayment->card_holder = $request->card_holder_name;
-                                $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                                $addPurchasePayment->card_type = $request->card_type;
-                                $addPurchasePayment->card_month = $request->month;
-                                $addPurchasePayment->card_year = $request->year;
-                                $addPurchasePayment->card_secure_code = $request->secure_code;
-                            } elseif ($request->payment_method == 'Cheque') {
-                                $addPurchasePayment->cheque_no = $request->cheque_no;
-                            } elseif ($request->payment_method == 'Bank-Transfer') {
-                                $addPurchasePayment->account_no = $request->account_no;
-                            } elseif ($request->payment_method == 'Custom') {
-                                $addPurchasePayment->transaction_no = $request->transaction_no;
-                            }
                             $addPurchasePayment->admin_id = auth()->user()->id;
                             $addPurchasePayment->save();
 
@@ -938,21 +781,6 @@ class SupplierController extends Controller
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
 
-                            if ($request->payment_method == 'Card') {
-                                $addPurchasePayment->card_no = $request->card_no;
-                                $addPurchasePayment->card_holder = $request->card_holder_name;
-                                $addPurchasePayment->card_transaction_no = $request->card_transaction_no;
-                                $addPurchasePayment->card_type = $request->card_type;
-                                $addPurchasePayment->card_month = $request->month;
-                                $addPurchasePayment->card_year = $request->year;
-                                $addPurchasePayment->card_secure_code = $request->secure_code;
-                            } elseif ($request->payment_method == 'Cheque') {
-                                $addPurchasePayment->cheque_no = $request->cheque_no;
-                            } elseif ($request->payment_method == 'Bank-Transfer') {
-                                $addPurchasePayment->account_no = $request->account_no;
-                            } elseif ($request->payment_method == 'Custom') {
-                                $addPurchasePayment->transaction_no = $request->transaction_no;
-                            }
                             $addPurchasePayment->admin_id = auth()->user()->id;
                             $addPurchasePayment->save();
 

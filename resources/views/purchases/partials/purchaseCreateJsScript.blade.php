@@ -25,19 +25,6 @@
     }
     setSuppliers();
 
-    function setAccount(){
-        $.ajax({
-            url:"{{route('accounting.accounts.all.form.account')}}",
-            success:function(accounts){
-                $.each(accounts, function (key, account) {
-                    $('#account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                });
-                $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
-            }
-        });
-    }
-    setAccount();
-
     $('#supplier_id').on('change', function () {
         document.getElementById('search_product').focus();
         var id = $(this).val(); 
@@ -96,8 +83,8 @@
         var total_item = 0;
         var total_qty = 0;
         quantities.forEach(function(qty){
-                total_item += 1;
-                total_qty += parseFloat(qty.value)
+            total_item += 1;
+            total_qty += parseFloat(qty.value)
         });
         $('#total_qty').val(parseFloat(total_qty));
         $('#total_item').val(parseFloat(total_item));

@@ -251,24 +251,32 @@
                     @if ($defaultLayout->show_total_in_word == 1)
                         <p style="text-transform: uppercase;"><strong>In Word : <span id="inword"></span> ONLY.</strong></p> 
                     @endif
-                    <br>
-                    <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
-                        @if ($defaultLayout->account_name)
-                            <p>Account Name : {{ $defaultLayout->account_name }}</p>
-                        @endif
 
-                        @if ($defaultLayout->account_no)
-                            <p>Account No : {{ $defaultLayout->account_no }}</p>
-                        @endif
+                    @if (
+                        $defaultLayout->account_name || 
+                        $defaultLayout->account_no || 
+                        $defaultLayout->bank_name || 
+                        $defaultLayout->bank_branch  
+                      )
+                        <br>
+                        <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
+                            @if ($defaultLayout->account_name)
+                                <p>Account Name : {{ $defaultLayout->account_name }}</p>
+                            @endif
 
-                        @if ($defaultLayout->bank_name)
-                            <p>Bank : {{ $defaultLayout->bank_name }}</p>
-                        @endif
+                            @if ($defaultLayout->account_no)
+                                <p>Account No : {{ $defaultLayout->account_no }}</p>
+                            @endif
 
-                        @if ($defaultLayout->bank_branch)
-                            <p>Branch : {{ $defaultLayout->bank_branch }}</p>
-                        @endif
-                    </div>
+                            @if ($defaultLayout->bank_name)
+                                <p>Bank : {{ $defaultLayout->bank_name }}</p>
+                            @endif
+
+                            @if ($defaultLayout->bank_branch)
+                                <p>Branch : {{ $defaultLayout->bank_branch }}</p>
+                            @endif
+                        </div>
+                    @endif
                 </div>
                 <div class="col-md-6">
                     <table class="table modal-table table-sm">

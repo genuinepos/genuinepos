@@ -57,7 +57,7 @@
                                                     <div class="col-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap bordered"> 
-                                                            <input type="checkbox" {{ $layout->show_shop_logo == 1 ? 'CHECKED' : '' }} name="show_shop_logo"> &nbsp; Show Branch/Shop Logo</p> 
+                                                            <input type="checkbox" {{ $layout->show_shop_logo == 1 ? 'CHECKED' : '' }} name="show_shop_logo"> &nbsp; Show Business/Shop Logo</p> 
                                                         </div>
                                                     </div>
                                                 </div>

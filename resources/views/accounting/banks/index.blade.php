@@ -18,7 +18,6 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
                     <div class="container-fluid">
                         <div class="row">
@@ -48,9 +47,7 @@
                                                     <th class="text-start">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -204,6 +201,7 @@
                     $('.loading_button').hide();
                     return;
                 }
+
                 $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
@@ -252,10 +250,12 @@
                         $('.error_' + inputId).html(fieldName + ' is required.');
                     }
                 });
+
                 if (countErrorField > 0) {
                     $('.loading_button').hide();
                     return;
                 }
+
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -278,18 +278,8 @@
                     'title': 'Delete Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-danger',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-modal-primary',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            } 
-                        }
+                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                        'No': {'class': 'no btn-modal-primary','action': function() { console.log('Deleted canceled.');}}
                     }
                 });
             });

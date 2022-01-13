@@ -515,21 +515,13 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::delete('delete/{bankId}', 'BankController@delete')->name('accounting.banks.delete');
     });
 
-    Route::group(['prefix' => 'types'], function () {
-        Route::get('/', 'AccountTypeController@index')->name('accounting.types.index');
-        Route::get('all/types', 'AccountTypeController@allTypes')->name('accounting.types.all.type');
-        Route::post('store', 'AccountTypeController@store')->name('accounting.types.store');
-        Route::post('update', 'AccountTypeController@update')->name('accounting.types.update');
-        Route::delete('delete/{typeId}', 'AccountTypeController@delete')->name('accounting.types.delete');
-        Route::get('change/status/{typeId}', 'AccountTypeController@changeStatus')->name('accounting.types.change.status');
-    });
-
     Route::group(['prefix' => 'accounts'], function () {
         Route::get('/', 'AccountController@index')->name('accounting.accounts.index');
         Route::get('all/account', 'AccountController@allAccounts')->name('accounting.accounts.all.account');
         Route::get('account/book/{accountId}', 'AccountController@accountBook')->name('accounting.accounts.book');
         Route::post('store', 'AccountController@store')->name('accounting.accounts.store');
-        Route::post('update', 'AccountController@update')->name('accounting.accounts.update');
+        Route::get('edit/{accountId}', 'AccountController@edit')->name('accounting.accounts.edit');
+        Route::post('update/{accountId}', 'AccountController@update')->name('accounting.accounts.update');
         Route::delete('delete/{accountId}', 'AccountController@delete')->name('accounting.accounts.delete');
         Route::get('all/banks', 'AccountController@allBanks')->name('accounting.accounts.all.banks');
         Route::get('all/account/types', 'AccountController@allAccountTypes')->name('accounting.accounts.all.account.types');

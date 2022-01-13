@@ -4,7 +4,6 @@
             <th class="text-start">Name</th>
             <th class="text-start">Account Number</th>
             <th class="text-start">Bank Name</th>
-            <th class="text-start">Account Type</th>
             <th class="text-start">Opening Balance</th>
             <th class="text-start">Balance</th>
             <th class="text-start">Action</th>
@@ -16,7 +15,6 @@
                 <td class="text-start">{{ $account->name }}</td> 
                 <td class="text-start">{{ $account->account_number }}</td> 
                 <td class="text-start">{{ $account->bank->name }}({{ $account->bank->branch_name }})</td> 
-                <td class="text-start">{{ $account->account_type ? $account->account_type->name : 'N/A' }}</td>
                 <td class="text-start">{{ App\Utils\Converter::format_in_bdt($account->opening_balance) }}</td>
                 <td class="text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
             
@@ -26,7 +24,7 @@
                           Action
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a id="edit" title="Edit details" data-bs-target="#editModal" class="dropdown-item" href="javascript:;" ><i class="far fa-edit text-primary"></i>Edit</a>
+                            <a class="dropdown-item" id="edit" title="Edit"  href="{{ route('accounting.accounts.edit', $account->id) }}" ><i class="far fa-edit text-primary"></i>Edit</a>
                             <a class="dropdown-item" href="{{ route('accounting.accounts.book', $account->id) }}"><i class="fas fa-book text-primary"></i> Account Book</a>
                             <a class="dropdown-item" href="{{ route('accounting.accounts.delete', $account->id) }}" id="delete"><i class="fas fa-book text-primary"></i> Delete</a>
                             <a id="fund_transfer" class="dropdown-item" data-toggle="modal" data-bs-target="#fundTransferModal" data-id="{{ $account->id }}" data-ac_name="{{ $account->name.' ('.$account->account_number.')' }}" data-balance="{{ $account->balance }}" href="#"><i class="far fa-money-bill-alt text-primary"></i> Fund Transfer</a>

@@ -16,54 +16,6 @@
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form" class="px-2">
-                                            <div class="form-group row">
-                                                <div class="col-md-2">
-                                                    <label><strong>Account Type :</strong></label>
-                                                    <select name="account_type" id="f_account_type" class="form-control">
-                                                        <option value="">All</option>  
-                                                        <option value="1">Cash-In-Hand</option> 
-                                                        <option value="2">Bank A/C</option> 
-                                                        <option value="3">Purchase A/C</option> 
-                                                        <option value="4">Purchase Return A/C</option> 
-                                                        <option value="5">Sales A/C</option> 
-                                                        <option value="6">Sales Return A/C</option> 
-                                                        <option value="7">Direct Expense</option> 
-                                                        <option value="8">Indirect Expense</option> 
-                                                        <option value="9">Current Assets</option> 
-                                                        <option value="10">Current Liabilities</option> 
-                                                        <option value="11">Misc. Expense</option> 
-                                                        <option value="12">Misc. Income</option> 
-                                                        <option value="13">Loans (Liabilities)</option> 
-                                                        <option value="14">Loans And Advances</option> 
-                                                        <option value="15">Fixed Assets</option> 
-                                                        <option value="16">Investments</option> 
-                                                        <option value="17">Bank OD A/C</option> 
-                                                        <option value="18">Deposit</option> 
-                                                        <option value="19">Provision</option> 
-                                                        <option value="20">Reserves And Surplus</option> 
-                                                        <option value="21">Payroll A/C</option> 
-                                                        <option value="22">Sale Exchange A/C</option> 
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="row margin_row mt-1">
@@ -124,36 +76,6 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="add_account_form" action="{{ route('accounting.accounts.store') }}">
-                        <div class="form-group mt-1">
-                            <label><strong>Account Type : <span class="text-danger">*</span></strong></label>
-                            <select name="account_type_id"  class="form-control add_input" data-name="Account Type" id="account_type_id">
-                                <option value="">Select Account type</option>  
-                                <option value="1">Cash-In-Hand</option> 
-                                <option value="2">Bank A/C</option> 
-                                <option value="3">Purchase A/C</option> 
-                                <option value="4">Purchase Return A/C</option> 
-                                <option value="5">Sales A/C</option> 
-                                <option value="6">Sales Return A/C</option> 
-                                <option value="7">Direct Expense</option> 
-                                <option value="8">Indirect Expense</option> 
-                                <option value="9">Current Assets</option> 
-                                <option value="10">Current Liabilities</option> 
-                                <option value="11">Misc. Expense</option> 
-                                <option value="12">Misc. Income</option> 
-                                <option value="13">Loans (Liabilities)</option> 
-                                <option value="14">Loans And Advances</option> 
-                                <option value="15">Fixed Assets</option> 
-                                <option value="16">Investments</option> 
-                                <option value="17">Bank OD A/C</option> 
-                                <option value="18">Deposit</option> 
-                                <option value="19">Provision</option> 
-                                <option value="20">Reserves And Surplus</option> 
-                                <option value="21">Payroll A/C</option> 
-                                <option value="22">Sale Exchange A/C</option> 
-                            </select>
-                            <span class="error error_account_type"></span>
-                        </div>
-
                         <div class="form-group">
                             <label><strong>Name :</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control add_input" data-name="Type name" id="name" placeholder="account name"/>
@@ -166,7 +88,7 @@
                             <span class="error error_account_number"></span>
                         </div>
 
-                        <div class="form-group mt-1 bank_field d-none">
+                        <div class="form-group mt-1">
                             <label><strong>Bank Name :</strong> <span class="text-danger">*</span> </label>
                             <select name="bank_id" class="form-control add_input" data-name="Bank name" id="bank_id">
                                 <option value="">Select Bank</option>
@@ -201,7 +123,7 @@
                     <h6 class="modal-title" id="exampleModalLabel">Edit Account</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body"></div>
+                <div class="modal-body" id="edit_account_body"></div>
             </div>
         </div>
     </div>  
@@ -370,44 +292,24 @@
                         toastr.error('Net Connetion Error. Reload This Page.'); 
                         return;
                     }
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
 
-        // edit account type by ajax
-        $('#edit_account_form').on('submit', function(e){
+        // pass editable data to edit modal fields
+        $(document).on('click', '#edit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.edit_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                } 
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                return;
-            }
-            
+            var url = $(this).attr('href');
             $.ajax({
-                url:url,
-                type:'post',
-                data: request,
-                success:function(data){
-                    console.log(data);
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    getAllAccount();
-                    $('#editModal').modal('hide'); 
+                url: url,
+                type: 'get',
+                success: function(data) {
+                    $('#edit_account_body').html(data);
+                    $('#editModal').modal('show');
                 }
             });
         });

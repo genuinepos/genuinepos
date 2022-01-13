@@ -213,7 +213,8 @@ class UserController extends Controller
         }
 
         $user = AdminAndUser::with(['role'])->where('id', $userId)->first();
-        if ($user->role_type == 1) {
+
+        if ($user->role_type == 1 && auth()->user()->role_type != 1) {
             abort(403, 'Access Forbidden.');
         }
 

@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Utils\Converter;
 use Illuminate\Support\Str;
 use App\Models\ProductVariant;
+use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseOrderProduct;
@@ -784,15 +785,16 @@ class PurchaseUtil
         $purchase->save();
     }
 
-    public function addPurchasePaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $purchase, $supplierPaymentId,)
+    public function addPurchasePaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $purchase, $supplier_payment_id)
     {
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
         $addPurchasePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'PPV') . $invoiceId;
-        $addPurchasePayment->purchase_id = $purchaseId;
+        $addPurchasePayment->purchase_id = $purchase->id;
         $addPurchasePayment->is_advanced = $purchase->is_purchased == 0 ? 1 : 0;
         $addPurchasePayment->account_id = $request->account_id;
         $addPurchasePayment->payment_method_id = $request->payment_method_id;
+        $addPurchasePayment->supplier_payment_id = $supplier_payment_id;
         $addPurchasePayment->paid_amount = $payingAmount;
         $addPurchasePayment->date = $request->date;
         $addPurchasePayment->time = date('h:i:s a');

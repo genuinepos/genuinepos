@@ -150,13 +150,38 @@ class PurchaseController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
+        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->orderBy('account_type', 'asc')
+            ->get(['id', 'name', 'account_number', 'account_type', 'balance']);
+
+        $purchaseAccounts = DB::table('accounts')
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->where('account_type', 3)
+            ->get(['id', 'name']);
+
         $warehouses = DB::table('warehouses')->where('branch_id', auth()->user()->branch_id)->get();
-        return view('purchases.create', compact('warehouses'));
+        return view('purchases.create', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts'));
     }
 
     // add purchase method
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'supplier_id' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'purchase_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'purchase_account_id.required' => 'Sale A/C is required.',
+            'account_id.required' => 'Credit field must not be is empty.',
+            'payment_method_id.required' => 'Payment method field is required.',
+            'supplier_id.required' => 'Supplier is required.',
+        ]);
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'purchase'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
@@ -260,57 +285,53 @@ class PurchaseController extends Controller
             $this->purchaseUtil->addPurchaseOrderProduct($request, $isEditProductPrice, $addPurchase->id);
         }
 
-        // Add supplier ledger
-        $addSupplierLedger = new SupplierLedger();
-        $addSupplierLedger->supplier_id = $request->supplier_id;
-        $addSupplierLedger->purchase_id = $addPurchase->id;
-        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
-        $addSupplierLedger->save();
+        // Add Purchase A/C Ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 3,
+            date: $request->date,
+            account_id: $request->purchase_account_id,
+            trans_id: $addPurchase->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
+
+        // Add supplier ledger For Purchase
+        $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: 1,
+            supplier_id: $request->supplier_id,
+            date: $request->date,
+            trans_id: $addPurchase->id,
+            amount: $request->paying_amount,
+        );
 
         // Add purchase payment
-        if ($request->paying_amount > 0) {
-            $addPurchasePayment = new PurchasePayment();
-            $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
-            $addPurchasePayment->purchase_id = $addPurchase->id;
-            $addPurchasePayment->account_id = $request->account_id;
-            $addPurchasePayment->pay_mode = $request->payment_method;
-            $addPurchasePayment->paid_amount = $request->paying_amount;
-            $addPurchasePayment->date = $request->date;
-            $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
-            $addPurchasePayment->month = date('F');
-            $addPurchasePayment->year = date('Y');
-            $addPurchasePayment->note = $request->payment_note;
-            $addPurchasePayment->is_advanced = $request->purchase_status == 3 ? 1 : 0;
+        $addPurchasePaymentGetId = $this->purchaseUtil->addPurchasePaymentGetId(
+            invoicePrefix: $paymentInvoicePrefix,
+            request: $request,
+            payingAmount: $request->paying_amount,
+            invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT),
+            purchase: $addPurchase,
+            supplier_payment_id: NULL
+        );
 
-            $addPurchasePayment->admin_id = auth()->user()->id;
-            $addPurchasePayment->save();
+        // Add Bank/Cash-In-Hand A/C Ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 11,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $addPurchasePaymentGetId,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
-            // if ($request->account_id) {
-            //     // Add cash flow
-            //     $addCashFlow = new CashFlow();
-            //     $addCashFlow->account_id = $request->account_id;
-            //     $addCashFlow->debit = $request->paying_amount;
-            //     $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
-            //     $addCashFlow->transaction_type = 3;
-            //     $addCashFlow->cash_type = 1;
-            //     $addCashFlow->date = $request->date;
-            //     $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            //     $addCashFlow->month = date('F');
-            //     $addCashFlow->year = date('Y');
-            //     $addCashFlow->admin_id = auth()->user()->id;
-            //     $addCashFlow->save();
-            //     $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            //     $addCashFlow->save();
-            // }
-
-            // // Add supplier ledger
-            // $addSupplierLedger = new SupplierLedger();
-            // $addSupplierLedger->supplier_id = $request->supplier_id;
-            // $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
-            // $addSupplierLedger->row_type = 2;
-            // $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
-            // $addSupplierLedger->save();
-        }
+        // Add supplier ledger for payment
+        $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: 3,
+            supplier_id: $request->supplier_id,
+            date: $request->date,
+            trans_id: $addPurchasePaymentGetId,
+            amount: $request->paying_amount,
+        );
 
         // update main product and variant price
         if ($request->purchase_status == 1) {
@@ -740,47 +761,33 @@ class PurchaseController extends Controller
         $purchase = Purchase::where('id', $purchaseId)->first();
 
         // Add purchase payment
-        $addPurchasePayment = new PurchasePayment();
-        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPR') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
-        $addPurchasePayment->purchase_id = $purchase->id;
-        $addPurchasePayment->is_advanced = $purchase->is_purchased == 0 ? 1 : 0;
-        $addPurchasePayment->account_id = $request->account_id;
-        $addPurchasePayment->pay_mode = $request->payment_method;
-        $addPurchasePayment->paid_amount = $request->amount;
-        $addPurchasePayment->date = $request->date;
-        $addPurchasePayment->time = date('h:i:s a');
-        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
-        $addPurchasePayment->month = date('F');
-        $addPurchasePayment->year = date('Y');
-        $addPurchasePayment->note = $request->note;
-        $addPurchasePayment->admin_id = auth()->user()->id;
+        $addPurchasePaymentGetId = $this->purchaseUtil->addPurchasePaymentGetId(
+            invoicePrefix: $paymentInvoicePrefix,
+            request: $request,
+            payingAmount: $request->paying_amount,
+            invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT),
+            purchase: $purchase,
+            supplier_payment_id: NULL
+        );
 
-        if ($request->hasFile('attachment')) {
-            $purchasePaymentAttachment = $request->file('attachment');
-            $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
-            $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
-            $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
-        }
+        // Add Bank/Cash-In-Hand A/C Ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 11,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $addPurchasePaymentGetId,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
-        $addPurchasePayment->save();
-        // if ($request->account_id) {
-        //     // Add cash flow
-        //     $addCashFlow = new CashFlow();
-        //     $addCashFlow->account_id = $request->account_id;
-        //     $addCashFlow->debit = $request->amount;
-        //     //$addCashFlow->balance = $account->balance;
-        //     $addCashFlow->purchase_payment_id = $addPurchasePayment->id;
-        //     $addCashFlow->transaction_type = 3;
-        //     $addCashFlow->cash_type = 1;
-        //     $addCashFlow->date = $request->date;
-        //     $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-        //     $addCashFlow->month = date('F');
-        //     $addCashFlow->year = date('Y');
-        //     $addCashFlow->admin_id = auth()->user()->id;
-        //     $addCashFlow->save();
-        //     $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-        //     $addCashFlow->save();
-        // }
+        // Add supplier ledger
+        $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: $voucher_type_id,
+            supplier_id: $purchase->supplier_id,
+            date: $request->date,
+            trans_id: $addPurchasePaymentGetId,
+            amount: $request->paying_amount,
+        );
 
         // $addSupplierLedger = new SupplierLedger();
         // $addSupplierLedger->supplier_id = $purchase->supplier_id;
@@ -881,7 +888,7 @@ class PurchaseController extends Controller
         //     }
         // }
 
-         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
+        $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         // $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
 
         return response()->json('Successfully payment is updated.');

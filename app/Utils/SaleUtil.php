@@ -351,7 +351,7 @@ class SaleUtil
         $payment->save();
     }
 
-    public function saleReturnPayment($request, $sale)
+    public function saleReturnPaymentGetId($request, $sale, $customer_payment_id)
     {
         // Add sale return payment
         $addSalePayment = new SalePayment();
@@ -360,6 +360,7 @@ class SaleUtil
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;
         $addSalePayment->payment_method_id = $request->payment_method_id;
+        $addSalePayment->customer_payment_id = $customer_payment_id;
         $addSalePayment->payment_type = 2;
         $addSalePayment->paid_amount = $request->amount;
         $addSalePayment->date = $request->date;

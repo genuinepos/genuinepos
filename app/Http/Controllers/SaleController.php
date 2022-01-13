@@ -1038,7 +1038,9 @@ class SaleController extends Controller
                 $sale->sale_return->save();
             }
 
-            $saleReturnPaymentGetId = $this->saleUtil->saleReturnPaymentGetId($request, $sale);
+            $saleReturnPaymentGetId = $this->saleUtil->saleReturnPaymentGetId(
+                request : $request, sale: $sale, customer_payment_id : NULL
+            );
 
             // Add bank A/C ledger
             $this->accountUtil->addAccountLedger(

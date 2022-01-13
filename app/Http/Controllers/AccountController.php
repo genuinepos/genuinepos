@@ -40,12 +40,20 @@ class AccountController extends Controller
         return view('accounting.accounts.ajax_view.account_list', compact('accounts'));
     }
 
+    public function edit($accountId)
+    {
+        $account = DB::table('accounts')->where('id', $accountId)->first();
+        $banks = DB::table('banks')->get();
+        return view('accounting.accounts.ajax_view.edit_account', compact('account', 'banks'));
+    }
+
     //Get account book
     public function accountBook($accountId)
     {
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+
         $account = Account::with(['bank', 'cash_flows'])->where('id', $accountId)->first();
         return view('accounting.accounts.account_book', compact('account'));
     }
@@ -59,17 +67,10 @@ class AccountController extends Controller
             'bank_id' => 'required',
         ]);
 
-        if ($request->account_type == 2) {
-            $this->validate($request, [
-                'bank_id' => 'required',
-            ]);
-        }
-
         $addAccount = Account::insertGetId([
             'name' => $request->name,
             'account_number' => $request->account_number,
             'bank_id' => $request->bank_id,
-            'account_type' => $request->account_type,
             'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
             'balance' => $request->opening_balance ? $request->opening_balance : 0,
             'credit' => $request->opening_balance ? $request->opening_balance : 0,
@@ -94,7 +95,7 @@ class AccountController extends Controller
     }
 
     // Update bank
-    public function update(Request $request)
+    public function update(Request $request, $accountId)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -102,12 +103,11 @@ class AccountController extends Controller
             'bank_id' => 'required',
         ]);
 
-        $updateBank = Account::where('id', $request->id)->first();
+        $updateBank = Account::where('id', $accountId)->first();
         $updateBank->update([
             'name' => $request->name,
             'account_number' => $request->account_number,
             'bank_id' => $request->bank_id,
-            'account_type' => $request->account_type,
             'remark' => $request->remark,
         ]);
 

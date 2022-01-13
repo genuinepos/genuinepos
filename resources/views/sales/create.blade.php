@@ -397,7 +397,7 @@
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Pay Account :</label>
                                                 <div class="col-sm-7">
                                                     <select name="account_id" class="form-control" id="account_id">
-                                                        <option value="">Cash-In-Hand</option>
+                                                        <option value="">Select Account</option>
                                                         @foreach ($accounts as $account)
                                                             <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
                                                         @endforeach

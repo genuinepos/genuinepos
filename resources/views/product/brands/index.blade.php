@@ -7,7 +7,6 @@
             <div class="row">
                 <div class=" border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-band-aid"></span>
@@ -16,10 +15,9 @@
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
                     <div class="row mt-1">
-                        @if (auth()->user()->permission->brand['brand_add'] == '1')
+                        @if (auth()->user()->permission->product['brand'] == '1')
                             <div class="col-md-4">
                                 <div class="card" id="add_form">
                                     <div class="section-header">
@@ -124,6 +122,11 @@
             serverSide: true,
             searchable: true,
             ajax: "{{ route('product.brands.index') }}",
+            columnDefs: [{
+                "targets": [0, 1, 3],
+                "orderable": false,
+                "searchable": false
+            }],
             columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
                 {data: 'photo',name: 'photo'},
                 {data: 'name',name: 'name'},
@@ -188,8 +191,8 @@
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 $('.data_preloader').show();
-                var id = $(this).data('id');
-                $.get("brands/edit/" + id, function(data) {
+                var url = $(this).attr('href');
+                $.get(url, function(data) {
                     $("#edit_form_body").html(data);
                     $('#add_form').hide();
                     $('#edit_form').show();

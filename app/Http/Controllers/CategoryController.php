@@ -15,39 +15,39 @@ class CategoryController extends Controller
     {
         $this->middleware('auth:admin_and_user');
     }
-    
+
     // Category main page/index page
     public function index(Request $request)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $img_url = asset('public/uploads/category/');
         if ($request->ajax()) {
             $categories = DB::table('categories')
-            ->where('parent_category_id', NULL)
-            ->orderBy('id', 'DESC')->get();
-           return DataTables::of($categories)
-            ->addIndexColumn()
-            ->editColumn('photo', function ($row) use($img_url) {
-                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="'.$img_url.'/'.$row->photo.'">';
-            })
-            ->addColumn('action', function($row) {
-                $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="javascript:;" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('product.categories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
-                $html .= '</div>';
-                return $html;
-            })
-            ->setRowAttr([
-                'data-href' => function ($row) {
-                    return route('product.categories.edit', $row->id);
-                }
-            ])->rawColumns(['photo', 'action'])->smart(true)->make(true);
+                ->where('parent_category_id', NULL)
+                ->orderBy('id', 'DESC')->get();
+            return DataTables::of($categories)
+                ->addIndexColumn()
+                ->editColumn('photo', function ($row) use ($img_url) {
+                    return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $img_url . '/' . $row->photo . '">';
+                })
+                ->addColumn('action', function ($row) {
+                    $html = '<div class="dropdown table-dropdown">';
+                    $html .= '<a href="javascript:;" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="' . route('product.categories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->setRowAttr([
+                    'data-href' => function ($row) {
+                        return route('product.categories.edit', $row->id);
+                    }
+                ])->rawColumns(['photo', 'action'])->smart(true)->make(true);
         }
 
-        $categories = DB::table('categories')->where('parent_category_id',NULL)->get();
+        $categories = DB::table('categories')->where('parent_category_id', NULL)->get();
         return view('product.categories.index', compact('categories'));
     }
 
@@ -72,7 +72,7 @@ class CategoryController extends Controller
                 'name' => $request->name,
                 'photo' => $categoryPhotoName
             ]);
-        }else {
+        } else {
             Category::insert([
                 'name' => $request->name,
             ]);
@@ -107,9 +107,9 @@ class CategoryController extends Controller
 
         if ($request->file('photo')) {
             if ($updateCategory->photo !== 'default.png') {
-                if (file_exists(public_path('uploads/category/'.$updateCategory->photo))) {
-                    unlink(public_path('uploads/category/'.$updateCategory->photo));
-                } 
+                if (file_exists(public_path('uploads/category/' . $updateCategory->photo))) {
+                    unlink(public_path('uploads/category/' . $updateCategory->photo));
+                }
             }
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
@@ -118,7 +118,7 @@ class CategoryController extends Controller
                 'name' => $request->name,
                 'photo' => $categoryPhotoName
             ]);
-        }else {
+        } else {
             $updateCategory->update([
                 'name' => $request->name,
             ]);
@@ -134,14 +134,14 @@ class CategoryController extends Controller
 
         $deleteCategory = Category::find($categoryId);
         if ($deleteCategory->photo !== 'default.png') {
-            if (file_exists(public_path('uploads/category/'.$deleteCategory->photo))) {
-                unlink(public_path('uploads/category/'.$deleteCategory->photo));
-            } 
+            if (file_exists(public_path('uploads/category/' . $deleteCategory->photo))) {
+                unlink(public_path('uploads/category/' . $deleteCategory->photo));
+            }
         }
         if (!is_null($deleteCategory)) {
-            $deleteCategory->delete();  
+            $deleteCategory->delete();
         }
-        
+
         return response()->json('Category deleted Successfully');
     }
 }

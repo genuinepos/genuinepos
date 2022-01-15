@@ -35,18 +35,18 @@
                                             <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p> 
                                             <p class="m-0 branch"><strong>Business Location : </strong> 
                                                 @if($purchase->branch) 
-                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(BRANCH)</b>
+                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
                                                 @else 
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
                                                 @endif
                                             </p>
                                              <p class="m-0 warehouse"><strong>Purchase Stored Location : </strong>
                                                 @if ($purchase->warehouse)
-                                                    {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WAREHOUSE)</b>
+                                                    {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WH)</b>
                                                 @elseif($purchase->branch)
-                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }} <b>(BRANCH)</b>
+                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }} <b>(B.L.)</b>
                                                 @else 
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b> 
+                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                                 @endif
                                             </p>
                                          </div>
@@ -55,19 +55,38 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">PR.Invoice ID:<span
+                                                <label for="inputEmail3" class=" col-4"><b>PR.Invoice ID : </b><span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="Purchase Return Invoice ID">
+                                                    <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="Purchase Return Invoice ID" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2">Date:</label>
+                                                <label for="inputEmail3" class=" col-2"><b>Date :</b> <span
+                                                    class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="date" id="datepicker" class="form-control" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                                                    <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class="col-5"><b>Purchase Return A/C : <span
+                                                    class="text-danger">*</span></b></label>
+                                                <div class="col-7">
+                                                    <select name="purchase_return_account_id" class="form-control add_input"
+                                                        id="purchasae_return_account_id" data-name="Purchase Return A/C">
+                                                        @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
+                                                            <option value="{{ $purchaseReturnAccount->id }}">
+                                                                {{ $purchaseReturnAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_purchase_return_account_id"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -100,9 +119,7 @@
                                                                     <th>Return Subtotal</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="purchase_return_list">
-                                                               
-                                                            </tbody>
+                                                            <tbody id="purchase_return_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -162,8 +179,13 @@
             dataType: 'json',
             success:function(purchase){
                 if (purchase.purchase_return != null) {
-                    $('#invoice_id').val(purchase.purchase_return.invoice_id);
-                    $('#date').val(purchase.purchase_return.date);
+                    $('#invoice_id').val(purchase.purchase_return ? purchase.purchase_return.invoice_id : '');
+                    $('#date').val(purchase.purchase_return ? purchase.purchase_return.date : '');
+
+                    if (purchase.purchase_return) {
+                        $('#purchase_return_account_id').val(purchase.purchase_return.purchase_return_account_id);
+                    }
+                    
                     $.each(purchase.purchase_return.purchase_return_products, function (key, return_product) {
                         var tr = "";
                         tr += '<tr >';
@@ -350,7 +372,7 @@
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
     new Litepicker({
         singleMode: true,
-        element: document.getElementById('datepicker'),
+        element: document.getElementById('date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,

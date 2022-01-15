@@ -68,7 +68,7 @@ class ExpanseController extends Controller
 
         $expenseAccounts = DB::table('accounts')->whereIn('account_type', [7, 8, 9, 10, 15])
             ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->select('id', 'name', 'account_type')->get();
+            ->select('id', 'name', 'account_type')->orderBy('accounts.account_type', 'asc')->get();
 
         $accounts =  DB::table('accounts')->whereIn('account_type', [1, 2])
             ->where('accounts.branch_id', auth()->user()->branch_id)
@@ -214,7 +214,7 @@ class ExpanseController extends Controller
 
         $expenseAccounts = DB::table('accounts')->whereIn('account_type', [7, 8, 9, 10, 15])
             ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->select('id', 'name', 'account_type')->get();
+            ->select('id', 'name', 'account_type')->orderBy('accounts.account_type', 'asc')->get();
 
         return view('expanses.edit', compact('expense', 'categories', 'users', 'taxes', 'expenseAccounts'));
     }

@@ -63,7 +63,6 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            
                                             <div class="input-group mt-1">
                                                 <label for="inputEmail3" class="col-5"><b>Sales Return A/C : <span
                                                     class="text-danger">*</span></b></label>
@@ -213,13 +212,21 @@
                 }
 
                 $('#invoice_id').val(sale.sale_return != null ? sale.sale_return.invoice_id : '');
+
                 $('#date').val(sale.sale_return != null ? sale.sale_return.date : '');
+
                 $('#return_discount_type').val(sale.sale_return != null ? sale.sale_return.return_discount_type : 1);
+
                 $('#return_discount').val(sale.sale_return != null ? sale.sale_return.return_discount : 0.00);
                 
                 $('.span_total_return_discount_amount').html(sale.sale_return != null ? sale.sale_return.return_discount_amount : 0.00);
+
                 $('#total_return_discount_amount').val(sale.sale_return != null ? sale.sale_return.return_discount_amount : 0.00);
 
+                if (sale.sale_return) {
+                    $('#sale_return_account_id').val(sale.sale_return.sale_return_account_id );
+                }
+               
                 if (sale.sale_return != null) {
                     $.each(sale.sale_return.sale_return_products, function (key, return_product) {
                         var tr = "";

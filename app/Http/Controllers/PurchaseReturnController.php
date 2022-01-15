@@ -83,27 +83,21 @@ class PurchaseReturnController extends Controller
                 $query->whereBetween('purchase_returns.report_date', $date_range); // Final
             }
 
+            $query->select(
+                'purchase_returns.*',
+                'purchases.invoice_id as parent_invoice_id',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'suppliers.name as sup_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $returns = $query->select(
-                    'purchase_returns.*',
-                    'purchases.invoice_id as parent_invoice_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'suppliers.name as sup_name',
-                    'p_supplier.name as ps_name',
-                )->orderBy('purchase_returns.report_date', 'desc');
+                $returns = $query->orderBy('purchase_returns.report_date', 'desc');
             } else {
-                $returns = $query->select(
-                    'purchase_returns.*',
-                    'purchases.invoice_id as parent_invoice_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'suppliers.name as sup_name',
-                )->where('purchase_returns.branch_id', auth()->user()->branch_id)->orderBy('purchase_returns.report_date', 'desc');
+                $returns = $query->where('purchase_returns.branch_id', auth()->user()->branch_id)
+                    ->orderBy('purchase_returns.report_date', 'desc');
             }
 
             return DataTables::of($returns)
@@ -126,7 +120,7 @@ class PurchaseReturnController extends Controller
                             if ($row->purchase_id) {
                                 $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->purchase_id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
                             } else {
-                                $html .= '<a class="dropdown-item" id="add_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
+                                $html .= '<a class="dropdown-item" id="add_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Receive Return Amt.</a>';
                             }
                         }
                     }
@@ -187,15 +181,25 @@ class PurchaseReturnController extends Controller
         }
 
         $purchaseId = $purchaseId;
+
         $purchase = Purchase::with(['warehouse', 'branch', 'supplier'])->where('id', $purchaseId)->first();
-        return view('purchases.purchase_return.create', compact('purchaseId', 'purchase'));
+
+        $purchaseReturnAccounts = DB::table('accounts')->whereIn('account_type', [4])
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->select('id', 'name', 'account_type')->get();
+
+        return view('purchases.purchase_return.create', compact('purchaseId', 'purchase', 'purchaseReturnAccounts'));
     }
 
     public function store(Request $request, $purchaseId)
     {
-        $this->validate($request, [
-            'date' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'purchase_return_account_id' => 'required',
+                'date' => 'required',
+            ]
+        );
 
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
@@ -292,13 +296,18 @@ class PurchaseReturnController extends Controller
         $storedReturnType = $purchaseReturn->return_type;
         $storedBranchId = $purchaseReturn->branch_id;
         $storedWarehouseId = $purchaseReturn->warehouse_id;
+        $storePurchaseReturnAccountId = $purchaseReturn->purchase_return_account_id;
         $storeSupplierId = $purchaseReturn->purchase ? $purchaseReturn->purchase->supplier_id : $purchaseReturn->supplier_id;
+
         if ($purchaseReturn->return_type == 1) {
+
             $purchaseReturn->purchase->is_return_available = 0;
+
             if ($purchaseReturn->total_return_due_received > 0) {
                 return response()->json(['errorMsg' => "You can not delete this, cause your have received some or full amount on this return."]);
             }
         } else {
+
             if ($purchaseReturn->total_return_due_received > 0) {
                 return response()->json(['errorMsg' => "You can not delete this, cause your have received some or full amount on this return."]);
             }
@@ -306,24 +315,32 @@ class PurchaseReturnController extends Controller
         $purchaseReturn->delete();
 
         foreach ($storeReturnProducts as $return_product) {
+
             $this->productStockUtil->adjustMainProductAndVariantStock($return_product->product_id, $return_product->product_variant_id);
+
             if ($storedReturnType == 1) {
+
                 if ($storePurchase->warehouse_id) {
                     $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $storePurchase->warehouse_id);
                 } else {
                     $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storePurchase->branch_id);
-                } 
+                }
             } else {
+
                 if ($storedWarehouseId) {
                     $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $storedWarehouseId);
-                } else{
+                } else {
                     $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storedBranchId);
-                } 
+                }
             }
         }
 
         if ($storePurchase) {
             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($storePurchase);
+        }
+
+        if ($storePurchaseReturnAccountId) {
+            $this->accountUtil->adjustAccountBalance('credit', $storePurchaseReturnAccountId);
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($storeSupplierId);
@@ -335,8 +352,10 @@ class PurchaseReturnController extends Controller
         if (auth()->user()->permission->purchase['purchase_return'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')
             ->where('branch_id', auth()->user()->branch_id)->get();
+
         $suppliers = DB::table('suppliers')->select('id', 'name', 'phone')->get();
         return view('purchases.purchase_return.supplier_return', compact('warehouses', 'suppliers'));
     }
@@ -569,7 +588,7 @@ class PurchaseReturnController extends Controller
                     $qty_limits[] = $productBranch->product_quantity;
                 }
             }
-        } 
+        }
 
         return response()->json(['purchaseReturn' => $purchaseReturn, 'qty_limits' => $qty_limits]);
     }
@@ -653,7 +672,7 @@ class PurchaseReturnController extends Controller
                     $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId,  $updatePurchaseReturn->warehouse_id);
                 } else {
                     $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, $updatePurchaseReturn->branch_id);
-                } 
+                }
             }
         }
 
@@ -664,7 +683,7 @@ class PurchaseReturnController extends Controller
                 $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $updatePurchaseReturn->warehouse_id);
             } else {
                 $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $updatePurchaseReturn->branch_id);
-            } 
+            }
         }
 
         if (isset($request->warehouse_id) && $storedWarehouseId != $request->warehouse_id) {

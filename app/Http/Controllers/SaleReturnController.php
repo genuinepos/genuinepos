@@ -154,8 +154,18 @@ class SaleReturnController extends Controller
     // Get sale requested by ajax
     public function getSale($saleId)
     {
-        $sale = Sale::with(['branch', 'customer', 'sale_products', 'sale_products.product', 'sale_products.variant', 'sale_return', 'sale_return.sale_return_products', 'sale_return.sale_return_products.sale_product', 'sale_return.sale_return_products.sale_product.product', 'sale_return.sale_return_products.sale_product.variant'])->where('id', $saleId)->first();
-        return response()->json($sale);
+        return $sale = Sale::with([
+            'branch',
+            'customer',
+            'sale_products',
+            'sale_products.product',
+            'sale_products.variant',
+            'sale_return',
+            'sale_return.sale_return_products',
+            'sale_return.sale_return_products.sale_product',
+            'sale_return.sale_return_products.sale_product.product',
+            'sale_return.sale_return_products.sale_product.variant'
+        ])->where('id', $saleId)->first();
     }
 
     public function store(Request $request, $saleId)
@@ -336,7 +346,7 @@ class SaleReturnController extends Controller
             'sale_return_products',
             'sale_return_products.sale_product'
         ])->where('sale_id', $saleId)->first();
-        
+
         if ($saleReturn) {
             return view('sales.sale_return.save_and_print_template.sale_return_print_view', compact('saleReturn'));
         }

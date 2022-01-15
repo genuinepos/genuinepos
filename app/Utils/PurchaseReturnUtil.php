@@ -8,6 +8,7 @@ use App\Utils\PurchaseUtil;
 use App\Models\PurchaseReturn;
 use App\Models\PurchaseProduct;
 use App\Utils\ProductStockUtil;
+use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseReturnProduct;
 
 class PurchaseReturnUtil
@@ -150,5 +151,25 @@ class PurchaseReturnUtil
 
         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
+    }
+
+    public function adjustPurchaseReturnAmounts($purchaseReturn)
+    {
+        $totalReturnPaid = DB::table('purchase_payments')
+            ->where('purchase_payments.purchase_id', $purchaseReturn->purchase_id)
+            ->where('purchase_payments.payment_type', 2)
+            ->select(DB::raw('sum(paid_amount) as total_paid'))
+            ->groupBy('purchase_payments.purchase_id')
+            ->get();
+
+        $due = $purchaseReturn->total_return_amount - $totalReturnPaid->sum('total_paid');
+        $purchaseReturn->total_return_due_received = $totalReturnPaid->sum('total_paid');
+        $purchaseReturn->total_return_due = $due;
+        $purchaseReturn->save();
+    }
+
+    public function adjustSupplierReturnAmounts($purchaseReturn)
+    {
+        return;
     }
 }

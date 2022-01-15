@@ -35,10 +35,10 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Reference ID : </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
+                                <li><strong>P. Invoice ID : </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
                                 </li>
                                 <li><strong>B.Location : </strong>
-                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (Head Office)'}}
+                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)'}}
                                 </li>
                             </ul>
                         </div>
@@ -62,147 +62,82 @@
                         <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark"></i></span>
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="far fa-money-bill-alt text-dark input_i"></i>
+                                </span>
                             </div>
                             <input type="hidden" id="p_available_amount" value="{{ $purchase->purchase_return_due }}">
-                            <input type="number" name="amount" class="form-control form-control-sm p_input" step="any" data-name="Amount" id="p_amount" value="{{ $purchase->purchase_return_due }}"/>
+                            <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_amount" value="{{ $purchase->purchase_return_due }}"/>
                         </div>
-                        <span class="error error_p_amount"></span>
+                        <span class="error error_p_paying_amount"></span>
                     </div>
 
                     <div class="col-md-4">
                         <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark"></i></span>
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="fas fa-calendar-week text-dark input_i"></i>
+                                </span>
                             </div>
-                            <input readonly type="text" name="date" class="form-control form-control-sm p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date('Y-m-d') }}">
+                            <input readonly type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date('Y-m-d') }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
 
                     <div class="col-md-4">
                         <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
-                        
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="fas fa-money-check text-dark input_i"></i>
+                                </span>
                             </div>
-                            <select name="payment_method" class="form-control form-control-sm"  id="payment_method">
-                                <option value="Cash">Cash</option>  
-                                <option value="Advanced">Advanced</option> 
-                                <option value="Card">Card</option> 
-                                <option value="Cheque">Cheque</option> 
-                                <option value="Bank-Transfer">Bank-Transfer</option> 
-                                <option value="Other">Other</option> 
-                                <option value="Custom">Custom Field</option> 
+                            <select name="payment_method_id" class="form-control"  id="payment_method_id">
+                                @foreach ($methods as $method)
+                                    <option value="{{ $method->id }}">
+                                        {{ $method->name }}
+                                    </option>
+                                @endforeach
                             </select>
+                            <span class="error error_p_payment_method_id"></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group row mt-2">
                     <div class="col-md-7">
-                        <label><strong>Payment Account :</strong> </label>
+                        <label><strong>Debit Account :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark"></i></span>
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="fas fa-money-check-alt text-dark input_i"></i>
+                                </span>
                             </div>
-                            <select name="account_id" class="form-control form-control-sm" id="p_account_id">
-                                <option value="">None</option>
+                            <select name="account_id" class="form-control" id="p_account_id">
                                 @foreach ($accounts as $account)
-                                <option {{ auth()->user()->branch ? auth()->user()->branch->default_account_id == $account->id ? 'SELECTED' : '' : '' }} value="{{ $account->id }}">
-                                    {{ $account->name }} (A/C:{{ $account->account_number }}) (Balance: {{ $account->balance }})
-                                </option>
+                                    <option value="{{ $account->id }}">
+                                        @php
+                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                            $balance = ' BL : '.$account->balance;
+                                        @endphp
+                                        {{ $account->name.$accountType.$balance}}
+                                    </option>
                                 @endforeach
                             </select>
+                            <span class="error error_p_account_id"></span>
                         </div>
                     </div>
 
                     <div class="col-md-5">
                         <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
-                        <input type="file" name="attachment" class="form-control form-control-sm" id="attachment" data-name="Date" >
-                    </div>
-                </div>
-
-                <div class="form-group mt-2">
-                    <div class="payment_method d-none" id="Card">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label><strong>Card Number :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="card_no" id="p_card_no" placeholder="Card number">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Card Holder Name :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="card_holder_name" id="p_card_holder_name" placeholder="Card holder name">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Card Transaction No :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="card_transaction_no" id="p_card_transaction_no" placeholder="Card transaction no">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Card Type :</strong> </label>
-                                <select name="card_type" class="form-control form-control-sm"  id="p_card_type">
-                                    <option value="Credit-Card">Credit Card</option>  
-                                    <option value="Debit-Card">Debit Card</option> 
-                                    <option value="Visa">Visa Card</option> 
-                                    <option value="Master-Card">Master Card</option> 
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <div class="col-md-3">
-                                <label><strong>Month :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="month" id="p_month" placeholder="Month">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Year :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="year" id="p_year" placeholder="Year">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Secure Code :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="secure_code" id="p_secure_code" placeholder="Secure code">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="payment_method d-none" id="Cheque">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label><strong>Cheque Number :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="cheque_no" id="p_cheque_no" placeholder="Cheque number">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="payment_method d-none" id="Bank-Transfer">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label><strong>Account Number :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="account_no" id="p_account_no" placeholder="Account number">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="payment_method d-none" id="Custom">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label><strong>Transaction No :</strong> </label>
-                                <input type="text" class="form-control form-control-sm" name="transaction_no" id="p_transaction_no" placeholder="Transaction number">
-                            </div>
-                        </div>
+                        <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
                 </div>
 
                 <div class="form-group mt-2">
                     <label><strong> Payment Note :</strong></label>
-                    <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
+                    <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                 </div>
 
                 <div class="form-group row mt-3">
@@ -218,6 +153,55 @@
 </div>
 
 <script>
+     //Add purchase return payment request by ajax
+     $('#payment_form').on('submit', function(e) {
+        e.preventDefault();
+        $('.loading_button').show();
+        var available = $('#p_available_amount').val();
+        var paying_amount = $('#p_paying_amount').val();
+
+        if (parseFloat(paying_amount) > parseFloat(available)) {
+            $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
+            $('.loading_button').hide();
+            return;
+        }
+
+        var url = $(this).attr('action');
+    
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                if (!$.isEmptyObject(data.errorMsg)) {
+                    toastr.error(data.errorMsg, 'ERROR');
+                    $('.loading_button').hide();
+                } else {
+                    $('.loading_button').hide();
+                    $('#paymentModal').modal('hide');
+                    $('#paymentViewModal').modal('hide');
+                    toastr.success(data);
+                    table.ajax.reload();
+                }
+            },error: function(err) {
+                $('.loading_button').hide();
+                $('.error').html('');
+
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_p_' + key + '').html(error[0]);
+                });
+            }
+        });
+    });
+
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');

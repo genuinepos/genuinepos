@@ -44,8 +44,7 @@
                             {{ $purchase->branch ? $purchase->branch->zip_code : '' }},
                             {{ $purchase->branch ? $purchase->branch->country : '' }}.
                         @else
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                            Office</b>)
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                         @endif
                     </li>
                 </ul>
@@ -109,19 +108,31 @@
                     @foreach ($purchase->purchase_payments as $payment)
                         <tr data-info="{{ $payment }}">
                             <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
+
                             <td>{{ $payment->invoice_id }}</td>
-                            <td>{{ $payment->pay_mode }}</td>
+
+                            <td>
+                                @if ($payment->paymentMethod)
+                                    {{ $payment->paymentMethod->name }}
+                                @else
+                                    {{ $payment->pay_mode }}
+                                @endif
+                            </td>
+
                             <td>
                                 @if ($payment->is_advanced == 1)
                                     <b>PO Advance Payment</b>
                                 @else 
-                                    {{ $payment->payment_type == 1 ? 'Purchase Due Payment' : 'Return Due Payment' }}
+                                    {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
                                 @endif
                             </td>
-                            <td>{{ $payment->account ? $payment->account->name.' (A/C:'.$payment->account->account_number.')' : '....' }}</td>
+
+                            <td>{{ $payment->account ? $payment->account->name : '....' }}</td>
+
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
+
                             <td>
                                 @if ($payment->payment_type == 1)
                                     <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>

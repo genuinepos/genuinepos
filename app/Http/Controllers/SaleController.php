@@ -552,6 +552,7 @@ class SaleController extends Controller
         $updateSale->report_date = date('Y-m-d', strtotime($request->date));
         $updateSale->save();
 
+        // Update Sales A/C Ledger
         $this->accountUtil->updateAccountLedger(
             voucher_type_id: 1,
             date: $request->date,
@@ -562,6 +563,7 @@ class SaleController extends Controller
         );
 
         if ($updateSale->status == 1 && $updateSale->customer_id) {
+            // Update customer ladger
             $this->customerUtil->updateCustomerLedger(
                 voucher_type_id: 1,
                 customer_id: $updateSale->customer_id,
@@ -888,7 +890,9 @@ class SaleController extends Controller
     // Show payment modal
     public function paymentModal($saleId)
     {
-        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])->orderBy('account_type', 'asc')->get();
+        $accounts = DB::table('accounts')
+        ->whereIn('account_type', [1, 2])->where('branch_id', auth()->user()->branch_id)
+        ->orderBy('account_type', 'asc')->get();
         $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
         return view('sales.ajax_view.add_payment', compact('sale', 'accounts', 'methods'));
@@ -956,7 +960,11 @@ class SaleController extends Controller
             return response()->json('Access Denied');
         }
 
-        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])->orderBy('account_type', 'asc')->get();
+        $accounts = DB::table('accounts')
+            ->whereIn('account_type', [1, 2])
+            ->where('branch_id', auth()->user()->branch_id)
+            ->orderBy('account_type', 'asc')->get();
+
         $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch')->where('id', $paymentId)->first();
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
         return view('sales.ajax_view.edit_payment', compact('payment', 'accounts', 'methods'));
@@ -1039,7 +1047,9 @@ class SaleController extends Controller
             }
 
             $saleReturnPaymentGetId = $this->saleUtil->saleReturnPaymentGetId(
-                request : $request, sale: $sale, customer_payment_id : NULL
+                request: $request,
+                sale: $sale,
+                customer_payment_id: NULL
             );
 
             // Add bank A/C ledger

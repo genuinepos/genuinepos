@@ -9,7 +9,7 @@
                     @if ($payment->purchase->branch)
                         {{ $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                     @endif
                 </b>
             </h3>
@@ -37,7 +37,7 @@
             @if ($payment->is_advanced == 1)
                 <b>PO Advance Payment</b>
             @else 
-                {{ $payment->payment_type == 1 ? 'Purchase Due Payment' : 'Return Due Payment' }}
+                {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
             @endif
         </h6>
         <h6 class="text-navy-blue"><b>P.Invoice ID :</b> {{ $payment->purchase->invoice_id }}</h6>
@@ -59,55 +59,14 @@
 
                         <tr>
                             <th width="50%" class="text-start">Payment Method :</th>
-                            <td width="50%">{{ $payment->pay_mode }}</td>
+                            <td width="50%">
+                                @if ($payment->paymentMethod)
+                                    {{ $payment->paymentMethod->name }}
+                                @else
+                                    {{ $payment->pay_mode }}
+                                @endif
+                            </td>
                         </tr>
-
-                        @if ($payment->pay_mode == 'Card')
-                            <tr>
-                                <th width="50%" class="text-start">Card Number :</th>
-                                <td width="50%">{{ $payment->card_no }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Card Holder :</th>
-                                <td width="50%">{{ $payment->card_holder }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Card Type :</th>
-                                <td width="50%">{{ $payment->card_type }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%">{{ $payment->card_transaction_no }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Month :</th>
-                                <td width="50%">{{ $payment->card_month }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Year :</th>
-                                <td width="50%">{{ $payment->card_year }}</td>
-                            </tr>
-                        @elseif($payment->pay_mode == 'Cheque')
-                            <tr>
-                                <th width="50%" class="text-start">Chaque No :</th>
-                                <td width="50%">{{ $payment->cheque_no }}</td>
-                            </tr>
-                        @elseif($payment->pay_mode == 'Bank-Transfer')
-                            <tr>
-                                <th width="50%" class="text-start">Account No :</th>
-                                <td width="50%">{{ $payment->account_no }}</td>
-                            </tr>
-                        @elseif($payment->pay_mode == 'Custom')
-                            <tr>
-                                <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%">{{ $payment->transaction_no }}</td>
-                            </tr>
-                        @endif
                     </tbody>
                 </table>
             </div>

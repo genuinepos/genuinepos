@@ -814,4 +814,89 @@ class PurchaseUtil
         $addPurchasePayment->save();
         return $addPurchasePayment->id;
     }
+
+    public function updatePurchasePayment($request, $payment)
+    {
+        // update sale payment
+        $payment->account_id = $request->account_id;
+        $payment->payment_method_id = $request->payment_method_id;
+        $payment->paid_amount = $request->paying_amount;
+        $payment->date = $request->date;
+        $payment->report_date = date('Y-m-d', strtotime($request->date));
+        $payment->month = date('F');
+        $payment->year = date('Y');
+        $payment->note = $request->note;
+
+        if ($request->hasFile('attachment')) {
+            if ($payment->attachment != null) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                }
+            }
+            $salePaymentAttachment = $request->file('attachment');
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
+            $payment->attachment = $salePaymentAttachmentName;
+        }
+
+        $payment->save();
+    }
+
+    public function purchaseReturnPaymentGetId($request, $purchase, $supplier_payment_id)
+    {
+        // Add sale return payment
+        $addPurchaseReturnPayment = new PurchasePayment();
+        $addPurchaseReturnPayment->invoice_id = 'PRPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+        $addPurchaseReturnPayment->purchase_id = $purchase->id;
+        $addPurchaseReturnPayment->supplier_id = $purchase->supplier_id;
+        $addPurchaseReturnPayment->account_id = $request->account_id;
+        $addPurchaseReturnPayment->payment_method_id = $request->payment_method_id;
+        $addPurchaseReturnPayment->supplier_payment_id = $supplier_payment_id;
+        $addPurchaseReturnPayment->payment_type = 2;
+        $addPurchaseReturnPayment->paid_amount = $request->paying_amount;
+        $addPurchaseReturnPayment->date = $request->date;
+        $addPurchaseReturnPayment->time = date('h:i:s a');
+        $addPurchaseReturnPayment->report_date = date('Y-m-d', strtotime($request->date));
+        $addPurchaseReturnPayment->month = date('F');
+        $addPurchaseReturnPayment->year = date('Y');
+        $addPurchaseReturnPayment->note = $request->note;
+        $addPurchaseReturnPayment->admin_id = auth()->user()->id;
+
+        if ($request->hasFile('attachment')) {
+            $attachment = $request->file('attachment');
+            $attachmentName = uniqid() . '-' . '.' . $attachment->getClientOriginalExtension();
+            $attachment->move(public_path('uploads/payment_attachment/'), $attachmentName);
+            $addPurchaseReturnPayment->attachment = $attachmentName;
+        }
+        $addPurchaseReturnPayment->save();
+
+        return $addPurchaseReturnPayment->id;
+    }
+
+    public function updatePurchaseReturnPayment($request, $payment)
+    {
+        // update sale payment
+        $payment->account_id = $request->account_id;
+        $payment->payment_method_id = $request->payment_method_id;
+        $payment->paid_amount = $request->paying_amount;
+        $payment->date = $request->date;
+        $payment->report_date = date('Y-m-d', strtotime($request->date));
+        $payment->month = date('F');
+        $payment->year = date('Y');
+        $payment->note = $request->note;
+
+        if ($request->hasFile('attachment')) {
+            if ($payment->attachment != null) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                }
+            }
+            $attachment = $request->file('attachment');
+            $attachmentName = uniqid() . '-' . '.' . $attachment->getClientOriginalExtension();
+            $attachment->move(public_path('uploads/payment_attachment/'), $attachmentName);
+            $payment->attachment = $attachmentName;
+        }
+
+        $payment->save();
+    }
 }

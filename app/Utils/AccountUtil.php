@@ -138,7 +138,7 @@ class AccountUtil
             14 => ['name' => 'Loan Pay', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit'],
             15 => ['name' => 'Loan Ins. Payment', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'credit'],
             16 => ['name' => 'Loan Ins. Receive', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'debit'],
-            17 => ['name' => 'Purchase Return Receive', 'voucher_no' => 'purchase_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'debit'],
+            17 => ['name' => 'Receive Return Amt.', 'voucher_no' => 'purchase_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'debit'],
             18 => ['name' => 'Received From Customer', 'voucher_no' => 'customer_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'debit'],
             19 => ['name' => 'Paid To Supplier', 'voucher_no' => 'supplier_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'credit'],
             20 => ['name' => 'Paid To Customer', 'voucher_no' => 'customer_return_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'credit'],

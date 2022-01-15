@@ -104,9 +104,9 @@ class SupplierUtil
             1 => ['name' => 'Purchase', 'id' => 'purchase_id', 'voucher_no' => 'sale_inv_id', 'amt'=> 'credit'],
             2 => ['name' => 'Purchase Return', 'id' => 'purchase_return_id', 'voucher_no' => 'return_inv_id', 'amt' => 'debit'],
             3 => ['name' => 'Purchase Payment', 'id' => 'purchase_payment_id', 'voucher_no' => 'received_voucher_no', 'amt' => 'debit'],
-            4 => ['name' => 'Return Payment', 'id' => 'purchase_payment_id', 'return_pay_voucher_no', 'amt' => 'credit'],
-            5 => ['name' => 'Paid To Supplier', 'id' => 'supplier_payment_id', 'supplier_payment_voucher', 'amt' => 'debit'],
-            6 => ['name' => 'Received From Supplier', 'id' => 'supplier_payment_id', 'supplier_return_payment_voucher', 'amt' => 'credit'],
+            4 => ['name' => 'Received Return Amt.', 'id' => 'purchase_payment_id', 'voucher_no' => 'return_pay_voucher_no', 'amt' => 'credit'],
+            5 => ['name' => 'Paid To Supplier', 'id' => 'supplier_payment_id', 'voucher_no' => 'supplier_payment_voucher', 'amt' => 'debit'],
+            6 => ['name' => 'Received From Supplier', 'id' => 'supplier_payment_id', 'voucher_no' => 'supplier_return_payment_voucher', 'amt' => 'credit'],
         ];
 
         return $data[$voucher_type_id];

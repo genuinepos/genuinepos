@@ -987,6 +987,7 @@
             $('.loading_button').hide();
             return;
         }
+        
         $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,
@@ -1166,7 +1167,7 @@
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
     new Litepicker({
         singleMode: true,
-        element: document.getElementById('datepicker'),
+        element: document.getElementById('date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,

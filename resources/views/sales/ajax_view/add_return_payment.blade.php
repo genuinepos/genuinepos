@@ -56,9 +56,9 @@
                     <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark"></i></span>
                 </div>
                 <input type="hidden" id="available_amount" value="{{ $sale->sale_return_due }}">
-                <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_amount" value="{{ $sale->sale_return_due }}"/>
+                <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="{{ $sale->sale_return_due }}"/>
             </div>
-            <span class="error error_p_amount"></span>
+            <span class="error error_p_paying_amount"></span>
         </div>
 
         <div class="col-md-4">
@@ -138,7 +138,7 @@
         $('.loading_button').show();
         var available_amount = $('#available_amount').val();
         var paying_amount = $('#p_paying_amount').val();
-        if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
+        if (parseFloat(paying_amount) > parseFloat(available_amount)) {
             $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
             $('.loading_button').hide();
             return;

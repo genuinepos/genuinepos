@@ -58,9 +58,9 @@
                     </span>
                 </div>
                 <input type="hidden" id="available_amount" value="{{ $payment->sale->sale_return_due+$payment->paid_amount }}">
-                <input type="number" name="amount" class="form-control p_input" step="any" data-name="Amount" id="p_amount" value="{{ $payment->paid_amount }}"/>
+                <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="{{ $payment->paid_amount }}"/>
             </div>
-            <span class="error error_p_amount"></span>
+            <span class="error error_p_paying_amount"></span>
         </div>
 
         <div class="col-md-4">
@@ -139,7 +139,6 @@
 </form>
 
 <script>
-    
     $('#sale_payment_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();

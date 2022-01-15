@@ -362,7 +362,7 @@ class SaleUtil
         $addSalePayment->payment_method_id = $request->payment_method_id;
         $addSalePayment->customer_payment_id = $customer_payment_id;
         $addSalePayment->payment_type = 2;
-        $addSalePayment->paid_amount = $request->amount;
+        $addSalePayment->paid_amount = $request->paying_amount;
         $addSalePayment->date = $request->date;
         $addSalePayment->time = date('h:i:s a');
         $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
@@ -387,7 +387,7 @@ class SaleUtil
         // update sale payment
         $payment->account_id = $request->account_id;
         $payment->payment_method_id = $request->payment_method_id;
-        $payment->paid_amount = $request->amount;
+        $payment->paid_amount = $request->paying_amount;
         $payment->date = $request->date;
         $payment->report_date = date('Y-m-d', strtotime($request->date));
         $payment->month = date('F');
@@ -407,7 +407,6 @@ class SaleUtil
         }
         
         $payment->save();
-
     }
 
     public function deleteSale($request, $saleId)

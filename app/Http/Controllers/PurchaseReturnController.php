@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\PurchaseReturnProduct;
 use App\Models\ProductWarehouseVariant;
+use App\Utils\AccountUtil;
 use App\Utils\Converter;
 use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseUtil;
@@ -31,13 +32,15 @@ class PurchaseReturnController extends Controller
     protected $supplierUtil;
     protected $purchaseUtil;
     protected $converter;
+    protected $accountUtil;
     public function __construct(
         PurchaseReturnUtil $purchaseReturnUtil,
         NameSearchUtil $nameSearchUtil,
         ProductStockUtil $productStockUtil,
         SupplierUtil $supplierUtil,
         PurchaseUtil $purchaseUtil,
-        Converter $converter
+        Converter $converter,
+        AccountUtil $accountUtil
     ) {
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->nameSearchUtil = $nameSearchUtil;
@@ -45,6 +48,7 @@ class PurchaseReturnController extends Controller
         $this->supplierUtil = $supplierUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->converter = $converter;
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
     // Sale return index view
@@ -91,6 +95,7 @@ class PurchaseReturnController extends Controller
                 'warehouses.warehouse_name',
                 'warehouses.warehouse_code',
                 'suppliers.name as sup_name',
+                'p_supplier.name as ps_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

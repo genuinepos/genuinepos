@@ -100,7 +100,7 @@ class SaleReturnController extends Controller
                         $html .= '<a class="dropdown-item" id="view_payment" href="' . route('sales.returns.payment.list', [$row->sale_id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
                         if ($row->total_return_due > 0) {
                             if (auth()->user()->permission->sale['sale_payment'] == '1') {
-                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->sale_id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->sale_id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amt.</a>';
                             }
                         }
                     }

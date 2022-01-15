@@ -69,6 +69,7 @@
                                                     class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                                                    <span class="error error_date"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -333,6 +334,7 @@
             data: request,
             success:function(data){
                 $('.submit_button').prop('type', 'sumbit');
+                $('.error').html('');
                 if(!$.isEmptyObject(data.errorMsg)){
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
@@ -352,10 +354,18 @@
                     });
                 }
             },error: function(err) {
-                $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
+                $('.submit_button').prop('type', 'sumbit');
                 $('.error').html('');
-                toastr.error('Net Connetion Error. Reload This Page.'); 
+
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_' + key + '').html(error[0]);
+                });
             }
         });
     });

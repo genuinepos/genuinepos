@@ -866,22 +866,33 @@ class SaleUtil
         $sale->save();
     }
 
-    public function addPurchaseSaleProduct($request, $sale)
+    public function addOrUpdatePurchaseSaleProduct($request, $sale)
     {
-        $purchase_product = DB::table('purchase_products')
-            ->where('is_sold_over', 0)
-            ->orderBy('id', 'asc')
-            ->first();
+        foreach ($sale->sale_products as $sale_product) {
+            $saleQuantity = $sale_product->quantity;
+            $index = 0;
+            while ($saleQuantity != 0) {
+                $purchase_product = DB::table('purchase_products')
+                    ->where('is_sold_over', 0)->where('product_id', $sale_product->product_id)
+                    ->where('product_variant_id', $sale_product->product_variant_id)
+                    if (1) {
+                        ->orderBy('id', 'asc')
+                    }else {
+                        ->orderBy('id', 'desc')
+                    }
+                    ->skip($index)->first();
 
-        $countPurchaseProductSale;
-
-        $limit = 20;
-        foreach ($variable as $key => $value) {
-            # code...
-        }
-        while ($limit != 0) {
-            echo 'Log'.PHP_EOL;
-            $limit--;
+                if ($purchase_product < $saleQuantity) {
+                    $purchase_product->total_sale = $purchase_product->quantity; 
+                    if ($purchase_product->quantity == $purchase_product->total_sale) {
+                        $purchase_product->is_sold_over = 1;
+                    }
+                    $purchase_product->save(); 
+                    $saleQuantity
+                }else if() {
+                    # code...
+                }
+            }
         }
     }
 }

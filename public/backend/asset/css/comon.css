@@ -495,3 +495,8 @@ a#print_report {
     font-weight: 600;
     color: white !important;
 }
+
+.red-label-notice{
+    color: red!important;
+    font-size: 9px!important;
+}

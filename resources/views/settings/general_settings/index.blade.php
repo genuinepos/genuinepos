@@ -150,10 +150,10 @@
                                     </div>
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>Business Logo :</strong><span
-                                                    class="text-danger">*</span></label>
+                                            <label><strong>Business Logo :</strong> <small class="red-label-notice">Required Size : H : 40px; W: 110px;</small></label>
                                             <input type="file" class="form-control" name="business_logo" id="business_logo">
-                                            <small>Previous logo (if exists) will be replaced</small>
+                                            <small>Previous logo (if exists) will be replaced</small><br>
+                                            
                                             <span class="error error_business_logo"></span>
                                         </div>
 
@@ -172,7 +172,7 @@
                                             <span class="error error_currency"></span>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        {{-- <div class="col-md-4">
                                             <label><strong>Financial year start month:</strong> <span
                                                     class="text-danger">*</span></label>
                                             <select name="financial_year_start" class="form-control bs_input"
@@ -184,7 +184,18 @@
                                                 @endforeach
                                             </select>
                                             <span class="error error_financial_year_start"></span>
-                                        </div>
+                                        </div> --}}
+
+                                        <div class="col-md-4">
+                                            <label><strong>Stock/Cost/Price Accounting Method : </strong> <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="financial_year_start" class="form-control bs_input"
+                                                data-name="Financial year start month" id="financial_year_start">
+                                                <option value="1">FIFO (First in First out)</option>
+                                                <option value="2">LIFO (Last in First out)</option>
+                                            </select>
+                                            <span class="error error_financial_year_start"></span>
+                                        </div> 
                                     </div>
 
                                     <div class="form-group row mt-1">

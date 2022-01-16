@@ -84,7 +84,8 @@ class PurchaseOrderReceiveController extends Controller
         }
 
         // Add received product to purchase products table
-        $purchase_order_products = DB::table('purchase_order_products')->where('purchase_id', $purchase->id)->get();
+        $purchase_order_products = DB::table('purchase_order_products')
+            ->where('purchase_id', $purchase->id)->get();
         foreach ($purchase_order_products as $purchase_order_product) {
             $purchaseProduct = PurchaseProduct::where('purchase_id', $purchase->id)->where('product_order_product_id', $purchase_order_product->id)->first();
             if ($purchaseProduct) {
@@ -129,9 +130,7 @@ class PurchaseOrderReceiveController extends Controller
                     $addPurchaseProduct->lot_no = $purchase_order_product->lot_no;
                     $addPurchaseProduct->save();
 
-                    if ($purchase->is_last_created == 1) {
-                        $this->purchaseUtil->updateProductAndVariantPrice($purchase_order_product->product_id, $purchase_order_product->product_variant_id, $purchase_order_product->unit_cost_with_discount, $purchase_order_product->net_unit_cost, $purchase_order_product->profit_margin, $purchase_order_product->selling_price, $isEditProductPrice);
-                    }
+                    $this->purchaseUtil->updateProductAndVariantPrice($purchase_order_product->product_id, $purchase_order_product->product_variant_id, $purchase_order_product->unit_cost_with_discount, $purchase_order_product->net_unit_cost, $purchase_order_product->profit_margin, $purchase_order_product->selling_price, $isEditProductPrice);
                 }
             }
         }
@@ -190,7 +189,7 @@ class PurchaseOrderReceiveController extends Controller
                 } else {
                     $this->productStockUtil->addBranchProduct($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
                     $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
-                } 
+                }
             }
         }
 

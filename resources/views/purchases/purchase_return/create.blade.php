@@ -100,9 +100,7 @@
                                                                     <th>Return Subtotal</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="purchase_return_list">
-                                                               
-                                                            </tbody>
+                                                            <tbody id="purchase_return_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>

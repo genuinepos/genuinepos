@@ -209,7 +209,7 @@
                                                                     <th>Line Total</th>
                                                                     @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                                                                         <th>xMargin(%)</th>
-                                                                        <th>Selling Price</th>
+                                                                        <th>Selling Price Exc.Tax</th>
                                                                     @endif
                                                                     <th><i class="fas fa-trash-alt"></i></th>
                                                                 </tr>

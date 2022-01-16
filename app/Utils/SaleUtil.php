@@ -260,7 +260,7 @@ class SaleUtil
                 if (auth()->user()->permission->sale['shipment_access'] == '1') {
                     $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
                 }
-                
+
                 if (auth()->user()->permission->sale['shipment_access'] == '1') {
                     $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
@@ -864,5 +864,24 @@ class SaleUtil
         $sale->sale_return_amount = $returnAmount;
         $sale->sale_return_due = $returnDue > 0 ? $returnDue : 0;
         $sale->save();
+    }
+
+    public function addPurchaseSaleProduct($request, $sale)
+    {
+        $purchase_product = DB::table('purchase_products')
+            ->where('is_sold_over', 0)
+            ->orderBy('id', 'asc')
+            ->first();
+
+        $countPurchaseProductSale;
+
+        $limit = 20;
+        foreach ($variable as $key => $value) {
+            # code...
+        }
+        while ($limit != 0) {
+            echo 'Log'.PHP_EOL;
+            $limit--;
+        }
     }
 }

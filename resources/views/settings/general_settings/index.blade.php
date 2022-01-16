@@ -187,12 +187,16 @@
                                         </div> --}}
 
                                         <div class="col-md-4">
-                                            <label><strong>Stock/Cost/Price Accounting Method : </strong> <span
+                                            <label><strong>Stock Accounting Method : </strong> <span
                                                     class="text-danger">*</span></label>
-                                            <select name="financial_year_start" class="form-control bs_input"
-                                                data-name="Financial year start month" id="financial_year_start">
-                                                <option value="1">FIFO (First in First out)</option>
-                                                <option value="2">LIFO (Last in First out)</option>
+                                            <select name="stock_accounting_method" class="form-control bs_input"
+                                                data-name="Stock Accounting Method" id="stock_accounting_method">
+                                                @php
+                                                    $stock_accounting_method = json_decode($generalSettings->business, true)['stock_accounting_method'] ?? NULL;
+                                                @endphp
+                                                @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
+                                                    <option {{ $stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
+                                                @endforeach
                                             </select>
                                             <span class="error error_financial_year_start"></span>
                                         </div> 

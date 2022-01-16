@@ -72,7 +72,7 @@ class GeneralSettingController extends Controller
             'currency' => $request->currency,
             'currency_placement' => $request->currency_placement,
             'date_format' => $request->date_format,
-            'financial_year_start' => $request->financial_year_start,
+            'stock_accounting_method' => $request->stock_accounting_method,
             'time_format' => $request->time_format,
             'business_logo' => $business_logo,
             'timezone' => $request->timezone,

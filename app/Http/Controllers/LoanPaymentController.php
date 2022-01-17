@@ -168,6 +168,7 @@ class LoanPaymentController extends Controller
         $loan_payments = DB::table('loan_payments')
         ->leftJoin('accounts', 'loan_payments.account_id', 'accounts.id')
         ->select('loan_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
+        ->where('loan_payments.company_id', $company_id)
         ->orderBy('loan_payments.report_date', 'desc')->get();
         return view('accounting.loans.ajax_view.payment_list', compact('company', 'loan_payments'));
     }

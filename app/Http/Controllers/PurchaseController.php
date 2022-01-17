@@ -508,14 +508,21 @@ class PurchaseController extends Controller
             $addSupplierLedger->save();
         }
 
-
         // update product and variant Price & quantity
         if ($editType == 'purchased') {
             $loop = 0;
             foreach ($product_ids as $productId) {
                 $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
                 if ($updatePurchase->is_last_created == 1) {
-                    $this->purchaseUtil->updateProductAndVariantPrice($productId, $variant_id, $unit_costs_with_discount[$loop], $net_unit_costs[$loop], $profits[$loop], $selling_prices[$loop], $isEditProductPrice);
+                    $this->purchaseUtil->updateProductAndVariantPrice(
+                        $productId,
+                        $variant_id,
+                        $unit_costs_with_discount[$loop],
+                        $net_unit_costs[$loop],
+                        $profits[$loop],
+                        $selling_prices[$loop],
+                        $isEditProductPrice
+                    );
                 }
                 $loop++;
             }

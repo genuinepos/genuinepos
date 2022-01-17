@@ -6,7 +6,7 @@
     function getPriceGroupProducts(){
         $.ajax({
             url:"{{route('sales.product.price.groups')}}",
-            success:function(data){
+            success:function(data) {
                 price_groups = data;
             }
         });
@@ -96,6 +96,7 @@
                                 } else {
                                     price = product.product_price;
                                 }
+
                                 var tax_amount = parseFloat(price / 100 * tax_percent);
                                 var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                 if (product.tax_type == 2) {
@@ -468,6 +469,7 @@
                             var __tax_amount = parseFloat(price) - parseFloat(calcTax);
                             unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
                         }
+
                         tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                         tr += '</td>';
                         tr += '<td class="text text-center">';
@@ -495,6 +497,7 @@
     // select variant product and add purchase table
     function salectVariant(e){
         var price_group_id = $('#price_group_id').val();
+        var url_param_price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no-price-group';
         if (keyName == 13 || keyName == 1) {
             document.getElementById('search_product').focus();
         }
@@ -570,6 +573,7 @@
                         } else {
                             price = variant_price;
                         }
+
                         var name = product_name.length > 35 ? product_name.substring(0, 35)+'...' : product_name; 
                         var tr = '';
                         tr += '<tr>';

@@ -68,7 +68,7 @@ class LoanPaymentController extends Controller
             $addCashFlow->save();
         }
 
-        $dueLoans = Loan::where('type', 1)->where('due', '>', 0)->get();
+        $dueLoans = Loan::where('type', 1)->where('loan_company_id', $company_id)->where('due', '>', 0)->get();
         foreach ($dueLoans as $dueLoan) {
             if ($dueLoan->due > $request->amount) {
                 if ($request->amount > 0) {
@@ -135,7 +135,7 @@ class LoanPaymentController extends Controller
             $addCashFlow->save();
         }
 
-        $dueLoans = Loan::where('type', 2)->where('due', '>', 0)->get();
+        $dueLoans = Loan::where('type', 2)->where('loan_company_id', $company_id)->where('due', '>', 0)->get();
         foreach ($dueLoans as $dueLoan) {
             if ($dueLoan->due > $request->amount) {
                 if ($request->amount > 0) {

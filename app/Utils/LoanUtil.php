@@ -43,11 +43,13 @@ class LoanUtil
     public function loanAmountAdjustment($loan)
     {
         if ($loan->type == 1) {
+            
             $loanPaymentDistributions = DB::table('loan_payment_distributions')->where('loan_id', $loan->id)
             ->where('loan_payment_distributions.payment_type', 1)
             ->select(
                 DB::raw('sum(paid_amount) as t_paid'),
             )->groupBy('loan_payment_distributions.loan_id')->get();
+
             $total_receive = $loanPaymentDistributions->sum('t_paid');
             $total_due = $loan->loan_amount - $total_receive;
             $loan->due = $total_due;

@@ -68,25 +68,32 @@ class LoanPaymentController extends Controller
             $addCashFlow->save();
         }
 
-        $dueLoans = Loan::where('type', 1)->where('loan_company_id', $company_id)->where('due', '>', 0)->get();
+        $dueLoans = Loan::where('type', 1)->where('loan_company_id', $company_id)->where('due', '>', 0)->orderBy('id', 'asc')->get();
+        $paying_amount = $request->amount;
         foreach ($dueLoans as $dueLoan) {
-            if ($dueLoan->due > $request->amount) {
-                if ($request->amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->amount, 1);
-                    $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $request->amount;
-                } 
+            if ($dueLoan->due > $paying_amount) {
+                if ($paying_amount > 0) {
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $paying_amount, 1);
+                    $paying_amount -= $paying_amount;
+                    $this->loanUtil->loanAmountAdjustment($dueLoan); 
+                }else {
+                    break;
+                }
             } elseif ($dueLoan->due == $request->amount) {
-                if ($request->amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->amount, 1);
+                if ($paying_amount > 0) {
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $paying_amount, 1);
+                    $paying_amount -= $paying_amount;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $request->amount;
-                } 
-            } elseif ($dueLoan->due < $request->amount) {
-                if ($request->amount > 0) {
+                } else {
+                    break;
+                }
+            } elseif ($dueLoan->due < $paying_amount) {
+                if ($paying_amount > 0) {
                     $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $dueLoan->due, 1);
+                    $paying_amount -= $dueLoan->due;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $dueLoan->due;
+                } else {
+                    break;
                 }
             }
         }
@@ -136,24 +143,31 @@ class LoanPaymentController extends Controller
         }
 
         $dueLoans = Loan::where('type', 2)->where('loan_company_id', $company_id)->where('due', '>', 0)->get();
+        $paying_amount = $request->amount;
         foreach ($dueLoans as $dueLoan) {
-            if ($dueLoan->due > $request->amount) {
+            if ($dueLoan->due > $paying_amount) {
                 if ($request->amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->amount, 2);
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $paying_amount, 2);
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $request->amount;
-                } 
-            } elseif ($dueLoan->due == $request->amount) {
-                if ($request->amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->amount, 2);
+                    $paying_amount -= $paying_amount;
+                }  else {
+                    break;
+                }
+            } elseif ($dueLoan->due == $paying_amount) {
+                if ($paying_amount > 0) {
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $paying_amount, 2);
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $request->amount;
-                } 
-            } elseif ($dueLoan->due < $request->amount) {
-                if ($request->amount > 0) {
+                    $paying_amount -= $paying_amount;
+                }  else {
+                    break;
+                }
+            } elseif ($dueLoan->due < $paying_amount) {
+                if ($paying_amount > 0) {
                     $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $dueLoan->due, 2);
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $dueLoan->due;
+                    $paying_amount -= $dueLoan->due;
+                } else {
+                    break;
                 }
             }
         }

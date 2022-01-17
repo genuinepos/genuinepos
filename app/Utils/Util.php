@@ -227,9 +227,9 @@ class Util
 
     public static function stockAccountingMethods()
     {
-        return  [
-            1 => 'FIFO (FIRST IN - LAST OUT)',
-            2 => 'LIFO (LAST IN - FAST OUT)',
+        return [
+            1 => 'FIFO (FIRST IN - FIRST OUT)',
+            2 => 'LIFO (LAST IN - FIRST OUT)',
         ];
     }
 

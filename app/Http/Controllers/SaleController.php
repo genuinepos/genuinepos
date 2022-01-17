@@ -186,10 +186,12 @@ class SaleController extends Controller
     // Add Sale method
     public function store(Request $request)
     {
-        $prefixSettings = DB::table('general_settings')
-            ->select(['id', 'prefix', 'send_es_settings'])
+        $settings = DB::table('general_settings')
+            ->select(['id', 'business', 'prefix', 'send_es_settings'])
             ->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+
+        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
 
         $branchInvoiceSchema = DB::table('branches')
             ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
@@ -334,6 +336,7 @@ class SaleController extends Controller
             $addSaleProduct->subtotal = $subtotals[$__index];
             $addSaleProduct->description = $descriptions[$__index] ? $descriptions[$__index] : NULL;
             $addSaleProduct->save();
+                
             $__index++;
         }
 
@@ -362,7 +365,11 @@ class SaleController extends Controller
                 $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
                 $__index++;
             }
+
+            $this->saleUtil->addPurchaseSaleProductChain($sale, $stockAccountingMethod);
         }
+
+
 
         $previous_due = $request->previous_due;
         $total_payable_amount = $request->total_payable_amount;
@@ -372,7 +379,7 @@ class SaleController extends Controller
 
         if (
             env('MAIL_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email'] == '1'
+            json_decode($settings->send_es_settings, true)['send_inv_via_email'] == '1'
         ) {
             if ($sale->customer && $sale->customer->email) {
                 SaleMailJob::dispatch($sale->customer->email, $sale)
@@ -382,7 +389,7 @@ class SaleController extends Controller
 
         if (
             env('SMS_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_notice_via_sms'] == '1'
+            json_decode($settings->send_es_settings, true)['send_notice_via_sms'] == '1'
         ) {
             if ($sale->customer && $sale->customer->phone) {
                 $this->smsUtil->singleSms($sale);

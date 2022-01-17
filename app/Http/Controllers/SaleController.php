@@ -180,7 +180,7 @@ class SaleController extends Controller
         $invoice_schemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);
         $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-        return view('sales.create', compact('customers', 'methods','accounts', 'price_groups', 'invoice_schemas'));
+        return view('sales.create', compact('customers', 'methods', 'accounts', 'price_groups', 'invoice_schemas'));
     }
 
     // Add Sale method
@@ -448,7 +448,7 @@ class SaleController extends Controller
         foreach ($sale->sale_products as $sale_product) {
             if ($sale_product->product->is_manage_stock == 0) {
                 $qty_limits[] = PHP_INT_MAX;
-            }else {
+            } else {
                 $productBranch = ProductBranch::where('branch_id', $sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {
@@ -461,7 +461,7 @@ class SaleController extends Controller
                 } else {
                     $qty_limits[] = $productBranch->product_quantity;
                 }
-            } 
+            }
         }
 
         return response()->json(['sale' => $sale, 'qty_limits' => $qty_limits]);
@@ -497,7 +497,7 @@ class SaleController extends Controller
             $sale_product->save();
         }
 
-        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('sales');
+        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $this->invoiceVoucherRefIdUtil->getLastId('sales');
         $updateSale->status = $request->status;
         $updateSale->pay_term = $request->pay_term;
         $updateSale->date = $request->date;
@@ -518,11 +518,11 @@ class SaleController extends Controller
         $updateSale->sale_note = $request->sale_note;
         $updateSale->report_date = date('Y-m-d', strtotime($request->date));
         $updateSale->save();
-        
+
         if ($updateSale->ledger) {
             $updateSale->ledger->report_date = $updateSale->report_date;
             $updateSale->ledger->save();
-        }else {
+        } else {
             if ($updateSale->status == 1 && $updateSale->customer_id) {
                 $addCustomerLedger = new CustomerLedger();
                 $addCustomerLedger->customer_id = $updateSale->customer_id;
@@ -530,7 +530,7 @@ class SaleController extends Controller
                 $addCustomerLedger->row_type = 1;
                 $addCustomerLedger->report_date = date('Y-m-d', strtotime($updateSale->date));
                 $addCustomerLedger->save();
-            } 
+            }
         }
 
         // update product quantity
@@ -721,19 +721,7 @@ class SaleController extends Controller
         $product = Product::with(['product_variants', 'tax', 'unit'])
             ->where('product_code', $product_code)
             ->select([
-                'id',
-                'name',
-                'type',
-                'product_code',
-                'product_price',
-                'profit',
-                'product_cost_with_tax',
-                'thumbnail_photo',
-                'unit_id',
-                'tax_id',
-                'tax_type',
-                'is_show_emi_on_pos',
-                'is_manage_stock',
+                'id', 'name', 'type', 'product_code', 'product_price', 'profit', 'product_cost_with_tax', 'thumbnail_photo', 'unit_id', 'tax_id', 'tax_type', 'is_show_emi_on_pos', 'is_manage_stock',
             ])->first();
 
         if ($product) {
@@ -745,7 +733,7 @@ class SaleController extends Controller
                     ]
                 );
             }
-         
+
             $productBranch = DB::table('product_branches')
                 ->where('branch_id', $branch_id)
                 ->where('product_id', $product->id)
@@ -764,11 +752,11 @@ class SaleController extends Controller
                             ]
                         );
                     } else {
-                        return response()->json(['errorMsg' => 'Stock is out of this product of this branch/shop']);
+                        return response()->json(['errorMsg' => 'Stock is out of this product of this Location/Shop']);
                     }
                 }
             } else {
-                return response()->json(['errorMsg' => 'This product is not available in this branch/shop. ']);
+                return response()->json(['errorMsg' => 'This product is not available in this Location/Shop. ']);
             }
         } else {
             $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
@@ -791,7 +779,7 @@ class SaleController extends Controller
                         ->first();
 
                     if (is_null($productBranch)) {
-                        return response()->json(['errorMsg' => 'This product is not available in this shop']);
+                        return response()->json(['errorMsg' => 'This product is not available in this Location/Shop']);
                     }
 
                     $productBranchVariant = DB::table('product_branch_variants')
@@ -802,7 +790,7 @@ class SaleController extends Controller
                         ->first();
 
                     if (is_null($productBranchVariant)) {
-                        return response()->json(['errorMsg' => 'This variant is not available in this shop']);
+                        return response()->json(['errorMsg' => 'This variant is not available in this Location/Shop']);
                     }
 
                     if ($productBranch && $productBranchVariant) {
@@ -812,10 +800,10 @@ class SaleController extends Controller
                                 'qty_limit' => $productBranchVariant->variant_quantity
                             ]);
                         } else {
-                            return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this branch']);
+                            return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this Location/Shop']);
                         }
                     } else {
-                        return response()->json(['errorMsg' => 'This product is not available in this branch.']);
+                        return response()->json(['errorMsg' => 'This product is not available in this Location/Shop.']);
                     }
                 }
             }
@@ -844,7 +832,8 @@ class SaleController extends Controller
 
     public function viewPayment($saleId)
     {
-        $sale = Sale::with(['customer', 'branch', 'sale_payments', 'sale_payments.paymentMethod'])->where('id', $saleId)->first();
+        $sale = Sale::with(['customer', 'branch', 'sale_payments', 'sale_payments.paymentMethod'])
+            ->where('id', $saleId)->first();
         return view('sales.ajax_view.payment_view', compact('sale'));
     }
 
@@ -1209,7 +1198,7 @@ class SaleController extends Controller
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
             return response()->json('Access Denied');
         }
-        
+
         $deleteSalePayment = SalePayment::with('account', 'customer', 'sale', 'sale.sale_return', 'cashFlow')
             ->where('id', $paymentId)->first();
 

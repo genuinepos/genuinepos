@@ -55,8 +55,8 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
                                 @if ($sale->branch)
-                                    <h5 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                                    <h6 class="company_name">
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
                                     <h6 class="company_address">
                                         {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                         {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -73,13 +73,13 @@
                                         <p><b>Email :</b> {{ $sale->branch->email }}</p>
                                     @endif 
                                 @else
-                                    <h5 class="company_name">
+                                    <p class="company_name">
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                    </h5>
+                                    </p>
 
-                                    <h6 class="company_address">
+                                    <p class="company_address">
                                         {{ json_decode($generalSettings->business, true)['address'] }}
-                                    </h6>
+                                    </p>
 
                                     @if ($defaultLayout->branch_phone)
                                         <p><strong>Phone :</strong> {{ json_decode($generalSettings->business, true)['phone'] }}</p>

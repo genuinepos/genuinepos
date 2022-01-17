@@ -8,7 +8,7 @@ class LoanUtil
 {
     public function adjustCompanyPayLoanAmount($companyId)
     {
-        $payLoan = DB::table('loans')->where('loan_company_id', $companyId)
+        $payLoan = DB::table('loans')->where('loans.loan_company_id', $companyId)
         ->where('loans.type', 1)
         ->select(
             DB::raw('sum(loan_amount) as t_amount'),
@@ -25,7 +25,7 @@ class LoanUtil
 
     public function adjustCompanyReceiveLoanAmount($companyId)
     {
-        $receiveLoan = DB::table('loans')->where('loan_company_id', $companyId)
+        $receiveLoan = DB::table('loans')->where('loans.loan_company_id', $companyId)
         ->where('loans.type', 2)
         ->select(
             DB::raw('sum(loan_amount) as t_amount'),

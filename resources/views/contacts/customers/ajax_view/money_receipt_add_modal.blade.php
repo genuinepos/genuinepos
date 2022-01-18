@@ -60,30 +60,32 @@
 <form id="money_receipt_form" action="{{ route('money.receipt.voucher.store', $customer->id) }}" method="POST">
     @csrf
     <div class="form-group row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label><b>Receiving Amount :</b> </label>
-            <input type="text" name="amount" class="form-control form-control-sm mr_input" id="mr_amount" placeholder="Receiving Amount" data-name="Receiving amount" value=""/>
+            <input type="text" name="amount" class="form-control mr_input" id="mr_amount" placeholder="Receiving Amount" data-name="Receiving amount"/>
             <span class="error error_mr_amount"></span>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
-                            class="fas fa-calendar-week text-dark"></i></span>
+                            class="fas fa-calendar-week text-dark input_i"></i></span>
                 </div>
-                <input type="text" name="date" class="form-control datepicker"
+                <input type="text" name="date" class="form-control"
                     autocomplete="off" id="mr_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
             </div>
         </div>
 
-        <div class="col-md-4">
-            <label><strong>Status :</strong> </strong> <span class="text-danger">*</span> </label>
-            <select name="status" class="form-control mr_input" data-name="Money receipt status" id="mr_status">
-                <option value="Pending">Pending</option>
-            </select>
-            <span class="error error_mr_status"></span>
+        <div class="col-md-3">
+            <label><b>Account Details :</b> </label>
+            <input type="text" name="account_details" class="form-control mr_input" id="mr_amount" placeholder="Account Details"/>
+        </div>
+
+        <div class="col-md-3">
+            <label><b>Receiver :</b> </label>
+            <input type="text" name="receiver" class="form-control mr_input" id="mr_amount" placeholder="Receiver Name"/>
         </div>
     </div>
 
@@ -98,26 +100,14 @@
     <div class="extra_label">
         <div class="form-group row mt-2">
             <div class="col-md-3">
-                <p> <input type="checkbox" name="is_amount" id="is_amount" value="1"> &nbsp; <b>Receiving Amount</b> </p>
+                <p> <input type="checkbox" CHECKED name="is_customer_name" value="1"> &nbsp; <b>Show Customer Name</b></p>
             </div>
-            
-            <div class="col-md-2">
-                <p> <input type="checkbox" CHECKED name="is_invoice_id" id="is_date" value="1"> &nbsp; <b>Voucher No</b></p>
-            </div>
-            
-            <div class="col-md-2">
-                <p> <input type="checkbox" CHECKED name="is_date" id="is_date" value="1"> &nbsp; <b>Show Date</b></p>
-            </div>
-            
-            <div class="col-md-2">
-                <p> <input type="checkbox" name="is_note" id="is_note" value="1"> &nbsp; <b>Paper Note</b></p>
-            </div>
-        </div>
-    </div>
 
-    <div class="extra_label">
-        <div class="form-group row mt-2">
-            <div class="col-md-3 mt-2">
+            <div class="col-md-3">
+                <p> <input type="checkbox" CHECKED name="is_date" value="1"> &nbsp; <b>Show Date</b></p>
+            </div>
+
+            <div class="col-md-4">
                 <p> <input type="checkbox" name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>Is Header Less For Pad Print?</b> </p>
             </div>
 
@@ -139,8 +129,25 @@
 <script>
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
     var _expectedDateFormat = '' ;
-    _expectedDateFormat = dateFormat.replace('d', 'dd');
-    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
-    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-    $('.datepicker').datepicker({format: _expectedDateFormat});
+    _expectedDateFormat = dateFormat.replace('d', 'DD');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('mr_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
 </script>

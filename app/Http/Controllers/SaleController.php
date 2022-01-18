@@ -244,7 +244,7 @@ class SaleController extends Controller
         $addSale->pay_term = $request->pay_term;
         $addSale->date = $request->date;
         $addSale->time = date('h:i:s a');
-        $addSale->report_date = date('Y-m-d', strtotime($request->date));
+        $addSale->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addSale->pay_term_number = $request->pay_term_number;
         $addSale->total_item = $request->total_item;
         $addSale->net_total_amount = $request->net_total_amount;

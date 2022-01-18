@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+use App\Models\Purchase;
 use App\Models\AdminAndUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -7,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Models\Purchase;
 
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
@@ -854,7 +855,7 @@ Route::get('maintenance/mode', function () {
 
 Route::get('add-user', function () {
     $addAdmin = new AdminAndUser();
-    $addAdmin->prefix = 'Mr.'; 
+    $addAdmin->prefix = 'Mr.';
     $addAdmin->name = 'Super';
     $addAdmin->last_name = 'Admin';
     $addAdmin->email = 'superadmin@gmail.com';
@@ -879,13 +880,29 @@ Route::get('/test', function () {
     //     $p->save();
     // }
 
-    // $limit = 20;
-    // $index = 1;
-    // while ($limit != 0) {
-    //     echo $index.'Log'.PHP_EOL;
-    //     $limit -=5;
-    //     $index++;
-    // }
+    // $stockArray = [];
+    $productOpeningStock = DB::table('product_opening_stocks')
+        ->where('product_id', 334)
+        ->select('id as op_id', 'product_id', 'quantity', 'created_at as date')
+        ->get()->toArray();
+
+   $purchases = DB::table('purchase_products')
+        ->select('id as pp_id', 'product_id', 'quantity', 'created_at as date')
+        ->where('product_id', 334)->get()->toArray();
+
+    $production = DB::table('productions')
+        ->select('id as production_id', 'product_id', 'quantity', 'created_at as date')
+        ->where('product_id', 334)->get()->toArray();
+
+    // $arr1 = [1 => 1, 2, 3 , 'num' => [1, 2, 3, 4]];
+    // $arr2 = [4, 5, 6];
+    // $arr3 = [7, 8, 9];
+
+    return $collection = array_merge($productOpeningStock, $purchases, $production);
+    foreach ($$collection as $row) {
+        echo $row['quantity'];
+    }
+    //return array_merge($arr1, $arr2, $arr3);
 });
 
 // All authenticated routes

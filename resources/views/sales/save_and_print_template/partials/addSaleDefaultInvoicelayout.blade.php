@@ -23,13 +23,13 @@
                                     @if ($sale->branch->logo != 'default.png')
                                         <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                     @else 
-                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                     @endif
                                 @else 
                                     @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                         <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                                     @else 
-                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                                     @endif
                                 @endif
                             @endif
@@ -308,13 +308,15 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class="text-end"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                <td class="total_payable text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($previous_due) }}
-                                </td>
-                            </tr>
-
+                            @if ($previous_due > 0)
+                                <tr>
+                                    <td class="text-end"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                    <td class="total_payable text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($previous_due) }}
+                                    </td>
+                                </tr>
+                            @endif
+                            
                             <tr>
                                 <td class="text-end"><strong> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
                                 <td class="total_payable text-end">

@@ -873,7 +873,8 @@ class SaleUtil
     }
 
     public function addPurchaseSaleProductChain($sale, $stockAccountingMethod)
-    {
+    {   
+        return;
         // foreach ($sale->sale_products as $sale_product) {
         //     $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
 

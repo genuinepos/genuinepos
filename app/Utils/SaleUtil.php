@@ -937,68 +937,69 @@ class SaleUtil
 
     public function updatePurchaseSaleProductChain($sale, $stockAccountingMethod)
     {
-        foreach ($sale->sale_products as $sale_product) {
-            $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
+        return;
+        // foreach ($sale->sale_products as $sale_product) {
+        //     $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
             
-            $openingStock = DB::table('product_opening_stocks')->where('product_id', $sale_product->product_id)
-                ->where('product_variant_id', $variant_id)->first();
+        //     $openingStock = DB::table('product_opening_stocks')->where('product_id', $sale_product->product_id)
+        //         ->where('product_variant_id', $variant_id)->first();
 
-            $purchaseProducts = '';
-            if ($stockAccountingMethod == 1) {
-                $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                    ->where('product_id', $sale_product->product_id)
-                    ->where('product_variant_id', $variant_id)
-                    ->orderBy('id', 'asc')->get();
+        //     $purchaseProducts = '';
+        //     if ($stockAccountingMethod == 1) {
+        //         $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+        //             ->where('product_id', $sale_product->product_id)
+        //             ->where('product_variant_id', $variant_id)
+        //             ->orderBy('id', 'asc')->get();
 
-            } else if ($stockAccountingMethod == 2) {
-                $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                    ->where('product_id', $sale_product->product_id)
-                    ->where('product_variant_id', $variant_id)
-                    ->orderBy('id', 'desc')->get();
-            }
+        //     } else if ($stockAccountingMethod == 2) {
+        //         $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+        //             ->where('product_id', $sale_product->product_id)
+        //             ->where('product_variant_id', $variant_id)
+        //             ->orderBy('id', 'desc')->get();
+        //     }
 
-            $sold_qty = $sale_product->quantity;
-            if (count($purchaseProducts) > 0) {
-                foreach ($purchaseProducts as $purchaseProduct) {
-                    if ($sold_qty > $purchaseProduct->left_qty) {
-                        if ($sold_qty > 0) {
-                            $addPurchaseSaleChain = new PurchaseSaleProductChain();
-                            $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
-                            $addPurchaseSaleChain->sale_product_id = $sale_product->id;
-                            $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
-                            $addPurchaseSaleChain->save();
-                            $sold_qty -= $purchaseProduct->left_qty;
-                            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-                        } else {
-                            break;
-                        }
-                    } else if ($sold_qty == $purchaseProduct->left_qty) {
-                        if ($sold_qty > 0) {
-                            $addPurchaseSaleChain = new PurchaseSaleProductChain();
-                            $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
-                            $addPurchaseSaleChain->sale_product_id = $sale_product->id;
-                            $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
-                            $addPurchaseSaleChain->save();
-                            $sold_qty -= $purchaseProduct->left_qty;
-                            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-                        } else {
-                            break;
-                        }
-                    } else if ($sold_qty < $purchaseProduct->left_qty) {
-                        if ($sold_qty > 0) {
-                            $addPurchaseSaleChain = new PurchaseSaleProductChain();
-                            $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
-                            $addPurchaseSaleChain->sale_product_id = $sale_product->id;
-                            $addPurchaseSaleChain->sold_qty = $sold_qty;
-                            $addPurchaseSaleChain->save();
-                            $sold_qty -= $sold_qty;
-                            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-                        }else {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        //     $sold_qty = $sale_product->quantity;
+        //     if (count($purchaseProducts) > 0) {
+        //         foreach ($purchaseProducts as $purchaseProduct) {
+        //             if ($sold_qty > $purchaseProduct->left_qty) {
+        //                 if ($sold_qty > 0) {
+        //                     $addPurchaseSaleChain = new PurchaseSaleProductChain();
+        //                     $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+        //                     $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+        //                     $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+        //                     $addPurchaseSaleChain->save();
+        //                     $sold_qty -= $purchaseProduct->left_qty;
+        //                     $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+        //                 } else {
+        //                     break;
+        //                 }
+        //             } else if ($sold_qty == $purchaseProduct->left_qty) {
+        //                 if ($sold_qty > 0) {
+        //                     $addPurchaseSaleChain = new PurchaseSaleProductChain();
+        //                     $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+        //                     $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+        //                     $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+        //                     $addPurchaseSaleChain->save();
+        //                     $sold_qty -= $purchaseProduct->left_qty;
+        //                     $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+        //                 } else {
+        //                     break;
+        //                 }
+        //             } else if ($sold_qty < $purchaseProduct->left_qty) {
+        //                 if ($sold_qty > 0) {
+        //                     $addPurchaseSaleChain = new PurchaseSaleProductChain();
+        //                     $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+        //                     $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+        //                     $addPurchaseSaleChain->sold_qty = $sold_qty;
+        //                     $addPurchaseSaleChain->save();
+        //                     $sold_qty -= $sold_qty;
+        //                     $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+        //                 }else {
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
 }

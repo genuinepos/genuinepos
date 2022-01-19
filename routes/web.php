@@ -1,7 +1,5 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Purchase;
 use App\Models\AdminAndUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -879,29 +877,6 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-
-    // $stockArray = [];
-    $productOpeningStock = DB::table('product_opening_stocks')
-        ->where('product_id', 334)
-        ->select('id as op_id', 'product_id', 'quantity', 'created_at as date')
-        ->get()->toArray();
-
-   $purchases = DB::table('purchase_products')
-        ->select('id as pp_id', 'product_id', 'quantity', 'created_at as date')
-        ->where('product_id', 334)->get()->toArray();
-
-    $production = DB::table('productions')
-        ->select('id as production_id', 'product_id', 'quantity', 'created_at as date')
-        ->where('product_id', 334)->get()->toArray();
-
-    // $arr1 = [1 => 1, 2, 3 , 'num' => [1, 2, 3, 4]];
-    // $arr2 = [4, 5, 6];
-    // $arr3 = [7, 8, 9];
-
-    return $collection = array_merge($productOpeningStock, $purchases, $production);
-    foreach ($$collection as $row) {
-        echo $row['quantity'];
-    }
     //return array_merge($arr1, $arr2, $arr3);
 });
 

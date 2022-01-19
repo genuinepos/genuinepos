@@ -61,7 +61,7 @@ class MoneyReceiptController extends Controller
     public function store(Request $request, $customerId)
     {
         $addReceipt = new MoneyReceipt();
-        $addReceipt->invoice_id = $this->invoiceVoucherRefIdUtil->getLastId('money_receipts');
+        $addReceipt->invoice_id = 'MR'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('money_receipts'), 4, "0", STR_PAD_LEFT);
         $addReceipt->customer_id = $customerId;
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $addReceipt->branch_id = NULL;

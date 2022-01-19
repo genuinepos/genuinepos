@@ -72,8 +72,6 @@
                     <th>From</th>
                     <th>Voucher No</th>
                     <th>Amount</th>
-                    <th>Received Amount</th>
-                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -82,6 +80,7 @@
                     @foreach ($customer->receipts as $receipt)
                         <tr>
                             <td>{{ date('d/m/Y', strtotime($receipt->date)) }}</td>
+                            
                             <td>
                                 @if ($receipt->branch)
                                     {{ $receipt->branch->name }}/{{ $receipt->branch->branch_code }}
@@ -89,20 +88,13 @@
                                     Head Office
                                 @endif
                             </td>
+
                             <td>{{ $receipt->invoice_id }}</td>
+
                             <td>
                                 {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $receipt->amount }}
                             </td>
-                            <td>
-                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $receipt->received_amount }}
-                            </td>
-                            <td>
-                                @if ($receipt->status == 'Pending')
-                                    <span class="badge bg-info">Pending</span>
-                                @else
-                                    <span class="badge bg-success">Completed</span>
-                                @endif
-                            </td>
+                       
                             <td>
                                 <div class="btn-group" role="group">
                                     <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

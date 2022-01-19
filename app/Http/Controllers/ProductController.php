@@ -15,6 +15,7 @@ use App\Models\PriceGroupProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
+use App\Utils\ProductStockUtil;
 use App\Utils\ProductUtil;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
@@ -22,9 +23,11 @@ use Yajra\DataTables\Facades\DataTables;
 class ProductController extends Controller
 {
     protected $productUtil;
-    public function __construct(ProductUtil $productUtil)
+    protected $productStockUtil;
+    public function __construct(ProductUtil $productUtil, ProductStockUtil $productStockUtil)
     {
         $this->productUtil = $productUtil;
+        $this->productStockUtil = $productStockUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -353,35 +356,14 @@ class ProductController extends Controller
         // Add Opening Stock and update branch stock
         $index = 0;
         foreach ($product_ids as $product_id) {
+
             $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+
             $openingStock = ProductOpeningStock::where('branch_id', $branch_id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
 
             if ($openingStock) {
-                $product = Product::where('id', $openingStock->product_id)->first();
-                $product->quantity -= $openingStock->quantity;
-                $product->save();
-
-                if ($openingStock->product_variant_id) {
-                    $productVariant = ProductVariant::where('id', $variant_id)->first();
-                    $productVariant->variant_quantity -= $openingStock->quantity;
-                    $productVariant->save();
-                }
-
-                $productBranch = ProductBranch::where('branch_id', $branch_id)
-                    ->where('product_id', $openingStock->product_id)
-                    ->first();
-                $productBranch->product_quantity -= $openingStock->quantity;
-                $productBranch->save();
-
-                if ($openingStock->product_variant_id) {
-                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                        ->where('product_id', $openingStock->product_id)
-                        ->where('product_variant_id', $openingStock->product_variant_id)->first();
-                    $productBranchVariant->variant_quantity -= $openingStock->quantity;
-                }
-
                 $openingStock->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
                 $openingStock->quantity = $quantities[$index];
                 $openingStock->subtotal = $subtotals[$index];
@@ -397,57 +379,8 @@ class ProductController extends Controller
                 $addOpeningStock->save();
             }
 
-            $product = Product::where('id', $product_id)->first();
-            $product->quantity += (float)$quantities[$index];
-            $product->save();
-
-            if ($variant_ids[$index] != 'noid') {
-                $productVariant = ProductVariant::where('id', $variant_id)->first();
-                $productVariant->variant_quantity += (float)$quantities[$index];
-                $productVariant->save();
-            }
-
-            // update branch product qty
-            $productBranch = ProductBranch::where('branch_id', $branch_id)
-                ->where('product_id', $product_id)
-                ->first();
-
-            if ($productBranch) {
-                $productBranch->product_quantity += (float)$quantities[$index];
-                $productBranch->save();
-                if ($variant_ids[$index] != 'noid') {
-                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                        ->where('product_id', $product_id)
-                        ->where('product_variant_id', $variant_id)->first();
-
-                    if ($productBranchVariant) {
-                        $productBranchVariant->variant_quantity += (float)$quantities[$index];
-                        $productBranchVariant->save();
-                    } else {
-                        $addProductBranchVariant = new ProductBranchVariant();
-                        $addProductBranchVariant->product_branch_id = $productBranch->id;
-                        $addProductBranchVariant->product_id = $product_id;
-                        $addProductBranchVariant->product_variant_id = $variant_id;
-                        $addProductBranchVariant->variant_quantity = $quantities[$index];
-                        $addProductBranchVariant->save();
-                    }
-                }
-            } else {
-                $addBranchProduct = new ProductBranch();
-                $addBranchProduct->branch_id = $branch_id;
-                $addBranchProduct->product_id = $product_id;
-                $addBranchProduct->product_quantity = $quantities[$index];
-                $addBranchProduct->save();
-
-                if ($variant_ids[$index] != 'noid') {
-                    $addProductBranchVariant = new ProductBranchVariant();
-                    $addProductBranchVariant->product_branch_id = $addBranchProduct->id;
-                    $addProductBranchVariant->product_id = $product_id;
-                    $addProductBranchVariant->product_variant_id = $variant_id;
-                    $addProductBranchVariant->variant_quantity = $quantities[$index];
-                    $addProductBranchVariant->save();
-                }
-            }
+            $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+            $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
 
             $index++;
         }
@@ -786,7 +719,6 @@ class ProductController extends Controller
     // delete product
     public function delete(Request $request, $productId)
     {
-
         $deleteProduct = Product::with(
             [
                 'product_images',

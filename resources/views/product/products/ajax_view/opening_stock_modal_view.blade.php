@@ -8,7 +8,7 @@
     @csrf
     <div class="card mt-3">
         <div class="card-header">
-            <p class="m-0"><b>Branch : {{ auth()->user()->branch ? auth()->user()->branch->name .'/'. auth()->user()->branch->branch_code : 'Head Office' }}</b> </p>
+            <p class="m-0"><b>Business Location : {{ auth()->user()->branch ? auth()->user()->branch->name .'/'. auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}</b> </p>
         </div>
         <div class="card_body">
             <div class="product_stock_table_area">

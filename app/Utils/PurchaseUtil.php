@@ -384,6 +384,7 @@ class PurchaseUtil
             $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
             $addPurchaseProduct->description = $descriptions[$index];
             $addPurchaseProduct->quantity = $quantities[$index];
+            $addPurchaseProduct->left_qty = $quantities[$index];
             $addPurchaseProduct->unit = $unit_names[$index];
             $addPurchaseProduct->unit_cost = $unit_costs[$index];
             $addPurchaseProduct->unit_discount = $discounts[$index];
@@ -780,5 +781,17 @@ class PurchaseUtil
         $purchase->purchase_return_amount = $returnAmount;
         $purchase->purchase_return_due = $returnDue > 0 ? $returnDue : 0;
         $purchase->save();
+    }
+
+    public function adjustPurchaseLeftQty($purchaseProduct)
+    {
+        $totalSold = DB::table('purchase_sale_product_chains')
+        ->where('purchase_product_id', $purchaseProduct->id)
+        ->select(DB::raw('SUM(sold_qty) as total_sold'))
+        ->groupBy('purchase_product_id')->get();
+
+        $leftQty = $purchaseProduct->quantity - $totalSold->sum('total_sold');
+        $purchaseProduct->left_qty = $leftQty;
+        $purchaseProduct->save();
     }
 }

@@ -10,12 +10,15 @@ use App\Models\SalePayment;
 use App\Models\MoneyReceipt;
 use Illuminate\Http\Request;
 use App\Models\CustomerLedger;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use Illuminate\Support\Facades\DB;
 
 class MoneyReceiptController extends Controller
 {
-    public function __construct()
+    protected $invoiceVoucherRefIdUtil;
+    public function __construct(InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -57,17 +60,8 @@ class MoneyReceiptController extends Controller
 
     public function store(Request $request, $customerId)
     {
-        // generate invoice ID
-        $i = 5;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
-
         $addReceipt = new MoneyReceipt();
-        $addReceipt->invoice_id = $invoiceId;
+        $addReceipt->invoice_id = $this->invoiceVoucherRefIdUtil->getLastId('money_receipts');
         $addReceipt->customer_id = $customerId;
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $addReceipt->branch_id = NULL;
@@ -77,17 +71,13 @@ class MoneyReceiptController extends Controller
 
         $addReceipt->amount = $request->amount;
         $addReceipt->note = $request->note;
-        $addReceipt->status = $request->status;
-        $addReceipt->is_amount = isset($request->is_amount) ? 1 : 0;
+        $addReceipt->receiver = $request->receiver;
+        $addReceipt->ac_details = $request->ac_details;
         $addReceipt->is_date = isset($request->is_date) ? 1 : 0;
-        $addReceipt->is_note = isset($request->is_note) ? 1 : 0;
-        $addReceipt->is_invoice_id = isset($request->is_invoice_id) ? 1 : 0;
+        $addReceipt->is_customer_name = isset($request->is_customer_name) ? 1 : 0;
         $addReceipt->is_header_less = isset($request->is_header_less) ? 1 : 0;
         $addReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL;
         $addReceipt->date = date('d-m-Y');
-        $addReceipt->date_ts = date('Y-m-d', strtotime($request->date));
-        $addReceipt->month = date('F');
-        $addReceipt->year = date('Y');
         $addReceipt->save();
 
         $receipt = DB::table('money_receipts')
@@ -114,17 +104,13 @@ class MoneyReceiptController extends Controller
         $updateReceipt = MoneyReceipt::where('id', $receiptId)->first();
         $updateReceipt->amount = $request->amount;
         $updateReceipt->note = $request->note;
-        $updateReceipt->status = $request->status;
-        $updateReceipt->is_amount = isset($request->is_amount) ? 1 : 0;
+        $updateReceipt->receiver = $request->receiver;
+        $updateReceipt->ac_details = $request->ac_details;
         $updateReceipt->is_date = isset($request->is_date) ? 1 : 0;
-        $updateReceipt->is_note = isset($request->is_note) ? 1 : 0;
-        $updateReceipt->is_invoice_id = isset($request->is_invoice_id) ? 1 : 0;
         $updateReceipt->is_header_less = isset($request->is_header_less) ? 1 : 0;
         $updateReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL;
+        $updateReceipt->is_customer_name = isset($request->is_customer_name) ? 1 : 0;
         $updateReceipt->date = date('d-m-Y');
-        $updateReceipt->date_ts = date('Y-m-d', strtotime($request->date));
-        $updateReceipt->month = date('F');
-        $updateReceipt->year = date('Y');
         $updateReceipt->save();
 
         $receipt = DB::table('money_receipts')

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
+use App\Models\Product;
+use App\Utils\PurchaseUtil;
 use Illuminate\Http\Request;
+use App\Models\PurchaseProduct;
 use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -10,21 +13,23 @@ use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Models\Manufacturing\Production;
 use App\Utils\Manufacturing\ProductionUtil;
 use App\Models\Manufacturing\ProductionIngredient;
-use App\Models\Product;
 
 class ProductionController extends Controller
 {
     protected $invoiceVoucherRefIdUtil;
     protected $productStockUtil;
     protected $productionUtil;
+    protected $purchaseUtil;
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         ProductStockUtil $productStockUtil,
         ProductionUtil $productionUtil,
+        PurchaseUtil $purchaseUtil
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->productStockUtil = $productStockUtil;
         $this->productionUtil = $productionUtil;
+        $this->purchaseUtil = $purchaseUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -78,7 +83,7 @@ class ProductionController extends Controller
         if ($request->tax_id) {
             $tax_id = explode('-', $request->tax_id)[0];
         }
-        
+
         $this->validate($request, [
             'date' => 'required',
             'output_quantity' => 'required',
@@ -139,6 +144,19 @@ class ProductionController extends Controller
         $addProduction->is_final = isset($request->is_final) ? 1 : 0;
         $addProduction->is_last_entry = 1;
         $addProduction->save();
+
+        $addRowInPurchaseProductTable = new PurchaseProduct();
+        $addRowInPurchaseProductTable->production_id = $addProduction->id;
+        $addRowInPurchaseProductTable->product_id = $request->product_id;
+        $addRowInPurchaseProductTable->product_variant_id = $request->variant_id;
+        $addRowInPurchaseProductTable->net_unit_cost = $request->per_unit_cost_inc_tax;
+        $addRowInPurchaseProductTable->quantity = $request->final_output_quantity;
+        $addRowInPurchaseProductTable->line_total = $request->total_cost;
+        $addRowInPurchaseProductTable->profit_margin = $request->xMargin;
+        $addRowInPurchaseProductTable->selling_price = $request->selling_price;
+        $addRowInPurchaseProductTable->left_qty = $request->final_output_quantity;
+        $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addRowInPurchaseProductTable->save();
 
         if (isset($request->product_ids)) {
             $index = 0;
@@ -313,13 +331,44 @@ class ProductionController extends Controller
         $updateProduction->is_final = isset($request->is_final) ? 1 : 0;
         $updateProduction->save();
 
+        $purchaseProduct = PurchaseProduct::where('production_id', $updateProduction->id)->first();
+        if ($purchaseProduct) {
+
+            $purchaseProduct->net_unit_cost = $request->per_unit_cost_inc_tax;
+            $purchaseProduct->quantity = $request->final_output_quantity;
+            $purchaseProduct->line_total = $request->total_cost;
+            $purchaseProduct->profit_margin = $request->xMargin;
+            $purchaseProduct->selling_price = $request->selling_price;
+            $purchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+            $purchaseProduct->save();
+            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+        } else {
+
+            $addRowInPurchaseProductTable = new PurchaseProduct();
+            $addRowInPurchaseProductTable->production_id = $addProduction->id;
+            $addRowInPurchaseProductTable->product_id = $request->product_id;
+            $addRowInPurchaseProductTable->product_variant_id = $request->variant_id;
+            $addRowInPurchaseProductTable->net_unit_cost = $request->per_unit_cost_inc_tax;
+            $addRowInPurchaseProductTable->quantity = $request->final_output_quantity;
+            $addRowInPurchaseProductTable->left_qty = $request->final_output_quantity;
+            $addRowInPurchaseProductTable->line_total = $request->total_cost;
+            $addRowInPurchaseProductTable->profit_margin = $request->xMargin;
+            $addRowInPurchaseProductTable->selling_price = $request->selling_price;
+            $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+            $addRowInPurchaseProductTable->save();
+        }
+
         if (isset($request->product_ids)) {
             $index = 0;
             foreach ($request->product_ids as $product_id) {
+
                 $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+
                 $updateProductionIngredient = ProductionIngredient::where('production_id', $updateProduction->id)
                     ->where('product_id', $product_id)->where('variant_id', $variant_id)->first();
+
                 if ($updateProductionIngredient) {
+
                     $updateProductionIngredient->unit_id = $request->unit_ids[$index];
                     $updateProductionIngredient->input_qty = $request->input_quantities[$index];
                     $updateProductionIngredient->parameter_quantity = $request->parameter_input_quantities[$index];
@@ -329,10 +378,14 @@ class ProductionController extends Controller
                 }
 
                 if (json_decode($generalSetting->mf_settings, true)['enable_editing_ingredient_qty'] == '1') {
+
                     $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+
                     if ($updateProduction->stock_warehouse_id) {
+
                         $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $updateProduction->stock_warehouse_id);
                     } else {
+
                         $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
                     }
                 }
@@ -342,17 +395,23 @@ class ProductionController extends Controller
 
         if (json_decode($generalSetting->mf_settings, true)['enable_updating_product_price'] == '1') {
             if ($updateProduction->is_last_entry == 1) {
+
                 $this->productionUtil->updateProductAndVariantPriceByProduction($updateProduction->product_id, $updateProduction->variant_id, $request->per_unit_cost_exc_tax, $request->per_unit_cost_inc_tax, $request->xMargin, $request->selling_price, $tax_id, $request->tax_type);
             }
         }
 
         $this->productStockUtil->adjustMainProductAndVariantStock($updateProduction->product_id, $updateProduction->variant_id);
+
         if (isset($request->store_warehouse_id)) {
+
             $this->productStockUtil->adjustWarehouseStock($updateProduction->product_id, $updateProduction->variant_id, $request->store_warehouse_id);
+
             if ($storedWarehouseId != $request->store_warehouse_id) {
+
                 $this->productStockUtil->adjustWarehouseStock($updateProduction->product_id, $updateProduction->variant_id, $storedWarehouseId);
             }
         } else {
+
             $this->productStockUtil->adjustBranchStock($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->branch_id);
         }
 
@@ -361,10 +420,11 @@ class ProductionController extends Controller
 
     public function delete(Request $request, $productionId)
     {
-        if (auth()->user()->permission->manufacturing['production_delete'] == '0' ) {
+        if (auth()->user()->permission->manufacturing['production_delete'] == '0') {
+
             return response()->json('Access Denied');
         }
-        
+
         $this->productionUtil->deleteProduction($productionId);
         return response()->json('Successfully production is deleted');
     }

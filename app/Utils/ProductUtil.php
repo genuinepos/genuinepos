@@ -6,11 +6,20 @@ use App\Models\Unit;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Warranty;
+use App\Utils\PurchaseUtil;
+use App\Models\PurchaseProduct;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProductOpeningStock;
 
 class ProductUtil
 {
+    public $purchaseUtil;
+    public function __construct(PurchaseUtil $purchaseUtil)
+    {
+        $this->purchaseUtil = $purchaseUtil;
+    }
+
     public function productListTable($request)
     {
         $generalSettings = DB::table('general_settings')->select('business')->first();
@@ -79,7 +88,7 @@ class ProductUtil
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="'.route('products.view', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
                 $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
                 if (auth()->user()->permission->product['product_edit']  == '1') {
                     $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
@@ -137,10 +146,10 @@ class ProductUtil
                 return $row->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->expire_date)) : '...';
             })->rawColumns([
                 'multiple_delete',
-                'photo', 
+                'photo',
                 'action',
-                'name', 
-                'type', 
+                'name',
+                'type',
                 'cate_name',
                 'status',
                 'expire_date',
@@ -203,5 +212,59 @@ class ProductUtil
         $add->description = $request->description;
         $add->save();
         return response()->json($add);
+    }
+
+    // Add opening stock method
+    public function addOpeningStock($branch_id, $product_id, $variant_id, $unit_cost_inc_tax, $quantity, $subtotal)
+    {
+        $addOpeningStock = new ProductOpeningStock();
+        $addOpeningStock->branch_id = $branch_id;
+        $addOpeningStock->product_id = $product_id;
+        $addOpeningStock->product_variant_id = $variant_id;
+        $addOpeningStock->unit_cost_inc_tax = $unit_cost_inc_tax;
+        $addOpeningStock->quantity = $quantity;
+        $addOpeningStock->subtotal = $subtotal;
+        $addOpeningStock->save();
+
+        $addRowInPurchaseProductTable = new PurchaseProduct();
+        $addRowInPurchaseProductTable->opening_stock_id = $addOpeningStock->id;
+        $addRowInPurchaseProductTable->product_id = $product_id;
+        $addRowInPurchaseProductTable->product_variant_id = $variant_id;
+        $addRowInPurchaseProductTable->net_unit_cost = $unit_cost_inc_tax;
+        $addRowInPurchaseProductTable->quantity = $quantity;
+        $addRowInPurchaseProductTable->left_qty = $quantity;
+        $addRowInPurchaseProductTable->line_total = $subtotal;
+        $addRowInPurchaseProductTable->left_qty = $quantity;
+        $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s');
+        $addRowInPurchaseProductTable->save();
+    }
+
+    // Update opening stock method
+    public function updateOpeningStock($openingStock, $unit_cost_inc_tax, $quantity, $subtotal)
+    {
+        $openingStock->unit_cost_inc_tax = $unit_cost_inc_tax;
+        $openingStock->quantity = $quantity;
+        $openingStock->subtotal = $subtotal;
+        $openingStock->save();
+
+        $purchaseProduct = PurchaseProduct::where('opening_stock_id', $openingStock->id)->first();
+        if ($purchaseProduct) {
+            $purchaseProduct->net_unit_cost = $unit_cost_inc_tax;
+            $purchaseProduct->quantity = $quantity;
+            $purchaseProduct->line_total = $subtotal;
+            $purchaseProduct->save();
+            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+        } else {
+            $addRowInPurchaseProductTable = new PurchaseProduct();
+            $addRowInPurchaseProductTable->opening_stock_id = $openingStock->id;
+            $addRowInPurchaseProductTable->product_id = $openingStock->product_id;
+            $addRowInPurchaseProductTable->product_variant_id = $openingStock->product_variant_id;
+            $addRowInPurchaseProductTable->net_unit_cost = $unit_cost_inc_tax;
+            $addRowInPurchaseProductTable->quantity = $quantity;
+            $addRowInPurchaseProductTable->left_qty = $quantity;
+            $addRowInPurchaseProductTable->line_total = $subtotal;
+            $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s');
+            $addRowInPurchaseProductTable->save();
+        }
     }
 }

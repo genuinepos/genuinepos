@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\report;
 
+use Carbon\Carbon;
 use App\Utils\Converter;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -55,7 +56,8 @@ class ProductPurchaseReportController extends Controller
             if ($request->from_date) {
                 $fromDate = date('Y-m-d', strtotime($request->from_date));
                 $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-                $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
                 $query->whereBetween('purchases.report_date', $date_range);
             }
 
@@ -160,7 +162,8 @@ class ProductPurchaseReportController extends Controller
         if ($request->from_date) {
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
             $query->whereBetween('purchases.report_date', $date_range);
         }
 

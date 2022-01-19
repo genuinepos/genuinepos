@@ -8,6 +8,7 @@ use App\Models\Supplier;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\SupplierLedger;
+use App\Models\PurchaseProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Utils\InvoiceVoucherRefIdUtil;
@@ -15,10 +16,13 @@ use App\Utils\InvoiceVoucherRefIdUtil;
 class Util
 {
     protected $invoiceVoucherRefIdUtil;
+    protected $productUtil;
     public function __construct(
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        ProductUtil $productUtil
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->productUtil = $productUtil;
     }
 
     public function addQuickProductFromAddSale($request)
@@ -46,10 +50,7 @@ class Util
         $l = 6;
         $b = 0;
         $code = '';
-        while ($b < $l) {
-            $code .= rand(1, 9);
-            $b++;
-        }
+        while ($b < $l) {$code .= rand(1, 9);$b++;}
 
         $addProduct->type = 1;
         $addProduct->name = $request->name;
@@ -75,14 +76,15 @@ class Util
         $addProduct->quantity = $request->quantity ? $request->quantity : 0;
         $addProduct->save();
 
-        //Add opening stock
-        $addOpeningStock = new ProductOpeningStock();
-        $addOpeningStock->branch_id = $request->branch_id;
-        $addOpeningStock->product_id  = $addProduct->id;
-        $addOpeningStock->unit_cost_inc_tax = $request->unit_cost_inc_tax;
-        $addOpeningStock->quantity = $request->quantity;
-        $addOpeningStock->subtotal = $request->subtotal;
-        $addOpeningStock->save();
+        // Add opening stock
+        $this->productUtil->addOpeningStock(
+            branch_id: $request->branch_id,
+            product_id: $addProduct->id,
+            variant_id: NULL,
+            unit_cost_inc_tax: $request->product_cost_with_tax,
+            quantity: $request->quantity,
+            subtotal: $request->subtotal
+        );
 
         // Add product Branch
         $addProductBranch = new ProductBranch();
@@ -90,6 +92,7 @@ class Util
         $addProductBranch->product_id = $addProduct->id;
         $addProductBranch->product_quantity = $request->quantity;
         $addProductBranch->save();
+
         return response()->json($addProduct);
     }
 

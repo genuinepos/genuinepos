@@ -92,16 +92,16 @@
         <h6><i class="fas fa-spinner"></i> Processing...</h6>
     </div>
     <div class="table-responsive">
-        <table class="display data_tbl data__table table-striped">
+        <table class="display modal-table table-sm table-striped">
             <thead>
-                <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Voucher No</th>
-                    <th class="text-start">Method</th>
-                    <th class="text-start">Type</th>
-                    <th class="text-start">Account</th>
-                    <th class="text-end">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                    <th class="text-start">Action</th>
+                <tr class="bg-primary">
+                    <th class="text-start text-white">Date</th>
+                    <th class="text-start text-white">Voucher No</th>
+                    <th class="text-start text-white">Method</th>
+                    <th class="text-start text-white">Type</th>
+                    <th class="text-start text-white">Account</th>
+                    <th class="text-end text-white">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-start text-white">Action</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">

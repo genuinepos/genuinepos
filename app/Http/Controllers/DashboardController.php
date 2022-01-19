@@ -88,13 +88,17 @@ class DashboardController extends Controller
 
         if ($request->date_range != 'all_time') {
             if ($request->date_range) {
+
                 $date_range = explode('~', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
                 $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $saleQuery->whereBetween('sales.report_date', [$form_date, $to_date]); // Final
-                $purchaseQuery->whereBetween('purchases.report_date', [$form_date, $to_date]);
-                $expenseQuery->whereBetween('expanses.report_date', [$form_date, $to_date]);
-                $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', [$form_date, $to_date]);
+
+                $range = [Carbon::parse($form_date), Carbon::parse($to_date)->endOfDay()];
+
+                $saleQuery->whereBetween('sales.report_date', $range); // Final
+                $purchaseQuery->whereBetween('purchases.report_date', $range);
+                $expenseQuery->whereBetween('expanses.report_date', $range);
+                $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', $range);
             }
         }
 
@@ -185,7 +189,10 @@ class DashboardController extends Controller
                     $date_range = explode('~', $request->date_range);
                     $form_date = date('Y-m-d', strtotime($date_range[0]));
                     $to_date = date('Y-m-d', strtotime($date_range[1]));
-                    $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+
+                    $range = [Carbon::parse($form_date), Carbon::parse($to_date)->endOfDay()];
+
+                    $query->whereBetween('sales.report_date', [$range]); // Final
                 }
             }
 
@@ -256,7 +263,9 @@ class DashboardController extends Controller
                     $date_range = explode('~', $request->date_range);
                     $form_date = date('Y-m-d', strtotime($date_range[0]));
                     $to_date = date('Y-m-d', strtotime($date_range[1]));
-                    $query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+
+                    $range = [Carbon::parse($form_date), Carbon::parse($to_date)->endOfDay()];
+                    $query->whereBetween('sales.report_date', $range); // Final
                 }
             }
 
@@ -319,7 +328,8 @@ class DashboardController extends Controller
                     $date_range = explode('~', $request->date_range);
                     $form_date = date('Y-m-d', strtotime($date_range[0]));
                     $to_date = date('Y-m-d', strtotime($date_range[1]));
-                    $query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+                    $range = [Carbon::parse($form_date), Carbon::parse($to_date)->endOfDay()];
+                    $query->whereBetween('purchases.report_date', $range); // Final
                 }
             }
 

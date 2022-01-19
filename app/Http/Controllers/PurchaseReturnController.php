@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Utils\Converter;
+use App\Utils\PurchaseUtil;
+use App\Utils\SupplierUtil;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
 use App\Models\PurchaseReturn;
 use App\Models\PurchaseProduct;
+use App\Utils\ProductStockUtil;
 use App\Models\ProductWarehouse;
 use App\Utils\PurchaseReturnUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\PurchaseReturnProduct;
 use App\Models\ProductWarehouseVariant;
-use App\Utils\Converter;
-use App\Utils\ProductStockUtil;
-use App\Utils\PurchaseUtil;
-use App\Utils\SupplierUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseReturnController extends Controller
@@ -79,7 +80,8 @@ class PurchaseReturnController extends Controller
             if ($request->from_date) {
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
                 $query->whereBetween('purchase_returns.report_date', $date_range); // Final
             }
 

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\report;
 
 // use App\Models\Purchase;
-use App\Models\Sale;
+use Carbon\Carbon;
 // use App\Models\ProductOpeningStock;
+use App\Models\Sale;
 use App\Models\Brand;
 use App\Models\Branch;
 use App\Models\Product;
@@ -177,7 +178,8 @@ class ProfitLossReportController extends Controller
         if ($request->from_date) {
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', $date_range);
             $saleQuery->whereBetween('sales.report_date', $date_range);
             $expenseQuery->whereBetween('expanses.report_date', $date_range);
@@ -355,7 +357,8 @@ class ProfitLossReportController extends Controller
         if ($request->from_date) {
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
             $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', $date_range);
             $saleQuery->whereBetween('sales.report_date', $date_range);
             $expenseQuery->whereBetween('expanses.report_date', $date_range);

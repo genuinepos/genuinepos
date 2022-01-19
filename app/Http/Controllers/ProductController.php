@@ -15,6 +15,7 @@ use App\Models\PriceGroupProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
+use App\Models\PurchaseProduct;
 use App\Utils\ProductStockUtil;
 use App\Utils\ProductUtil;
 use Intervention\Image\Facades\Image;
@@ -347,36 +348,31 @@ class ProductController extends Controller
     public function openingStockUpdate(Request $request)
     {
         $branch_id = auth()->user()->branch_id;
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $quantities = $request->quantities;
-        $subtotals = $request->subtotals;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
 
         // Add Opening Stock and update branch stock
         $index = 0;
-        foreach ($product_ids as $product_id) {
-
-            $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-
+        foreach ($request->product_ids as $product_id) {
+            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
             $openingStock = ProductOpeningStock::where('branch_id', $branch_id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
 
             if ($openingStock) {
-                $openingStock->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                $openingStock->quantity = $quantities[$index];
-                $openingStock->subtotal = $subtotals[$index];
-                $openingStock->save();
+                $this->productUtil->updateOpeningStock(
+                    openingStock : $openingStock,
+                    unit_cost_inc_tax : $request->unit_costs_inc_tax[$index],
+                    quantity : $request->quantities[$index],
+                    subtotal : $request->subtotals[$index]
+                );
             } else {
-                $addOpeningStock = new ProductOpeningStock();
-                $addOpeningStock->branch_id = $branch_id;
-                $addOpeningStock->product_id = $product_id;
-                $addOpeningStock->product_variant_id = $variant_id;
-                $addOpeningStock->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                $addOpeningStock->quantity = $quantities[$index];
-                $addOpeningStock->subtotal = $subtotals[$index];
-                $addOpeningStock->save();
+                $this->productUtil->addOpeningStock(
+                    branch_id : $branch_id,
+                    product_id : $product_id,
+                    variant_id : $variant_id,
+                    unit_cost_inc_tax : $request->unit_costs_inc_tax[$index],
+                    quantity : $request->quantities[$index],
+                    subtotal : $request->subtotals[$index]
+                );
             }
 
             $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
@@ -797,6 +793,7 @@ class ProductController extends Controller
             //             $deleteProduct->delete(); 
             //         }
             //     }
+
             return response()->json('Multiple delete feature is disabled in this demo');
         } elseif ($request->action == 'multipla_deactive') {
             foreach ($request->data_ids as $data_id) {
@@ -804,7 +801,7 @@ class ProductController extends Controller
                 $product->status = 0;
                 $product->save();
             }
-            return response()->json('Successfully all selected product status deactived');
+            return response()->json('Successfully all selected product status deactivated');
         }
     }
 

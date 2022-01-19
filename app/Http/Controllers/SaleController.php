@@ -369,8 +369,6 @@ class SaleController extends Controller
             $this->saleUtil->addPurchaseSaleProductChain($sale, $stockAccountingMethod);
         }
 
-
-
         $previous_due = $request->previous_due;
         $total_payable_amount = $request->total_payable_amount;
         $paying_amount = $request->paying_amount;
@@ -523,7 +521,7 @@ class SaleController extends Controller
         $updateSale->shipment_status = $request->shipment_status;
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->sale_note = $request->sale_note;
-        $updateSale->report_date = date('Y-m-d', strtotime($request->date));
+        $updateSale->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $updateSale->save();
 
         if ($updateSale->ledger) {

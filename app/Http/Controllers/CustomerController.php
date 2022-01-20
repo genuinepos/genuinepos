@@ -26,6 +26,7 @@ class CustomerController extends Controller
     public $converter;
     public $invoiceVoucherRefIdUtil;
     public $saleUtil;
+    
     public function __construct(CustomerUtil $customerUtil, AccountUtil $accountUtil, Converter $converter, SaleUtil $saleUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->customerUtil = $customerUtil;
@@ -90,7 +91,7 @@ class CustomerController extends Controller
         $addCustomerLedger = new CustomerLedger();
         $addCustomerLedger->customer_id = $addCustomer->id;
         $addCustomerLedger->row_type = 3;
-        $addCustomerLedger->report_date = date('Y-m-d');
+        $addCustomerLedger->report_date = date('Y-m-d H:i:s');
         $addCustomerLedger->amount = $request->opening_balance ? $request->opening_balance : 0.00;
         $addCustomerLedger->save();
 
@@ -382,7 +383,7 @@ class CustomerController extends Controller
         $customerPayment->account_id = $request->account_id;
         $customerPayment->paid_amount = $request->amount;
         $customerPayment->pay_mode = $request->payment_method;
-        $customerPayment->report_date = date('Y-m-d', strtotime($request->date));
+        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $customerPayment->date = $request->date;
         $customerPayment->time = date('h:i:s a');
         $customerPayment->month = date('F');
@@ -423,7 +424,7 @@ class CustomerController extends Controller
             $addCashFlow->transaction_type = 13;
             $addCashFlow->cash_type = 2;
             $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+            $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
@@ -437,7 +438,7 @@ class CustomerController extends Controller
         $addCustomerLedger->customer_id = $customerId;
         $addCustomerLedger->row_type = 5;
         $addCustomerLedger->customer_payment_id = $customerPayment->id;
-        $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
+        $addCustomerLedger->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addCustomerLedger->save();
 
         $dueInvoices = Sale::where('customer_id', $customerId)->where('due', '>', 0)->get();
@@ -455,7 +456,7 @@ class CustomerController extends Controller
                         $addSalePayment->paid_amount = $request->amount;
                         $addSalePayment->date = date('d-m-Y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->pay_mode = $request->payment_method;
@@ -500,7 +501,7 @@ class CustomerController extends Controller
                         $addSalePayment->paid_amount = $request->amount;
                         $addSalePayment->date = date('d-m-Y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->pay_mode = $request->payment_method;
@@ -545,7 +546,7 @@ class CustomerController extends Controller
                         $addSalePayment->paid_amount = $dueInvoice->due;
                         $addSalePayment->date = date('d-m-Y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->pay_mode = $request->payment_method;
@@ -608,7 +609,7 @@ class CustomerController extends Controller
         $customerPayment->type = 2;
         $customerPayment->pay_mode = $request->payment_method;
         $customerPayment->date = $request->date;
-        $customerPayment->report_date = date('Y-m-d', strtotime($request->date));
+        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $customerPayment->time = date('h:i:s a');
         $customerPayment->month = date('F');
         $customerPayment->year = date('Y');
@@ -648,7 +649,7 @@ class CustomerController extends Controller
             $addCashFlow->transaction_type = 13;
             $addCashFlow->cash_type = 1;
             $addCashFlow->date = date('d-m-y', strtotime($request->date));
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+            $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
@@ -662,7 +663,7 @@ class CustomerController extends Controller
         $addCustomerLedger->customer_id = $customerId;
         $addCustomerLedger->row_type = 5;
         $addCustomerLedger->customer_payment_id = $customerPayment->id;
-        $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
+        $addCustomerLedger->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addCustomerLedger->save();
 
         $returnSales = Sale::with(['sale_return'])->where('sale_return_due', '>', 0)->get();
@@ -683,7 +684,7 @@ class CustomerController extends Controller
                         $addSalePayment->payment_type = 2;
                         $addSalePayment->date = date('d-m-y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->note = $request->note;
@@ -737,7 +738,7 @@ class CustomerController extends Controller
                         $addSalePayment->payment_type = 2;
                         $addSalePayment->date = date('d-m-y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->note = $request->note;
@@ -790,7 +791,7 @@ class CustomerController extends Controller
                         $addSalePayment->payment_type = 2;
                         $addSalePayment->date = date('d-m-y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->note = $request->note;

@@ -199,7 +199,7 @@ class SaleReturnController extends Controller
             }
 
             $saleReturn->date = $request->date;
-            $saleReturn->report_date = date('Y-m-d', strtotime($request->date));
+            $saleReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $saleReturn->save();
 
             // update sale return products
@@ -245,7 +245,7 @@ class SaleReturnController extends Controller
             }
 
             $addSaleReturn->date = $request->date;
-            $addSaleReturn->report_date = date('Y-m-d', strtotime($request->date));
+            $addSaleReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $addSaleReturn->month = date('F');
             $addSaleReturn->year = date('Y');
             $addSaleReturn->save();

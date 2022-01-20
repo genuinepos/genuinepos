@@ -128,7 +128,7 @@ class TransferToWarehouseController extends Controller
         $addTransferToWarehouse->net_total_amount = $request->net_total_amount;
         $addTransferToWarehouse->shipping_charge = $request->shipping_charge;
         $addTransferToWarehouse->date = $request->date;
-        $addTransferToWarehouse->report_date = date('Y-m-d', strtotime($request->date));
+        $addTransferToWarehouse->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addTransferToWarehouse->month = date('F');
         $addTransferToWarehouse->year = date('Y');
         $addTransferToWarehouse->save();
@@ -242,7 +242,7 @@ class TransferToWarehouseController extends Controller
         $updateTransferToWarehouse->shipping_charge = $request->shipping_charge;
         $updateTransferToWarehouse->additional_note = $request->additional_note;
         $updateTransferToWarehouse->date = $request->date;
-        $updateTransferToWarehouse->report_date = date('Y-m-d', strtotime($request->date));
+        $updateTransferToWarehouse->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updateTransferToWarehouse->month = date('F');
         $updateTransferToWarehouse->year = date('Y');
         $updateTransferToWarehouse->save();

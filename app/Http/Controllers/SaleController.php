@@ -25,6 +25,7 @@ use App\Utils\AccountUtil;
 use App\Utils\CustomerUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\ProductStockUtil;
+use App\Utils\PurchaseUtil;
 
 class SaleController extends Controller
 {
@@ -36,6 +37,7 @@ class SaleController extends Controller
     protected $productStockUtil;
     protected $accountUtil;
     protected $invoiceVoucherRefIdUtil;
+    protected $purchaseUtil;
     public function __construct(
         NameSearchUtil $nameSearchUtil,
         SaleUtil $saleUtil,
@@ -44,7 +46,8 @@ class SaleController extends Controller
         CustomerUtil $customerUtil,
         ProductStockUtil $productStockUtil,
         AccountUtil $accountUtil,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil, 
+        PurchaseUtil $purchaseUtil
     ) {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->saleUtil = $saleUtil;
@@ -54,6 +57,7 @@ class SaleController extends Controller
         $this->productStockUtil = $productStockUtil;
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->purchaseUtil = $purchaseUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -244,7 +248,7 @@ class SaleController extends Controller
         $addSale->pay_term = $request->pay_term;
         $addSale->date = $request->date;
         $addSale->time = date('h:i:s a');
-        $addSale->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $addSale->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addSale->pay_term_number = $request->pay_term_number;
         $addSale->total_item = $request->total_item;
         $addSale->net_total_amount = $request->net_total_amount;
@@ -336,7 +340,7 @@ class SaleController extends Controller
             $addSaleProduct->subtotal = $subtotals[$__index];
             $addSaleProduct->description = $descriptions[$__index] ? $descriptions[$__index] : NULL;
             $addSaleProduct->save();
-                
+
             $__index++;
         }
 
@@ -479,8 +483,9 @@ class SaleController extends Controller
             return response()->json('Access Denied');
         }
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
+        $settings = DB::table('general_settings')->select(['id', 'business', 'prefix'])->first();
+        $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
+        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
         }
@@ -521,7 +526,7 @@ class SaleController extends Controller
         $updateSale->shipment_status = $request->shipment_status;
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->sale_note = $request->sale_note;
-        $updateSale->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $updateSale->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updateSale->save();
 
         if ($updateSale->ledger) {
@@ -599,14 +604,22 @@ class SaleController extends Controller
             $__index++;
         }
 
-        $deleteNotFoundSaleProducts = SaleProduct::where('sale_id', $updateSale->id)
-            ->where('delete_in_update', 1)->get();
+        $deleteNotFoundSaleProducts = SaleProduct::with('purchaseSaleProductChains', 'purchaseSaleProductChains.purchaseProduct')->where('sale_id', $updateSale->id)->where('delete_in_update', 1)->get();
+
         foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
             $storedProductId = $deleteNotFoundSaleProduct->product_id;
             $storedVariantId = $deleteNotFoundSaleProduct->product_variant_id ? $deleteNotFoundSaleProduct->product_variant_id : NULL;
+
+            $purchaseSaleProductChains = $deleteNotFoundSaleProduct->purchaseSaleProductChains;
+
             $deleteNotFoundSaleProduct->delete();
+
             $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
             $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
+
+            foreach ($purchaseSaleProductChains as $purchaseSaleProductChain) {
+                $this->purchaseUtil->adjustPurchaseLeftQty($purchaseSaleProductChain->purchaseProduct);
+            }
         }
 
         if ($request->status == 1) {
@@ -622,6 +635,14 @@ class SaleController extends Controller
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
                 $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, auth()->user()->branch_id);
             }
+
+            $sale = Sale::with([
+                'sale_products',
+                'sale_products.purchaseSaleProductChains',
+                'sale_products.purchaseSaleProductChains.purchaseProduct',
+            ])->where('id', $updateSale->id)->first();
+
+            $this->saleUtil->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
         }
 
         if ($request->status == 1) {
@@ -942,7 +963,7 @@ class SaleController extends Controller
             if ($cashFlow) {
                 $cashFlow->credit = $request->amount;
                 $cashFlow->date = $request->date;
-                $cashFlow->report_date = date('Y-m-d', strtotime($request->date));
+                $cashFlow->report_date = date('Y-m-d', strtotime($request->date.date(' H:i:s')));
                 $cashFlow->month = date('F');
                 $cashFlow->year = date('Y');
                 $cashFlow->save();
@@ -962,7 +983,7 @@ class SaleController extends Controller
                 $addCashFlow->transaction_type = 2;
                 $addCashFlow->cash_type = 2;
                 $addCashFlow->date = $request->date;
-                $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+                $addCashFlow->report_date = date('Y-m-d', strtotime($request->date.date(' H:i:s')));
                 $addCashFlow->month = date('F');
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;

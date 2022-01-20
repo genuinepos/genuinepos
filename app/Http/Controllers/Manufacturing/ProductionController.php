@@ -124,7 +124,7 @@ class ProductionController extends Controller
 
         $addProduction->date = $request->date;
         $addProduction->time = date('h:i:s a');
-        $addProduction->report_date = date('Y-m-d', strtotime($request->date));
+        $addProduction->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addProduction->product_id = $request->product_id;
         $addProduction->variant_id = $request->variant_id;
         $addProduction->unit_id = $request->unit_id;
@@ -314,7 +314,7 @@ class ProductionController extends Controller
         $updateProduction->warehouse_id = isset($request->store_warehouse_id) ? $request->store_warehouse_id : NULL;
         $updateProduction->date = $request->date;
         $updateProduction->time = date('h:i:s a');
-        $updateProduction->report_date = date('Y-m-d', strtotime($request->date));
+        $updateProduction->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updateProduction->total_ingredient_cost = $request->total_ingredient_cost;
         $updateProduction->quantity = $request->output_quantity;
         $updateProduction->parameter_quantity = $request->parameter_quantity;

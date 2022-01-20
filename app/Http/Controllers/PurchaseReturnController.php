@@ -85,27 +85,22 @@ class PurchaseReturnController extends Controller
                 $query->whereBetween('purchase_returns.report_date', $date_range); // Final
             }
 
+            $query->select(
+                'purchase_returns.*',
+                'purchases.invoice_id as parent_invoice_id',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'suppliers.name as sup_name',
+                'p_supplier.name as ps_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $returns = $query->select(
-                    'purchase_returns.*',
-                    'purchases.invoice_id as parent_invoice_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'suppliers.name as sup_name',
-                    'p_supplier.name as ps_name',
-                )->orderBy('purchase_returns.report_date', 'desc');
+                $returns = $query->orderBy('purchase_returns.report_date', 'desc');
             } else {
-                $returns = $query->select(
-                    'purchase_returns.*',
-                    'purchases.invoice_id as parent_invoice_id',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'warehouses.warehouse_name',
-                    'warehouses.warehouse_code',
-                    'suppliers.name as sup_name',
-                )->where('purchase_returns.branch_id', auth()->user()->branch_id)->orderBy('purchase_returns.report_date', 'desc');
+                $returns = $query->where('purchase_returns.branch_id', auth()->user()->branch_id)
+                    ->orderBy('purchase_returns.report_date', 'desc');
             }
 
             return DataTables::of($returns)
@@ -314,13 +309,13 @@ class PurchaseReturnController extends Controller
                     $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $storePurchase->warehouse_id);
                 } else {
                     $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storePurchase->branch_id);
-                } 
+                }
             } else {
                 if ($storedWarehouseId) {
                     $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $storedWarehouseId);
-                } else{
+                } else {
                     $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storedBranchId);
-                } 
+                }
             }
         }
 
@@ -478,7 +473,7 @@ class PurchaseReturnController extends Controller
         $addPurchaseReturn->total_return_due = $request->total_return_amount;
         $addPurchaseReturn->date = $request->date;
         $addPurchaseReturn->return_type = 2;
-        $addPurchaseReturn->report_date = date('Y-m-d', strtotime($request->date));
+        $addPurchaseReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addPurchaseReturn->month = date('F');
         $addPurchaseReturn->year = date('Y');
         $addPurchaseReturn->admin_id = auth()->user()->id;
@@ -571,7 +566,7 @@ class PurchaseReturnController extends Controller
                     $qty_limits[] = $productBranch->product_quantity;
                 }
             }
-        } 
+        }
 
         return response()->json(['purchaseReturn' => $purchaseReturn, 'qty_limits' => $qty_limits]);
     }
@@ -610,7 +605,7 @@ class PurchaseReturnController extends Controller
         $updatePurchaseReturn->total_return_due = $request->total_return_amount - $updatePurchaseReturn->total_return_due_received;
         $updatePurchaseReturn->date = $request->date;
         $updatePurchaseReturn->return_type = 2;
-        $updatePurchaseReturn->report_date = date('Y-m-d', strtotime($request->date));
+        $updatePurchaseReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updatePurchaseReturn->month = date('F');
         $updatePurchaseReturn->year = date('Y');
         $updatePurchaseReturn->save();
@@ -655,7 +650,7 @@ class PurchaseReturnController extends Controller
                     $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId,  $updatePurchaseReturn->warehouse_id);
                 } else {
                     $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, $updatePurchaseReturn->branch_id);
-                } 
+                }
             }
         }
 
@@ -666,7 +661,7 @@ class PurchaseReturnController extends Controller
                 $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $updatePurchaseReturn->warehouse_id);
             } else {
                 $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $updatePurchaseReturn->branch_id);
-            } 
+            }
         }
 
         if (isset($request->warehouse_id) && $storedWarehouseId != $request->warehouse_id) {

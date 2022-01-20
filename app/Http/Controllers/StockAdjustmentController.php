@@ -213,7 +213,7 @@ class StockAdjustmentController extends Controller
         $addStockAdjustment->time = date('h:i:s a');;
         $addStockAdjustment->month = date('F');
         $addStockAdjustment->year = date('Y');
-        $addStockAdjustment->report_date_ts = date('Y-m-d', strtotime($request->date));
+        $addStockAdjustment->report_date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addStockAdjustment->admin_id = auth()->user()->id;
         $addStockAdjustment->reason = $request->reason;
         $addStockAdjustment->save();

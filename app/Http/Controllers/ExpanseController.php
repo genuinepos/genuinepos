@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Expanse;
 use App\Models\CashFlow;
 use App\Utils\Converter;
@@ -58,7 +59,8 @@ class ExpanseController extends Controller
             if ($request->from_date) {
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
                 $query->whereBetween('expanses.report_date', $date_range); // Final
             }
 
@@ -189,7 +191,8 @@ class ExpanseController extends Controller
             if ($request->from_date) {
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
                 $query->whereBetween('expanses.report_date', $date_range); // Final
             }
 

@@ -54,7 +54,8 @@ class StockAdjustmentController extends Controller
             if ($request->from_date) {
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
                 $query->whereBetween('stock_adjustments.report_date_ts', $date_range); // Final
             }
 
@@ -212,7 +213,7 @@ class StockAdjustmentController extends Controller
         $addStockAdjustment->time = date('h:i:s a');;
         $addStockAdjustment->month = date('F');
         $addStockAdjustment->year = date('Y');
-        $addStockAdjustment->report_date_ts = date('Y-m-d', strtotime($request->date));
+        $addStockAdjustment->report_date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addStockAdjustment->admin_id = auth()->user()->id;
         $addStockAdjustment->reason = $request->reason;
         $addStockAdjustment->save();

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSomeNewColsPurchaseProductsTableTable extends Migration
+class EditColFromPurchaseProductsTableTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,7 @@ class AddSomeNewColsPurchaseProductsTableTable extends Migration
     public function up()
     {
         Schema::table('purchase_products', function (Blueprint $table) {
-            $table->unsignedBigInteger('production_id')->nullable();
-            $table->unsignedBigInteger('opening_stock_id')->nullable();
-            $table->foreign('production_id')->references('id')->on('purchase_products')->onDelete('cascade');
-            $table->foreign('opening_stock_id')->references('id')->on('product_opening_stocks')->onDelete('cascade');
+            $table->unsignedBigInteger('purchase_id')->change()->nullable()->default(null);
         });
     }
 

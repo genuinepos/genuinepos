@@ -744,7 +744,7 @@ class SaleController extends Controller
     {
         $product_code = (string)$product_code;
         $branch_id = auth()->user()->branch_id;
-        $product = Product::with(['product_variants', 'tax', 'unit'])
+        $product = Product::with(['product_variants', 'product_variants.updateVariantCost','tax', 'unit', 'updateProductCost'])
             ->where('product_code', $product_code)
             ->select([
                 'id', 'name', 'type', 'product_code', 'product_price', 'profit', 'product_cost_with_tax', 'thumbnail_photo', 'unit_id', 'tax_id', 'tax_type', 'is_show_emi_on_pos', 'is_manage_stock',
@@ -785,7 +785,7 @@ class SaleController extends Controller
                 return response()->json(['errorMsg' => 'This product is not available in this Location/Shop. ']);
             }
         } else {
-            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+            $variant_product = ProductVariant::with('product', 'updateVariantCost', 'product.tax', 'product.unit')
                 ->where('variant_code', $product_code)
                 ->select([
                     'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price'

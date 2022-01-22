@@ -182,7 +182,7 @@
                                 tr += '<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
                                 tr += '<input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">';
                                 tr += '<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                                tr += '<input value="'+ product.product_cost_with_tax +'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
+                                tr += '<input value="'+(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax)+'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                                 tr += '<input type="hidden" id="previous_quantity" value="0">';
                                 tr += '<input type="hidden" id="qty_limit" value="'+ qty_limit +'">';
                                 tr += '</td>';
@@ -370,7 +370,7 @@
                                     }
 
                                     li += '<li>';
-                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-is_manage_stock="'+product.is_manage_stock+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'"  data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-is_manage_stock="'+product.is_manage_stock+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-description="'+product.is_show_emi_on_pos+'" data-p_tax_percent="'+tax_percent+'" data-tax_type="'+product.tax_type+'"  data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax)+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
                                 }
                             });

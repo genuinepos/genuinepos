@@ -1706,6 +1706,15 @@
                                 </div>
                             @endif
 
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('reports.stock.in.out.index') }}" class="bar-link">
+                                        <span><i class="fas fa-cart-arrow-down"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.stock_in_out_report')</p>
+                            </div>
+                         
                             @if (auth()->user()->permission->report['purchase_payment_report'] == '1')
                                 <div
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">

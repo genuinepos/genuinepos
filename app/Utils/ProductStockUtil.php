@@ -26,6 +26,8 @@ class ProductStockUtil
 
             $productPurchase = DB::table('purchase_products')
                 ->where('purchase_products.product_id', $product_id)
+                ->where('purchase_products.opening_stock_id', NULL)
+                ->where('purchase_products.production_id', NULL)
                 ->select(DB::raw('sum(quantity) as total_purchase'))
                 ->groupBy('purchase_products.product_id')->get();
 
@@ -84,6 +86,8 @@ class ProductStockUtil
 
                 $variantPurchase = DB::table('purchase_products')
                     ->where('purchase_products.product_variant_id', $variant_id)
+                    ->where('purchase_products.opening_stock_id', NULL)
+                    ->where('purchase_products.production_id', NULL)
                     ->select(DB::raw('sum(quantity) as total_purchase'))
                     ->groupBy('purchase_products.product_variant_id')
                     ->get();
@@ -182,6 +186,8 @@ class ProductStockUtil
                 ->where('purchases.branch_id', $branch_id)
                 ->where('purchases.warehouse_id', NULL)
                 ->where('purchase_products.product_id', $product_id)
+                ->where('purchase_products.opening_stock_id', NULL)
+                ->where('purchase_products.production_id', NULL)
                 ->select(DB::raw('sum(quantity) as total_purchase'))
                 ->groupBy('purchase_products.product_id')->get();
 
@@ -292,6 +298,8 @@ class ProductStockUtil
                     ->where('purchases.warehouse_id', NULL)
                     ->where('purchase_products.product_id', $product_id)
                     ->where('purchase_products.product_variant_id', $variant_id)
+                    ->where('purchase_products.opening_stock_id', NULL)
+                    ->where('purchase_products.production_id', NULL)
                     ->select(DB::raw('sum(quantity) as total_purchase'))
                     ->groupBy('purchase_products.product_variant_id')->get();
 
@@ -391,6 +399,8 @@ class ProductStockUtil
                 ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
                 ->where('purchases.warehouse_id', $warehouse_id)
                 ->where('purchase_products.product_id', $product_id)
+                ->where('purchase_products.opening_stock_id', NULL)
+                ->where('purchase_products.production_id', NULL)
                 ->select(DB::raw('sum(quantity) as total_purchase'))
                 ->groupBy('purchase_products.product_id')->get();
 

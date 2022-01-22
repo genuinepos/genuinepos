@@ -155,6 +155,7 @@ class ProductionController extends Controller
         $addRowInPurchaseProductTable->profit_margin = $request->xMargin;
         $addRowInPurchaseProductTable->selling_price = $request->selling_price;
         $addRowInPurchaseProductTable->left_qty = $request->final_output_quantity;
+        $addRowInPurchaseProductTable->branch_id = auth()->user()->branch_id;
         $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addRowInPurchaseProductTable->save();
 

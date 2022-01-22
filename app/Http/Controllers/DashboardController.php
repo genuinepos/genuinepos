@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $thisWeek = Carbon::now()->startOfWeek()->format('Y-m-d') . '~' . Carbon::now()->endOfWeek()->format('Y-m-d');
         $thisYear = Carbon::now()->startOfYear()->format('Y-m-d') . '~' . Carbon::now()->endOfYear()->format('Y-m-d');
         $thisMonth = Carbon::now()->startOfMonth()->format('Y-m-d') . '~' . Carbon::now()->endOfMonth()->format('Y-m-d');
-        $toDay = Carbon::now()->format('Y-m-d') . '~' . Carbon::now()->format('Y-m-d')->endOfDay();
+        $toDay = Carbon::now()->format('Y-m-d') . '~' . Carbon::now()->endOfDay()->format('Y-m-d');
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('dashboard.dashboard_1', compact('branches', 'thisWeek', 'thisYear', 'thisMonth', 'toDay'));
     }

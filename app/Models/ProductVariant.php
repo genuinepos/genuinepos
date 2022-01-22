@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\SaleProduct;
 use App\Models\PurchaseProduct;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductVariant extends Model
@@ -43,5 +44,19 @@ class ProductVariant extends Model
     public function sale_variants()
     {
         return $this->hasMany(SaleProduct::class, 'product_variant_id');
+    }
+
+    public function updateVariantCost()
+    {
+        $settings = DB::table('general_settings')->select('business')->first();
+        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        if ($stockAccountingMethod == 1) {
+            $ordering = 'asc';
+        }else {
+            $ordering = 'desc';
+        }
+
+        return $this->hasOne(PurchaseProduct::class, 'product_variant_id')->where('left_qty', '>', '0')
+            ->orderBy('created_at', $ordering)->select('product_variant_id', 'net_unit_cost');
     }
 }

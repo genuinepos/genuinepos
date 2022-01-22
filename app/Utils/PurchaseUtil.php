@@ -363,45 +363,33 @@ class PurchaseUtil
 
     public function addPurchaseProduct($request, $isEditProductPrice, $purchaseId)
     {
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $descriptions = $request->descriptions;
-        $quantities = $request->quantities;
-        $unit_names = $request->unit_names;
-        $discounts = $request->unit_discounts;
-        $unit_costs = $request->unit_costs;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $unit_costs_with_discount = $request->unit_costs_with_discount;
-        $subtotal = $request->subtotals;
-        $tax_percents = $request->tax_percents;
-        $unit_taxes = $request->unit_taxes;
-        $net_unit_costs = $request->net_unit_costs;
-        $linetotals = $request->linetotals;
-        $profits = $request->profits;
-        $selling_prices = $request->selling_prices;
+        $warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
 
         $index = 0;
-        foreach ($product_ids as $productId) {
+        foreach ($request->product_ids as $productId) {
             $addPurchaseProduct = new PurchaseProduct();
             $addPurchaseProduct->purchase_id = $purchaseId;
             $addPurchaseProduct->product_id = $productId;
-            $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $addPurchaseProduct->description = $descriptions[$index];
-            $addPurchaseProduct->quantity = $quantities[$index];
-            $addPurchaseProduct->left_qty = $quantities[$index];
-            $addPurchaseProduct->unit = $unit_names[$index];
-            $addPurchaseProduct->unit_cost = $unit_costs[$index];
-            $addPurchaseProduct->unit_discount = $discounts[$index];
-            $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
-            $addPurchaseProduct->subtotal = $subtotal[$index];
-            $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
-            $addPurchaseProduct->unit_tax = $unit_taxes[$index];
-            $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
-            $addPurchaseProduct->line_total = $linetotals[$index];
 
+            $addPurchaseProduct->product_variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+
+            $addPurchaseProduct->description = $request->descriptions[$index];
+            $addPurchaseProduct->quantity =  $request->quantities[$index];
+            $addPurchaseProduct->left_qty =  $request->quantities[$index];
+            $addPurchaseProduct->unit = $request->unit_names[$index];
+            $addPurchaseProduct->unit_cost = $request->unit_costs[$index];
+            $addPurchaseProduct->unit_discount = $request->unit_discounts[$index];
+            $addPurchaseProduct->unit_cost_with_discount = $request->unit_costs_with_discount[$index];
+            $addPurchaseProduct->subtotal = $request->subtotals[$index];
+            $addPurchaseProduct->unit_tax_percent = $request->tax_percents[$index];
+            $addPurchaseProduct->unit_tax = $request->unit_taxes[$index];
+            $addPurchaseProduct->net_unit_cost = $request->net_unit_costs[$index];
+            $addPurchaseProduct->line_total = $request->linetotals[$index];
+            $addPurchaseProduct->branch_id = auth()->user()->branch_id;
+    
             if ($isEditProductPrice == '1') {
-                $addPurchaseProduct->profit_margin = $profits[$index];
-                $addPurchaseProduct->selling_price = $selling_prices[$index];
+                $addPurchaseProduct->profit_margin = $request->profits[$index];
+                $addPurchaseProduct->selling_price = $request->selling_prices[$index];
             }
 
             if (isset($request->lot_number)) {
@@ -418,6 +406,7 @@ class PurchaseUtil
 
     public function addPurchaseOrderProduct($request, $isEditProductPrice, $purchaseId)
     {
+        $warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
         $descriptions = $request->descriptions;
@@ -453,6 +442,7 @@ class PurchaseUtil
             $addPurchaseProduct->unit_tax = $unit_taxes[$index];
             $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
             $addPurchaseProduct->line_total = $linetotals[$index];
+            $addPurchaseProduct->branch_id = auth()->user()->branch_id;
 
             if ($isEditProductPrice == '1') {
                 $addPurchaseProduct->profit_margin = $profits[$index];

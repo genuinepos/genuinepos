@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Utils\Util;
 use App\Models\Sale;
 use App\Utils\SmsUtil;
+use App\Models\Product;
 use App\Utils\SaleUtil;
 use App\Models\CashFlow;
 use App\Models\Customer;
 use App\Jobs\SaleMailJob;
+use App\Utils\AccountUtil;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
 use App\Utils\CustomerUtil;
@@ -17,12 +19,11 @@ use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
+use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
-use App\Models\CashRegisterTransaction;
-use App\Utils\AccountUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\ProductStockUtil;
+use App\Models\CashRegisterTransaction;
 
 class POSController extends Controller
 {
@@ -86,12 +87,16 @@ class POSController extends Controller
     public function store(Request $request)
     {
         //return $request->all();
-        $prefixSettings = DB::table('general_settings')
-            ->select(['id', 'prefix', 'reward_poing_settings', 'send_es_settings'])
+        $settings = DB::table('general_settings')
+            ->select(['id', 'business', 'prefix', 'reward_poing_settings', 'send_es_settings'])
             ->first();
 
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+        $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
+
+        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+
+        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+
         $branchInvoiceSchema = DB::table('branches')
             ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
             ->where('branches.id', auth()->user()->branch_id)
@@ -200,11 +205,11 @@ class POSController extends Controller
 
             if ($customer) {
                 if (
-                    json_decode($prefixSettings->reward_poing_settings, true)['enable_cus_point'] ==
+                    json_decode($settings->reward_poing_settings, true)['enable_cus_point'] ==
                     '1'
                 ) {
                     $customer->point = $customer->point - $request->pre_redeemed;
-                    $customer->point = $customer->point + $this->calculateCustomerPoint($prefixSettings, $request->total_invoice_payable);
+                    $customer->point = $customer->point + $this->calculateCustomerPoint($settings, $request->total_invoice_payable);
                     $customer->save();
                 }
 
@@ -277,11 +282,25 @@ class POSController extends Controller
             $invoiceId = ++$lastSalePayment->id;
         }
 
+        $sale = Sale::with([
+            'customer',
+            'branch',
+            'branch.add_sale_invoice_layout',
+            'branch.pos_sale_invoice_layout',
+            'sale_products',
+            'sale_products.product',
+            'sale_products.product.warranty',
+            'sale_products.variant',
+            'admin'
+        ])->where('id', $addSale->id)->first();
+
         if ($request->action == 1) {
             $this->salePayment($request, $addSale, $paymentInvoicePrefix, $invoiceId);
             if ($customer) {
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
             }
+
+            $this->saleUtil->addPurchaseSaleProductChain($sale, $stockAccountingMethod);
         }
 
         // Add cash register transaction
@@ -297,21 +316,9 @@ class POSController extends Controller
         $total_due = $request->total_due;
         $change_amount = $request->change_amount;
 
-        $sale = Sale::with([
-            'customer',
-            'branch',
-            'branch.add_sale_invoice_layout',
-            'branch.pos_sale_invoice_layout',
-            'sale_products',
-            'sale_products.product',
-            'sale_products.product.warranty',
-            'sale_products.variant',
-            'admin'
-        ])->where('id', $addSale->id)->first();
-
         if (
             env('MAIL_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email'] == '1'
+            json_decode($settings->send_es_settings, true)['send_inv_via_email'] == '1'
         ) {
             if ($customer && $customer->email) {
                 dispatch(new SaleMailJob($customer->email, $sale));
@@ -320,7 +327,7 @@ class POSController extends Controller
 
         if (
             env('SMS_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_notice_via_sms'] == '1'
+            json_decode($settings->send_es_settings, true)['send_notice_via_sms'] == '1'
         ) {
             if ($customer && $customer->phone) {
                 $this->smsUtil->singleSms($sale);
@@ -395,8 +402,8 @@ class POSController extends Controller
     // update pos sale
     public function update(Request $request)
     {
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+        $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
         $updateSale = Sale::with(['sale_payments', 'sale_products', 'sale_products.product', 'sale_products.variant', 'sale_products.product.comboProducts'])->where('id', $request->sale_id)->first();
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
@@ -729,12 +736,20 @@ class POSController extends Controller
     // Get pos product list
     public function posProductList(Request $request)
     {
-        //return $request->all();
         $products = '';
-        $query = DB::table('products')
-            ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->leftJoin('product_variants', 'products.id', 'product_variants.product_id');
+        $query = Product::with([
+            'tax:id,tax_percent',
+            'unit:id,name',
+            'product_variants:id,product_id,variant_name,variant_code,variant_cost_with_tax,variant_price,variant_profit',
+            'product_variants.updateVariantCost',
+            'updateProductCost',
+        ]);
+
+        // $query = DB::table('products')
+        //     ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+        //     ->leftJoin('units', 'products.unit_id', 'units.id')
+        //     ->leftJoin('product_variants', 'products.id', 'product_variants.product_id');
+
 
         if ($request->category_id) {
             $query->where('category_id', $request->category_id);
@@ -750,25 +765,41 @@ class POSController extends Controller
 
         $products = $query->select(
             'products.id',
-            'products.number_of_sale',
-            'products.thumbnail_photo',
-            'products.name',
-            'products.product_code',
-            'products.product_cost_with_tax',
-            'products.profit',
-            'products.product_price',
-            'products.is_show_emi_on_pos',
-            'products.tax_type',
-            'units.name as unit_name',
-            'taxes.id as tax_id',
-            'taxes.tax_percent',
-            'product_variants.id as variant_id',
-            'product_variants.variant_name',
-            'product_variants.variant_code',
-            'product_variants.variant_cost_with_tax',
-            'product_variants.variant_profit',
-            'product_variants.variant_price',
-        )->orderBy('products.id', 'desc')->get();
+            'category_id',
+            'brand_id',
+            'unit_id',
+            'number_of_sale',
+            'thumbnail_photo',
+            'name',
+            'product_code',
+            'product_cost_with_tax',
+            'profit',
+            'product_price',
+            'is_show_emi_on_pos',
+            'tax_type',
+        )->get();
+
+        // return $products = $query->select(
+        //     'products.id',
+        //     'products.number_of_sale',
+        //     'products.thumbnail_photo',
+        //     'products.name',
+        //     'products.product_code',
+        //     'products.product_cost_with_tax',
+        //     'products.profit',
+        //     'products.product_price',
+        //     'products.is_show_emi_on_pos',
+        //     'products.tax_type',
+        //     'units.name as unit_name',
+        //     'taxes.id as tax_id',
+        //     'taxes.tax_percent',
+        //     'product_variants.id as variant_id',
+        //     'product_variants.variant_name',
+        //     'product_variants.variant_code',
+        //     'product_variants.variant_cost_with_tax',
+        //     'product_variants.variant_profit',
+        //     'product_variants.variant_price', 
+        // )->orderBy('products.id', 'desc')->get();
 
         return view('sales.pos.ajax_view.select_product_list', compact('products'));
     }
@@ -1456,8 +1487,8 @@ class POSController extends Controller
             $index++;
         }
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+        $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
 
         $i = 5;
         $a = 0;

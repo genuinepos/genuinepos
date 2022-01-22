@@ -890,11 +890,13 @@ class SaleUtil
                 $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
                     ->where('product_id', $sale_product->product_id)
                     ->where('product_variant_id',  $variant_id)
+                    ->where('branch_id', auth()->user()->branch_id)
                     ->orderBy('created_at', 'asc')->get();
             } else if ($stockAccountingMethod == 2) {
                 $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
                     ->where('product_id', $sale_product->product_id)
                     ->where('product_variant_id', $variant_id)
+                    ->where('branch_id', auth()->user()->branch_id)
                     ->orderBy('created_at', 'desc')->get();
             }
 
@@ -984,11 +986,13 @@ class SaleUtil
                     $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
                         ->where('product_id', $sale_product->product_id)
                         ->where('product_variant_id',  $variant_id)
+                        ->where('branch_id', auth()->user()->branch_id)
                         ->orderBy('created_at', 'asc')->get();
                 } else if ($stockAccountingMethod == 2) {
                     $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
                         ->where('product_id', $sale_product->product_id)
                         ->where('product_variant_id', $variant_id)
+                        ->where('branch_id', auth()->user()->branch_id)
                         ->orderBy('created_at', 'desc')->get();
                 }
 

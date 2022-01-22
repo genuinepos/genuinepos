@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Bank;
 use App\Models\Account;
-use App\Models\AccountType;
 use App\Models\CashFlow;
 use App\Utils\AccountUtil;
+use App\Models\AccountType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -278,7 +279,8 @@ class AccountController extends Controller
         if ($request->from_date) {
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
             $query->whereBetween('report_date', $date_range); // Final
         }
 

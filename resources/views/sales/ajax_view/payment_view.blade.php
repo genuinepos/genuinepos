@@ -54,7 +54,7 @@
         <h6><i class="fas fa-spinner"></i> Processing...</h6>
     </div>
     <div class="table-responsive">
-        <table class="table modal-table table-sm table-striped">
+        <table class="display modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-primary">
                     <th class="text-white">Date</th>

@@ -1,13 +1,18 @@
 <?php
 
+use App\Models\Sale;
+use App\Models\SaleProduct;
+use App\Utils\PurchaseUtil;
 use App\Models\AdminAndUser;
+use App\Models\PurchaseProduct;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Models\PurchaseSaleProductChain;
 use App\Http\Controllers\Auth\ResetPasswordController;
-
+use App\Utils\Converter;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -780,6 +785,11 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
         Route::get('search/product/{product_name}', 'ProductSaleReportController@searchProduct');
     });
 
+    Route::group(['prefix' => 'stock/in/out'], function () {
+        Route::get('/', 'StockInOutReportController@index')->name('reports.stock.in.out.index');
+        Route::get('print', 'StockInOutReportController@print')->name('reports.stock.in.out.print');
+    });
+
     Route::group(['prefix' => 'purchase/payments'], function () {
         Route::get('/', 'PurchasePaymentReportController@index')->name('reports.purchase.payments.index');
         Route::get('print', 'PurchasePaymentReportController@print')->name('reports.purchase.payments.print');
@@ -878,6 +888,85 @@ Route::get('/test', function () {
     //     $p->save();
     // }
     //return array_merge($arr1, $arr2, $arr3);
+
+    $purchaseProducts = PurchaseProduct::all();
+    foreach ($purchaseProducts as $pp) {
+        $pp->left_qty = $pp->quantity;
+        $pp->save();
+    }
+
+    // $settings = DB::table('general_settings')
+    //     ->select(['id', 'business', 'prefix', 'send_es_settings'])
+    //     ->first();
+    // $converter = new Converter();
+
+    // $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+
+    // $saleProducts = SaleProduct::orderBy('id', 'desc')->get();
+    // foreach ($saleProducts as $sale_product) {
+    //     $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
+
+    //     $purchaseProducts = '';
+    //     if ($stockAccountingMethod == 1) {
+    //         $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+    //             ->where('product_id', $sale_product->product_id)
+    //             ->where('product_variant_id',  $variant_id)
+    //             ->where('branch_id', auth()->user()->branch_id)
+    //             ->orderBy('created_at', 'asc')->get();
+    //     } else if ($stockAccountingMethod == 2) {
+    //         $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+    //             ->where('product_id', $sale_product->product_id)
+    //             ->where('product_variant_id', $variant_id)
+    //             ->where('branch_id', auth()->user()->branch_id)
+    //             ->orderBy('created_at', 'desc')->get();
+    //     }
+
+    //     if (count($purchaseProducts) > 0) {
+    //         $sold_qty = $sale_product->quantity;
+    //         foreach ($purchaseProducts as $purchaseProduct) {
+    //             if ($sold_qty > $purchaseProduct->left_qty) {
+    //                 if ($sold_qty > 0) {
+    //                     $addPurchaseSaleChain = new PurchaseSaleProductChain();
+    //                     $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+    //                     $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+    //                     $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+    //                     $addPurchaseSaleChain->save();
+    //                     $sold_qty -= $purchaseProduct->left_qty;
+    //                     $purchaseUtil = new PurchaseUtil($converter);
+    //                     $purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+    //                 } else {
+    //                     break;
+    //                 }
+    //             } else if ($sold_qty == $purchaseProduct->left_qty) {
+    //                 if ($sold_qty > 0) {
+    //                     $addPurchaseSaleChain = new PurchaseSaleProductChain();
+    //                     $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+    //                     $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+    //                     $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+    //                     $addPurchaseSaleChain->save();
+    //                     $sold_qty -= $purchaseProduct->left_qty;
+    //                     $purchaseUtil = new PurchaseUtil($converter);
+    //                     $purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+    //                 } else {
+    //                     break;
+    //                 }
+    //             } else if ($sold_qty < $purchaseProduct->left_qty) {
+    //                 if ($sold_qty > 0) {
+    //                     $addPurchaseSaleChain = new PurchaseSaleProductChain();
+    //                     $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+    //                     $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+    //                     $addPurchaseSaleChain->sold_qty = $sold_qty;
+    //                     $addPurchaseSaleChain->save();
+    //                     $sold_qty -= $sold_qty;
+    //                     $purchaseUtil = new PurchaseUtil($converter);
+    //                     $purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+    //                 } else {
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 });
 
 // All authenticated routes

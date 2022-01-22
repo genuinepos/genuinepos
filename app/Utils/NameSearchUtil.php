@@ -11,23 +11,23 @@ class NameSearchUtil
     {
         $namedProducts = '';
         $namedProducts = Product::with([
-            'product_variants:id,variant_name,variant_code,variant_cost,variant_cost_with_tax,variant_price',
+            'product_variants:id,product_id,variant_name,variant_code,variant_cost,variant_cost_with_tax,variant_price',
+            'product_variants.updateVariantCost',
             'tax:id,tax_name,tax_percent',
-            'unit:id,name,code_name',
+            'unit:id,name',
+            'updateProductCost',
         ])
             ->where('name', 'LIKE',  $keyword . '%')
+            ->where('is_for_sale', 1)
             ->where('status', 1)->select(
                 'id',
                 'name',
                 'product_code',
                 'is_combo',
-                'is_featured',
-                'is_for_sale',
                 'is_manage_stock',
                 'is_purchased',
                 'is_show_emi_on_pos',
                 'is_variant',
-                'offer_price',
                 'product_cost',
                 'product_cost_with_tax',
                 'product_price',

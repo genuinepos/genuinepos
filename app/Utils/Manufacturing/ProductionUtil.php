@@ -2,19 +2,22 @@
 
 namespace App\Utils\Manufacturing;
 
+use Carbon\Carbon;
 use App\Models\Product;
 use App\Utils\Converter;
 use Illuminate\Support\Str;
 use App\Models\ProductVariant;
+use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\Manufacturing\Production;
-use App\Utils\ProductStockUtil;
+use App\Utils\PurchaseUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductionUtil
 {
     protected $converter;
     protected $productStockUtil;
+    
     public function __construct(
         Converter $converter,
         ProductStockUtil $productStockUtil,
@@ -195,7 +198,8 @@ class ProductionUtil
         if ($request->from_date) {
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            $date_range = [$from_date, $to_date];
+            //$date_range = [$from_date, $to_date];
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('productions.report_date', $date_range); // Final
         }
         return $query;

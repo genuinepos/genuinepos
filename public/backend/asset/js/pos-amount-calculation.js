@@ -84,7 +84,7 @@ $(document).on('click', '#edit_product', function (e) {
     var product_variant = parentTableRow.find('.product_variant').html();
     var product_code = parentTableRow.find('.product-name').attr('title');
     var unit_price_exc_tax = parentTableRow.find('#unit_price_exc_tax').val();
-    var unit_cost_inc_tax = parentTableRow.find('#unit_costs_inc_tax').val();
+    var unit_cost_inc_tax = parentTableRow.find('#unit_cost_inc_tax').val();
     var unit_tax_percent = parentTableRow.find('#unit_tax_percent').val();
     var tax_type = parentTableRow.find('#tax_type').val();
     var unit_tax_amount = parentTableRow.find('#unit_tax_amount').val();

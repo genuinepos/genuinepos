@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Loan;
-use App\Models\CashFlow;
-use App\Utils\AccountUtil;
-use App\Utils\Converter;
 use App\Utils\LoanUtil;
+use App\Models\CashFlow;
+use App\Utils\Converter;
+use App\Utils\AccountUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -43,7 +44,8 @@ class LoanController extends Controller
             if ($request->from_date) {
                 $fromDate = date('Y-m-d', strtotime($request->from_date));
                 $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-                $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+                $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
                 $query->whereBetween('loans.report_date', $date_range); // Final
             }
 
@@ -296,7 +298,8 @@ class LoanController extends Controller
         if ($request->from_date) {
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+            $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
             $query->whereBetween('loans.report_date', $date_range); // Final
         }
 

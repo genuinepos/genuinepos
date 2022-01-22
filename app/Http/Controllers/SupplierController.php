@@ -87,7 +87,7 @@ class SupplierController extends Controller
         $addSupplierLedger = new SupplierLedger();
         $addSupplierLedger->supplier_id = $addSupplier->id;
         $addSupplierLedger->row_type = 3;
-        $addSupplierLedger->report_date = date('Y-m-d');
+        $addSupplierLedger->report_date = date('Y-m-d H:i:s');
         $addSupplierLedger->amount = $request->opening_balance ? $request->opening_balance : 0;
         $addSupplierLedger->save();
 
@@ -364,7 +364,7 @@ class SupplierController extends Controller
         $supplierPayment->paid_amount = $request->amount;
         $supplierPayment->pay_mode = $request->payment_method;
         $supplierPayment->date = $request->date;
-        $supplierPayment->report_date = date('Y-m-d', strtotime($request->date));
+        $supplierPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $supplierPayment->time = date('h:i:s a');
         $supplierPayment->month = date('F');
         $supplierPayment->year = date('Y');
@@ -404,7 +404,7 @@ class SupplierController extends Controller
             $addCashFlow->transaction_type = 12;
             $addCashFlow->cash_type = 1;
             $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+            $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
@@ -418,7 +418,7 @@ class SupplierController extends Controller
         $addSupplierLedger->supplier_id = $supplierId;
         $addSupplierLedger->row_type = 4;
         $addSupplierLedger->supplier_payment_id = $supplierPayment->id;
-        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
+        $addSupplierLedger->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addSupplierLedger->save();
 
         $dueInvoices = Purchase::where('supplier_id', $supplierId)
@@ -436,7 +436,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->account_id = $request->account_id;
                         $addPurchasePayment->paid_amount = $request->amount;
                         $addPurchasePayment->date = $request->date;
-                        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->pay_mode = $request->payment_method;
@@ -481,7 +481,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->account_id = $request->account_id;
                         $addPurchasePayment->paid_amount = $request->amount;
                         $addPurchasePayment->date = $request->date;
-                        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->pay_mode = $request->payment_method;
@@ -524,7 +524,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->account_id = $request->account_id;
                         $addPurchasePayment->paid_amount = $dueInvoice->due;
                         $addPurchasePayment->date = $request->date;
-                        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->pay_mode = $request->payment_method;
@@ -588,7 +588,7 @@ class SupplierController extends Controller
         $supplierPayment->type = 2;
         $supplierPayment->pay_mode = $request->payment_method;
         $supplierPayment->date = $request->date;
-        $supplierPayment->report_date = date('Y-m-d', strtotime($request->date));
+        $supplierPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $supplierPayment->time = date('h:i:s a');
         $supplierPayment->month = date('F');
         $supplierPayment->year = date('Y');
@@ -628,7 +628,7 @@ class SupplierController extends Controller
             $addCashFlow->transaction_type = 12;
             $addCashFlow->cash_type = 2;
             $addCashFlow->date = date('d-m-y', strtotime($request->date));
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+            $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
@@ -642,7 +642,7 @@ class SupplierController extends Controller
         $addSupplierLedger->supplier_id = $supplierId;
         $addSupplierLedger->row_type = 4;
         $addSupplierLedger->supplier_payment_id = $supplierPayment->id;
-        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
+        $addSupplierLedger->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addSupplierLedger->save();
 
         $returnPurchases = Purchase::with(['purchase_return'])->where('purchase_return_due', '>', 0)->get();
@@ -662,7 +662,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->paid_amount = $request->amount;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
@@ -715,7 +715,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->paid_amount = $request->amount;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
@@ -767,7 +767,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->paid_amount = $returnPurchase->purchase_return_due;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                        $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
@@ -837,7 +837,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->paid_amount = $request->amount;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                            $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                             $addPurchasePayment->month = date('F');
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
@@ -885,7 +885,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->paid_amount = $request->amount;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                            $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                             $addPurchasePayment->month = date('F');
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
@@ -933,7 +933,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->paid_amount = $dueSupplierReturnInvoice->total_return_due;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                            $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+                            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                             $addPurchasePayment->month = date('F');
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;

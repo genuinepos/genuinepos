@@ -65,7 +65,7 @@ class PurchaseOrderReceiveController extends Controller
         $purchase->po_received_qty = $request->total_received;
         $purchase->is_purchased = $request->total_received > 0 ? 1 : $purchase->is_purchased;
         $purchase->date = $request->date;
-        $purchase->report_date = date('Y-m-d', strtotime($request->date));
+        $purchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $purchase->save();
 
         // Update Purchase order Product
@@ -144,7 +144,7 @@ class PurchaseOrderReceiveController extends Controller
             $addPurchasePayment->pay_mode = $request->payment_method;
             $addPurchasePayment->paid_amount = $request->paying_amount;
             $addPurchasePayment->date = $request->date;
-            $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
+            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $addPurchasePayment->month = date('F');
             $addPurchasePayment->year = date('Y');
             $addPurchasePayment->note = $request->payment_note;
@@ -160,7 +160,7 @@ class PurchaseOrderReceiveController extends Controller
                 $addCashFlow->transaction_type = 3;
                 $addCashFlow->cash_type = 1;
                 $addCashFlow->date = $request->date;
-                $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+                $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                 $addCashFlow->month = date('F');
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
@@ -174,7 +174,7 @@ class PurchaseOrderReceiveController extends Controller
             $addSupplierLedger->supplier_id = $request->supplier_id;
             $addSupplierLedger->purchase_payment_id = $addPurchasePayment->id;
             $addSupplierLedger->row_type = 2;
-            $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
+            $addSupplierLedger->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $addSupplierLedger->save();
         }
 

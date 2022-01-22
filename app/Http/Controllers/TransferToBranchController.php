@@ -131,7 +131,7 @@ class TransferToBranchController extends Controller
         $addTransferToBranch->net_total_amount = $request->net_total_amount;
         $addTransferToBranch->shipping_charge = $request->shipping_charge;
         $addTransferToBranch->date = $request->date;
-        $addTransferToBranch->report_date = date('Y-m-d', strtotime($request->date));
+        $addTransferToBranch->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addTransferToBranch->month = date('F');
         $addTransferToBranch->year = date('Y');
         $addTransferToBranch->save();
@@ -246,7 +246,7 @@ class TransferToBranchController extends Controller
         $updateTransferToBranch->shipping_charge = $request->shipping_charge;
         $updateTransferToBranch->additional_note = $request->additional_note;
         $updateTransferToBranch->date = $request->date;
-        $updateTransferToBranch->report_date = date('Y-m-d', strtotime($request->date));
+        $updateTransferToBranch->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updateTransferToBranch->month = date('F');
         $updateTransferToBranch->year = date('Y');
         $updateTransferToBranch->save();

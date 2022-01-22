@@ -209,7 +209,7 @@ class PayrollController extends Controller
         $addPayroll->total_deduction_amount = $request->total_deduction_amount;
         $addPayroll->gross_amount = $request->gross_amount;
         $addPayroll->due = $request->gross_amount;
-        $addPayroll->report_date_ts = date('Y-m-d');
+        $addPayroll->report_date_ts = date('Y-m-d H:i:s');
         $addPayroll->date = date('d-m-Y');
         $addPayroll->month = $request->month;
         $addPayroll->year = $request->year;
@@ -434,7 +434,7 @@ class PayrollController extends Controller
         $addPayrollPayment->due = $updatePayroll->due;
         $addPayrollPayment->date = $request->date;
         $addPayrollPayment->time = date('h:i:s a');
-        $addPayrollPayment->report_date = date('Y-m-d', strtotime($request->date));
+        $addPayrollPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addPayrollPayment->month = date('F');
         $addPayrollPayment->year = date('Y');
         $addPayrollPayment->note = $request->note;
@@ -483,7 +483,7 @@ class PayrollController extends Controller
             $addCashFlow->transaction_type = 8;
             $addCashFlow->cash_type = 1;
             $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+            $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $addCashFlow->month = date('F');
             $addCashFlow->year = date('Y');
             $addCashFlow->admin_id = auth()->user()->id;
@@ -563,7 +563,7 @@ class PayrollController extends Controller
         $updatePayrollPayment->paid = $request->amount;
         $updatePayrollPayment->due = $updatePayrollPayment->payroll->due;
         $updatePayrollPayment->date = $request->date;
-        $updatePayrollPayment->report_date = date('Y-m-d', strtotime($request->date));
+        $updatePayrollPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updatePayrollPayment->month = date('F');
         $updatePayrollPayment->year = date('Y');
         $updatePayrollPayment->note = $request->note;
@@ -623,7 +623,7 @@ class PayrollController extends Controller
                 $addCashFlow->transaction_type = 8;
                 $addCashFlow->cash_type = 1;
                 $addCashFlow->date = $request->date;
-                $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+                $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                 $addCashFlow->month = date('F');
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;

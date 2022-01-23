@@ -18,7 +18,7 @@
         /* Search Product area style end */
     </style>
 @endpush
-@section('title', 'Stock In Out Report - ')
+@section('title', 'Stock In-Out Report - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -27,8 +27,8 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-cart"></span>
-                                <h5>Stock In Out Report</h5>
+                                <span class="fas fa-cubes"></span>
+                                <h5>Stock In-Out Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back

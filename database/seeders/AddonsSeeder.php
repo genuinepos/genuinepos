@@ -16,7 +16,7 @@ class AddonsSeeder extends Seeder
     {
         $addons = array(
             array('branches' => '1','hrm' => '1','todo' => '1','service' => '0','manufacturing' => '0','e_commerce' => '0')
-          );
+        );
         
         \DB::table("addons")->insert($addons);
     }

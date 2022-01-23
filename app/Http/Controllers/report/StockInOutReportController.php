@@ -79,12 +79,9 @@ class StockInOutReportController extends Controller
                 'branches.name as branch_name',
                 'purchases.id as purchase_id',
                 'purchases.invoice_id as purchase_inv',
-                'purchases.date as purchase_date',
                 'productions.id as production_id',
                 'productions.reference_no as production_voucher_no',
-                'productions.date as production_date',
                 'product_opening_stocks.id as pos_id',
-                'product_opening_stocks.created_at as pos_date',
                 'purchase_products.net_unit_cost',
                 'purchase_products.quantity as stock_in_qty',
                 'purchase_products.created_at as stock_in_date',
@@ -170,5 +167,86 @@ class StockInOutReportController extends Controller
         $customers = DB::table('customers')->select('id', 'name')->get();
 
         return view('reports.stock_in_out_report.index', compact('branches', 'customers'));
+    }
+
+    public function print(Request $request)
+    {
+        $generalSettings = DB::table('general_settings')->first();
+        $branch_id = $request->branch_id;
+        $stockInOuts = '';
+        $fromDate = '';
+        $toDate = '';
+        $query = DB::table('purchase_sale_product_chains')
+            ->leftJoin('sale_products', 'purchase_sale_product_chains.sale_product_id', 'sale_products.id')
+            ->leftJoin('products', 'sale_products.product_id', 'products.id')
+            ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
+            ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+            ->leftJoin('customers', 'sales.customer_id', 'customers.id')
+            ->leftJoin('branches', 'sales.branch_id', 'branches.id')
+            ->leftJoin('purchase_products', 'purchase_sale_product_chains.purchase_product_id', 'purchase_products.id')
+            ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
+            ->leftJoin('productions', 'purchase_products.production_id', 'productions.id')
+            ->leftJoin('product_opening_stocks', 'purchase_products.opening_stock_id', 'product_opening_stocks.id');
+
+        if ($request->product_id) {
+            $query->where('sale_products.product_id', $request->product_id);
+        }
+
+        if ($request->variant_id) {
+            $query->where('sale_products.product_variant_id', $request->variant_id);
+        }
+
+        if ($request->branch_id) {
+            if ($request->branch_id == 'NULL') {
+                $query->where('sales.branch_id', NULL);
+            } else {
+                $query->where('sales.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->customer_id) {
+            if ($request->customer_id == 'NULL') {
+                $query->where('sales.customer_id', NULL);
+            } else {
+                $query->where('sales.customer_id', $request->customer_id);
+            }
+        }
+
+        if ($request->from_date) {
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+            $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
+            $query->whereBetween('sales.report_date', $date_range);
+        }
+
+        $query->select(
+            'sales.id as sale_id',
+            'sales.date',
+            'sales.invoice_id',
+            'products.name',
+            'product_variants.variant_name',
+            'sale_products.unit_price_inc_tax',
+            'sale_products.unit',
+            'purchase_sale_product_chains.sold_qty',
+            'customers.name as customer_name',
+            'branches.name as branch_name',
+            'purchases.id as purchase_id',
+            'purchases.invoice_id as purchase_inv',
+            'productions.id as production_id',
+            'productions.reference_no as production_voucher_no',
+            'product_opening_stocks.id as pos_id',
+            'purchase_products.net_unit_cost',
+            'purchase_products.quantity as stock_in_qty',
+            'purchase_products.created_at as stock_in_date',
+        );
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            $stockInOuts = $query->orderBy('sales.report_date', 'desc')->get();
+        } else {
+            $stockInOuts = $query->where('sales.branch_id', auth()->user()->branch_id)
+                ->orderBy('sales.report_date', 'desc')->get();
+        }
+
+        return view('reports.stock_in_out_report.ajax_view.print', compact('stockInOuts', 'fromDate', 'toDate', 'branch_id'));
     }
 }

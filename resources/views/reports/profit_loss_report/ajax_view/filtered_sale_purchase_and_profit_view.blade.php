@@ -129,7 +129,7 @@
                         <h6 class="text-muted m-0">Gross Profit : 
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
                             <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($grossProfit) }}</span></h6>
-                            <p class="text-muted m-0">Gross Profit (Total Sale + Total Stock Adjustment Recovered)
+                            <p class="text-muted m-0">Gross Profit : (Total Sale + Total Stock Adjustment Recovered)
                                 - <br>( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
                     </div>
                 </div>

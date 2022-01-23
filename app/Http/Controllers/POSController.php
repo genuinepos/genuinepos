@@ -278,7 +278,7 @@ class POSController extends Controller
 
         $invoiceId = 1;
         $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
-        if ($lastSale) {
+        if ($lastSalePayment) {
             $invoiceId = ++$lastSalePayment->id;
         }
 

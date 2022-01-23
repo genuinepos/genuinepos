@@ -15,7 +15,7 @@
 
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ number_format((float)$totalTotalUnitCost, 2, '.', '') }}
+                                    {{ App\Utils\Converter::format_in_bdt($totalTotalUnitCost) }}
                                 </td>
                             </tr>
 
@@ -23,7 +23,7 @@
                                 <th class="text-start">Total Order Tax : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ number_format($totalOrderTax, 2, '.', '') }}
+                                    {{ App\Utils\Converter::format_in_bdt($totalOrderTax) }}
                                 </td>
                             </tr>
 
@@ -31,7 +31,7 @@
                                 <th class="text-start"> Total Stock Adjustment : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ number_format($totalStockAdjustmentAmount, 2, '.', '') }}
+                                    {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentAmount) }}
                                 </td>
                             </tr>
     
@@ -39,7 +39,7 @@
                                 <th class="text-start"> Total Expense : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ number_format($totalExpense, 2, '.', '') }}
+                                    {{ App\Utils\Converter::format_in_bdt($totalExpense) }}
                                 </td>
                             </tr>
     
@@ -47,7 +47,7 @@
                                 <th class="text-start">Total transfer shipping charge : </th>
                                 <td class="text-start"> 
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ number_format($totalTransferShipmentCost, 2, '.', '') }}
+                                    {{ App\Utils\Converter::format_in_bdt($totalTransferShipmentCost) }}
                                 </td>
                             </tr>
     
@@ -55,13 +55,16 @@
                                 <th class="text-start">Total Sell Return : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ number_format($totalReturn, 2, '.', '') }}
+                                    {{ App\Utils\Converter::format_in_bdt($totalReturn) }}
                                 </td>
                             </tr>
     
                             <tr>
                                 <th class="text-start">Total Payroll :</th>
-                                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ number_format($totalPayroll, 2, '.', '') }}</td>
+                                <td class="text-start">
+                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                    {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}
+                                </td>
                             </tr>
     
                             <tr>
@@ -87,7 +90,7 @@
 
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ number_format($totalSale, 2, '.', '') }}
+                                    {{ App\Utils\Converter::format_in_bdt($totalSale) }}
                                 </td>
                             </tr>
     
@@ -95,7 +98,7 @@
                                 <th class="text-start">Total Stock Adjustment Recovered : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ number_format($totalStockAdjustmentRecovered, 2, '.', '') }}
+                                    {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentRecovered) }}
                                 </td>
                             </tr>
                         </tbody>
@@ -107,7 +110,7 @@
 </div>  
 
 @php
-    $netProfit = ($totalSale + $totalStockAdjustmentRecovered) 
+    $grossProfit = ($totalSale + $totalStockAdjustmentRecovered) 
                 - $totalStockAdjustmentAmount 
                 - $totalExpense
                 - $totalReturn
@@ -122,11 +125,11 @@
         <div class="card-body"> 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="net_profit_area">
-                        <h6 class="text-muted m-0">Net Profit : 
+                    <div class="gross_profit_area">
+                        <h6 class="text-muted m-0">Gross Profit : 
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            <span class="{{ $netProfit < 0 ? 'text-danger' : '' }}">{{ number_format((float)$netProfit, 2, '.', '') }}</span></h6>
-                            <p class="text-muted m-0">Net Profit (Total Sale + Total Stock Adjustment Recovered)
+                            <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($grossProfit) }}</span></h6>
+                            <p class="text-muted m-0">Gross Profit : (Total Sale + Total Stock Adjustment Recovered)
                                 - <br>( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
                     </div>
                 </div>

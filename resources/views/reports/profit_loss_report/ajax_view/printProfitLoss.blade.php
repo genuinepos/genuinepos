@@ -144,7 +144,7 @@
                     </table>
 
                     @php
-                        $netProfit = ($totalSale + $totalStockAdjustmentRecovered) 
+                        $grossProfit = ($totalSale + $totalStockAdjustmentRecovered) 
                                     - $totalStockAdjustmentAmount 
                                     - $totalExpense
                                     - $totalReturn
@@ -155,11 +155,11 @@
                     @endphp
 
               
-                    <div class="net_profit_area">
-                        <h6 class="text-muted m-0">Net Profit : 
+                    <div class="gross_profit_area">
+                        <h6 class="text-muted m-0">Gross Profit : 
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            <span class="{{ $netProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($netProfit) }}</span></h6>
-                        <p class="text-muted m-0"><b>Calculate Net Profit :</b> (Total Sale + Total Stock Adjustment Recovered)
+                            <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($grossProfit) }}</span></h6>
+                        <p class="text-muted m-0"><b>Calculate Gross Profit :</b> (Total Sale + Total Stock Adjustment Recovered)
                             <b>-</b> ( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
                     </div>
                 </div> 

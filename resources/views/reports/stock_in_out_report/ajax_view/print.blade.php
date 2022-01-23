@@ -8,7 +8,7 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 15px;margin-right: 15px;}
+    @page {size:a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 15px; margin-right: 15px;}
     .header, .header-space,
     .footer, .footer-space {height: 20px;}
     .header {position: fixed; top: 0;}
@@ -18,9 +18,8 @@
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
 @php
-    $totalExpense = 0;
-    $totalPaid = 0;
-    $totalDue = 0;
+    $totalStockInQty = 0;
+    $totalStockOutQty = 0;
 @endphp
 
 <div class="row">
@@ -49,7 +48,7 @@
                 <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Expense Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>Stock In-Out Report </b></h6>
     </div>
 </div>
 <br>
@@ -58,53 +57,69 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Reference No</th>
-                    <th class="text-start">Description</th>
-                    <th class="text-start">B.Location</th>
-                    <th class="text-start">Expense For</th>
-                    <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-start">Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-start">Due({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-start">Product</th>
+                    <th class="text-start">Sale</th>
+                    <th class="text-start">Sale Date</th>
+                    <th class="text-start">B. Location</th>
+                    <th class="text-end">Sold/Out Qty</th>
+                    <th class="text-end">Sold Price({{json_decode($generalSettings->business, true)['currency']}})</th>
+                
+                    <th class="text-start">Customer</th>
+                    <th class="text-start">Stock In By</th>
+                    <th class="text-start">Stock In Date</th>
+                    <th class="text-end">Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
-                @foreach ($expenses as $ex)
+                @foreach ($stockInOuts as $row)
                     @php
-                        $totalExpense += $ex->net_total_amount;
-                        $totalPaid += $ex->paid;
-                        $totalDue += $ex->due;
+                        $totalStockInQty += $row->stock_in_qty;
+                        $totalStockOutQty += $row->sold_qty;
                     @endphp
                     <tr>
                         <td class="text-start">
-                            {{ date($__date_format, strtotime($ex->date)) }}
-                        </td>
-                        <td class="text-start">{{ $ex->invoice_id }}</td>
-                        <td class="text-start">
                             @php
-                                $expenseDescriptions = DB::table('expense_descriptions')
-                                    ->where('expense_id', $ex->id)
-                                    ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
-                                    ->select('expanse_categories.name', 'expanse_categories.code', 'expense_descriptions.amount')
-                                    ->get();
+                                $variant = $row->variant_name ? '/' . $row->variant_name : '';
                             @endphp
-                            @foreach ($expenseDescriptions as $exDescription)
-                                {!! '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b>'. $exDescription->amount !!} <br>
-                            @endforeach
+                            {{ Str::limit($row->name, 20, '') . $variant }}
+                        </td>
+                        <td class="text-start">{{ $row->invoice_id }}</td>
+                        <td class="text-start">
+                            {{ date($__date_format, strtotime($row->date)) }}
                         </td>
                         <td class="text-start">
-                            @if ($ex->branch_name)
-                                {!! $ex->branch_name . '/' . $ex->branch_code . '(<b>BR</b>)' !!}
-                            @else
-                                {!! json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}
+                            @if ($row->branch_name) 
+                                {{ $row->branch_name }}
+                            @else 
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }}
                             @endif
                         </td>
 
-                        <td>{{ $ex->cr_prefix . ' ' . $ex->cr_name . ' ' . $ex->cr_last_name }}</td>
+                        <td class="text-end">{{ $row->sold_qty }}</td>
 
-                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->net_total_amount) }}</td>
-                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->paid) }}</td>
-                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->due) }}</td>
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax) }}
+                        </td>
+
+                        <td class="text-start">{{ $row->customer_name ? $row->customer_name : 'Walk-In-Customer'; }}</td>
+                        
+                        <td class="text-start">
+                            @if ($row->purchase_inv) 
+                                {{ 'Purchase:'. $row->purchase_inv }}  
+                            @elseif ($row->production_voucher_no) 
+                                {{ 'Production:' . $row->production_voucher_no }}
+                            @elseif ($row->pos_id) 
+                                {{ 'Opening Stock' }}
+                            @endif
+                        </td>
+
+                        <td class="text-start">
+                            {{ date($__date_format, strtotime($row->stock_in_date)) }}
+                        </td>
+
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($row->net_unit_cost) }}
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -119,30 +134,22 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Expense : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">Total Stock In Qty : </th>
                     <td class="text-end">
-                        {{ App\Utils\Converter::format_in_bdt($totalExpense) }}
+                        {{ App\Utils\Converter::format_in_bdt($totalStockInQty) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Paid : {{json_decode($generalSettings->business, true)['currency']}}</th>
+                    <th class="text-end">Total Stock Out Qty : </th>
                     <td class="text-end">
-                        {{ App\Utils\Converter::format_in_bdt($totalPaid) }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <th class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                    <td class="text-end">
-                        {{ App\Utils\Converter::format_in_bdt($totalDue) }}
+                        {{ App\Utils\Converter::format_in_bdt($totalStockOutQty) }}
                     </td>
                 </tr>
             </thead>
         </table>
     </div>
 </div>
-
 
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">

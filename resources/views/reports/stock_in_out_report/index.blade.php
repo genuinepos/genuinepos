@@ -295,34 +295,6 @@
         $(this).addClass('selectProduct');
     });
 
-    //Print purchase report
-    $(document).on('click', '#print_report', function (e) {
-        e.preventDefault();
-        var url = "{{ route('reports.stock.in.out.print') }}";
-        var branch_id = $('#branch_id').val();
-        var product_id = $('#product_id').val();
-        var variant_id = $('#variant_id').val();
-        var customer_id = $('#customer_id').val();
-        var from_date = $('.from_date').val();
-        var to_date = $('.to_date').val();
-        $.ajax({
-            url:url,
-            type:'get',
-            data: {branch_id, product_id, customer_id, variant_id, from_date, to_date},
-            success:function(data){
-                $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
-                });
-            }
-        }); 
-    });
-
     // Show details modal with data
     $(document).on('click', '#details', function (e) {
         e.preventDefault();
@@ -335,6 +307,38 @@
             $('.footer_btn').hide();
             $('.action_hideable').hide();
         });
+    });
+
+        //Print purchase Payment report
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('reports.stock.in.out.print') }}";
+        var branch_id = $('#branch_id').val();
+        var customer_id = $('#customer_id').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
+        $.ajax({
+            url : url,
+            type : 'get',
+            data : {branch_id, customer_id, from_date, to_date},
+            success:function(data){
+                $(data).printThis({
+                    debug : false,                   
+                    importCSS : true,                
+                    importStyle : true,          
+                    loadCSS : "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline : false, 
+                    printDelay : 500, 
+                    header : "", 
+                    pageTitle : "",
+                    // footer: 'Footer Text',
+                    formValues : false,         
+                    canvas : false, 
+                    beforePrint : null,
+                    afterPrint : null      
+                });
+            }
+        }); 
     });
 </script>
 

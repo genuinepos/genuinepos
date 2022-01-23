@@ -21,13 +21,13 @@
                             @if ($defaultLayout->show_shop_logo == 1)
                                 @if ($sale->branch)
                                     @if ($sale->branch->logo != 'default.png')
-                                        <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                        <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                     @else 
                                         <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                     @endif
                                 @else 
                                     @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                        <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                                     @else 
                                         <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                                     @endif
@@ -56,21 +56,22 @@
                             <div class="heading text-end">
                                 @if ($sale->branch)
                                     <h6 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-                                    <h6 class="company_address">
-                                        {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
+                                        {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
+                                    </h6>
+
+                                    <p class="company_address">
                                         {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
                                         {{ $defaultLayout->branch_state == 1 ? $sale->branch->state : '' }},
                                         {{ $defaultLayout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
                                         {{ $defaultLayout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                    </h6>
+                                    </p>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <p><strong>Phone :</strong> {{ $sale->branch->phone }}</p>
+                                        <p><b>Phone :</b>  {{ $sale->branch->phone }}</p>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <p><strong>Email :</strong> {{ $sale->branch->email }}</p>
+                                        <p><b>Email :</b> {{ $sale->branch->email }}</p>
                                     @endif 
                                 @else
                                     <h6 class="company_name">
@@ -123,8 +124,15 @@
                             @if ($defaultLayout->customer_phone)
                                 <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}</li>
                             @endif
+
+                            @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                                <li><strong>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} : </strong>  
+                                    {{ $sale->customer ? $sale->customer->point : 0 }}
+                                </li>
+                            @endif
                         </ul>
                     </div>
+
                     <div class="col-lg-4 text-center">
                         @if ($defaultLayout->is_header_less == 1)
                             <div class="middle_header_text text-center">
@@ -144,13 +152,12 @@
                                 </h6>
                             </div>
                         @endif
-
                         <img style="width: 170px; height:35px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> Invoice No : </strong> {{ $sale->invoice_id }}</li>
-                            <li><strong> Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
+                            <li><strong> Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
                             <li><strong> Entered By : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }}</li>
                         </ul>
                     </div>
@@ -167,18 +174,15 @@
                             @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
                                 <th class="text-start">Warranty</th>
                             @endif
-
-                            <th class="text-end">Price</th>
-
+                            <th class="text-start">Price</th>
                             @if ($defaultLayout->product_discount)
-                                <th class="text-end">Discount</th>
+                                <th class="text-start">Discount</th>
                             @endif
 
                             @if ($defaultLayout->product_tax)
-                                <th class="text-end">Tax</th>
+                                <th class="text-start">Tax</th>
                             @endif
-
-                            <th class="text-end">SubTotal</th>
+                            <th class="text-start">SubTotal</th>
                         </tr>
                     </thead>
                     <tbody class="sale_print_product_list">
@@ -188,7 +192,7 @@
                                 <td class="text-start">
                                     {{ $sale_product->product->name }}
                                     @if ($sale_product->variant)
-                                        -{{ $sale_product->variant->variant_name }}
+                                        -{{ $sale_product->variant->variant_name }}{!! $sale_product->ex_quantity != 0 ? '(<b>EX:</b>'.$sale_product->ex_quantity.')' : '' !!}
                                     @endif
                                     {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                 </td>
@@ -201,26 +205,26 @@
                                             {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
                                             {!! $defaultLayout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->product->warranty->description . '</small>' : '' !!}
                                         @else 
-                                            <strong>No</strong>
+                                            <b>No</b>
                                         @endif
                                     </td>
                                 @endif
 
-                                <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }} </td>
+                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }} </td>
 
                                 @if ($defaultLayout->product_discount)
-                                    <td class="text-end">
+                                    <td class="text-start">
                                         {{ App\Utils\Converter::format_in_bdt($sale_product->unit_discount_amount) }}
                                     </td>
                                 @endif
 
                                 @if ($defaultLayout->product_tax)
-                                    <td class="text-end">
+                                    <td class="text-start">
                                         {{ $sale_product->unit_tax_percent }}%
                                     </td>
                                 @endif
 
-                                <td class="text-end">
+                                <td class="text-start">
                                     {{ App\Utils\Converter::format_in_bdt($sale_product->subtotal) }}
                                 </td>
                             </tr>
@@ -246,9 +250,9 @@
             <div class="row">
                 <div class="col-md-6">
                     @if ($defaultLayout->show_total_in_word == 1)
-                        <p style="text-transform: uppercase;"><strong>In Word : <span id="inword"></span> ONLY.</strong></p>
+                        <p style="text-transform: uppercase;"><strong>In Word : <span id="inword"></span> ONLY.</strong></p> 
                     @endif
-                    
+
                     @if (
                         $defaultLayout->account_name || 
                         $defaultLayout->account_no || 
@@ -279,7 +283,7 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end"><strong>Net Total Amount :{{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong>Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="net_total text-end">{{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}</td>
                             </tr> 
                             <tr>
@@ -296,18 +300,17 @@
                             <tr>
                                 <td class="text-end"><strong> Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="order_tax text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) }}
-                                    ({{ $sale->order_tax_percent }} %)
+                                    {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) }}({{ $sale->order_tax_percent }} %)
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class="text-end"><strong> Shipment charge : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
-                                <td class="shipment_charge text-end">  
+                                <td class="shipment_charge text-end">
                                     {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                 </td>
                             </tr>
-
+                    
                             @if ($previous_due > 0)
                                 <tr>
                                     <td class="text-end"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
@@ -318,7 +321,7 @@
                             @endif
                             
                             <tr>
-                                <td class="text-end"><strong> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
+                                <td class="text-end"><strong> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="total_payable text-end">
                                     {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
                                 </td>
@@ -331,19 +334,22 @@
                                 </td>
                             </tr>
 
+                            @if ($change_amount > 0)
+                                <tr>
+                                    <td class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                    <td class="total_paid text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
+                                    </td>
+                                </tr>
+                            @endif
+                            
                             <tr>
-                                <td class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                <td class="total_paid text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="text-end"><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
                                 <td class="total_due text-end">
                                     {{ App\Utils\Converter::format_in_bdt($total_due > 0 ? $total_due : 0) }}
                                 </td>
                             </tr>
+                        
                         </tbody>
                     </table>
                 </div>
@@ -370,7 +376,7 @@
                         <p class="borderTop"><strong>Signature Of Authority</strong></p>
                     </div>
                 </div>
-            </div>
+            </div><br>
     
             <div class="row">
                 <div class="col-md-12">
@@ -423,7 +429,7 @@
                                             @if ($sale->branch->logo != 'default.png')
                                                 <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                             @else 
-                                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ $sale->branch->name }}</span>
+                                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black; font-weight: 600;">{{ $sale->branch->name }}</span>
                                             @endif
                                         @else 
                                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
@@ -435,7 +441,7 @@
                                     @endif
                                 </th>
                             </tr>
-    
+
                             @if ($sale->branch)
                                 <tr>
                                     <th class="text-center">
@@ -488,7 +494,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>Date:</b> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span> 
+                                    <b>Date:</b> <span> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</span> 
                                 </th>
                             </tr>
 
@@ -503,6 +509,15 @@
                                     <b>Customer:</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> 
                                 </th>
                             </tr>
+
+                            @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                                <tr>
+                                    <th class="text-center">
+                                        <b>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} : </b>  
+                                        <span>{{ $sale->customer ? $sale->customer->point : 0 }}</span> 
+                                    </th>
+                                </tr>
+                            @endif
                         </thead>
                     </table>
                 </div>
@@ -523,7 +538,9 @@
                                     @php
                                         $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
                                     @endphp
-                                    <th class="text-start">{{ $loop->index + 1 }}. {{ Str::limit($saleProduct->product->name, 25, '').$variant }} </th>
+                                    <th class="text-start">
+                                        {{ $loop->index + 1 }}. {{ Str::limit($saleProduct->product->name, 25, '').$variant }}{!! $saleProduct->ex_quantity != 0 ? '(<strong>EX:</strong>'.$saleProduct->ex_quantity.')' : '' !!} 
+                                    </th>
                                     
                                     <th class="text-center">{{ (float)$saleProduct->quantity }}</th>
                                     <th class="text-center">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
@@ -556,7 +573,7 @@
                             </tr>
                             
                             <tr>
-                                <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                 <th class="text-end">
                                     <span>
                                         ({{ $sale->order_tax_percent }} %)
@@ -564,17 +581,19 @@
                                 </th>
                             </tr>
 
+                            @if ($previous_due > 0)
+                                <tr>
+                                    <th class="text-end">Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <th class="text-end">
+                                        <span>
+                                            {{ App\Utils\Converter::format_in_bdt($previous_due) }}
+                                        </span>
+                                    </th>
+                                </tr>
+                            @endif
+                            
                             <tr>
-                                <th class="text-end">Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                <td class="text-end">
-                                    <span>
-                                        {{ App\Utils\Converter::format_in_bdt($previous_due) }}
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-end"> Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
@@ -583,7 +602,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end"> Paid :  {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end"> Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
@@ -591,15 +610,19 @@
                                 </th>
                             </tr>
 
-                            <tr>
-                                <th class="text-end">Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                <th class="total_paid text-end">
-                                    <b>
-                                        {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
-                                    </b>
-                                </th>
-                            </tr> 
-                            
+                            @if ($sale->ex_status == 0)
+                                @if ($change_amount > 0)
+                                    <tr>
+                                        <th class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></th>
+                                        <th class="total_paid text-end">
+                                            <span>
+                                                {{ App\Utils\Converter::format_in_bdt($change_amount) }}
+                                            </span>
+                                        </th>
+                                    </tr>
+                                @endif
+                            @endif
+
                             <tr>
                                 <th class="text-end"> Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
@@ -617,18 +640,14 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <span>
-                                        {{ $defaultLayout->invoice_notice ?  $defaultLayout->invoice_notice : '' }}
-                                    </span> 
+                                    <span>{{ $defaultLayout->invoice_notice ?  $defaultLayout->invoice_notice : '' }}</span> 
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-center">
                                     <br>
-                                    <span>
-                                        {{ $defaultLayout->footer_text ?  $defaultLayout->footer_text : '' }}
-                                    </span> 
+                                    <span>{{ $defaultLayout->footer_text ?  $defaultLayout->footer_text : '' }}</span> 
                                 </th>
                             </tr>
                         </thead>

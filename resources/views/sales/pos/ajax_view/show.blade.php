@@ -168,7 +168,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         @if (auth()->user()->permission->sale['sale_payment'] == '1') 
-                            @include('sales.pos.ajax_view.partials.posSaleDetailsPaymentList')
+                            @include('sales.pos.ajax_view.partials.pos_sale_details_payment_list')
                         @endif
                     </div>
                     <div class="col-md-6">
@@ -290,17 +290,17 @@
 
 <!-- Sale print templete-->
 @if ($sale->branch && $sale->branch->pos_sale_invoice_layout)
-    @include('sales.pos.ajax_view.partials.posSaleBranchInvoiceLayout')
+    @include('sales.pos.ajax_view.partials.pos_sale_branch_invoice_layout')
 @else
-    @include('sales.pos.ajax_view.partials.posSaleDefaultInvoiceLayout')
+    @include('sales.pos.ajax_view.partials.pos_sale_iefault_invoice_layout')
 @endif
 <!-- Sale print templete end-->
 
 <!-- Challan print templete-->
 @if ($sale->branch && $sale->branch->pos_sale_invoice_layout)
-    @include('sales.pos.ajax_view.partials.posSaleBranchChallanLayout')
+    @include('sales.pos.ajax_view.partials.pos_sale_branch_challan_layout')
 @else
-    @include('sales.pos.ajax_view.partials.posSaleDefaultChallanLayout')
+    @include('sales.pos.ajax_view.partials.pos_sale_default_challan_layout')
 @endif
 <!-- Challan print templete end-->
 <script>

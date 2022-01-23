@@ -51,7 +51,9 @@
                             <div class="heading text-end">
                                 @if ($sale->branch)
                                     <h6 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                    </h6>
+
                                     <p class="company_address">
                                         <strong>
                                             {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
@@ -70,8 +72,10 @@
                                         <p><b>Email</b> : {{ $sale->branch->email }}</p>
                                     @endif
                                 @else
-                                    <p class="company_name">
-                                        <strong> {{ json_decode($generalSettings->business, true)['shop_name'] }}</strong></p>
+                                    <h6 class="company_name">
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                    </h6>
+                                    
                                     <p class="company_address">
                                         {{ json_decode($generalSettings->business, true)['address'] }}
                                     </p>

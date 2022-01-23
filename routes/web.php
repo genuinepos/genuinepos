@@ -900,7 +900,7 @@ Route::get('/test', function () {
         ->first();
     $converter = new Converter();
 
-    return $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+    $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
 
     $saleProducts = SaleProduct::orderBy('id', 'desc')->get();
     foreach ($saleProducts as $sale_product) {

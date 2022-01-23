@@ -144,7 +144,7 @@
                         tr +='<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
                         tr +='<input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">';
                         tr +='<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                        tr += '<input value="'+ product_cost_inc_tax +'" name="unit_costs_inc_tax[]" type="hidden" id="unit_costs_inc_tax">';
+                        tr += '<input value="'+ product_cost_inc_tax +'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                         tr += '<input type="hidden" id="previous_qty" value="0.00">';
                         tr += '<input type="hidden" id="qty_limit" value="' + singleProductQty +
                             '">';
@@ -390,7 +390,6 @@
         var unit_tax_percent = parentTableRow.find('#unit_tax_percent').val();
         var unit_tax_amount = parentTableRow.find('#unit_tax_amount').val();
         var unit_discount_type = parentTableRow.find('#unit_discount_type').val();
-        console.log(unit_discount_type);
         var unit_discount = parentTableRow.find('#unit_discount').val();
         var unit_discount_amount = parentTableRow.find('#unit_discount_amount').val();
         var product_unit = parentTableRow.find('#unit').val();

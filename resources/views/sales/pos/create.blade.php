@@ -156,7 +156,7 @@
                                 tr +='<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
                                 tr +='<input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">';
                                 tr +='<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                                tr += '<input value="'+(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax)+'" name="unit_costs_inc_tax[]" type="hidden" id="unit_costs_inc_tax">';
+                                tr += '<input value="'+(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax)+'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                                 tr += '<input type="hidden" id="previous_qty" value="0.00">';
                                 tr += '<input type="hidden" id="qty_limit" value="'+ qty_limit +'">';
                                 tr += '<input class="index-'+ unique_index +'" type="hidden" id="index">';
@@ -502,7 +502,7 @@
                         tr +='<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
                         tr +='<input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">';
                         tr +='<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                        tr += '<input value="' + product_cost_inc_tax + '" name="unit_costs_inc_tax[]" type="hidden" id="unit_costs_inc_tax">';
+                        tr += '<input value="' + product_cost_inc_tax + '" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
                         tr += '<input type="hidden" id="previous_qty" value="0.00">';
                         tr += '<input type="hidden" id="qty_limit" value="' + singleProductQty +
                             '">';

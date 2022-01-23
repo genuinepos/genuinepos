@@ -107,7 +107,7 @@
 </div>  
 
 @php
-    $netProfit = ($totalSale + $totalStockAdjustmentRecovered) 
+    $grossProfit = ($totalSale + $totalStockAdjustmentRecovered) 
                 - $totalStockAdjustmentAmount 
                 - $totalExpense
                 - $totalReturn
@@ -122,11 +122,11 @@
         <div class="card-body"> 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="net_profit_area">
-                        <h6 class="text-muted m-0">Net Profit : 
+                    <div class="gross_profit_area">
+                        <h6 class="text-muted m-0">Gross Profit : 
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            <span class="{{ $netProfit < 0 ? 'text-danger' : '' }}">{{ number_format((float)$netProfit, 2, '.', '') }}</span></h6>
-                            <p class="text-muted m-0">Net Profit (Total Sale + Total Stock Adjustment Recovered)
+                            <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ number_format((float)$grossProfit, 2, '.', '') }}</span></h6>
+                            <p class="text-muted m-0">Gross Profit (Total Sale + Total Stock Adjustment Recovered)
                                 - <br>( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
                     </div>
                 </div>

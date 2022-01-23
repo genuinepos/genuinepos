@@ -967,10 +967,6 @@ Route::get('/test', function () {
     //         }
     //     }
     // }
-
-    $dateFormat = 'd-m-y';
-    $__date_format = str_replace('-', '/', $dateFormat);
-    return $__date_format;
 });
 
 // All authenticated routes

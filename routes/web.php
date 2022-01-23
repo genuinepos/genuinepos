@@ -889,11 +889,11 @@ Route::get('/test', function () {
     // }
     //return array_merge($arr1, $arr2, $arr3);
 
-    // $purchaseProducts = PurchaseProduct::all();
-    // foreach ($purchaseProducts as $pp) {
-    //     $pp->left_qty = $pp->quantity;
-    //     $pp->save();
-    // }
+    $purchaseProducts = PurchaseProduct::all();
+    foreach ($purchaseProducts as $pp) {
+        $pp->left_qty = $pp->quantity;
+        $pp->save();
+    }
 
     // $settings = DB::table('general_settings')
     //     ->select(['id', 'business', 'prefix', 'send_es_settings'])
@@ -967,10 +967,6 @@ Route::get('/test', function () {
     //         }
     //     }
     // }
-
-    $dateFormat = 'd-m-y';
-    $__date_format = str_replace('-', '/', $dateFormat);
-    return $__date_format;
 });
 
 // All authenticated routes

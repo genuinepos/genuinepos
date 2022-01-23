@@ -892,7 +892,7 @@ Route::get('/test', function () {
     $purchaseProducts = PurchaseProduct::with('purchase')->get();
     foreach ($purchaseProducts as $pp) {
         $pp->left_qty = $pp->quantity;
-        $pp->created_at = date('Y-m-d H:i:s', strtotime($pp->purchase->date.date(' H:i:s')));
+        $pp->created_at = date('Y-m-d H:i:s', strtotime($pp->purchase->date.' '.$pp->purchase->time));
         $pp->branch_id = $pp->purchase->branch_id;
         $pp->save();
     }

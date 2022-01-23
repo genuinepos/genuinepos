@@ -14,7 +14,9 @@ class RemoveProductionIdAndOpeningStockIdFromPurchaseProductsTableTable extends 
     public function up()
     {
         Schema::table('purchase_products', function (Blueprint $table) {
-            //
+            $table->dropForeign(['production_id']);
+            $table->dropColumn('production_id');
+            $table->dropColumn('opening_stock_id');
         });
     }
 

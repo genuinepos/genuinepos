@@ -292,7 +292,7 @@
 @if ($sale->branch && $sale->branch->pos_sale_invoice_layout)
     @include('sales.pos.ajax_view.partials.pos_sale_branch_invoice_layout')
 @else
-    @include('sales.pos.ajax_view.partials.pos_sale_iefault_invoice_layout')
+    @include('sales.pos.ajax_view.partials.pos_sale_default_invoice_layout')
 @endif
 <!-- Sale print templete end-->
 

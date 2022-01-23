@@ -86,7 +86,7 @@
 
             @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
                 @for ($i = 0; $i < $sale->branch->add_sale_invoice_layout->gap_from_top; $i++)
-                    </br>
+                    <br/>
                 @endfor
             @endif
 
@@ -229,26 +229,34 @@
             <div class="row" style="margin-top: -23px!important;">
                 <div class="col-md-6">
                     @if ($sale->branch->add_sale_invoice_layout->show_total_in_word)
-                        <p style="text-transform: uppercase;"><b>In Word : <span id="inword"></span> ONLY.</b></p>
+                        <p style="text-transform: uppercase;"><b>In Word : </b> <span id="inword"></span></p>
                     @endif 
-                    <br>
-                    <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px; margin-top:13px;">
-                        @if ($sale->branch->add_sale_invoice_layout->account_name)
-                            <p>Account Name : {{ $sale->branch->add_sale_invoice_layout->account_name }}</p>
-                        @endif
 
-                        @if ($sale->branch->add_sale_invoice_layout->account_no)
-                            <p>Account No : {{ $sale->branch->add_sale_invoice_layout->account_no }}</p>
-                        @endif
+                    @if (
+                        $sale->branch->add_sale_invoice_layout->account_name || 
+                        $sale->branch->add_sale_invoice_layout->account_no || 
+                        $sale->branch->add_sale_invoice_layout->bank_name || 
+                        $sale->branch->add_sale_invoice_layout->bank_branch  
+                    )
+                        <br>
+                        <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px; margin-top:13px;">
+                            @if ($sale->branch->add_sale_invoice_layout->account_name)
+                                <p>Account Name : {{ $sale->branch->add_sale_invoice_layout->account_name }}</p>
+                            @endif
 
-                        @if ($sale->branch->add_sale_invoice_layout->bank_name)
-                            <p>Bank : {{ $sale->branch->add_sale_invoice_layout->bank_name }}</p>
-                        @endif
+                            @if ($sale->branch->add_sale_invoice_layout->account_no)
+                                <p>Account No : {{ $sale->branch->add_sale_invoice_layout->account_no }}</p>
+                            @endif
 
-                        @if ($sale->branch->add_sale_invoice_layout->bank_branch)
-                            <p>Branch : {{ $sale->branch->add_sale_invoice_layout->bank_branch }}</p>
-                        @endif
-                    </div>
+                            @if ($sale->branch->add_sale_invoice_layout->bank_name)
+                                <p>Bank : {{ $sale->branch->add_sale_invoice_layout->bank_name }}</p>
+                            @endif
+
+                            @if ($sale->branch->add_sale_invoice_layout->bank_branch)
+                                <p>Branch : {{ $sale->branch->add_sale_invoice_layout->bank_branch }}</p>
+                            @endif
+                        </div>
+                    @endif
                 </div>
 
                 <div class="col-md-6">

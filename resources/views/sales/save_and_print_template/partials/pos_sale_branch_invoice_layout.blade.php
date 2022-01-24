@@ -212,7 +212,7 @@
             <div class="row">
                 <div class="col-md-6">
                     @if ($sale->branch->pos_sale_invoice_layout->show_total_in_word == 1)
-                        <p style="text-transform: uppercase;"><strong>In Word : <span id="inword"></span> ONLY.</strong></p>
+                        <p style="text-transform: uppercase;"><b>In Word : </b> <span id="inword"></span> ONLY.</p>
                     @endif
                     <br>
                     <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
@@ -506,7 +506,7 @@
                                 </th>
                             </tr>
 
-                            @if ($previous_due > 0)
+                            @if ($previous_due != 0)
                                 <tr>
                                     <th class="text-end">Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <th class="text-end">

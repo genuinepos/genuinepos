@@ -16,21 +16,21 @@
                       </div>
                       <div class="row">
                           <div class="col-md-4 col-sm-4 col-lg-4">
-                              @if ($defaultLayout->show_shop_logo == 1)
-                                  @if ($sale->branch)
-                                      @if ($sale->branch->logo != 'default.png')
-                                          <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
-                                      @else 
-                                          <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
-                                      @endif
-                                  @else 
-                                      @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                          <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                                      @else 
-                                          <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
-                                      @endif
-                                  @endif
-                              @endif
+                                @if ($defaultLayout->show_shop_logo == 1)
+                                    @if ($sale->branch)
+                                        @if ($sale->branch->logo != 'default.png')
+                                            <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                        @else 
+                                            <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
+                                        @endif
+                                    @else 
+                                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                        @else 
+                                            <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                        @endif
+                                    @endif
+                                @endif
                           </div>
 
                           <div class="col-md-4 col-sm-4 col-lg-4 text-center">
@@ -96,7 +96,7 @@
               
               @if ($defaultLayout->is_header_less == 1)
                   @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
-                      </br>
+                      <br/>
                   @endfor
               @endif
 
@@ -239,8 +239,9 @@
               <div class="row" style="margin-top: -23px!important;">
                   <div class="col-md-6">
                       @if ($defaultLayout->show_total_in_word)
-                          <p style="text-transform: uppercase;"><b>In Word : <span id="inword"></span> ONLY.</b></p>
+                          <p style="text-transform: uppercase;"><b>In Word : </b> <span id="inword"></span>Only</p>
                       @endif
+
                       @if (
                         $defaultLayout->account_name || 
                         $defaultLayout->account_no || 

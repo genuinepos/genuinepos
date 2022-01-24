@@ -45,10 +45,11 @@
                             <div class="heading text-end">
                                 @if ($sale->branch)
                                     <h6 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+                                        {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
+                                    </h6>
+
                                     <p class="company_address">
                                         <b>
-                                            {{ $sale->branch->name . '/' . $sale->branch->branch_code }} <br>
                                             {{ $sale->branch->pos_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
                                             {{ $sale->branch->pos_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
                                             {{ $sale->branch->pos_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
@@ -64,8 +65,10 @@
                                         <p><b>Email</b> : {{ $sale->branch->email }}</p>
                                     @endif
                                 @else 
-                                    <h5 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                                    <h6 class="company_name">
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                    </h6>
+
                                     <p class="company_address">
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }},<br>
                                     </p>
@@ -219,7 +222,7 @@
             </div>
 
             @if (count($sale->sale_products) > 6)
-                <br>
+                <br/>
                 <div class="row page_break">
                     <div class="col-md-12 text-end">
                         <h6><em>Continued To this next page....</em></h6>
@@ -230,46 +233,55 @@
             <div class="row">
                 <div class="col-md-6">
                     @if ($sale->branch->pos_sale_invoice_layout->show_total_in_word)
-                        <p><b>In Word : <span id="inword"></span></b></p>
+                        <p><b>In Word : </b> <span id="inword"></span></p>
                     @endif
-                    <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px; margin-top:13px;">
-                        @if ($sale->branch->pos_sale_invoice_layout->account_name)
-                            <p>Account Name : {{ $sale->branch->pos_sale_invoice_layout->account_name }}</p>
-                        @endif
 
-                        @if ($sale->branch->pos_sale_invoice_layout->account_no)
-                            <p>Account No : {{ $sale->branch->pos_sale_invoice_layout->account_no }}</p>
-                        @endif
+                    @if (
+                        $sale->branch->pos_sale_invoice_layout->account_name || 
+                        $sale->branch->pos_sale_invoice_layout->account_no || 
+                        $sale->branch->pos_sale_invoice_layout->bank_name || 
+                        $sale->branch->pos_sale_invoice_layout->bank_branch  
+                    )
+                        <br/>
+                        <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px; margin-top:13px;">
+                            @if ($sale->branch->pos_sale_invoice_layout->account_name)
+                                <p>Account Name : {{ $sale->branch->pos_sale_invoice_layout->account_name }}</p>
+                            @endif
 
-                        @if ($sale->branch->pos_sale_invoice_layout->bank_name)
-                            <p>Bank : {{ $sale->branch->pos_sale_invoice_layout->bank_name }}</p>
-                        @endif
+                            @if ($sale->branch->pos_sale_invoice_layout->account_no)
+                                <p>Account No : {{ $sale->branch->pos_sale_invoice_layout->account_no }}</p>
+                            @endif
 
-                        @if ($sale->branch->pos_sale_invoice_layout->bank_branch)
-                            <p>Branch : {{ $sale->branch->pos_sale_invoice_layout->bank_branch }}</p>
-                        @endif
-                    </div>
+                            @if ($sale->branch->pos_sale_invoice_layout->bank_name)
+                                <p>Bank : {{ $sale->branch->pos_sale_invoice_layout->bank_name }}</p>
+                            @endif
+
+                            @if ($sale->branch->pos_sale_invoice_layout->bank_branch)
+                                <p>Branch : {{ $sale->branch->pos_sale_invoice_layout->bank_branch }}</p>
+                            @endif
+                        </div>
+                    @endif
                 </div>
 
                 <div class="col-md-6">
                     <table class="table modal-table table-sm">
                         <tbody>
-                            {{-- <tr>
+                            <tr>
                                 <td class="text-start"><strong>Net Total Amount :</strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                        {{ $sale->net_total_amount }}</b>
+                                        {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}</b>
                                 </td>
-                            </tr> --}}
+                            </tr>
 
                             <tr>
                                 <td class="text-end"><strong> Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="text-end">
                                     @if ($sale->order_discount_type == 1)
-                                        {{ $sale->order_discount_amount }} (Fixed)
+                                        {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }} (Fixed)
                                     @else
-                                        {{ $sale->order_discount_amount }} ( {{ $sale->order_discount }}%)
+                                        {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }} ( {{ $sale->order_discount }}%)
                                     @endif
                                 </td>
                             </tr>
@@ -277,7 +289,7 @@
                             <tr>
                                 <td class="text-end"><strong> Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
                                 <td class="text-end">
-                                    {{ $sale->order_tax_amount }}
+                                    {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) }}
                                     ({{ $sale->order_tax_percent }} %)
                                 </td>
                             </tr>
@@ -285,38 +297,28 @@
                             <tr>
                                 <td class="text-end"><strong> Shipment charge : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
                                 <td class="text-end">
-                                    {{ bcadd($sale->shipment_charge, 0, 2) }}
+                                    {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class="text-end"><strong> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="text-end">
-                                    {{ bcadd($sale->total_payable_amount, 0, 2) }}
+                                    {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class="text-end"><strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="text-end">
-                                    {{ bcadd($sale->paid, 0, 2) }}
+                                    {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                 </td>
                             </tr>
-
-                            {{-- <tr>
-                                <td class="text-start"><strong> Change Amount : </strong></td>
-                                <td class="text-end">
-                                    <b>
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                        {{ number_format($sale->change_amount, 2) }}
-                                    </b>
-                                </td>
-                            </tr> --}}
 
                             <tr>
                                 <td class="text-end"><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
                                 <td class="total_paid text-end">
-                                    {{ bcadd($sale->due, 0, 2) }}
+                                    {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                 </td>
                             </tr>
                         </tbody>

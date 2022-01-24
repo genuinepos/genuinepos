@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="middle_header_text text-center">
-                                <h5>{{ $sale->branch->add_sale_invoice_layout->invoice_heading }}</h5>
+                                <h6>{{ $sale->branch->add_sale_invoice_layout->invoice_heading }}</h6>
                                 <h6>
                                     @php
                                         $payable = $sale->total_payable_amount - $sale->sale_return_amount;
@@ -43,15 +43,16 @@
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
-                                <h5 class="company_name">
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                                <h6 class="company_address">
-                                    {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
+                                <h6 class="company_name">
+                                    {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
+                                </h6>
+                                
+                                <p class="company_address">
                                     {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
                                     {{ $sale->branch->add_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
                                     {{ $sale->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
                                     {{ $sale->branch->add_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                </h6>
+                                </p>
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_phone)
                                     <p><strong>Phone :</strong> {{ $sale->branch->phone }}</p>
@@ -94,6 +95,7 @@
                             @endif
                         </ul>
                     </div>
+
                     <div class="col-lg-4 text-center">
                         @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
                             <div class="middle_header_text text-center">
@@ -115,6 +117,7 @@
                         @endif
                         <img style="width: 170px; height:40px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                     </div>
+
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> Invoice No : </strong> {{ $sale->invoice_id }}</li>
@@ -209,24 +212,32 @@
                     @if ($sale->branch->add_sale_invoice_layout->show_total_in_word == 1)
                         <p style="text-transform: uppercase;"><strong>In Word : <span id="inword"></span> ONLY.</strong></p>
                     @endif
-                    <br> 
-                    <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
-                        @if ($sale->branch->add_sale_invoice_layout->account_name)
-                            <p>Account Name : {{ $sale->branch->add_sale_invoice_layout->account_name }}</p>
-                        @endif
 
-                        @if ($sale->branch->add_sale_invoice_layout->account_no)
-                            <p>Account No : {{ $sale->branch->add_sale_invoice_layout->account_no }}</p>
-                        @endif
+                    @if (
+                        $sale->branch->add_sale_invoice_layout->->account_name || 
+                        $sale->branch->add_sale_invoice_layout->->account_no || 
+                        $sale->branch->add_sale_invoice_layout->->bank_name || 
+                        $sale->branch->add_sale_invoice_layout->->bank_branch  
+                    )
+                        <br> 
+                        <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
+                            @if ($sale->branch->add_sale_invoice_layout->account_name)
+                                <p>Account Name : {{ $sale->branch->add_sale_invoice_layout->account_name }}</p>
+                            @endif
 
-                        @if ($sale->branch->add_sale_invoice_layout->bank_name)
-                            <p>Bank : {{ $sale->branch->add_sale_invoice_layout->bank_name }}</p>
-                        @endif
+                            @if ($sale->branch->add_sale_invoice_layout->account_no)
+                                <p>Account No : {{ $sale->branch->add_sale_invoice_layout->account_no }}</p>
+                            @endif
 
-                        @if ($sale->branch->add_sale_invoice_layout->bank_branch)
-                            <p>Branch : {{ $sale->branch->add_sale_invoice_layout->bank_branch }}</p>
-                        @endif
-                    </div>
+                            @if ($sale->branch->add_sale_invoice_layout->bank_name)
+                                <p>Bank : {{ $sale->branch->add_sale_invoice_layout->bank_name }}</p>
+                            @endif
+
+                            @if ($sale->branch->add_sale_invoice_layout->bank_branch)
+                                <p>Branch : {{ $sale->branch->add_sale_invoice_layout->bank_branch }}</p>
+                            @endif
+                        </div>
+                    @endif
                 </div>
                 <div class="col-md-6">
                     <table class="table modal-table table-sm">
@@ -263,10 +274,14 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class="text-end"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                <td class="total_payable text-end">{{ App\Utils\Converter::format_in_bdt($previous_due) }}</td>
-                            </tr>
+                            @if ($previous_due > 0)
+                                <tr>
+                                    <td class="text-end"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                    <td class="total_payable text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($previous_due) }}
+                                    </td>
+                                </tr>
+                            @endif
 
                             <tr>
                                 <td class="text-end"><strong> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
@@ -473,51 +488,63 @@
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                 </th>
                                 <th class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
+                                    </span>
                                 </th>
                             </tr>
                             
                             <tr>
                                 <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
-                                    ({{ $sale->order_tax_percent }} %)
+                                    <span>
+                                        ({{ $sale->order_tax_percent }} %)
+                                    </span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-end">Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($previous_due) }}
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($previous_due) }}
+                                    </span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-end"> Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
+                                    </span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-end"> Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
+                                    </span>
                                 </th>
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                <td class="total_paid text-end">
-                                    <b>
+                                <th class="text-start"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></th>
+                                <th class="total_paid text-end">
+                                    <span>
                                         {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
-                                    </b>
-                                </td>
+                                    </span>
+                                </th>
                             </tr> 
 
                             <tr>
                                 <th class="text-end"> Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($total_due > 0 ? $total_due : 0) }}
+                                    <span>
+                                        {{ App\Utils\Converter::format_in_bdt($total_due > 0 ? $total_due : 0) }}
+                                    </span>
                                 </th>
                             </tr>
                         </thead>

@@ -845,7 +845,8 @@ class CustomerController extends Controller
         $customer = DB::table('customers')->where('id', $customerId)->first();
         $customer_payments = DB::table('customer_payments')
             ->leftJoin('accounts', 'customer_payments.account_id', 'accounts.id')
-            ->select('customer_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
+            ->leftJoin('payment_methods', 'customer_payments.payment_method_id', 'payment_methods.id')
+            ->select('customer_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no', 'payment_methods.name as payment_method_name')
             ->where('customer_payments.customer_id', $customerId)
             ->orderBy('customer_payments.report_date', 'desc')->get();
         return view('contacts.customers.ajax_view.view_payment_list', compact('customer', 'customer_payments'));
@@ -859,7 +860,8 @@ class CustomerController extends Controller
             'customer',
             'account',
             'customer_payment_invoices',
-            'customer_payment_invoices.sale:id,invoice_id,date'
+            'customer_payment_invoices.sale:id,invoice_id,date',
+            'paymentMethod'
         )->where('id', $paymentId)->first();
         return view('contacts.customers.ajax_view.payment_details', compact('customerPayment'));
     }

@@ -311,7 +311,7 @@
                                 </td>
                             </tr>
                     
-                            @if ($previous_due > 0)
+                            @if ($previous_due != 0)
                                 <tr>
                                     <td class="text-end"><strong> Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                     <td class="total_payable text-end">

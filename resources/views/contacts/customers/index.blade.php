@@ -397,7 +397,8 @@
             "serverSide": true,
             aaSorting: [[0, 'asc']],
             ajax: "{{ route('contacts.customer.index') }}",
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             columnDefs: [{"targets": [0, 7],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action',name: 'action'},

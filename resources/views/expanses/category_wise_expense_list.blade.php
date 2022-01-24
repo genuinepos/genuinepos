@@ -124,9 +124,7 @@
                                                 <th class="text-start">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
                                                 <th colspan="4" class="text-end text-white">Total :</th>
@@ -161,7 +159,8 @@
             ],
             "processing": true,
             "serverSide": true,
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('expanses.category.wise.expense') }}",
                 "data": function(d) {

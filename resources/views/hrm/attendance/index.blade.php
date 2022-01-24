@@ -137,7 +137,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
                     <div class="container-fluid">
                         <div class="row">
@@ -171,9 +170,7 @@
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -281,7 +278,8 @@
         "serverSide": true,
         "searching" : false,
         aaSorting: [[1, 'asc']],
-        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('hrm.attendance') }}",
             "data": function(d) {

@@ -250,7 +250,7 @@
             <div class="row">
                 <div class="col-md-6">
                     @if ($defaultLayout->show_total_in_word == 1)
-                        <p style="text-transform: uppercase;"><strong>In Word : <span id="inword"></span> ONLY.</strong></p> 
+                        <p style="text-transform: uppercase;"><b>In Word : </b> <span id="inword"></span> ONLY.</p> 
                     @endif
 
                     @if (

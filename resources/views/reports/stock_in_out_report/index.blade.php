@@ -138,8 +138,8 @@
                                         <thead>
                                             <tr>
                                                 <th>Product</th>
-                                                <th>Sale</th>
                                                 <th>Sale Date</th>
+                                                <th>Sale</th>
                                                 <th>B. Location</th>
                                                 <th>Sold Qty</th>
                                                 <th>Sold Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -202,8 +202,8 @@
         },
         columns: [
             {data: 'product', name: 'products.name'},
-            {data: 'sale', name: 'sales.invoice_id'},
             {data: 'date', name: 'sales.date'},
+            {data: 'sale', name: 'sales.invoice_id'},
             {data: 'branch', name: 'branches.name'},
             {data: 'sold_qty', name: 'purchase_sale_product_chains.sold_qty', className: 'text-end'},
             {data: 'unit_price_inc_tax', name: 'sale_products.unit_price_inc_tax', className: 'text-end'},

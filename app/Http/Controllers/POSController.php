@@ -164,7 +164,7 @@ class POSController extends Controller
 
         $addSale->date = date('d-m-Y');
         $addSale->time = date('h:i:s a');
-        $addSale->report_date = date('Y-m-d');
+        $addSale->report_date = date('Y-m-d H:i:s');
         $addSale->month = date('F');
         $addSale->year = date('Y');
         $addSale->total_item = $request->total_item;
@@ -216,7 +216,7 @@ class POSController extends Controller
                 $addCustomerLedger = new CustomerLedger();
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_id = $addSale->id;
-                $addCustomerLedger->report_date = date('Y-m-d');
+                $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                 $addCustomerLedger->save();
             }
         } else {
@@ -402,8 +402,11 @@ class POSController extends Controller
     // update pos sale
     public function update(Request $request)
     {
-        $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $settings = DB::table('general_settings')->select(['id', 'business', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+
+        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        
         $updateSale = Sale::with(['sale_payments', 'sale_products', 'sale_products.product', 'sale_products.variant', 'sale_products.product.comboProducts'])->where('id', $request->sale_id)->first();
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
@@ -428,10 +431,6 @@ class POSController extends Controller
         }
 
         $updateSale->status = $request->action;
-        $updateSale->date = date('d-m-Y');
-        $updateSale->report_date = date('Y-m-d h:m:i');
-        $updateSale->month = date('F');
-        $updateSale->year = date('Y');
         $updateSale->total_item = $request->total_item;
         $updateSale->net_total_amount = $request->net_total_amount;
         $updateSale->order_discount_type = 1;
@@ -466,7 +465,7 @@ class POSController extends Controller
                 $addCustomerLedger->customer_id = $updateSale->customer_id;
                 $addCustomerLedger->sale_id = $updateSale->id;
                 $addCustomerLedger->row_type = 1;
-                $addCustomerLedger->report_date = date('Y-m-d', strtotime($updateSale->date));
+                $addCustomerLedger->report_date = date('Y-m-d H:i:s', strtotime($updateSale->report_date));
                 $addCustomerLedger->save();
             }
         }
@@ -563,7 +562,7 @@ class POSController extends Controller
             $addSalePayment->paid_amount = $request->paying_amount;
             $addSalePayment->date = date('d-m-Y');
             $addSalePayment->time = date('h:i:s');
-            $addSalePayment->report_date = date('Y-m-d');
+            $addSalePayment->report_date = date('Y-m-d H:i:s');
             $addSalePayment->month = date('F');
             $addSalePayment->year = date('Y');
             $addSalePayment->pay_mode = $request->payment_method;
@@ -597,7 +596,7 @@ class POSController extends Controller
                 $addCashFlow->transaction_type = 2;
                 $addCashFlow->cash_type = 2;
                 $addCashFlow->date = date('d-m-Y');
-                $addCashFlow->report_date = date('Y-m-d');
+                $addCashFlow->report_date = date('Y-m-d H:i:s');
                 $addCashFlow->month = date('F');
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
@@ -610,10 +609,14 @@ class POSController extends Controller
                 $addCustomerLedger->customer_id = $updateSale->customer_id;
                 $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                 $addCustomerLedger->row_type = 2;
-                $addCustomerLedger->report_date = date('Y-m-d');
+                $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                 $addCustomerLedger->save();
             }
         }
+
+        $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])
+            ->where('id', $updateSale->id)
+            ->first();
 
         // Update customer due
         if ($request->action == 1) {
@@ -621,6 +624,8 @@ class POSController extends Controller
             if ($updateSale->customer_id) {
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
             }
+
+            $this->saleUtil->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
         }
 
         $previous_due = 0;
@@ -630,7 +635,6 @@ class POSController extends Controller
         $change_amount = $request->change_amount;
 
         if ($request->action == 1) {
-            $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])->where('id', $updateSale->id)->first();
             return view('sales.save_and_print_template.pos_sale_print', compact(
                 'sale',
                 'previous_due',
@@ -824,7 +828,7 @@ class POSController extends Controller
                     $addSalePayment->paid_amount = $request->total_invoice_payable;
                     $addSalePayment->date = date('d-m-Y');
                     $addSalePayment->time = date('h:i:s a');
-                    $addSalePayment->report_date = date('Y-m-d');
+                    $addSalePayment->report_date = date('Y-m-d H:i:s');
                     $addSalePayment->month = date('F');
                     $addSalePayment->year = date('Y');
                     $addSalePayment->pay_mode = $request->payment_method;
@@ -858,7 +862,7 @@ class POSController extends Controller
                         $addCashFlow->transaction_type = 2;
                         $addCashFlow->cash_type = 2;
                         $addCashFlow->date = date('d-m-Y');
-                        $addCashFlow->report_date = date('Y-m-d');
+                        $addCashFlow->report_date = date('Y-m-d H:i:s');
                         $addCashFlow->month = date('F');
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
@@ -872,7 +876,7 @@ class POSController extends Controller
                         $addCustomerLedger->customer_id = $request->customer_id;
                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                         $addCustomerLedger->row_type = 2;
-                        $addCustomerLedger->report_date = date('Y-m-d');
+                        $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                         $addCustomerLedger->save();
                     }
 
@@ -904,7 +908,7 @@ class POSController extends Controller
                                     $addSalePayment->paid_amount = $dueAmounts;
                                     $addSalePayment->date = date('d-m-Y');
                                     $addSalePayment->time = date('h:i:s a');
-                                    $addSalePayment->report_date = date('Y-m-d');
+                                    $addSalePayment->report_date = date('Y-m-d H:i:s');
                                     $addSalePayment->month = date('F');
                                     $addSalePayment->year = date('Y');
                                     $addSalePayment->pay_mode = $request->payment_method;
@@ -939,7 +943,7 @@ class POSController extends Controller
                                         $addCashFlow->transaction_type = 2;
                                         $addCashFlow->cash_type = 2;
                                         $addCashFlow->date = date('d-m-Y');
-                                        $addCashFlow->report_date = date('Y-m-d');
+                                        $addCashFlow->report_date = date('Y-m-d H:i:s');
                                         $addCashFlow->month = date('F');
                                         $addCashFlow->year = date('Y');
                                         $addCashFlow->admin_id = auth()->user()->id;
@@ -953,7 +957,7 @@ class POSController extends Controller
                                         $addCustomerLedger->customer_id = $request->customer_id;
                                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                                         $addCustomerLedger->row_type = 2;
-                                        $addCustomerLedger->report_date = date('Y-m-d');
+                                        $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                                         $addCustomerLedger->save();
                                     }
                                     $dueAmounts -= $dueAmounts;
@@ -978,7 +982,7 @@ class POSController extends Controller
                                     $addSalePayment->paid_amount = $dueAmounts;
                                     $addSalePayment->date = date('d-m-Y');
                                     $addSalePayment->time = date('h:i:s a');
-                                    $addSalePayment->report_date = date('Y-m-d');
+                                    $addSalePayment->report_date = date('Y-m-d H:i:s');
                                     $addSalePayment->month = date('F');
                                     $addSalePayment->year = date('Y');
                                     $addSalePayment->pay_mode = $request->payment_method;
@@ -1013,7 +1017,7 @@ class POSController extends Controller
                                         $addCashFlow->transaction_type = 2;
                                         $addCashFlow->cash_type = 2;
                                         $addCashFlow->date = date('d-m-Y');
-                                        $addCashFlow->report_date = date('Y-m-d');
+                                        $addCashFlow->report_date = date('Y-m-d H:i:s');
                                         $addCashFlow->month = date('F');
                                         $addCashFlow->year = date('Y');
                                         $addCashFlow->admin_id = auth()->user()->id;
@@ -1027,7 +1031,7 @@ class POSController extends Controller
                                         $addCustomerLedger->customer_id = $request->customer_id;
                                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                                         $addCustomerLedger->row_type = 2;
-                                        $addCustomerLedger->report_date = date('Y-m-d');
+                                        $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                                         $addCustomerLedger->save();
                                     }
                                     $dueAmounts -= $dueAmounts;
@@ -1047,7 +1051,7 @@ class POSController extends Controller
                                     $addSalePayment->paid_amount = $dueInvoice->due;
                                     $addSalePayment->date = date('d-m-Y');
                                     $addSalePayment->time = date('h:i:s a');
-                                    $addSalePayment->report_date = date('Y-m-d');
+                                    $addSalePayment->report_date = date('Y-m-d H:i:s');
                                     $addSalePayment->month = date('F');
                                     $addSalePayment->year = date('Y');
                                     $addSalePayment->pay_mode = $request->payment_method;
@@ -1082,7 +1086,7 @@ class POSController extends Controller
                                         $addCashFlow->transaction_type = 2;
                                         $addCashFlow->cash_type = 2;
                                         $addCashFlow->date = date('d-m-Y');
-                                        $addCashFlow->report_date = date('Y-m-d');
+                                        $addCashFlow->report_date = date('Y-m-d H:i:s');
                                         $addCashFlow->month = date('F');
                                         $addCashFlow->year = date('Y');
                                         $addCashFlow->admin_id = auth()->user()->id;
@@ -1096,7 +1100,7 @@ class POSController extends Controller
                                         $addCustomerLedger->customer_id = $request->customer_id;
                                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                                         $addCustomerLedger->row_type = 2;
-                                        $addCustomerLedger->report_date = date('Y-m-d');
+                                        $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                                         $addCustomerLedger->save();
                                     }
 
@@ -1157,7 +1161,7 @@ class POSController extends Controller
                                 $addCashFlow->transaction_type = 13;
                                 $addCashFlow->cash_type = 2;
                                 $addCashFlow->date = date('d-m-Y');
-                                $addCashFlow->report_date = date('Y-m-d');
+                                $addCashFlow->report_date = date('Y-m-d H:i:s');
                                 $addCashFlow->month = date('F');
                                 $addCashFlow->year = date('Y');
                                 $addCashFlow->admin_id = auth()->user()->id;
@@ -1171,7 +1175,7 @@ class POSController extends Controller
                             $addCustomerLedger->customer_id = $addSale->customer_id;
                             $addCustomerLedger->row_type = 5;
                             $addCustomerLedger->customer_payment_id = $customerPayment->id;
-                            $addCustomerLedger->report_date = date('Y-m-d');
+                            $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                             $addCustomerLedger->save();
                         }
                     }
@@ -1184,7 +1188,7 @@ class POSController extends Controller
                     $addSalePayment->paid_amount = $paidAmount;
                     $addSalePayment->date = date('d-m-Y');
                     $addSalePayment->time = date('h:i:s a');
-                    $addSalePayment->report_date = date('Y-m-d');
+                    $addSalePayment->report_date = date('Y-m-d H:i:s');
                     $addSalePayment->month = date('F');
                     $addSalePayment->year = date('Y');
                     $addSalePayment->pay_mode = $request->payment_method;
@@ -1218,7 +1222,7 @@ class POSController extends Controller
                         $addCashFlow->transaction_type = 2;
                         $addCashFlow->cash_type = 2;
                         $addCashFlow->date = date('d-m-Y');
-                        $addCashFlow->report_date = date('Y-m-d');
+                        $addCashFlow->report_date = date('Y-m-d H:i:s');
                         $addCashFlow->month = date('F');
                         $addCashFlow->year = date('Y');
                         $addCashFlow->admin_id = auth()->user()->id;
@@ -1232,7 +1236,7 @@ class POSController extends Controller
                         $addCustomerLedger->customer_id = $request->customer_id;
                         $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                         $addCustomerLedger->row_type = 2;
-                        $addCustomerLedger->report_date = date('Y-m-d');
+                        $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                         $addCustomerLedger->save();
                     }
                 }
@@ -1245,7 +1249,7 @@ class POSController extends Controller
                 $addSalePayment->paid_amount = $paidAmount;
                 $addSalePayment->date = date('d-m-Y');
                 $addSalePayment->time = date('h:i:s a');
-                $addSalePayment->report_date = date('Y-m-d');
+                $addSalePayment->report_date = date('Y-m-d H:i:s');
                 $addSalePayment->month = date('F');
                 $addSalePayment->year = date('Y');
                 $addSalePayment->pay_mode = $request->payment_method;
@@ -1280,7 +1284,7 @@ class POSController extends Controller
                     $addCashFlow->cash_type = 2;
                     $addCashFlow->date = date('d-m-Y');
                     $addSalePayment->time = date('h:i:s a');
-                    $addCashFlow->report_date = date('Y-m-d');
+                    $addCashFlow->report_date = date('Y-m-d H:i:s');
                     $addCashFlow->month = date('F');
                     $addCashFlow->year = date('Y');
                     $addCashFlow->admin_id = auth()->user()->id;
@@ -1294,7 +1298,7 @@ class POSController extends Controller
                     $addCustomerLedger->customer_id = $request->customer_id;
                     $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                     $addCustomerLedger->row_type = 2;
-                    $addCustomerLedger->report_date = date('Y-m-d');
+                    $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                     $addCustomerLedger->save();
                 }
             }
@@ -1487,8 +1491,9 @@ class POSController extends Controller
             $index++;
         }
 
-        $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $settings = DB::table('general_settings')->select(['id', 'business','prefix'])->first();
         $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
 
         $i = 5;
         $a = 0;
@@ -1507,7 +1512,7 @@ class POSController extends Controller
             $addSalePayment->paid_amount = $request->paying_amount - $change;
             $addSalePayment->date = date('d-m-Y');
             $addSalePayment->time = date('h:i:s');
-            $addSalePayment->report_date = date('Y-m-d');
+            $addSalePayment->report_date = date('Y-m-d H:i:s');
             $addSalePayment->month = date('F');
             $addSalePayment->year = date('Y');
             $addSalePayment->pay_mode = $request->payment_method;
@@ -1541,7 +1546,7 @@ class POSController extends Controller
                 $addCashFlow->transaction_type = 2;
                 $addCashFlow->cash_type = 2;
                 $addCashFlow->date = date('d-m-Y');
-                $addCashFlow->report_date = date('Y-m-d');
+                $addCashFlow->report_date = date('Y-m-d H:i:s');
                 $addCashFlow->month = date('F');
                 $addCashFlow->year = date('Y');
                 $addCashFlow->admin_id = auth()->user()->id;
@@ -1555,7 +1560,7 @@ class POSController extends Controller
                 $addCustomerLedger->customer_id = $request->customer_id;
                 $addCustomerLedger->sale_payment_id = $addSalePayment->id;
                 $addCustomerLedger->row_type = 2;
-                $addCustomerLedger->report_date = date('Y-m-d');
+                $addCustomerLedger->report_date = date('Y-m-d H:i:s');
                 $addCustomerLedger->save();
             }
         }
@@ -1571,6 +1576,8 @@ class POSController extends Controller
         if ($updateSale->customer_id) {
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
         }
+
+        $this->saleUtil->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
 
         return view('sales.save_and_print_template.pos_sale_print', compact(
             'sale',

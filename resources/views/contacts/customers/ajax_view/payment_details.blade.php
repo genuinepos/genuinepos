@@ -50,55 +50,8 @@
 
                         <tr>
                             <th width="50%" class="text-start">Payment Method :</th>
-                            <td width="50%" class="text-start">{{ $customerPayment->pay_mode }}</td>
+                            <td width="50%" class="text-start">{{ $customerPayment->paymentMethod ? $customerPayment->paymentMethod->name : $customerPayment->pay_mode }}</td>
                         </tr>
-
-                        @if ($customerPayment->pay_mode == 'Card')
-                            <tr>
-                                <th width="50%" class="text-start">Card Number :</th>
-                                <td width="50%" class="text-start">{{ $customerPayment->card_no }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Card Holder :</th>
-                                <td width="50%" class="text-start">{{ $customerPayment->card_holder }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Card Type :</th>
-                                <td width="50%" class="text-start">{{ $customerPayment->card_type }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%" class="text-start">{{ $customerPayment->card_transaction_no }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Month :</th>
-                                <td width="50%" class="text-start">{{ $customerPayment->card_month }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Year :</th>
-                                <td width="50%" class="text-start">{{ $customerPayment->card_year }}</td>
-                            </tr>
-                        @elseif($customerPayment->pay_mode == 'Cheque')
-                            <tr>
-                                <th width="50%" class="text-start">Chaque No :</th>
-                                <td width="50%" class="text-start">{{ $customerPayment->cheque_no }}</td>
-                            </tr>
-                        @elseif($customerPayment->pay_mode == 'Bank-Transfer')
-                            <tr>
-                                <th width="50%" class="text-start">Account No :</th>
-                                <td width="50%" class="text-start">{{ $customerPayment->account_no }}</td>
-                            </tr>
-                        @elseif($customerPayment->pay_mode == 'Custom')
-                            <tr>
-                                <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%" class="text-start">{{ $customerPayment->transaction_no }}</td>
-                            </tr>
-                        @endif
                     </tbody>
                 </table>
             </div>
@@ -138,7 +91,7 @@
     <div class="row">
         <div class="col-12">
             <div class="heading_area">
-                <p><b>DESTIBUTION OF DUE PURCHASES:</b></p>
+                <p><b>PAYMENT AGAINST INVOICES :</b></p>
             </div>
         </div>
         <div class="col-12">

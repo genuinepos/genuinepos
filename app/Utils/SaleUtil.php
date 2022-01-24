@@ -73,13 +73,15 @@ class SaleUtil
                                 } elseif ($dueInvoice->due < $dueAmounts) {
                                     if ($dueInvoice->due > 0) {
                                         $this->addPayment($paymentInvoicePrefix, $request, $dueInvoice->due, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), $dueInvoice->id);
-                                        $dueAmounts = $dueAmounts - $dueInvoice->due;
+                                        $dueAmounts -= $dueInvoice->due;
                                         $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
                                 }
                                 $index++;
                             }
                         }
+
+                        //DB::table('test')->insert(['test_value' => $dueAmounts]);
 
                         if ($dueAmounts > 0) {
                             // Add Customer Payment Record

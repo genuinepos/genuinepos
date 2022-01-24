@@ -279,7 +279,7 @@
                     class="btn btn-sm btn-success">Print Packing Slip</button>
                 @endif
 
-                <button type="button" class="btn btn-sm btn-info print_challan_btn">Print Challan</button>
+                <button type="button" class="btn btn-sm btn-info print_challan_btn text-white">Print Challan</button>
                 <button type="button" class="btn btn-sm btn-primary print_btn">Print Invoice</button>
                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button> 
             </div>

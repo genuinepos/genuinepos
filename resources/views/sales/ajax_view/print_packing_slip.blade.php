@@ -11,13 +11,13 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class=" text-center">
-                        <h1 >{{ json_decode($generalSettings->business, true)['shop_name'] }}</h1>
-                        <h6><strong>{{$sale->branch ? $sale->branch->name . '/' . $sale->branch->branch_code : ''}}</strong> </h6>
                         @if ($sale->branch)
-                            <p>{{ $sale->branch->city . ', ' . $sale->branch->state . ', ' . $sale->branch->zip_code . ', ' . $sale->branch->country }}</p>
+                            <h3><strong>{{$sale->branch ? $sale->branch->name . '/' . $sale->branch->branch_code : ''}}</strong> </h3>
+                            <p style="width: 60%; margin:0 auto;">{{ $sale->branch->city . ', ' . $sale->branch->state . ', ' . $sale->branch->zip_code . ', ' . $sale->branch->country }}</p>
                             <p><strong>Phone :</strong> {{ $sale->branch->phone }}</p>
                         @else
-                            <p><strong>{{ json_decode($generalSettings->business, true)['address'] }}</strong></p> 
+                            <h3>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h3>
+                            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p> 
                             <p><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                         @endif
                         <h6 >Packing Slip</h6>

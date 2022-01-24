@@ -271,12 +271,12 @@ class SaleController extends Controller
         if ($request->status == 1) {
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $paidAmount = $request->paying_amount - $changedAmount;
-            if ($request->previous_due > 0) {
+            if ($request->previous_due != 0) {
                 $addSale->total_payable_amount = $request->total_invoice_payable;
                 if ($paidAmount >= $request->total_invoice_payable) {
                     $addSale->paid = $request->total_invoice_payable;
                     $addSale->due = 0.00;
-                    $payingPreviousDue = $paidAmount - $request->total_invoice_payable; // Comming Soon;
+                    $payingPreviousDue = $paidAmount - $request->total_invoice_payable; 
                 } elseif ($paidAmount < $request->total_invoice_payable) {
                     $addSale->paid = $request->paying_amount;
                     $calcDue = $request->total_invoice_payable - $request->paying_amount;
@@ -284,7 +284,8 @@ class SaleController extends Controller
                 }
             } else {
                 $addSale->total_payable_amount = $request->total_payable_amount;
-                $addSale->paid = $request->change_amount > 0 ? $request->total_invoice_payable : $request->paying_amount;
+                // $addSale->paid = $request->change_amount > 0 ? $request->total_invoice_payable : $request->paying_amount;
+                $addSale->paid = $paidAmount;
                 $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
                 $addSale->due = $request->total_due > 0 ? $request->total_due : 0.00;
             }

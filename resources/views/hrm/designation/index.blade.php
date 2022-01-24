@@ -80,7 +80,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
                     <div class="container-fluid">
                         <div class="row">

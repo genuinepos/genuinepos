@@ -158,7 +158,8 @@
         "serverSide": true,
         "searching" : true,
         aaSorting: [[0, 'asc']],
-        "lengthMenu" : [50, 100, 500, 1000, 2000],
+        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.payroll.payment') }}",
             "data": function(d) {

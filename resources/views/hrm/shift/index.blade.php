@@ -80,8 +80,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- =========================================top section button=================== -->
 
                     <div class="container-fluid">
                         <div class="row">
@@ -111,9 +109,7 @@
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>

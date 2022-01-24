@@ -7,7 +7,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
@@ -16,7 +15,6 @@
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
                     <div class="row px-3 mt-1">
                         <div class="col-md-4">
@@ -108,9 +106,7 @@
                                                         <th class="text-start">Actions</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-
-                                                </tbody>
+                                                <tbody></tbody>
                                             </table>
                                         </div>
                                     </div>

@@ -796,10 +796,12 @@
                                         <div class="col-md-4">
                                             <label><strong>Default datatable page entries :</strong></label>
                                             <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
-                                                <option value="10">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
+                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 10 ? 'SELECTED' : '' }} value="10">10</option>
+                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 25 ? 'SELECTED' : '' }} value="25">25</option>
+                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 50 ? 'SELECTED' : '' }} value="50">50</option>
+                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 100 ? 'SELECTED' : '' }} value="100">100</option>
+                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 500 ? 'SELECTED' : '' }} value="500">500</option>
+                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 1000 ? 'SELECTED' : '' }} value="1000">1000</option>
                                             </select>
                                         </div>
                                     </div>

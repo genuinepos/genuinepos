@@ -152,12 +152,13 @@ class AccountUtil
     {
         $voucherType = $this->voucherType($voucher_type_id);
         $add = new AccountLedger();
-        $add->date = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
+        $add->date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $add->account_id = $account_id;
         $add->voucher_type = $voucher_type_id;
         $add->{$voucherType['id']} = $trans_id;
         $add->{$voucherType['amt']} = $amount;
         $add->amount_type = $voucherType['amt'];
+        $add->branch_id = auth()->user()->branch_id;
         $add->save();
         $add->running_balance = $this->adjustAccountBalance($balance_type, $account_id);
         $add->save();
@@ -168,7 +169,7 @@ class AccountUtil
         $voucherType = $this->voucherType($voucher_type_id);
         $update = AccountLedger::where($voucherType['id'], $trans_id)->first();
         $previousAccountId = $update->account_id;
-        $update->date = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
+        $update->date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $update->account_id = $account_id;
         $update->{$voucherType['amt']} = $amount;
         $update->save();
@@ -178,5 +179,14 @@ class AccountUtil
         if ($previousAccountId != $account_id) {
             $this->adjustAccountBalance($balance_type, $account_id);
         }
+    }
+
+    public function accountBalanceType($balance_type)
+    {
+        $data = [
+            1 => 'debit', 2 => 'debit', 3 => 'debit', 4 => 'credit', 5 => 'credit', 6 => 'debit', 7 => 'debit', 8 => 'debit', 9 => 'debit', 10 => 'debit', 11 => 'debit', 12 => 'credit', 13 => 'credit', 14 => 'debit', 15 => 'debit', 16 => 'debit', 17 => 'debit', 18 => 'credit', 19 => 'debit', 20 => 'debit', 21 => 'debit', 22 => 'credit', 23 => 'debit',
+        ];
+
+        return $data[$balance_type];
     }
 }

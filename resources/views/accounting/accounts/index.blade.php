@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css"
         integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="{{asset('public')}}/backend/asset/css/select2.min.css"/>
 @endpush
 @section('title', 'Account List - ')
 @section('content')
@@ -31,8 +32,8 @@
                                                         <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                class="form-control submit_able" id="f_branch_id" autofocus>
+                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -132,8 +133,8 @@
                     <form id="add_account_form" action="{{ route('accounting.accounts.store') }}">
                         <div class="form-group">
                             <label><strong>Name :</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control add_input" data-name="Type name" id="name"
-                                placeholder="Account Name" />
+                            <input type="text" name="name" class="form-control add_input" data-name="Name" id="name"
+                                placeholder="Account Name" autocomplete="off"/>
                             <span class="error error_name"></span>
                         </div>
                         
@@ -149,37 +150,53 @@
                             <span class="error error_account_type"></span>
                         </div>
 
-                        <div class="form-group row mt-1 bank_account_field d-none">
-                            <div class="col-md-12">
-                                <label><strong>Bank Name :</strong> <span class="text-danger">*</span> </label>
-                                <select name="bank_id" class="form-control add_input" data-name="Bank name" id="bank_id">
-                                    <option value="">Select Bank</option>
-                                    @foreach ($banks as $bank)
-                                        <option value="{{ $bank->id }}">{{ $bank->name . ' (' . $bank->branch_name . ')' }}
+                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                            <div class="form-group row mt-1 bank_account_field d-none">
+                                <div class="col-md-12">
+                                    <label><strong>Bank Name :</strong> <span class="text-danger">*</span> </label>
+                                    <select name="bank_id" class="form-control add_input" data-name="Bank name" id="bank_id">
+                                        <option value="">Select Bank</option>
+                                        @foreach ($banks as $bank)
+                                            <option value="{{ $bank->id }}">
+                                                {{ $bank->name . ' (' . $bank->branch_name . ')' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_bank_id"></span>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label><strong>Account Number : </strong><span class="text-danger">*</span></label>
+                                    <input type="text" name="account_number" class="form-control add_input"
+                                        data-name="Type name" id="account_number" placeholder="Account number" />
+                                    <span class="error error_account_number"></span>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label><strong>Access Business Location :</strong> <span class="text-danger">*</span></label>
+                                    <select name="business_location[]" id="business_location" class="form-control select2" multiple="multiple">
+                                        <option value="NULL">
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
                                         </option>
-                                    @endforeach
-                                </select>
-                                <span class="error error_bank_id"></span>
-                            </div>
 
-                            <div class="col-md-12">
-                                <label><strong>Account Number : </strong><span class="text-danger">*</span></label>
-                                <input type="text" name="account_number" class="form-control add_input"
-                                    data-name="Type name" id="account_number" placeholder="Account number" />
-                                <span class="error error_account_number"></span>
+                                        @foreach ($branches as $branch)
+                                            <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_business_location"></span>
+                                </div>
                             </div>
-                        </div>
-
+                        @endif
+                        
                         <div class="form-group mt-1">
                             <label><strong>Opening Balance :</strong></label>
-                            <input type="number" name="opening_balance" class="form-control" data-name="Type name"
+                            <input type="number" name="opening_balance" class="form-control" 
                                 id="opening_balance" value="0.00" step="any" />
                         </div>
 
                         <div class="form-group mt-1">
                             <label><strong>Remarks :</strong></label>
-                            <input type="text" name="remark" class="form-control" data-name="Remark"
-                                id="remarks"/>
+                            <input type="text" name="remark" class="form-control" id="remarks" placeholder="Remarks"/>
                         </div>
 
                         <div class="form-group text-right py-2">
@@ -347,7 +364,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js"
         integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{asset('public')}}/backend/asset/js/select2.min.js"></script>
+
     <script>
+        $('.select2').select2({
+            placeholder: "Select a access business location",
+            allowClear: true
+        });
+
         var accounts_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
@@ -361,7 +385,7 @@
             "ajax": {
                 "url": "{{ route('accounting.accounts.index') }}",
                 "data": function(d) {
-                    d.branch_id = $('#branch_id').val();
+                    d.branch_id = $('#f_branch_id').val();
                     d.account_type = $('#f_account_type').val();
                 }
             },
@@ -419,7 +443,10 @@
                         $('#add_account_form')[0].reset();
                         $('.loading_button').hide();
                         accounts_table.ajax.reload();
+                        $(".select2").select2().val('').trigger('change');
                         $('#addModal').modal('hide');
+                        $('#addModal').modal('show');
+                        $('#name').focus();
                     },
                     error: function(err) {
                         $('.submit_button').prop('type', 'submit');

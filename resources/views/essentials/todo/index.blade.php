@@ -337,8 +337,8 @@
         }
     });
 
-     //Submit filter form by select input changing
-     $(document).on('submit', '#filter_form', function (e) {
+    //Submit filter form by select input changing
+    $(document).on('submit', '#filter_form', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
         table.ajax.reload();

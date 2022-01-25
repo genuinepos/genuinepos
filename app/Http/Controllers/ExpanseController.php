@@ -66,13 +66,18 @@ class ExpanseController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $expenseAccounts = DB::table('accounts')->whereIn('account_type', [7, 8, 9, 10, 15])
-            ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->select('id', 'name', 'account_type')->orderBy('accounts.account_type', 'asc')->get();
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $accounts =  DB::table('accounts')->whereIn('account_type', [1, 2])
-            ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->select('id', 'name', 'account_type', 'balance')->orderBy('account_type', 'asc')->get();
+        $expenseAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->whereIn('account_type', [7, 8, 9, 10, 15])
+            ->get(['accounts.id', 'accounts.name']);
 
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
         return view('expanses.create', compact('expenseAccounts', 'accounts', 'methods'));
@@ -211,10 +216,11 @@ class ExpanseController extends Controller
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
 
-
-        $expenseAccounts = DB::table('accounts')->whereIn('account_type', [7, 8, 9, 10, 15])
-            ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->select('id', 'name', 'account_type')->orderBy('accounts.account_type', 'asc')->get();
+        $expenseAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->whereIn('account_type', [7, 8, 9, 10, 15])
+            ->get(['accounts.id', 'accounts.name']);
 
         return view('expanses.edit', compact('expense', 'categories', 'users', 'taxes', 'expenseAccounts'));
     }
@@ -321,10 +327,13 @@ class ExpanseController extends Controller
     public function paymentModal($expenseId)
     {
         $expense = Expanse::with('branch')->where('id', $expenseId)->first();
-        $accounts =  DB::table('accounts')->whereIn('account_type', [1, 2])
-            ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->select('id', 'name', 'account_type', 'balance')
-            ->orderBy('account_type', 'asc')->get();
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
         return view('expanses.ajax_view.add_payment', compact('expense', 'accounts', 'methods'));
@@ -362,10 +371,14 @@ class ExpanseController extends Controller
     public function paymentEdit($paymentId)
     {
         $payment = ExpansePayment::with(['expense'])->where('id', $paymentId)->first();
-        $accounts =  DB::table('accounts')->whereIn('account_type', [1, 2])
-            ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->select('id', 'name', 'account_type', 'balance')
-            ->orderBy('account_type', 'asc')->get();
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
 
         return view('expanses.ajax_view.edit_payment', compact('payment', 'accounts', 'methods'));

@@ -285,4 +285,35 @@ class Util
             23 => 'Production A/C',
         ];
     }
+
+    public function accountBalanceType($balance_type)
+    {
+        $data = [
+            1 => 'debit',
+            2 => 'debit',
+            3 => 'debit',
+            4 => 'credit',
+            5 => 'credit',
+            6 => 'debit',
+            7 => 'debit',
+            8 => 'debit',
+            9 => 'debit',
+            10 => 'debit',
+            11 => 'debit',
+            12 => 'credit',
+            13 => 'credit',
+            14 => 'debit',
+            15 => 'debit',
+            16 => 'debit',
+            17 => 'debit',
+            18 => 'credit',
+            19 => 'debit',
+            20 => 'debit',
+            21 => 'debit',
+            22 => 'credit',
+            23 => 'debit',
+        ];
+
+        return $data[$balance_type];
+    }
 }

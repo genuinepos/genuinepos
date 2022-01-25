@@ -10,6 +10,8 @@ use App\Utils\Converter;
 use App\Utils\AccountUtil;
 use App\Models\AccountType;
 use Illuminate\Http\Request;
+use App\Models\AccountBranch;
+use App\Models\AccountLedger;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -36,24 +38,30 @@ class AccountController extends Controller
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
             $accounts = '';
-            $query = DB::table('accounts')
+            $query = DB::table('account_branches')
+                ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
                 ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
-                ->leftJoin('branches', 'accounts.branch_id', 'branches.id');
+                ->leftJoin('branches', 'account_branches.branch_id', 'branches.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('accounts.branch_id', NULL);
+                    $query->where('account_branches.branch_id', NULL);
                 } else {
-                    $query->where('accounts.branch_id', $request->branch_id);
+                    $query->where('account_branches.branch_id', $request->branch_id);
                 }
             }
-    
+
             if ($request->account_type) {
                 $query = $query->where('accounts.account_type', $request->account_type);
             }
 
             $query->select(
-                'accounts.*',
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.opening_balance',
+                'accounts.balance',
+                'accounts.account_type',
                 'banks.name as b_name',
                 'banks.branch_name as b_branch',
                 'branches.name as branch_name',
@@ -63,7 +71,7 @@ class AccountController extends Controller
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $accounts = $query->orderBy('accounts.account_type', 'asc');
             } else {
-                $accounts = $query->where('accounts.branch_id', auth()->user()->branch_id)
+                $accounts = $query->where('account_branches.branch_id', auth()->user()->branch_id)
                     ->orderBy('accounts.account_type', 'asc');
             }
 
@@ -102,7 +110,7 @@ class AccountController extends Controller
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $account = Account::with(['bank', 'cash_flows'])->where('id', $accountId)->first();
         return view('accounting.accounts.account_book', compact('account'));
     }
@@ -110,6 +118,7 @@ class AccountController extends Controller
     // Store bank
     public function store(Request $request)
     {
+        //return $request->branch_ids;
         $this->validate($request, [
             'name' => 'required',
             'account_type' => 'required',
@@ -119,44 +128,63 @@ class AccountController extends Controller
             $this->validate($request, [
                 'bank_id' => 'required',
                 'account_number' => 'required',
+                "business_location"    => "required|array",
+                "business_location.*"  => "required",
             ]);
         }
 
-        $addAccount = Account::insertGetId([
+        $openingBalance = $request->opening_balance ? $request->opening_balance : 0;
+
+        $addAccountGetId = Account::insertGetId([
             'name' => $request->name,
             'account_number' => $request->account_type == 2 ? $request->account_number : null,
             'bank_id' => $request->account_type == 2 ? $request->bank_id : null,
             'account_type' => $request->account_type,
-            'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
-            'balance' => $request->opening_balance ? $request->opening_balance : 0,
-            'debit' => $request->opening_balance ? $request->opening_balance : 0,
+            'opening_balance' => $openingBalance,
+            'balance' => $openingBalance,
+            $this->accountUtil->accountBalanceType($request->account_type) => $openingBalance,
             'remark' => $request->remark,
             'admin_id' => auth()->user()->id,
-            'branch_id' => auth()->user()->branch_id,
         ]);
 
-        // $addCashflow = new CashFlow();
-        // $addCashflow->account_id = $addAccount;
-        // $addCashflow->transaction_type = 7;
-        // $addCashflow->cash_type = 2;
-        // $addCashflow->credit = $request->opening_balance ? $request->opening_balance : 0;
-        // $addCashflow->report_date = date('Y-m-d');
-        // $addCashflow->date = date('Y-m-d');
-        // $addCashflow->month = date('F');
-        // $addCashflow->year = date('Y');
-        // $addCashflow->admin_id = auth()->user()->id;
-        // $addCashflow->save();
-        // $addCashflow->balance = $this->accountUtil->adjustAccountBalance($addAccount);
-        // $addCashflow->save();
+        if ($request->account_type == 2) {
+            foreach ($request->business_location as $branch_id) {
+                $addAccountBranch = AccountBranch::insert(
+                    [
+                        'branch_id' => $branch_id != 'NULL' ? $branch_id : NULL,
+                        'account_id' => $addAccountGetId,
+                    ]
+                );
+            }
+        } else {
+            $addAccountBranch = AccountBranch::insert(
+                [
+                    'branch_id' => auth()->user()->branch_id,
+                    'account_id' => $addAccountGetId,
+                ]
+            );
+        }
+
+        // Add Opening Stock Ledger
+        $accountLedger = new AccountLedger();
+        $accountLedger->account_id = $addAccountGetId;
+        $accountLedger->voucher_type = 0;
+        $accountLedger->date = date('Y-m-d H:i:s');
+        $accountLedger->{$this->accountUtil->accountBalanceType($request->account_type)} = $openingBalance;
+        $accountLedger->amount_type = $this->accountUtil->accountBalanceType($request->account_type);
+        $accountLedger->running_balance = $openingBalance;
+        $accountLedger->save();
 
         return response()->json('Account created successfully');
     }
 
     public function edit($id)
     {
-        $account = DB::table('accounts')->where('id', $id)->first();
+        $account = Account::with('accountBranches')->where('id', $id)->first();
+        $isExistsHeadOffice = DB::table('account_branches')->where('account_id', $id)->where('branch_id', NULL)->first();
         $banks = DB::table('banks')->get();
-        return view('accounting.accounts.ajax_view.edit_account', compact('account', 'banks'));
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('accounting.accounts.ajax_view.edit_account', compact('account', 'isExistsHeadOffice', 'banks', 'branches'));
     }
 
     // Update bank
@@ -170,17 +198,54 @@ class AccountController extends Controller
             $this->validate($request, [
                 'bank_id' => 'required',
                 'account_number' => 'required',
+                "business_location"    => "required|array",
+                "business_location.*"  => "required",
             ]);
         }
 
-        $updateBank = Account::where('id', $id)->first();
-        $updateBank->update([
+        $updateAccount = Account::with('accountBranches')->where('id', $id)->first();
+
+        // update account branches
+        if ($updateAccount->account_type == 2) {
+            foreach ($updateAccount->accountBranches as $accountBranch) {
+                $accountBranch->is_delete_in_update = 1;
+                $accountBranch->save();
+            }
+        }
+
+        $updateAccount->update([
             'name' => $request->name,
             'account_number' => $request->account_type == 2 ? $request->account_number : null,
             'bank_id' => $request->account_type == 2 ? $request->bank_id : null,
             'account_type' => $request->account_type,
             'remark' => $request->remark,
         ]);
+
+        if ($request->account_type == 2) {
+            foreach ($request->business_location as $branch) {
+                $branch_id = $branch != 'NULL' ? $branch : NULL;
+                $accountBranch = AccountBranch::where('account_id', $updateAccount->id)->where('branch_id', $branch_id)->first();
+                if ($accountBranch) {
+
+                    $accountBranch->is_delete_in_update = 0;
+                    $accountBranch->save();
+                } else {
+
+                    $addAccountBranch = AccountBranch::insert(
+                        [
+                            'branch_id' => $branch_id,
+                            'account_id' => $updateAccount->id,
+                        ]
+                    );
+                }
+            }
+        }
+
+        // Delete unused account branch row
+        $accountBranches = AccountBranch::where('account_id', $updateAccount->id)->where('is_delete_in_update', 1)->get();
+        foreach ($accountBranches as $accountBranch) {
+            $accountBranch->delete();
+        }
 
         return response()->json('Account updated successfully');
     }

@@ -17,6 +17,7 @@ class CreateAccountBranchesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->unsignedBigInteger('account_id')->nullable();
+            $table->boolean('is_delete_in_update')->default(0);
             $table->timestamps();
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');

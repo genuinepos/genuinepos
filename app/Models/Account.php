@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Models\Bank;
 use App\Models\CashFlow;
 use App\Models\AdminAndUser;
+use App\Models\AccountBranch;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
@@ -14,6 +15,11 @@ class Account extends Model
     public function bank()
     {
         return $this->belongsTo(Bank::class, 'bank_id')->select(['id', 'name', 'branch_name']);
+    }
+
+    public function accountBranches()
+    {
+        return $this->hasMany(AccountBranch::class);
     }
 
     public function cash_flows()

@@ -568,7 +568,7 @@ class SaleController extends Controller
         );
 
         if ($updateSale->status == 1 && $updateSale->customer_id) {
-            // Update customer ladger
+            // Update customer ledger
             $this->customerUtil->updateCustomerLedger(
                 voucher_type_id: 1,
                 customer_id: $updateSale->customer_id,

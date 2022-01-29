@@ -197,7 +197,7 @@ class SaleReturnController extends Controller
         }
 
         // generate invoice ID
-        $invoiceId = 1;
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, "0", STR_PAD_LEFT);
         $lastReturn = DB::table('sale_returns')->orderBy('id', 'desc')->first();
         if ($lastReturn) {
             $invoiceId = ++$lastReturn->id;

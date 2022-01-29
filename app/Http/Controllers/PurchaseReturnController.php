@@ -19,6 +19,7 @@ use App\Models\PurchaseReturnProduct;
 use App\Models\ProductWarehouseVariant;
 use App\Utils\AccountUtil;
 use App\Utils\Converter;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseUtil;
 use App\Utils\SupplierUtil;
@@ -33,6 +34,7 @@ class PurchaseReturnController extends Controller
     protected $purchaseUtil;
     protected $converter;
     protected $accountUtil;
+    protected $invoiceVoucherRefIdUtil;
     public function __construct(
         PurchaseReturnUtil $purchaseReturnUtil,
         NameSearchUtil $nameSearchUtil,
@@ -40,7 +42,8 @@ class PurchaseReturnController extends Controller
         SupplierUtil $supplierUtil,
         PurchaseUtil $purchaseUtil,
         Converter $converter,
-        AccountUtil $accountUtil
+        AccountUtil $accountUtil,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->nameSearchUtil = $nameSearchUtil;
@@ -49,6 +52,7 @@ class PurchaseReturnController extends Controller
         $this->purchaseUtil = $purchaseUtil;
         $this->converter = $converter;
         $this->accountUtil = $accountUtil;
+        $this->accountUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
     // Sale return index view
@@ -189,9 +193,11 @@ class PurchaseReturnController extends Controller
 
         $purchase = Purchase::with(['warehouse', 'branch', 'supplier'])->where('id', $purchaseId)->first();
 
-        $purchaseReturnAccounts = DB::table('accounts')->whereIn('account_type', [4])
-            ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->select('id', 'name', 'account_type')->get();
+        $purchaseReturnAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 4)
+            ->get(['accounts.id', 'accounts.name']);
 
         return view('purchases.purchase_return.create', compact('purchaseId', 'purchase', 'purchaseReturnAccounts'));
     }
@@ -210,11 +216,7 @@ class PurchaseReturnController extends Controller
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
 
         // generate invoice ID
-        $invoiceId = 1;
-        $lastReturn = DB::table('purchase_returns')->orderBy('id', 'desc')->first();
-        if ($lastReturn) {
-            $invoiceId = ++$lastReturn->id;
-        }
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
 
         $purchase_product_ids = $request->purchase_product_ids;
         $return_quantities = $request->return_quantities;
@@ -361,8 +363,14 @@ class PurchaseReturnController extends Controller
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')
             ->where('branch_id', auth()->user()->branch_id)->get();
 
+        $purchaseReturnAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 4)
+            ->get(['accounts.id', 'accounts.name']);
+
         $suppliers = DB::table('suppliers')->select('id', 'name', 'phone')->get();
-        return view('purchases.purchase_return.supplier_return', compact('warehouses', 'suppliers'));
+        return view('purchases.purchase_return.supplier_return', compact('warehouses', 'suppliers', 'purchaseReturnAccounts'));
     }
 
     // Search product by code
@@ -447,7 +455,6 @@ class PurchaseReturnController extends Controller
         return $this->nameSearchUtil->nameSearching($product_code);
     }
 
-
     public function checkWarehouseProductVariant($productId, $variantId, $warehouseId)
     {
         $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouseId)->where('product_id', $productId)->first();
@@ -483,17 +490,13 @@ class PurchaseReturnController extends Controller
         }
 
         // generate invoice ID
-        $invoiceId = 1;
-        $lastReturn = DB::table('purchase_returns')->orderBy('id', 'desc')->first();
-        if ($lastReturn) {
-            $invoiceId = ++$lastReturn->id;
-        }
-
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
+      
         $addPurchaseReturn = new PurchaseReturn();
         $addPurchaseReturn->supplier_id = $request->supplier_id;
         $addPurchaseReturn->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $addPurchaseReturn->branch_id = auth()->user()->branch_id;
-        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
+        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
         $addPurchaseReturn->purchase_tax_percent = $request->purchase_tax ? $request->purchase_tax : 0.00;
         $addPurchaseReturn->purchase_tax_amount = $request->purchase_tax_amount;
         $addPurchaseReturn->total_return_amount = $request->total_return_amount;

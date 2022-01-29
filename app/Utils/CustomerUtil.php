@@ -157,12 +157,13 @@ class CustomerUtil
     public function voucherType($voucher_type_id)
     {
         $data = [
+            0 => ['name' => 'Opening_balance', 'id' => 'sale_id', 'voucher_no' => NULL, 'amt'=> 'debit'],
             1 => ['name' => 'Sale', 'id' => 'sale_id', 'voucher_no' => 'sale_inv_id', 'amt'=> 'debit'],
             2 => ['name' => 'Sale Return', 'id' => 'sale_return_id', 'voucher_no' => 'return_inv_id', 'amt' => 'credit'],
             3 => ['name' => 'Received Payment', 'id' => 'sale_payment_id', 'voucher_no' => 'received_voucher_no', 'amt' => 'credit'],
             4 => ['name' => 'Return Payment', 'id' => 'sale_payment_id', 'return_pay_voucher_no', 'amt' => 'debit'],
             5 => ['name' => 'Receive From Customer', 'id' => 'customer_payment_id', 'customer_payment_voucher', 'amt' => 'credit'],
-            6 => ['name' => 'Paid To Customer', 'id' => 'customer_payment_id', 'customer_return_payment_voucher', 'amt' => 'debit'],
+            6 => ['name' => 'Paid Return Amt.', 'id' => 'customer_payment_id', 'customer_return_payment_voucher', 'amt' => 'debit'],
         ];
 
         return $data[$voucher_type_id];

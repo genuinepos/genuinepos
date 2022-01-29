@@ -108,6 +108,7 @@ class Util
 
         $generalSettings = DB::table('general_settings')->first('prefix');
         $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
+
         $addCustomer = Customer::create([
             'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
@@ -131,12 +132,14 @@ class Util
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);
 
-        $addCustomerLedger = new CustomerLedger();
-        $addCustomerLedger->customer_id = $addCustomer->id;
-        $addCustomerLedger->row_type = 3;
-        $addCustomerLedger->report_date = date('Y-m-d');
-        $addCustomerLedger->amount = $request->opening_balance ? $request->opening_balance : 0.00;
-        $addCustomerLedger->save();
+        // Add supplier Ledger
+        $this->customerUtil->addCustomerLedger(
+            voucher_type_id: 0,
+            customer_id: $addCustomer->id,
+            date: date('Y-m-d H:i:s'),
+            trans_id: NULL,
+            amount: $request->opening_balance ? $request->opening_balance : 0
+        );
 
         return response()->json($addCustomer);
     }

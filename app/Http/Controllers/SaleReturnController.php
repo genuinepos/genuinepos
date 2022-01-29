@@ -197,7 +197,7 @@ class SaleReturnController extends Controller
         }
 
         // generate invoice ID
-        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, "0", STR_PAD_LEFT);
+        $invoiceId = 1;
         $lastReturn = DB::table('sale_returns')->orderBy('id', 'desc')->first();
         if ($lastReturn) {
             $invoiceId = ++$lastReturn->id;
@@ -212,6 +212,7 @@ class SaleReturnController extends Controller
             $saleReturnDue = $request->total_return_amount - $saleDue;
 
             // Update Sale return
+            $saleReturn->sale_return_account_id = $request->sale_return_account_id;
             $saleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
             $saleReturn->return_discount_type = $request->return_discount_type;
             $saleReturn->return_discount = $request->return_discount;
@@ -277,6 +278,7 @@ class SaleReturnController extends Controller
             $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
 
             $addSaleReturn->branch_id = $sale->branch_id;
+            $addSaleReturn->sale_return_account_id = $request->sale_return_account_id;
             $addSaleReturn->admin_id = auth()->user()->id;
             $addSaleReturn->return_discount_type = $request->return_discount_type;
             $addSaleReturn->return_discount = $request->return_discount;
@@ -357,10 +359,13 @@ class SaleReturnController extends Controller
     {
         $saleReturn = SaleReturn::with(['sale', 'sale.customer', 'sale_return_products'])->where('id', $saleReturnId)->first();
         $storedReturnedProducts = $saleReturn->sale_return_products;
+        $storedReturnAccountId = $saleReturn->sale_return_account_id;
         $storedBranchId = $saleReturn->sale->branch_id;
+
         if ($saleReturn->total_return_due_pay > 0) {
             return response()->json(['errorMsg' => "You can not delete this return invoice, cause your have paid some or full amount on this return."]);
         }
+
         $saleReturn->sale->is_return_available = 0;
         $saleReturn->delete();
         foreach ($storedReturnedProducts as $return_product) {
@@ -371,6 +376,10 @@ class SaleReturnController extends Controller
         $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);
         if ($saleReturn->sale->customer_id) {
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($saleReturn->sale->customer_id);
+        }
+
+        if ($storedReturnAccountId) {
+            $this->accountUtil->adjustAccountBalance('debit', $storedReturnAccountId);
         }
 
         return response()->json('Sale return deleted successfully');

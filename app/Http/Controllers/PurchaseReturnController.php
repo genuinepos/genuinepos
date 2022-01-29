@@ -52,7 +52,7 @@ class PurchaseReturnController extends Controller
         $this->purchaseUtil = $purchaseUtil;
         $this->converter = $converter;
         $this->accountUtil = $accountUtil;
-        $this->accountUtil = $invoiceVoucherRefIdUtil;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
     // Sale return index view
@@ -491,9 +491,10 @@ class PurchaseReturnController extends Controller
 
         // generate invoice ID
         $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
-      
+
         $addPurchaseReturn = new PurchaseReturn();
         $addPurchaseReturn->supplier_id = $request->supplier_id;
+        $addPurchaseReturn->purchase_return_account_id = $request->purchase_return_account_id;
         $addPurchaseReturn->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $addPurchaseReturn->branch_id = auth()->user()->branch_id;
         $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
@@ -547,7 +548,25 @@ class PurchaseReturnController extends Controller
             $__index2++;
         }
 
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($request->supplier_id);
+        // Add Purchase Return A/C ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 4,
+            date: $request->date,
+            account_id: $request->purchase_return_account_id,
+            trans_id: $addPurchaseReturn->id,
+            amount: $request->total_return_amount,
+            balance_type: 'credit'
+        );
+
+        // Add supplier Ledger
+        $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: 2,
+            supplier_id: $request->supplier_id,
+            date: $request->date,
+            trans_id: $addPurchaseReturn->id,
+            amount: $request->total_return_amount
+        );
+
         return response()->json('Successfully purchase return is added.');
     }
 
@@ -557,7 +576,14 @@ class PurchaseReturnController extends Controller
         $purchaseReturnId = $purchaseReturnId;
         $return = DB::table('purchase_returns')->where('id', $purchaseReturnId)->first();
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->get();
-        return view('purchases.purchase_return.edit_supplier_return', compact('purchaseReturnId', 'return', 'warehouses'));
+
+        $purchaseReturnAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 4)
+            ->get(['accounts.id', 'accounts.name']);
+
+        return view('purchases.purchase_return.edit_supplier_return', compact('purchaseReturnId', 'return', 'warehouses', 'purchaseReturnAccounts'));
     }
 
     public function getEditableSupplierReturn($purchaseReturnId)
@@ -603,10 +629,14 @@ class PurchaseReturnController extends Controller
 
     public function supplierReturnUpdate(Request $request, $purchaseReturnId)
     {
+        //return $request->purchase_return_account_id;
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
+
         $updatePurchaseReturn = PurchaseReturn::with('purchase_return_products')->where('id', $purchaseReturnId)->first();
+
         $storedWarehouseId = $updatePurchaseReturn->warehouse_id;
+
         $storedReturnProducts = $updatePurchaseReturn->purchase_return_products;
 
         foreach ($updatePurchaseReturn->purchase_return_products as $purchase_return_product) {
@@ -628,6 +658,7 @@ class PurchaseReturnController extends Controller
         }
 
         $updatePurchaseReturn->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
+        $updatePurchaseReturn->purchase_return_account_id = $request->purchase_return_account_id;
         $updatePurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
         $updatePurchaseReturn->purchase_tax_percent = $request->purchase_tax ? $request->purchase_tax : 0.00;
         $updatePurchaseReturn->purchase_tax_amount = $request->purchase_tax_amount;
@@ -700,7 +731,25 @@ class PurchaseReturnController extends Controller
             }
         }
 
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchaseReturn->supplier_id);
+        // Update Purchase Return A/C ledger
+        $this->accountUtil->updateAccountLedger(
+            voucher_type_id: 4,
+            date: $request->date,
+            account_id: $request->purchase_return_account_id,
+            trans_id: $updatePurchaseReturn->id,
+            amount: $request->total_return_amount,
+            balance_type: 'credit'
+        );
+
+        // Update Supplier Ledger
+        $this->supplierUtil->updateSupplierLedger(
+            voucher_type_id: 2,
+            supplier_id: $updatePurchaseReturn->supplier_id,
+            date: $request->date,
+            trans_id: $updatePurchaseReturn->id,
+            amount: $request->total_return_amount
+        );
+
         session()->flash('successMsg', 'Purchase return created successfully.');
         return response()->json('Purchase return created successfully.');
     }

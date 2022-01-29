@@ -22,7 +22,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Edit Purchase Return</h5> 
+                                            <h5>Add Purchase Return</h5> 
                                         </div>
 
                                         <div class="col-6">
@@ -66,23 +66,21 @@
                                                 </div>
                                             </div>
 
-                                     
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4"><b>Return A/C : <span
-                                                        class="text-danger">*</span></b></label>
-                                                    <div class="col-8">
-                                                        <select name="purchase_return_account_id" class="form-control add_input"
-                                                            id="purchasae_return_account_id" data-name="Purchase Return A/C">
-                                                            @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
-                                                                <option value="{{ $purchaseReturnAccount->id }}">
-                                                                    {{ $purchaseReturnAccount->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_purchase_return_account_id"></span>
-                                                    </div>
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class="col-4"><b>Return A/C : <span
+                                                    class="text-danger">*</span></b></label>
+                                                <div class="col-8">
+                                                    <select name="purchase_return_account_id" class="form-control add_input"
+                                                        id="purchase_return_account_id" data-name="Purchase Return A/C">
+                                                        @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
+                                                            <option value="{{ $purchaseReturnAccount->id }}">
+                                                                {{ $purchaseReturnAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_purchase_return_account_id"></span>
                                                 </div>
-                                          
+                                            </div>
                                         </div>
 
                                         <div class="col-md-3">

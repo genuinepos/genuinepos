@@ -80,7 +80,7 @@
                                                     class="text-danger">*</span></b></label>
                                                 <div class="col-7">
                                                     <select name="purchase_return_account_id" class="form-control add_input"
-                                                        id="purchasae_return_account_id" data-name="Purchase Return A/C">
+                                                        id="purchase_return_account_id" data-name="Purchase Return A/C">
                                                         @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
                                                             <option value="{{ $purchaseReturnAccount->id }}">
                                                                 {{ $purchaseReturnAccount->name }}

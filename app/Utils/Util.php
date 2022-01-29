@@ -124,6 +124,7 @@ class Util
             'country' => $request->country,
             'state' => $request->state,
             'shipping_address' => $request->shipping_address,
+            'credit_limit' => $request->credit_limit,
             'opening_balance' => $request->opening_balance ? $request->opening_balance : 0.00,
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);

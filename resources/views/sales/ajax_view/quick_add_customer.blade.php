@@ -63,15 +63,26 @@
         </div>
 
         <div class="col-md-3">
+            <label><strong>Credit Limit :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
+            <input type="number" step="any" name="credit_limit" class="form-control"
+                placeholder="Credit Limit" value=""/>
+        </div>
+
+        <div class="col-md-3">
             <label><strong>Pay Term :</strong>  </label>
             <div class="col-md-12">
                 <div class="row">
-                    <input type="text" name="pay_term_number" class="form-control w-50"/>
-                    <select name="pay_term" class="form-control w-50">
-                        <option value="1">Select term</option>
-                        <option value="2">Days </option>
-                        <option value="3">Months</option>
-                    </select>
+                    <div class="col-md-5">
+                        <input type="text" name="pay_term_number" class="form-control" placeholder="Number"/>
+                    </div>
+
+                    <div class="col-md-7">
+                        <select name="pay_term" class="form-control">
+                            <option value="1">Select term</option>
+                            <option value="2">Days </option>
+                            <option value="3">Months</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -134,7 +145,7 @@
 
 <script>
     // Add customer by ajax
-    $(document).on('submit', '#add_customer_form', function(e){
+    $('#add_customer_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
@@ -169,6 +180,7 @@
                 $('.loading_button').hide();
                 $('#customer_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
                 $('#customer_id').val(data.id);
+                $('#display_pre_due').val(parseFloat(data.total_sale_due).toFixed(2));
                 $('#previous_due').val(parseFloat(data.total_sale_due).toFixed(2));
                 calculateTotalAmount();
             }

@@ -105,7 +105,7 @@ class ProfitLossReportController extends Controller
             // $saleProducts = $saleProductQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)
             //     ->where('sales.status', 1)
             //     ->get();
-            
+
             $saleProducts = $saleProductQuery->where('sales.branch_id', auth()->user()->branch_id)->get();
 
             $transferStBranch = $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)->get();
@@ -336,8 +336,13 @@ class ProfitLossReportController extends Controller
         $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
             ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
 
-        $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-            ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
+        $saleProductQuery = DB::table('purchase_sale_product_chains')
+            ->leftJoin('purchase_products', 'purchase_sale_product_chains.purchase_product_id', 'purchase_products.id')
+            ->leftJoin('sale_products', 'purchase_sale_product_chains.sale_product_id', 'sale_products.id')
+            ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+            ->select(
+                DB::raw('SUM(net_unit_cost * sold_qty) as total_unit_cost')
+            );
 
         $adjustmentQuery = DB::table('stock_adjustments')->select(
             DB::raw('sum(net_total_amount) as total_adjustment'),

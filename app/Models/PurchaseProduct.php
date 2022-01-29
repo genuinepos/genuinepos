@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PurchaseSaleProductChain;
 
 class PurchaseProduct extends Model
 {
@@ -14,6 +15,11 @@ class PurchaseProduct extends Model
     public function purchase()
     {
         return $this->belongsTo(Purchase::class, 'purchase_id', 'id');
+    }
+
+    public function purchaseSaleChains()
+    {
+        return $this->hasMany(PurchaseSaleProductChain::class);
     }
 
     public function variant()

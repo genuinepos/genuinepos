@@ -254,7 +254,6 @@ class PurchaseController extends Controller
         $addPurchase->save();
 
         // add purchase or purchase order product
-
         if ($request->purchase_status == 1) {
             $this->purchaseUtil->addPurchaseProduct($request, $isEditProductPrice, $addPurchase->id);
         } else {

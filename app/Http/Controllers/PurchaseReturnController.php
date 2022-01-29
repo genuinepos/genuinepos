@@ -586,6 +586,9 @@ class PurchaseReturnController extends Controller
         $return_subtotals = $request->return_subtotals;
         $units = $request->units;
 
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
+
+        $updatePurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
         $updatePurchaseReturn->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $updatePurchaseReturn->purchase_tax_percent = $request->purchase_tax ? $request->purchase_tax : 0.00;
         $updatePurchaseReturn->purchase_tax_amount = $request->purchase_tax_amount;

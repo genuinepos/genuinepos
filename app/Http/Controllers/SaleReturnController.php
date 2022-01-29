@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\SalePayment;
 use App\Utils\Converter;
 use App\Utils\CustomerUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\ProductStockUtil;
 use App\Utils\SaleUtil;
 use Yajra\DataTables\Facades\DataTables;
@@ -21,12 +22,20 @@ class SaleReturnController extends Controller
     protected $saleUtil;
     protected $customerUtil;
     protected $converter;
-    public function __construct(ProductStockUtil $productStockUtil, SaleUtil $saleUtil, CustomerUtil $customerUtil, Converter $converter)
+    protected $invoiceVoucherRefIdUtil;
+    public function __construct(
+        ProductStockUtil $productStockUtil, 
+        SaleUtil $saleUtil, 
+        CustomerUtil $customerUtil, 
+        Converter $converter,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+        )
     {
         $this->productStockUtil = $productStockUtil;
         $this->saleUtil = $saleUtil;
         $this->customerUtil = $customerUtil;
         $this->converter = $converter;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -172,12 +181,8 @@ class SaleReturnController extends Controller
         }
 
         // generate invoice ID
-        $invoiceId = 1;
-        $lastReturn = DB::table('sale_returns')->orderBy('id', 'desc')->first();
-        if ($lastReturn) {
-            $invoiceId = ++$lastReturn->id;
-        }
-
+        $invoiceId =  $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, "0", STR_PAD_LEFT);
+      
         $saleReturn = SaleReturn::where('sale_id', $saleId)->first();
         $sale = Sale::where('id', $saleId)->first();
         if ($saleReturn) {
@@ -186,7 +191,7 @@ class SaleReturnController extends Controller
             $saleReturnDue = $request->total_return_amount - $saleDue;
 
             // Update Sale return
-            $saleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
+            $saleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
             $saleReturn->return_discount_type = $request->return_discount_type;
             $saleReturn->return_discount = $request->return_discount;
             $saleReturn->return_discount_amount = $request->total_return_discount_amount;
@@ -231,7 +236,7 @@ class SaleReturnController extends Controller
 
             $addSaleReturn = new SaleReturn();
             $addSaleReturn->sale_id = $sale->id;
-            $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
+            $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
 
             $addSaleReturn->branch_id = $sale->branch_id;
             $addSaleReturn->admin_id = auth()->user()->id;

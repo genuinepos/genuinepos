@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\PurchaseReturnProduct;
 use App\Models\ProductWarehouseVariant;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseReturnController extends Controller
@@ -32,13 +33,15 @@ class PurchaseReturnController extends Controller
     protected $supplierUtil;
     protected $purchaseUtil;
     protected $converter;
+    protected $invoiceVoucherRefIdUtil;
     public function __construct(
         PurchaseReturnUtil $purchaseReturnUtil,
         NameSearchUtil $nameSearchUtil,
         ProductStockUtil $productStockUtil,
         SupplierUtil $supplierUtil,
         PurchaseUtil $purchaseUtil,
-        Converter $converter
+        Converter $converter,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->nameSearchUtil = $nameSearchUtil;
@@ -46,6 +49,7 @@ class PurchaseReturnController extends Controller
         $this->supplierUtil = $supplierUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->converter = $converter;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
     // Sale return index view
@@ -198,12 +202,8 @@ class PurchaseReturnController extends Controller
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
 
         // generate invoice ID
-        $invoiceId = 1;
-        $lastReturn = DB::table('purchase_returns')->orderBy('id', 'desc')->first();
-        if ($lastReturn) {
-            $invoiceId = ++$lastReturn->id;
-        }
-
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
+      
         $purchase_product_ids = $request->purchase_product_ids;
         $return_quantities = $request->return_quantities;
         $return_subtotals = $request->return_subtotals;
@@ -456,17 +456,13 @@ class PurchaseReturnController extends Controller
         }
 
         // generate invoice ID
-        $invoiceId = 1;
-        $lastReturn = DB::table('purchase_returns')->orderBy('id', 'desc')->first();
-        if ($lastReturn) {
-            $invoiceId = ++$lastReturn->id;
-        }
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
 
         $addPurchaseReturn = new PurchaseReturn();
         $addPurchaseReturn->supplier_id = $request->supplier_id;
         $addPurchaseReturn->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $addPurchaseReturn->branch_id = auth()->user()->branch_id;
-        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
+        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
         $addPurchaseReturn->purchase_tax_percent = $request->purchase_tax ? $request->purchase_tax : 0.00;
         $addPurchaseReturn->purchase_tax_amount = $request->purchase_tax_amount;
         $addPurchaseReturn->total_return_amount = $request->total_return_amount;
@@ -590,15 +586,10 @@ class PurchaseReturnController extends Controller
         $return_subtotals = $request->return_subtotals;
         $units = $request->units;
 
-        // Generate invoice id.
-        $invoiceId = 1;
-        $lastReturn = DB::table('purchase_returns')->orderBy('id', 'desc')->first();
-        if ($lastReturn) {
-            $invoiceId = ++$lastReturn->id;
-        }
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
 
+        $updatePurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
         $updatePurchaseReturn->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
-        $updatePurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
         $updatePurchaseReturn->purchase_tax_percent = $request->purchase_tax ? $request->purchase_tax : 0.00;
         $updatePurchaseReturn->purchase_tax_amount = $request->purchase_tax_amount;
         $updatePurchaseReturn->total_return_amount = $request->total_return_amount;

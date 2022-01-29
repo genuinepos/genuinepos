@@ -4,9 +4,10 @@ namespace App\Imports;
 
 use App\Models\Supplier;
 use App\Models\SupplierLedger;
-use App\Utils\SupplierUtil;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\SupplierUtil;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class SupplierImport implements ToCollection
@@ -17,6 +18,8 @@ class SupplierImport implements ToCollection
      */
     public function collection(Collection $collection)
     {
+        $this->invoiceVoucherRefIdUtil = new InvoiceVoucherRefIdUtil;
+
         $index = 0;
         $generalSettings = DB::table('general_settings')->first('prefix');
         $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
@@ -24,17 +27,12 @@ class SupplierImport implements ToCollection
         foreach ($collection as $c) {
             if ($index != 0) {
                 if ($c[2]) {
-                    $i = 5;
-                    $a = 0;
-                    $id = '';
-                    while ($a < $i) {
-                        $id .= rand(1, 9);
-                        $a++;
-                    }
 
                     $firstLetterOfSupplier = str_split($c[2])[0];
+                    $supplierId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT);
+
                     $addSupplier = Supplier::create([
-                        'contact_id' => $c[0] ? $c[0] : $supIdPrefix . $id,
+                        'contact_id' => $c[0] ? $c[0] : $supIdPrefix . $supplierId,
                         'business_name' => $c[1],
                         'name' => $c[2],
                         'phone' => $c[3],
@@ -50,7 +48,7 @@ class SupplierImport implements ToCollection
                         'country' => $c[13],
                         'zip_code' => $c[14],
                         'shipping_address' => $c[15],
-                        'prefix' => $c[16] ? $c[16] : $firstLetterOfSupplier . $id,
+                        'prefix' => $c[16] ? $c[16] : $firstLetterOfSupplier . $supplierId,
                         'pay_term_number' => (float)$c[17],
                         'pay_term' => (float)$c[18],
                         'total_purchase_due' => (float)$c[9] ? (float)$c[9] : 0,

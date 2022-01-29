@@ -174,7 +174,7 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <input type="text" name="pay_term_number"
-                                            class="form-control w-50" />
+                                            class="form-control w-50"/>
                                         <select name="pay_term" class="form-control w-50">
                                             <option value="1">Select term</option>
                                             <option value="2">Days </option>

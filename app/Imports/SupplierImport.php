@@ -4,21 +4,23 @@ namespace App\Imports;
 
 use App\Models\Supplier;
 use App\Models\SupplierLedger;
+use App\Utils\SupplierUtil;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class SupplierImport implements ToCollection
 {
+    protected $supplierUtil;
     /**
      * @param Collection $collection
      */
     public function collection(Collection $collection)
     {
-        //dd($collection);
         $index = 0;
         $generalSettings = DB::table('general_settings')->first('prefix');
         $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
+        $this->supplierUtil = new SupplierUtil();
         foreach ($collection as $c) {
             if ($index != 0) {
                 if ($c[2]) {
@@ -29,6 +31,7 @@ class SupplierImport implements ToCollection
                         $id .= rand(1, 9);
                         $a++;
                     }
+
                     $firstLetterOfSupplier = str_split($c[2])[0];
                     $addSupplier = Supplier::create([
                         'contact_id' => $c[0] ? $c[0] : $supIdPrefix . $id,
@@ -53,13 +56,14 @@ class SupplierImport implements ToCollection
                         'total_purchase_due' => (float)$c[9] ? (float)$c[9] : 0,
                     ]);
 
-                    if ((float)$c[9] && (float)$c[9] >= 0) {
-                        $addSupplierLedger = new SupplierLedger();
-                        $addSupplierLedger->supplier_id = $addSupplier->id;
-                        $addSupplierLedger->row_type = 3;
-                        $addSupplierLedger->amount = (float)$c[9];
-                        $addSupplierLedger->save();
-                    }
+                    // Add supplier Ledger
+                    $this->supplierUtil->addSupplierLedger(
+                        voucher_type_id: 0,
+                        supplier_id: $addSupplier->id,
+                        date: date('Y-m-d H:i:s'),
+                        trans_id: NULL,
+                        amount: (float)$c[9] ? (float)$c[9] : 0
+                    );
                 }
             }
             $index++;

@@ -84,8 +84,8 @@ class SupplierController extends Controller
             'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
 
-         // Add supplier Ledger
-         $this->supplierUtil->addSupplierLedger(
+        // Add supplier Ledger
+        $this->supplierUtil->addSupplierLedger(
             voucher_type_id: 0,
             supplier_id: $addSupplier->id,
             date: date('Y-m-d H:i:s'),

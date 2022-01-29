@@ -64,9 +64,9 @@
         <div class="col-md-3">
             <label><b>Pay Term</b> : </label>
             <div class="row">
-                <input type="text" name="pay_term_number" class="form-control w-50"
+                <input type="text" name="pay_term_number" class="form-control"
                     id="e_pay_term_number" value="{{ $customer->pay_term_number }}"/>
-                <select name="pay_term" class="form-control w-50">
+                <select name="pay_term" class="form-control">
                     <option value="">Select term</option>
                     <option {{ $customer->pay_term == 1 ? 'SELECTED' : ''  }} value="1">Days </option>
                     <option {{ $customer->pay_term == 2 ? 'SELECTED' : ''  }} value="2">Months</option>

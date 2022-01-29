@@ -17,7 +17,7 @@
                      <div class="col-md-4">
                          <ul class="list-unstyled">
                              <li><strong>Supplier :- </strong></li>
-                             <li><strong>Name : </strong>{{ $purchase->supplier->name }}</li>
+                             <li><strong>Name : </strong> {{ $purchase->supplier->name }}</li>
                              <li><strong>Address : </strong> {{ $purchase->supplier->address }}</li>
                              <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
                              <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
@@ -316,7 +316,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h1 class="bill_name">Purchase Order Bill</h1>
+                            <h3 class="bill_name">Purchase Order Bill</h3>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">

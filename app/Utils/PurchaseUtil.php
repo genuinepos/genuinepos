@@ -442,7 +442,6 @@ class PurchaseUtil
             $addPurchaseProduct->unit_tax = $unit_taxes[$index];
             $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
             $addPurchaseProduct->line_total = $linetotals[$index];
-            $addPurchaseProduct->branch_id = auth()->user()->branch_id;
 
             if ($isEditProductPrice == '1') {
                 $addPurchaseProduct->profit_margin = $profits[$index];

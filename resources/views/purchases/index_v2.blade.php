@@ -370,8 +370,13 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    purchase_table.ajax.reload();
-                    toastr.error(data);
+                    if ($.isEmptyObject(data.errorMsg)) {
+                        purchase_table.ajax.reload();
+                        toastr.error(data);
+                    }else{
+                        toastr.error(data.errorMsg);
+                    }
+                    
                 },error: function(err) {
                     if (err.status == 0) {
                         toastr.error('Net Connetion Error. Reload This Page.'); 

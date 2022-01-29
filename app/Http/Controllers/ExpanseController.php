@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
 use App\Models\ExpenseDescription;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -22,11 +23,17 @@ class ExpanseController extends Controller
     protected $expenseUtil;
     protected $accountUtil;
     protected $converter;
-    public function __construct(ExpenseUtil $expenseUtil, AccountUtil $accountUtil, Converter $converter)
-    {
+    protected $invoiceVoucherRefIdUtil;
+    public function __construct(
+        ExpenseUtil $expenseUtil,
+        AccountUtil $accountUtil,
+        Converter $converter,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+    ) {
         $this->expenseUtil = $expenseUtil;
         $this->accountUtil = $accountUtil;
         $this->converter = $converter;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -268,15 +275,12 @@ class ExpanseController extends Controller
         ]);
 
         // generate invoice ID
-        $invoiceId = 1;
-        $lastExpense = DB::table('expanses')->orderBy('id', 'desc')->select('id')->first();
-        if ($lastExpense) {
-            $invoiceId = ++$lastExpense->id;
-        }
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
 
         // Add expanse
         $addExpanse = new Expanse();
-        $addExpanse->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $invoiceId;
+        $addExpanse->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $addExpanse->branch_id = NULL;
         } else {
@@ -317,8 +321,10 @@ class ExpanseController extends Controller
         }
 
         if ($request->paying_amount > 0) {
+
+            $paymentVoucher = str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_payments'), 4, "0", STR_PAD_LEFT);
             $addExpansePayment = new ExpansePayment();
-            $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $invoiceId;
+            $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . $paymentVoucher;
             $addExpansePayment->expanse_id = $addExpanse->id;
             $addExpansePayment->account_id = $request->account_id;
             $addExpansePayment->pay_mode = $request->payment_method;
@@ -378,14 +384,33 @@ class ExpanseController extends Controller
             return response()->json('Access Denied');
         }
 
-        $deleteExpanse = Expanse::where('id', $expanseId)->first();
+        $deleteExpanse = Expanse::with(['expense_payments'])->where('id', $expanseId)->first();
+        $storedPayments = $deleteExpanse->expense_payments;
         if (!is_null($deleteExpanse)) {
-            if ($deleteExpanse->paid > 0) {
-                return response()->json(['errorMsg' => 'You can not delete this expanse, already some or more amount is paid on this expanse.']);
+            if ($deleteExpanse->attachment) {
+                if (file_exists(public_path('uploads/expanse_attachment/' . $deleteExpanse->attachment))) {
+                    unlink(public_path('uploads/expanse_attachment/' . $deleteExpanse->attachment));
+                }
             }
+
             $deleteExpanse->delete();
+
+            if (count($storedPayments) > 0) {
+                foreach ($storedPayments as $payment) {
+                    if ($payment->attachment) {
+                        if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                            unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                        }
+                    }
+
+                    if ($payment->account_id) {
+                        $this->accountUtil->adjustAccountBalance($payment->account_id);
+                    }
+                }
+            }
         }
-        return response()->json('Successfully expanse is deleted');
+
+        return response()->json('Successfully expense is deleted');
     }
 
     // Edit view
@@ -416,7 +441,7 @@ class ExpanseController extends Controller
         if (auth()->user()->permission->expense['edit_expense'] == '0') {
             return response()->json('Access Denied');
         }
-        
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['expenses'];
         $this->validate($request, [
@@ -424,18 +449,9 @@ class ExpanseController extends Controller
             'total_amount' => 'required',
         ]);
 
-        // generate invoice ID
-        $i = 6;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
 
         // Add expanse
         $updateExpanse = Expanse::where('id', $expenseId)->first();
-        $updateExpanse->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'EXI') . date('ymd') . $invoiceId;
         $updateExpanse->note = $request->expanse_note;
         $updateExpanse->tax_percent = $request->tax ? $request->tax : 0;
         $updateExpanse->total_amount = $request->total_amount;
@@ -497,7 +513,7 @@ class ExpanseController extends Controller
             $exDescription->delete();
         }
 
-        return response()->json(['successMsg' => 'Successfully expanse is updated']);
+        return response()->json(['successMsg' => 'Successfully expense is updated']);
     }
 
     // Get all form Categories by ajax request

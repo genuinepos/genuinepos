@@ -598,7 +598,7 @@ class PurchaseController extends Controller
         $purchaseId = $purchaseId;
         $editType = $editType;
         $warehouses = DB::table('warehouses')->get();
-        $purchase = DB::table('purchases')->where('id', $purchaseId)->select('id', 'warehouse_id', 'date')->first();
+        $purchase = DB::table('purchases')->where('id', $purchaseId)->select('id', 'warehouse_id', 'date', 'purchase_status')->first();
         return view('purchases.edit', compact('purchaseId', 'warehouses', 'purchase', 'editType'));
     }
 
@@ -659,20 +659,36 @@ class PurchaseController extends Controller
     public function delete(Request $request, $purchaseId)
     {
         // get deleting purchase row
-        $deletePurchase = purchase::with('supplier', 'purchase_products')->where('id', $purchaseId)->first();
+        $deletePurchase = purchase::with([
+            'supplier',
+            'purchase_products',
+            'purchase_products.product',
+            'purchase_products.variant',
+            'purchase_products.purchaseSaleChains'
+        ])->where('id', $purchaseId)->first();
+
         $supplier = DB::table('suppliers')->where('id', $deletePurchase->supplier_id)->first();
         //purchase payments
         $storedWarehouseId = $deletePurchase->warehouse_id;
         $storedBranchId = $deletePurchase->branch_id;
         $storedPayments = $deletePurchase->purchase_payments;
         $storePurchaseProducts = $deletePurchase->purchase_products;
+
+        foreach ($deletePurchase->purchase_products as $purchase_product) {
+            if (count($purchase_product->purchaseSaleChains) > 0) {
+                $variant = $purchase_product->variant ? ' - ' . $purchase_product->variant : '';
+                $product = $purchase_product->product->name . $variant;
+                return response()->json(["errorMsg" => "Can not delete is purchase. Mismatch between sold and purchase stock account method. Product: ${product}"]);
+            }
+        }
+
         foreach ($deletePurchase->purchase_products as $purchase_product) {
             $SupplierProduct = SupplierProduct::where('supplier_id', $deletePurchase->supplier_id)
                 ->where('product_id', $purchase_product->product_id)
                 ->where('product_variant_id', $purchase_product->product_variant_id)
                 ->first();
             if ($SupplierProduct) {
-                $SupplierProduct->label_qty -= $purchase_product->quantity;;
+                $SupplierProduct->label_qty -= $purchase_product->quantity;
                 $SupplierProduct->save();
             }
         }

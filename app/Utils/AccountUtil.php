@@ -142,7 +142,7 @@ class AccountUtil
             18 => ['name' => 'Received From Customer', 'voucher_no' => 'customer_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'debit'],
             19 => ['name' => 'Paid To Supplier', 'voucher_no' => 'supplier_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'credit'],
             20 => ['name' => 'Paid To Customer', 'voucher_no' => 'customer_return_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'credit'],
-            20 => ['name' => 'Received From Supplier', 'voucher_no' => 'supplier_return_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'debit'],
+            21 => ['name' => 'Received From Supplier', 'voucher_no' => 'supplier_return_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'debit'],
         ];
 
         return $data[$voucher_type_id];

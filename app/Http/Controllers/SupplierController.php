@@ -347,26 +347,42 @@ class SupplierController extends Controller
     public function payment($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
-        $accounts = DB::table('accounts')->orderBy('id', 'DESC')->where('status', 1)->get();
-        return view('contacts.suppliers.ajax_view.payment_modal', compact('supplier', 'accounts'));
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
+        return view('contacts.suppliers.ajax_view.payment_modal', compact('supplier', 'accounts', 'methods'));
     }
 
     // Supplier Payment add
     public function paymentAdd(Request $request, $supplierId)
     {
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ]);
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
 
         // Add Supplier Payment Record
         $supplierPayment = new SupplierPayment();
-        $supplierPayment->voucher_no = 'SPV' . date('my') . $this->invoiceVoucherRefIdUtil->supplierPaymentVoucherNo();
+        $supplierPayment->voucher_no = 'SPV' . $this->invoiceVoucherRefIdUtil->getLastId('supplier_payments');
         $supplierPayment->branch_id = auth()->user()->branch_id;
         $supplierPayment->supplier_id = $supplierId;
         $supplierPayment->account_id = $request->account_id;
-        $supplierPayment->paid_amount = $request->amount;
-        $supplierPayment->pay_mode = $request->payment_method;
+        $supplierPayment->paid_amount = $request->paying_amount;
+        $supplierPayment->payment_method_id = $request->payment_method_id;
         $supplierPayment->date = $request->date;
-        $supplierPayment->report_date = date('Y-m-d', strtotime($request->date));
+        $supplierPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $supplierPayment->time = date('h:i:s a');
         $supplierPayment->month = date('F');
         $supplierPayment->year = date('Y');
@@ -381,42 +397,36 @@ class SupplierController extends Controller
         $supplierPayment->note = $request->note;
         $supplierPayment->save();
 
-        // if ($request->account_id) {
-        //     // Add cash flow
-        //     $addCashFlow = new CashFlow();
-        //     $addCashFlow->account_id = $request->account_id;
-        //     $addCashFlow->debit = $request->amount;
-        //     $addCashFlow->supplier_payment_id = $supplierPayment->id;
-        //     $addCashFlow->transaction_type = 12;
-        //     $addCashFlow->cash_type = 1;
-        //     $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-        //     $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-        //     $addCashFlow->month = date('F');
-        //     $addCashFlow->year = date('Y');
-        //     $addCashFlow->admin_id = auth()->user()->id;
-        //     $addCashFlow->save();
-        //     $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-        //     $addCashFlow->save();
-        // }
+        // Add supplier Ledger
+        $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: 5,
+            supplier_id: $supplierId,
+            date: $request->date,
+            trans_id: $supplierPayment->id,
+            amount: $request->paying_amount
+        );
 
-        // // Add supplier payment for direct payment
-        // $addSupplierLedger = new SupplierLedger();
-        // $addSupplierLedger->supplier_id = $supplierId;
-        // $addSupplierLedger->row_type = 4;
-        // $addSupplierLedger->supplier_payment_id = $supplierPayment->id;
-        // $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
-        // $addSupplierLedger->save();
+        // Add Bank/Cash-in-hand A/C Ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 19,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $supplierPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'credit'
+        );
 
         $dueInvoices = Purchase::where('supplier_id', $supplierId)
             ->where('due', '>', 0)
             ->get();
+
         if (count($dueInvoices) > 0) {
             $index = 0;
             foreach ($dueInvoices as $dueInvoice) {
                 if ($dueInvoice->due > $request->amount) {
                     if ($request->amount > 0) {
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->purchasePaymentVoucherNo();
+                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
@@ -444,7 +454,7 @@ class SupplierController extends Controller
                 } elseif ($dueInvoice->due == $request->amount) {
                     if ($request->amount > 0) {
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->purchasePaymentVoucherNo();
+                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
@@ -471,7 +481,7 @@ class SupplierController extends Controller
                 } elseif ($dueInvoice->due < $request->amount) {
                     if ($dueInvoice->due > 0) {
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('my') . $this->invoiceVoucherRefIdUtil->purchasePaymentVoucherNo();
+                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
@@ -508,15 +518,24 @@ class SupplierController extends Controller
     public function returnPayment($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
-        $accounts = DB::table('accounts')->orderBy('id', 'DESC')->where('status', 1)->get();
-        return view('contacts.suppliers.ajax_view.return_payment_modal', compact('supplier', 'accounts'));
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
+        return view('contacts.suppliers.ajax_view.return_payment_modal', compact('supplier', 'accounts', 'methods'));
     }
 
     public function returnPaymentAdd(Request $request, $supplierId)
     {
         // Add Supplier Payment Record
         $supplierPayment = new SupplierPayment();
-        $supplierPayment->voucher_no = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('supplier_payments');
+        $supplierPayment->voucher_no = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('supplier_payments');
         $supplierPayment->branch_id = auth()->user()->branch_id;
         $supplierPayment->supplier_id = $supplierId;
         $supplierPayment->account_id = $request->account_id;
@@ -539,31 +558,24 @@ class SupplierController extends Controller
         $supplierPayment->note = $request->note;
         $supplierPayment->save();
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->credit = $request->amount;
-            $addCashFlow->supplier_payment_id = $supplierPayment->id;
-            $addCashFlow->transaction_type = 12;
-            $addCashFlow->cash_type = 2;
-            $addCashFlow->date = date('d-m-y', strtotime($request->date));
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->user()->id;
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+        // Add supplier Ledger
+        $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: 6,
+            supplier_id: $supplierId,
+            date: $request->date,
+            trans_id: $supplierPayment->id,
+            amount: $request->paying_amount
+        );
 
-        // Add supplier payment for direct payment
-        $addSupplierLedger = new SupplierLedger();
-        $addSupplierLedger->supplier_id = $supplierId;
-        $addSupplierLedger->row_type = 4;
-        $addSupplierLedger->supplier_payment_id = $supplierPayment->id;
-        $addSupplierLedger->report_date = date('Y-m-d', strtotime($request->date));
-        $addSupplierLedger->save();
+        // Add Bank A/C Ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 21,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $supplierPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'credit'
+        );
 
         $returnPurchases = Purchase::with(['purchase_return'])->where('purchase_return_due', '>', 0)->get();
         if (count($returnPurchases) > 0) {
@@ -573,7 +585,7 @@ class SupplierController extends Controller
                     if ($request->amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+                        $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
                         $addPurchasePayment->purchase_id = $returnPurchase->id;
                         $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
@@ -611,7 +623,7 @@ class SupplierController extends Controller
                     if ($request->amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+                        $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
                         $addPurchasePayment->purchase_id = $returnPurchase->id;;
                         $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
@@ -648,7 +660,7 @@ class SupplierController extends Controller
                     if ($request->amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+                        $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
                         $addPurchasePayment->purchase_id = $returnPurchase->id;
                         $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;

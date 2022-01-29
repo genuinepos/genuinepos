@@ -24,13 +24,12 @@ class SaleReturnController extends Controller
     protected $converter;
     protected $invoiceVoucherRefIdUtil;
     public function __construct(
-        ProductStockUtil $productStockUtil, 
-        SaleUtil $saleUtil, 
-        CustomerUtil $customerUtil, 
+        ProductStockUtil $productStockUtil,
+        SaleUtil $saleUtil,
+        CustomerUtil $customerUtil,
         Converter $converter,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
-        )
-    {
+    ) {
         $this->productStockUtil = $productStockUtil;
         $this->saleUtil = $saleUtil;
         $this->customerUtil = $customerUtil;
@@ -181,8 +180,8 @@ class SaleReturnController extends Controller
         }
 
         // generate invoice ID
-        $invoiceId =  $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, "0", STR_PAD_LEFT);
-      
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, "0", STR_PAD_LEFT);
+
         $saleReturn = SaleReturn::where('sale_id', $saleId)->first();
         $sale = Sale::where('id', $saleId)->first();
         if ($saleReturn) {

@@ -462,7 +462,7 @@ class PurchaseController extends Controller
         $updatePurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
 
         // update purchase total information
-        $updatePurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);;
+        $updatePurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);;
         $updatePurchase->pay_term = $request->pay_term;
         $updatePurchase->pay_term_number = $request->pay_term_number;
         $updatePurchase->invoice_id = $request->invoice_id;
@@ -777,9 +777,11 @@ class PurchaseController extends Controller
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
         $purchase = Purchase::where('id', $purchaseId)->first();
 
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 4, "0", STR_PAD_LEFT);
+        
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
-        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPR') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPR') . $invoiceId;
         $addPurchasePayment->purchase_id = $purchase->id;
         $addPurchasePayment->is_advanced = $purchase->is_purchased == 0 ? 1 : 0;
         $addPurchasePayment->account_id = $request->account_id;
@@ -976,9 +978,11 @@ class PurchaseController extends Controller
             $purchase->purchase_return->save();
         }
 
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 4, "0", STR_PAD_LEFT);
+
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
-        $addPurchasePayment->invoice_id = 'PRP' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+        $addPurchasePayment->invoice_id = 'PRP' . $invoiceId;
         $addPurchasePayment->purchase_id = $purchase->id;
         $addPurchasePayment->account_id = $request->account_id;
         $addPurchasePayment->pay_mode = $request->payment_method;

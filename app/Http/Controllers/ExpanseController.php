@@ -321,7 +321,6 @@ class ExpanseController extends Controller
         }
 
         if ($request->paying_amount > 0) {
-
             $paymentVoucher = str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_payments'), 4, "0", STR_PAD_LEFT);
             $addExpansePayment = new ExpansePayment();
             $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . $paymentVoucher;

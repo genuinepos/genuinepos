@@ -44,6 +44,7 @@
         var supplier = suppliersArray.filter(function (supplier) {
             return supplier.id == id;
         });
+
         if (supplier[0].pay_term != null && supplier[0].pay_term_number != null) {
             $('#pay_term').val(supplier[0].pay_term);
             $('#pay_term_number').val(supplier[0].pay_term_number);
@@ -51,12 +52,15 @@
             $('#pay_term').val('');
             $('#pay_term_number').val('');
         }
+
     });
 
     $('#addSupplier').on('click', function () {
         $.get("{{route('purchases.add.quick.supplier.modal')}}", function(data) {
+
             $('#add_supplier_modal_body').html(data);
             $('#addSupplierModal').modal('show');
+
         });
     });
 
@@ -81,10 +85,12 @@
             url:"{{route('purchases.get.all.taxes')}}",
             async:false,
             success:function(taxes){
+
                 taxArray = taxes;
                 $.each(taxes, function(key, val){
                     $('#purchase_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
                 });
+
             }
         });
     }
@@ -95,10 +101,12 @@
         var line_totals = document.querySelectorAll('#line_total');
         var total_item = 0;
         var total_qty = 0;
+
         quantities.forEach(function(qty){
-                total_item += 1;
-                total_qty += parseFloat(qty.value)
+            total_item += 1;
+            total_qty += parseFloat(qty.value);
         });
+
         $('#total_qty').val(parseFloat(total_qty));
         $('#total_item').val(parseFloat(total_item));
 
@@ -1019,6 +1027,7 @@
             $('.loading_button').hide();
             return;
         }
+        
         $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,

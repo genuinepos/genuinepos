@@ -66,12 +66,17 @@
             <label><strong>Pay Term :</strong>  </label>
             <div class="col-md-12">
                 <div class="row">
-                    <input type="text" name="pay_term_number" class="form-control w-50"/>
-                    <select name="pay_term" class="form-control w-50">
-                        <option value="">Select term</option>
-                        <option value="1">Days </option>
-                        <option value="2">Months</option>
-                    </select>
+                    <div class="col-md-5">
+                        <input type="text" name="pay_term_number" class="form-control" placeholder="Number"/>
+                    </div>
+                    
+                    <div class="col-md-7">
+                        <select name="pay_term" class="form-control">
+                            <option value="">Select term</option>
+                            <option value="1">Days </option>
+                            <option value="2">Months</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,7 +131,7 @@
 
 <script>
     // Add supplier by ajax
-    $(document).on('submit', '#add_supplier_form', function(e){
+    $('#add_supplier_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
